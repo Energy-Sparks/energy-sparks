@@ -261,4 +261,87 @@ describe Commercial::Contract do
       expect(described_class.ordered_by_contract_holder_name).to eq([funder_contract, group_contract, school_contract])
     }
   end
+
+  describe '.current_contract_holder_summaries' do
+    subject(:summaries) { described_class.current_contract_holder_summaries }
+
+    shared_examples 'a correctly generated summary' do
+      let(:contract_holder_type) { contract_holder.class.name }
+
+      context 'with no current contract' do
+        it 'returns nothing' do
+          expect(summaries).to be_empty
+        end
+      end
+
+      context 'with a mixture of visible and data enabled schools' do
+        before do
+          contract = create(:commercial_contract, contract_holder:)
+          2.times do
+            create(:commercial_licence, contract:, school: create(:school, data_enabled: false))
+          end
+          3.times do
+            create(:commercial_licence, contract:, school: create(:school, data_enabled: true))
+          end
+          create(:school_onboarding, contract:, school: nil)
+        end
+
+        it 'returns expected summary' do
+          expect(summaries.first).to eq({
+                                          name: contract_holder.name,
+                                          type: contract_holder_type,
+                                          visible_not_data_enabled: 2,
+                                          visible_data_enabled: 3,
+                                          onboardings: 1,
+                                          total: 6
+                                        })
+        end
+      end
+
+      context 'with multiple current contracts' do
+        before do
+          2.times do
+            create(:commercial_licence,
+                   contract: create(:commercial_contract, contract_holder:),
+                   school: create(:school, data_enabled: false))
+          end
+          3.times do
+            create(:commercial_licence,
+                   contract: create(:commercial_contract, contract_holder:),
+                   school: create(:school, data_enabled: true))
+          end
+          create(:school_onboarding, contract: create(:commercial_contract, contract_holder:), school: nil)
+        end
+
+        it 'returns expected summary' do
+          expect(summaries.first).to eq({
+                                          name: contract_holder.name,
+                                          type: contract_holder_type,
+                                          visible_not_data_enabled: 2,
+                                          visible_data_enabled: 3,
+                                          onboardings: 1,
+                                          total: 6
+                                        })
+        end
+      end
+    end
+
+    context 'with a Funder' do
+      it_behaves_like 'a correctly generated summary' do
+        let!(:contract_holder) { create(:funder) } # rubocop:disable RSpec/LetSetup
+      end
+    end
+
+    context 'with a School Group' do
+      it_behaves_like 'a correctly generated summary' do
+        let!(:contract_holder) { create(:school_group) } # rubocop:disable RSpec/LetSetup
+      end
+    end
+
+    context 'with a School' do
+      it_behaves_like 'a correctly generated summary' do
+        let!(:contract_holder) { create(:school) } # rubocop:disable RSpec/LetSetup
+      end
+    end
+  end
 end
