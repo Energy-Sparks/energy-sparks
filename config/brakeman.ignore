@@ -104,6 +104,29 @@
       "note": "table names only come from code so isn't really an issue"
     },
     {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "64623040e1e88dad285dc03858b37d0f850aeb4e1cc3462a04261099466c1425",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/commercial/contract.rb",
+      "line": 151,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "current.joins(contract_holder_joins).left_joins(:licences).joins(\"LEFT JOIN schools AS licence_schools ON licence_schools.id = commercial_licences.school_id\").left_joins(:school_onboardings).select(\"commercial_contracts.contract_holder_type\", \"commercial_contracts.contract_holder_id\", \"#{contract_holder_name_sql} AS contract_holder_name\", count_case(\"licence_schools.visible = TRUE AND licence_schools.data_enabled = FALSE\", \"visible_not_data_enabled_count\"), count_case(\"licence_schools.visible = TRUE AND licence_schools.data_enabled = TRUE\", \"visible_data_enabled_count\"), count_case(\"school_onboardings.school_id IS NULL\", \"onboarding_count\", :id => \"school_onboardings.id\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Commercial::Contract",
+        "method": "current_contract_holders_with_counts"
+      },
+      "user_input": "contract_holder_name_sql",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
       "fingerprint": "73d5c0af49f75a3f7d6de36415bcc548673829385ee90056da14aebb4fc3b02d",
