@@ -411,8 +411,8 @@ describe 'manage contracts' do
 
       it {
         expect(page).to have_text(
-          'Any changes made to the start and end dates or licence years fields for this contract will be ' \
-          'automatically applied to any licences'
+          'Any changes made to the start and end dates or licence years fields for this contract will be applied to ' \
+          'any licences that have not yet been invoiced'
         )
       }
 
