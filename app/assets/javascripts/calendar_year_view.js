@@ -88,21 +88,21 @@ $(document).ready(function() {
       const button = id('edit_button');
       button.style.display = enable ? 'initial' : 'none';
       if (enable) {
-        button.addEventListener('click', function (e) {
+        button.onclick = (e) => {
           e.preventDefault();
           editEvent(event);
-        });
+        };
       }
     }
 
     function enableDelete(enable) {
-      const deleteButton = id('delete_button');
-      deleteButton.style.display = enable ? 'block' : 'none';
-      deleteButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        setFormMethod('delete')
+      const button = id('delete_button');
+      button.style.display = enable ? 'block' : 'none';
+      button.onclick = (e) => {
+        e.preventDefault();
+        setFormMethod('delete');
         id('event_form').submit();
-      });
+      };
     }
 
     function setFormMethod(method) {
