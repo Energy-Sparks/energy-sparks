@@ -28,7 +28,11 @@
       <tbody>
         <% @contract_holder_summaries.each do |summary| %>
           <tr>
-            <td><%= summary[:name] %></td>
+            <td>
+              <%= link_to summary[:name],
+                          polymorphic_path([:admin, summary[:type].underscore.to_sym, :contracts],
+                                           "#{summary[:type].underscore}_id": summary[:id]) %>
+            </td>
             <td><%= summary[:type] %></td>
             <td><%= summary[:onboardings] %></td>
             <td><%= summary[:visible_not_data_enabled] %></td>

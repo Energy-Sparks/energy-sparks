@@ -288,6 +288,7 @@ describe Commercial::Contract do
 
         it 'returns expected summary' do
           expect(summaries.first).to eq({
+                                          id: contract_holder.id,
                                           name: contract_holder.name,
                                           type: contract_holder_type,
                                           visible_not_data_enabled: 2,
@@ -315,6 +316,7 @@ describe Commercial::Contract do
 
         it 'returns expected summary' do
           expect(summaries.first).to eq({
+                                          id: contract_holder.id,
                                           name: contract_holder.name,
                                           type: contract_holder_type,
                                           visible_not_data_enabled: 2,

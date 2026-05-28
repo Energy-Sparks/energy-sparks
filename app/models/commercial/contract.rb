@@ -173,6 +173,7 @@ module Commercial
         onboard     = row.onboarding_count
 
         {
+          id: row.contract_holder_id,
           name: row.contract_holder_name,
           type: row.contract_holder_type,
           visible_not_data_enabled: visible_not,
