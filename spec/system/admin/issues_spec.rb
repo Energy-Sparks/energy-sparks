@@ -95,7 +95,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                   select 'Gas', from: 'Fuel type'
                   check gas_meter.mpan_mprn.to_s if issueable.is_a? School
-                  select 'issue tag label', from: 'Issue tags'
+                  select 'issue tag 1', from: 'Issue tags'
                   select 'Other Issues Admin', from: 'Assigned to'
                   fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
                   check 'Pinned'
@@ -106,7 +106,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   expect(page).to have_text issue_type.capitalize.to_s
                   expect(page).to have_text "#{issue_type} title"
                   expect(page).to have_text "#{issue_type} desc"
-                  expect(page).to have_text 'issue tag label'
+                  expect(page).to have_text 'issue tag 1'
                   expect(page).to have_text 'Gas'
                   expect(page).to have_text 'Other Issues Admin'
                   expect(page).to have_text "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
@@ -164,7 +164,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   select 'Gas', from: 'Fuel type'
                   select 'Closed', from: 'Status'
                   select new_issue_type, from: 'Issue type'
-                  select 'issue tag label', from: 'Issue tags'
+                  select 'issue tag 1', from: 'Issue tags'
                   select 'Other Issues Admin', from: 'Assigned to'
                   fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
                   uncheck 'Pinned'
@@ -181,7 +181,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   expect(page).to have_text "#{issue_type} desc"
                   expect(page).to have_text 'Gas'
                   expect(page).to have_text 'Closed'
-                  expect(page).to have_text 'issue tag label'
+                  expect(page).to have_text 'issue tag 1'
                   expect(page).to have_text 'Other Issues Admin'
                   expect(page).to have_text "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_text "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"

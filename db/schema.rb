@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_22_074513) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_20_090103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1315,6 +1315,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_074513) do
     t.string "label"
     t.string "system_id"
     t.datetime "updated_at", null: false
+    t.index ["label"], name: "index_issue_tags_on_label", unique: true
+    t.index ["system_id"], name: "index_issue_tags_on_system_id", unique: true
   end
 
   create_table "issue_tags_issues", force: :cascade do |t|
