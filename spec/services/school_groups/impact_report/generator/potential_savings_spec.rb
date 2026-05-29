@@ -23,19 +23,21 @@ RSpec.describe SchoolGroups::ImpactReport::Generator::PotentialSavings do
     end
 
     it 'has the right metrics' do
-      expect(generator.metrics).to contain_exactly(metric(:out_of_hours, value: 1200, number_of_schools: 3, enough_data: true),
-                                                   metric(:baseload),
-                                                   metric(:peak),
-                                                   metric(:use),
-                                                   metric(:heating_down, :gas),
-                                                   metric(:heating_early, :gas),
-                                                   metric(:heating_off, :gas),
-                                                   metric(:insulate_pipes, :gas),
-                                                   metric(:out_of_hours, :gas),
-                                                   metric(:thermostatic_control, :gas),
-                                                   metric(:use, :gas),
-                                                   metric(:solar_panels, :solar_pv),
-                                                   metric(:heating_off, :storage_heater))
+      expect(generator.metrics).to contain_exactly(
+        metric(:out_of_hours, value: 1200, number_of_schools: 3, enough_data: true),
+        metric(:baseload),
+        metric(:peak),
+        metric(:use),
+        metric(:heating_down, :gas),
+        metric(:heating_early, :gas),
+        metric(:heating_off, :gas),
+        metric(:insulate_pipes, :gas),
+        metric(:out_of_hours, :gas),
+        metric(:thermostatic_control, :gas),
+        metric(:use, :gas),
+        metric(:solar_panels, :solar_pv),
+        metric(:heating_off, :storage_heater)
+      )
     end
   end
 end
