@@ -920,4 +920,41 @@ describe 'manage contracts' do
       end
     end
   end
+
+  context 'when viewing contract holders' do
+    let!(:contract_holder) { create(:funder) }
+
+    before do
+      contract = create(:commercial_contract, contract_holder:)
+      2.times do
+        create(:commercial_licence, contract:, school: create(:school, data_enabled: false))
+      end
+      3.times do
+        create(:commercial_licence, contract:, school: create(:school, data_enabled: true))
+      end
+      create(:school_onboarding, contract:, school: nil)
+      click_on 'Contract Holders'
+    end
+
+    it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+      let(:table_id) { '#contract-holders-table' }
+      let(:expected_header) do
+        [
+          ['Name', 'Type', 'Onboarding', 'Visible not data enabled', 'Visible and data enabled', 'Total']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          [
+            contract_holder.name,
+            'Funder',
+            '1',
+            '2',
+            '3',
+            '6'
+          ]
+        ]
+      end
+    end
+  end
 end
