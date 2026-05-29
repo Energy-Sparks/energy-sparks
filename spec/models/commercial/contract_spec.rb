@@ -62,9 +62,9 @@ describe Commercial::Contract do
         end
 
         it 'prevents editing fields that are never editable' do
-          contract.product = create(:commercial_product)
+          contract.contract_holder = create(:funder)
           expect(contract).not_to be_valid
-          expect(contract.errors[:product_id]).to include(
+          expect(contract.errors[:contract_holder_id]).to include(
             'cannot be changed once the contract is in its current state'
           )
         end
@@ -110,32 +110,69 @@ describe Commercial::Contract do
   end
 
   describe '#editable_fields' do
-    subject(:contract) { create(:commercial_contract, status: :provisional) }
-
-    it 'has the expected fields' do
-      expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name,
-                                                              :number_of_schools, :purchase_order_number,
-                                                              :start_date, :status, :updated_by_id)
-    end
-
-    context 'when confirmed' do
-      subject(:contract) { create(:commercial_contract, status: :confirmed) }
+    context 'with standard contract' do
+      subject(:contract) { create(:commercial_contract, status: :provisional) }
 
       it 'has the expected fields' do
-        expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name,
-                                                                :number_of_schools, :purchase_order_number,
-                                                                :start_date, :updated_by_id)
+        expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
+                                                                :name, :number_of_schools,
+                                                                :product_id, :purchase_order_number,
+                                                                :start_date, :status, :updated_by_id)
+      end
+
+      context 'when confirmed' do
+        subject(:contract) { create(:commercial_contract, status: :confirmed) }
+
+        it 'has the expected fields' do
+          expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
+                                                                  :name, :number_of_schools,
+                                                                  :product_id, :purchase_order_number,
+                                                                  :start_date, :updated_by_id)
+        end
+      end
+
+      context 'with invoiced licences' do
+        before do
+          create(:commercial_licence, contract:, status: :invoiced)
+        end
+
+        it 'has the expected fields' do
+          expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools,
+                                                                  :purchase_order_number, :status, :updated_by_id)
+        end
       end
     end
 
-    context 'with invoiced licences' do
-      before do
-        create(:commercial_licence, contract:, status: :invoiced)
-      end
+    context 'with custom contract' do
+      subject(:contract) { create(:commercial_contract, :custom, status: :provisional) }
 
       it 'has the expected fields' do
-        expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools,
-                                                                :purchase_order_number, :status, :updated_by_id)
+        expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
+                                                                :licence_years, :name, :number_of_schools,
+                                                                :product_id, :purchase_order_number,
+                                                                :start_date, :status, :updated_by_id)
+      end
+
+      context 'when confirmed' do
+        subject(:contract) { create(:commercial_contract, :custom, status: :confirmed) }
+
+        it 'has the expected fields' do
+          expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
+                                                                  :licence_years, :name, :number_of_schools,
+                                                                  :product_id, :purchase_order_number,
+                                                                  :start_date, :updated_by_id)
+        end
+      end
+
+      context 'with invoiced licences' do
+        before do
+          create(:commercial_licence, contract:, status: :invoiced)
+        end
+
+        it 'has the expected fields' do
+          expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools,
+                                                                  :purchase_order_number, :status, :updated_by_id)
+        end
       end
     end
   end
@@ -165,5 +202,63 @@ describe Commercial::Contract do
         end_date: original.end_date.next_year
       )
     end
+  end
+
+  describe '.over_licensed' do
+    let!(:contract) { create(:commercial_contract, number_of_schools: 1) }
+    let(:licence_count) { 1 }
+
+    before do
+      create_list(:commercial_licence, licence_count, contract:)
+    end
+
+    it { expect(described_class.over_licensed).to be_empty }
+
+    context 'with too many licences' do
+      let(:licence_count) { 2 }
+
+      it { expect(described_class.over_licensed).to include(contract) }
+    end
+  end
+
+  describe '.overlapping' do
+    let!(:contract_one) do
+      create(:commercial_contract, start_date: Date.new(2024, 1, 1), end_date: Date.new(2024, 12, 31))
+    end
+    let!(:contract_two) do
+      create(:commercial_contract,
+             contract_holder: contract_one.contract_holder,
+             start_date: Date.new(2025, 1, 1),
+             end_date: Date.new(2025, 12, 31))
+    end
+
+    it { expect(described_class.overlapping).to(be_empty) }
+
+    context 'when there are overlaps for different contract holders' do
+      let!(:contract_two) do
+        create(:commercial_contract, start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(be_empty) }
+    end
+
+    context 'when there are overlaps for same contract holder' do
+      let!(:contract_two) do
+        create(:commercial_contract, contract_holder: contract_one.contract_holder,
+                                     start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(contain_exactly(contract_one, contract_two)) }
+    end
+  end
+
+  describe '.ordered_by_contract_holder_name' do
+    let!(:school_contract) { create(:commercial_contract, contract_holder: create(:school, name: 'XYZ School')) }
+    let!(:group_contract) { create(:commercial_contract, contract_holder: create(:school_group, name: 'Big Group')) }
+    let!(:funder_contract) { create(:commercial_contract, contract_holder: create(:funder, name: 'ABC, Inc')) }
+
+    it {
+      expect(described_class.ordered_by_contract_holder_name).to eq([funder_contract, group_contract, school_contract])
+    }
   end
 end
