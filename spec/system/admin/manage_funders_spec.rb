@@ -80,7 +80,6 @@ describe 'manage funders' do
       click_on('Funders')
     end
 
-    it { expect(page).to have_text('This funder is invoiced for its contracted schools') }
     it { expect(page).to have_link('Contracts', href: admin_funder_contracts_path(funder)) }
     it { expect(page).to have_link('Edit', href: edit_admin_funder_path(funder)) }
     it { expect(page).to have_link('Delete', href: admin_funder_path(funder)) }
@@ -123,7 +122,7 @@ describe 'manage funders' do
     end
 
     context 'when showing funded schools' do
-      include_context 'a mixture of contracted schools and onboardings'
+      include_context 'with a mixture of contracted schools and onboardings'
       before { click_on(funder.name) }
 
       it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do

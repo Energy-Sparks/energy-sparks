@@ -3,6 +3,18 @@
 <h2>Funded schools</h2>
 
 <p>
+  <%= render PromptComponent.new(icon: 'circle-info', status: :neutral) do |prompt| %>
+    <p>
+      The following table shows schools LINKED to the funder and does not use the new Contracts & Licensing data.
+      For a summary of schools by current contract holders view the contract holder report.
+    </p>
+    <% prompt.with_link do %>
+        <%= link_to 'Contract Holders', admin_commercial_contract_holders_path %>
+    <% end %>
+  <% end %>
+</p>
+
+<p>
   This table summarises the number of visible and data enabled schools for each funder, along with a count of
   schools which have no funder assigned.
 </p>
