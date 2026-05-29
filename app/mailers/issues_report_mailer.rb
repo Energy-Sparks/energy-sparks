@@ -35,6 +35,7 @@ class IssuesReportMailer < ApplicationMailer
                 ->(issue) { issue.school_group&.name },
                 ->(issue, csv) { csv && link_to(csv, admin_school_group_url(issue.school_group)) }),
      Column.new(:title, ->(issue) { issue.title }),
+     Column.new(:tags, ->(issue) { issue.issue_tags.pluck(:label).join('|') }),
      Column.new(:fuel, ->(issue) { issue.fuel_type&.humanize }),
      Column.new(:next_review_date, ->(issue) { format_date(issue.review_date) }),
      Column.new(:created_by, ->(issue) { issue.created_by.display_name }),
