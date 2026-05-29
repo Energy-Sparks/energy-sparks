@@ -21,8 +21,8 @@ describe 'manage funders' do
         click_on 'Create'
       end
 
-      it { expect(page).to have_content('Funder was successfully created') }
-      it { expect(page).to have_content('My funder') }
+      it { expect(page).to have_text('Funder was successfully created') }
+      it { expect(page).to have_text('My funder') }
     end
 
     context 'with invalid data' do
@@ -30,7 +30,7 @@ describe 'manage funders' do
 
       it 'displays errors' do
         click_on 'Create'
-        expect(page).to have_content("Name can't be blank")
+        expect(page).to have_text("Name can't be blank")
       end
     end
   end
@@ -49,8 +49,8 @@ describe 'manage funders' do
         click_on 'Update'
       end
 
-      it { expect(page).to have_content('Funder was successfully updated') }
-      it { expect(page).to have_content(funder.reload.name) }
+      it { expect(page).to have_text('Funder was successfully updated') }
+      it { expect(page).to have_text(funder.reload.name) }
     end
   end
 
@@ -69,7 +69,7 @@ describe 'manage funders' do
         click_on 'Delete'
       end
 
-      it { expect(page).to have_content('Cannot delete record because dependent contracts exist') }
+      it { expect(page).to have_text('Cannot delete record because dependent contracts exist') }
     end
   end
 
@@ -97,7 +97,8 @@ describe 'manage funders' do
         let(:table_id) { '#contracts-table' }
         let(:expected_header) do
           [
-            ['Name', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status', 'Actions']
+            ['Name', 'Product', 'Period', 'Terms', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools',
+             'Status', 'Actions']
           ]
         end
         let(:expected_rows) do
@@ -105,6 +106,8 @@ describe 'manage funders' do
             [
               contract.name,
               contract.product.name,
+              contract.licence_period.humanize,
+              contract.invoice_terms.humanize,
               contract.start_date.to_fs(:es_short),
               contract.end_date.to_fs(:es_short),
               contract.number_of_schools.to_s,
