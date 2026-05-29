@@ -636,6 +636,8 @@ Rails.application.routes.draw do
 
     namespace :commercial do
       resources :contracts do
+        post :confirm, on: :member
+
         get :contract_holder_options, on: :collection
         get :choose, on: :collection
         resources :licences, controller: "contracts/licences" do

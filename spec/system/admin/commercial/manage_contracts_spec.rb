@@ -776,11 +776,44 @@ describe 'manage contracts' do
               contract.number_of_schools.to_s,
               '0',
               contract.status.humanize,
-              'Edit Renew Delete'
+              'Edit Renew Confirm Delete'
             ]
           ]
         end
       end
+    end
+  end
+
+  context 'when confirming a contract' do
+    let!(:contract) { create(:commercial_contract, status: :provisional) }
+
+    before do
+      click_on 'All Contracts'
+      click_on contract.name
+    end
+
+    context 'when clicking the button' do
+      it 'confirms the contract' do
+        click_on 'Confirm'
+        expect(page).to have_text('Contract and licences have been confirmed')
+        expect(contract.reload.status).to eq('confirmed')
+      end
+
+      context 'when there are licences' do
+        let!(:licence) { create(:commercial_licence, contract:) }
+
+        it 'confirms the licences' do
+          click_on 'Confirm'
+          expect(page).to have_text('Contract and licences have been confirmed')
+          expect(licence.reload.status).to eq('confirmed')
+        end
+      end
+    end
+
+    context 'when the contract is already confirmed' do
+      let!(:contract) { create(:commercial_contract, status: :confirmed) }
+
+      it { expect(page).to have_no_link('Confirm', href: confirm_admin_commercial_contract_path(contract)) }
     end
   end
 
