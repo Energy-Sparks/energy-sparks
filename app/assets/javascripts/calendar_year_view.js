@@ -40,7 +40,6 @@ $(document).ready(function() {
     function editEvent(event) {
       const lastEvent =  event.events[event.events.length - 1];
       setupModal(lastEvent, lastEvent.startDate, lastEvent.endDate);
-      enableDelete(true);
       enableEdit(false, null);
       $('#event-modal').modal();
     }
@@ -57,12 +56,10 @@ $(document).ready(function() {
           return editEvent(event);
       }
       setupModal(null, event.date, event.date);
-      enableDelete(false);
       $('#event-modal').modal();
     }
 
     function setupModal(event, start_date, end_date) {
-      const calendarId = $('#event-modal').data('calendar');
       let method = 'post';
       let action_suffix = '';
       let event_type_id = '';
@@ -75,6 +72,7 @@ $(document).ready(function() {
         new_title_display = 'none';
         edit_title_display = 'initial';
       }
+      const calendarId = id('event-modal').dataset.calendar;
       id('event_form').setAttribute('action', `/calendars/${calendarId}/calendar_events${action_suffix}`);
       setFormMethod(method)
       id('calendar_event_calendar_event_type_id').value = event_type_id;
@@ -82,6 +80,7 @@ $(document).ready(function() {
       q('#event-modal input[name="calendar_event[end_date]"]').value = end_date.toLocaleDateString('en-GB');
       id('event-model-new-title').style.display = new_title_display;
       id('event-model-edit-title').style.display = edit_title_display;
+      enableDelete(!!event);
     }
 
     function enableEdit(enable, event) {
@@ -101,7 +100,7 @@ $(document).ready(function() {
       button.onclick = (e) => {
         e.preventDefault();
         setFormMethod('delete');
-        id('event_form').submit();
+        id('event_form').requestSubmit();
       };
     }
 
