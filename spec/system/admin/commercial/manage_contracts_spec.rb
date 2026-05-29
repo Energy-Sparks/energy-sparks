@@ -731,7 +731,7 @@ describe 'manage contracts' do
         refresh
       end
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false, tfoot: true do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false, tfoot: true do
         let(:table_id) { '#per-school-fees' }
         let(:expected_header) do
           [
@@ -756,7 +756,7 @@ describe 'manage contracts' do
 
       it { expect(page).to have_text("#{contract.contract_holder.name} Contracts") }
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#contracts-table' }
         let(:expected_header) do
           [
