@@ -10,6 +10,7 @@
 #  metric_category      :enum             not null
 #  metric_type          :enum             not null
 #  number_of_schools    :integer
+#  unit                 :enum
 #  value                :integer
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null

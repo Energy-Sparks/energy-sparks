@@ -13,21 +13,22 @@ module SchoolGroups
         end
 
         def metrics
-          metric_names.map do |fuel_type, metric|
-            number_of_schools = number_of_schools(fuel_type, metric)
-            { enough_data: enough_data?(fuel_type, metric, number_of_schools),
+          metric_names.map do |fuel_type, metric, unit|
+            number_of_schools = number_of_schools(fuel_type, metric, unit)
+            { enough_data: enough_data?(fuel_type, metric, unit, number_of_schools),
               fuel_type:,
               metric_category:,
               metric_type: self.class.metric_type(metric),
+              unit:,
               number_of_schools:,
-              value: value(fuel_type, metric) }
+              value: value(fuel_type, metric, unit) }
           end
         end
 
         private
 
         def metric_names
-          %i[electricity gas].flat_map { |fuel| self.class::TYPES.map { |type| [fuel, type] } }
+          %i[electricity gas].product(self.class::METRICS, self.class::UNITS)
         end
 
         def enough_data?(*)

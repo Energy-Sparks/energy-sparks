@@ -3,22 +3,21 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::AnnualSaving do
-  subject(:energy) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
+  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
 
   let(:school) { create(:school, :with_school_group) }
-  let(:alerts) { [] }
 
   describe '#metrics' do
-    subject(:metrics) { energy.metrics.reject { |metric| metric[:value].zero? } }
+    let(:alerts) { [] }
 
     before do
       alerts
       [Comparison::ChangeInElectricitySinceLastYear, Comparison::ChangeInGasSinceLastYear].each(&:refresh)
     end
 
-    def electricity(type, **)
+    def electricity(unit, **)
       { enough_data: true, fuel_type: :electricity, metric_category: :energy_efficiency,
-        metric_type: :"annual_saving_#{type}", number_of_schools: 1, value: 0 }.merge(**)
+        metric_type: :annual_saving, unit:, number_of_schools: 1, value: 0 }.merge(**)
     end
 
     def gas(*, **)
@@ -32,7 +31,7 @@ describe SchoolGroups::ImpactReport::Generator::AnnualSaving do
       end
 
       it 'has the right metrics' do
-        expect(energy.metrics).to contain_exactly(
+        expect(generator.metrics).to contain_exactly(
           electricity(:gbp, value: 800),
           electricity(:co2, value: 400),
           electricity(:kwh, value: 500),
@@ -54,7 +53,7 @@ describe SchoolGroups::ImpactReport::Generator::AnnualSaving do
       end
 
       it 'has the right metrics' do
-        expect(energy.metrics).to contain_exactly(
+        expect(generator.metrics).to contain_exactly(
           electricity(:gbp, enough_data: false, number_of_schools: 0),
           electricity(:co2, enough_data: false, number_of_schools: 0),
           electricity(:kwh, enough_data: false, number_of_schools: 0),
