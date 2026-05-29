@@ -7,6 +7,7 @@ module Admin
     end
 
     def show
+      @funding_summary = ::Commercial::Contract.current_contract_holder_summaries.first { |s| s[:id] = @funder.id }
     end
 
     def new

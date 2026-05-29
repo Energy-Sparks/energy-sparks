@@ -275,16 +275,7 @@ describe Commercial::Contract do
       end
 
       context 'with a mixture of visible and data enabled schools' do
-        before do
-          contract = create(:commercial_contract, contract_holder:)
-          2.times do
-            create(:commercial_licence, contract:, school: create(:school, data_enabled: false))
-          end
-          3.times do
-            create(:commercial_licence, contract:, school: create(:school, data_enabled: true))
-          end
-          create(:school_onboarding, contract:, school: nil)
-        end
+        include_context 'with a mixture of contracted schools and onboardings'
 
         it 'returns expected summary' do
           expect(summaries.first).to eq({
