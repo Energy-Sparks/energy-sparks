@@ -6,7 +6,7 @@
   <%= render PromptComponent.new(icon: 'circle-info', status: :neutral) do |prompt| %>
     <p>
       The following table shows schools LINKED to the funder and does not use the new Contracts & Licensing data.
-      For a summary of schools by current contract holders view the contract holder report.
+      For a summary of schools funded by current contract holders view the contract holder report.
     </p>
     <% prompt.with_link do %>
         <%= link_to 'Contract Holders', admin_commercial_contract_holders_path %>
@@ -84,7 +84,8 @@
   <li>Data sharing - whether the school data is Public, Private, or Within group</li>
   <li>Onboarding date - date school onboarding was completed. Will be empty for some older schools, or any created manually</li>
   <li>Date enabled date - date school was first made data enabled. Consistent with the "recently onboarded" report. Will be empty if school not yet visible</li>
-  <li>Funder - the funder either directly linked to the school or to its school group</li>
+  <li>Contract holder - the contract holder for the school's current licence. Will be the name of a Funder, or "School self funding" or "MAT funding" (if contract is held by their School Group)</li>
+  <li>Funder - the funder linked to the school. Note: this is does not use the new contracting data</li>
   <li>Funding status</li>
   <li>Postcode</li>
   <li>Country</li>

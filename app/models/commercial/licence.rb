@@ -41,6 +41,7 @@ module Commercial
     belongs_to :school
 
     delegate :product, to: :contract
+    delegate :contract_holder, to: :contract
 
     LICENCE_STATUS = {
       provisional: 'provisional',
