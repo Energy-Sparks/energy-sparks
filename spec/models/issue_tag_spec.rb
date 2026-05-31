@@ -15,4 +15,9 @@ RSpec.describe IssueTag do
       expect { sys_issue_tag.destroy }.not_to change(described_class, :count)
     end
   end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:label) }
+    it { is_expected.to validate_uniqueness_of(:label) }
+  end
 end
