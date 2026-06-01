@@ -12,6 +12,7 @@ module Schools
           'Data sharing',
           'Onboarding date',
           'Date enabled date', # (see “Recently onboarded” report)
+          'Contract Holder',
           'Funder',
           'Funding status',
           'Postcode',
@@ -84,6 +85,7 @@ module Schools
             school.data_sharing.humanize,
             onboarding_completed(school),
             first_made_data_enabled(school),
+            school.summarised_contract_holder_name,
             school&.funder&.name,
             school.funding_status.humanize,
             school.postcode,

@@ -15,9 +15,12 @@
   <% @funders.each do |funder| %>
       <tr>
         <td><%= link_to funder.name, admin_funder_path(funder) %></td>
-        <td class="text-end"><%= funder.contracts.count %></td>
+        <td class="text-end">
+          <%= funder.contracts.count %>
+        </td>
         <td class="text-end">
           <div class="btn-group">
+            <%= link_to 'Contracts', admin_funder_contracts_path(funder), class: 'btn btn-sm' %>
             <%= link_to 'Edit', edit_admin_funder_path(funder), class: 'btn btn-sm' %>
             <%= link_to 'Delete',
                         admin_funder_path(funder),

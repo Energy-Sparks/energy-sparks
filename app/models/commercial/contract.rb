@@ -91,6 +91,7 @@ module Commercial
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
     has_many :schools, -> { distinct }, through: :licences
+    has_many :school_onboardings, dependent: :nullify
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
@@ -133,6 +134,55 @@ module Commercial
         )
         .order(Arel.sql('contract_holder_name ASC'))
     }
+
+    def self.count_case(expr, alias_name, id: 'licence_schools.id')
+      "COUNT(DISTINCT CASE WHEN #{expr} THEN #{id} END) AS #{alias_name}"
+    end
+
+    scope :current_contract_holders_with_counts, lambda {
+      current
+        .joins(contract_holder_joins)
+        .left_joins(:licences)
+        .joins('LEFT JOIN schools AS licence_schools ON licence_schools.id = commercial_licences.school_id')
+        .left_joins(:school_onboardings)
+        .select(
+          'commercial_contracts.contract_holder_type',
+          'commercial_contracts.contract_holder_id',
+          "#{contract_holder_name_sql} AS contract_holder_name",
+          count_case('licence_schools.visible = TRUE AND licence_schools.data_enabled = FALSE',
+                     'visible_not_data_enabled_count'),
+          count_case('licence_schools.visible = TRUE AND licence_schools.data_enabled = TRUE',
+                     'visible_data_enabled_count'),
+          count_case(
+            'school_onboardings.school_id IS NULL',
+            'onboarding_count',
+            id: 'school_onboardings.id'
+          )
+        )
+        .group(
+          'commercial_contracts.contract_holder_type', 'commercial_contracts.contract_holder_id',
+          'schools.name', 'school_groups.name', 'funders.name'
+        )
+        .order(Arel.sql(contract_holder_name_sql))
+    }
+
+    def self.current_contract_holder_summaries
+      current_contract_holders_with_counts.map do |row|
+        visible_not = row.visible_not_data_enabled_count
+        visible_yes = row.visible_data_enabled_count
+        onboard     = row.onboarding_count
+
+        {
+          id: row.contract_holder_id,
+          name: row.contract_holder_name,
+          type: row.contract_holder_type,
+          visible_not_data_enabled: visible_not,
+          visible_data_enabled: visible_yes,
+          onboardings: onboard,
+          total: visible_not + visible_yes + onboard
+        }
+      end
+    end
 
     def self.temporal_group_keys = %i[contract_holder_id contract_holder_type]
 
