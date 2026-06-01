@@ -9,8 +9,6 @@ module SchoolGroups
 
         private
 
-        def metric_category = :energy_efficiency
-
         def value(fuel, metric, unit)
           model = model(fuel, metric)
           column = column(model, unit)
@@ -19,7 +17,7 @@ module SchoolGroups
 
         def number_of_schools(fuel, metric, _unit) = model(fuel, metric).count
 
-        def enough_data?(_fuel, _metric, _unit, number_of_schools) = number_of_schools.positive?
+        def enough_data?(number_of_schools) = number_of_schools.positive?
 
         def model(fuel, metric)
           { gas: {

@@ -29,8 +29,6 @@ module SchoolGroups
 
         private
 
-        def metric_category = :energy_efficiency
-
         def categorise(fuel_type, benchmark)
           key = [fuel_type, benchmark].compact.join('_')
           categories = SchoolGroups::CategoriseSchools.new(schools: @impact_report.visible_schools)

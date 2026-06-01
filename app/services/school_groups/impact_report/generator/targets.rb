@@ -4,25 +4,15 @@ module SchoolGroups
   class ImpactReport
     class Generator
       class Targets < Base
-        TYPES = METRICS = %i[targets].freeze
+        METRICS = %i[targets].freeze
 
         private
 
-        def metric_category
-          :energy_efficiency
-        end
+        def value(fuel, _metric, _unit) = model(fuel).where('previous_to_current_year_change < 0').count
 
-        def value(fuel, _metric)
-          model(fuel).where('previous_to_current_year_change < 0').count
-        end
+        def number_of_schools(fuel, _metric, _unit) = model(fuel).count
 
-        def number_of_schools(fuel, _metric)
-          model(fuel).count
-        end
-
-        def enough_data?(_fuel, _metric, number_of_schools)
-          number_of_schools.positive?
-        end
+        def enough_data?(number_of_schools) = number_of_schools.positive?
 
         def model(fuel)
           { gas: Comparison::GasTargets,

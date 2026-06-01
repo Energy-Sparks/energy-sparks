@@ -29,9 +29,9 @@ describe SchoolGroups::ImpactReport::Generator::OutOfHours do
       [Comparison::AnnualChangeInGasOutOfHoursUse, Comparison::AnnualChangeInElectricityOutOfHoursUse].each(&:refresh)
     end
 
-    def metric(type, value, fuel_type, **)
-      { enough_data: true, metric_category: :energy_efficiency, metric_type: [:out_of_hours, type].join('_'),
-        fuel_type:, number_of_schools: 1, value: }
+    def metric(unit, value, fuel_type, **)
+      { enough_data: true, metric_category: :energy_efficiency, metric_type: :out_of_hours, fuel_type:,
+        number_of_schools: 1, value:, unit: }
         .merge(**)
     end
 

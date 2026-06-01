@@ -108,28 +108,11 @@ module ImpactReport
       available? && value.to_i.nonzero?
     end
 
-    def key
-      key_and_unit.first&.to_sym
-    end
-
-    def unit
-      key_and_unit[1]&.to_sym
-    end
-
     def energy_efficiency_type
       return unless energy_efficiency?
 
       ENERGY_EFFICIENCY_GENERATORS.find { |type| type::METRICS.include?(metric_type.to_sym) }
                                   &.name.to_s.demodulize.underscore.to_sym
-    end
-
-    private
-
-    ## I would like to see the unit in it's own field on metric as this is clunky
-    def key_and_unit
-      @key_and_unit ||= metric_type.match(
-        /(.+?)(?:_(#{GENERATOR::OutOfHours::TYPES.join('|')}))?$/
-      ).captures
     end
   end
 end

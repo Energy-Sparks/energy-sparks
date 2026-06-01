@@ -9,21 +9,11 @@ module SchoolGroups
 
         private
 
-        def metric_category
-          :energy_efficiency
-        end
+        def value(fuel, _metric, unit) = sum(fuel, unit)
 
-        def value(fuel, _metric, unit)
-          sum(fuel, unit)
-        end
+        def number_of_schools(fuel, _metric, unit) = savings(fuel, unit).count
 
-        def number_of_schools(fuel, _metric, unit)
-          savings(fuel, unit).count
-        end
-
-        def enough_data?(_fuel, _metric, _unit, number_of_schools)
-          number_of_schools.positive?
-        end
+        def enough_data?(number_of_schools) = number_of_schools.positive?
 
         def savings(fuel, unit)
           model = if fuel == :gas
@@ -35,9 +25,7 @@ module SchoolGroups
                .where(column(model, unit, :current).lt(column(model, unit, :previous)))
         end
 
-        def column(model, unit, type)
-          model.arel_table["#{type}_year_#{unit}"]
-        end
+        def column(model, unit, type) = model.arel_table["#{type}_year_#{unit}"]
 
         def sum(fuel, unit)
           scope = savings(fuel, unit)

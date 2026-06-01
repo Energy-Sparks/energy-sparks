@@ -4,32 +4,20 @@ module SchoolGroups
   class ImpactReport
     class Generator
       class OutOfHours < Base
-        def self.metric_type(metric)
-          [:out_of_hours, metric].join('_')
-        end
-
-        TYPES = %i[gbp co2 kwh].freeze
-        METRICS = TYPES.map { |type| metric_type(type) }.freeze
+        UNITS = %i[gbp co2 kwh].freeze
+        METRICS = %i[out_of_hours].freeze
 
         private
 
-        def metric_category
-          :energy_efficiency
-        end
-
-        def value(fuel, metric)
+        def value(fuel, _metric, unit)
           model = model(fuel)
-          column = column(model, metric)
+          column = column(model, unit)
           model.where(column.gt(0)).sum(column)
         end
 
-        def number_of_schools(fuel, _metric)
-          model(fuel).count
-        end
+        def number_of_schools(fuel, _metric, _unit) = model(fuel).count
 
-        def enough_data?(_fuel, _metric, number_of_schools)
-          number_of_schools.positive?
-        end
+        def enough_data?(number_of_schools) = number_of_schools.positive?
 
         def model(fuel)
           { gas: Comparison::AnnualChangeInGasOutOfHoursUse,
@@ -37,9 +25,7 @@ module SchoolGroups
             .where(school: @impact_report.visible_schools)
         end
 
-        def column(model, metric)
-          model.arel_table[[:out_of_hours, metric == :gbp ? :gbpcurrent : metric].join('_')]
-        end
+        def column(model, unit) = model.arel_table[[:out_of_hours, unit == :gbp ? :gbpcurrent : unit].join('_')]
       end
     end
   end

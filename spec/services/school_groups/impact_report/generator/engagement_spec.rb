@@ -11,7 +11,8 @@ describe SchoolGroups::ImpactReport::Generator::Engagement do
     subject(:metrics) { generator.metrics.reject { |metric| metric[:value].zero? } }
 
     def metric(metric_type, **)
-      { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type:, number_of_schools: 1, value: 1 }
+      { metric_category: :engagement, metric_type:, number_of_schools: 1, value: 1, enough_data: true, fuel_type: nil,
+        unit: nil }
         .merge(**)
     end
 

@@ -15,7 +15,8 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
     end
 
     def expected(**)
-      { enough_data: true, fuel_type: nil, metric_category: :overview, number_of_schools: 1, value: 1 }.merge(**)
+      { enough_data: true, fuel_type: nil, unit: nil, metric_category: :overview, number_of_schools: 1, value: 1 }
+        .merge(**)
     end
 
     context 'with users' do

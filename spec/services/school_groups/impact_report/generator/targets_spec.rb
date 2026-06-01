@@ -16,8 +16,8 @@ describe SchoolGroups::ImpactReport::Generator::Targets do
     end
 
     def metric(**)
-      { enough_data: true, metric_category: :energy_efficiency, metric_type: :targets, number_of_schools: 1, value: 1 }
-        .merge(**)
+      { enough_data: true, metric_category: :energy_efficiency, metric_type: :targets, number_of_schools: 1, value: 1,
+        unit: nil }.merge(**)
     end
 
     it 'has the right metrics' do
