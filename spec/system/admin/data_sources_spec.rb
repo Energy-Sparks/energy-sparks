@@ -252,23 +252,16 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
               let(:setup_data) { [school, meter_issue, meter, issue_meter] }
 
               it 'displays a count of issues' do
-                puts page.html
                 expect(page).to have_text 'Meter issues 1'
               end
 
               it 'lists issue in meter issues tab' do
-                puts "\n\n\n\nHere is the meter #{gas_meter.attributes}\n\n"
-                puts "Here is the school #{school}\n\n"
-                puts "Here is the data source #{existing_data_source.meters.all.to_a}\n\n"
-                puts "Here are the meters for this data source #{existing_data_source.attributes}\n\n"
-                puts "Here are the meter issues for that data source #{existing_data_source.active_meter_issues.first}\n\n"
-                puts "Here is the issue #{meter_issue.attributes}\n\n\n"
                 within '#meter_issues' do
                   expect(page).to have_text meter_issue.title
                   expect(page).to have_text meter_issue.issueable.name
                   expect(page).to have_text meter_issue.fuel_type.capitalize
                   expect(page).to have_text nice_date_times_today(meter_issue.updated_at)
-                  expect(page).to have_link(meter_issue.title, href: polymorphic_path([:admin, existing_data_source, meter_issue]))
+                  expect(page).to have_link(meter_issue.title, href: polymorphic_path([:admin, school, meter_issue]))
                   expect(page).to have_css("i[class*='fa-thumbtack']")
                 end
               end
