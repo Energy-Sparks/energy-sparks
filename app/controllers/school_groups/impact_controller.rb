@@ -9,7 +9,6 @@ module SchoolGroups
     before_action :redirect_unless_feature_enabled
     before_action :load_data
     before_action :redirect_unless_authorised
-    before_action :fetch_impact_report
     before_action :redirect_unless_visible
     before_action :redirect_not_enough_data
     before_action :enable_prototype_page
@@ -19,11 +18,6 @@ module SchoolGroups
     skip_before_action :authenticate_user!
 
     private
-
-    def fetch_impact_report
-      # Eventually this will be replaced with an active record object or similar
-      @impact_report = SchoolGroups::ImpactReport.new(@school_group)
-    end
 
     def load_data
       @config = @school_group.impact_report_configuration
@@ -51,7 +45,7 @@ module SchoolGroups
     end
 
     def redirect_not_enough_data
-      return if @impact_report.visible_schools_count >= 2
+      return if @run.enough_data?
 
       redirect_to(school_group_path(@school_group),
                   alert: I18n.t('advice_pages.index.show.not_available'))
