@@ -9,6 +9,9 @@
         <%= @school_group.name %>
       </h1>
       <span class="badge rounded-pill text-bg-primary"><%= @school_group.group_type.humanize %></span>
+      <% if @school_group.group_review %>
+        <span><%= review_date_badge(@school_group.group_review) %></span>
+      <% end %>
     </div>
     <div>
       <%= header_nav_link 'All school groups',

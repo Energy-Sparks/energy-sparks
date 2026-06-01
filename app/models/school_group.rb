@@ -303,8 +303,8 @@ class SchoolGroup < ApplicationRecord
     Issue.for_school_group(self)
   end
 
-  def review_date
-    issues.joins(:issue_tags).where(issue_tags: { system_id: :group_review })&.first&.review_date
+  def group_review
+    issues.joins(:issue_tags).where(issue_tags: { system_id: :group_review })&.first
   end
 
   def email_locales
