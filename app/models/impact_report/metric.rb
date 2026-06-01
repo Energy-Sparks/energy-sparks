@@ -61,7 +61,8 @@ module ImpactReport
       GENERATOR::AnnualSaving,
       GENERATOR::Benchmark,
       GENERATOR::Targets,
-      GENERATOR::Holiday
+      GENERATOR::Holiday,
+      GENERATOR::OutOfHours
     ].freeze
 
     ENERGY_EFFICIENCY_METRICS = (
