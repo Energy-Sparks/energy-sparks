@@ -50,7 +50,7 @@ describe ImpactReport::Metric do
   describe 'keys and units' do
     context 'with a valid metric' do
       subject(:metric_gbp) do
-        create(:impact_report_metric, metric_category: :energy_efficiency, metric_type: 'out_of_hours_gbp')
+        create(:impact_report_metric, metric_category: :energy_efficiency, metric_type: :out_of_hours_gbp)
       end
 
       it { expect(metric_gbp.key).to eq(:out_of_hours) }
