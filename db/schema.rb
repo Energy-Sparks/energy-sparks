@@ -1310,6 +1310,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_101824) do
     t.index ["meter_id"], name: "index_issue_meters_on_meter_id"
   end
 
+  create_table "issue_tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "label"
+    t.string "system_id"
+    t.datetime "updated_at", null: false
+    t.index ["label"], name: "index_issue_tags_on_label", unique: true
+    t.index ["system_id"], name: "index_issue_tags_on_system_id", unique: true
+  end
+
+  create_table "issue_tags_issues", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "issue_id"
+    t.bigint "issue_tag_id"
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_issue_tags_issues_on_issue_id"
+    t.index ["issue_tag_id"], name: "index_issue_tags_issues_on_issue_tag_id"
+  end
+
   create_table "issues", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "created_by_id"
