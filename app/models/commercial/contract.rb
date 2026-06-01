@@ -37,9 +37,9 @@
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (product_id => commercial_products.id)
 #  fk_rails_...  (updated_by_id => users.id)
+#
 module Commercial
-  # rubocop:disable Metrics/ClassLength
-  class Contract < ApplicationRecord
+  class Contract < ApplicationRecord # rubocop:disable Metrics/ClassLength
     include Trackable
     include TemporalRange
     include Commercial::HasContractHolder
@@ -229,5 +229,4 @@ module Commercial
       errors.add(:invoice_terms, 'invoice terms can only be full for a custom contract')
     end
   end
-  # rubocop:enable Metrics/ClassLength
 end
