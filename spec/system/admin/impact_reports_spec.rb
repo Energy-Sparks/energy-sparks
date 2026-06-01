@@ -3,15 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Admin impact report configuration' do
+  before do
+    Flipper.enable(:impact_reporting)
+  end
+
   let!(:admin) { create(:admin) }
   let!(:school_group) { create(:school_group, :with_active_schools, count: 2) }
   let!(:other_school_group) { create(:school_group, :diocese) }
   let(:school) { school_group.assigned_schools.first }
-
-  before do
-    Flipper.enable(:impact_reporting)
-    create(:impact_report_run, :with_metrics, school_group:)
-  end
+  let!(:run) { create(:impact_report_run, :with_metrics, school_group:) }
 
   describe 'when not logged in' do
     context 'when visiting the index' do
@@ -106,6 +106,9 @@ RSpec.describe 'Admin impact report configuration' do
       before do
         visit edit_admin_impact_report_path(school_group)
       end
+
+      it { expect(page).to have_link('View report', href: school_group_impact_index_path(school_group)) }
+      it { expect(page).to have_link('All reports', href: admin_impact_reports_path) }
 
       context 'when turning sections off' do
         before do
@@ -207,6 +210,17 @@ RSpec.describe 'Admin impact report configuration' do
 
           it 'does not show the report' do
             expect(page).to have_text('This feature is not available')
+          end
+        end
+
+        context 'when there are not enough visible schools' do
+          before do
+            run.metrics.overview.find_by(metric_type: 'visible_schools').update!(value: 1)
+            visit school_group_impact_index_path(school_group.reload)
+          end
+
+          it 'does not show the report' do
+            expect(page).to have_text('Not enough data')
           end
         end
       end

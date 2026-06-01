@@ -46,14 +46,19 @@ module ImpactReport
       comparison_end_date - 364.days
     end
 
+    def enough_data?
+      metric = overview(:visible_schools)
+      metric.present? && metric.available? && metric.value >= 2
+    end
+
     # e.g. overview(:active_users)
     def overview(metric_type)
-      by_category(:overview)[metric_type.to_s][nil]
+      by_category(:overview).dig(metric_type.to_s, nil)
     end
 
     # e.g. engagement(:points)
     def engagement(metric_type)
-      by_category(:engagement)[metric_type.to_s][nil]
+      by_category(:engagement).dig(metric_type.to_s, nil)
     end
 
     def potential_savings
