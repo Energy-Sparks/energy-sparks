@@ -24,6 +24,7 @@
         <%= issue.issue_type.capitalize %>
       </span>
       <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
+      <%= render 'admin/issues/issue_tags', issue: issue %>
       <%= render 'admin/issues/fuel_type', issue: issue %>
       <%= render 'admin/issues/meters', issue: issue %>
       <span class='float-end pb-2'>

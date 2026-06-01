@@ -610,6 +610,8 @@ Rails.application.routes.draw do
 
     get 'chart-preview', to: 'chart_previews#show'
 
+    resources :issue_tags
+
     concerns :issueable
     resources :funders do
       scope module: :funders do
@@ -636,6 +638,8 @@ Rails.application.routes.draw do
 
     namespace :commercial do
       resources :contracts do
+        post :confirm, on: :member
+
         get :contract_holder_options, on: :collection
         get :choose, on: :collection
         resources :licences, controller: "contracts/licences" do

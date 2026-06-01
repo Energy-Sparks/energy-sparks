@@ -36,6 +36,9 @@
     <% else %>
       <%= f.hidden_field :issue_type %>
     <% end %>
+    <%= f.association :issue_tags, input_html: { class: 'form-control select2' },
+                                   label: 'Issue tags',
+                                   label_method: :label %>
     <div class="row">
       <div class="col-md-6">
         <%= f.input :owned_by_id, collection: User.admins_by_name, label: 'Assigned to', label_method: :display_name,

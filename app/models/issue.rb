@@ -47,6 +47,8 @@ class Issue < ApplicationRecord
   has_many :issue_meters, dependent: :destroy
   has_many :meters, through: :issue_meters
 
+  has_and_belongs_to_many :issue_tags, inverse_of: :issues # rubocop:disable Rails/HasAndBelongsToMany
+
   scope :for_school_group, lambda { |school_group|
     where(issues: { issueable_type: 'SchoolGroup', issueable_id: school_group }).or(
       where(issues: { issueable_type: 'School', issueable_id: school_group.assigned_schools })
@@ -63,6 +65,9 @@ class Issue < ApplicationRecord
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
   scope :for_owned_by, ->(owned_by) { where(owned_by:) }
   scope :for_statuses, ->(statuses) { where(status: statuses) }
+  scope :for_issue_tag, lambda { |issue_tag|
+    joins(:issue_tags).where(issue_tags: { id: issue_tag })
+  }
   scope :search, lambda { |search|
     joins(:rich_text_description).where('title ~* ? or action_text_rich_texts.body ~* ?', search, search)
   }
@@ -108,13 +113,15 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ['For', 'Name', 'Title', 'Description', 'Fuel type', 'Type', 'Status', 'Status summary', 'Meters', 'Meter status',
-     'Data sources', 'Owned by', 'Next review date', 'Created by', 'Created at', 'Updated by', 'Updated at']
+    ['For', 'Name', 'Title', 'Description', 'Fuel type', 'Type', 'Status', 'Status summary', 'Tags', 'Meters',
+     'Meter status', 'Data sources', 'Owned by', 'Next review date', 'Created by', 'Created at', 'Updated by',
+     'Updated at']
   end
 
   def self.csv_attributes
     %w[issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status
-       status_summary mpan_mprns admin_meter_statuses data_source_names owned_by.display_name review_date created_by.display_name created_at updated_by.display_name updated_at]
+       status_summary issue_tag_labels mpan_mprns admin_meter_statuses data_source_names owned_by.display_name
+       review_date created_by.display_name created_at updated_by.display_name updated_at]
   end
 
   def self.issue_type_images
@@ -143,6 +150,10 @@ class Issue < ApplicationRecord
 
   def mpan_mprns
     meters.map(&:mpan_mprn).compact.join('|').presence
+  end
+
+  def issue_tag_labels
+    issue_tags.pluck(:label).join('|').presence
   end
 
   def admin_meter_statuses
