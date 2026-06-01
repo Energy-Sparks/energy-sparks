@@ -41,7 +41,7 @@ describe SchoolGroups::ImpactReport::Generator::Engagement do
 
     context 'with active targets for visible schools' do
       before do
-        travel_to(DateTime.new(2026, 5, 15))
+        travel_to(Date.new(2026, 5, 15))
         target = create(:school_target, school:)
         create(:school_target, school:, start_date: target.start_date - 1.year)
       end
