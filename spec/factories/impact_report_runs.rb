@@ -27,7 +27,7 @@ FactoryBot.define do
             run: run,
             metric_category: category,
             metric_type: type,
-            value: 1,
+            value: 2,
             enough_data: true
           }
 
