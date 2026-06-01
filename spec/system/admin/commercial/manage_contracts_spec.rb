@@ -731,7 +731,7 @@ describe 'manage contracts' do
         refresh
       end
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false, tfoot: true do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false, tfoot: true do
         let(:table_id) { '#per-school-fees' }
         let(:expected_header) do
           [
@@ -756,7 +756,7 @@ describe 'manage contracts' do
 
       it { expect(page).to have_text("#{contract.contract_holder.name} Contracts") }
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#contracts-table' }
         let(:expected_header) do
           [
@@ -950,6 +950,35 @@ describe 'manage contracts' do
           expect(page).to have_text(contract_one.name)
           expect(page).to have_text(contract_two.name)
         end
+      end
+    end
+  end
+
+  context 'when viewing contract holders' do
+    let!(:contract_holder) { create(:funder) }
+
+    include_context 'with a mixture of contracted schools and onboardings'
+
+    before { click_on 'Contract Holders' }
+
+    it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+      let(:table_id) { '#contract-holders-table' }
+      let(:expected_header) do
+        [
+          ['Name', 'Type', 'Onboarding', 'Visible not data enabled', 'Visible and data enabled', 'Total']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          [
+            contract_holder.name,
+            'Funder',
+            '1',
+            '2',
+            '3',
+            '6'
+          ]
+        ]
       end
     end
   end

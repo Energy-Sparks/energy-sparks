@@ -16,6 +16,7 @@ FactoryBot.define do
       inset_day { true }
       school_occupied { true }
       analytics_event_type { :inset_day_in_school }
+      title { 'In school Inset Day' }
     end
     trait :inset_day_out_of_school do
       inset_day { true }

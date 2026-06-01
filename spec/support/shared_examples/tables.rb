@@ -3,11 +3,11 @@ RSpec.shared_examples 'it contains the expected data table' do |sortable: true, 
   let(:expected_footer_rows) { nil }
 
   it 'has sortable columns', if: sortable do
-    expect(page).to have_css("#{table_id}.table-sorted")
+    expect(page).to have_css("#{table_id}.table-sorted, #{table_id}.table-paged")
   end
 
   it 'does not have sortable columns', unless: sortable do
-    expect(page).to have_no_css("#{table_id}.table-sorted")
+    expect(page).to have_no_css("#{table_id}.table-sorted, #{table_id}.table-paged")
   end
 
   it 'aligns the data cells correctly', if: aligned do

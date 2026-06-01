@@ -26,7 +26,7 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
   context 'when rendering' do
     it { expect(page).to have_text('Current Contracts') }
 
-    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+    it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
       let(:table_id) { '#contracts-table' }
       let(:expected_header) do
         [
@@ -63,7 +63,7 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
         )
       end
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#contracts-table' }
         let(:expected_header) do
           [
