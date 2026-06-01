@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Engagement do
-  subject(:engagement) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
+  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
 
   let(:school) { create(:school, :with_school_group) }
 
   describe '#metrics' do
-    subject(:metrics) { engagement.metrics.reject { |metric| metric[:value].zero? } }
+    subject(:metrics) { generator.metrics.reject { |metric| metric[:value].zero? } }
 
     def metric(metric_type, **)
       { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type:, number_of_schools: 1, value: 1 }
@@ -39,8 +39,9 @@ describe SchoolGroups::ImpactReport::Generator::Engagement do
       end
     end
 
-    context 'with counts currently active targets for visible schools' do
+    context 'with active targets for visible schools' do
       before do
+        travel_to(DateTime.new(2026, 5, 15))
         target = create(:school_target, school:)
         create(:school_target, school:, start_date: target.start_date - 1.year)
       end
