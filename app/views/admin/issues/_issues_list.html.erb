@@ -24,6 +24,7 @@
             <%= link_to issue.title, polymorphic_path([:admin, issue.issueable, issue]) %>
           </span><br>
           <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
+          <%= render 'admin/issues/issue_tags', issue: issue %>
           <%= render 'admin/issues/meters', issue: issue %>
         </td>
         <td class="fit"><%= render 'admin/issues/fuel_type', issue: issue %></td>
