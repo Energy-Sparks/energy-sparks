@@ -94,6 +94,12 @@ module Commercial
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
+    attr_accessor :update_licences
+
+    def update_licences?
+      ActiveModel::Type::Boolean.new.cast(update_licences)
+    end
+
     def self.contract_holder_name_sql
       <<~SQL.squish
         COALESCE(
@@ -144,7 +150,8 @@ module Commercial
         ).merge(
           comments: "Renewed from #{original.name}",
           end_date: original.end_date.next_year,
-          start_date: original.end_date + 1.day
+          start_date: original.end_date + 1.day,
+          update_licences: true
         )
       )
     end
@@ -172,13 +179,17 @@ module Commercial
     # Others cannot be changed once invoicing has started, e.g. agreed_school_price
     def editable_attributes
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
-      fields += [:status] if provisional?
-      fields += %i[agreed_school_price start_date end_date] unless invoiced?
+      fields += %i[status] if provisional?
+      fields += [:licence_years] if custom? && !invoiced?
+      fields += %i[agreed_school_price product_id start_date end_date] unless invoiced?
       fields
     end
 
+    # Indicate whether changes to the contract should trigger updates to existing licences. Based on
+    # user choice (:update_licences) and whether the saved changes indicate that an update is worthwhile.
     def cascade_updates_to_licences?
-      licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
+      update_licences? && licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status
+                                                                               licence_years])
     end
 
     def as_range

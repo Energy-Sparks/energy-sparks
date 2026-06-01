@@ -27,6 +27,9 @@
           </span>
         </td>
         <td>
+          <%= render 'admin/issues/issue_tags', issue: issue %>
+        </td>
+        <td>
           <%= render 'admin/issues/fuel_type', issue: issue, email: true %>
         </td>
         <td><%= review_date_badge(issue, label: false, humanise: false) %></td>
