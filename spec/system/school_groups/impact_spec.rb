@@ -7,18 +7,18 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
 
   let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
   let!(:config) { create(:impact_report_configuration, school_group:, visible: true) }
+  let!(:impact_report) { create(:impact_report_run, :with_metrics, school_group:) } # rubocop:disable RSpec/LetSetup
 
   before do
     # so we can display a testimonial
     create(:testimonial, case_study: create(:case_study, organisation: school_group))
-    create(:impact_report_run, :with_metrics, school_group:)
   end
 
   describe 'Access control' do
     shared_examples 'an access controlled impact page' do |message: 'This feature is not available'|
       it 'redirects to school group dashboard' do
         expect(page).to have_current_path(school_group_path(school_group))
-        expect(page).to have_content(message)
+        expect(page).to have_text(message)
       end
     end
 
@@ -71,8 +71,10 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
         end
       end
 
-      context 'when group has less than 2 schools' do
-        let!(:school_group) { create(:school_group, :with_active_schools, count: 1, public: true) }
+      context 'when group run has less than 2 visible schools' do
+        let!(:impact_report) do
+          create(:impact_report_run, :with_metrics, school_group:, overview: { visible_schools: { value: 1 } })
+        end
 
         it_behaves_like 'an access controlled impact page', message: 'Not enough data'
       end
@@ -100,25 +102,25 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
       let(:header) { find_by_id('header-section') }
 
       it 'has the title' do
-        expect(header).to have_content("#{school_group.name} Impact Report")
+        expect(header).to have_text("#{school_group.name} Impact Report")
       end
 
       it 'has the description' do
         group_type = I18n.t(school_group.group_type, scope: 'school_groups.clusters.group_type')
-        expect(header).to have_content(strip_tags(
-                                         I18n.t('school_groups.impact.feature.description_html',
-                                                count: 1, group_type: group_type)
-                                       ))
+        expect(header).to have_text(strip_tags(
+                                      I18n.t('school_groups.impact.feature.description_html',
+                                             count: 2, group_type: group_type)
+                                    ))
       end
 
       it 'has the report generation date' do
-        expect(header).to have_content(strip_tags(I18n.t('common.last_updated_on_html',
-                                                         date: Time.zone.today.to_date.to_fs(:es_long))))
+        expect(header).to have_text(strip_tags(I18n.t('common.last_updated_on_html',
+                                                      date: Time.zone.today.to_date.to_fs(:es_long))))
       end
 
       it 'has the read more link' do
-        expect(header).to have_content(strip_tags(I18n.t('school_groups.impact.feature.read_more_html',
-                                                         href: '#notes')))
+        expect(header).to have_text(strip_tags(I18n.t('school_groups.impact.feature.read_more_html',
+                                                      href: '#notes')))
         expect(header).to have_link('Read more', href: '#notes')
       end
     end
