@@ -47,8 +47,9 @@ module ImpactReport
     end
 
     def enough_data?
-      metric = overview(:visible_schools)
-      metric.present? && metric.available? && metric.value >= 2
+      overview(:visible_schools).then do |metric|
+        metric.present? && metric.available? && metric&.value.to_i >= 2
+      end
     end
 
     # e.g. overview(:active_users)
