@@ -1450,4 +1450,53 @@ describe School do
       end
     end
   end
+
+  describe '#summarised_contract_holder_name' do
+    subject(:name) { school.summarised_contract_holder_name }
+
+    let!(:school) { create(:school) }
+
+    context 'with no licence' do
+      it { expect(name).to be_nil }
+    end
+
+    context 'with no current licence' do
+      before do
+        create(:commercial_licence, :expired, school:)
+      end
+
+      it { expect(name).to be_nil }
+    end
+
+    context 'with funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+      end
+
+      it { expect(name).to eq(contract_holder.name) }
+    end
+
+    context 'with MAT licence' do
+      let(:school) { create(:school, :with_trust) }
+      let(:contract_holder) { school.organisation_group }
+
+      before do
+        create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+      end
+
+      it { expect(name).to eq('MAT funding') }
+    end
+
+    context 'with self-funded licence' do
+      let(:contract_holder) { school }
+
+      before do
+        create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+      end
+
+      it { expect(name).to eq('School self funding') }
+    end
+  end
 end

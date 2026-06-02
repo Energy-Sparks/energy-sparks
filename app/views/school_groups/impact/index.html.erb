@@ -44,7 +44,7 @@
         <%= carousel.with_testimonial_card(testimonial: testimonial) %>
       <% end %>
     <% end %>
-    <%= if current_user&.admin?
+    <%= if current_user&.admin? && CaseStudy.for_school_group(@school_group).published.none?
           carousel.with_placeholder(
             'Please edit case studies and assign a school group or ' \
             'school to each one, then relevant ones will display here. Add more testimonials too if possible please.',
