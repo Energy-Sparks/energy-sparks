@@ -8,7 +8,7 @@
         <%= card.with_header title: impact_t("potential_savings.titles.#{metric.fuel_type}") %>
         <%= card.with_figure format_unit(metric.value, :£) %>
         <%= card.with_subtext do
-              impact_t("potential_savings.keys.#{metric.key}",
+              impact_t("potential_savings.keys.#{metric.metric_type}",
                        fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}"),
                        count: metric.number_of_schools)
             end %>

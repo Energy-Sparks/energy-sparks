@@ -74,14 +74,11 @@ module ImpactReport
 
     def energy_efficiency
       fuel_order = %w[gas electricity]
-
-      SUPPORTED_ENERGY_EFFICIENCY_METRICS.flat_map do |metric_type|
-        fuel_order.filter_map do |fuel_type|
-          by_category(:energy_efficiency).dig(metric_type, fuel_type).then do |m|
-            # all values have to be non-zero and gbp values have to be above threshold
-            m if m&.nonzero? && (m.unit != :gbp || m.value > self.class.gbp_threshold)
-          end
-        end
+      unit_order = %w[gbp co2 kwh]
+      metrics.filter { |m| displayable_energy_efficiency_metric?(m) }.sort_by do |metric|
+        [SUPPORTED_ENERGY_EFFICIENCY_METRICS.index(metric.metric_type),
+         unit_order.index(metric.unit),
+         fuel_order.index(metric.fuel_type)]
       end
     end
 
@@ -126,6 +123,13 @@ module ImpactReport
         .select(&:nonzero?)
         .sort_by { |m| -m.value }
         .presence
+    end
+
+    def displayable_energy_efficiency_metric?(metric)
+      metric.metric_category == 'energy_efficiency' &&
+        SUPPORTED_ENERGY_EFFICIENCY_METRICS.include?(metric.metric_type) &&
+        metric.nonzero? &&
+        (metric.unit != 'gbp' || metric.value > self.class.gbp_threshold)
     end
   end
 end

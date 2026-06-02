@@ -117,8 +117,8 @@ describe ImpactReport::Run do
     end
   end
 
-  def create_metric(metric_type, fuel_type, value)
-    create(:impact_report_metric, run:, metric_category:, fuel_type:, value:, metric_type:)
+  def create_metric(metric_type, fuel_type, value, unit = nil)
+    create(:impact_report_metric, run:, metric_category:, fuel_type:, value:, metric_type:, unit:)
   end
 
   describe '#potential_savings' do
@@ -200,10 +200,10 @@ describe ImpactReport::Run do
     let(:run) { create(:impact_report_run) }
 
     context 'with all metrics' do
-      let!(:annual_saving_gbp_gas) { create_metric(:annual_saving_gbp, :gas, 300) }
-      let!(:annual_saving_gbp_electricity) { create_metric(:annual_saving_gbp, :electricity, 400) }
-      let!(:annual_saving_co2_gas) { create_metric(:annual_saving_co2, :gas, 500) }
-      let!(:annual_saving_co2_electricity) { create_metric(:annual_saving_co2, :electricity, 600) }
+      let!(:annual_saving_gbp_gas) { create_metric(:annual_saving, :gas, 300, :gbp) }
+      let!(:annual_saving_gbp_electricity) { create_metric(:annual_saving, :electricity, 400, :gbp) }
+      let!(:annual_saving_co2_gas) { create_metric(:annual_saving, :gas, 500, :co2) }
+      let!(:annual_saving_co2_electricity) { create_metric(:annual_saving, :electricity, 600, :co2) }
       let!(:targets_gas) { create_metric(:targets, :gas, 12) }
       let!(:targets_electricity) { create_metric(:targets, :electricity, 1) }
 
@@ -217,27 +217,25 @@ describe ImpactReport::Run do
     end
 
     context 'with just gas metrics' do
-      let!(:annual_saving_gbp_gas) { create_metric(:annual_saving_gbp, :gas, 300) }
-      let!(:annual_saving_co2_gas) { create_metric(:annual_saving_co2, :gas, 500) }
+      let!(:annual_saving_gbp_gas) { create_metric(:annual_saving, :gas, 300, :gbp) }
+      let!(:annual_saving_co2_gas) { create_metric(:annual_saving, :gas, 500, :co2) }
 
       it 'returns metrics in configured order, gas first, then electricity' do
-        expect(energy_efficiency).to eq(
-          [annual_saving_gbp_gas, annual_saving_co2_gas]
-        )
+        expect(energy_efficiency).to eq([annual_saving_gbp_gas, annual_saving_co2_gas])
       end
     end
 
     context 'when filtering metrics' do
       before do
-        create(:impact_report_metric, run:, metric_category:,
-                                      fuel_type: :electricity, metric_type: :annual_saving_gbp, value: 45)
-        create(:impact_report_metric, run:, metric_category:,
-                                      fuel_type: :gas, metric_type: :annual_saving_co2, enough_data: false)
+        create(:impact_report_metric, run:, metric_category:, metric_type: :annual_saving,
+                                      fuel_type: :electricity, unit: :gbp, value: 45)
+        create(:impact_report_metric, run:, metric_category:, metric_type: :annual_saving,
+                                      fuel_type: :gas, unit: :co2, enough_data: false)
       end
 
       let!(:ok_metric) do
-        create(:impact_report_metric, run:, metric_category:,
-                                      fuel_type: :gas, metric_type: :annual_saving_gbp, value: 300, enough_data: true)
+        create(:impact_report_metric, run:, metric_category:, metric_type: :annual_saving,
+                                      fuel_type: :gas, unit: :gbp, value: 300, enough_data: true)
       end
 
       it { expect(energy_efficiency).to eq([ok_metric]) }
@@ -271,14 +269,6 @@ describe ImpactReport::Run do
              metric_type: 'baseload')
     end
 
-    let!(:annual_saving_gbp) do
-      create(:impact_report_metric,
-             run: run,
-             fuel_type: 'electricity',
-             metric_category: 'energy_efficiency',
-             metric_type: 'annual_saving_gbp')
-    end
-
     it 'memoizes the index' do
       expect(index).to equal(run.send(:metrics_index))
     end
@@ -289,10 +279,6 @@ describe ImpactReport::Run do
 
     it 'stores engagemement metrics in a hash' do
       expect(index['engagement']['points'][nil]).to equal(points)
-    end
-
-    it 'stores energy efficiency metrics in a hash' do
-      expect(index['energy_efficiency']['annual_saving_gbp']['electricity']).to equal(annual_saving_gbp)
     end
 
     it 'stores potential savings metrics in an array' do

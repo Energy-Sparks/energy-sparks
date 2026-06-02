@@ -8,16 +8,17 @@ en:
         featured:
           title: Featured energy efficient school
         metric_types:
-          annual_saving_co2:
-            subtext:
-              one: Reduced emissions by reducing %{fuel_type} use in %{count} school in the last 12 months
-              other: Reduced emissions by reducing %{fuel_type} use in %{count} schools in the last 12 months
-            title: Reduced %{fuel_type} emissions
-          annual_saving_gbp:
-            subtext:
-              one: Cost saving by reducing %{fuel_type} use in %{count} school in the last 12 months using current tariffs
-              other: Cost saving by reducing %{fuel_type} use in %{count} schools in the last 12 months using current tariffs
-            title: Total %{fuel_type} savings
+          annual_saving:
+            gbp:
+              subtext:
+                one: Cost saving by reducing %{fuel_type} use in %{count} school in the last 12 months using current tariffs
+                other: Cost saving by reducing %{fuel_type} use in %{count} schools in the last 12 months using current tariffs
+              title: Total %{fuel_type} savings
+            co2:
+              subtext:
+                one: Reduced emissions by reducing %{fuel_type} use in %{count} school in the last 12 months
+                other: Reduced emissions by reducing %{fuel_type} use in %{count} schools in the last 12 months
+              title: Reduced %{fuel_type} emissions
           baseload:
             subtext: Schools achieving %{rating} rating for managing electricity baseload
             title: Baseload management

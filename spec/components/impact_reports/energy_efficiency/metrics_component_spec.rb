@@ -12,7 +12,10 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
   let(:params) { { run:, id:, classes: } }
 
   context 'with base params' do
-    let(:run) { create(:impact_report_run, categories: %i[overview energy_efficiency], school_group:) }
+    let(:run) do
+      create(:impact_report_run, categories: %i[overview energy_efficiency], school_group:,
+                                 energy_efficiency: { annual_saving: { unit: :gbp } })
+    end
 
     before do
       render_inline(described_class.new(**params))
@@ -49,7 +52,7 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       it { expect(card).to have_css('.figure', exact_text: "£#{metric.value}") }
 
       it {
-        expect(card).to have_text(impact_t('energy_efficiency.metric_types.annual_saving_gbp.subtext',
+        expect(card).to have_text(impact_t('energy_efficiency.metric_types.annual_saving.gbp.subtext',
                                            fuel_type: 'electricity', count: metric.number_of_schools))
       }
     end
@@ -69,7 +72,7 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
 
       it {
         expect(card).to have_text(
-          impact_t('energy_efficiency.metric_types.annual_saving_co2.subtext',
+          impact_t('energy_efficiency.metric_types.annual_saving.co2.subtext',
                    fuel_type: 'gas',
                    count: metric.number_of_schools)
         )
