@@ -1,0 +1,21 @@
+<% content_for :page_title, "#{@school_group.name} Impact report runs" %>
+<% content_for :header_title, "#{@school_group.name} Impact report runs" %>
+
+<table class="table table-paged">
+  <thead>
+    <tr>
+      <th class="text-start">ID</th>
+      <th class="text-start">Run date</th>
+      <th class="text-center no-sort">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @runs.each do |run| %>
+      <tr>
+        <td class="text-start"><%= run.id %></td>
+        <td class="text-start"><%= run.run_date %></td>
+        <td class="text-center">View</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

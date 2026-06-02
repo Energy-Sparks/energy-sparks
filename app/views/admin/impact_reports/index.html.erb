@@ -2,7 +2,7 @@
 <h1>Impact Report Configurations</h1>
 <div class="bg-light p-2 my-2 border rounded-2">
   <%= form_tag admin_impact_reports_path, method: :get do %>
-  <div class="d-flex align-items-center gap-2">
+    <div class="d-flex align-items-center gap-2">
       <%= select_tag :user,
                      options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
                      include_blank: 'Any admin user',
@@ -10,7 +10,6 @@
       <%= submit_tag 'Filter',
                      class: 'btn btn-secondary btn-sm' %>
     </div>
-
   <% end %>
 </div>
 <table class="table table-paged">
@@ -51,19 +50,21 @@
         <td class="text-center border-end">
           <%= checkmark(config&.feature_visible_for?(:energy_efficiency)) %>
           <% if config&.feature_expired_for?(:energy_efficiency) %>
-            <br><div class="badge text-bg-light">Expired</div>
+            <br>
+            <div class="badge text-bg-light">Expired</div>
           <% end %>
         </td>
         <td class="text-center"><%= checkmark(config&.show_engagement || !config) %></td>
         <td class="text-center border-end">
           <%= checkmark(config&.feature_visible_for?(:engagement)) %>
           <% if config&.feature_expired_for?(:engagement) %>
-            <br><div class="badge text-bg-light">Expired</div>
+            <br>
+            <div class="badge text-bg-light">Expired</div>
           <% end %>
         </td>
-        <td class='text-center'><%= link_to 'Edit', edit_admin_impact_report_path(school_group),
+        <td class='text-center'><%= link_to 'Edit', edit_school_group_impact_configuration_path(school_group),
                                             class: 'btn btn-secondary btn-sm' %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
