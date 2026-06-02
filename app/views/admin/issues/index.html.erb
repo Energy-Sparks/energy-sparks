@@ -26,7 +26,12 @@
       </div>
     <% end %>
   </div>
-  <% end %>
+<% end %>
+
+ <%= render Elements::ButtonComponent.new('Manage Issue Tags',
+                                          admin_issue_tags_path,
+                                          style: :secondary,
+                                          classes: 'mt-3 mb-3') %>
 
   <div class="bg-light ps-2 pt-2 my-2 border rounded-2">
     <%= form_tag polymorphic_path(
@@ -48,6 +53,12 @@
                            class: 'form-control' %>
           </div>
         <% end %>
+        <div class="me-2 mb-2">
+          <%= select_tag :issue_tag,
+                         options_from_collection_for_select(IssueTag.all, :id, :label, params[:issue_tag]),
+                         include_blank: 'Any tag',
+                         class: 'form-control' %>
+        </div>
         <div class="me-2 mb-2">
           <%= select_tag :review_date,
                          options_for_select([['Next review date not set', :review_unset],

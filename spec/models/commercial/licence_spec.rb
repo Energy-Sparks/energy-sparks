@@ -24,7 +24,7 @@ describe Commercial::Licence do
         let!(:licence) { create(:commercial_licence, status: :provisional) }
 
         it 'allows the licence to be destroyed' do
-          expect { licence.destroy }.to change(Commercial::Licence, :count).by(-1)
+          expect { licence.destroy }.to change(described_class, :count).by(-1)
         end
       end
     end
@@ -48,7 +48,7 @@ describe Commercial::Licence do
     end
 
     context 'when licence_period is custom' do
-      let!(:contract) { create(:commercial_contract, licence_period: :custom) }
+      let!(:contract) { create(:commercial_contract, :custom) }
 
       it { expect(licence.dates_will_automatically_change?).to be(true) }
 
@@ -93,11 +93,67 @@ describe Commercial::Licence do
     end
 
     context 'with :expiring' do
-      let(:licence_school_a) { create(:commercial_licence, school: school_a, end_date: Time.zone.today + 1) }
-
       subject(:licences) { described_class.filtered(:expiring, Time.zone.today + 7) }
 
+      let(:licence_school_a) { create(:commercial_licence, school: school_a, end_date: Time.zone.today + 1) }
+
       it { expect(licences).to contain_exactly(licence_school_a) }
+    end
+  end
+
+  describe '.overlapping' do
+    let!(:licence_one) do
+      create(:commercial_licence, start_date: Date.new(2024, 1, 1), end_date: Date.new(2024, 12, 31))
+    end
+    let!(:licence_two) do
+      create(:commercial_licence,
+             school: licence_one.school,
+             start_date: Date.new(2025, 1, 1),
+             end_date: Date.new(2025, 12, 31))
+    end
+
+    it { expect(described_class.overlapping).to(be_empty) }
+
+    context 'when there are overlaps for different contract holders' do
+      let!(:licence_two) do
+        create(:commercial_licence, start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(be_empty) }
+    end
+
+    context 'when there are overlaps for same contract holder' do
+      let!(:licence_two) do
+        create(:commercial_licence, school: licence_one.school,
+                                    start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(contain_exactly(licence_one, licence_two)) }
+    end
+  end
+
+  describe '.licence_period_days' do
+    subject(:licence_period_days) { described_class.licence_period_days(start_date, end_date) }
+
+    context 'with a non-leap year' do
+      let(:start_date) { Date.new(2026, 1, 1) }
+      let(:end_date) { Date.new(2026, 12, 31) }
+
+      it { expect(licence_period_days).to eq(365) }
+    end
+
+    context 'with a leap year' do
+      let(:start_date) { Date.new(2028, 1, 1) }
+      let(:end_date) { Date.new(2028, 12, 31) }
+
+      it { expect(licence_period_days).to eq(365) }
+    end
+
+    context 'with a period including a leap day' do
+      let(:start_date) { Date.new(2028, 1, 1) }
+      let(:end_date) { Date.new(2028, 3, 1) }
+
+      it { expect(licence_period_days).to eq(60) }
     end
   end
 end

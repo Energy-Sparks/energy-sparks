@@ -7,9 +7,12 @@ ruby '~> 3.4.8'
 gem 'rails', '~> 8.1.2'
 
 # Rails/Core
+gem 'awesome_print'
+gem 'benchmark'
 gem 'bootsnap'
-gem 'image_processing', '~> 1.14'
-gem 'jbuilder', '~> 2.14' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'image_processing', '~> 2.0' # https://guides.rubyonrails.org/active_storage_overview.html#transforming-images
+gem 'jbuilder', '~> 2.15' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'mini_magick' # for image_processing
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
@@ -27,9 +30,9 @@ gem 'closed_struct'
 gem 'pg'
 gem 'scenic'
 
-# Dashboard analytics
+# analytics
 gem 'energy-sparks_analytics', path: 'analytics'
-
+gem 'interpolate' # upstream repository archived since 2018
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
 gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'

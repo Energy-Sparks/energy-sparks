@@ -6,30 +6,32 @@ FactoryBot.define do
     run_date { Time.zone.today }
 
     transient do
-      metric_categories { [] }
+      categories { [] }
 
-      # one transient per metric type (expects a hash or nil)
+      # one hash per category:
+      # engagement: { targets: { value: 5 } }
       ImpactReport::Metric.categories.each do |category|
-        ImpactReport::Metric.metrics(category).each do |type|
-          add_attribute(type) { nil }
-        end
+        add_attribute(category) { {} }
       end
     end
 
     after(:create) do |run, evaluator|
-      evaluator.metric_categories.each do |category|
+      evaluator.categories.each do |category|
+        category_overrides = evaluator.public_send(category)
+
         ImpactReport::Metric.metrics(category).each do |type|
-          override = evaluator.public_send(type)
+          override = category_overrides[type] || {}
           attrs = override.is_a?(Hash) ? override : {}
 
           defaults = {
-            impact_report_run: run,
+            run: run,
             metric_category: category,
             metric_type: type,
-            value: 1,
-            enough_data: true,
-            fuel_type: nil
+            value: 2,
+            enough_data: true
           }
+
+          defaults[:fuel_type] = :electricity if %i[potential_savings energy_efficiency].include?(category)
 
           create(
             :impact_report_metric,
@@ -41,12 +43,12 @@ FactoryBot.define do
 
     ImpactReport::Metric.categories.each do |category|
       trait :"with_#{category}_metrics" do
-        transient { metric_categories { [category] } }
+        transient { categories { [category] } }
       end
     end
 
     trait :with_metrics do
-      transient { metric_categories { ImpactReport::Metric.categories } }
+      transient { categories { ImpactReport::Metric.categories } }
     end
   end
 end

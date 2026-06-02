@@ -39,7 +39,7 @@
 #  fk_rails_...  (updated_by_id => users.id)
 #
 module Commercial
-  class Contract < ApplicationRecord
+  class Contract < ApplicationRecord # rubocop:disable Metrics/ClassLength
     include Trackable
     include TemporalRange
     include Commercial::HasContractHolder
@@ -48,6 +48,12 @@ module Commercial
     self.table_name = 'commercial_contracts'
 
     scope :by_name, -> { order(name: :asc) }
+
+    scope :over_licensed, lambda {
+      joins(:licences)
+        .group('commercial_contracts.id')
+        .having('COUNT(commercial_licences.id) > commercial_contracts.number_of_schools')
+    }
 
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
@@ -81,11 +87,104 @@ module Commercial
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
     validate :ensure_only_editable_attributes_changed, unless: :new_record?
+    validate :validate_invoice_terms
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
     has_many :schools, -> { distinct }, through: :licences
+    has_many :school_onboardings, dependent: :nullify
 
     accepts_nested_attributes_for :licences, allow_destroy: true
+
+    attr_accessor :update_licences
+
+    def update_licences?
+      ActiveModel::Type::Boolean.new.cast(update_licences)
+    end
+
+    def self.contract_holder_name_sql
+      <<~SQL.squish
+        COALESCE(
+          schools.name,
+          school_groups.name,
+          funders.name
+        )
+      SQL
+    end
+
+    def self.contract_holder_joins
+      <<~SQL.squish
+        LEFT JOIN schools
+          ON schools.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'School'
+        LEFT JOIN school_groups
+          ON school_groups.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'SchoolGroup'
+        LEFT JOIN funders
+          ON funders.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'Funder'
+      SQL
+    end
+
+    scope :ordered_by_contract_holder_name, lambda {
+      name_sql = contract_holder_name_sql
+
+      joins(contract_holder_joins)
+        .select(
+          Arel.sql("commercial_contracts.*, #{name_sql} AS contract_holder_name")
+        )
+        .order(Arel.sql('contract_holder_name ASC'))
+    }
+
+    def self.count_case(expr, alias_name, id: 'licence_schools.id')
+      "COUNT(DISTINCT CASE WHEN #{expr} THEN #{id} END) AS #{alias_name}"
+    end
+
+    scope :current_contract_holders_with_counts, lambda {
+      current
+        .joins(contract_holder_joins)
+        .left_joins(:licences)
+        .joins('LEFT JOIN schools AS licence_schools ON licence_schools.id = commercial_licences.school_id')
+        .left_joins(:school_onboardings)
+        .select(
+          'commercial_contracts.contract_holder_type',
+          'commercial_contracts.contract_holder_id',
+          "#{contract_holder_name_sql} AS contract_holder_name",
+          count_case('licence_schools.visible = TRUE AND licence_schools.data_enabled = FALSE',
+                     'visible_not_data_enabled_count'),
+          count_case('licence_schools.visible = TRUE AND licence_schools.data_enabled = TRUE',
+                     'visible_data_enabled_count'),
+          count_case(
+            'school_onboardings.school_id IS NULL',
+            'onboarding_count',
+            id: 'school_onboardings.id'
+          )
+        )
+        .group(
+          'commercial_contracts.contract_holder_type', 'commercial_contracts.contract_holder_id',
+          'schools.name', 'school_groups.name', 'funders.name'
+        )
+        .order(Arel.sql(contract_holder_name_sql))
+    }
+
+    def self.current_contract_holder_summaries
+      current_contract_holders_with_counts.map do |row|
+        visible_not = row.visible_not_data_enabled_count
+        visible_yes = row.visible_data_enabled_count
+        onboard     = row.onboarding_count
+
+        {
+          id: row.contract_holder_id,
+          name: row.contract_holder_name,
+          type: row.contract_holder_type,
+          visible_not_data_enabled: visible_not,
+          visible_data_enabled: visible_yes,
+          onboardings: onboard,
+          total: visible_not + visible_yes + onboard
+        }
+      end
+    end
+
+    def self.temporal_group_keys = %i[contract_holder_id contract_holder_type]
 
     def self.as_renewal(original)
       new(
@@ -101,9 +200,16 @@ module Commercial
         ).merge(
           comments: "Renewed from #{original.name}",
           end_date: original.end_date.next_year,
-          start_date: original.end_date + 1.day
+          start_date: original.end_date + 1.day,
+          update_licences: true
         )
       )
+    end
+
+    def self.filtered(scope_name, date = nil)
+      date = Date.parse(date) if date.present? && date.is_a?(String)
+      scope = date.present? ? public_send(scope_name, date) : public_send(scope_name)
+      scope.includes(:contract_holder, :product).by_start_date
     end
 
     def status_colour
@@ -123,13 +229,17 @@ module Commercial
     # Others cannot be changed once invoicing has started, e.g. agreed_school_price
     def editable_attributes
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
-      fields += [:status] if provisional?
-      fields += %i[agreed_school_price start_date end_date] unless licences.invoiced.exists?
+      fields += %i[status] if provisional?
+      fields += [:licence_years] if custom? && !invoiced?
+      fields += %i[agreed_school_price product_id start_date end_date] unless invoiced?
       fields
     end
 
+    # Indicate whether changes to the contract should trigger updates to existing licences. Based on
+    # user choice (:update_licences) and whether the saved changes indicate that an update is worthwhile.
     def cascade_updates_to_licences?
-      licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
+      update_licences? && licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status
+                                                                               licence_years])
     end
 
     def as_range
@@ -138,6 +248,10 @@ module Commercial
 
     def custom_contract_length?
       custom? && licence_years > 1.0
+    end
+
+    def invoiced?
+      licences.invoiced.exists?
     end
 
     private
@@ -157,6 +271,12 @@ module Commercial
       forbidden.each do |attr|
         errors.add(attr, 'cannot be changed once the contract is in its current state')
       end
+    end
+
+    def validate_invoice_terms
+      return unless custom? && pro_rata?
+
+      errors.add(:invoice_terms, 'invoice terms can only be full for a custom contract')
     end
   end
 end

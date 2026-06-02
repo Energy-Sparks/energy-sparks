@@ -13,7 +13,7 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
       classes: 'extra-classes',
       show_actions: false
     ) do |c|
-      c.with_header { 'Current Contracts'}
+      c.with_header { 'Current Contracts' }
     end
   end
 
@@ -24,13 +24,14 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
   end
 
   context 'when rendering' do
-    it { expect(page).to have_content('Current Contracts') }
+    it { expect(page).to have_text('Current Contracts') }
 
-    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+    it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
       let(:table_id) { '#contracts-table' }
       let(:expected_header) do
         [
-          ['Name', 'Contract Holder', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status']
+          ['Name', 'Contract Holder', 'Product', 'Period', 'Terms', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools',
+           'Status']
         ]
       end
       let(:expected_rows) do
@@ -39,6 +40,8 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
             contract.name,
             contract.contract_holder.name,
             contract.product.name,
+            contract.licence_period.humanize,
+            contract.invoice_terms.humanize,
             contract.start_date.to_fs(:es_short),
             contract.end_date.to_fs(:es_short),
             contract.number_of_schools.to_s,
@@ -60,11 +63,12 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
         )
       end
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#contracts-table' }
         let(:expected_header) do
           [
-            ['Name', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status']
+            ['Name', 'Product', 'Period', 'Terms', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools',
+             'Status']
           ]
         end
         let(:expected_rows) do
@@ -72,6 +76,8 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
             [
               contract.name,
               contract.product.name,
+              contract.licence_period.humanize,
+              contract.invoice_terms.humanize,
               contract.start_date.to_fs(:es_short),
               contract.end_date.to_fs(:es_short),
               contract.number_of_schools.to_s,

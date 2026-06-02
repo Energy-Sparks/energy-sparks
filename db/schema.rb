@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_11_103302) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_20_090103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -30,7 +30,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_103302) do
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
   create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings", "footnotes"]
-  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings"]
+  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings", "baseload_gbp", "baseload_co2", "baseload_kwh", "out_of_hours_gbp", "out_of_hours_co2", "out_of_hours_kwh", "peak_gbp", "peak_co2", "peak_kwh", "use_gbp", "use_co2", "use_kwh", "heating_down_gbp", "heating_down_co2", "heating_down_kwh", "heating_early_gbp", "heating_early_co2", "heating_early_kwh", "heating_off_gbp", "heating_off_co2", "heating_off_kwh", "insulate_pipes_gbp", "insulate_pipes_co2", "insulate_pipes_kwh", "thermostatic_control_gbp", "thermostatic_control_co2", "thermostatic_control_kwh", "solar_panels_gbp", "solar_panels_co2", "solar_panels_kwh", "annual_saving_gbp", "annual_saving_co2", "annual_saving_kwh", "out_of_hours_exemplar", "out_of_hours_well_managed", "long_term_exemplar", "long_term_well_managed", "baseload_exemplar", "baseload_well_managed", "heating_control_exemplar", "heating_control_well_managed", "holiday_previous_gbp", "holiday_previous_kwh", "holiday_previous_year_gbp", "holiday_previous_year_kwh"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
@@ -1308,6 +1308,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_103302) do
     t.datetime "updated_at", null: false
     t.index ["issue_id"], name: "index_issue_meters_on_issue_id"
     t.index ["meter_id"], name: "index_issue_meters_on_meter_id"
+  end
+
+  create_table "issue_tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "label"
+    t.string "system_id"
+    t.datetime "updated_at", null: false
+    t.index ["label"], name: "index_issue_tags_on_label", unique: true
+    t.index ["system_id"], name: "index_issue_tags_on_system_id", unique: true
+  end
+
+  create_table "issue_tags_issues", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "issue_id"
+    t.bigint "issue_tag_id"
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_issue_tags_issues_on_issue_id"
+    t.index ["issue_tag_id"], name: "index_issue_tags_issues_on_issue_tag_id"
   end
 
   create_table "issues", force: :cascade do |t|
@@ -3317,14 +3335,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_103302) do
 
   create_view "comparison_change_in_electricity_since_last_years", materialized: true, sql_definition: <<-SQL
       SELECT latest_runs.id,
-      enba.school_id,
-      enba.previous_year_electricity_kwh,
-      enba.current_year_electricity_kwh,
-      enba.previous_year_electricity_co2,
-      enba.current_year_electricity_co2,
-      enba.previous_year_electricity_gbp,
-      enba.current_year_electricity_gbp,
-      enba.solar_type
+      energy.school_id,
+      energy.previous_year_electricity_kwh AS previous_year_kwh,
+      energy.current_year_electricity_kwh AS current_year_kwh,
+      energy.previous_year_electricity_co2 AS previous_year_co2,
+      energy.current_year_electricity_co2 AS current_year_co2,
+      energy.previous_year_electricity_gbp AS previous_year_gbp,
+      energy.current_year_electricity_gbp AS current_year_gbp,
+      energy.solar_type
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data.previous_year_electricity_kwh,
@@ -3337,11 +3355,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_103302) do
              FROM alerts,
               alert_types,
               LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) enba,
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (enba.alert_generation_run_id = latest_runs.id);
+    WHERE (energy.alert_generation_run_id = latest_runs.id);
   SQL
   add_index "comparison_change_in_electricity_since_last_years", ["school_id"], name: "idx_on_school_id_14ce133c88", unique: true
 

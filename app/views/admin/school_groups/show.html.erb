@@ -136,6 +136,7 @@
     <% else %>
       <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
     <% end %>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @school_group %></div>
   <% end %>
   <% component.with_tab(name: :'school-notes',
                         label: label_count('School notes',
@@ -147,6 +148,7 @@
     <% else %>
       <div class="bg-light p-2">No school notes for <%= @school_group.name %>.</div>
     <% end %>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @school_group %></div>
   <% end %>
 <% end %>
 

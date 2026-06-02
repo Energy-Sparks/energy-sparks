@@ -41,6 +41,7 @@ module Commercial
     belongs_to :school
 
     delegate :product, to: :contract
+    delegate :contract_holder, to: :contract
 
     LICENCE_STATUS = {
       provisional: 'provisional',
@@ -62,11 +63,13 @@ module Commercial
 
     enum :status, LICENCE_STATUS
 
-    validates_presence_of :start_date, :end_date
+    validates :start_date, :end_date, presence: true
 
-    def self.filtered(scope_name, date = Time.zone.today, school_group_id = nil)
-      date = Date.parse(date) if date.is_a?(String)
-      scope = public_send(scope_name, date)
+    def self.temporal_group_keys = [:school_id]
+
+    def self.filtered(scope_name, date = nil, school_group_id = nil)
+      date = Date.parse(date) if date.present? && date.is_a?(String)
+      scope = date.present? ? public_send(scope_name, date) : public_send(scope_name)
 
       if school_group_id.present?
         scope = scope.joins(school: :school_groupings)
@@ -77,6 +80,12 @@ module Commercial
            .by_start_date
     end
 
+    # Calculate duration ignoring leap years
+    def self.licence_period_days(period_start, period_end)
+      real_days = (period_end - period_start).to_i + 1
+      real_days - leap_days_between(period_start, period_end)
+    end
+
     def dates_will_automatically_change?
       persisted? &&
         contract.custom? &&
@@ -85,6 +94,12 @@ module Commercial
 
     def deletable?
       !invoiced?
+    end
+
+    private_class_method def self.leap_days_between(period_start, period_end)
+      (period_start.year..period_end.year).count do |year|
+        Date.leap?(year) && Date.new(year, 2, 29).between?(period_start, period_end)
+      end
     end
 
     private

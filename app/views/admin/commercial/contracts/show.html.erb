@@ -9,16 +9,23 @@
       <%= link_to 'Edit',
                   edit_admin_commercial_contract_path(@contract),
                   class: 'btn btn-primary btn-sm' %>
-      <%= render(Forms::DeleteButtonComponent.new(admin_commercial_contract_path(@contract), resource: @contract)) %>
-
+      <%= unless @contract.confirmed?
+            link_to 'Confirm', confirm_admin_commercial_contract_path(@contract),
+                    method: :post,
+                    class: 'btn btn-warning btn-sm'
+          end %>
       <%= link_to 'Manage All Licences', edit_admin_commercial_contract_licences_path(@contract),
                   class: 'btn btn-secondary btn-sm' %>
-      <%= link_to 'Renew', new_admin_commercial_contract_path(original_contract_id: @contract.id),
-                  class: 'btn btn-secondary btn-sm' %>
+
+      <%= unless @contract.future?
+            link_to 'Renew', new_admin_commercial_contract_path(original_contract_id: @contract.id),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
       <%= link_to 'Add New Licence', new_admin_commercial_licence_path(contract_id: @contract.id),
                   class: 'btn btn-secondary btn-sm' %>
       <%= link_to 'Calculate Price', admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
                   class: 'btn btn-secondary btn-sm' %>
+      <%= render(Forms::DeleteButtonComponent.new(admin_commercial_contract_path(@contract), resource: @contract)) %>
     </p>
   </div>
 </div>
@@ -100,7 +107,7 @@
               Agreed School Price
             </dt>
             <dd class="col-7">
-              <%= format_unit(@contract.agreed_school_price, :£) %>
+              <%= format_price(@contract.agreed_school_price) %>
             </dd>
             <dt class="col-5">
               Purchase order number
@@ -129,19 +136,19 @@
             <tbody>
               <tr>
                 <td>Base price</td>
-                <td><%= format_unit(@pricing.totals.base_price, :£) %></td>
+                <td><%= format_price(@pricing.totals.base_price) %></td>
               </tr>
               <tr>
                 <td>Metering fees</td>
-                <td><%= format_unit(@pricing.totals.metering_fee, :£) %></td>
+                <td><%= format_price(@pricing.totals.metering_fee) %></td>
               </tr>
               <tr>
                 <td>Private account fees</td>
-                <td><%= format_unit(@pricing.totals.private_account_fee, :£) %></td>
+                <td><%= format_price(@pricing.totals.private_account_fee) %></td>
               </tr>
               <tr>
                 <td><strong>Total</strong></td>
-                <td><strong><%= format_unit(@pricing.totals.total, :£) %></strong></td>
+                <td><strong><%= format_price(@pricing.totals.total) %></strong></td>
               </tr>
             </tbody>
           </table>
@@ -223,16 +230,16 @@
             </td>
             <td><%= link_to school.name, school_path(school) %></td>
             <td data-sort="<%= pricing[:price].base_price %>">
-              <%= format_unit(pricing[:price].base_price, :£) %>
+              <%= format_price(pricing[:price].base_price) %>
             </td>
             <td data-sort="<%= pricing[:price].metering_fee %>">
-              <%= format_unit(pricing[:price].metering_fee, :£) %>
+              <%= format_price(pricing[:price].metering_fee) %>
             </td>
             <td data-sort="<%= pricing[:price].private_account_fee %>">
-              <%= format_unit(pricing[:price].private_account_fee, :£) %>
+              <%= format_price(pricing[:price].private_account_fee) %>
             </td>
             <td data-sort="<%= pricing[:price].total %>">
-              <%= format_unit(pricing[:price].total, :£) %>
+              <%= format_price(pricing[:price].total) %>
             </td>
           </tr>
         <% end %>
@@ -241,10 +248,10 @@
         <tr>
           <td></td>
           <td></td>
-          <td><strong><%= format_unit(@pricing.totals.base_price, :£) %></strong></td>
-          <td><strong><%= format_unit(@pricing.totals.metering_fee, :£) %></strong></td>
-          <td><strong><%= format_unit(@pricing.totals.private_account_fee, :£) %></strong></td>
-          <td><strong><%= format_unit(@pricing.totals.total, :£) %></strong></td>
+          <td><strong><%= format_price(@pricing.totals.base_price) %></strong></td>
+          <td><strong><%= format_price(@pricing.totals.metering_fee) %></strong></td>
+          <td><strong><%= format_price(@pricing.totals.private_account_fee) %></strong></td>
+          <td><strong><%= format_price(@pricing.totals.total) %></strong></td>
         </tr>
       </tfoot>
     </table>

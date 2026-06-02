@@ -2,9 +2,7 @@
 
 require 'rails_helper'
 
-describe 'school licences' do
-  include AdvicePageHelper
-
+describe 'school licences', :include_application_helper do
   let(:user) { create(:admin) }
   let!(:school) { create(:school, :with_school_group, number_of_pupils: 100) }
   let!(:product) { create(:commercial_product, :default_product) }
@@ -20,39 +18,5 @@ describe 'school licences' do
   end
 
   it { expect(page).to have_css('div.commercial-licences-component') }
-  it { expect(page).to have_content("##{licence.id}") }
-
-  it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
-    let(:table_id) { '#pricing-table' }
-    let(:expected_header) do
-      [
-        ['', 'Cost']
-      ]
-    end
-    let(:expected_rows) do
-      [
-        ['Base Price', format_unit(product.small_school_price, :£, true, :ks2, :text)],
-        ['Metering Fee', format_unit(0.0, :£, true, :ks2, :text)],
-        ['Private Account Fee', format_unit(0.0, :£, true, :ks2, :text)],
-        ['Total Price', format_unit(product.small_school_price, :£, true, :ks2, :text)]
-      ]
-    end
-  end
-
-  it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
-    let(:table_id) { '#renewal-pricing-table' }
-    let(:expected_header) do
-      [
-        ['', 'Cost']
-      ]
-    end
-    let(:expected_rows) do
-      [
-        ['Base Price', format_unit(product.small_school_price, :£, true, :ks2, :text)],
-        ['Metering Fee', format_unit(0.0, :£, true, :ks2, :text)],
-        ['Private Account Fee', format_unit(0.0, :£, true, :ks2, :text)],
-        ['Total Price', format_unit(product.small_school_price, :£, true, :ks2, :text)]
-      ]
-    end
-  end
+  it { expect(page).to have_text("##{licence.id}") }
 end

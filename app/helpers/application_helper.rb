@@ -1,6 +1,7 @@
 module ApplicationHelper
   include Pagy::Frontend
   include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::NumberHelper
 
   def nice_date_times(datetime, options = {})
     return '' if datetime.nil?
@@ -8,7 +9,11 @@ module ApplicationHelper
     if options[:localtime] && Rails.application.config.display_timezone
       datetime = datetime.in_time_zone(Rails.application.config.display_timezone)
     end
-    "#{nice_dates(datetime)} #{nice_times_only(datetime)}"
+    if options[:short_date]
+      "#{short_dates(datetime)} #{nice_times_only(datetime)}"
+    else
+      "#{nice_dates(datetime)} #{nice_times_only(datetime)}"
+    end
   end
 
   def nice_times_only(datetime)
@@ -263,6 +268,22 @@ module ApplicationHelper
     return school_time if school_time.blank?
 
     format('%04d', school_time).insert(2, ':')
+  end
+
+  def format_price(price, decimals: true)
+    raw = price.to_s
+    integer, decimal = raw.split('.')
+
+    formatted_int = ActiveSupport::NumberHelper.number_to_delimited(integer)
+
+    return "£#{formatted_int}" unless decimals
+
+    if decimal
+      padded = decimal.ljust(2, '0')
+      "£#{formatted_int}.#{padded}"
+    else
+      "£#{formatted_int}.00"
+    end
   end
 
   def table_headers_from_array(array)

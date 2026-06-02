@@ -141,11 +141,11 @@ class HomeController < ApplicationController
     product = Commercial::Product.default_product
     return {} unless product
     {
-      small_school_price: format_unit(product.small_school_price, :£),
-      large_school_price: format_unit(product.large_school_price, :£),
-      mat_price: format_unit(product.mat_price, :£),
-      private_account_fee: format_unit(product.private_account_fee, :£),
-      metering_fee: format_unit(product.metering_fee, :£),
+      small_school_price: format_price(product.small_school_price, decimals: false),
+      large_school_price: format_price(product.large_school_price, decimals: false),
+      mat_price: format_price(product.mat_price, decimals: false),
+      private_account_fee: format_price(product.private_account_fee, decimals: false),
+      metering_fee: format_price(product.metering_fee, decimals: false),
       size_threshold: product.size_threshold
     }
   end
