@@ -54,6 +54,7 @@
               <% end %>
               <th title="Issues admin" class="d-none d-md-table-cell nowrap">Admin</th>
             <% end %>
+            <th class="text-end" title="Review date">Review date</th>
             <th class="text-end" title="Schools onboarding">Onboarding</th>
             <th class="text-end" title="Schools active (without data visible)">Active</th>
             <th class="text-end" title="Schools active (with data visible)" class='nowrap'>Data visible</th>
@@ -90,6 +91,11 @@
                   <% end %>
                 </td>
               <% end %>
+              <td class="text-end">
+                <% if school_group.next_group_review %>
+                  <%= link_to review_date_badge(school_group.next_group_review, label: false),
+                              admin_issue_path(school_group.next_group_review) %>
+                <% end %>
               <td class="text-end"><%= school_group.onboardings_for_group.incomplete.count %></td>
               <td class="text-end"><%= school_group.assigned_schools.visible.count %></td>
               <td class="text-end"><%= school_group.assigned_schools.visible.data_enabled.count %></td>
@@ -115,6 +121,7 @@
           <tfooter>
             <tr class="fw-bold">
               <td>All Energy Sparks Schools</td>
+              <td></td>
               <td></td>
               <td></td>
               <td class="text-end"><%= SchoolOnboarding.incomplete.count %></td>
