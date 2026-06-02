@@ -7,7 +7,8 @@
         component_classes: 'theme theme-dark'
       ) do |grid| %>
     <% displayable.each do |metric| %>
-      <% grid.with_stats_card(if: metric.energy_efficiency_type == :annual_saving) do |card| %>
+      <% grid.with_stats_card(if: metric.metric_category == :energy_efficiency &&
+                                    metric.metric_type == :annual_saving) do |card| %>
         <%= card.with_header title: impact_t("energy_efficiency.metric_types.#{metric.metric_type}.title",
                                              fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}")) %>
         <%= card.with_figure format_unit(metric.value, metric.unit.to_sym, false) %>

@@ -28,7 +28,7 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving_gbp annual_saving_co2 targets].freeze
+    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving targets].freeze
 
     def end_date
       run_date - 1.day

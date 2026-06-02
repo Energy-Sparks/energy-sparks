@@ -35,10 +35,10 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       create(:impact_report_run, categories: %i[overview], school_group:)
     end
 
-    context 'with annual_saving_gbp metric' do
-      let!(:metric_type) { :annual_saving_gbp }
+    context 'with annual_saving gbp metric' do
+      let!(:metric_type) { :annual_saving }
       let!(:metric) do
-        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity)
+        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity, unit: :gbp)
       end
       let(:card) { card_with_title('Total electricity savings') }
 
@@ -54,10 +54,10 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       }
     end
 
-    context 'with annual_saving_co2 metric' do
-      let!(:metric_type) { :annual_saving_co2 }
+    context 'with annual_saving co2 metric' do
+      let!(:metric_type) { :annual_saving }
       let!(:metric) do
-        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :gas)
+        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :gas, unit: :co2)
       end
       let(:card) { card_with_title('Reduced gas emissions') }
 
