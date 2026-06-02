@@ -30,9 +30,9 @@ gem 'closed_struct'
 gem 'pg'
 gem 'scenic'
 
-# Dashboard analytics
+# analytics
 gem 'energy-sparks_analytics', path: 'analytics'
-
+gem 'interpolate' # upstream repository archived since 2018
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
 gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'

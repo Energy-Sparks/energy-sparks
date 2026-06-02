@@ -303,6 +303,10 @@ class SchoolGroup < ApplicationRecord
     Issue.for_school_group(self)
   end
 
+  def next_group_review
+    issues.joins(:issue_tags).where(issue_tags: { system_id: :group_review })&.order(review_date: :asc)&.first
+  end
+
   def email_locales
     default_country == 'wales' ? %i[en cy] : [:en]
   end
