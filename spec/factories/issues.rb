@@ -25,5 +25,12 @@ FactoryBot.define do
         end
       end
     end
+
+    trait :with_group_review do
+      after(:create) do |issue|
+        t = create(:issue_tag, system_id: :group_review)
+        issue.issue_tags << t
+      end
+    end
   end
 end
