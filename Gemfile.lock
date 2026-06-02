@@ -928,6 +928,7 @@ DEPENDENCIES
   i18n-tasks (~> 1.1.2)
   image_processing (~> 2.0)
   importmap-rails
+  interpolate
   jbuilder (~> 2.15)
   jquery-rails
   knapsack
