@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require 'date'
+require 'sun_times'
+require 'tzinfo'
+
 module DataFeeds
   # Provides higher level interface to PVLive API to support bulk downloads,
   # conversion of data into preferred structure, interpolation of missing values,
@@ -22,9 +26,9 @@ module DataFeeds
 
     # should run minimum to 10 days, to create overlap for interpolation (missing days data only slightly fault tolerant)
     def historic_solar_pv_data(gsp_id, sunrise_sunset_latitude, sunrise_sunset_longitude, start_date, end_date)
-      if start_date < Date.new(2014, 1, 1)
-        raise "Error: requested start_date #{start_date} earlier than first available date 2014-01-01"
-      end
+      raise "Error: requested start_date #{start_date} earlier than first available date 2014-01-01" if start_date < Date.new(
+        2014, 1, 1
+      )
 
       pv_data, meta_data_dictionary = download_historic_data(gsp_id, start_date, end_date)
       datetime_to_yield_hash = process_pv_data(pv_data, meta_data_dictionary, sunrise_sunset_latitude,
