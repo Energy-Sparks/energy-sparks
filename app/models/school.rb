@@ -972,6 +972,23 @@ class School < ApplicationRecord
     default_contract_holder.nil?
   end
 
+  def contract_holder
+    licences.current.first&.contract_holder
+  end
+
+  def summarised_contract_holder_name
+    return nil unless contract_holder.present?
+
+    case contract_holder
+    when self
+      'School self funding'
+    when organisation_group
+      'MAT funding'
+    else
+      contract_holder.name
+    end
+  end
+
   private
 
   def valid_uk_postcode

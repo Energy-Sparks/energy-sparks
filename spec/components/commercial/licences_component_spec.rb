@@ -24,9 +24,9 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
   end
 
   context 'when rendering' do
-    it { expect(page).to have_content('Current Licences') }
+    it { expect(page).to have_text('Current Licences') }
 
-    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+    it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
       let(:table_id) { '#licences-table' }
       let(:expected_header) do
         [
@@ -60,7 +60,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
                       ))
       end
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#licences-table' }
         let(:expected_header) do
           [
@@ -93,7 +93,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
                       ))
       end
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#licences-table' }
         let(:expected_header) do
           [
@@ -126,7 +126,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
                       ))
       end
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#licences-table' }
         let(:expected_header) do
           [

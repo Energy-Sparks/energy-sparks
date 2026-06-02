@@ -660,6 +660,7 @@ Rails.application.routes.draw do
           get :recent
         end
       end
+      resources :contract_holders, only: [:index]
       resources :licences do
         collection do
           get :current

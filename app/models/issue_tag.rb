@@ -22,6 +22,8 @@ class IssueTag < ApplicationRecord
 
   scope :by_label, -> { order(label: :asc) }
 
+  validates :label, presence: true, uniqueness: true
+
   def deletable?
     system_id.nil?
   end

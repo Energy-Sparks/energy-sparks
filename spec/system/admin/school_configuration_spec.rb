@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'editing school configuration', type: :system do
-  let!(:school) { create(:school)}
+  let!(:school) { create(:school) }
 
   before do
     sign_in(create(:admin))
@@ -113,7 +113,7 @@ RSpec.describe 'editing school configuration', type: :system do
     it 'allows default contract holder to be updated' do
       school.organisation_group = school_group
       refresh
-      select 'MAT funded', from: 'How will school be funded in future?'
+      select 'MAT funded', from: 'Default contract holder'
       click_on('Update configuration')
       expect(school.reload.default_contract_holder).to eq school_group
     end

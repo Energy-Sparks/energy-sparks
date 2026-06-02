@@ -74,12 +74,13 @@ describe 'manage funders' do
   end
 
   context 'when viewing a funder' do
-    let!(:funder) { create(:funder) }
+    let!(:funder) { create(:funder, invoiced: true) }
 
     before do
       click_on('Funders')
     end
 
+    it { expect(page).to have_link('Contracts', href: admin_funder_contracts_path(funder)) }
     it { expect(page).to have_link('Edit', href: edit_admin_funder_path(funder)) }
     it { expect(page).to have_link('Delete', href: admin_funder_path(funder)) }
 
@@ -93,7 +94,7 @@ describe 'manage funders' do
 
       it { expect(page).to have_link(contract.name, href: admin_commercial_contract_path(contract)) }
 
-      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#contracts-table' }
         let(:expected_header) do
           [
@@ -115,6 +116,28 @@ describe 'manage funders' do
               contract.status.humanize,
               'Edit Renew Confirm Delete'
             ]
+          ]
+        end
+      end
+    end
+
+    context 'when showing funded schools' do
+      include_context 'with a mixture of contracted schools and onboardings'
+      before { click_on(funder.name) }
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#funded-schools' }
+        let(:expected_header) do
+          [
+            %w[Category Schools]
+          ]
+        end
+        let(:expected_rows) do
+          [
+            ['Onboarding', '1'],
+            ['Visible not data enabled', '2'],
+            ['Visible and data enabled', '3'],
+            ['Total', '6']
           ]
         end
       end
