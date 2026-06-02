@@ -255,6 +255,23 @@ describe ImpactReport::Run do
 
       it { expect(energy_efficiency).to eq([ok_metric]) }
     end
+
+    context 'with gbp_threshold' do
+      let(:gbp_threshold) { 100 }
+      let!(:above_threshold) do
+        create(:impact_report_metric, run:, metric_category:,
+                                      fuel_type: :electricity, metric_type: :annual_saving_gbp, value: 150)
+      end
+
+      before do
+        create(:impact_report_metric, run:, metric_category:,
+                                      fuel_type: :gas, metric_type: :annual_saving_gbp, value: 50)
+      end
+
+      it 'filters out metrics below the threshold' do
+        expect(run.energy_efficiency(gbp_threshold:)).to eq([above_threshold])
+      end
+    end
   end
 
   describe 'metrics indexing' do
