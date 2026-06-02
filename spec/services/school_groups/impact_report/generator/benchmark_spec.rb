@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Benchmark do
-  subject(:benchmark) { described_class.new(SchoolGroups::ImpactReport.new(school_group)) }
+  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school_group)) }
 
   let(:school_group) { create(:school_group) }
   let!(:advice_pages) do
@@ -43,7 +43,7 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
       end
 
       it 'has the right metrics' do
-        expect(benchmark.metrics).to match_array(
+        expect(generator.metrics).to match_array(
           advice_pages.reject { |page| page.key == 'electricity_long_term' }
                       .map { |page| advice_page_metric(page) } +
           [metric(:long_term, number_of_schools: 2, value: 2, enough_data: true)]
@@ -58,7 +58,7 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
       end
 
       it 'has the right metrics' do
-        expect(benchmark.metrics).to match_array(
+        expect(generator.metrics).to match_array(
           advice_pages.reject { |page| page.key == 'electricity_long_term' }
                       .map { |page| advice_page_metric(page) } +
           [metric(:long_term, number_of_schools: 1, value: 0, enough_data: true)]
