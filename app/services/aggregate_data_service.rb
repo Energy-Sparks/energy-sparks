@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'benchmark/memory'
-
 # Service responsible for carrying out the data "validation" and "aggregation" processes
 # for a +MeterCollection+
 #

@@ -12,12 +12,19 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
   end
 
   shared_examples 'a group admin page header' do
+    let!(:group_review) { create(:issue, :with_group_review, issueable: school_group, review_date: 1.day.from_now) }
+
     it 'has the expected title' do
       expect(page).to have_text(school_group.name)
     end
 
     it 'identifies the group type' do
       expect(page).to have_text(school_group.group_type.humanize)
+    end
+
+    it 'displays the next review date' do
+      refresh
+      expect(page).to have_text(short_dates(group_review.review_date))
     end
 
     context "when clicking on 'All school groups'" do
