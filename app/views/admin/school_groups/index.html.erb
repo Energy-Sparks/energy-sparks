@@ -92,9 +92,9 @@
                 </td>
               <% end %>
               <td class="text-end">
-                <% if school_group.group_review %>
-                  <%= link_to review_date_badge(school_group.group_review, label: false),
-                              admin_issue_path(school_group.group_review) %>
+                <% if school_group.next_group_review %>
+                  <%= link_to review_date_badge(school_group.next_group_review, label: false),
+                              admin_issue_path(school_group.next_group_review) %>
                 <% end %>
               <td class="text-end"><%= school_group.onboardings_for_group.incomplete.count %></td>
               <td class="text-end"><%= school_group.assigned_schools.visible.count %></td>
