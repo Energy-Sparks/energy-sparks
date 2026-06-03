@@ -642,6 +642,12 @@ describe 'manage contracts' do
 
     it { expect(page).to have_text(contract.name) }
     it { expect(page).to have_text(contract.comments) }
+    it { expect(page).to have_link('All contracts', href: current_admin_commercial_contracts_path) }
+
+    it do
+      expect(page).to have_link('Contract holder contracts',
+                                href: polymorphic_path([:admin, contract.contract_holder, :contracts]))
+    end
 
     context 'when viewing terms' do
       it {
@@ -752,7 +758,7 @@ describe 'manage contracts' do
     end
 
     context 'when navigating to contract holder page' do
-      before { click_on 'All contracts' }
+      before { click_on 'Contract holder contracts' }
 
       it { expect(page).to have_text("#{contract.contract_holder.name} Contracts") }
 
