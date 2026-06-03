@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   class DataSourcesController < AdminController
+    before_action :enable_bootstrap5
+
     load_and_authorize_resource
 
-    def show
-    end
+    def show; end
 
     def deliver
       @data_source = DataSource.find(params[:data_source_id])

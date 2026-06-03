@@ -28,14 +28,14 @@
 
 <div class="bg-light border rounded py-2 mb-2">
   <div class="col-12 clearfix">
-    <span data-toggle="collapse" href="#data-source" role="button" aria-expanded="true" aria-controls="data-source" class="badge text-bg-light toggler text-decoration-none collapsed">
+    <span data-bs-toggle="collapse" href="#data-source" role="button" aria-expanded="true" aria-controls="data-source" class="badge text-bg-light toggler text-decoration-none collapsed ps-3">
       <%= toggler %>
     </span>
     <%= render 'admin/issues/issueable', issueable: @data_source %>
     <span class="badge text-bg-info"><%= @data_source.organisation_type.try(:humanize) %></span>
-    <span class='float-end'>
-      <%= render 'email_report_button', data_source: @data_source, class: 'btn btn-sm' %>
-      <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: 'btn btn-sm' %>
+    <span class='float-end pe-2'>
+      <%= render 'email_report_button', data_source: @data_source, class: 'btn btn-secondary btn-sm' %>
+      <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: 'btn btn-secondary btn-sm' %>
       <%= link_to 'Delete', admin_data_source_path(@data_source), method: :delete, data: { confirm: 'Are you sure?' },
                                                                   class: 'btn btn-sm btn-danger' %>
     </span>
