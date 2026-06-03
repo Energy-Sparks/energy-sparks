@@ -19,12 +19,11 @@
       <tr>
         <td class="text-start"><%= run.run_date %></td>
         <td class="text-center"><%= run.metrics.count %></td>
-        <td class="text-center"><%= run.metrics.enough_data.count %></td>
-
-        <td class="text-center"><%= run.metrics.overview.count %></td>
-        <td class="text-center"><%= run.metrics.energy_efficiency.count %></td>
-        <td class="text-center"><%= run.metrics.engagement.count %></td>
-        <td class="text-center"><%= run.metrics.potential_savings.count %></td>
+        <td class="text-center"><%= run.metrics.count(&:enough_data) %></td>
+        <td class="text-center"><%= run.metrics.count(&:overview?) %></td>
+        <td class="text-center"><%= run.metrics.count(&:energy_efficiency?) %></td>
+        <td class="text-center"><%= run.metrics.count(&:engagement?) %></td>
+        <td class="text-center"><%= run.metrics.count(&:potential_savings?) %></td>
         <td class="text-center">
           <%= link_to 'View', school_group_impact_run_path(@school_group, run),
                       class: 'btn btn-secondary btn-sm' %>

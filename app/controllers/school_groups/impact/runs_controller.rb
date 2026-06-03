@@ -8,7 +8,7 @@ module SchoolGroups
       before_action :enable_bootstrap5
       load_and_authorize_resource :school_group
       load_and_authorize_resource :run, class: 'ImpactReport::Run', through: :school_group,
-                                        through_association: :impact_report_runs
+                                        through_association: :impact_report_runs, include: :metrics
 
       def index
         @runs = @runs.order(run_date: :desc)
