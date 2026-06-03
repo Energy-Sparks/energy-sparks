@@ -7,10 +7,16 @@ module SchoolGroups
 
       before_action :enable_bootstrap5
       load_and_authorize_resource :school_group
-      # load_and_authorize_resource :impact_resource_run, class: 'ImpactReport::Run',as: :run, through: :school_group
+      load_and_authorize_resource :run, class: 'ImpactReport::Run', through: :school_group,
+                                        through_association: :impact_report_runs
 
       def index
-        @runs = @school_group.impact_report_runs.order(run_date: :desc)
+        @runs = @runs.order(run_date: :desc)
+      end
+
+      def latest
+        @run = @runs.latest
+        render :show
       end
     end
   end

@@ -31,6 +31,8 @@ module ImpactReport
 
     belongs_to :run, foreign_key: :impact_report_run_id, class_name: 'ImpactReport::Run', inverse_of: :metrics
 
+    scope :enough_data, -> { where(enough_data: true) }
+
     def self.enum_map(values)
       values.index_with(&:to_s)
     end

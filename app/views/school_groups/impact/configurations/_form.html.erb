@@ -6,8 +6,7 @@
           <h2 class="mb-0">General</h2>
 
           <div class="d-flex gap-2">
-            <%= link_to 'All reports', admin_impact_reports_path, class: 'btn btn-secondary' %>
-            <%= link_to 'View report', school_group_impact_index_path(@school_group), class: 'btn btn-primary' %>
+            <%= render '/school_groups/impact/buttons' %>
           </div>
         </div>
         <p>Impact reports will only be available for groups with at least 2 visible schools and where either the user is an admin, or the report is set to visible.</p>
@@ -21,6 +20,11 @@
         <%= f.input :show_energy_efficiency,
                     wrapper: :custom_boolean_switch,
                     label: 'Display section', hint: 'Show or hide the whole energy efficiency section' %>
+
+        <h4>Metrics</h4>
+        <%= render TogglerDropdownComponent.new(title: 'Latest visible metrics', classes: 'mb-2', bg: 'white') do %>
+          <%= render ImpactReports::EnergyEfficiency::MetricsComponent.new(run: @run, classes: 'mt-4') %>
+        <% end %>
 
         <h4>Featured school</h4>
         <p>Select a featured school to highlight in this section, along with a note and image. When a school is not selected, this section will not be displayed.</p>
@@ -76,6 +80,12 @@
         <%= f.input :show_engagement, wrapper: :custom_boolean_switch,
                                       label: 'Display section',
                                       hint: 'Show or hide the whole engagement section' %>
+
+        <h4>Metrics</h4>
+        <%= render TogglerDropdownComponent.new(title: 'Latest visible metrics', classes: 'mb-2', bg: 'white') do %>
+          <%= render ImpactReports::Engagement::MetricsComponent.new(run: @run, classes: 'mt-4') %>
+        <% end %>
+
         <h4>Featured school</h4>
         <p>By default, the highest scoring school in the group will be shown as the featured school in this section,
         along with a podium of the top 3 schools. Use the options below to override this and select a specific school

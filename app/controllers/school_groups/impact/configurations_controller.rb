@@ -7,14 +7,15 @@ module SchoolGroups
 
       before_action :enable_bootstrap5
       load_and_authorize_resource :school_group, include: :impact_report_configuration
+      before_action :fetch_config_and_run, only: %i[edit update]
 
-      def edit
-        @configuration = @school_group.impact_report_configuration || @school_group.build_impact_report_configuration
-        render :edit
+      def show
+        redirect_to edit_school_group_impact_configuration_path(@school_group)
       end
 
+      def edit; end
+
       def update
-        @configuration = @school_group.impact_report_configuration || @school_group.build_impact_report_configuration
         @configuration.attributes = configuration_params if params[:impact_report_configuration].present?
 
         if @configuration.save
@@ -26,6 +27,11 @@ module SchoolGroups
       end
 
       private
+
+      def fetch_config_and_run
+        @configuration = @school_group.impact_report_configuration || @school_group.build_impact_report_configuration
+        @run = @school_group.impact_report_runs.latest
+      end
 
       def configuration_params
         params.expect(impact_report_configuration:

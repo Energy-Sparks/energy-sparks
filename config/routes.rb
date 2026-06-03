@@ -289,7 +289,11 @@ Rails.application.routes.draw do
       resources :impact, only: [:index]
       namespace :impact, path: 'impact' do
         resource :configuration, only: %i[show edit update]
-        resources :runs, only: %i[index show]
+        resources :runs, only: %i[index show] do
+          collection do
+            get :latest
+          end
+        end
       end
 
       resources :secr, only: [:index]
