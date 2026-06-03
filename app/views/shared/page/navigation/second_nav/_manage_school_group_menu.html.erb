@@ -50,7 +50,7 @@
                   admin_school_group_path(school_group), class: 'dropdown-item' %>
 
       <% if school_group.organisation? %>
-        <%= link_to 'Impact report', edit_admin_impact_report_path(school_group), class: 'dropdown-item' %>
+        <%= link_to 'Impact report', edit_school_group_impact_configuration_path(school_group), class: 'dropdown-item' %>
       <% end %>
 
       <%= link_to 'Issues',
