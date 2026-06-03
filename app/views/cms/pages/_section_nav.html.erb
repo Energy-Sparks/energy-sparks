@@ -1,0 +1,14 @@
+<div id="section-navigation" class="page-nav-component" style="position: sticky; top: 120px;">
+  <ul class="nav flex-column flex-nowrap w-100">
+    <li class="nav-item">
+      <a class="nav-link header"><%= t('pages.section_nav.title') %></a>
+    </li>
+    <% sections.positioned.each do |section| %>
+      <li class="nav-item overflow-hidden section">
+        <a class="nav-link item small generic-item section-link"
+           href="#<%= section.slug %>">
+           <%= section.title %></a>
+      </li>
+    <% end %>
+  </ul>
+</div>

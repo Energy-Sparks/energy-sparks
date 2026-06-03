@@ -36,7 +36,7 @@ RSpec.describe SchoolGroups::CsvGenerator do
         expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize, 'All school types', 7, 7, 7, 7, 7].join(','))
         i += 1
       end
-      expect(data.lines[i].chomp).to eq(['All Energy Sparks schools', 'All school types', 14, 14, 14, 14, 14].join(','))
+      expect(data.lines[i].chomp).to eq(['All Energy Sparks schools', 'All', 'All school types', 14, 14, 14, 14, 14].join(','))
     end
   end
 

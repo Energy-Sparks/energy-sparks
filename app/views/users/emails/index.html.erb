@@ -1,0 +1,37 @@
+<%= render 'users/user_page', user: @user do %>
+  <div id="email-preferences">
+    <div class="row">
+      <div class="col">
+        <h2><%= t('users.show.update_email_preferences') %></h2>
+
+        <p>
+          <%= t('users.emails.index.intro_html') %>
+        </p>
+      </div>
+    </div>
+    <div class="row mt-4 mb-4">
+      <div class="col">
+        <%= form_tag user_emails_path(@user), id: 'mailchimp-form', class: 'mailchimp-form' do %>
+          <%= render 'mailchimp_interest_fields',
+                     email_types: @email_types,
+                     interests: @interests %>
+
+          <div class="row">
+            <div class="col-md-12">
+              <p>
+                <%= t('users.emails.index.footer_html') %>
+              </p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <%= submit_tag t('common.labels.update'), class: 'btn btn-primary' %>
+              <%= link_to t('common.labels.cancel'), user_path(@user), class: 'btn btn-secondary' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

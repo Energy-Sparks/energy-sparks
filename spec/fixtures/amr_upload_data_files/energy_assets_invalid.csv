@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Dataserve - Powered by SenseLogix</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/jquery-ui.js"></script>
+<script type="text/javascript" src="/js/jquery.tipTip.js"></script>
+<link href="/templates/default/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/templates/default/css/admin.css" rel="stylesheet" type="text/css" />
+<link href="/templates/default/css/jquery-ui.css" rel="stylesheet" type="text/css" />
+<link href="/templates/default/css/tipTip.css" rel="stylesheet" type="text/css" />
+<link href="/templates/default/css/jquery-ui-overrides.css" rel="stylesheet" type="text/css" />
+<link href="/templates/default/css/partner.css" rel="stylesheet" type="text/css" />
+<link href="/templates/default/css/globalserv.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" HREF="favicon.ico">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-startup-image"  href="startup.png" />
+<meta name="viewport" content = "width = device-width, initial-scale = 1.1, user-scalable = yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<link rel="apple-touch-startup-image" sizes="1004x768"  href="startup1024x768.png" />
+<link rel="apple-touch-startup-image" sizes="768x1004"  href="startup768x1024.png" />
+<script type="text/javascript">
+(function ($) {
+$(document).ready(function () {
+$.single=function(a){return function(b){a[0]=b;return a}}($([1]));
+/*@cc_on
+if (!window.XMLHttpRequest) {
+$('.hoverable').each(function () {
+this.attachEvent('onmouseenter', function (evt) { $.single(evt.srcElement).addClass('menu_hover'); });
+this.attachEvent('onmouseleave', function (evt) { $.single(evt.srcElement).removeClass('menu_hover'); });
+});
+$('.hoverbut').each(function () {
+this.attachEvent('onmouseenter', function (evt) { $.single(evt.srcElement).addClass('button_hover'); });
+this.attachEvent('onmouseleave', function (evt) { $.single(evt.srcElement).removeClass('button_hover'); });
+});
+}
+@*/
+});
+}(jQuery));
+</script>
+</head><body>
+<div id="container" class="clearfix">
+<div id="header" class="clearfix">
+<div id="" class="l_float"></div>
+<div id="sense_logo"><a href="index.php?mode=system"><img   src="/templates/default/img/logo.png" border="0" alt="EnergyLogix" class="pngfix"/></a></div>
+</div>
+<div id="page_content_admin" class="clearfix">
+<!--<div class="small button hoverbut" onclick="location.href='index.php?section=login&logout=true';" id="logout">Logout</div>--><div id="main_admin" class="clearfix">
+<div class="frame supersize">		<div class="center">Hi.  This page is currently undergoing maintenance.</div>
+<div class="center">Please use the back button to return to the page that you came from.<br>(You will be redirected to the home page in 10 seconds)</div>
+<script>
+$(document).ready(function () {
+// Handler for .ready() called.
+window.setTimeout(function () {
+location.href = "/index.php";
+}, 10000)
+});
+</script>
+</div>
+</div><!-- main content -->
+</div><!-- Page Content -->
+</div><!--container -->
+<div id="copyright">
+<a href="#">Copyright  2019 EnergyLogix</a>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+// stupid ipad and iphone don't like hovering tooltips
+if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
+$('#tiptip_holder').delay(3000).html('');
+}else{
+$(".tooltip").tipTip({edgeOffset: 10, defaultPosition:"top", delay:6000});}
+});
+</script>
+</body>
+</html>

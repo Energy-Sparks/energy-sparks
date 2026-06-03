@@ -110,6 +110,7 @@ describe 'Meter', :meters do
       end
       let(:electricity_meters_not_reviewed) do
         [create(:electricity_meter, dcc_meter: :smets2, meter_review_id: nil, consent_granted: false),
+         create(:electricity_meter, dcc_meter: :smets2, meter_review: create(:meter_review, disabled: true)),
          create(:electricity_meter, dcc_meter: :other, meter_review_id: nil, consent_granted: false)]
       end
 
@@ -125,6 +126,48 @@ describe 'Meter', :meters do
 
       it 'returns a collection of unreviewed meters' do
         expect(Meter.unreviewed_dcc_meter).to match_array(electricity_meters_not_reviewed)
+      end
+    end
+
+    context 'when finding meters to check against DCC' do
+      it 'checks main meters' do
+        meter = create(:electricity_meter, dcc_meter: :no)
+        create(:electricity_meter, dcc_meter: :smets2)
+        expect(Meter.meters_to_check_against_dcc.first).to eq(meter)
+      end
+
+      it 'does not check recently checked meters' do
+        create(:electricity_meter, dcc_meter: :no, dcc_checked_at: 6.days.ago)
+        create(:electricity_meter, dcc_meter: :smets2)
+        expect(Meter.meters_to_check_against_dcc).to eq([])
+      end
+
+      it 'does not check meters for archived schools' do
+        create(:electricity_meter, dcc_meter: :no, school: create(:school, active: false, removal_date: 1.month.ago))
+        expect(Meter.meters_to_check_against_dcc).to eq([])
+      end
+    end
+
+    context 'when finding meters for schools' do
+      before do
+        [create(:electricity_meter, school: create(:school, active: false, removal_date: 1.month.ago)),
+         create(:electricity_meter, active: false, school: create(:school, active: false, removal_date: 1.month.ago)),
+         create(:electricity_meter, active: false, school: create(:school))]
+      end
+
+      it 'returns active meters from active schools' do
+        active_meter = create(:electricity_meter, school: create(:school))
+        expect(Meter.active_for_active_schools).to contain_exactly(active_meter)
+      end
+    end
+
+    context 'when finding meters with stale readings' do
+      it 'returns only active meters with stale readings' do
+        data_source = create(:data_source)
+        create(:gas_meter_with_validated_reading_dates, active: false, data_source:, school: create(:school, active: true))
+        stale_meter = create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, data_source:, school: create(:school, active: true))
+        create(:gas_meter_with_validated_reading_dates, end_date: 2.days.ago, data_source:, school: create(:school, active: true))
+        expect(Meter.with_stale_readings).to contain_exactly(stale_meter)
       end
     end
   end
@@ -474,6 +517,30 @@ describe 'Meter', :meters do
             { 'name' => energy_tariff_school_electricity_non_half_hourly.name, 'tariff_holder' => 'school' }
           )
       end
+    end
+  end
+
+  describe '#has_solar_array?' do
+    let!(:meter) { create(:electricity_meter) }
+
+    context 'with no array' do
+      it { expect(meter.has_solar_array?).to eq(false) }
+    end
+
+    context 'with metered solar' do
+      before do
+        create(:solar_pv_mpan_meter_mapping, meter: meter)
+      end
+
+      it { expect(meter.has_solar_array?).to eq(true) }
+    end
+
+    context 'with estimated solar' do
+      before do
+        create(:solar_pv_attribute, meter: meter)
+      end
+
+      it { expect(meter.has_solar_array?).to eq(true) }
     end
   end
 end

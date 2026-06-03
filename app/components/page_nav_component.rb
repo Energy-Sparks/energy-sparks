@@ -1,49 +1,61 @@
 # frozen_string_literal: true
 
-class PageNavComponent < ViewComponent::Base
-  renders_many :sections, ->(**args) do
-    args[:options] = options
-    SectionComponent.new(**args)
-  end
+class PageNavComponent < ApplicationComponent
+  renders_many :sections, lambda { |**kwargs|
+    kwargs[:options] ||= {}
+    kwargs[:options] = options.merge(kwargs[:options])
+    SectionComponent.new(**kwargs)
+  }
 
   attr_reader :name, :icon, :classes, :href, :options
 
-  def initialize(name: 'Menu', icon: 'home', href:, classes: nil, options: {})
+  def initialize(href:, name: 'Menu', icon: 'home', classes: nil, options: {})
+    super(classes: classes)
     @name = name
     @icon = icon
-    @classes = classes
     @href = href
     @options = options
   end
 
   def header
-    args = { class: 'nav-link border-bottom' }
-    args[:class] += " #{classes}" if classes
-    link_to(helpers.text_with_icon(name, icon), href, args)
+    kwargs = { class: 'nav-link header' }
+    kwargs[:class] += " #{classes}" if classes
+    text = icon.nil? ? name : helpers.text_with_icon(name, icon)
+    link_to(text, href, kwargs)
   end
 
   class SectionComponent < ViewComponent::Base
-    renders_many :items, ->(**args) do
-      args[:match_controller] ||= options[:match_controller]
-      PageNavComponent::ItemComponent.new(**args)
-    end
+    renders_many :items, lambda { |**kwargs|
+      kwargs[:match_controller] ||= options[:match_controller]
+      kwargs[:match_on_param] ||= options[:match_on_param]
+      PageNavComponent::ItemComponent.new(**kwargs)
+    }
 
     attr_reader :name, :icon, :visible, :classes, :options
 
-    def initialize(name: nil, icon: nil, visible: true, classes: nil, options: {})
+    def initialize(id: nil, name: nil, icon: nil, visible: true, toggler: true, expanded: true, classes: nil,
+                   options: {})
+      @id = id
       @name = name
       @classes = classes
       @icon = icon
       @visible = visible
       @options = options
+      @toggler = toggler
+      @expanded = expanded
     end
 
     def id
-      name.try(:parameterize)
+      @id || name.try(:parameterize)
     end
 
     def link_text
-      helpers.text_with_icon(name, icon) + content_tag(:span, helpers.toggler, class: 'pl-1 float-right')
+      helpers.text_with_icon(content_tag(:span, name, class: 'nav-text'), icon,
+                             class: 'fuel fa-fw') + content_tag(:span, helpers.toggler, class: 'nav-toggle-icons')
+    end
+
+    def expanded?
+      @expanded
     end
 
     def render?
@@ -51,20 +63,33 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: 'nav-link border-bottom small toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      if @toggler
+        toggle_classes = 'nav-link toggler'
+        toggle_classes += ' collapsed' unless expanded?
+        args = { class: toggle_classes,
+                 'data-toggle': 'collapse', 'data-bs-toggle': 'collapse',
+                 'data-target': "##{id}", 'data-bs-target': "##{id}" }
+      else
+        args = { class: '' }
+      end
       args[:class] += " #{classes}" if classes
       link_to(link_text, "##{id}", args)
     end
   end
 
   class ItemComponent < ViewComponent::Base
-    attr_reader :name, :href, :match_controller, :classes
+    attr_reader :name, :href, :match_controller, :classes, :match_on_param
 
-    def initialize(name:, href:, classes: nil, match_controller: false)
+    def initialize(name:, href:, note: nil, match_controller: false, selected: false, # rubocop:disable Lint/MissingSuper, Metrics/ParameterLists
+                   visible: true, classes: nil, match_on_param: nil)
       @name = name
+      @note = note
       @href = href
       @match_controller = match_controller
+      @selected = selected
+      @visible = visible
       @classes = classes
+      @match_on_param = match_on_param
     end
 
     def current_controller?(href)
@@ -72,18 +97,25 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def current_item?(href)
-      match_controller ? current_controller?(href) : current_page?(href)
+      if match_on_param
+        params[match_on_param[:param]] == match_on_param[:value] && current_page?(href)
+      else
+        match_controller ? current_controller?(href) : current_page?(href)
+      end
     end
 
     def call
-      args = { class: 'nav-link border-bottom item small' }
-      args[:class] += " #{classes}" if classes
-      args[:class] += ' current' if current_item?(href)
-      link_to(name, href, args)
+      kwargs = { class: 'nav-link item' }
+      kwargs[:class] += " #{classes}" if classes
+      kwargs[:class] += ' current' if current_item?(href) || @selected
+      note = @note.nil? ? '' : content_tag(:span, @note, class: 'nav-toggle-icons')
+      tag.li(class: 'nav-item') do
+        link_to(content_tag(:span, name, class: 'nav-text') + note, href, kwargs)
+      end
     end
 
     def render?
-      name
+      name && @visible
     end
   end
 
@@ -104,8 +136,10 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: "nav-link d-md-none d-#{display}", 'data-toggle': 'collapse', 'data-target': "##{id}" }
-      link_to(icon, '', args)
+      kwargs = { class: "nav-link d-md-none d-#{display}",
+                 'data-toggle': 'collapse', 'data-bs-toggle': 'collapse',
+                 'data-target': "##{id}", 'data-bs-target': "##{id}" }
+      link_to(icon, '', kwargs)
     end
   end
 end

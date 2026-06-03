@@ -1,8 +1,12 @@
-<h1>Individual Meter attributes for <%= @meter.name %></h1>
-
-<p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
-
-<p><%= link_to 'Meter details', school_meter_path(@school, @meter) %></p>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Meter attributes for <%= @meter.mpan_mprn %></h1>
+  <div class="h5">
+    <%= link_to t('schools.meters.show.school_meter_management'), school_meters_path(@school),
+                class: 'btn btn-default' %>
+    <%= link_to 'Meter details', school_meter_path(@school, @meter),
+                class: 'btn btn-default' %>
+  </div>
+</div>
 
 <ul class="nav nav-tabs" id="top-level-meter-attribute-tabs">
   <li class="nav-item">
@@ -15,7 +19,7 @@
 
 <ul class="nav nav-tabs mt-3" id="meter-attribute-tabs" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="database-meter-attributes-tab" data-toggle="tab" href="#database-meter-attributes-content" role="tab" aria-controls="database-meter-attributes-content" aria-selected="true">Attributes</a>
+    <a class="nav-link active" id="database-meter-attributes-tab" data-toggle="tab" href="#database-meter-attributes" role="tab" aria-controls="database-meter-attributes" aria-selected="true">Attributes</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="deleted-meter-attributes-tab" data-toggle="tab" href="#deleted-meter-attributes-content" role="tab" aria-controls="deleted-meter-attributes-content" aria-selected="false">Deleted</a>
@@ -26,10 +30,12 @@
 </ul>
 
 <div class="tab-content" id="meter-attributes-tabs-content">
-  <div class="tab-pane fade show active" id="database-meter-attributes-content" role="tabpanel" aria-labelledby="database-meter-attributes-tab">
+  <div class="tab-pane fade show active" id="database-meter-attributes" role="tabpanel" aria-labelledby="database-meter-attributes-tab">
 
     <table class="table">
-      <%= render 'admin/schools/meter_attributes/meter_attributes_table', school: @school, available_meter_attributes: @available_meter_attributes, meter: @meter %>
+      <%= render 'admin/schools/meter_attributes/meter_attributes_table',
+                 school: @school,
+                 available_meter_attributes: @available_meter_attributes, meter: @meter %>
     </table>
   </div>
 

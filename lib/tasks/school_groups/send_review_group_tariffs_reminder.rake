@@ -1,6 +1,7 @@
 namespace :school_groups do
   desc "Sends an email to school group admins to review the information we have about their school group's energy tariffs"
   task send_review_group_tariffs_reminder: :environment do
+    return unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
     # Note: see `.ebextensions/cronjob.config` for dates and times this task is scheduled to run
     begin
       SendReviewGroupTariffsReminderJob.perform_later

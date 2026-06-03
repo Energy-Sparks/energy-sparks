@@ -1,30 +1,39 @@
-<%= component 'notice', status: :neutral do |c| %>
-  <% c.with_link { link_to t('advice_pages.storage_heaters.insights.link'), learn_more_school_advice_storage_heaters_path(@school) } %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <% c.with_link do
+       link_to t('advice_pages.storage_heaters.insights.link'), learn_more_school_advice_storage_heaters_path(@school)
+     end %>
   <%= t('advice_pages.storage_heaters.insights.advice_html') %>
 <% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'your_storage_heater_energy_use
 ', section_title: t('advice_pages.storage_heaters.insights.your_storage_heater_energy_use.title') %>
 
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertStorageHeatersLongTermTrend), show_links: false, show_icons: false %>
+<%= render AlertsComponent.new(school: @school, dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertStorageHeatersLongTermTrend), show_links: false) %>
 
 <%= render 'analysis_table' %>
 
 <%= render 'schools/advice/section_title', section_id: 'leaving_the_heating_on_during_warm_weather
 ', section_title: t('advice_pages.storage_heaters.insights.leaving_the_heating_on_during_warm_weather.title') %>
 
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertSeasonalHeatingSchoolDaysStorageHeaters), show_links: false, show_icons: false %>
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertTurnHeatingOffStorageHeaters), show_links: false, show_icons: false %>
+<%= render AlertsComponent.new(school: @school, dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertSeasonalHeatingSchoolDaysStorageHeaters), show_links: false) %>
+<%= render AlertsComponent.new(school: @school, dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertTurnHeatingOffStorageHeaters), show_links: false) %>
 
 <%= render('seasonal_control_notice') %>
 
-<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.storage_heaters.insights.how_do_you_compare.title') %>
+<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare',
+                                           section_title: t('advice_pages.storage_heaters.insights.how_do_you_compare.title') %>
 
 <p>
   <%= t('advice_pages.storage_heaters.insights.how_do_you_compare.for_more_detail') %>
 </p>
 <ul>
-  <li><%= link_to t('analytics.benchmarking.chart_table_config.change_in_storage_heaters_since_last_year'), compare_for_school_group_path(:change_in_storage_heaters_since_last_year, @school) %></li>
-  <li><%= link_to t('analytics.benchmarking.chart_table_config.annual_storage_heater_out_of_hours_use'), compare_for_school_group_path(:annual_storage_heater_out_of_hours_use, @school) %></li>
-  <li><%= link_to t('analytics.benchmarking.chart_table_config.storage_heater_consumption_during_holiday'), compare_for_school_group_path(:storage_heater_consumption_during_holiday, @school) %></li>
+  <li><%= link_to t('analytics.benchmarking.chart_table_config.change_in_storage_heaters_since_last_year'),
+                  compare_for_school_group_path(:change_in_storage_heaters_since_last_year, @school) %></li>
+  <li><%= link_to t('analytics.benchmarking.chart_table_config.annual_storage_heater_out_of_hours_use'),
+                  compare_for_school_group_path(:annual_storage_heater_out_of_hours_use, @school) %></li>
+  <li><%= link_to t('analytics.benchmarking.chart_table_config.storage_heater_consumption_during_holiday'),
+                  compare_for_school_group_path(:storage_heater_consumption_during_holiday, @school) %></li>
 </ul>

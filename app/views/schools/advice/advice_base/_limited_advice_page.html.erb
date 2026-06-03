@@ -1,0 +1,11 @@
+<%= render 'schools/advice/advice_page', school: @school,
+                                         advice_pages: @advice_pages,
+                                         advice_page: @advice_page,
+                                         tab: @tab,
+                                         data_warning: nil do %>
+  <h2>
+    <%= render PageNavComponent::CollapseButton.new(display: 'inline') %>
+    <%= title %>
+  </h2>
+  <%= yield %>
+<% end %>

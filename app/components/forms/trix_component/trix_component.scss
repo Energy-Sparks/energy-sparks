@@ -1,0 +1,37 @@
+.forms-trix-component.buttons-large {
+  trix-toolbar {
+    .trix-button--icon {
+      width: 3.6em;
+      height: 2.6em;
+    }
+  }
+}
+
+.forms-trix-component.large {
+  trix-editor {
+    min-height: 500px !important;
+  }
+}
+
+trix-toolbar {
+  .trix-dialog {
+    padding: 5px;
+
+    .trix-dialog-hidden__input {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
+    }
+  }
+
+}
+
+.trix-dialog--youtube {
+  max-width: 600px;
+}
+
+trix-editor {
+  .youtube-embed {
+    max-width: 400px;
+  }
+}

@@ -19,7 +19,7 @@
     <p>
       <% if @filter[:search] == 'group' %>
         <%= t('compare.filter.schools_in_school_group_html',
-              school_group: tag.span(current_school_group.name, class: 'badge badge-info')) %>
+              school_group: tag.span(current_user_default_school_group.name, class: 'badge badge-info')) %>
       <% elsif @filter[:search] == 'country' %>
         <%= t('compare.filter.schools_with_country_html',
               country: tag.span(

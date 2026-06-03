@@ -22,7 +22,7 @@
           <% meter_energy_tariffs = meter.energy_tariffs.order(:start_date) %>
           <tr>
             <td><%= link_to(school.name, school_path(school)) %></td>
-            <td><%= link_to meter.display_name, smart_meter_tariffs_school_energy_tariffs_path(school) %></td>
+            <td><%= link_to icon_and_display_name(meter), smart_meter_tariffs_school_energy_tariffs_path(school) %></td>
             <td><%= meter_energy_tariffs.count %></td>
             <td><%= formatted_date_range_for(meter_energy_tariffs.first) if meter_energy_tariffs.count > 1 %></td>
             <td><%= formatted_date_range_for(meter_energy_tariffs.last) %></td>

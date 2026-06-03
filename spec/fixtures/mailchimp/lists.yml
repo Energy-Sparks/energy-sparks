@@ -1,147 +1,143 @@
 ---
 lists:
-  - id: ed205db324
-    web_id: 164399
-    name: Energy Sparks
-    contact:
-      company: Energy Sparks
-      address1: Place
-      address2: Somewhere
-      city: Nottingham
-      state: B&NES
-      zip: NG1 1EQ
-      country: GB
-      phone: 01122 123456
-    permission_reminder: You are receiving this email because you opted in via our website.
-    use_archive_bar: true
-    campaign_defaults:
-      from_name: EnergySparksAdmin
-      from_email: admin@example.uk
-      subject: ''
-      language: en
-    notify_on_subscribe: ''
-    notify_on_unsubscribe: ''
-    date_created: '2019-07-12T09:50:52+00:00'
-    list_rating: 3
-    email_type_option: false
-    subscribe_url_short: http://eepurl.com/ABCDEF
-    subscribe_url_long: https://energysparks.us16.list-manage.com/subscribe?u=123
-    beamer_address: us16-03a16d5481-123@inbound.mailchimp.com
-    visibility: pub
-    double_optin: false
-    has_welcome: true
-    marketing_permissions: false
-    modules: []
-    stats:
-      member_count: 187
-      unsubscribe_count: 2
-      cleaned_count: 8
-      member_count_since_send: 1
-      unsubscribe_count_since_send: 0
-      cleaned_count_since_send: 1
-      campaign_count: 27
-      campaign_last_sent: '2020-11-24T13:16:44+00:00'
-      merge_field_count: 13
-      avg_sub_rate: 6
-      avg_unsub_rate: 0
-      target_sub_rate: 1
-      open_rate: 27.65578635014837
-      click_rate: 2.9394121175764845
-      last_sub_date: '2020-11-22T15:32:00+00:00'
-      last_unsub_date: '2020-10-13T12:45:01+00:00'
-    _links:
-      - rel: self
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json
-      - rel: parent
-        href: https://us16.api.mailchimp.com/3.0/lists
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json
-      - rel: update
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324
-        method: PATCH
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json
-      - rel: batch-sub-unsub-members
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324
-        method: POST
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json
-      - rel: delete
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324
-        method: DELETE
-      - rel: abuse-reports
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/abuse-reports
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json
-      - rel: activity
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/activity
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json
-      - rel: clients
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/clients
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json
-      - rel: growth-history
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/growth-history
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json
-      - rel: interest-categories
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/interest-categories
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json
-      - rel: members
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/members
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json
-      - rel: merge-fields
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/merge-fields
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json
-      - rel: segments
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/segments
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json
-      - rel: webhooks
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/webhooks
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json
-      - rel: signup-forms
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/signup-forms
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json
-      - rel: locations
-        href: https://us16.api.mailchimp.com/3.0/lists/ed205db324/locations
-        method: GET
-        targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json
-        schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json
+- id: aff6ac9f1b
+  web_id: 524305
+  name: EnergySparks
+  contact:
+    company: EnergySparks
+    address1:
+    address2: ''
+    city: London
+    state: London
+    zip:
+    country: GB
+    phone: ''
+  permission_reminder: You are receiving this email because you opted in via our website.
+  use_archive_bar: true
+  campaign_defaults:
+    from_name: Developer
+    from_email: email@example.org
+    subject: ''
+    language: en
+  notify_on_subscribe: ''
+  notify_on_unsubscribe: ''
+  date_created: '2020-12-15T16:53:20+00:00'
+  list_rating: 0
+  email_type_option: false
+  subscribe_url_short: http://eepurl.com/hlLGmb
+  subscribe_url_long: https://energysparks.us7.list-manage.com/subscribe?u=253aacf73707a8669b850824e&id=aff6ac9f1b
+  beamer_address: us7-7d46323d6e-9aa739de69@inbound.mailchimp.com
+  visibility: prv
+  double_optin: false
+  has_welcome: false
+  marketing_permissions: false
+  modules: []
+  stats:
+    member_count: 2
+    unsubscribe_count: 1
+    cleaned_count: 0
+    member_count_since_send: 0
+    unsubscribe_count_since_send: 0
+    cleaned_count_since_send: 0
+    campaign_count: 1
+    campaign_last_sent: ''
+    merge_field_count: 23
+    avg_sub_rate: 1
+    avg_unsub_rate: 0
+    target_sub_rate: 0
+    open_rate: 100
+    click_rate: 50
+    last_sub_date: '2025-02-05T16:36:17+00:00'
+    last_unsub_date: '2025-02-06T16:09:39+00:00'
+  _links:
+  - rel: self
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json
+  - rel: parent
+    href: https://us7.api.mailchimp.com/3.0/lists
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json
+  - rel: update
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b
+    method: PATCH
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/PATCH.json
+  - rel: batch-sub-unsub-members
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b
+    method: POST
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST-Response.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/BatchPOST.json
+  - rel: delete
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b
+    method: DELETE
+  - rel: abuse-reports
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/abuse-reports
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Abuse/Collection.json
+  - rel: activity
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/activity
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json
+  - rel: clients
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/clients
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json
+  - rel: growth-history
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/growth-history
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Growth/Collection.json
+  - rel: interest-categories
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/interest-categories
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/InterestCategories/Collection.json
+  - rel: members
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/members
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Members/Collection.json
+  - rel: merge-fields
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/merge-fields
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/MergeFields/Collection.json
+  - rel: segments
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/segments
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Segments/Collection.json
+  - rel: webhooks
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/webhooks
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Webhooks/Collection.json
+  - rel: signup-forms
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/signup-forms
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/SignupForms/Collection.json
+  - rel: locations
+    href: https://us7.api.mailchimp.com/3.0/lists/aff6ac9f1b/locations
+    method: GET
+    targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json
+    schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Locations/Collection.json
 total_items: 1
 constraints:
   may_create: false
   max_instances: 1
   current_total_instances: 1
 _links:
-  - rel: self
-    href: https://us16.api.mailchimp.com/3.0/lists
-    method: GET
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json
-    schema: https://us16.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json
-  - rel: parent
-    href: https://us16.api.mailchimp.com/3.0/
-    method: GET
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Root/Response.json
-  - rel: create
-    href: https://us16.api.mailchimp.com/3.0/lists
-    method: POST
-    targetSchema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json
-    schema: https://us16.api.mailchimp.com/schema/3.0/Definitions/Lists/POST.json
+- rel: self
+  href: https://us7.api.mailchimp.com/3.0/lists
+  method: GET
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/CollectionResponse.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Paths/Lists/Collection.json
+- rel: create
+  href: https://us7.api.mailchimp.com/3.0/lists
+  method: POST
+  targetSchema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/Response.json
+  schema: https://us7.api.mailchimp.com/schema/3.0/Definitions/Lists/POST.json

@@ -1,13 +1,14 @@
-<%= simple_form_for [school, low_carbon_hub_installation] do |form| %>
-  <%= render 'shared/errors', subject: low_carbon_hub_installation, subject_name: 'rtone api feed' %>
+<%= simple_form_for [school, installation] do |form| %>
+  <%= render 'shared/errors', subject: installation, subject_name: 'rtone api feed' %>
 
-  <%= form.input :amr_data_feed_config_id, collection: AmrDataFeedConfig.low_carbon_hub_api.pluck(:description, :id), label_method: :first, value_method: :second, include_blank: false %>
-  <%= form.input :rbee_meter_id, as: :string, label: "Rbee id", disabled: low_carbon_hub_installation.persisted? %>
+  <%= form.input :amr_data_feed_config_id, collection: AmrDataFeedConfig.low_carbon_hub_api.pluck(:description, :id),
+                                           label_method: :first, value_method: :second, include_blank: false %>
+  <%= form.input :rbee_meter_id, as: :string, label: 'Rbee id', disabled: installation.persisted? %>
   <%= form.input :username, as: :string %>
   <%= form.input :password, as: :string %>
 
-  <div class="actions">
-    <%= form.submit "Submit", class: 'btn btn-primary'%>
+  <div class='actions'>
+    <%= form.submit 'Submit', class: 'btn btn-primary' %>
   </div>
 
 <% end %>

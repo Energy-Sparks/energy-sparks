@@ -4,18 +4,22 @@
       <div class="card-body">
         <div class="p-4">
           <%= fa_icon "#{fuel_type_icon(:electricity)} fa-3x" %>
-          <%= fa_icon "sun fa-3x" %>
+          <%= fa_icon 'sun fa-3x' %>
         </div>
-        <%= link_to t('common.electricity_and_solar_pv'), pupils_school_analysis_path(school, category: :solar), class: 'h2 stretched-link text-decoration-none' %>
+        <%= link_to t('common.electricity_and_solar_pv'),
+                    pupils_school_analysis_path(school, category: :solar),
+                    class: 'h2 stretched-link text-decoration-none' %>
       </div>
     </div>
   <% elsif school.has_electricity? %>
-    <div class="card electricity-dark electricity-card m-3 text-center pb-3">
+    <div class="card electric-dark electric-card m-3 text-center pb-3">
       <div class="card-body">
         <div class="p-4">
           <%= fa_icon "#{fuel_type_icon(:electricity)} fa-3x" %>
         </div>
-        <%= link_to t('common.electricity'), pupils_school_analysis_path(school, category: :electricity), class: 'h2 stretched-link text-decoration-none' %>
+        <%= link_to t('common.electricity'),
+                    pupils_school_analysis_path(school, category: :electricity),
+                    class: 'h2 stretched-link text-decoration-none' %>
         <div>
           <% if school.has_storage_heaters? %>
             <span class="small" title="">(<%= t('pupils.analysis.without_storage_heaters') %>)</span>
@@ -30,7 +34,9 @@
         <div class="p-4">
           <%= fa_icon "#{fuel_type_icon(:gas)} fa-3x" %>
         </div>
-        <%= link_to t('common.gas'), pupils_school_analysis_path(school, category: :gas), class: 'h2 stretched-link text-decoration-none' %>
+        <%= link_to t('common.gas'),
+                    pupils_school_analysis_path(school, category: :gas),
+                    class: 'h2 stretched-link text-decoration-none' %>
       </div>
     </div>
   <% end %>
@@ -40,7 +46,9 @@
         <div class="p-4">
           <%= fab_icon('intercom fa-3x') %>
         </div>
-        <%= link_to t('common.storage_heaters'), pupils_school_analysis_path(school, category: :storage_heaters), class: 'h2 stretched-link text-decoration-none' %>
+        <%= link_to t('common.storage_heaters'),
+                    pupils_school_analysis_path(school, category: :storage_heaters),
+                    class: 'h2 stretched-link text-decoration-none' %>
       </div>
     </div>
   <% end %>
@@ -50,7 +58,9 @@
         <div class="p-4">
           <%= fa_icon('tachometer-alt fa-3x') %>
         </div>
-        <%= link_to t('pupils.analysis.live_energy_data'), school_live_data_path(school), class: 'h2 stretched-link text-decoration-none' %>
+        <%= link_to t('pupils.analysis.live_energy_data'),
+                    school_live_data_path(school),
+                    class: 'h2 stretched-link text-decoration-none' %>
       </div>
     </div>
   <% end %>

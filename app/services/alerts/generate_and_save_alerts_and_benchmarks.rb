@@ -84,8 +84,8 @@ module Alerts
           analysis_date = AggregateSchoolService.analysis_date(@aggregate_school, alert_type.fuel_type)
           result = AlertTypeRunResult.generate_alert_report(alert_type, analysis_date, @school) do
             Adapters::AnalyticsAdapter
-              .new(alert_type: alert_type,
-                   analysis_date: analysis_date,
+              .new(alert_type:,
+                   analysis_date:,
                    school: @school,
                    aggregate_school: @aggregate_school,
                    use_max_meter_date_if_less_than_asof_date: true)

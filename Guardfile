@@ -24,7 +24,7 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "bundle exec rspec" do
+guard :rspec, all_on_start: false, cmd: "bundle exec rspec" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -32,8 +32,7 @@ guard :rspec, cmd: "bundle exec rspec" do
 
   # RSpec files
   rspec = dsl.rspec
-  watch(rspec.spec_helper)  { rspec.spec_dir }
-  watch(rspec.spec_support) { rspec.spec_dir }
+  # watch(rspec.spec_support) { rspec.spec_dir } # don't run all specs on support file change
   watch(rspec.spec_files)
 
   # Ruby files
@@ -53,7 +52,8 @@ guard :rspec, cmd: "bundle exec rspec" do
   end
 
   # Rails config changes
-  watch(rails.spec_helper)     { rspec.spec_dir }
+  # watch(rails.spec_helper)     { rspec.spec_dir } # don't run all specs on helper change
+  watch(rails.routes) { rspec.spec.call("system/routing") }
   watch(rails.routes)          { "#{rspec.spec_dir}/system" }
   watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
 
@@ -62,8 +62,4 @@ guard :rspec, cmd: "bundle exec rspec" do
   watch(rails.layouts)       { |m| rspec.spec.call("system/#{m[1]}") }
 
   notification :terminal_notifier if `uname` =~ /Darwin/
-end
-
-guard :rubocop, all_on_start: false, cli: "--config=.rubocop.yml" do
-  watch(%r{.+\.rb$})
 end

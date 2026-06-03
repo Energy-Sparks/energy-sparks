@@ -35,10 +35,6 @@ describe 'change_in_heating_since_last_year' do
                                 temperature_adjusted_percent: 8 })
   end
 
-  before do
-    visit "/comparisons/#{key}"
-  end
-
   describe 'change_in_gas_since_last_year' do
     let(:alert_class_name) { 'AlertGasAnnualVersusBenchmark' }
     let(:key) { :change_in_gas_since_last_year }

@@ -12,7 +12,7 @@
       <tr>
         <td><%= calendar.title %></td>
         <td><%= calendar.calendars.count %></td>
-        <td><div class='btn-group'><%= link_to 'Show', calendar, class: 'btn btn-info' if can?(:read, calendar) %></div></td>
+        <td><div class='btn-group'><%= link_to 'Show', calendar, class: 'btn btn-primary' if can?(:read, calendar) %></div></td>
       </tr>
     <% end %>
   </tbody>

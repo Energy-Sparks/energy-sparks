@@ -2,8 +2,6 @@
 
 module Schools
   class MetersController < ApplicationController
-    include CsvDownloader
-
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
@@ -18,7 +16,7 @@ module Schools
       respond_to do |format|
         format.html
         format.csv do
-          send_data readings_to_csv(AmrValidatedReading.download_query_for_school(@school), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL),
+          send_data CsvDownloader.readings_to_csv(AmrValidatedReading.download_query_for_school(@school).to_sql, AmrValidatedReading::CSV_HEADER_FOR_SCHOOL),
                     filename: "school-amr-readings-#{@school.name.parameterize}.csv"
         end
       end
@@ -29,8 +27,8 @@ module Schools
       respond_to do |format|
         format.html
         format.csv do
-          send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_METER),
-                    filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv"
+          send_data CsvDownloader.readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL),
+                    filename: "#{@meter.mpan_mprn}-readings.csv"
         end
       end
     end
@@ -38,9 +36,8 @@ module Schools
     def edit; end
 
     def create
-      manager = MeterManagement.new(@meter)
       if @meter.save
-        manager.process_creation!
+        MeterManagement.new(@meter).process_creation!(current_user)
         redirect_to school_meters_path(@school)
       else
         load_meters
@@ -53,6 +50,7 @@ module Schools
       manager = MeterManagement.new(@meter)
       if @meter.save
         manager.process_mpan_mpnr_change! if @meter.mpan_mprn_previously_changed?
+        # the admin team prefer this always redirects back to the meters page
         redirect_to school_meters_path(@school), notice: 'Meter updated'
       else
         render :edit
@@ -82,6 +80,12 @@ module Schools
       redirect_to school_meters_path(@school)
     end
 
+    def reload
+      job = @meter.perse_api ? PerseReloadJob : N3rgyReloadJob
+      job.perform_later(@meter, current_user.email)
+      redirect_to school_meters_path(@school), notice: 'Reload queued'
+    end
+
     private
 
     def set_breadcrumbs
@@ -109,7 +113,8 @@ module Schools
 
     def meter_params
       params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :data_source_id,
-                                    :procurement_route_id, :admin_meter_statuses_id, :meter_system)
+                                    :procurement_route_id, :admin_meter_statuses_id, :meter_system, :perse_api,
+                                    :manual_reads, :gas_unit)
     end
   end
 end

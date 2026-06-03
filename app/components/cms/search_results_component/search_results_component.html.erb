@@ -1,0 +1,61 @@
+<%= tag.div id: id, class: classes do %>
+  <div class="row">
+    <div id="search-summary" class="col-md-12">
+      <p>
+        <%= t('components.cms.search_results.results_html', count: @results.length, keywords: @query) if @query %>.
+      </p>
+    </div>
+  </div>
+
+  <div class="row search-results">
+    <div class="col-md-12">
+      <% @results.each do |section| %>
+        <div id="<%= section.slug %>" class="row mb-2 search-result">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-12">
+                <h5>
+                  <%= link_to section.page.title, category_page_path(section.page.category, section.page) %>
+                  -
+                  <%= link_to section.title, category_page_path(section.page.category,
+                                                                section.page,
+                                                                anchor: section.slug) %>
+                </h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="headline col-md-12">
+                <small>
+                  <%= section.headline.html_safe %>...
+                </small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <span class="bg-blue-very-dark text-white text-uppercase mb-3 badge badge-primary">
+                  <%= link_to section.page.category.title, category_path(section.page.category) %>
+                </span>
+                <% unless section.published %>
+                  <span class="text-uppercase mb-3 badge badge-warning">
+                    Unpublished
+                  </span>
+                <% end %>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+      <% end %>
+
+      <% unless @results.any? %>
+        <p><%= t('components.cms.search_results.no_results_prompt') %></p>
+
+        <ul>
+          <li><%= link_to t('pages.search.browse'), categories_path %></li>
+          <li><%= link_to t('pages.search.training'), training_path %></li>
+          <li><%= link_to t('components.cms.search_results.get_in_touch'), contact_path %></li>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+<% end %>

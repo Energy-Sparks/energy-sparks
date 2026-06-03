@@ -1,0 +1,9 @@
+.school-search-component-button {
+  border-top-right-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+  border: 1px solid #ced4da;
+}
+
+.page-item.disabled .page-link {
+  color: $grey-light;
+}

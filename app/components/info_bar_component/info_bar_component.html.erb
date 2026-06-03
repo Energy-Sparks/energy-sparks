@@ -1,4 +1,4 @@
-<%= component 'notice', status: status, classes: classes, style: style do %>
+<%= render NoticeComponent.new(status: status, classes: classes, style: style) do %>
   <div class="row align-items-center">
     <% if icon %>
       <div class="col-md-<%= icon_cols %> d-flex justify-content-center align-content-center flex-wrap">
@@ -11,7 +11,7 @@
       </div>
       <% buttons.each do |title, path| %>
         <div class="col-md-2 d-flex justify-content-end">
-          <%= link_to sanitize(title), path, class: 'btn btn-light btn rounded-pill', style: 'height: fit-content;' %>
+          <%= link_to sanitize(title), path, class: 'btn', style: 'height: fit-content;' %>
         </div>
       <% end %>
     <% else %>

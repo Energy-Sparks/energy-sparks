@@ -1,0 +1,9 @@
+<% if style == :default %>
+  <%= icon(icon_set, "#{icon_name} #{classes}") %>
+<% elsif style == :circle %>
+  <%# Use font-awesome stacking support. %>
+  <span class="fa-stack <%= classes %>">
+    <i class="fa-solid fa-circle fa-stack-2x fa-inverse"></i>
+    <%= icon(icon_set, icon_name, class: 'fa-stack-1x') %>
+  </span>
+<% end %>

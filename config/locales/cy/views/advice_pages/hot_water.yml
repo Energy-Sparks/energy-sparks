@@ -78,7 +78,7 @@ cy:
         for_more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
         how_do_you_compare: Sut ydych chi'n cymharu?
         improving_the_way_html_over_10pc_html: |-
-          <p>Mae'r tabl isod yn dangos bod %{gas_better_control_saving_gbp_percent} o'r ynni a ddefnyddir i wresogi eich dŵr poeth yn cael ei ddefnyddio y tu allan i oriau agor yr ysgol. Gallai addasu gosodiadau eich boeler i sicrhau eich bod ond yn gwresogi dŵr pan fydd ei angen arbed %{gas_better_control_saving_gbp} y flwyddyn i chi.
+          <p>Mae'r tabl isod yn dangos bod %{gas_better_control_saving_gbp_percent} o'r ynni a ddefnyddir i wresogi eich dŵr poeth yn cael ei ddefnyddio y tu allan i oriau agor yr ysgol. Gallai addasu gosodiadau eich boeler i sicrhau eich bod ond yn gwresogi dŵr pan fydd ei angen arbed %{gas_better_control_saving_gbp} y flwyddyn i chi. Cyflwynir y costau yn y tabl hwn gan ddefnyddio tariff nwy cyfredol eich ysgol.
           </p>
           <p>Neu gallech ymchwilio i newid eich system dŵr poeth presennol am wresogyddion trydan pwynt defnyddio.</p>
         improving_the_way_html_under_10pc_html: "<p>Mae eich defnydd o ddŵr poeth ar wyliau ac ar benwythnosau eisoes yn isel iawn. Gallech leihau eich defnydd blynyddol o nwy ar gyfer dŵr poeth %{gas_better_control_saving_gbp_percent} drwy ei ddiffodd yn gyfan gwbl y tu allan i oriau ysgol.</p>"

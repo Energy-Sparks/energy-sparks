@@ -1,25 +1,52 @@
 ---
 en:
   education_workshops:
-    availability: Please note, education workshops are currently only available to schools with an active Energy Sparks account. In-person workshops are available in most areas of England and Wales. We are currently only able to offer virtual workshops in Scotland.
+    audience:
+      description_html: |-
+        Our workshops can incorporate different elements to suit a variety of audiences, including:
+        <ul>
+          <li>Whole school or key stage assemblies</li>
+          <li>Sessions for eco-teams and classes</li>
+          <li>In-person training for estate staff, business managers and sustainability leads on how to use Energy Sparks</li>
+        </ul>
+      title: Motivational workshops for both pupils and staff
     book: Book a workshop
-    cost_html: "<p>Workshops are available on a paid-for basis from £250 to £500 dependent on location and whether provided in-person or online. Discounts are available if we are able to co-ordinate workshops for several schools within the same Multi-Academy Trust or Local Authority to cut down travel. Some schools in designated regions will be eligible for free in-person workshops. We will let you know if you are eligible for a free workshop or provide an accurate quote after you have completed the workshop booking form.</p>"
-    intro_html: |-
-      <p>
-        To support engagement and drive impact, Energy Sparks offers in-person and virtual half day education workshops to participating schools across the UK. Education workshops can include:
-      </p>
-      <ul>
-        <li>Assemblies</li>
-        <li>Eco-team and class workshops</li>
-        <li>In-person training on using Energy Sparks for eco-team leads, estate staff and business managers.</li>
-      </ul>
-      <p>
-        We will work with your school to deliver a workshop that meets your school’s needs and interests. Sessions can include:
-      </p>
-      <ul>
-        <li>Energy warriors: Introduce your pupils to the energy we use in our homes and schools</li>
-        <li>Our school, our climate: Learn about how the small changes we make in our school can affect the climate</li>
-        <li>Energy detectives: Learn how to conduct an energy audit and identify energy guzzlers around the school</li>
-        <li>Spot what’s hot: Learn how to analyse heating charts and explore temperature and heating in your school using a thermal imaging camera</li>
-      </ul>
+    details:
+      description_html: |-
+        Workshops are available on a paid-for basis, with prices ranging from £250 to £550 depending on location and whether provided in-person or online.<br><br>
+        Some schools in designated regions will be eligible for free in-person workshops. We will let you know if you are eligible for a free workshop or provide an accurate quote after you have completed the workshop booking form.
+      price: "£250 to £550 + VAT"
+      title: Workshop details
+    feature:
+      description: Whether you are looking to inspire the next generation of energy saving champions, or want to encourage your staff to cut costs and emissions, our workshops can help you.
+      title: 'Energy saving workshops: motivate your pupils and staff'
+    prices_range_from: Prices range from
     title: Education Workshops
+    workshops:
+      cards:
+      - title: Energy warriors
+        icon: person-rays
+        icon_colour: text-blue-dark
+        description: Introduce your pupils to the energy we use in our homes and schools.
+      - title: Our school, our climate
+        icon: earth-europe
+        icon_colour: text-electric
+        description: Learn about how the small changes we make in our school can affect the climate.
+      - title: Energy detectives
+        icon: magnifying-glass-chart
+        icon_colour: text-teal-dark
+        description: Learn how to conduct an energy audit and identify energy guzzlers around the school.
+      - title: Spot what's hot
+        icon: fire
+        icon_colour: text-yellow-medium
+        description: Learn how to analyse heating charts, and explore temperature and heating in your school using a thermal imaging camera.
+      - title: Antarctica and Energy Sparks
+        icon: snowflake
+        icon_colour: text-blue-medium
+        description: Learn about the impact of climate change on Antarctica, and how pupils can use Energy Sparks to make a difference.
+      - title: Assemblies
+        icon: people-group
+        icon_colour: text-blue-dark
+        description: Suitable for the whole school, a key stage or a year group.
+      description: 'We will work with you to deliver a workshop that meets your school''s needs and interests. We can run assemblies designed for the whole school, or can tailor these to suit particular age groups or key stages. Sessions can include:'
+      title: Workshops that inspire

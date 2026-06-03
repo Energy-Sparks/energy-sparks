@@ -9,7 +9,7 @@ module Schools
       private
 
       def usage_service
-        @usage_service ||= Schools::Advice::PeakUsageService.new(@school, @aggregate_school)
+        @usage_service ||= Schools::Advice::PeakUsageService.new(@school, aggregate_school_service)
       end
     end
   end

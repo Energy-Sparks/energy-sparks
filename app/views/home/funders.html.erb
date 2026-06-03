@@ -1,20 +1,22 @@
-<% content_for :page_title, t('funders.title') %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('funders.title') %>
 
-<div class="application container">
-  <h1><%= t('funders.title') %></h1>
-  <p><%= t('funders.intro_html', school_count: @school_count) %></p>
+  <div class="application container">
+    <h1><%= t('funders.title') %></h1>
+    <p><%= t('funders.intro_html', school_count: @school_count) %></p>
 
-  <div class="row align-items-center">
-    <% @partners.each do |partner| %>
-      <div class="col-md-4 col-lg-3">
-        <div class="card bio">
-          <div class="card-body">
-            <a href="<%= partner.url || '#' %>">
-              <%= image_tag partner.image, class: "card-img-top" %>
-            </a>
+    <div class="row align-items-center">
+      <% @partners.each do |partner| %>
+        <div class="col-md-4 col-lg-3">
+          <div class="card border-0">
+            <div class="card-body">
+              <a href="<%= partner.url || '#' %>">
+                <%= image_tag partner.image, class: 'card-img-top' %>
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>

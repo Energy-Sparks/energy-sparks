@@ -3,10 +3,12 @@
 <%= simple_form_for(@dashboard_message, url: [:admin, @messageable, :dashboard_message], method: :put) do |f| %>
   <%= redirect_back_tag params %>
   <%= f.input :message %>
-  <%= link_to 'Back', redirect_back_url(params), class: 'btn' %>
-
-  <%= f.submit 'Save', class: "btn float-right ml-2" %>
+  <%= f.submit 'Save', class: 'btn btn-primary' %>
+  <%= link_to 'Back', redirect_back_url(params), class: 'btn btn-secondary' %>
   <% unless @dashboard_message.new_record? %>
-   <%= link_to 'Delete', polymorphic_url([:admin, @messageable, :dashboard_message], redirect_back_params(params)), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn float-right' %>
+   <%= link_to 'Delete', polymorphic_url([:admin, @messageable, :dashboard_message],
+                                         redirect_back_params(params)), method: :delete,
+                                                                        data: { confirm: 'Are you sure?' },
+                                                                        class: 'btn btn-danger float-right' %>
   <% end %>
 <% end %>

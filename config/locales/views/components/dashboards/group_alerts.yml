@@ -1,0 +1,16 @@
+---
+en:
+  components:
+    dashboards:
+      group_alerts:
+        school_descriptions:
+          all: all schools
+          almost_all: almost all schools
+          few: a few schools
+          most: most schools
+          no_schools: no schools
+          one: one school
+          schools: schools
+          several: several schools
+          some: some schools
+          two: two schools

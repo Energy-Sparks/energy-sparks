@@ -12,7 +12,7 @@ describe 'Solar Panels Report', type: :system do
   end
 
   it 'displays a report' do
-    click_on 'Solar Panels'
+    click_on 'Solar panels'
     expect(page).to have_link(solar_panels.meter.school.name, href: school_path(solar_panels.meter.school))
     expect(page).to have_link(solar_panels.meter.name, href: school_meter_path(solar_panels.meter.school, solar_panels.meter))
     expect(page).to have_content(solar_panels.input_data['start_date'])

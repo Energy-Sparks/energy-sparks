@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe HelpPageHelper do
+describe HelpPageHelper, type: :helper do
   describe '.link_to_help_for_feature' do
     it 'handles undefined feature' do
       expect(helper.link_to_help_for_feature(:not_a_feature)).to be_nil

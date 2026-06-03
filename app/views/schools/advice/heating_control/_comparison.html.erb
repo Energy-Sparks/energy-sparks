@@ -1,11 +1,13 @@
-<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.comparison.title') %>
+<%= render 'schools/advice/section_title', section_id: 'comparison',
+                                           section_title: t('advice_pages.heating_control.insights.comparison.title') %>
 
 <% if @benchmark_warm_weather_days %>
   <p>
     <%= t('advice_pages.heating_control.insights.comparison.intro') %>
   </p>
   <div class="col">
-    <%= component 'school_comparison', id: 'comparison-warm-weather-days', comparison: @benchmark_warm_weather_days do |c| %>
+    <%= render SchoolComparisonComponent.new(id: 'comparison-warm-weather-days',
+                                             comparison: @benchmark_warm_weather_days) do |c| %>
       <% c.with_footer { advice_t('heating_control.insights.comparison.callout_footer') } %>
     <% end %>
   </div>

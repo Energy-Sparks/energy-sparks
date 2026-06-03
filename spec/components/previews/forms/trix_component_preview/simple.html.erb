@@ -1,0 +1,9 @@
+<h2>Simplified buttons</h2>
+
+<p>
+ Used for user facing forms, e.g. activity and action recording.
+</p>
+
+<%= simple_form_for([:admin, ActivityType.new]) do |form| %>
+  <%= render(Forms::TrixComponent.new(form: form, field: :description, controls: :simple)) %>
+<% end %>

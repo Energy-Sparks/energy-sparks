@@ -1,66 +1,79 @@
 <%= content_for :page_title, t('pupils.schools.show.title', school_name: @school.name) %>
 
-<%= render 'shared/dashboard_title', school: @school do %>
-  <%= render 'pupil_dashboard_buttons', school: @school %>
-<% end %>
-
-<% if @show_data_enabled_features %>
-  <% if @equivalences_content.present? %>
-    <%= render 'equivalences', equivalences_content: @equivalences_content, school: @school %>
-  <% end %>
-
-  <h2 class="mt-2"><%= t('pupils.schools.show.look_at_the_energy_use') %>:</h2>
-  <%= render 'pupils/analysis/top_level', school: @school %>
-<% else %>
-  <%= render 'default_equivalences', equivalences: @default_equivalences, school: @school %>
-  <%= component 'info_bar',
-                status: :neutral,
-                title: t('pupils.schools.show.setting_up'),
-                icon: fa_icon('info-circle fa-3x'),
-                buttons: {} %>
-<% end %>
-
-<h2 class="mt-2"><%= t('pupils.schools.show.things_to_do') %></h2>
-<% if @dashboard_alerts && @dashboard_alerts.any? %>
-  <% @dashboard_alerts.each do |content| %>
-    <%= component 'info_bar',
-                  status: content.colour,
-                  title: content&.pupil_dashboard_title,
-                  icon: fa_icon(alert_icon(content&.alert, 'fa-3x')),
-                  buttons: dashboard_alert_buttons(@school, content) %>
+<% content_for :dashboard_header do %>
+  <%= render(Layout::Cards::PageHeaderComponent.new(
+               title: t('common.labels.welcome'),
+               subtitle: t('schools.show.dashboard_subtitle_html')
+             )) do |c| %>
+    <% c.with_callout(title: @school.name, classes: 'bg-grey-pale') do |callout| %>
+      <% callout.with_row do %>
+        <%= @school.address %> <%= @school.postcode %>
+      <% end %>
+      <% callout.with_row do %>
+        <span class="badge badge-secondary">
+          <%= t("common.school_types.#{@school.school_type}") %>
+        </span>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>
 
-<% if @show_temperature_observations %>
-  <% if @temperature_observations.empty? %>
-    <%= component 'info_bar',
-                  status: :neutral,
-                  title: t('pupils.schools.show.measure_temperatures'),
-                  icon: fa_icon('temperature-high fa-3x'),
-                  buttons: { t('pupils.schools.show.enter_temperatures') =>
-                              new_school_temperature_observation_path(@school, introduction: true) } %>
-  <% else %>
-    <%= component 'info_bar',
-                  status: :neutral,
-                  title: t('pupils.schools.show.updating_temperatures'),
-                  icon: fa_icon('temperature-high fa-3x'),
-                  buttons: { t('pupils.schools.show.previous_temperatures') =>
-                              school_temperature_observations_path(@school),
-                             t('pupils.schools.show.update_temperatures') =>
-                              new_school_temperature_observation_path(@school, introduction: true) } %>
-  <% end %>
-<% end %>
+<div class="container">
+  <div class="row mt-4">
+    <div class="col">
+      <%= render DashboardEquivalencesComponent.new(
+            id: 'explore-energy-data',
+            school: @school,
+            user: current_user
+          ) %>
+    </div>
+  </div>
+  <%= render PupilDashboardLearnMoreComponent.new(
+        classes: 'mt-4 mb-4',
+        school: @school,
+        user: current_user
+      ) %>
+</div>
 
-<%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
-<%= render 'schools/prompt_recommendations_scoreboard', school: @school %>
-<%= render 'schools/dashboard/transport_surveys', school: @school %>
+<div class="container">
+  <div class="row mt-4">
+    <div class="col">
+      <%= render DashboardInsightsComponent.new(
+            id: 'alerts-and-reminders',
+            audience: @audience,
+            school: @school,
+            user: current_user
+          ) %>
+    </div>
+  </div>
+</div>
 
-<%= component 'scoreboard_summary', podium: current_school_podium %>
+<div class="container-fluid bg-light pb-3">
+  <div class="container">
+    <%= render Scoreboards::SchoolSummaryComponent.new(
+          id: 'scoreboard-summary',
+          podium: current_school_podium,
+          user: current_user,
+          audience: @audience,
+          classes: 'mt-4 pt-4'
+        ) %>
 
-<br>
+    <%= render TimelineComponent.new(
+          observations: @observations,
+          user: current_user,
+          classes: 'mt-4',
+          table_opts: { show_date: true }
+        ) do |timeline| %>
+          <% timeline.with_link do %>
+            <p>
+              <%= link_to school_timeline_path(@school), class: 'btn btn-default' do %>
+                <%= t('activities.show.all_activities') %>
+              <% end %>
+            </p>
+          <% end %>
+    <% end %>
 
-<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
+    <%= render DashboardLoginComponent.new(school: @school, user: current_user) %>
 
-<% unless user_signed_in? %>
-  <%= render 'shared/school_login_prompt', school: @school %>
-<% end %>
+  </div>
+</div>

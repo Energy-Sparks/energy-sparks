@@ -119,7 +119,7 @@ ignore_unused:
   - 'support.*'
   - '{errors, simple_form}.*'
   - '*_mailer.*.subject'
-  - 'analytics.*'
+  - 'analytics.[ac-z]*'
   - 'calendar_event_type.*'
   - 'key_stage.*'
   - 'staff_role.*'
@@ -132,7 +132,7 @@ ignore_unused:
   - 'co2'
   - '£'
   - 'date.*'
-  - 'devise.mailer.confirmation_instructions.subject'
+  - 'devise.*'
   - 'common.storage_heater'
   - 'chart_configuration.*'
   - 'aggregation_service_solar_pv.*'
@@ -147,7 +147,6 @@ ignore_unused:
   - 'advice_pages.electricity_costs.charts.cost_1_year_accounting_breakdown*'
   - 'advice_pages.gas_costs.charts.cost_1_year_accounting_breakdown*'
   - 'advice_pages.tables.tooltips.bill_components.*'
-  - 'school_groups.show.we_are_working_with.*'
   - 'school_groups.priority_actions.alert_types.*_html'
   - 'schools.user_tariffs.index.exported_solar_pv.*'
   - 'schools.user_tariffs.index.solar_pv.*'
@@ -161,10 +160,22 @@ ignore_unused:
   - 'intervention_types.errors.invalid_fuel_type.*'
   - 'onboarding_mailer.reminder_email.subject.*'
   - 'onboarding_mailer.reminder_email.paragraph_3.*'
+  - 'components.observation.*.description*'
   - 'components.observation.*.compact_message*'
   - 'components.observation.*.message*'
   - 'campaign_mailer.send_information.for_las.group_dashboard_html'
   - 'campaign_mailer.send_information.for_mats.group_dashboard_html'
+  - 'pupils.default_equivalences.equivalence_*.*'
+  - 'schools.prompts.programme.progress.*'
+  - 'schools.prompts.audit.progress.*'
+  - 'components.dashboards.group_alerts.school_descriptions.*'
+  - 'school_groups.advice.chart_types.*'
+  - '{schools,school_groups}.timeline.activity_in_*'
+  - 'school_groups.advice.comparison_reports.links.*'
+  - 'school_groups.advice_pages.show.page_summary.*'
+  - 'school_groups.impact.potential_savings.{titles,keys}.*'
+  - 'school_groups.impact.energy_efficiency.metric_types.*'
+  - 'schools.status.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
@@ -200,4 +211,8 @@ ignore_unused:
  <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
        patterns: [
          ['\badvice_t[( ]\s*%{key}', 'advice_pages.%{key}']
+       ] %>
+ <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
+       patterns: [
+         ['\bimpact_t[( ]\s*%{key}', 'school_groups.impact.%{key}']
        ] %>

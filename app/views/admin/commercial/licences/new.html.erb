@@ -1,0 +1,3 @@
+<%= render 'form', licence: @licence,
+                   contract: @contract,
+                   title: @contract.present? ? "New #{@contract.name} Licence" : 'New Licence' %>

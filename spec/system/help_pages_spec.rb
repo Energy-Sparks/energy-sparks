@@ -13,12 +13,10 @@ describe 'help pages', type: :system do
     context 'with an hidden page' do
       before do
         help_page.update!(published: false)
+        visit help_path(help_page)
       end
 
-      it 'serves me a 404' do
-        visit help_path(help_page)
-        expect(page.status_code).to be 404
-      end
+      it_behaves_like 'a 404 error page'
     end
   end
 

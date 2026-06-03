@@ -11,7 +11,7 @@
   </div>
 </div>
 
-<hr />
+<hr>
 
 <div class="row mt-2">
   <div class="col">
@@ -25,12 +25,16 @@
   </div>
 </div>
 
-<hr />
+<hr>
 
 <div class="row mt-2">
   <div class="col">
-    <%= render 'other_users' %>
+    <h2>Users without a school</h2>
+
+    <%= render Admin::UserListComponent.new(id: 'unattached-users',
+                                            users: @unattached_users,
+                                            show_organisation: false) %>
   </div>
 </div>
 
-<%= link_to "Back to Top", "#top", class: "btn btn-primary" %>
+<%= link_to 'Back to Top', '#top', class: 'btn btn-primary' %>

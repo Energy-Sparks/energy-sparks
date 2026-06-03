@@ -87,8 +87,12 @@ class Podium
     school_position.try(:points).to_i > 0
   end
 
+  def position_for(school)
+    @positions.find {|position| position.school == school}
+  end
+
   def school_position
-    @positions.find {|position| position.school == @school}
+    position_for(@school)
   end
 
   def next_school_position
@@ -104,9 +108,7 @@ class Podium
   end
 
   def points_to_overtake
-    return unless low_to_high.any?
-
-    low_to_high&.second&.points
+    next_school_position&.points
   end
 
   def current_school?(position)

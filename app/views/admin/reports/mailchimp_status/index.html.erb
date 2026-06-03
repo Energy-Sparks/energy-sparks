@@ -1,0 +1,53 @@
+<% content_for :page_title, 'Mailchimp Status Report' %>
+
+<h1>Mailchimp Status</h1>
+
+<h2>Synchronisation status</h2>
+
+<table class="table" id="sync-status">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Users</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Pending updates</td>
+      <td><%= @pending %></td>
+    </tr>
+    <tr>
+      <td>Submitted in last 24 hours</td>
+      <td><%= User.where('mailchimp_updated_at >= ?', (Time.zone.now - 1.day)).count %></td>
+    </tr>
+    <tr>
+      <td>Submitted in last week</td>
+      <td><%= User.where('mailchimp_updated_at >= ?', (Time.zone.now - 7.days)).count %></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Subscription status</h2>
+
+<p>Excludes school onboarding and pupil users, and any user that is not confirmed.</p>
+
+<table class="table" id="subscription-status">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Users</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% User.mailchimp_statuses.keys.sort.each do |status| %>
+      <tr>
+        <td><%= status.humanize %></td>
+        <td><%= @user_statuses[status] || 0 %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td>Unknown</td>
+      <td><%= @user_statuses[nil] %></td>
+    </tr>
+  </tbody>
+</table>

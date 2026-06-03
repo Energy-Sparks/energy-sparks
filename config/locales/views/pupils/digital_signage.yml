@@ -1,0 +1,76 @@
+---
+en:
+  pupils:
+    digital_signage:
+      charts:
+        last-week:
+          dates: Showing energy used up to week ending %{last_end_date}
+          intro: Chart shows the energy used for each day
+          title: How much %{fuel_type} did your school use over the last two weeks?
+        out-of-hours:
+          dates: Showing energy used between %{start_date} and %{end_date}
+          intro: Chart shows energy used during school days, weekends, holidays and outside of school hours
+          title: When did your school use %{fuel_type} over the last year?
+      index:
+        charts:
+          intro_html: Display an energy use chart.
+          last-week:
+            description: Chart showing comparison of energy use for last two weeks
+            title: Last week
+          out-of-hours:
+            description: Chart showing out of hours usage for last 12 months
+            title: Out of hours
+          title: Energy use charts
+        equivalences:
+          intro_html: Display a random equivalence based on recent energy use.
+          title: Energy equivalences
+        intro_html: |-
+          <p>Many schools use digital signage to make information available to staff, students and visitors.</p>
+          <p>Energy Sparks provides some options for displaying aspects of your energy analysis within a digital signage
+          system like TriplePlay.</p>
+          <p>The links below provide access to dedicated web pages that display:</p>
+          <ul>
+            <li>a random energy equivalence, that puts energy use into context</li>
+            <li>charts that summarise recent energy use, and a comparison of energy use during school hours, holidays
+            and weekend</li>
+          </ul>
+          <p>We have provided several options to allow you to choose what information will be displayed</p>
+          <p>The pages are formatted for display on panels, e.g. installed in public areas or classrooms. They can be
+          used in any digital signage system capable of displaying or embedding a web page. But your system must support
+          fetching content, data and javascript directly from our website.</p>
+          <p>The pages do not automatically update so are best incorporated into an existing carousel of content or
+          a regularly refreshing display.</p>
+          <p>If you have questions about using this feature then please contact us at
+          <a href='mailto:support@energysparks.uk'>support@energysparks.uk</a></p>
+        prompt:
+          link_text: Get in touch
+          text: If you would like support in testing out how you can incorporate our analysis into your digital signage, or have any questions or feedback then please get in touch. Our aim is to ensure this feature works with a range of different digital signage systems.
+          title: We are inviting schools to try out this new feature of Energy Sparks
+        public_data_html: |-
+          <p>Our digital signage feature is currently only available to schools that are publicly sharing their analysis
+          via their pupil and adult dashboards.</p>
+          <p>Please <a href='mailto:hello@energysparks.uk'>get in touch</a> if you would like to revise your data sharing
+          setting. Or are interested in discussing how we might be able to extend this feature to support schools with more
+          limited data sharing options.</p>
+        school_group:
+          data_sharing:
+            title: Public sharing
+          downloads:
+            intro_html: |-
+              <p>The links below allow you to download a complete list of URLs for the schools in your group that are publicly
+              sharing their analysis. These are intended
+              to help setting up displays if the digital signage system is managed centrally within a MAT or
+              Local Authority</p>
+              <p>If individual schools are responsible for their own signage then please refer to the school-specific pages.
+              These can be accessed from the "Manage School" menu when viewing a school dashboard.</p>
+            title: Centrally managed signage
+          links:
+            charts: charts
+            equivalences: equivalences
+        title: Digital signage pages
+      table:
+        columns:
+          chart_type: Chart Type
+          description: Description
+          link: Link
+          url_pattern: URL Pattern

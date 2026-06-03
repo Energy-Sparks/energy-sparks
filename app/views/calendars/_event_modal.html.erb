@@ -1,19 +1,29 @@
-<div class="modal" tabindex="-1" id="event-modal" role="dialog" data-calendar=<%= @calendar.id %>>
+<div class="modal" tabindex="-1" id="event-modal" role="dialog" data-calendar="<%= @calendar.id %>">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><span class="event-action"></span><%= t('calendars.event_modal.calendar_event') %></h5>
+        <h5 class="modal-title">
+          <span id='event-model-new-title'><%= t('calendars.event_modal.new_calendar_event') %></span>
+          <span id='event-model-edit-title' style='display: none'><%= t('calendars.event_modal.edit_calendar_event') %></span>
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <%= simple_form_for([@calendar, CalendarEvent.new], method: :patch, remote: true, html: { id: 'event_form', calendar_id: @calendar.id, class:"form-horizontal calendar_event_form"} ) do |f| %>
+      <%= simple_form_for([@calendar, CalendarEvent.new],
+                          method: :patch, remote: true,
+                          html: { id: 'event_form',
+                                  calendar_id: @calendar.id,
+                                  class: 'form-horizontal calendar_event_form' }) do |f| %>
 
       <div class="modal-body">
         <input name="event-index" type="hidden">
         <div class="form-group">
           <label for="inputAddress"><%= t('calendars.event_modal.event_type') %></label>
-          <%= f.select :calendar_event_type_id, options_from_collection_for_select(@calendar.valid_calendar_event_types, 'id', 'display_title',nil) ,{}, { class: 'form-control' } %>
+          <%= f.select :calendar_event_type_id,
+                       options_from_collection_for_select(@calendar.valid_calendar_event_types, 'id', 'display_title',
+                                                          nil),
+                       {}, { class: 'form-control' } %>
         </div>
 
         <div class="row">
@@ -31,7 +41,10 @@
       </div>
       <div class="modal-footer">
         <%= f.submit t('calendars.event_modal.save_changes'), class: 'btn btn-primary' %>
-        <button type="button" class="btn" data-dismiss="modal" id="delete_button"><%= t('common.labels.delete') %></button>
+        <button type="button" class="btn" id="edit_button"><%= t('calendars.event_modal.edit_existing') %></button>
+        <button type="button" class="btn" data-dismiss="modal" id="delete_button">
+          <%= t('common.labels.delete') %>
+        </button>
         <button type="button" class="btn" data-dismiss="modal"><%= t('common.labels.close') %></button>
       </div>
       <% end %>

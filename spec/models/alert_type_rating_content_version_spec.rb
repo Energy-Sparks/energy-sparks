@@ -133,7 +133,7 @@ describe AlertTypeRatingContentVersion do
     let(:alert_type_rating)              { create(:alert_type_rating, alert_type: alert_type) }
     let(:alert_type_rating_pupil)        { create(:alert_type_rating, alert_type: alert_type, pupil_dashboard_alert_active: true) }
     let(:alert_type_rating_management)   { create(:alert_type_rating, alert_type: alert_type, management_dashboard_alert_active: true) }
-    let(:alert_type_rating_both)         { create(:alert_type_rating, alert_type: alert_type, management_dashboard_alert_active: true, pupil_dashboard_alert_active: true) }
+    let(:alert_type_rating_all) { create(:alert_type_rating, alert_type: alert_type, management_dashboard_alert_active: true, pupil_dashboard_alert_active: true, group_dashboard_alert_active: true) }
 
     let(:alert_type_rating_management_priorities) { create(:alert_type_rating, alert_type: alert_type, management_priorities_active: true) }
 
@@ -143,7 +143,7 @@ describe AlertTypeRatingContentVersion do
     let!(:content_version)              { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating) }
     let!(:content_version_pupil)        { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_pupil, pupil_dashboard_title: 'some title') }
     let!(:content_version_management)   { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_management, management_dashboard_title: 'some title') }
-    let!(:content_version_both)         { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_both, management_dashboard_title: 'some title', pupil_dashboard_title: 'some title') }
+    let!(:content_version_all) { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_all, management_dashboard_title: 'some title', pupil_dashboard_title: 'some title', group_dashboard_title: 'group title') }
     let!(:content_version_management_title) { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_management_priorities, management_priorities_title: 'some priorities title') }
 
     let!(:content_version_email) { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_email, email_title: 'email title {{title_variable}}', email_content: 'email content {{content_variable}}') }
@@ -152,7 +152,7 @@ describe AlertTypeRatingContentVersion do
 
     context 'when fetching records for sync' do
       it 'includes records with pupil, management dashboard alert, sms and email active' do
-        expect(AlertTypeRatingContentVersion.tx_resources).to match_array([content_version_pupil, content_version_management, content_version_both, content_version_management_title, content_version_sms, content_version_email])
+        expect(AlertTypeRatingContentVersion.tx_resources).to match_array([content_version_pupil, content_version_management, content_version_all, content_version_management_title, content_version_sms, content_version_email])
       end
     end
 
@@ -170,9 +170,9 @@ describe AlertTypeRatingContentVersion do
         key = data['en'].keys.first
         expect(data['en'][key].keys).to match_array(['management_dashboard_title_html'])
 
-        data = content_version_both.tx_serialise
+        data = content_version_all.tx_serialise
         key = data['en'].keys.first
-        expect(data['en'][key].keys).to match_array(%w[pupil_dashboard_title_html management_dashboard_title_html])
+        expect(data['en'][key].keys).to match_array(%w[pupil_dashboard_title_html management_dashboard_title_html group_dashboard_title_html])
 
         data = content_version_management_title.tx_serialise
         key = data['en'].keys.first

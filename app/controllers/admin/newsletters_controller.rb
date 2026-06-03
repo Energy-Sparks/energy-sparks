@@ -1,6 +1,11 @@
 module Admin
   class NewslettersController < AdminController
+    include ImageResizer
+
     load_and_authorize_resource
+    before_action only: [:create, :update] do
+      resize_image(newsletter_params[:image])
+    end
 
     # GET /newsletters
     def index
@@ -21,7 +26,7 @@ module Admin
 
     # POST /newsletters
     def create
-      @newsletter = Newsletter.new(newsletter_params)
+      @newsletter = Newsletter.new(newsletter_params.merge(created_by: current_user))
       if @newsletter.save
         redirect_to admin_newsletters_path, notice: 'Newsletter was successfully created.'
       else
@@ -31,7 +36,7 @@ module Admin
 
     # PATCH/PUT /newsletters/1
     def update
-      if @newsletter.update(newsletter_params)
+      if @newsletter.update(newsletter_params.merge(updated_by: current_user))
         redirect_to admin_newsletters_path, notice: 'Newsletter was successfully updated.'
       else
         render :edit
@@ -47,7 +52,7 @@ module Admin
     private
 
     def newsletter_params
-      params.require(:newsletter).permit(:title, :url, :published_on, :image)
+      params.require(:newsletter).permit(:title, :url, :published_on, :published, :image)
     end
   end
 end

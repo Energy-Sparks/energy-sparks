@@ -24,13 +24,13 @@
         <td><%= transport_type.category.try(:humanize) %>
         <td><%= transport_type.speed_km_per_hour %></td>
         <td><%= transport_type.kg_co2e_per_km %></td>
-        <td><span class="badge bg-primary text-light"><%= y_n(transport_type.can_share) %></span></td>
-        <td><span class="badge bg-primary text-light"><%= y_n(transport_type.park_and_stride) %></span></td>
+        <td><span class="badge text-bg-primary"><%= y_n(transport_type.can_share) %></span></td>
+        <td><span class="badge text-bg-primary"><%= y_n(transport_type.park_and_stride) %></span></td>
         <td><%= transport_type.note %></td>
         <td><%= transport_type.position %></td>
         <td>
           <div class="btn-group">
-            <%= render partial: "buttons", locals: { transport_type: transport_type } %>
+            <%= render partial: 'buttons', locals: { transport_type: transport_type } %>
           </div>
         </td>
       </tr>
@@ -38,4 +38,6 @@
   </tbody>
 </table>
 
-<%= link_to 'New Transport type', new_admin_transport_type_path, class: 'btn btn-primary' if can? :create, TransportSurvey::TransportType %>
+<%= if can? :create, TransportSurvey::TransportType
+      link_to 'New Transport type', new_admin_transport_type_path, class: 'btn btn-primary'
+    end %>

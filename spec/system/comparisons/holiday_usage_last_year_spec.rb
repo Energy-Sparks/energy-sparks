@@ -32,7 +32,6 @@ describe 'holiday_usage_last_year' do
   context 'when viewing report' do
     before do
       travel_to Date.new(2024, 3, 30)
-      visit "/comparisons/#{key}"
     end
 
     it_behaves_like 'a school comparison report' do
@@ -66,6 +65,8 @@ describe 'holiday_usage_last_year' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end

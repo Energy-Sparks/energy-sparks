@@ -4,12 +4,13 @@ module Admin
 
     def removal
       @school_remover = SchoolRemover.new(@school)
+      render layout: Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
     end
 
     def deactivate_users
       service = SchoolRemover.new(@school)
       service.remove_users!
-      redirect_back fallback_location: root_path, notice: 'Users have been deactivated'
+      redirect_back fallback_location: root_path, notice: 'Users have been disabled'
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end

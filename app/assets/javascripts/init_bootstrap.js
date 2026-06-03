@@ -1,8 +1,15 @@
 "use strict"
-$(document).ready(function() {
-  // Activate tooltips
-  $('[data-toggle="tooltip"]').tooltip();
 
-  // Activate popovers
-  $('[data-toggle="popover"]').popover();
+document.addEventListener("DOMContentLoaded", function () {
+
+  // Tooltips
+  document
+    .querySelectorAll('[data-bs-toggle="tooltip"]')
+    .forEach(el => new bootstrap.Tooltip(el));
+
+  // Popovers
+  document
+    .querySelectorAll('[data-bs-toggle="popover"]')
+    .forEach(el => new bootstrap.Popover(el));
+
 });

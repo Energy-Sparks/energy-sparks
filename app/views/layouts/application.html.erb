@@ -1,24 +1,40 @@
-<!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
-  <head>
-    <%= render 'shared/head' %>
-  </head>
-  <body vocab="http://schema.org/">
-    <% if Flipper.enabled?(:navigation, current_user, current_user&.school_group) %>
-      <%= render 'shared/navigation/main' %>
-    <% else %>
-      <%= render 'shared/navigation' %>
-    <% end %>
-    <div class="application container<%= nav_margin_classes %><%= conditional_application_container_classes %>">
-      <%= render 'shared/breadcrumbs' %>
-      <%= render 'shared/alerts' if flash.any? %>
-      <%= yield %>
+<%# Application (default) layout %>
+<%# Sub-templates can be made from this (for an example see group_settings.html.erb) %>
+<%# Please no further sub layers after this though to keep things simple %>
+<%= content_for(:page) do %>
+  <% if content_for?(:header) %>
+    <div class="container-fluid <%= @audience || :adult %> pb-2">
+      <div class="container">
+        <%= render 'shared/page/breadcrumbs_and_flash' %>
+        <%= yield :header %>
+      </div>
     </div>
-    <% if show_partner_footer?(@school) %>
-      <%= render 'shared/partners' %>
+  <% end %>
+  <div class="application <%= container_class %>">
+    <%= render 'shared/page/breadcrumbs_and_flash' unless content_for?(:header) %>
+    <% if content_for?(:page_nav) %>
+      <div class="row mt-2">
+        <div id="page-navigation" class="col-md-3 col-lg-3 col-xl-2">
+          <%= yield :page_nav %>
+        </div>
+        <div id="page-body" class="col-md-9 col-lg-9 col-xl-10">
+          <%= yield %>
+        </div>
+      </div>
+    <% else %>
+      <% if content_for?(:header_title) %>
+        <% content_for(:page_title, yield(:header_title)) unless content_for(:page_title) %>
+        <h1><%= yield :header_title %></h1>
+      <% end %>
+      <%= content_for?(:application) ? yield(:application) : yield %>
     <% end %>
-    <%= render 'shared/cookie_banner' %>
-    <%= render 'shared/footer' %>
-  </body>
-  <%= render 'layouts/set_mobility_locale' %>
-</html>
+  </div>
+  <% if content_for?(:footer) %>
+    <div class="container-fluid py-2 theme <%= @footer_theme || 'theme-dark' %>">
+      <div class="container">
+        <%= yield :footer %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<%= render template: 'layouts/page' %>

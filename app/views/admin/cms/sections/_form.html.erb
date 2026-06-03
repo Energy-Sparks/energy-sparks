@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col">
+    <% url = if section.new_record?
+               admin_cms_sections_path
+             else
+               admin_cms_section_path(section)
+             end %>
+    <%= simple_form_for(section, as: :section, url: url) do |f| %>
+      <%= render 'shared/errors', subject: section, subject_name: 'section' %>
+      <div class="form-group">
+        <label for='page_id'>Page</label>
+        <%= f.select :page_id,
+                     options_for_select(
+                       Cms::Page.by_title.map { |p| [p.title, p.id] },
+                       section.page_id || params[:page_id]
+                     ),
+                     { include_blank: 'Choose page' },
+                     { class: 'form-control' } %>
+      </div>
+
+      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+        <%= f.input t_field(:title, locale), as: :string %>
+      <% end %>
+
+      <%= render 'admin/shared/locale_tabs', f: f, field: :body do |locale| %>
+        <div class="body-trix-editor-<%= locale %> form-group">
+          <%= f.label t_field(:body, locale), 'Body', class: 'form-label' %>
+          <%= render Forms::TrixComponent.new(id: "body-#{locale}",
+                                              form: f,
+                                              field: t_field(:body, locale),
+                                              size: :large,
+                                              controls: :advanced) %>
+        </div>
+      <% end %>
+
+      <div class="form-group mt-4">
+        <%= f.submit 'Save', class: 'btn btn-primary' %>
+        <%= link_to 'Cancel', admin_cms_sections_path, class: 'btn' %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -2,12 +2,12 @@
 #
 # Table name: jobs
 #
-#  closing_date :date
-#  created_at   :datetime         not null
 #  id           :bigint(8)        not null, primary key
+#  closing_date :date
 #  title        :string           not null
-#  updated_at   :datetime         not null
 #  voluntary    :boolean          default(FALSE)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 class Job < ApplicationRecord
   has_one_attached :file

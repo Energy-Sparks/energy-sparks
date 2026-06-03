@@ -10,7 +10,7 @@
     <p class="small">This image will appear in the list of programmes.</p>
     <div class="upload-preview">
       <div class="col-md-3">
-        <% t_image = ('image_' + locale.to_s).to_sym %>
+        <% t_image = "image_#{locale}".to_sym %>
         <% if !f.object.send(t_image).blank? %>
           <%= image_tag f.object.send(t_image), width: '300px' %>
         <% else %>
@@ -23,7 +23,8 @@
   <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :short_description do |locale| %>
-    <%= f.input t_field(:short_description, locale), label: ProgrammeType.human_attribute_name(:short_description), as: :string %>
+    <%= f.input t_field(:short_description, locale), label: ProgrammeType.human_attribute_name(:short_description),
+                                                     as: :string %>
   <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>

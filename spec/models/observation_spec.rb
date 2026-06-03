@@ -6,6 +6,24 @@ describe Observation do
 
   before { SiteSettings.current.update(photo_bonus_points: 0) }
 
+  describe '.in_academic_year and .counts_by_academic_year' do
+    let(:academic_year) { create(:academic_year, start_date: 2.days.ago, end_date: 2.days.from_now) }
+
+    context 'when observations are on last day of academic year' do
+      let!(:observations) { create_list(:observation, 2, :activity, school:, at: academic_year.end_date + 3.hours) }
+
+      it { expect(school.observations.in_academic_year(academic_year)).to match_array(observations) }
+      it { expect(school.observations.counts_by_academic_year[academic_year.id]).to be(2) }
+    end
+
+    context 'when observations are after last day of academic year' do
+      let!(:observations) { create_list(:observation, 2, :activity, school:, at: academic_year.end_date + 25.hours) }
+
+      it { expect(school.observations.in_academic_year(academic_year)).not_to match_array(observations) }
+      it { expect(school.observations.counts_by_academic_year[academic_year.id]).to be_nil }
+    end
+  end
+
   describe '#pupil_count' do
     it 'is valid when present for interventions only' do
       expect(build(:observation, observation_type: :temperature, pupil_count: 12)).to be_invalid
@@ -33,162 +51,241 @@ describe Observation do
     end
   end
 
-  context 'creates an observation' do
-    context 'activities' do
-      it 'sets a score if an activity has an image in its activity description and the current observation score is non zero' do
-        activity = create(:activity, description: '<div><figure></figure></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        # Notes: see ActivityCreator where observation points are assigned for activities
-        observation = build(:observation, observation_type: :activity, activity: activity, points: 10)
-        observation.save
-        expect(observation.points).to eq(25)
+  describe 'academic year methods' do
+    let(:calendar) { create(:calendar, :with_previous_and_next_academic_years) }
+    let!(:school) { create(:school, calendar:) }
+    let(:previous_academic_year) { calendar.current_academic_year.previous_year }
+    let(:current_academic_year) { calendar.current_academic_year }
+    let(:future_academic_year) { calendar.current_academic_year.next_year }
+
+    describe '#in_previous_academic_year?' do
+      let(:observation) { build(:observation, :activity, school:) }
+
+      context 'when observation is in previous academic year' do
+        before { observation.at = previous_academic_year.start_date + 1.day }
+
+        it { expect(observation.in_previous_academic_year?).to be(true) }
       end
 
-      it 'sets a score if an activity has an image in its observation description and the current observation score is non zero' do
-        activity = create(:activity, description: '<div></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        # Notes: see ActivityCreator where observation points are assigned for activities
-        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>', points: 10)
-        observation.save
-        expect(observation.points).to eq(25)
+      context 'when observation is in current academic year' do
+        before { observation.at = current_academic_year.start_date + 1.day }
+
+        it { expect(observation.in_previous_academic_year?).to be(false) }
       end
 
-      it 'does not set a score if an activity has an image in its activity description but the current observation score is otherwise nil or zero' do
-        activity = create(:activity, description: '<div><figure></figure></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        # Notes: see ActivityCreator where observation points are assigned for activities
-        observation = build(:observation, observation_type: :activity, activity: activity, points: 0)
-        observation.save
-        expect(observation.points).to eq(0)
-        observation = build(:observation, observation_type: :activity, activity: activity, points: nil)
-        observation.save
-        expect(observation.points).to eq(nil)
+      context 'when observation is in future academic year' do
+        before { observation.at = future_academic_year.start_date + 1.day }
+
+        it { expect(observation.in_previous_academic_year?).to be(false) }
       end
 
-      it 'does not set a score if an activity has an image in its observation description but the current observation score is otherwise nil or zero' do
-        activity = create(:activity, description: '<div></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>')
-        observation.save
-        expect(observation.points).to eq(nil)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>', points: 0)
-        observation.save
-        expect(observation.points).to eq(0)
-      end
+      context 'when school has no current academic year' do
+        let(:school) { create(:school, calendar: nil) }
 
-      it 'does not sets a score if an activity has no image in its activity or observation description' do
-        activity = create(:activity, description: '<div></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div></div>')
-        observation.save
-        expect(observation.points).to eq(nil)
+        before { observation.at = Time.zone.today }
+
+        it { expect(observation.in_previous_academic_year?).to be(true) }
       end
     end
 
-    context 'interventions' do
-      let!(:intervention_type) { create(:intervention_type, score: 50) }
+    describe 'academic year methods' do
+      context 'when observation "at" is nil' do
+        let!(:observation) { build(:observation, :activity, at: nil, school:) }
 
-      before { SiteSettings.current.update(photo_bonus_points: 25) }
+        it { expect(observation.academic_year_was).to be_nil}
+        it { expect(observation.academic_year).to be_nil}
+        it { expect(observation.academic_year_changed?).to be(false) }
 
-      it 'does not set a score if an intervention has an image in its description (bonus points) but the current observation score is otherwise nil or zero (outside academic year)' do
-        allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div><figure></figure></div>')
-        observation.save
-        expect(observation.points).to eq(nil)
+        context 'when observation "at" is changed' do
+          before do
+            observation.at = current_academic_year.start_date
+          end
+
+          it { expect(observation.academic_year_was).to be_nil }
+          it { expect(observation.academic_year).to eq(current_academic_year) }
+          it { expect(observation.academic_year_changed?).to be(true) }
+        end
       end
 
-      it 'does not set a score if an intervention is completed outside of the academic year it was started and no image in its description (bonus points)' do
-        allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-        SiteSettings.current.update(photo_bonus_points: 25)
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div></div>')
-        observation.save
-        expect(observation.points).to eq(nil)
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div></div>', points: 0)
-        observation.save
-        expect(observation.points).to eq(nil)
-      end
+      context 'when observation "at" has a value' do
+        let(:at) { current_academic_year.start_date + 1.day }
+        let!(:observation) { create(:observation, :activity, at:, school:) }
 
-      it 'only adds points automatically if its an intervention' do
-        allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-        observation = build(:observation, observation_type: :temperature)
-        observation.save
-        expect(observation.points).to eq(nil)
-      end
+        it { expect(observation.academic_year_was).to eq(current_academic_year) }
+        it { expect(observation.academic_year).to eq(current_academic_year)}
+        it { expect(observation.academic_year_changed?).to be(false) }
 
-      it 'sets the score if observation recorded within the academic year' do
-        allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type)
-        observation.save
-        expect(observation.points).to eq(50)
-      end
+        context 'when observation "at" is changed to a different academic year' do
+          before do
+            observation.at = previous_academic_year.start_date + 1.day
+          end
 
-      it 'sets the score if observation recorded within the academic year and adds bonus points if the description contains an image' do
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div><figure></figure></div>')
-        observation.save
-        expect(observation.points).to eq(75)
-      end
+          it { expect(observation.academic_year_was).to eq(current_academic_year) }
+          it { expect(observation.academic_year).to eq(previous_academic_year) }
+          it { expect(observation.academic_year_changed?).to be(true) }
+        end
 
-      it 'does not set a score if observation recorded outside of the academic year' do
-        allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type)
-        observation.save
-        expect(observation.points).to eq(nil)
-      end
+        context 'when observation "at" is changed but remains in same academic year' do
+          before do
+            observation.at = current_academic_year.start_date + 2.days
+          end
 
-      it 'scores 0 points for previous academic years' do
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago)
-        observation.save
-        expect(observation.points).to eq(nil)
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago)
-        observation.save
-        expect(observation.points).to eq(nil)
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, description: '<div><figure></figure></div>')
-        observation.save
-        expect(observation.points).to eq(nil)
-      end
-
-      it 'updates score if date changed' do
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago)
-        observation.save!
-        expect(observation.points).to eq(nil)
-        expect(observation.intervention?).to be true
-        observation.update(observation_type: :intervention, at: Time.zone.today)
-        observation.reload
-        expect(observation.points).to eq(50)
+          it { expect(observation.academic_year_was).to eq(current_academic_year) }
+          it { expect(observation.academic_year).to eq(current_academic_year) }
+          it { expect(observation.academic_year_changed?).to be(false) }
+        end
       end
     end
 
-    context 'setting defaults' do
-      context 'when the associated object is set using observable' do
-        let(:transport_survey) { create(:transport_survey, school: school) }
+    describe '#update_points?' do
+      context 'when creating a new observation' do
+        let!(:observation) { build(:observation, :activity, at: nil, school:) }
 
-        subject(:observation) { Observation.create(observable: transport_survey) }
+        context 'when setting "at" to previous academic year' do
+          before do
+            observation.at = previous_academic_year.start_date + 1.day
+          end
 
-        it 'sets observation_type' do
-          expect(observation.observation_type).to eq('transport_survey')
+          it { expect(observation.update_points?).to be(true) }
         end
 
-        it 'sets school from related object' do
-          expect(observation.school).to eq(transport_survey.school)
+        context 'when setting "at" to current academic year' do
+          before do
+            observation.at = current_academic_year.start_date + 1.day
+          end
+
+          it { expect(observation.update_points?).to be(true) }
+        end
+
+        context 'when setting "at" to future academic year' do
+          before do
+            observation.at = current_academic_year.start_date + 1.year + 1.day
+          end
+
+          it { expect(observation.update_points?).to be(true) }
         end
       end
 
-      context 'when the associated object is not set with observable' do
-        let(:activity) { create(:activity) }
+      context 'when updating an existing observation' do
+        context 'when observation is in previous academic year' do
+          let!(:observation) { create(:observation, :activity, at: previous_academic_year.start_date + 1.day, school:) }
 
-        subject(:observation) { Observation.create(activity: activity) }
+          context 'when changing to be within previous academic year' do
+            before do
+              observation.at = previous_academic_year.start_date + 2.days
+            end
 
-        it 'does not set observation_type' do
-          expect(observation.observation_type).to be_nil
+            it { expect(observation.update_points?).to be(false) }
+          end
+
+          context 'when changing to be current academic year' do
+            before do
+              observation.at = current_academic_year.start_date + 1.day
+            end
+
+            it { expect(observation.update_points?).to be(true) }
+          end
+
+          context 'when changing to future academic year' do
+            before do
+              observation.at = current_academic_year.start_date + 1.year + 1.day
+            end
+
+            it { expect(observation.update_points?).to be(true) }
+          end
         end
 
-        it 'does not set school' do
-          expect(observation.school).to be_nil
+        context 'when observation is in current academic year' do
+          let!(:observation) { create(:observation, :activity, at: current_academic_year.start_date + 1.day, school:) }
+
+          context 'when changing to be within current academic year' do
+            before do
+              observation.at = current_academic_year.start_date + 2.days
+            end
+
+            it { expect(observation.update_points?).to be(true) }
+          end
+
+          context 'when changing to previous academic year' do
+            before do
+              observation.at = previous_academic_year.start_date + 1.day
+            end
+
+            it { expect(observation.update_points?).to be(true) }
+          end
+
+          context 'when changing to future academic year' do
+            before do
+              observation.at = current_academic_year.start_date + 1.year + 1.day
+            end
+
+            it { expect(observation.update_points?).to be(true) }
+          end
+        end
+      end
+    end
+  end
+
+  describe '#available_bonus_points' do
+    before do
+      SiteSettings.current.update(photo_bonus_points: 5)
+    end
+
+    [:activity, :intervention].each do |type|
+      context "for a #{type} observation" do
+        let(:observation) { build(:observation, type) }
+
+        context 'when description has no images' do
+          before { observation.description = '<div><p>No images here</p></div>' }
+
+          it 'returns zero' do
+            expect(observation.available_bonus_points).to eq(0)
+          end
         end
 
-        it 'does not set at' do
-          expect(observation.at).to be_nil
+        context 'when description has images' do
+          before { observation.description = content_with_attachment }
+
+          it 'returns the photo bonus points' do
+            expect(observation.available_bonus_points).to eq(5)
+          end
         end
+      end
+    end
+  end
+
+
+
+  describe 'setting defaults on create' do
+    context 'when the associated object is set using observable' do
+      let(:transport_survey) { create(:transport_survey, school: school) }
+
+      subject(:observation) { Observation.create(observable: transport_survey) }
+
+      it 'sets observation_type' do
+        expect(observation.observation_type).to eq('transport_survey')
+      end
+
+      it 'sets school from related object' do
+        expect(observation.school).to eq(transport_survey.school)
+      end
+    end
+
+    context 'when the associated object is not set with observable' do
+      let(:activity) { create(:activity) }
+
+      subject(:observation) { Observation.create(activity: activity) }
+
+      it 'does not set observation_type' do
+        expect(observation.observation_type).to be_nil
+      end
+
+      it 'does not set school' do
+        expect(observation.school).to be_nil
+      end
+
+      it 'does not set at' do
+        expect(observation.at).to be_nil
       end
     end
   end

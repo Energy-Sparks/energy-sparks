@@ -1,0 +1,59 @@
+<div id="<%= id %>"
+     class="row pupil-dashboard-learn-more-component dashboard-learn-more-component <%= classes %>">
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        <h2>
+          <%= title %>
+        </h2>
+      </div>
+    </div>
+    <% unless data_enabled? %>
+      <div class="row">
+        <div class="col">
+          <p>
+            <%= intro %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+    <% if data_enabled? %>
+        <div class="row">
+          <% if school.has_solar_pv? %>
+            <%= render PupilExploreComponent.new(school: school, icon: 'sun', fuel_type: :electricity, classes: 'col') do |c| %>
+              <% c.with_category category: :solar_pv, link_text: t('common.electricity_and_solar_pv') %>
+              <% c.with_note do %>
+                <div>
+                  <% if school.has_storage_heaters? %>
+                    <p class="small">(<%= t('pupils.analysis.without_storage_heaters') %>)</p>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          <% elsif school.has_electricity? %>
+            <%= render PupilExploreComponent.new(school: school, icon: 'bolt', fuel_type: :electricity, classes: 'col') do |c| %>
+              <% c.with_category category: :electricity, link_text: t('common.electricity') %>
+              <% c.with_note do %>
+                <div>
+                  <% if school.has_storage_heaters? %>
+                    <p class="small">(<%= t('pupils.analysis.without_storage_heaters') %>)</p>
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+          <% if school.has_gas? %>
+            <%= render PupilExploreComponent.new(school: school, icon: 'fire', fuel_type: :gas, classes: 'col') do |c| %>
+              <% c.with_category category: :gas, link_text: t('common.gas') %>
+            <% end %>
+          <% end %>
+          <% if school.has_storage_heaters? %>
+            <%= render PupilExploreComponent.new(school: school, icon: 'intercom', icon_set: 'fab',
+                                                 fuel_type: :storage_heaters, classes: 'col') do |c| %>
+              <% c.with_category category: :storage_heaters, link_text: t('common.storage_heaters') %>
+            <% end %>
+          <% end %>
+        </div>
+    <% end %>
+  </div>
+</div>

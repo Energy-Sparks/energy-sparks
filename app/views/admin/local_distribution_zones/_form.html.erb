@@ -1,0 +1,6 @@
+<%= simple_form_for([:admin, @resource]) do |f| %>
+  <%= f.input :name %>
+  <%= f.input :code %>
+  <%= f.input :publication_id, label: 'Publication ID' %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

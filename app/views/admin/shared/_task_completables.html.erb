@@ -1,0 +1,16 @@
+<div class="col col-md-3">
+  <h3>Programmes</h3>
+  <ul>
+    <% task.programme_types_todo.each do |programme_type| %>
+      <li><%= link_to programme_type.title, edit_admin_programme_type_path(programme_type) %></li>
+    <% end %>
+  </ul>
+</div>
+<div class="col col-md-3">
+  <h3>Audits</h3>
+  <ul>
+    <% task.audits_todo.each do |audit| %>
+      <li><%= link_to audit.title, school_audit_path(audit.school, audit) %></li>
+    <% end %>
+  </ul>
+</div>

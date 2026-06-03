@@ -1,4 +1,4 @@
-<% content_for :page_title, t('programme_types.index.page_title') %>
+<% content_for :page_title, t('common.programmes') %>
 
 <div class="row">
   <div class="col">
@@ -17,4 +17,10 @@
   </div>
 </div>
 
-<%= render "cards", programme_types: @programme_types, user_progress: @user_progress %>
+<% if Flipper.enabled?(:todos, current_user) %>
+  <% @programme_types.each do |programme_type| %>
+    <%= render('programme_type', programme_type:) if programme_type.has_todos? %>
+  <% end %>
+<% else %>
+  <%= render 'cards', programme_types: @programme_types, user_progress: @user_progress %>
+<% end %>

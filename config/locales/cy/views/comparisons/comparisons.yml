@@ -1,0 +1,42 @@
+cy:
+  comparisons:
+    column_headings:
+      current_period: Cyfnod diweddaraf
+      last_year_electricity_kwh_floor_area: kWh/arwynebedd llawr trydan y llynedd
+      last_year_energy_kgco2_floor_area: kgCO2/arwynebedd llawr ynni y llynedd
+      last_year_energy_kwh_floor_area: kWh/arwynebedd llawr ynni y llynedd
+      last_year_gas_kwh_floor_area: kWh/arwynebedd llawr nwy y llynedd
+      last_year_storage_heater_kwh_floor_area: kWh/arwynebedd llawr stôr-wresogyddion y llynedd
+      previous_period: Cyfnod blaenorol
+      previous_period_unadjusted: Cyfnod blaenorol (heb ei addasu)
+      recent_data: Data diweddar
+      swimming_pool: Pwll Nofio
+    hot_water_efficiency:
+      unlisted:
+        message:
+          one: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
+          two: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
+          many: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
+          other: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
+    period_types:
+      periods: cyfnodau
+    tables:
+      electricity_usage: Cymhariaeth defnydd trydan
+      gas_usage: Cymhariaeth defnydd nwy
+      heating_start_time: Amseroedd Cychwyn Gwresogi
+      optimum_start_analysis: Dadansoddiad Cychwyn Gorau posib
+      storage_heater_usage: Cymhariaeth defnydd stôr-wresogyddion
+      table_number: Tabl %{table_number}
+      total_usage: Cymhariaeth cyfanswm defnydd ynni
+    unlisted:
+      link:
+        one: Gweld ysgol
+        two: Gweld rhestr o ysgolion
+        many: Gweld rhestr o ysgolion
+        other: Gweld rhestr o ysgolion
+      loading: Wrthi'n llwytho ysgolion
+      message:
+        one: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi
+        two: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi
+        many: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi
+        other: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddi ddigon o ddata i'w dadansoddi

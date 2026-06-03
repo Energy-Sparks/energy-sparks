@@ -1,27 +1,71 @@
-<% content_for :page_title, t('education_workshops.title') %>
-
-<div class="application container">
-  <h1><%= t('education_workshops.title') %></h1>
-
-  <%= render 'two_column_image_deck',
-             column_one: 'for-schools/workshop-class.png',
-             column_two: 'for-schools/workshop-activity.png' %>
-
-  <div class="row">
-    <div class="col-md-12">
-      <%= t('education_workshops.intro_html') %>
-    </div>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('education_workshops.title') %>
+  <div class="container-fluid adult mb-4 py-5">
+    <%= render Layout::GridComponent.new(
+          id: 'hero', cols: 2, feature: true, classes: 'container'
+        ) do |grid| %>
+      <% grid.with_feature_card(cell_classes: 'my-auto', size: :xl) do |feature| %>
+        <%= feature.with_header title: t('education_workshops.feature.title') %>
+        <%= feature.with_description { t('education_workshops.feature.description') } %>
+      <% end %>
+      <%= grid.with_image src: 'for-schools/workshop-class.png', classes: 'rounded-xl', cell_classes: '' %>
+    <% end %>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <p>
-        <%= t('education_workshops.availability') %>
-      </p>
-      <%= t('education_workshops.cost_html') %>
-      <p>
-        <a href="https://forms.gle/eREfqJgH5SRYQRah9" class="btn"><%= t('education_workshops.book') %></a>
-      </p>
-    </div>
+  <div class="container">
+    <%= render Layout::Cards::SectionHeaderComponent.new(
+          classes: '', id: 'workshops-header'
+        ) do |section_header| %>
+      <%= section_header.with_header title: t('education_workshops.workshops.title') %>
+      <%= section_header.with_description { t('education_workshops.workshops.description') } %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(id: 'workshops',
+                                         cols: 3, rows: 2, classes: 'mb-4',
+                                         cell_classes: 'mb-4',
+                                         component_classes: 'theme theme-dark') do |grid| %>
+      <% I18n.t('education_workshops.workshops.cards').each do |card| %>
+        <% grid.with_stats_card do |stats| %>
+          <%= stats.with_icon name: card[:icon], classes: card[:icon_colour], style: :circle %>
+          <%= stats.with_header title: card[:title] %>
+          <%= stats.with_subtext { card[:description] } %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(
+          id: 'audience',
+          cols: 2,
+          theme: :light,
+          classes: 'rounded-xl p-4 mt-5 mb-6'
+        ) do |grid| %>
+      <%= grid.with_image(src: 'pupil-whiteboard.jpg') %>
+      <%= grid.with_feature_card(cell_classes: 'my-auto', size: :md) do |feature| %>
+        <%= feature.with_header(title: t('education_workshops.audience.title')) %>
+        <%= feature.with_description { t('education_workshops.audience.description_html') } %>
+        <%= feature.with_button(t('education_workshops.book'),
+                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary) %>
+      <% end %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(
+          id: 'details',
+          cols: 2,
+          classes: 'my-5',
+          cell_classes: ''
+        ) do |grid| %>
+      <%= grid.with_feature_card(size: :lg, cell_classes: 'my-auto') do |feature| %>
+        <%= feature.with_header(title: t('education_workshops.details.title')) %>
+        <%= feature.with_price(
+              label: t('education_workshops.prices_range_from'),
+              price: t('education_workshops.details.price'),
+              classes: 'text-complement pb-1'
+            ) %>
+        <%= feature.with_description { t('education_workshops.details.description_html') } %>
+        <%= feature.with_button(t('education_workshops.book'),
+                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary, classes: 'mr-2') %>
+      <% end %>
+      <%= grid.with_image(src: 'workshops-hall.jpg') %>
+    <% end %>
   </div>
-</div>
+<% end %>

@@ -1,0 +1,64 @@
+<h1>Chart Previews</h1>
+
+<p>
+This page is intended to help with interactive testing and debugging of chart configurations. Using the options below you can select a school and
+run a specific chart using their data.
+</p>
+
+<%= simple_form_for :preview_chart, url: admin_chart_preview_path, method: 'GET', html: { class: 'form' } do |f| %>
+  <%= f.input :school_id,
+              collection: @schools,
+              label: 'Choose school',
+              label_method: ->(k) { k.name },
+              include_blank: false,
+              selected: @preview_school&.id,
+              input_html: { class: 'form-control select2' } %>
+
+  <%= f.input :chart_type,
+              collection: @chart_list,
+              label: 'Choose chart type',
+              group_method: :last,
+              group_label_method: :first,
+              include_blank: false,
+              selected: (params[:preview_chart].present? ? params[:preview_chart]['chart_type'] : nil),
+              input_html: { class: 'form-control select2' } %>
+
+  <p>
+  You can optionally provide a title, subtitle and footer for the chart to see
+  how the chart will look when embedded into a page with other text around it.
+  </p>
+
+  <%= f.input :title, as: :string, required: false, input_html: { value: @title || '' } %>
+  <%= f.input :subtitle, as: :string, required: false, input_html: { value: @subtitle || '' } %>
+  <%= f.input :footer, as: :string, required: false, input_html: { value: @footer || '' } %>
+
+  <p>
+  You can optionally indicate whether the chart should have controls to switch axis and to
+  navigate through the database. However these may be overridden by the chart configuration
+  as some charts do not support navigation or switching axes.
+  </p>
+
+  <%= f.input :axis_controls, as: :boolean, input_html: { checked: @axis_controls } %>
+  <%= f.input :analysis_controls, as: :boolean, input_html: { checked: @analysis_controls } %>
+
+  <%= f.submit 'Run chart', class: 'btn btn-primary' %>
+  <%= link_to 'Clear', admin_chart_preview_path, class: 'btn btn-primary' %>
+  <%= f.submit 'Next school', class: 'btn btn-primary' %>
+<% end %>
+
+<div class="mt-4">
+  <% if @preview_school.present? && @chart_type.present? %>
+    <%= render ChartComponent.new chart_type: @chart_type, axis_controls: @axis_controls,
+                                  analysis_controls: @analysis_controls, school: @preview_school do |c| %>
+      <% if @title.present? %>
+        <% c.with_title { @title } %>
+      <% end %>
+      <% if @subtitle.present? %>
+        <% c.with_subtitle { @subtitle } %>
+      <% end %>
+      <% if @footer.present? %>
+        <% c.with_footer { @footer } %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

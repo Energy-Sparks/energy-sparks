@@ -8,6 +8,8 @@
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>
       <%= f.association :report_group, label_method: :title, value_method: :id, include_blank: false %>
+      <%= f.input :fuel_type, collection: Comparison::Report.fuel_types.keys, label_method: :humanize,
+                              include_blank: 'Not applicable' %>
       <%= f.input :reporting_period,
                   collection: Comparison::Report.reporting_periods.keys,
                   label_method: :humanize %>

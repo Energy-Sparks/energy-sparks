@@ -14,4 +14,18 @@ class ApplicationMailer < ActionMailer::Base
   def user_emails(users)
     users.map(&:email)
   end
+
+  def env
+    ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
+  end
+
+  def prevent_delivery_from_test
+    mail.perform_deliveries = false unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
+  end
+
+  private
+
+  def admin_subject(title)
+    "[energy-sparks-#{env}] Energy Sparks - #{title}"
+  end
 end

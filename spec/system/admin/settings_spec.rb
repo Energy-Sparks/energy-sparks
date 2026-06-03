@@ -13,12 +13,12 @@ describe 'site-wide settings' do
     around do |example|
       ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'true' do
         example.run
+        BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)
       end
     end
 
     context 'with no existing site settings' do
       it 'allows admins to update site settings with prices' do
-        BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)
         click_on 'Site Settings'
         uncheck 'Message for no contacts'
         uncheck 'October'

@@ -27,7 +27,7 @@
         <td>
           <div class="btn-group">
             <%= link_to 'Edit', edit_admin_video_path(video), class: 'btn' %>
-            <%= link_to 'Delete', admin_video_path(video), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+            <%= link_to 'Delete', admin_video_path(video), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           </div>
         </td>
       </tr>
@@ -39,4 +39,4 @@
   <p>There are no videos</p>
 <% end %>
 
-<p><%= link_to 'New Video', new_admin_video_path, class: 'btn'%></p>
+<p><%= link_to 'New Video', new_admin_video_path, class: 'btn' %></p>

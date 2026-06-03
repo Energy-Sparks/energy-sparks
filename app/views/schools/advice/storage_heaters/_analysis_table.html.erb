@@ -48,18 +48,22 @@
         <%= t('advice_pages.storage_heaters.analysis.analysis_table.rows.total') %>
       </td>
       <td class="text-right">
-        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :kwh), :kwh) %>
+        <%= format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :kwh), :kwh) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :£), :£) %>
+        <%= format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :£), :£) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :co2), :co2) %>
+        <%= format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :co2), :co2) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :percent), :percent) %>
+        <%= format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :percent), :percent) %>
       </td>
     </tr>
   </tbody>
 </table>
-
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes',
+           additional_notice_text: t('advice_pages.baseload.current_baseload.calculation_dates',
+                                     start_date: short_dates(@analysis_dates.start_date),
+                                     end_date: short_dates(@analysis_dates.end_date)) %>

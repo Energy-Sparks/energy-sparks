@@ -9,6 +9,22 @@ describe Audits::Progress, type: :service do
 
   subject(:service) { Audits::Progress.new(audit) }
 
+  context 'when the audit was created less than a year ago' do
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school, created_at: 3.days.ago) }
+
+    describe '#notification' do
+      it { expect(service.notification).to include('recent') }
+    end
+  end
+
+  context 'when the audit was created over a year ago' do
+    let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school, created_at: 2.years.ago) }
+
+    describe '#notification' do
+      it { expect(service.notification).not_to include('recent') }
+    end
+  end
+
   context 'with no actions or activities completed' do
     describe '#notification' do
       it { expect(service.notification).to eq('You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>165</strong> points and <strong>50</strong> bonus points for completing all audit tasks') }
@@ -69,7 +85,7 @@ describe Audits::Progress, type: :service do
     end
   end
 
-  context 'with all activies completed' do
+  context 'with all activies completed (with no bonus points available)' do
     before do
       audit.activity_types.each do |activity_type|
         activity = build(:activity, school: school, activity_type: activity_type, happened_on: 2.days.ago)
@@ -78,7 +94,7 @@ describe Audits::Progress, type: :service do
     end
 
     describe '#notification' do
-      it { expect(service.notification).to eq('You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>90</strong> points and <strong>0</strong> bonus points for completing all audit tasks') }
+      it { expect(service.notification).to eq('You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>90</strong> points for completing all audit tasks') }
     end
   end
 end

@@ -1,1 +1,3 @@
-<%= image_tag programme_type.t_attached_or_default(:image, placeholder: "placeholder300x200.png"), class: "card-img-top img-fluid " + css_class %>
+<%= image_tag cdn_link_url(programme_type.t_attached_or_default(:image,
+                                                                placeholder: 'placeholder300x200.png')),
+              class: "card-img-top img-fluid #{css_class}" %>

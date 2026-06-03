@@ -1,0 +1,60 @@
+a.badge {
+  text-decoration: none;
+  .outline {
+    outline: solid;
+    outline-width: 1px;
+    outline-color: $grey-light;
+  }
+}
+
+// used for mailchimp
+.btn-dark-blue {
+  color: $white;
+  background-color: $blue-dark;
+  background-image: none;
+}
+
+.btn-group {
+   .btn {
+     margin-left: 5px;
+     margin-right: 5px;
+   }
+   &:not(.panel) {
+    .btn {
+      border-radius: $btn-border-radius !important;
+    }
+  }
+}
+
+.btn-group-xs > .btn, .btn-xs {
+  padding: 0px 5px;
+  @include font(f9);
+  border-radius: 30px;
+}
+
+.card-deck.activities {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    outline: none;
+  }
+}
+
+.highcharts-annotation a,
+.highcharts-annotation a:hover{
+  color: inherit;
+  text-decoration: inherit;
+}
+
+section.highlight {
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $blue-very-dark;
+    outline: none;
+  }
+}

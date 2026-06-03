@@ -2,12 +2,12 @@
 #
 # Table name: temperature_recordings
 #
+#  id             :bigint(8)        not null, primary key
 #  centigrade     :decimal(, )      not null
 #  created_at     :datetime         not null
-#  id             :bigint(8)        not null, primary key
+#  updated_at     :datetime         not null
 #  location_id    :bigint(8)        not null
 #  observation_id :bigint(8)        not null
-#  updated_at     :datetime         not null
 #
 # Indexes
 #
@@ -19,7 +19,6 @@
 #  fk_rails_...  (location_id => locations.id) ON DELETE => cascade
 #  fk_rails_...  (observation_id => observations.id) ON DELETE => cascade
 #
-
 
 class TemperatureRecording < ApplicationRecord
   belongs_to :observation

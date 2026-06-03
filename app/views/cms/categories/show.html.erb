@@ -1,0 +1,39 @@
+<%= content_for :page_title, @category.title %>
+
+<% content_for :dashboard_header do %>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: @category.title,
+        subtitle: @category.description
+      ) %>
+<% end %>
+
+<div class="container">
+  <div class="row d-md-none">
+    <div class="col d-md-none">
+      <%= render PageNavComponent::CollapseButton.new %>
+    </div>
+  </div>
+
+  <%= render 'cms/search' %>
+
+  <div class="row mt-2">
+    <div id="page-navigation" class="col-md-4 col-lg-4 col-xl-3">
+      <%= render 'cms/nav', categories: @categories, current_category: @category, classes: '' %>
+    </div>
+
+    <% cache_unless current_user&.admin?, [@category, I18n.locale], expires_in: 1.hour do %>
+      <div id="page-body" class="col-md-8 col-lg-8 col-xl-9">
+        <div class="row">
+          <div class="col-md-12">
+            <% @category.pages.by_title.each do |page| %>
+              <%= render Cms::PageSummaryComponent.new(id: page.slug, page: page, current_user: current_user,
+                                                       classes: 'mb-4') %>
+            <% end %>
+          </div>
+        </div>
+
+        <%= render 'cms/admin_buttons', content: @category, current_user: @current_user %>
+      </div>
+    <% end %>
+  </div>
+</div>

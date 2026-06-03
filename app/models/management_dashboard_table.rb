@@ -2,12 +2,12 @@
 #
 # Table name: management_dashboard_tables
 #
+#  id                                   :bigint(8)        not null, primary key
+#  created_at                           :datetime         not null
+#  updated_at                           :datetime         not null
 #  alert_id                             :bigint(8)
 #  alert_type_rating_content_version_id :bigint(8)
 #  content_generation_run_id            :bigint(8)
-#  created_at                           :datetime         not null
-#  id                                   :bigint(8)        not null, primary key
-#  updated_at                           :datetime         not null
 #
 # Indexes
 #
@@ -27,20 +27,9 @@ class ManagementDashboardTable < ApplicationRecord
   belongs_to :alert
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
 
-  def table
-    alert.table_data['summary_table']
-  end
-
   def data
-    # analytics currently returns a hash serialised as string,
-    # would be preferable to return e.g. json
-    if alert.template_data['summary_data'].blank?
-      summary_data = {}
-    else
-      # rubocop:disable Security/Eval
-      summary_data = eval(alert.template_data['summary_data'])
-      # rubocop:enable Security/Eval
-    end
+    return Tables::SummaryTableData.new({}) if alert.variables['summary_data'].blank?
+    summary_data = alert.variables['summary_data'].deep_symbolize_keys
     Tables::SummaryTableData.new(summary_data)
   end
 end

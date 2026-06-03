@@ -1,0 +1,5 @@
+Description:
+    Generator that will create an after party task to insert a new AmrDataFeedConfig.
+
+Example:
+    bin/rails generate amr_data_feed_config new-feed-identifier --description=description_of_the_config

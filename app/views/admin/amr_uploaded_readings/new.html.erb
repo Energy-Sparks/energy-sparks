@@ -2,7 +2,7 @@
   <h1>Manually load data</h1>
   <div>
     <%= link_to 'All data feed configurations', admin_amr_data_feed_configs_path,
-                class: 'btn btn-outline-dark font-weight-bold' %>
+                class: 'btn btn-default' %>
   </div>
 </div>
 
@@ -11,22 +11,12 @@
   results before deciding on whether to import the data or not
 </p>
 
-<ul class="nav nav-tabs" id="manual-loading" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id='loading-tab' data-toggle="tab"
-       href="#loading" role="tab" aria-controls="loading" aria-selected="true">Preview and load</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link"
-       id='config-tab' data-toggle="tab" href="#config" role="tab" aria-controls="config" aria-selected="false">Configuration</a>
-  </li>
-</ul>
-<div class="tab-content" id="manual-loading-tabs">
-  <div class="tab-pane fade show active" id="loading" role="tabpanel" aria-labelledby="loading-tab">
-
+<%= render TabsComponent.new do |component| %>
+  <% component.with_tab(name: :loading, label: 'Preview and load') do %>
     <% if @errors %>
       <div class="alert alert-danger" role="alert">
-        <p>We have identified some problem processing the file you have uploaded, are you sure it is in the correct format?</p>
+        <p>We have identified some problem processing the file you have uploaded, are you sure it is in the correct
+           format?</p>
         <% if @amr_reading_data.present? %>
           <p>File was processed, but there are data errors.</p>
           <p><strong>Reading count</strong>: <%= @amr_reading_data.reading_count %></p>
@@ -57,86 +47,94 @@
             render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data
           end %>
     <% end %>
-
     <div class="alert alert-secondary">
       <%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
         <%= f.input :data_file, label: 'Upload a file', as: :file, input_html: { accept: '.csv, .xls, .xlsx, .cns' } %>
         <%= f.submit 'Preview', class: 'btn' %>
       <% end %>
     </div>
+  <% end %>
+  <% component.with_tab(name: :config, label: 'Configuration') do %>
+    <h4>Configuration summary</h4>
+    <p>The import process is expecting a file with:</p>
+    <ul>
+      <% if @amr_data_feed_config.row_per_reading %>
+        <li>One <b>row per half hour reading</b></li>
 
-  </div>
-  <div class="tab-pane fade show" id="config" role="tabpanel" aria-labelledby="config-tab">
-      <h4>Configuration summary</h4>
-
-      <p>The import process is expecting a file with:</p>
-
-      <ul>
-        <% if @amr_data_feed_config.row_per_reading %>
-          <li>One <b>row per half hour reading</b></li>
-        <% else %>
-          <li>One <b>row per day</b>, with all half-hourly periods in columns</li>
-        <% end %>
-
-        <% if @amr_data_feed_config.number_of_header_rows > 0 %>
-          <li><b><%= @amr_data_feed_config.number_of_header_rows %> header rows</b></li>
-        <% else %>
-          <li>No header row</li>
-        <% end %>
-
-        <% if @amr_data_feed_config.lookup_by_serial_number %>
-          <li>The Meter Serial Numbers in a column labelled <b><%= @amr_data_feed_config.msn_field %></b>
-        <% else %>
-          <li>The MPAN/MPRN to be in a column labelled <b><%= @amr_data_feed_config.mpan_mprn_field %></b></li>
-        <% end %>
-
-        <% if @amr_data_feed_config.row_per_reading && (@amr_data_feed_config.reading_time_field.nil? && @amr_data_feed_config.period_field.nil?) %>
-          <li>The date and time for the reading date to be in a column
-            labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
-        <% else %>
-          <li>The reading date to be in a column labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
-        <% end %>
-
-        <li>Dates formatted like this <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b>
-          (<code><%= @amr_data_feed_config.date_format %></code>)</li>
-
-        <% if @amr_data_feed_config.delayed_reading %>
-          <li><strong>Important:</strong> this configuration will adjust the dates in the uploaded file backwards by 1 day. This matches what the supplier provides.
-            But use caution if you are manually preparing data.
+        <% if @amr_data_feed_config.half_hourly_labelling %>
+          <li>Half hourly readings are labelled at the <%= @amr_data_feed_config.half_hourly_labelling %> of the period
           </li>
         <% end %>
 
-        <% if @amr_data_feed_config.row_per_reading %>
-          <li>A reading field column labelled  <b><%= @amr_data_feed_config.reading_fields.first %></b></li>
-          <% if @amr_data_feed_config.positional_index && @amr_data_feed_config.period_field %>
-            <li>A <b>numbered</b> half-hourly period in a column labelled
-              <b><%= @amr_data_feed_config.period_field %></b>, e.g. 1, 2, 3, 4 </li>
-          <% end %>
-          <% if @amr_data_feed_config.reading_time_field %>
-            <li>The reading times to specified in a separate column labelled
-              <b><%= @amr_data_feed_config.reading_time_field %></b></li>
-            <li>The separate reading times to be formatted like this
-              <b>01:30</b>, <b>23:30</b> but this format is also supported: <b>130</b>, <b>2330</b></li>
-          <% end %>
-        <% else %>
-          <li>Reading fields to be in columns labelled
-            <b><%= @amr_data_feed_config.reading_fields.join(',').truncate(70) %></b></li>
+        <% if @amr_data_feed_config.allow_merging %>
+          <li>Partial days of readings are allowed and will be merged if updates are available. Warnings are still
+            given for more than <%= @amr_data_feed_config.blank_threshold %> missing readings.</li>
         <% end %>
 
-        <% if @amr_data_feed_config.handle_off_by_one %>
-          <li>It is expecting the half hourly readings to be off by one half hour</li>
+      <% else %>
+        <li>One <b>row per day</b>, with all half-hourly periods in columns</li>
+      <% end %>
+
+      <% if @amr_data_feed_config.number_of_header_rows > 0 %>
+        <li><b><%= @amr_data_feed_config.number_of_header_rows %> header rows</b></li>
+      <% else %>
+        <li>No header row</li>
+      <% end %>
+
+      <% if @amr_data_feed_config.lookup_by_serial_number %>
+        <li>The Meter Serial Numbers in a column labelled <b><%= @amr_data_feed_config.msn_field %></b>
+      <% else %>
+        <li>The MPAN/MPRN to be in a column labelled <b><%= @amr_data_feed_config.mpan_mprn_field %></b></li>
+      <% end %>
+
+      <% if @amr_data_feed_config.row_per_reading && (@amr_data_feed_config.reading_time_field.nil? &&
+            @amr_data_feed_config.period_field.nil?) %>
+        <li>The date and time for the reading date to be in a column
+          labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
+      <% else %>
+        <li>The reading date to be in a column labelled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
+      <% end %>
+
+      <li>Dates formatted like this <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b>
+        (<code><%= @amr_data_feed_config.date_format %></code>)</li>
+
+      <% if @amr_data_feed_config.delayed_reading %>
+        <li><strong>Important:</strong> this configuration will adjust the dates in the uploaded file backwards by 1
+          day. This matches what the supplier provides. But use caution if you are manually preparing data.
+        </li>
+      <% end %>
+
+      <% if @amr_data_feed_config.row_per_reading %>
+        <li>A reading field column labelled  <b><%= @amr_data_feed_config.reading_fields.first %></b></li>
+        <% if @amr_data_feed_config.positional_index && @amr_data_feed_config.period_field %>
+          <li>A <b>numbered</b> half-hourly period in a column labelled
+            <b><%= @amr_data_feed_config.period_field %></b>, e.g. 1, 2, 3, 4 </li>
         <% end %>
+        <% if @amr_data_feed_config.reading_time_field %>
+          <li>The reading times to specified in a separate column labelled
+            <b><%= @amr_data_feed_config.reading_time_field %></b></li>
+          <li>The separate reading times to be formatted like this
+            <b>01:30</b>, <b>23:30</b> but this format is also supported: <b>130</b>, <b>2330</b></li>
+        <% end %>
+      <% else %>
+        <li>Reading fields to be in columns labelled
+          <b><%= @amr_data_feed_config.reading_fields.join(',').truncate(70) %></b></li>
+      <% end %>
 
-      </ul>
+      <% if @amr_data_feed_config.handle_off_by_one %>
+        <li>It is expecting the half hourly readings to be off by one half hour</li>
+      <% end %>
 
-      <h3>Header example</h3>
+    </ul>
 
-      <p>The file will have a header that looks like:</p>
+    <h3>Header example</h3>
 
-      <p style="overflow-wrap: anywhere;">
-        <code>
-        <%= @amr_data_feed_config.header_example %>
-        </code>
-      </p>
-  </div>
-</div>
+    <p>The file will have a header that looks like:</p>
+
+    <p style="overflow-wrap: anywhere;">
+      <code>
+      <%= @amr_data_feed_config.header_example %>
+      </code>
+    </p>
+  <% end %>
+<% end %>

@@ -14,7 +14,7 @@ module Schools
 
       @supply = validate_supply
       @period = validate_period
-      @split_meters = params[:split_meters].present?
+      @split_meters = params[:split_meters].present? || params[:mpxn].present?
       @show_measurements = @period == :weekly
 
       if @supply && @period && @school.send(:"has_#{@supply}?")

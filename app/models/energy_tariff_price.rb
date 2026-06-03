@@ -2,15 +2,15 @@
 #
 # Table name: energy_tariff_prices
 #
-#  created_at       :datetime         not null
-#  description      :text
-#  end_time         :time             default(Sat, 01 Jan 2000 23:30:00.000000000 UTC +00:00), not null
-#  energy_tariff_id :bigint(8)        not null
 #  id               :bigint(8)        not null, primary key
-#  start_time       :time             default(Sat, 01 Jan 2000 00:00:00.000000000 UTC +00:00), not null
+#  description      :text
+#  end_time         :time             default(2000-01-01 23:30:00.000000000 UTC +00:00), not null
+#  start_time       :time             default(2000-01-01 00:00:00.000000000 UTC +00:00), not null
 #  units            :text
-#  updated_at       :datetime         not null
 #  value            :decimal(, )
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  energy_tariff_id :bigint(8)        not null
 #
 # Indexes
 #
@@ -25,8 +25,9 @@ class EnergyTariffPrice < ApplicationRecord
   validates :start_time, :end_time, :units, presence: true
   validates :value, presence: true, on: :update
 
-  validates :value, numericality: { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE }, allow_nil: true, on: :create
-  validates :value, numericality: { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE }, on: :update
+  NUMERICALITY_OPTIONS = { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE }.freeze
+  validates :value, numericality: NUMERICALITY_OPTIONS, allow_nil: true, on: :create
+  validates :value, numericality: NUMERICALITY_OPTIONS, on: :update
 
   validate :no_time_overlaps
   validate :time_range_given
@@ -97,6 +98,8 @@ class EnergyTariffPrice < ApplicationRecord
   def time_range_given
     return if energy_tariff&.flat_rate?
 
-    errors.add(:start_time, I18n.t('energy_tariff_price.errors.cannot_be_the_same_as_end_time')) if start_time == end_time
+    return unless start_time == end_time
+
+    errors.add(:start_time, I18n.t('energy_tariff_price.errors.cannot_be_the_same_as_end_time'))
   end
 end

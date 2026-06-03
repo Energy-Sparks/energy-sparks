@@ -23,11 +23,15 @@
             <td><%= response.weather_image %></td>
             <td><%= response.journey_minutes %> <%= t('schools.transport_surveys.common.mins') %></td>
             <td><%= response.transport_type.image %> <%= response.transport_type.name %></td>
-            <td><%= response.passengers > 1 ? response.passengers : "" %></td>
+            <td><%= response.passengers > 1 ? response.passengers : '' %></td>
             <td><%= response.carbon_kg_co2 %>kg CO2</td>
             <td><%= nice_date_times response.surveyed_at, localtime: true %></td>
             <% if can? :delete, response %>
-              <td><%= link_to t('common.labels.delete'), school_transport_survey_response_path(@school, @transport_survey, response), method: :delete, data: { confirm:  t('common.confirm') }, class: 'btn btn-sm btn-danger' %></td>
+              <td><%= link_to t('common.labels.delete'),
+                              school_transport_survey_response_path(@school, @transport_survey, response),
+                              method: :delete,
+                              data: { confirm: t('common.confirm') },
+                              class: 'btn btn-sm btn-danger' %></td>
             <% end %>
           </tr>
         <% end %>
@@ -35,10 +39,12 @@
     </table>
   </div>
 
-  <%= link_to(t('schools.transport_surveys.common.download_responses'), school_transport_survey_responses_path(@school, @transport_survey, format: :csv), class: 'btn' ) %>
+  <%= link_to(t('schools.transport_surveys.common.download_responses'),
+              school_transport_survey_responses_path(@school, @transport_survey, format: :csv),
+              class: 'btn') %>
 
 <% else %>
   <h4><%= t('schools.transport_surveys.common.no_responses') %></h4>
 <% end %>
 
-<%= render "shared/pagy_footer" %>
+<%= render 'shared/pagy_footer' %>

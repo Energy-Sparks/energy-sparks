@@ -6,7 +6,7 @@ module Admin
         respond_to do |format|
           format.html
           format.csv do
-            send_data csv_report(@report), filename: "#{t('common.application')}-unvalidated-readings-report-#{Time.zone.now.iso8601}".parameterize + '.csv'
+            send_data csv_report(@report), filename: EnergySparks::Filenames.csv('unvalidated-readings-report')
           end
         end
       end

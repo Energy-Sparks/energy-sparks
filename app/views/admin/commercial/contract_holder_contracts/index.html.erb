@@ -1,0 +1,16 @@
+<% if @contract_holder.is_a?(SchoolGroup) %>
+  <% content_for :header_title, "#{@contract_holder.name} Contracts" %>
+<% else %>
+  <%= render Admin::HeaderNavComponent.new do |header_nav| %>
+    <% header_nav.with_header title: "#{@contract_holder.name} Contracts" %>
+  <% end %>
+<% end %>
+
+<% if @contract_holder.is_a?(School) %>
+  <%= render 'schools/school_page_with_navigation', school: @contract_holder,
+                                                    page_title: "#{@contract_holder.name} Licences" do %>
+      <%= render 'contracts' %>
+  <% end %>
+<% else %>
+  <%= render 'contracts' %>
+<% end %>

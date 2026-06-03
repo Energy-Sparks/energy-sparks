@@ -1,13 +1,8 @@
-<h1>Edit School group</h1>
+<h1>Edit <%= admin_form_label(@school_group) %></h1>
 
 <div class="row">
   <div class="col-sm-8">
     <%= render 'form', school_group: @school_group %>
-
-    <div class="other-actions">
-      <%= link_to 'Back', admin_school_groups_path, class: 'btn btn-secondary' %>
-    </div>
-
   </div>
 
   <div class="col-sm-4">

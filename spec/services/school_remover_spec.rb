@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 describe SchoolRemover, :schools, type: :service do
+  include ActiveJob::TestHelper
+  include EmailHelpers
+
   let(:school)                   { create(:school, visible: false, number_of_pupils: 12) }
   let(:visible_school)           { create(:school, visible: true, number_of_pupils: 12) }
 
@@ -20,6 +23,10 @@ describe SchoolRemover, :schools, type: :service do
   let(:archive) { false }
   let(:service) { SchoolRemover.new(school, archive: archive) }
 
+  around do |example|
+    ClimateControl.modify(SEND_AUTOMATED_EMAILS: 'true') { example.run }
+  end
+
   before do
     electricity_meter_issue.meters << electricity_meter
     electricity_meter_issue.save!
@@ -29,57 +36,57 @@ describe SchoolRemover, :schools, type: :service do
 
   describe '#users_ready?' do
     context 'with all access locked all users' do
-      before { school.users.each(&:lock_access!) }
+      before { school.users.each(&:disable!) }
 
       it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
-        expect(school.users.count(&:access_locked?)).to eq(4)
+        expect(school.users.count(&:active?)).to eq(0)
         expect(service.users_ready?).to eq(true)
       end
     end
 
     context 'with at least 1 access unlocked user' do
       before do
-        school.users.each(&:lock_access!)
-        school.users.first.unlock_access!
+        school.users.each(&:disable!)
+        school.users.first.enable!
       end
 
       it 'returns false' do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
-        expect(school.users.count(&:access_locked?)).to eq(3)
+        expect(school.users.count(&:active?)).to eq(1)
         expect(service.users_ready?).to eq(false)
       end
     end
 
     context 'with all access locked users except one which is associated with another school' do
       before do
-        school.users.each(&:lock_access!)
-        school.users.first.unlock_access!
+        school.users.each(&:disable!)
+        school.users.first.enable!
         school.users.first.add_cluster_school(visible_school)
       end
 
       it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(1)
         expect(school.users.count).to eq(4)
-        expect(school.users.count(&:access_locked?)).to eq(3)
+        expect(school.users.count(&:active?)).to eq(1)
         expect(service.users_ready?).to eq(true)
       end
     end
 
     context 'with two access locked users and two unlocked users, only one of which is associated with another school' do
       before do
-        school.users.each(&:lock_access!)
-        school.users.first.unlock_access!
-        school.users.second.unlock_access!
+        school.users.each(&:disable!)
+        school.users.first.enable!
+        school.users.second.enable!
         school.users.first.add_cluster_school(visible_school)
       end
 
       it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(1)
         expect(school.users.count).to eq(4)
-        expect(school.users.count(&:access_locked?)).to eq(2)
+        expect(school.users.count(&:active?)).to eq(2)
         expect(service.users_ready?).to eq(false)
       end
     end
@@ -87,6 +94,15 @@ describe SchoolRemover, :schools, type: :service do
 
   describe '#remove_school!' do
     context 'when archive flag is set to false (pure delete)' do
+      context 'when a school is removed' do
+        let!(:school_group) { create(:school_group) }
+        let(:school) { create(:school, school_group: school_group, visible: false, number_of_pupils: 12) }
+
+        it 'touches the group' do
+          expect { service.remove_school! }.to(change { school_group.reload.updated_at })
+        end
+      end
+
       context 'when school is not visible' do
         before do
           service.remove_school!
@@ -109,9 +125,14 @@ describe SchoolRemover, :schools, type: :service do
           expect(gas_meter.issues.count).to eq 0
           expect(school.issues.count).to eq 0
         end
+
+        it 'sends no archived email' do
+          perform_enqueued_jobs
+          expect(ActionMailer::Base.deliveries.count).to eq(0)
+        end
       end
 
-      context 'when school is visiable' do
+      context 'when school is visible' do
         before do
           school.update(visible: true)
         end
@@ -126,6 +147,15 @@ describe SchoolRemover, :schools, type: :service do
 
     context 'when archive flag set true (archive - soft delete)' do
       let(:archive) { true }
+
+      context 'when a school is removed' do
+        let!(:school_group) { create(:school_group) }
+        let(:school) { create(:school, school_group: school_group, visible: false, number_of_pupils: 12) }
+
+        it 'touches the group' do
+          expect { service.remove_school! }.to(change { school_group.reload.updated_at })
+        end
+      end
 
       context 'when school is not visible' do
         before do
@@ -153,9 +183,27 @@ describe SchoolRemover, :schools, type: :service do
           expect(gas_meter.issues.count).to eq 1
           expect(school.issues.count).to eq 3
         end
+
+        it 'sends an archived email' do
+          perform_enqueued_jobs
+          email = ActionMailer::Base.deliveries.last
+          expect(email.subject).to eq("#{school.name} has been archived on Energy Sparks")
+          expect(email.to).to contain_exactly(school_admin.email, school_admin_user.email, staff_user.email)
+          expect(bootstrap_email_body_to_markdown(email)).to eq(<<~EMAIL.chomp)
+            # School archived
+
+            #{school.name} has been archived on Energy Sparks. You will no longer be able to access the energy data insights or previously recorded activities for your school.
+
+            Your account may have been archived because the school's funded use of Energy Sparks has ended and you have chosen not to pay for our services going forward. It could also be because you have not renewed a paid-for contract to use our online energy management tool.
+
+            We would love to support your school again in future. You can view our current services and prices [here](http://localhost/product) or request to re-enrol your school by emailing [hello@energysparks.uk](mailto:hello@energysparks.uk).
+
+            If you are subscribed to our newsletters, you will continue to receive these, but you can choose to opt-out using the unsubscribe link at the bottom of every newsletter.
+          EMAIL
+        end
       end
 
-      context 'when school is visiable' do
+      context 'when school is visible' do
         before do
           school.update(visible: true)
         end
@@ -174,7 +222,7 @@ describe SchoolRemover, :schools, type: :service do
 
     it 'locks the user accounts' do
       remove
-      expect(school.users).to be_all(&:access_locked?)
+      expect(school.users).to be_all(&:inactive?)
     end
 
     it 'removes alert contacts' do
@@ -187,7 +235,7 @@ describe SchoolRemover, :schools, type: :service do
 
       it 'keeps the alert contacts' do
         remove
-        expect(school.users).to be_all(&:access_locked?)
+        expect(school.users).to be_all(&:inactive?)
         expect(Contact.count).to eq 1
       end
     end
@@ -202,12 +250,21 @@ describe SchoolRemover, :schools, type: :service do
 
       it 'does not lock user and switches them to the other school' do
         school_admin.reload
-        expect(school_admin).not_to be_access_locked
+        expect(school_admin).to be_active
         expect(school_admin.school).to eq(other_school)
       end
     end
 
-    context
+    context 'when a user is not confirmed' do
+      let!(:unconfirmed) { create(:school_admin, school: school, confirmed_at: nil) }
+
+      it 'removes the unconfirmed user' do
+        remove
+        school.users.reload
+        expect(school.users.count).to eq(4)
+        expect(school.users).to be_all(&:inactive?)
+      end
+    end
   end
 
   describe '#remove_meters!' do

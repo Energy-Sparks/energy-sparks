@@ -7,7 +7,7 @@ module Alerts
     let!(:school) { create(:school, :with_fuel_configuration, has_gas: false) }
     let(:aggregate_school) do
       holidays = build(:holidays, :with_calendar_year)
-      build(:meter_collection, :with_fuel_and_aggregate_meters,
+      build(:meter_collection, :with_aggregated_aggregate_meter,
             holidays: holidays,
             start_date: Date.new(holidays.last.start_date.year, 1, 1),
             end_date: holidays.last.end_date)
@@ -135,6 +135,7 @@ module Alerts
       end
 
       it 'handles custom period reports' do
+        travel_to(Date.new(2024, 12, 1))
         report = create(:report, :with_custom_period)
         report.custom_period.update(current_start_date: 1.day.ago,
                                     previous_end_date: 2.days.ago,

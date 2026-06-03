@@ -372,6 +372,10 @@ describe EnergyTariff do
     let!(:energy_tariff_2)  { create(:energy_tariff, tariff_holder: school, enabled: false)}
     let!(:energy_tariff_3)  { create(:energy_tariff)}
     let!(:energy_tariff_4)  { create(:energy_tariff, tariff_holder: school_group)}
+    let!(:remove_school_tariff) do
+      removed_school = create(:school, school_group: school_group, active: false)
+      create(:energy_tariff, tariff_holder: removed_school)
+    end
 
     it 'returns expected schools' do
       expect(EnergyTariff.for_schools_in_group(school.school_group)).to match_array([energy_tariff])
@@ -495,5 +499,9 @@ describe EnergyTariff do
       # using eq not match_array as we're expecting exactly this order
       expect(tariffs).to eq([energy_tariff_open_start, energy_tariff, energy_tariff_open_end])
     end
+  end
+
+  it_behaves_like 'restricted school group association' do
+    subject { build(:energy_tariff, tariff_holder: restricted_group) }
   end
 end

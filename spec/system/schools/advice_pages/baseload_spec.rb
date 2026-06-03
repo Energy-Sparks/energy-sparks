@@ -6,20 +6,12 @@ RSpec.describe 'Baseload advice page', type: :system do
 
   include_context 'electricity advice page'
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as a school admin' do
     let(:user)  { create(:school_admin, school: school) }
 
     before do
-      allow_any_instance_of(Schools::Advice::BaseloadController).to receive_messages(
-        {
-          build_economic_tariffs_change_caveats: OpenStruct.new(
-            last_change_date: Date.new(2022, 9, 1),
-            percent_change: 18.857098661736725,
-            rate_after_£_per_kwh: 3.066783066364631,
-            rate_before_£_per_kwh: 0.1544426564326899
-          )
-        }
-      )
       sign_in(user)
       visit school_advice_path(school)
     end
@@ -66,7 +58,6 @@ RSpec.describe 'Baseload advice page', type: :system do
             average_baseload_kw: average_baseload_kw,
             average_baseload_kw_benchmark: average_baseload_kw_benchmark,
             annual_baseload_usage: usage,
-            baseload_usage_benchmark: usage,
             estimated_savings: savings,
             annual_average_baseloads: [annual_average_baseload],
             baseload_meter_breakdown: baseload_meter_breakdown,
@@ -213,12 +204,12 @@ RSpec.describe 'Baseload advice page', type: :system do
 
       it 'shows the comparison section' do
         expect(page).to have_content('How do you compare?')
-        within '.school-comparison-component-footer-row' do
+        within '.school-comparison-component .footer-row' do
           expect(page).to have_content('1.1')
           expect(page).to have_content('2.4')
         end
         # check within comparison component
-        within '.school-comparison-component-callout-box' do
+        within '.school-comparison-component .callout-box' do
           expect(page).to have_content('2.1')
         end
         expect(page).to have_content('compare with other schools in your group')

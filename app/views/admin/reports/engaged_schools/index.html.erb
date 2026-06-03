@@ -1,12 +1,20 @@
-<h1>Engaged Schools</h1>
+<%= render 'admin/reports/title', title: 'Engaged Schools' %>
 
 <p>
-  The following report lists "engaged schools". An engaged school has done one of the following since the start of the current academic year (<%= nice_dates(AcademicYear.current.start_date) %>):
+  The report generated below lists "engaged schools". An engaged school has done one of the following since the start of
+  the current academic year (<%= nice_dates(AcademicYear.current.start_date) %>):
 </p>
 
 <ul>
-  <li>Recorded a pupil activity or adult action, set a target, started a programme, received an audit, recorded some temperatures or run a transport survey</li>
-  <li><b>OR</b> had at least one school or pupil user login to the application. Users need to log in to use the above features, but some users may log in but not otherwise engage with that functionality, by including logged in visits in our list of engaged schools we can more better track 'silent' users and schools.</li>
+  <li>
+    Recorded a pupil activity or adult action, set a target, started a programme, received an audit, recorded some
+    temperatures or run a transport survey
+  </li>
+  <li>
+    <b>OR</b> had at least one school or pupil user login to the application. Users need to log in to use the above
+    features, but some users may log in but not otherwise engage with that functionality, by including logged in visits
+    in our list of engaged schools we can more better track 'silent' users and schools.
+  </li>
 </ul>
 
 <p>
@@ -14,55 +22,48 @@
 </p>
 
 <ul>
-  <li>We only started comprehensively logging all visits by logged in users in October 2023. So this may explain why there are no logged in users, but schools have, e.g. recorded an activity.</li>
-  <li>Users can record they've attended training by recording an action, but otherwise attendance at our training events isn't included as a measure of engagement</li>
-  <li>All schools are enrolled in the default programme when they finish onboarding. This isn't included in the below figures, which only include programmes where the school have opted to start it themselves</li>
-  <li>When we check the dates for activity and actions being recorded, we check the date it was added to the system. So recording historical activities and actions count as engagement for the current academic year, because the user is engaging with the site</li>
-  <li>For audits the date checked is when the auditor starts adding the report to the website, which may be after the actual audit date</li>
+  <li>
+    We only started comprehensively logging all visits by logged in users in October 2023. So this may explain why
+    there are no logged in users, but schools have, e.g. recorded an activity.
+  </li>
+  <li>
+    Users can record they've attended training by recording an action, but otherwise attendance at our training events
+    isn't included as a measure of engagement
+  </li>
+  <li>
+    All schools are enrolled in the default programme when they finish onboarding. This isn't included in the below
+    figures, which only include programmes where the school have opted to start it themselves
+  </li>
+  <li>
+    When we check the dates for activity and actions being recorded, we check the date it was added to the system.So
+    recording historical activities and actions count as engagement for the current academic year, because the user is
+    engaging with the site
+  </li>
+  <li>
+    For audits the date checked is when the auditor starts adding the report to the website, which may be after the
+    actual audit date
+  </li>
   <li>We're looking at engagement since early September of the current English school year</li>
+  <li>
+    If viewing the previous year then user activity is shown since the start of the previous academic year and also
+    includes the current year since we only record the most recent user login.
+  </li>
 </ul>
 
-<p>Using the above measures, EnergySparks currently has <strong><%= @engaged_schools.count %></strong> engaged schools out of <strong><%= @visible_schools %></strong> schools (<strong><%= @percentage %>%</strong>)</p>
+<p>
+  Using the above measures, EnergySparks currently has <strong><%= @engaged_schools_count %></strong> engaged schools
+  out of <strong><%= @visible_schools %></strong> schools (<strong><%= @percentage %>%</strong>)
+</p>
 
-<div class="d-flex justify-content-end">
-  <%= link_to 'Download as CSV', admin_reports_engaged_schools_path(format: :csv), class: 'btn btn-outline-dark font-weight-bold' %>
-</div>
-
-<table class="table table-sorted table-sm">
-  <thead>
-    <tr>
-      <th>School Group</th>
-      <th>School</th>
-      <th>Funder</th>
-      <th>Country</th>
-      <th>Activities</th>
-      <th>Actions</th>
-      <th>Programmes</th>
-      <th>Target?</th>
-      <th>Transport survey?</th>
-      <th>Temperatures?</th>
-      <th>Audit?</th>
-      <th>Active users</th>
-      <th>Last visit</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @engaged_schools.each do |service| %>
-      <tr>
-        <td><%= link_to service.school_group.name, school_group_path(service.school_group) %></td>
-        <td><%= link_to service.school.name, school_path(service.school) %></td>
-        <td><%= service.school.funder.name if service.school.funder %></td>
-        <td><%= service.school.country.humanize %></td>
-        <td><%= link_to service.recent_activity_count, school_timeline_path(service.school) %></td>
-        <td><%= link_to service.recent_action_count, school_timeline_path(service.school) %></td>
-        <td><%= service.recently_enrolled_programme_count %></td>
-        <td data-order="<%= service.active_target? ? '1' : '0' %>"><%= checkmark(service.active_target?, off_class: 'text-muted') %></td>
-        <td data-order="<%= service.transport_surveys? ? '1' : '0' %>"><%= checkmark(service.transport_surveys?, off_class: 'text-muted') %></td>
-        <td data-order="<%= service.temperature_recordings? ? '1' : '0' %>"><%= checkmark(service.temperature_recordings?, off_class: 'text-muted') %></td>
-        <td data-order="<%= service.audits? ? '1' : '0' %>"><%= checkmark(service.audits?, off_class: 'text-muted') %></td>
-        <td><%= link_to service.recently_logged_in_user_count, admin_school_group_users_path(service.school_group) %></td>
-        <td data-order="<%= service.most_recent_login.present? ? service.most_recent_login.iso8601 : '' %>"><%= nice_date_times(service.most_recent_login) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-<table>
+<%= form_with url: admin_reports_engaged_schools_path, class: 'form-inline mt-5 mb-2' do %>
+  <div class="form-group">
+    <%= label_tag :school_group_id, 'School Group', class: 'mr-2' %>
+    <%= select_tag :school_group_id,
+                   options_from_collection_for_select(SchoolGroup.by_name, :id, :name, params[:school_group_id]),
+                   include_blank: 'All School Groups', class: 'form-control mr-2' %>
+  </div>
+  <div class="actions">
+    <%= submit_tag 'Email Current Year', class: 'btn btn-primary' %>
+    <%= submit_tag 'Email Previous Year', class: 'btn btn-primary', name: 'previous' %>
+  </div>
+<% end %>

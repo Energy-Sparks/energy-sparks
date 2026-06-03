@@ -1,10 +1,22 @@
-<%= render 'schools/advice/section_title', section_id: 'heating-timings', section_title: t('advice_pages.heating_control.analysis.heating_timings.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'heating-timings',
+           section_title: t('advice_pages.heating_control.analysis.heating_timings.title') %>
+
+<%= render(AlertsComponent.new(school: school,
+                               dashboard_alerts: dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertGasHeatingHotWaterOnDuringHoliday))) %>
+<%= render(AlertsComponent.new(school: school,
+                               dashboard_alerts: dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertImpendingHoliday))) %>
+<% if heating_control_service.heating_on_in_last_weeks_holiday? %>
+  <%= render 'holiday_notice' %>
+<% end %>
 
 <%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html',
-  estimated_saving: format_unit(estimated_savings.£, :£),
-  percent: format_unit(percentage_of_annual_gas, :percent)) %>
+      estimated_saving: format_unit(heating_control_service.estimated_savings.£, :£),
+      percent: format_unit(heating_control_service.percentage_of_annual_gas, :percent)) %>
 
-<% if @last_week_start_times.average_start_time.present? %>
+<% if heating_control_service.last_week_start_times.average_start_time.present? %>
   <%= t('advice_pages.heating_control.analysis.heating_timings.intro_html') %>
 
   <table class="table advice-table" id='heating-start-times'>
@@ -28,7 +40,7 @@
       </tr>
     </thead>
     <tbody>
-      <% last_week_start_times.days.each do |day| %>
+      <% heating_control_service.last_week_start_times.days.each do |day| %>
         <tr>
           <td><%= day.date.to_fs(:es_full) %></td>
           <td><%= day.temperature.round(0) %></td>
@@ -63,5 +75,6 @@
       <% end %>
     </tbody>
   </table>
-  <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
+  <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+             data_target: 'how-have-we-analysed-your-data-footnotes' %>
 <% end %>

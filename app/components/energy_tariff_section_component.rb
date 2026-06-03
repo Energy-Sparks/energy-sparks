@@ -1,10 +1,10 @@
-class EnergyTariffSectionComponent < ViewComponent::Base
+class EnergyTariffSectionComponent < ApplicationComponent
   include EnergyTariffsHelper
   renders_one :charges_section
   attr_accessor :btn_class
 
-  def initialize(id:, title:, edit_path:, show_button: true, btn_class: 'btn')
-    @id = id
+  def initialize(title:, edit_path:, show_button: true, btn_class: 'btn', **_kwargs)
+    super
     @title = title
     @show_button = show_button
     @edit_path = edit_path

@@ -2,14 +2,14 @@
 #
 # Table name: programmes
 #
-#  created_at        :datetime         not null
-#  ended_on          :date
 #  id                :bigint(8)        not null, primary key
-#  programme_type_id :bigint(8)        not null
-#  school_id         :bigint(8)        not null
+#  ended_on          :date
 #  started_on        :date             not null
 #  status            :integer          default("started"), not null
+#  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  programme_type_id :bigint(8)        not null
+#  school_id         :bigint(8)        not null
 #
 # Indexes
 #
@@ -23,13 +23,17 @@
 #
 
 class Programme < ApplicationRecord
+  include Todos::Completable
+
   belongs_to :programme_type
   belongs_to :school
-  has_many :programme_activities
-  has_many :activities, through: :programme_activities
+
+  has_many :programme_activities # remove this when :todos feature flag removed
+  has_many :activities, through: :programme_activities # remove this when :todos feature flag removed
+
   has_many :observations, as: :observable, dependent: :destroy
 
-  enum status: { started: 0, completed: 1, abandoned: 2 } do
+  enum :status, { started: 0, completed: 1, abandoned: 2 } do
     event :complete do
       after do
         self.update(ended_on: Time.zone.now)
@@ -43,23 +47,32 @@ class Programme < ApplicationRecord
     end
   end
 
-  scope :recently_started, ->(date) { where('created_at > ?', date) }
-  scope :recently_started_non_default, ->(date) { recently_started(date).where.not(programme_type: ProgrammeType.default) }
-  scope :in_reverse_start_order, -> { started.order(started_on: :desc) }
+  scope :recently_started, ->(date_range) { where(created_at: date_range) }
+  scope :recently_started_non_default,
+        ->(date_range) { recently_started(date_range).where.not(programme_type: ProgrammeType.default) }
+  scope :in_reverse_start_order, -> { order(started_on: :desc) }
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
-  scope :last_started, -> { in_reverse_start_order.limit(1) }
+  scope :last_started, -> { started.in_reverse_start_order.limit(1) }
   scope :recently_ended, ->(date: 1.day.ago) { where('ended_on >= ?', date) }
+
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
 
-  def points_for_completion
-    # Only apply the bonus points if the programme is completed in the same academic year
-    school.academic_year_for(started_on)&.current? ? programme_type.bonus_score : 0
+  scope :completable, -> { started.active }
+
+  def assignable
+    programme_type
   end
 
+  def points_for_completion
+    programme_type.bonus_score
+  end
+
+  # remove this when :todos feature flag removed
   def activity_types_completed
     activities.map(&:activity_type).uniq
   end
 
+  # remove this when :todos feature flag removed
   def activity_of_type(activity_type)
     activities.where(activity_type: activity_type).last
   end
@@ -70,6 +83,7 @@ class Programme < ApplicationRecord
     self.observations.programme.first_or_create(at: self.ended_on, points: points_for_completion)
   end
 
+  # remove this when :todos feature flag removed
   def all_activities_complete?
     # Completed programme if all activity types for the programme type are in the list of completed  activities
     # (extra completed activities are ignored - activity types may have been removed from programme..)

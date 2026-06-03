@@ -41,8 +41,18 @@
                 <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
                 <td>
                   <div class="btn-group">
-                    <%= link_to(t('common.labels.edit'), edit_onboarding_user_path(@school_onboarding, user), { class: 'btn btn-default btn-sm', remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-window' }) if can?(:edit, user) %>
-                    <%= link_to(t('common.labels.delete'), onboarding_user_path(@school_onboarding, user), method: :delete, data: { confirm: t('common.labels.are_you_sure') }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
+                    <% if can?(:edit, user) %>
+                      <%= link_to(t('common.labels.edit'),
+                                  edit_onboarding_user_path(@school_onboarding, user),
+                                  { class: 'btn btn-default btn-sm', remote: true,
+                                    'data-toggle' => 'modal', 'data-target' => '#modal-window' }) %>
+                    <% end %>
+                    <% if can?(:delete, user) %>
+                      <%= link_to(t('common.labels.delete'),
+                                  onboarding_user_path(@school_onboarding, user),
+                                  method: :delete, data: { confirm: t('common.labels.are_you_sure') },
+                                  class: 'btn btn-danger btn-sm') %>
+                    <% end %>
                   </div>
                 </td>
             </tr>
@@ -53,12 +63,17 @@
 
     <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true"></div>
 
-    <%= link_to t('onboarding.users.add_new_account'), new_onboarding_user_path(@school_onboarding), { class: 'btn btn-default', remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-window' }  %>
+    <%= link_to t('onboarding.users.add_new_account'),
+                new_onboarding_user_path(@school_onboarding),
+                { class: 'btn btn-default', remote: true, 'data-toggle' => 'modal', 'data-target' => '#modal-window' } %>
 
     <% if @school_onboarding.ready_for_review? %>
-      <%= link_to t('onboarding.users.continue'), new_onboarding_completion_path(@school_onboarding), class: 'btn btn-default' %>
+      <%= link_to t('onboarding.users.continue'), new_onboarding_completion_path(@school_onboarding),
+                  class: 'btn btn-default' %>
     <% else %>
-      <%= link_to @users.any? ? t('onboarding.users.continue') : t('onboarding.users.skip_for_now'), new_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-default' %>
+      <%= link_to @users.any? ? t('onboarding.users.continue') : t('onboarding.users.skip_for_now'),
+                  new_onboarding_completion_path(@school_onboarding),
+                  class: 'btn btn-default' %>
     <% end %>
 
   </div>

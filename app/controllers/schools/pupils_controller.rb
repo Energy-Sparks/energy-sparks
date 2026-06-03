@@ -25,7 +25,8 @@ module Schools
     def update
       @pupil = @school.users.pupil.find(params[:id])
       authorize! :update, @pupil
-      if @pupil.update(pupil_params)
+      @pupil.assign_attributes(pupil_params)
+      if @pupil.save(context: :form_update)
         redirect_to school_users_path(@school)
       else
         render :edit

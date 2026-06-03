@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'intervention type reports' do
   let(:admin) { create(:admin) }
   let!(:intervention_type) { create(:intervention_type) }
-  let!(:observation) { create(:observation, :intervention, intervention_type:) }
+  let!(:observation) { create(:observation, :intervention, intervention_type:, school: create(:school, :with_school_group)) }
 
   before do
     sign_in(admin)
@@ -34,7 +34,7 @@ describe 'intervention type reports' do
       expect(page).to have_content intervention_type.name
       expect(page).to have_content observation.school.name
       expect(page).to have_link(observation.school.name,
-                                href: school_intervention_path(observation.school, observation))
+                                href: school_url(observation.school, host: 'example.com'))
     end
 
     context 'when the activity has been recorded multiple times' do

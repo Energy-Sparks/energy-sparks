@@ -1,22 +1,30 @@
-<%= component 'energy_tariffs',
-  tariff_holder: tariff_holder,
-  tariff_types: tariff_types,
-  show_actions: show_actions,
-  show_add_button: show_add_button,
-  default_tariffs: default_tariffs do |c| %>
+<%= render EnergyTariffsComponent.new(
+      tariff_holder: tariff_holder,
+      tariff_types: tariff_types,
+      show_actions: show_actions,
+      show_add_button: show_add_button,
+      default_tariffs: default_tariffs
+    ) do |c| %>
   <% c.with_header do %>
-    <%= t('schools.user_tariffs.index.introduction_html', advice_pages: school_advice_path(tariff_holder)) if tariff_holder.school? %>
+    <%= if tariff_holder.school?
+          t('schools.user_tariffs.index.introduction_html', advice_pages: school_advice_path(tariff_holder))
+        end %>
     <% if default_tariffs %>
       <div>
         <p>
           <% if viewed_tariff_holder&.meters&.dcc&.any? %>
             <%= t('schools.user_tariffs.index.default_tariffs_message_with_smart_meters_html',
-                  user_supplied_tariffs_link: polymorphic_path(tariff_holder_route(viewed_tariff_holder) + [:energy_tariffs], {}),
-                  smart_meter_tariffs_link: polymorphic_path(tariff_holder_route(viewed_tariff_holder) + [:energy_tariffs], { action: :smart_meter_tariffs })
-                )
-            %>
+                  user_supplied_tariffs_link: polymorphic_path(
+                    tariff_holder_route(viewed_tariff_holder) + [:energy_tariffs], {}
+                  ),
+                  smart_meter_tariffs_link: polymorphic_path(
+                    tariff_holder_route(viewed_tariff_holder) + [:energy_tariffs], { action: :smart_meter_tariffs }
+                  )) %>
           <% else %>
-            <%= t('schools.user_tariffs.index.default_tariffs_message_html', user_supplied_tariffs_link: polymorphic_path(tariff_holder_route(viewed_tariff_holder) + [:energy_tariffs], {})) %>
+            <%= t('schools.user_tariffs.index.default_tariffs_message_html',
+                  user_supplied_tariffs_link: polymorphic_path(
+                    tariff_holder_route(viewed_tariff_holder) + [:energy_tariffs], {}
+                  )) %>
           <% end %>.
         </p>
       </div>
@@ -27,9 +35,15 @@
   <% c.with_footer do %>
     <p>
       <% if tariff_holder.school? && @electricity_meters&.dcc&.any? %>
-        <%= t('schools.user_tariffs.index.note_about_smart_meter_tariffs_html', smart_meter_tariffs_link: polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariffs], { action: :smart_meter_tariffs })) %>.
+        <%= t('schools.user_tariffs.index.note_about_smart_meter_tariffs_html',
+              smart_meter_tariffs_link: polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariffs],
+                                                         { action: :smart_meter_tariffs })) %>.
       <% else %>
-        <%= t('schools.user_tariffs.index.note_about_defaults_html', default_tariffs_link: polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariffs], { action: :default_tariffs })) unless default_tariffs %>
+        <%= unless default_tariffs
+              t('schools.user_tariffs.index.note_about_defaults_html',
+                default_tariffs_link: polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariffs],
+                                                       { action: :default_tariffs }))
+            end %>
       <% end %>
     </p>
   <% end %>

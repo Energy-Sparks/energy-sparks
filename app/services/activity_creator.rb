@@ -8,6 +8,7 @@ class ActivityCreator
 
   def process
     @activity.activity_category = @activity.activity_type.activity_category if @activity.activity_type
+    @activity.created_by = @user
 
     if @activity.save
       process_programmes if started_active_programmes.any?
@@ -31,13 +32,11 @@ class ActivityCreator
   end
 
   def create_activity_observation
-    points = @activity.activity_type.score_when_recorded_at(@activity.school, @activity.happened_on)
     Observation.create!(
       school: @activity.school,
       observation_type: :activity,
       activity: @activity,
       at: @activity.happened_on,
-      points:,
       created_by: @user
     )
   end

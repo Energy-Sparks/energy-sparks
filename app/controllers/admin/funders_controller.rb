@@ -7,6 +7,7 @@ module Admin
     end
 
     def show
+      @funding_summary = ::Commercial::Contract.current_contract_holder_summaries.first { |s| s[:id] == @funder.id }
     end
 
     def new
@@ -17,7 +18,7 @@ module Admin
 
     def create
       if @funder.save
-        redirect_to admin_funders_path, notice: 'Funder was successfully created'
+        redirect_to(admin_funders_path, notice: 'Funder was successfully created')
       else
         render :new
       end
@@ -25,21 +26,24 @@ module Admin
 
     def update
       if @funder.update(funder_params)
-        redirect_to admin_funders_path, notice: 'Funder was successfully updated.'
+        redirect_to(admin_funders_path, notice: 'Funder was successfully updated.')
       else
         render :edit
       end
     end
 
     def destroy
-      @funder.destroy
-      redirect_to admin_funders_path, notice: 'Funder was successfully deleted.'
+      if @funder.destroy
+        redirect_to(admin_funders_path, alert: 'Funder was successfully deleted.')
+      else
+        redirect_to(admin_funders_path, alert: @funder.errors.full_messages.to_sentence)
+      end
     end
 
     private
 
     def funder_params
-      params.require(:funder).permit(:name)
+      params.require(:funder).permit(:name, :invoiced)
     end
   end
 end

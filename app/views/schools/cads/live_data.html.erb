@@ -1,7 +1,7 @@
 <h1>Test CAD</h1>
 
 <h2>Mode</h2>
-<p><%= @cad.test_mode ? "TEST" : "LIVE" %></p>
+<p><%= @cad.test_mode ? 'TEST' : 'LIVE' %></p>
 
 <% if @error %>
   <h2>Error</h2>
@@ -11,9 +11,8 @@
   <p><%= @reading.to_f %></p>
 <% end %>
 
-
-<br/>
-<br/>
+<br>
+<br>
 
 <%= link_to 'Back', school_cads_path(@school), class: 'btn' %>
-<%= link_to 'Retry', school_cad_live_data_path(@school, @cad), class: 'btn btn-success' %>
+<%= link_to 'Retry', school_cad_live_data_path(@school, @cad), class: 'btn btn-primary' %>

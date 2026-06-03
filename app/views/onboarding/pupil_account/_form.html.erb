@@ -1,12 +1,9 @@
-<p>
-  <%= t('onboarding.pupil_account.message_1') %>
-</p>
-<p>
-  <%= t('onboarding.pupil_account.message_2') %>
-</p>
-<p>
-  <%= t('onboarding.pupil_account.message_3') %>
-</p>
-
-<%= f.input :name, label: t('onboarding.pupil_account.name'), required: :true, hint: t('onboarding.pupil_account.name_hint'), placeholder: t('onboarding.pupil_account.name_placeholder', school_name: school.name) %>
-<%= f.input :pupil_password, label: t('onboarding.pupil_account.pupil_password'), as: :string, required: true, placeholder: t('onboarding.pupil_account.pupil_password_placeholder'), hint: t('onboarding.pupil_account.pupil_password_hint') %>
+<p><%= t('onboarding.pupil_account.message_1') %></p>
+<p><%= t('onboarding.pupil_account.message_2') %></p>
+<p><%= t('onboarding.pupil_account.message_3') %></p>
+<%= f.input :name, label: t('onboarding.pupil_account.name'), required: true,
+                   hint: t('onboarding.pupil_account.name_hint'),
+                   placeholder: t('onboarding.pupil_account.name_placeholder', school_name: school.name) %>
+<%= f.input :pupil_password, label: t('onboarding.pupil_account.pupil_password'), as: :string, required: true,
+                             placeholder: t('onboarding.pupil_account.pupil_password_placeholder'),
+                             hint: t('onboarding.pupil_account.pupil_password_hint') %>

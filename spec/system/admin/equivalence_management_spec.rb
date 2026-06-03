@@ -29,11 +29,11 @@ RSpec.describe 'equivalence type management', type: :system do
 
     click_on 'Create equivalence type'
 
+    with_retry { expect(EquivalenceType.first).not_to be_nil }
     equivalence_type = EquivalenceType.first
     expect(equivalence_type.electricity?).to eq true
     expect(equivalence_type.last_month?).to eq true
 
-    expect(equivalence_type.show_image?).to eq false
     expect(equivalence_type.image_name).to eq :no_image.to_s
 
     first_content = equivalence_type.current_content
@@ -50,11 +50,9 @@ RSpec.describe 'equivalence type management', type: :system do
 
     click_on 'Update equivalence type'
 
-    equivalence_type.reload
-    expect(equivalence_type.gas?).to eq true
+    with_retry { expect(equivalence_type.reload.gas?).to be true }
 
     expect(equivalence_type.image_name).to eq :petrol_car.to_s
-    expect(equivalence_type.show_image?).to eq true
 
     expect(equivalence_type.content_versions.count).to eq(2)
     first_content = equivalence_type.current_content

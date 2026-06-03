@@ -1,0 +1,40 @@
+<%= render 'admin/reports/title', title: 'Work Allocation' %>
+<table class="table table-condensed table-sorted">
+<thead>
+  <tr>
+    <th>Name</th>
+    <th>School Groups</th>
+    <th title="Schools onboarding">Onboarding</th>
+    <th title="Schools active (without data visible)">Active</th>
+    <th title="Schools active (with data visible)" class='nowrap'>Data visible</th>
+    <th title="Schools invisible">Invisible</th>
+    <th title="Schools removed">Removed</th>
+  </tr>
+</thead>
+
+<tbody>
+  <% User.admin.order(:name).find_each do |user| %>
+    <% issues_admin_for_ids = user.issues_admin_for_ids %>
+    <% unless issues_admin_for_ids.empty? %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= issues_admin_for_ids.length %>
+        <td><%= SchoolOnboarding.where(school_group_id: issues_admin_for_ids).incomplete.count %></td>
+        <td><%= School.where(school_group_id: issues_admin_for_ids).visible.count %></td>
+        <td><%= School.where(school_group_id: issues_admin_for_ids).visible.data_enabled.count %></td>
+        <td><%= School.where(school_group_id: issues_admin_for_ids).not_visible.count %></td>
+        <td><%= School.where(school_group_id: issues_admin_for_ids).inactive.count %></td>
+      </tr>
+    <% end %>
+  <% end %>
+    <tr class="font-weight-bold">
+    <td>All Energy Sparks Schools</td>
+    <td></td>
+    <td><%= SchoolOnboarding.incomplete.count %></td>
+    <td><%= School.visible.count %></td>
+    <td><%= School.visible.data_enabled.count %></td>
+    <td><%= School.not_visible.count %></td>
+    <td><%= School.inactive.count %></td>
+    </tr>
+</tbody>
+</table>

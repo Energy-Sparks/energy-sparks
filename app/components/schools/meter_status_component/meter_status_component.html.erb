@@ -1,0 +1,30 @@
+<%= tag.table id: id, class: class_names('table table-sorted', classes) do %>
+  <thead class="thead-dark text-nowrap">
+    <tr>
+      <th class='no-sort'></th>
+      <th><%= I18n.t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
+      <th class="text-left"><%= t('schools.meters.index.meter') %></th>
+      <th class="text-left"><%= t('schools.meters.index.name') %></th>
+      <th><%= t('common.labels.start_date') %></th>
+      <th><%= t('common.labels.end_date') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% meters.each do |meter| %>
+      <tr>
+        <td>
+          <%= render Elements::IconComponent.new(fuel_type: meter.fuel_type) %>
+        </td>
+        <td class="text-left"><%= t(meter.fuel_type, scope: 'common') %></td>
+        <td class="text-left"><%= meter.mpan_mprn %></td>
+        <td class="w-100 text-left"><%= meter.name %></td>
+        <td class="text-nowrap" data-order='<%= meter.first_validated_reading&.iso8601 %>'>
+          <%= short_dates(meter.first_validated_reading) %>
+        </td>
+        <td class="text-nowrap" data-order='<%= meter.last_validated_reading&.iso8601 %>'>
+          <%= short_dates(meter.last_validated_reading) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+<% end %>

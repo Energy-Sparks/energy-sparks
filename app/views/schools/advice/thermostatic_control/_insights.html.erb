@@ -1,20 +1,23 @@
-<%= component 'notice', status: :neutral do |c| %>
-  <% c.with_link { link_to t('advice_pages.thermostatic_control.insights.link'), learn_more_school_advice_thermostatic_control_path(@school) } %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <% c.with_link do
+       link_to t('advice_pages.thermostatic_control.insights.link'),
+               learn_more_school_advice_thermostatic_control_path(@school)
+     end %>
   <%= t('advice_pages.thermostatic_control.insights.advice_html') %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.thermostatic_control.insights.how_do_you_compare.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'how_do_you_compare',
+           section_title: t('advice_pages.thermostatic_control.insights.how_do_you_compare.title') %>
 
-<%=
-  t('advice_pages.thermostatic_control.insights.thermostatic_control_r2_notice_html',
-    r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2),
-    r2: @heating_thermostatic_analysis.r2.round(2),
-    average_schools_r2: AnalyseHeatingAndHotWater::HeatingModel.average_schools_r2
-  )
-%>
+<%= t('advice_pages.thermostatic_control.insights.thermostatic_control_r2_notice_html',
+      r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2),
+      r2: @heating_thermostatic_analysis.r2.round(2),
+      average_schools_r2: AnalyseHeatingAndHotWater::HeatingModel.average_schools_r2) %>
 
 <div class="col">
-  <%= component 'school_comparison', id: 'comparison-thermostatic', comparison: @benchmark_thermostatic_control %>
+  <%= render SchoolComparisonComponent.new(id: 'comparison-thermostatic', comparison: @benchmark_thermostatic_control) %>
 </div>
 
-<%= t('advice_pages.thermostatic_control.insights.for_more_detail_html', link: compare_for_school_group_path(:thermostatic_control, @school)) %>
+<%= t('advice_pages.thermostatic_control.insights.for_more_detail_html',
+      link: compare_for_school_group_path(:thermostatic_control, @school)) %>

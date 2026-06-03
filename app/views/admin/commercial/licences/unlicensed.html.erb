@@ -1,0 +1,62 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Unlicensed schools' %>
+  <% header_nav.with_button 'Contracts & Licensing', admin_commercial_path %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <p>This page lists active schools that do not have a current licence</p>
+    <p>
+        The table indicates whether the school has any expired licences and whether it has any licences that cover the current academic year.
+        A school may have been licensed for the start of the year and their licence has expired. Or they may have a licence that has yet to start.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <table id="unlicensed-schools" class="table table-sorted table-sm advice-table">
+        <thead>
+        <tr>
+            <th>School Group</th>
+            <th>School</th>
+            <th class="text-end">Visible?</th>
+            <th class="text-end">Data visible?</th>
+            <th class="text-end">Expired Licence?</th>
+            <th class="text-end">Licenced for Current Academic Year?</th>
+            <th class="text-end"></th>
+        </tr>
+        </thead>
+        <tbody>
+            <% @schools.each do |school| %>
+                <tr>
+                    <td>
+                        <%= link_to school.organisation_group.name, school_group_path(school.organisation_group) %>
+                    </td>
+                    <td>
+                        <%= link_to school.name, school_path(school) %>
+                    </td>
+                    <td class="text-end">
+                        <%= checkmark(school.visible?) %>
+                    </td>
+                    <td class="text-end">
+                        <%= checkmark(school.data_visible?) %>
+                    </td>
+                    <td class="text-end">
+                        <%= checkmark(school.licences.expired.any?) %>
+                    </td>
+                    <td class="text-end">
+                        <% licenced_for = school.licenced_for_period(@academic_year.start_date..@academic_year.end_date) %>
+                        <%= render(Elements::BadgeComponent.new(licenced_for.to_s.humanize,
+                                                                pill: true,
+                                                                colour: period_badge_colour(licenced_for))) %>
+                    </td>
+                    <td class="text-end">
+                        <%= link_to 'Licences', admin_school_licences_path(school), class: 'btn btn-sm' %>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<h1>Meter Loading Report</h1>
+
+<p>
+  View the most readings for a meter to identify the source of each reading.
+</p>
+
+<%= simple_form_for admin_reports_meter_loading_reports_path, method: :get, html: { class: 'form' } do |f| %>
+  <%= f.input :mpxn, label: 'MPAN/MPRN', autofocus: true, input_html: { name: :mpxn, value: params[:mpxn] } %>
+  <%= f.submit :Search, class: 'btn btn-primary' %>
+<% end %>
+
+<ul class="mt-4">
+  <li>Loaded - timestamp of when the reading was loaded. Most recently loaded reading will be used in preference to any earlier readings</li>
+  <li>Reading date - date of reading as interpreted by the system. (Blanks may be a formatting issue and not an actual bug)</li>
+  <li>File name - the name of the latest file to provide readings on this date. For feeds that send partial readings, the data might have been compiled from several CSV files. In which case this is the most recent file that contributed readings for this date</li>
+  <li>Load type - whether this was a manual upload, automated api request or automated load from an emailed CSV or FTP server. Downloads of CSV files are only available for automated loads</li>
+  <li>Config - the data feed config used to load the data</li>
+  <li>Original date - the reading date as provided in the CSV file. Useful in case there are date formatting issues in the reading date</li>
+</ul>
+
+<p>
+  Note: some automated feeds send files with the same name. We only store the latest version of each file, so its possible that
+  the linked to CSV file may contain different data if the supplier has resent a file with the same name.
+</p>
+
+<% if @results.any? %>
+  <div class="d-flex justify-content-center pt-4">
+    <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
+  </div>
+
+  <table class="table advice-table mt-4">
+    <thead>
+      <th>Loaded</th>
+      <th>Reading date</th>
+      <th>File name</th>
+      <th>Load Type</th>
+      <th>Config</th>
+      <th>Original date</th>
+    </thead>
+    <tbody>
+      <% @results.each do |result| %>
+        <tr>
+          <td><%= result.created_at.iso8601 %></td>
+          <td><%= result.parsed_date %></td>
+          <td>
+            <% if result.imported || result.source_type == 2 %>
+              <%= result.file_name %>
+            <% else %>
+              <%= link_to result.file_name, s3_csv_download_url(result.identifier, result.file_name) %>
+            <% end %>
+          </td>
+          <td>
+            <% if result.imported %>
+              Manual
+            <% elsif result.source_type == 2 %>
+              API
+            <% else %>
+              <%= link_to 'Data Feed', s3_csv_download_url(result.identifier, result.file_name) %>
+            <% end %>
+          </td>
+          <td><%= link_to result.identifier, admin_amr_data_feed_config_path(id: result.amr_data_feed_config_id) %></td>
+          <td><%= result.reading_date %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

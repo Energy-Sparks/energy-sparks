@@ -2,9 +2,9 @@
 #
 # Table name: contacts
 #
+#  id                  :bigint(8)        not null, primary key
 #  description         :text
 #  email_address       :text
-#  id                  :bigint(8)        not null, primary key
 #  mobile_phone_number :text
 #  name                :text
 #  school_id           :bigint(8)        not null
@@ -41,6 +41,8 @@ class Contact < ApplicationRecord
 
   accepts_nested_attributes_for :user
 
+  after_commit :update_user_mailchimp_timestamp, on: [:create, :destroy]
+
   def display_name
     name
   end
@@ -54,5 +56,11 @@ class Contact < ApplicationRecord
 
   def preferred_locale
     user ? user.preferred_locale : :en
+  end
+
+  private
+
+  def update_user_mailchimp_timestamp
+    user&.touch_mailchimp_timestamp!
   end
 end

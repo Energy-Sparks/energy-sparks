@@ -43,10 +43,6 @@ describe 'baseload_per_pupil' do
   end
 
   context 'when viewing report' do
-    before do
-      visit comparisons_baseload_per_pupil_index_path
-    end
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
@@ -57,7 +53,7 @@ describe 'baseload_per_pupil' do
       let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }
       let(:headers) do
         ['School', 'Baseload per pupil (W)', 'Last year cost of baseload', 'Average baseload kW',
-         'Baseload as a percent of total usage', 'Saving if matched exemplar school (using latest tariff)']
+         'Baseload as a percent of total usage', 'Potential savings']
       end
       let(:expected_table) do
         [headers,
@@ -72,6 +68,8 @@ describe 'baseload_per_pupil' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end

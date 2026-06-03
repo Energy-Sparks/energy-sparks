@@ -35,6 +35,7 @@ en:
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
+    help: Help
   contact_explainer:
     alerts_message: Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
     list_html: |-
@@ -46,20 +47,41 @@ en:
     title: 'Energy Sparks alerts:'
   dashboards:
     adult_dashboard: Adult dashboard
+    group_dashboard: Group dashboard
     pupil_dashboard: Pupil dashboard
+  errors:
+    '404':
+      description: Sorry, the page you are looking for does not exist
+      title: Page not found
+    '422':
+      description: Maybe you tried to change something you didn't have access to
+      title: The change you wanted was rejected
+    '500':
+      description: The Energy Sparks team have been notified
+      title: Sorry, something has gone wrong
+    resolution_html: Please continue to our <a href='/'>home page</a>
   footer:
     cc_licence_notice_html: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
     child_safeguarding_policy: Child safeguarding policy
-    follow_energy_sparks: Follow Energy Sparks
-    more_information: More information
+    legal_terms: Legal Terms
+    newsletter_signup: Newsletter Signup
+    other_links: Other Links
+    quick_links: Quick Links
     registered_charity_notice: Energy Sparks is a registered charity in England and Wales, registration 1189273
+    services: Services
     terms_and_conditions: Terms and conditions
+  maintenance:
+    progress: Our team is currently working on updating the site and we expect the service to be available again in a couple of hours
+    title: Energy Sparks is currently down for maintenance
+    unavailable: We're sorry but Energy Sparks is currently unavailable while we carry out some essential maintenance
   manage_menu:
-    admin: Admin
+    admin: Admin Home
     manage: Manage
-    reports: Reports
+    my_dashboard: My Dashboard
+    reports: All Reports
   manage_school_menu:
     batch_reports: Batch reports
+    digital_signage: Digital signage
     edit_school_details: Edit school details
     edit_school_times: Edit school times
     expert_analysis: Expert analysis
@@ -67,6 +89,7 @@ en:
     manage_audits: Manage Audits
     manage_cads: Manage CADs
     manage_issues: Manage issues
+    manage_manual_readings: Supply historical manual readings
     manage_meters: Manage meters
     manage_partners: Manage partners
     manage_school: Manage School
@@ -79,25 +102,30 @@ en:
     school_calendar: School calendar
     school_configuration: School configuration
     your_school_estate: Your school estate
+  my_school_group_menu:
+    group_dashboard: Group dashboard
+    my_school_group: My school group
   my_school_menu:
-    complete_pupil_activities: Complete pupil activities
     download_our_data: Download our data
     electricity_and_solar_usage: Electricity and solar usage
     electricity_usage: Electricity usage
     energy_analysis: Energy analysis
-    energy_audits: Energy audits
-    energy_saving_actions: Energy saving actions
     gas_usage: Gas usage
     live_energy_data: Live energy data
     my_alerts: My alerts
     my_school: My school
     my_school_group: My school group
+    recommended_activities: Recommended activities
     review_targets: Review targets
     school_programmes: School programmes
     scoreboard: Scoreboard
     storage_heater_usage: Storage heater usage
   nav:
+    back_to_dashboard: Back to dashboard
     enrol: Enrol
+    my_account: My account
+    my_schools: My schools
+    points: "%{count} points"
     sign_in: Sign In
     sign_out: Sign Out
   our_schools_menu:
@@ -106,21 +134,16 @@ en:
     scoreboards: Scoreboards
     view_schools: View schools
   our_services_menu:
-    case_studies: Case Studies
-    educational_workshops: Educational workshops
+    case_studies: Case studies
+    educational_workshops: Education workshops
     energy_audits: Energy audits
-    for_local_authorities: For Local Authorities
-    for_multi_academy_trusts: For Multi-Academy Trusts
-    for_schools: For Schools
+    energy_management_tool: Energy management tool
     newsletters: Newsletters
     our_services: Our services
-    pricing: Pricing
     training: Training
     videos: Videos
   partners:
     supports_in_partnership_with: Energy Sparks supports %{school_name} in partnership with
-  switch_schools_menu:
-    switch_school: Switch school
   terms_and_conditions:
     message_html: I confirm agreement with the Energy Sparks %{terms_and_conditions_link} and %{privacy_policy_link}
   timeline:

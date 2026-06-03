@@ -21,7 +21,7 @@ class SchoolFilter
   private
 
   def schools_from_school_groups(schools)
-    schools.where(school_group_id: @school_group_ids)
+    schools.joins(:school_groupings).where(school_groupings: { school_group_id: @school_group_ids })
   end
 
   def schools_from_scoreboards(schools)

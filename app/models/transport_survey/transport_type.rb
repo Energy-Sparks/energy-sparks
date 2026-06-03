@@ -2,10 +2,9 @@
 #
 # Table name: transport_types
 #
+#  id                :bigint(8)        not null, primary key
 #  can_share         :boolean          default(FALSE), not null
 #  category          :integer
-#  created_at        :datetime         not null
-#  id                :bigint(8)        not null, primary key
 #  image             :string           not null
 #  kg_co2e_per_km    :decimal(, )      default(0.0), not null
 #  name              :string
@@ -13,6 +12,7 @@
 #  park_and_stride   :boolean          default(FALSE), not null
 #  position          :integer          default(0), not null
 #  speed_km_per_hour :decimal(, )      default(0.0), not null
+#  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
 # Indexes
@@ -35,7 +35,7 @@ class TransportSurvey::TransportType < ApplicationRecord
   validates :kg_co2e_per_km, :speed_km_per_hour, :position, numericality: { greater_than_or_equal_to: 0 }
   validates :name, uniqueness: true
 
-  enum category: [:walking_and_cycling, :car, :public_transport, :park_and_stride]
+  enum :category, { walking_and_cycling: 0, car: 1, public_transport: 2, park_and_stride: 3 }
 
   def self.app_data
     all.select(:id, :name, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride).index_by(&:id)
@@ -47,6 +47,7 @@ class TransportSurvey::TransportType < ApplicationRecord
 
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Transport type has associated responses' if responses.any?
+
     destroy
   end
 
@@ -58,6 +59,6 @@ class TransportSurvey::TransportType < ApplicationRecord
   # override default key and slug to use original name pre-moving to module
   # keeps in sync with the data already in transifex
   def resource_key
-    "transport_type_#{self.id}"
+    "transport_type_#{id}"
   end
 end

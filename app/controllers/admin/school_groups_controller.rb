@@ -2,26 +2,33 @@ module Admin
   class SchoolGroupsController < AdminController
     load_and_authorize_resource
 
+    before_action :enable_bootstrap5, only: [:show]
+
     def index
+      @group_type = group_type
+      @organisation_group = organisation_group?
+      @school_groups = SchoolGroup.by_group_type(@group_type)
       respond_to do |format|
         format.html { @school_groups = @school_groups.by_name }
         format.csv do
-          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.by_name).export_detail,
+          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.by_name, include_total: @organisation_group).export_detail,
           filename: ::SchoolGroups::CsvGenerator.filename
         end
       end
     end
 
     def new
+      redirect_to admin_path and return if ['diocese', 'local_authority_area'].include?(group_type)
+      @school_group = SchoolGroup.build(group_type: group_type)
     end
 
     def edit
-      @schools = @school_group.schools.by_name
+      @schools = @school_group.assigned_schools.by_name
     end
 
     def create
       if @school_group.save
-        redirect_to admin_school_groups_path, notice: 'School group was successfully created.'
+        redirect_to admin_school_groups_path(group_type: @school_group.group_type), notice: 'School group was successfully created.'
       else
         render :new
       end
@@ -52,7 +59,6 @@ module Admin
         :default_scoreboard_id,
         :default_template_calendar_id,
         :default_dark_sky_area_id,
-        :default_solar_pv_tuos_area_id,
         :default_weather_station_id,
         :default_chart_preference,
         :default_issues_admin_user_id,
@@ -67,6 +73,14 @@ module Admin
         :default_procurement_route_gas_id,
         :default_procurement_route_solar_pv_id,
       )
+    end
+
+    def group_type
+      params[:group_type] || 'multi_academy_trust'
+    end
+
+    def organisation_group?
+      SchoolGroup::ORGANISATION_GROUP_TYPE_KEYS.include?(group_type)
     end
   end
 end

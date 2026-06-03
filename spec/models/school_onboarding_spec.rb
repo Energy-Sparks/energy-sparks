@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 describe SchoolOnboarding, type: :model do
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:contact_email) }
+    it { is_expected.to allow_value('test@example.com').for(:contact_email) }
+    it { is_expected.not_to allow_value('\xE2\x80\x8Btest@example.com').for(:contact_email) }
+  end
+
   context 'knows when it has only done an email send and or reminder email' do
     it 'with an email sent' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
@@ -104,7 +110,6 @@ describe SchoolOnboarding, type: :model do
       let(:school_group) do
         create(:school_group,
           default_template_calendar: create(:regional_calendar),
-          default_solar_pv_tuos_area: create(:solar_pv_tuos_area),
           default_dark_sky_area: create(:dark_sky_area),
           default_weather_station: create(:weather_station),
           default_scoreboard: create(:scoreboard),
@@ -121,7 +126,6 @@ describe SchoolOnboarding, type: :model do
 
       it 'copies default values from the group' do
         expect(school_onboarding.template_calendar).to eq(school_group.default_template_calendar)
-        expect(school_onboarding.solar_pv_tuos_area).to eq(school_group.default_solar_pv_tuos_area)
         expect(school_onboarding.dark_sky_area).to eq(school_group.default_dark_sky_area)
         expect(school_onboarding.weather_station).to eq(school_group.default_weather_station)
         expect(school_onboarding.scoreboard).to eq(school_group.default_scoreboard)
@@ -129,5 +133,24 @@ describe SchoolOnboarding, type: :model do
         expect(school_onboarding.country).to eq(school_group.default_country)
       end
     end
+
+    context 'with a diocese and local authority area' do
+      let!(:establishment) { create(:establishment, la_code: 343, diocese_code: 'CE99')}
+      let!(:diocese) { create(:school_group, group_type: :diocese, dfe_code: 'CE99') }
+      let!(:area) { create(:school_group, group_type: :local_authority_area, dfe_code: 343) }
+
+      let(:school_onboarding) { create(:school_onboarding, urn: establishment.id) }
+
+      before do
+        school_onboarding.populate_default_values(user)
+      end
+
+      it 'finds the groups' do
+        expect(school_onboarding.diocese).to eq(diocese)
+        expect(school_onboarding.local_authority_area).to eq(area)
+      end
+    end
   end
+
+  it_behaves_like 'restricted school group association', :school_onboarding
 end

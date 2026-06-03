@@ -1,0 +1,19 @@
+<div id="<%= section_id %>" class="row mt-2 mb-2">
+  <div class="col">
+    <h2><%= title %></h2>
+    <% prompts.each do |prompt| %>
+      <%= render PromptComponent.new id: prompt[:id].to_s.dasherize,
+                                     status: status,
+                                     style: :compact,
+                                     icon: icon do |c| %>
+        <% c.with_link { link_to prompt[:link], prompt[:path] } %>
+        <p>
+          <%= prompt[:msg] %>
+        </p>
+      <% end %>
+    <% end %>
+    <% unless prompts.any? %>
+      <p>Nothing to report</p>
+    <% end %>
+  </div>
+</div>

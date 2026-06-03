@@ -2,7 +2,15 @@
 
 $(document).ready(function() {
 
-  $('select.form-control.select2').select2({theme: 'bootstrap'});
+  $.fn.select2.defaults.set('sorter', function(datas) { return datas.filter((data) => !data?.element?.hidden); });
+
+  $('.bs4 select.form-control.select2').select2({theme: 'bootstrap'});
+  $('.bs5 select.form-select.select2').select2({theme: 'bootstrap-5'});
+
+  // Switch on select2 after cocoon insert. Needed for todos
+  $('.admin-todos').on('cocoon:after-insert', function(e, insertedItem) {
+    $(insertedItem).find('select.form-control.select2').select2({theme: 'bootstrap'});
+  });
 
   // When using select2 with bootstrap tabs
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

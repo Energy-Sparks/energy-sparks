@@ -1,24 +1,30 @@
 require 'rails_helper'
 
 describe NavHelper do
-  describe '#locale_switcher_buttons' do
-    it 'returns buttons for all available locales except the current locale' do
-      I18n.locale = 'en'
-      allow(helper).to receive(:url_for).and_return('http://cy.energysparks.uk/')
-      expect(helper.locale_switcher_buttons).to eq('<ul class="navbar-nav navbar-expand"><li class="nav-item pl-3 pr-3 nav-lozenge my-3px"><a href="http://cy.energysparks.uk/">Cymraeg</a></li></ul>')
-      I18n.locale = 'cy'
-      allow(helper).to receive(:url_for).and_return('http://energysparks.uk/')
-      expect(helper.locale_switcher_buttons).to eq('<ul class="navbar-nav navbar-expand"><li class="nav-item pl-3 pr-3 nav-lozenge my-3px"><a href="http://energysparks.uk/">English</a></li></ul>')
-      I18n.locale = 'en'
+  describe '#locale_name_for' do
+    it 'returns the name for a given locale' do
+      I18n.locale = :cy
+      expect(helper.locale_name_for('en')).to eq('English')
+      I18n.locale = :en
+      expect(helper.locale_name_for('cy')).to eq('Cymraeg')
     end
   end
 
-  describe '#locale_name_for' do
-    it 'returns the name for a given locale' do
-      I18n.locale = 'cy'
-      expect(helper.locale_name_for('en')).to eq('English')
-      I18n.locale = 'en'
-      expect(helper.locale_name_for('cy')).to eq('Cymraeg')
+  describe '#navigation_image_link' do
+    it 'links to the home page' do
+      expect(helper.navigation_image_link).to have_link(href: '/home-page')
+    end
+
+    it 'returns the Welsh logo' do
+      I18n.with_locale(:cy) do
+        expect(helper.navigation_image_link).to include 'navigation-brand-transparent-cy'
+      end
+    end
+
+    it 'returns the English logo' do
+      I18n.with_locale(:en) do
+        expect(helper.navigation_image_link).to include 'navigation-brand-transparent-en'
+      end
     end
   end
 

@@ -28,12 +28,14 @@ module Programmes
       end
     end
 
+    ## to be removed when todos feature removed
     def completed_activity(programme_type, activity_type)
       if user_and_school?
         programme_type.activity_of_type_for_school(school, activity_type)
       end
     end
 
+    ## to be removed when todos feature removed
     def completed_activity?(programme_type, activity_type)
       if user_and_school?
         completed_activity(programme_type, activity_type).present?

@@ -24,9 +24,11 @@ en:
       status: Status
       type: Type
     event_modal:
-      calendar_event: Calendar Event
+      edit_calendar_event: Edit Calendar Event
+      edit_existing: Edit Existing
       end_date: End Date
       event_type: Event Type
+      new_calendar_event: New Calendar Event
       save_changes: Save Changes
       start_date: Start Date
     legend:
@@ -50,7 +52,7 @@ en:
       all_calendars: All calendars
       amend_existing_events_message: You can amend existing events, like the term times by clicking on them, updating the dates and saving the changes
       calendar_view: Calendar view
-      confirm_message: This will copy all events that have been edited in the 7 days to child calendars. Are you sure?
+      confirm_message: This will copy all events that have been edited in the last 7 days to child calendars. Are you sure?
       current_events: Current events
       title: "%{calendar_title} Calendar"
       update_dependent_schools: Update dependent schools

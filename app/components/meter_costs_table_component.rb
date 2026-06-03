@@ -22,7 +22,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   # id: HTML id of the table
   # year_header: display year header row in table
   # month_format: change month format for month row
-  # precision: change rounding of numbers, see FormatEnergyUnit
+  # precision: change rounding of numbers, see FormatUnit
   def initialize(id: 'meter-costs-table', year_header: true, month_format: '%b', precision: :approx_accountant, monthly_costs:, change_in_costs: nil, school: nil, fuel_type: nil)
     @id = id
     @year_header = year_header
@@ -196,7 +196,7 @@ class MeterCostsTableComponent < ViewComponent::Base
 
   def format(value)
     return '-' if value.nil?
-    FormatEnergyUnit.format_pounds(:£, value, :text, @precision, true)
+    FormatUnit.format_pounds(:£, value, :text, @precision, true)
   end
 
   def mpan_mprn

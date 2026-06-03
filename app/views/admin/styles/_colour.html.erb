@@ -1,0 +1,7 @@
+<div class='col-lg-2 col-4'>
+  <div style='background-color:<%= hex %>; min-height: 130px;' class='p-3 m-1 border text-center overflow-auto'>
+    <%= "<strong>#{name}</strong><br>".html_safe if local_assigns[:name] %>
+    <%= "#{map}<br>".html_safe if local_assigns[:map].is_a?(Symbol) %>
+    <small><%= hex %></small>
+  </div>
+</div>

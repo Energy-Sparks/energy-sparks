@@ -8,9 +8,9 @@ class MeterManagement
     subscribe(Targets::FuelTypeEventListener.new)
   end
 
-  def process_creation!
+  def process_creation!(user)
     assign_amr_data_feed_readings
-    DccCheckerJob.perform_later(@meter) if Meter.main_meter.exists?(@meter.id)
+    DccCheckerJob.perform_later(@meter, user.email) if user.admin? && Meter.main_meter.exists?(@meter.id)
   end
 
   def process_mpan_mpnr_change!
@@ -24,9 +24,7 @@ class MeterManagement
   def delete_meter!
     @meter.transaction do
       AggregateSchoolService.new(@meter.school).invalidate_cache
-      if @meter.can_withdraw_consent?
-        Meters::DccWithdrawTrustedConsents.new([@meter]).perform
-      end
+      Meters::DccWithdrawTrustedConsents.new([@meter]).perform if @meter.can_withdraw_consent?
       @meter.destroy
     end
   end
@@ -35,9 +33,7 @@ class MeterManagement
     result = true
     @meter.transaction do
       @meter.update!(active: true)
-      if @meter.can_grant_consent?
-        result = Meters::DccGrantTrustedConsents.new([@meter]).perform
-      end
+      result = Meters::DccGrantTrustedConsents.new([@meter]).perform if @meter.can_grant_consent?
     end
     broadcast(:meter_activated, @meter)
     result

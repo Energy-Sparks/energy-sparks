@@ -1,0 +1,45 @@
+<% programme = programme_type.programme_for_school(current_user_school) if current_user_school %>
+
+<div class="row mt-4">
+  <div class="col-sm-2">
+    <%= link_to programme_type_path(programme_type) do %>
+      <%= render 'programme_types/image', programme_type: programme_type, css_class: 'activity-card-img' %>
+    <% end %>
+  </div>
+  <div class="col-sm-8">
+    <h4><strong>
+      <%= link_to programme_type.title, programme_type_path(programme_type), style: 'text-decoration: none;' %>
+    </strong></h4>
+    <% if programme&.completed? %>
+      <p>
+        <span class="h4 check">
+          <%= fa_icon('flag-checkered text-success') %>
+        </span>
+        <%= t('programme_types.cards.you_have_already_completed_this_programme') %>
+      </p>
+    <% elsif programme&.started? %>
+      <p>
+        <span class="h4 check">
+          <%= far_icon('check-circle text-success') %>
+        </span>
+        <%= t('programme_types.cards.you_have_already_started_this_programme') %>
+        </p>
+    <% end %>
+    <p>
+      <%= programme_type.short_description %>
+    </p>
+    <p>
+      <%= render 'intention', programme_type: %>
+    </p>
+    <p><%= t('programme_types.cards.bonus_points_html',
+             bonus_score: tag.span(programme_type.bonus_score, class: 'badge badge-success')) %></p>
+  </div>
+  <div class="col-sm-2 align-self-center">
+    <% if programme&.started? %>
+      <%= link_to t('programme_types.cards.continue'), programme_type_path(programme_type),
+                  class: 'btn btn-primary btn-lg' %>
+    <% else %>
+      <%= link_to t('programme_types.cards.view'), programme_type_path(programme_type), class: 'btn btn-primary btn-lg' %>
+    <% end %>
+  </div>
+</div>

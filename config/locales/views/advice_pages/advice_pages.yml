@@ -15,6 +15,7 @@ en:
         title: Long term trends
       recent_trend:
         title: Recent trend
+    authorisation_failed: Only an admin or staff user for this school can access this content
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
@@ -25,6 +26,8 @@ en:
     charts:
       controls:
         select_meter: Select a meter
+      the_whole_school: the whole school
+      whole_school: Whole school
     error:
       data_warning: We have not received data for your %{fuel_type} usage for over thirty days. As a result your analysis will be out of date and may not reflect recent changes in your school.
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
@@ -39,10 +42,12 @@ en:
     how_have_we_analysed_your_data:
       calculations_based_on_fuel_type: Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}
       cost_calculations: Cost calculations
-      cost_calculations_introduction_html: |-
-        <p>Consumption costs are estimated based on historic tariff information</p>
-        <p>Future savings are estimates based on your school's latest tariff information</p>
-        <p>Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs</p>
+      cost_calculations_introduction:
+      - Consumption costs are calculated based on the unit prices of energy and do not take into account standing charges or other fees.
+      - Tariffs may be based on MAT or Local Authority averages, or an Energy Sparks default, if your school has not provided their actual tariffs.
+      - Consumption costs are estimated based on historic tariff information.
+      - Future savings are estimates based on your school's latest tariff information.
+      - Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs.
       energy_data: Energy data
       link_title: How did we calculate these figures?
       page_title: How have we analysed your data?
@@ -59,9 +64,10 @@ en:
           type: Type
       school_comparisons: School comparisons
       school_comparisons_introduction_html: |-
-        <p>School comparisons are based on benchmarking your school against comparable schools based on the characteristics outlined below.</p>
+        <p>Comparisons are based on benchmarking a school against a comparable school based on the characteristics outlined above.</p>
         <p>"<strong>Exemplar</strong>" schools represent the top 17.5% of Energy Sparks schools</p>
         <p>"<strong>Well managed</strong>" schools represent the top 30% of Energy Sparks schools</p>
+        <p>Potential savings are based on a school reducing its usage to match those of an Exemplar school with similar characteristics.</p>
       total_energy_use_table:
         columns:
           aggregated_meter_date_range: Meter date range
@@ -74,7 +80,8 @@ en:
         title: What should you do next?
     loading_data: Loading data...
     nav:
-      name: Advice
+      manage_targets: Manage target
+      overview: Overview
       pages:
         baseload: Baseload
         electricity_costs: Tariffs and costs
@@ -83,17 +90,19 @@ en:
         electricity_meter_breakdown: Meter comparisons
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
+        electricity_target: Target
         gas_costs: Tariffs and costs
         gas_long_term: Long term changes
         gas_meter_breakdown: Meter comparisons
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
+        gas_target: Target
         heating_control: Heating control
         hot_water: Hot water
         solar_pv: Solar PV
+        storage_heater_target: Target
         storage_heaters: Storage heaters
         thermostatic_control: Thermostatic control
-        total_energy_use: Energy use summary
       sections:
         electricity: Electricity
         gas: Gas
@@ -103,6 +112,9 @@ en:
       message: We don't currently have %{fuel_type} data for your school, so are unable to run this analysis
       title: Unable to run requested analysis
     no_recent_data: no recent data
+    no_usage:
+      message: Our data shows that since %{date} your school has not used any %{fuel_type} out of hours. At present we are unable to provide further analysis.
+      title: No usage to report
     not_enough_data:
       available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
       learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.

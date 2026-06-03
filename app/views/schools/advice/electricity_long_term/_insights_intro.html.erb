@@ -1,4 +1,4 @@
-<%= component 'notice', status: :neutral do |c| %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <% c.with_link do
        link_to t('advice_pages.electricity_long_term.what_is_long_term_use.link'),
                learn_more_school_advice_electricity_long_term_path(school)

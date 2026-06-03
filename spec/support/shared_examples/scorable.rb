@@ -5,6 +5,7 @@ RSpec.shared_examples 'a scorable' do
       (1..5).collect do |n|
         create(:school, :with_points, score_points: 6 - n, scoreboard: scoreboard, school_group: school_group,
                                       activities_happened_on: activity_date,
+                                      calendar: subject.scorable_calendar,
                                       template_calendar: subject.scorable_calendar)
       end
     end

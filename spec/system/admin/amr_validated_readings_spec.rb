@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'meter reports', :amr_validated_readings, type: :system do
   let(:school_name)   { 'Oldfield Park Infants'}
   let!(:school)       { create(:school, :with_school_group, name: school_name)}
-  let!(:admin)        { create(:admin)}
+  let!(:admin)        { create(:admin) }
   let!(:meter)        { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school) }
 
   before do
@@ -23,7 +23,7 @@ RSpec.describe 'meter reports', :amr_validated_readings, type: :system do
 
     it 'links to a rich calendar view', js: true do
       click_on(meter.name.to_s)
-      expect(page).to have_content 'Report for meter'
+      expect(page).to have_content 'This report provides a calendar view of the validated meter readings'
       expect(page).to have_content 'January'
     end
 

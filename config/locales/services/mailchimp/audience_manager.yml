@@ -1,0 +1,20 @@
+---
+en:
+  mailchimp:
+    audience_manager:
+      interests:
+        energy_saving_leadership:
+          description_html: Are you struggling to get your colleagues to take action on energy saving? Sign up to receive ideas on how to build a community effort around cutting energy costs and carbon. You’ll receive advice, tips and inspirational success stories. We have advice for leaders within schools (including sustainability leads), as well as those from Multi-Academy Trusts. Sent at the start of each term.
+          name: Energy saving leadership
+        engaging_pupils_in_energy_saving_and_climate:
+          description_html: You’ll receive activity suggestions, resources, inspiration and success stories from other schools to help you engage pupils in energy saving and climate action. You’ll also receive updates on fun competitions. Sent at the end of each half-term.
+          name: Engaging pupils in energy saving and climate
+        getting_the_most_out_of_energy_sparks:
+          description_html: You’ll receive tips, ideas and inspiration to help you maximise energy saving and pupil engagement across your school estate(s). Sent monthly.
+          name: Getting the most out of Energy Sparks
+        tailored_advice_and_support:
+          description_html: From time to time, we would like to send you emails with tailored advice and support based on observations of your school's energy data and the energy management challenges we believe your school may be facing.
+          name: Tailored advice and support
+        training_opportunities:
+          description_html: Energy Sparks runs a series of free online training sessions to help you get the most out of our platform. Sign up to hear about the training opportunities available each half-term.
+          name: Training opportunities

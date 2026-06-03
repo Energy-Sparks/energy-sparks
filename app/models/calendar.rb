@@ -2,12 +2,12 @@
 #
 # Table name: calendars
 #
-#  based_on_id   :bigint(8)
-#  calendar_type :integer
-#  created_at    :datetime         not null
 #  id            :bigint(8)        not null, primary key
+#  calendar_type :integer
 #  title         :string           not null
+#  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  based_on_id   :bigint(8)
 #
 # Indexes
 #
@@ -27,20 +27,34 @@ class Calendar < ApplicationRecord
 
   has_many    :schools
 
-  validates_presence_of :title
+  validates :title, presence: true
 
   delegate :terms, :holidays, :bank_holidays, :inset_days, :outside_term_time, to: :calendar_events
 
-  enum calendar_type: [:national, :regional, :school]
+  # NB: A school calendar is always based on a regional calendar which is in turn based on a national calendar
+  # Currently academic years are only attached to national calendars
+  enum :calendar_type, { national: 0, regional: 1, school: 2 }
 
   scope :template, -> { regional }
+
+  def self.default_national
+    national.find_by(title: 'England and Wales')
+  end
 
   def valid_calendar_event_types
     national? ? CalendarEventType.bank_holiday : CalendarEventType.all
   end
 
   def academic_year_for(date)
-    academic_years.for_date(date).first || based_on && based_on.academic_year_for(date)
+    academic_years.for_date(date).first || (based_on && based_on.academic_year_for(date))
+  end
+
+  def current_academic_year
+    academic_year_for(Time.zone.today)
+  end
+
+  def national_calendar
+    national? ? self : based_on&.national_calendar
   end
 
   def terms_and_holidays
@@ -52,7 +66,7 @@ class Calendar < ApplicationRecord
   end
 
   def holiday_approaching?(today: Time.zone.today)
-    next_after_today = next_holiday(today: today)
+    next_after_today = next_holiday(today:)
     next_after_today.present? && (next_after_today.start_date - today <= 7)
   end
 end

@@ -8,26 +8,23 @@ RSpec.describe 'School Partners', :schools, type: :system do
 
 
   context 'as admin' do
-    context 'when managing partners' do
+    context 'when managing partners', with_feature: :new_manage_school_pages do
       let!(:partner_1)         { create(:partner) }
       let!(:partner_2)         { create(:partner) }
       let!(:partner_3)         { create(:partner) }
 
       before do
         sign_in(admin)
-        visit school_path(school)
+        visit settings_school_path(school)
+        click_on 'Manage partners'
       end
 
-      it 'has a partner link on the school group page' do
-        click_on 'Manage partners'
-
+      it 'has a partner link on the school settings page' do
         expect(page).to have_content(school_name)
         expect(page).to have_content(partner_1.display_name)
       end
 
-      it 'assigns partners to school groups via text box position' do
-        click_on 'Manage partners'
-
+      it 'assigns partners to schools via text box position' do
         expect(page.find_field(partner_1.name).value).to be_blank
         expect(page.find_field(partner_2.name).value).to be_blank
         expect(page.find_field(partner_3.name).value).to be_blank

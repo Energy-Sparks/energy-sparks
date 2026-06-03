@@ -1,0 +1,5 @@
+<h2>Default</h2>
+
+<%= simple_form_for([:admin, ActivityType.new]) do |form| %>
+  <%= render(Forms::TrixComponent.new(form: form, field: :description)) %>
+<% end %>

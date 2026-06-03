@@ -3,12 +3,25 @@ require 'rails_helper'
 RSpec.describe 'intervention type groups', type: :system do
   let!(:intervention_type_1) { create(:intervention_type) }
   let!(:intervention_type_2) { create(:intervention_type) }
+  let!(:programme_types) { create_list(:programme_type, 4, :with_todos) }
 
   let(:user) { }
 
   before do
     sign_in(user) if user.present?
     visit intervention_type_groups_path
+  end
+
+  context with_feature: :todos do
+    before { refresh }
+
+    it 'shows programmes' do
+      expect(page).to have_content('Our Programmes')
+      programme_types.each do |programme_type|
+        expect(page).to have_content(programme_type.title)
+        expect(page).to have_link(href: programme_type_path(programme_type))
+      end
+    end
   end
 
   context 'when user is not logged in' do

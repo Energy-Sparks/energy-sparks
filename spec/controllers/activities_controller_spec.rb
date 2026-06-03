@@ -22,20 +22,6 @@ RSpec.describe ActivitiesController do
     { happened_on: nil }
   end
 
-  describe 'GET #index' do
-    it "assigns all school's activities as @activities" do
-      activity = create(:activity, school_id: school.id)
-      get :index, params: { school_id: school.id }
-      expect(assigns(:activities)).to include activity
-    end
-
-    it 'does not include activities from other schools' do
-      activity = create(:activity, school_id: different_school.id)
-      get :index, params: { school_id: school.id }
-      expect(assigns(:activities)).not_to include activity
-    end
-  end
-
   describe 'GET #show' do
     it 'assigns the requested activity as @activity' do
       activity = create(:activity, school_id: school.id)
@@ -169,7 +155,7 @@ RSpec.describe ActivitiesController do
       sign_in(admin)
     end
 
-    context 'with invalid params' do
+    context 'with invalid params', toggle_feature: :todos do
       before do
         post :create, params: { school_id: school.id, activity: invalid_attributes }
       end
@@ -183,7 +169,7 @@ RSpec.describe ActivitiesController do
       end
     end
 
-    context 'with valid params' do
+    context 'with valid params', toggle_feature: :todos do
       before do
         post :create, params: { school_id: school.id, activity: valid_attributes }
       end

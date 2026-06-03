@@ -1,0 +1,39 @@
+<% if user.confirmed_at %>
+  <div id='profile-footer'>
+    <div class="row mt-4 mb-4">
+      <div class="col col-md-12">
+        <%= t('users.show.joined', date: nice_date_times(user.confirmed_at)) %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<% if current_user.admin? %>
+  <div id="admin-options" class="mt-4 mb-4 alert alert-secondary row">
+    <div class="col">
+      <p>
+        <strong>Admin options</strong>
+      </p>
+      <%= if user.mailchimp_status
+            link_to 'View in Mailchimp', admin_user_mailchimp_redirect_path(user), class: 'btn btn-sm btn-secondary'
+          end %>
+      <%= unless user.confirmed?
+            button_to 'Resend confirmation', admin_user_confirmation_path(user),
+                      class: 'btn btn-warning btn-sm'
+          end %>
+      <% if user.active %>
+        <%= link_to 'Disable', admin_user_disable_path(user_id: user.id),
+                    class: 'btn btn-warning btn-sm' %>
+      <% else %>
+        <%= link_to 'Enable', admin_user_enable_path(user_id: user.id),
+                    class: 'btn btn-warning btn-sm' %>
+      <% end %>
+      <% if user.access_locked? %>
+        <%= link_to 'Unlock', admin_user_unlock_path(user_id: user.id),
+                    class: 'btn btn-warning btn-sm' %>
+      <% end %>
+      <%= link_to 'Delete', admin_user_path(user), method: :delete,
+                                                   data: { confirm: 'Are you sure?' },
+                                                   class: 'btn btn-danger btn-sm' %>
+    </div>
+  </div>
+<% end %>

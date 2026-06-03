@@ -12,16 +12,24 @@ describe Tables::SummaryTableData do
   #       :year => {
   #         :kwh => 108_827.5394000001,
   #         :co2 => 21_333.057423499995,
-  #         :£ => 16_324.130910000014,
-  #         :savings_£ => 967.8809100000144,
+  #         :gbp => 16_324.130910000014,
+  #         :savings_gbp => 967.8809100000144,
   #         :percent_change => 0.11050720181070751
   #       },
+  #       :last_month => {
+  #         :recent => "",
+  #         :kwh => 1205.2192,
+  #         :co2 => 150.84771050000003,
+  #         :gbp => 180.78288,
+  #         :savings_gbp => "-",
+  #         :percent_change => "-"
+  #       }
   #       :workweek => {
   #         :recent => "",
   #         :kwh => 1205.2192,
   #         :co2 => 150.84771050000003,
-  #         :£ => 180.78288,
-  #         :savings_£ => "-",
+  #         :gbp => 180.78288,
+  #         :savings_gbp => "-",
   #         :percent_change => "-"
   #       }
   #     },
@@ -35,8 +43,8 @@ describe Tables::SummaryTableData do
   #         :recent => "No recent data",
   #         :kwh => 4930.7751,
   #         :co2 => 1035.462771,
-  #         :£ => 147.923253,
-  #         :savings_£ => "-",
+  #         :gbp => 147.923253,
+  #         :savings_gbp => "-",
   #         :percent_change => "-"
   #       }
   #     }
@@ -55,8 +63,8 @@ describe Tables::SummaryTableData do
   #         :recent => false,
   #         :kwh => 4930.7751,
   #         :co2 => 1035.462771,
-  #         :£ => 147.923253,
-  #         :savings_£ => "-",
+  #         :gbp => 147.923253,
+  #         :savings_gbp => "-",
   #         :percent_change => "-"
   #       }
   #     }
@@ -112,12 +120,13 @@ describe Tables::SummaryTableData do
 
   describe 'when period has data' do
     let(:template_data) do
-      { electricity: { year: { kwh: '123' }, workweek: { co2: '456' } } }
+      { electricity: { year: { kwh: '123' }, workweek: { co2: '456' }, last_month: { co2: '456' } } }
     end
 
     it 'shows status' do
-      expect(subject.by_fuel_type.first.has_data).to be_truthy
-      expect(subject.by_fuel_type.second.has_data).to be_truthy
+      subject.by_fuel_type.each do |fuel_type|
+        expect(fuel_type.has_data).to be_truthy
+      end
     end
   end
 
@@ -158,7 +167,7 @@ describe Tables::SummaryTableData do
 
   describe 'when 1 fuel type' do
     let(:template_data) do
-      { electricity: { year: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 }, workweek: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 } } }
+      { electricity: { year: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 }, workweek: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 } } }
     end
 
     it 'gives 2 entries' do
@@ -167,10 +176,12 @@ describe Tables::SummaryTableData do
 
     it 'gives annual data' do
       expect(subject.by_fuel_type.second.period).to eq('Last year')
+      expect(subject.by_fuel_type.second.period_key).to eq(:year)
     end
 
     it 'gives last week data' do
       expect(subject.by_fuel_type.first.period).to eq('Last week')
+      expect(subject.by_fuel_type.first.period_key).to eq(:workweek)
     end
   end
 
@@ -196,7 +207,7 @@ describe Tables::SummaryTableData do
 
   describe 'annual usage, co2, costs, savings' do
     let(:template_data) do
-      { electricity: { year: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 } } }
+      { electricity: { year: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 } } }
     end
 
     it 'shows usage' do
@@ -213,6 +224,16 @@ describe Tables::SummaryTableData do
 
     it 'shows savings' do
       expect(subject.by_fuel_type.second.savings).to eq('&pound;7.77')
+    end
+
+    context 'when one value is missing' do
+      let(:template_data) do
+        { electricity: { year: { kwh: 12.3, co2: nil, gbp: 6.6611, savings_gbp: 7.77 } } }
+      end
+
+      it 'returns empty string' do
+        expect(subject.by_fuel_type.first.co2).to eq('')
+      end
     end
   end
 

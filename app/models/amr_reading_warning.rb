@@ -2,18 +2,18 @@
 #
 # Table name: amr_reading_warnings
 #
-#  amr_data_feed_import_log_id :bigint(8)        not null
-#  created_at                  :datetime         not null
-#  fuel_type                   :string
 #  id                          :bigint(8)        not null, primary key
+#  fuel_type                   :string
 #  mpan_mprn                   :text
 #  reading_date                :text
 #  readings                    :text             is an Array
-#  school_id                   :integer
-#  updated_at                  :datetime         not null
 #  warning                     :integer
 #  warning_message             :text
 #  warning_types               :integer          is an Array
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  amr_data_feed_import_log_id :bigint(8)        not null
+#  school_id                   :integer
 #
 # Indexes
 #
@@ -38,7 +38,8 @@ class AmrReadingWarning < ApplicationRecord
     6 => :duplicate_reading
   }.freeze
 
-  enum warning: [:blank_readings, :missing_readings, :missing_mpan_mprn, :missing_reading_date, :invalid_reading_date]
+  enum :warning, { blank_readings: 0, missing_readings: 1, missing_mpan_mprn: 2, missing_reading_date: 3,
+                   invalid_reading_date: 4 }
 
   def messages
     warning_symbols.map { |warning_symbol| AmrReadingData::WARNINGS[warning_symbol] }.join(', ')

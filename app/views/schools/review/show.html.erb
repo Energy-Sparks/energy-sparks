@@ -1,0 +1,83 @@
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: t('schools.review.title', school_name: @school.name) do %>
+  <% if current_user.admin? && @school&.school_group %>
+    <div class='row mb-2'>
+      <div class="col d-flex justify-content-end align-items-baseline">
+          <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school&.school_group %>
+          <%= if @school.issues.status_open.any?
+                link_to "View school issues (#{@school.issues.status_open.count})",
+                        admin_school_issues_path(school_id: @school.slug),
+                        class: 'btn btn-sm btn-secondary'
+              end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row mt-4 mb-4">
+    <div class="col">
+      <p>
+        This page checks the current configuration of this school to identify possible errors that need to be
+        resolved before making the school data visible.
+      </p>
+      <p>
+        It also provides warnings about other aspects of the school setup that might be problematic for the
+        analysis or in terms of encouraging school engagement.
+      </p>
+    </div>
+  </div>
+
+  <%= render 'prompts',
+             section_id: 'errors',
+             title: 'Errors',
+             prompts: @errors,
+             status: :negative,
+             icon: 'exclamation' %>
+
+  <%= render 'prompts',
+             section_id: 'warnings',
+             title: 'Warnings',
+             prompts: @warnings,
+             status: :neutral,
+             icon: 'question' %>
+
+  <div class="row mt-4 mb-4">
+    <div class="col" id="review-buttons">
+      <% if can?(:change_data_processing, @school) %>
+        <% if @school.process_data? %>
+          <%= link_to 'Process data',
+                      school_data_processing_path(@school),
+                      class: 'btn btn-success',
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %>
+        <% else %>
+          <%= link_to 'Process data',
+                      school_data_processing_path(@school),
+                      class: 'btn btn-danger',
+                      method: :post,
+                      data: { confirm: 'Are you sure?' } %>
+        <% end %>
+      <% end %>
+
+      <% if can?(:change_data_enabled, @school) %>
+        <% if @school.data_enabled? %>
+          <%= link_to 'Data visible',
+                      school_data_enabled_path(@school),
+                      class: 'btn btn-success',
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %>
+        <% else %>
+          <%= link_to 'Data visible',
+                      school_data_enabled_path(@school),
+                      class: 'btn btn-danger',
+                      method: :post,
+                      data: { confirm: 'Are you sure?' } %>
+        <% end %>
+      <% end %>
+      <%= if @school.issues.status_open.any?
+            link_to "View school issues (#{@school.issues.status_open.count})",
+                    admin_school_issues_path(school_id: @school.slug),
+                    class: 'btn btn-secondary'
+          end %>
+    </div>
+  </div>
+<% end %>

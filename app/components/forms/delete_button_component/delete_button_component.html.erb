@@ -1,0 +1,6 @@
+<%= render Elements::ButtonComponent.new(@name,
+                                         @url,
+                                         size: @size,
+                                         rel: 'nofollow',
+                                         data: { method: :delete, confirm: 'Are you sure?' },
+                                         style: :danger) %>

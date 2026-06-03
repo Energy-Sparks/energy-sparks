@@ -1,0 +1,19 @@
+/* For pupil's dashboard */
+
+#pupil_password{
+  font-size: 200%;
+}
+
+div.public-display-logo {
+  border-radius: $border-radius-lg;
+  background-color: #192a52;
+  height: 60px;
+  margin-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 16px;
+  padding-left: 16px;
+  img {
+    height: 40px;
+  }
+}

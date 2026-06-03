@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   module Advice
     class ThermostaticControlController < AdviceBaseController
@@ -7,14 +9,13 @@ module Schools
       end
 
       def analysis
-        @analysis_dates = analysis_dates
         @heating_thermostatic_analysis = thermostatic_analysis_service.thermostatic_analysis
       end
 
       private
 
       def thermostatic_analysis_service
-        @thermostatic_analysis_service ||= Schools::Advice::ThermostaticAnalysisService.new(@school, aggregate_school)
+        @thermostatic_analysis_service ||= Schools::Advice::ThermostaticAnalysisService.new(@school, aggregate_school_service)
       end
 
       def create_analysable

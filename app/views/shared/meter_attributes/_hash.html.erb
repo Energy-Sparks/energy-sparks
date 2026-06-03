@@ -7,12 +7,12 @@
       end %>
   <%= form.hint field.hint %>
 
-  <% if field_name != 'root' && can_ignore_children?(field) %>
+  <% if field_name.to_s != 'root' && can_ignore_children?(field) %>
     <%= check_box_tag 'disable', false, false, { title: 'Disable section', class: 'disable-attributes' } %>
     <%= label_tag 'disabled-label', '(disabled)', class: 'hidden disabled-label' %>
   <% end %>
 
-  <div class="<%= 'ml-5' unless field_name == 'root' %>">
+  <div class="<%= 'ml-5' unless field_name.to_s == 'root' %>">
     <%= form.simple_fields_for field_name do |form| %>
       <% field.structure.each do |key, structure| %>
         <%= render "shared/meter_attributes/#{structure.type}", value: value ? value[key.to_s] : nil,

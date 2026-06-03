@@ -4,7 +4,7 @@
 
 <p><%= t('advice_pages.electricity_long_term.analysis.meter_breakdown.summary') %></p>
 
-<%= component 'chart', chart_type: :group_by_week_electricity_meter_breakdown_one_year, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: :group_by_week_electricity_meter_breakdown_one_year, school: school) do |c| %>
   <% c.with_title do
        t('advice_pages.electricity_long_term.charts.group_by_week_electricity_meter_breakdown_one_year.title')
      end %>

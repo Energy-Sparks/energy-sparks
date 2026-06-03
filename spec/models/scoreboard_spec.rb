@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe Scoreboard, :scoreboards, type: :model do
-  let!(:scoreboard) { create :scoreboard }
-
-  subject { scoreboard }
+  subject!(:scoreboard) { create(:scoreboard) }
 
   describe 'abilities' do
     let(:ability) { Ability.new(user) }
@@ -22,7 +20,7 @@ describe Scoreboard, :scoreboards, type: :model do
     end
 
     context 'private scoreboard' do
-      let!(:scoreboard) { create :scoreboard, public: false }
+      subject!(:scoreboard) { create :scoreboard, public: false }
 
       context 'guests' do
         it { expect(ability).not_to be_able_to(:read, scoreboard) }
@@ -52,7 +50,7 @@ describe Scoreboard, :scoreboards, type: :model do
 
   describe '#safe_destroy' do
     it 'does not let you delete if there is an associated school' do
-      create(:school, scoreboard: subject)
+      create(:school, scoreboard: scoreboard)
       expect do
         subject.safe_destroy
       end.to raise_error(
@@ -68,10 +66,23 @@ describe Scoreboard, :scoreboards, type: :model do
   end
 
   context 'as a Scorable' do
-    let!(:scoreboard) { create :scoreboard, academic_year_calendar: template_calendar }
+    subject!(:scoreboard) { create :scoreboard, academic_year_calendar: template_calendar }
+
     let!(:template_calendar) { create :template_calendar, :with_previous_and_next_academic_years }
     let(:school_group) { nil }
 
     it_behaves_like 'a scorable'
+  end
+
+  describe 'MailchimpUpdateable' do
+    subject { create(:scoreboard) }
+
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          name_en: 'Renamed scoreboard',
+        }
+      end
+    end
   end
 end

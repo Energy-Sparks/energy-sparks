@@ -1,0 +1,45 @@
+<% content_for :page_title, user.name %>
+
+<% content_for :dashboard_header do %>
+  <div class="row" id="profile-header">
+    <div class="col">
+      <h1><%= user.name %></h1>
+    </div>
+  </div>
+<% end %>
+
+<div class="container">
+  <div class="row mt-2">
+    <div id="profile-page-navigation" class="col-md-3 col-lg-3 col-xl-2">
+      <ul class="nav flex-column flex-nowrap w-100">
+        <li class="nav-item overflow-hidden">
+          <div class="collapse show" id="" aria-expanded="false">
+            <ul class="flex-column pl-0">
+              <li class="nav-item">
+                <%= link_to t('nav.my_account'), user_path(user) %>
+              </li>
+              <li class="nav-item">
+                <%= link_to t('users.show.update_account'), edit_user_path(user) %>
+              </li>
+              <li class="nav-item">
+                <%= link_to t('users.show.change_password'), edit_password_user_path(user) %>
+              </li>
+              <% unless user.admin? %>
+                <li class="nav-item">
+                  <%= link_to t('users.show.manage_alerts'), user_contacts_path(user) %>
+                </li>
+              <% end %>
+              <li class="nav-item">
+                <%= link_to t('users.show.update_email_preferences'), user_emails_path(user) %>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div id="page-body" class="col-md-9 col-lg-9 col-xl-10">
+      <%= yield %>
+    </div>
+  </div>
+</div>

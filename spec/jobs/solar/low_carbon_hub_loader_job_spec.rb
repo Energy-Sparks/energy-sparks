@@ -11,7 +11,9 @@ describe Solar::LowCarbonHubLoaderJob do
   include_context 'when sending solar loader job emails'
 
   describe '#perform' do
-    let(:job_result)  { job.perform(installation: installation, start_date: start_date, end_date: end_date, notify_email: admin.email) }
+    let(:job_result)  do
+      job.perform(installation: installation, start_date: start_date, end_date: end_date, notify_email: admin.email)
+    end
 
     context 'when the load is successful' do
       before do
@@ -19,7 +21,8 @@ describe Solar::LowCarbonHubLoaderJob do
       end
 
       it 'calls the upserter' do
-        expect(Solar::LowCarbonHubDownloadAndUpsert).to receive(:new).with(start_date: start_date, end_date: end_date, installation: installation)
+        expect(Solar::LowCarbonHubDownloadAndUpsert).to receive(:new).with(start_date: start_date, end_date: end_date,
+                                                                           installation: installation)
         job_result
       end
 
@@ -28,7 +31,9 @@ describe Solar::LowCarbonHubLoaderJob do
           job_result
         end
 
-        it_behaves_like 'a successful solar loader job', solar_feed_type: 'Rtone'
+        it_behaves_like 'a successful solar loader job', solar_feed_type: 'Rtone' do
+          let(:installation_for) { installation.school.name }
+        end
       end
     end
 
@@ -44,19 +49,21 @@ describe Solar::LowCarbonHubLoaderJob do
           job_result
         end
 
-        it_behaves_like 'a solar loader job with loader errors', solar_feed_type: 'Rtone'
+        it_behaves_like 'a solar loader job with loader errors', solar_feed_type: 'Rtone' do
+          let(:installation_for) { installation.school.name }
+        end
       end
 
       context 'with an unexpected exception' do
         before do
           allow(Solar::LowCarbonHubDownloadAndUpsert).to receive(:new).and_raise('Its broken')
-          # rubocop:disable RSpec/ExpectInHook
-          expect(Rollbar).to receive(:error).with(anything, job: :import_solar_edge_readings)
-          # rubocop:enable RSpec/ExpectInHook
+          expect(Rollbar).to receive(:error).with(anything, hash_including(job: :import_solar_edge_readings)) # rubocop:disable RSpec/ExpectInHook
           job_result
         end
 
-        it_behaves_like 'a solar loader job that had an exception', solar_feed_type: 'Rtone'
+        it_behaves_like 'a solar loader job that had an exception', solar_feed_type: 'Rtone' do
+          let(:installation_for) { installation.school.name }
+        end
       end
     end
   end

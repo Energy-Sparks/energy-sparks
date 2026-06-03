@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 describe Schools::SchoolMetricsGeneratorService, type: :service do
-  let(:school)            { create(:school) }
-  # this will create an empty meter collection as the school has no data
-  let(:meter_collection)  { Amr::AnalyticsMeterCollectionFactory.new(school).validated }
+  subject(:service) { Schools::SchoolMetricsGeneratorService.new(school:, meter_collection:) }
 
-  subject(:service)       { Schools::SchoolMetricsGeneratorService.new(school: school, meter_collection: meter_collection)}
-
-  let(:stub)              { double('service_stub') }
+  let(:school) { create(:school) }
+  let(:meter_collection) { build(:meter_collection, :with_aggregate_meter) }
+  let(:stub) { double('service_stub') }
 
   describe '#perform' do
     context 'when updating school configuration' do
@@ -20,7 +18,8 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
 
     context 'when running alerts and benchmarks' do
       it 'runs the service' do
-        expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
+        expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school,
+                                                                                 aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:perform).once
         service.perform
       end
@@ -28,7 +27,8 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
 
     context 'when generating equivalences' do
       it 'runs the service' do
-        expect(Equivalences::GenerateEquivalences).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
+        expect(Equivalences::GenerateEquivalences).to receive(:new).with(school: school,
+                                                                         aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:perform).once
         service.perform
       end
@@ -50,14 +50,14 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
       end
 
       it 'updates the target' do
-        school_target.reload
-        expect(school_target.report_last_generated).not_to be_nil
+        expect(school_target.reload.report_last_generated).not_to be_nil
       end
     end
 
     context 'when generating advice page benchmarks' do
       it 'runs the service' do
-        expect(Schools::AdvicePageBenchmarks::GenerateBenchmarks).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
+        expect(Schools::AdvicePageBenchmarks::GenerateBenchmarks).to \
+          receive(:new).with(school:, aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:generate!).once
         service.perform
       end

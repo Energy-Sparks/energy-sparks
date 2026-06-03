@@ -1,4 +1,4 @@
-<div class="chart-controls d-flex justify-content-between pt-4">
+<div class="chart-controls d-flex flex-wrap justify-content-between pt-4">
 
   <div>
     <div class="axis-controls" style='display: none;'>
@@ -24,22 +24,22 @@
 
   <div class='analysis-controls' style='display: none;'>
     <% if local_assigns[:analysis_controls] %>
-      <div class="d-flex align-items-center justify-content-between" role="group">
+      <div class="d-flex flex-wrap align-items-center justify-content-between" role="group">
         <span class="mr-2 align-bottom"><%= t('analysis_controls.explore') %></span>
         <div>
-          <button class="btn btn-sm btn-outline-dark rounded-pill explore-button move_back" disabled>
+          <button class="btn btn-sm explore-button move_back" disabled>
             <%= fa_icon('backward') %> <%= t('analysis_controls.back_one') %>
             <span class='period'><%= t('analysis_controls.period') %></span>
           </button>
         </div>
         <div>
-          <button class="btn btn-sm btn-outline-dark rounded-pill explore-button drillup" disabled>
+          <button class="btn btn-sm explore-button drillup" disabled>
             <%= fa_icon('eject') %> <%= t('analysis_controls.up_to') %>
             <span class='period'><%= t('analysis_controls.period') %></span> <%= t('analysis_controls.view') %>
           </button>
         </div>
         <div>
-          <button class="btn btn-sm btn-outline-dark rounded-pill explore-button move_forward" disabled>
+          <button class="btn btn-sm explore-button move_forward" disabled>
             <%= t('analysis_controls.forward_one') %>
             <span class='period'><%= t('analysis_controls.period') %></span> <%= fa_icon('forward') %>
           </button>

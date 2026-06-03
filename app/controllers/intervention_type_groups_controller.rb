@@ -5,6 +5,9 @@ class InterventionTypeGroupsController < ApplicationController
 
   def index
     @intervention_type_groups = @intervention_type_groups.by_name
+    if Flipper.enabled?(:todos, current_user)
+      @programme_types = ProgrammeType.featured.with_task_type(InterventionType)
+    end
   end
 
   def show

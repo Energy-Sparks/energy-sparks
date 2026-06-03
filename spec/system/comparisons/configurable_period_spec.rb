@@ -18,7 +18,6 @@ describe 'configurable_period' do
     create_alerts(schools[4], Date.new(2023, 5, 1), electricity: true, gas: true)
     create_alerts(schools[5], Date.new(2023, 6, 1), electricity: true, storage_heater: true)
   end
-  let(:advice_page_key) { :total_energy_use }
   let!(:reports) { create_list(:report, 2, :with_custom_period) }
 
   include_context 'with comparison report footnotes' do
@@ -67,11 +66,7 @@ describe 'configurable_period' do
     end
   end
 
-  before do
-    create(:advice_page, key: advice_page_key)
-  end
-
-  self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration - shouldn't leak because of self?
+  self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration -- shouldn't leak because of self?
     '',
     I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
     I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
@@ -97,25 +92,28 @@ describe 'configurable_period' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{reports[0].key}" }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { reports[0] }
+      let(:model) { Comparison::ConfigurablePeriod }
     end
 
     it_behaves_like 'a school comparison report with multiple tables',
-      table_titles: [
-        I18n.t('comparisons.tables.total_usage'),
-        I18n.t('comparisons.tables.electricity_usage'),
-        I18n.t('comparisons.tables.gas_usage'),
-        I18n.t('comparisons.tables.storage_heater_usage')
-      ]
+                    table_titles: [
+                      I18n.t('comparisons.tables.total_usage'),
+                      I18n.t('comparisons.tables.electricity_usage'),
+                      I18n.t('comparisons.tables.gas_usage'),
+                      I18n.t('comparisons.tables.storage_heater_usage')
+                    ] do
+      let(:expected_report) { reports[0] }
+      let(:model) { Comparison::ConfigurablePeriod }
+    end
 
     context 'with a total table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
+        let(:model) { Comparison::ConfigurablePeriod }
         let(:expected_school) { schools[0] }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :total }
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: true, unadjusted: false) }
@@ -207,8 +205,9 @@ describe 'configurable_period' do
     context 'with an electricity table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
+        let(:model) { Comparison::ConfigurablePeriod }
         let(:expected_school) { schools[0] }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :electricity }
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: false, unadjusted: false) }
@@ -275,8 +274,9 @@ describe 'configurable_period' do
     context 'with a gas table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
+        let(:model) { Comparison::ConfigurablePeriod }
         let(:expected_school) { schools[0] }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :gas }
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: false, unadjusted: true) }
@@ -333,8 +333,9 @@ describe 'configurable_period' do
     context 'with a storage heater table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { reports[0] }
+        let(:model) { Comparison::ConfigurablePeriod }
         let(:expected_school) { schools[0] }
-        let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+        let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :storage_heater }
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: false, unadjusted: true) }
@@ -378,6 +379,9 @@ describe 'configurable_period' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { reports[0] }
+      let(:model) { Comparison::ConfigurablePeriod }
+    end
   end
 end

@@ -35,7 +35,12 @@ module Schools
       end
 
       def perform
-        return nil unless school_has_fuel_type?
+        unless school_has_fuel_type?
+          # remove any old benchmarks generated when school may have had active meters for this fuel type
+          @school.advice_page_school_benchmarks.where(advice_page: @advice_page).destroy_all
+          return nil
+        end
+
         begin
           benchmarked_as = benchmark_school
           @school_benchmark = @school.advice_page_school_benchmarks.find_or_create_by(advice_page: @advice_page)
@@ -51,6 +56,10 @@ module Schools
       end
 
       protected
+
+      def aggregate_school_service
+        ::AggregateSchoolService.new(@school, @aggregate_school)
+      end
 
       def school_has_fuel_type?
         @advice_page.school_has_fuel_type?(@school)

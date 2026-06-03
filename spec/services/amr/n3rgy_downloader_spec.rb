@@ -83,9 +83,9 @@ describe Amr::N3rgyDownloader do
         end
 
         it 'converts to kWh' do
-          adjusted = fixture_readings.map { |r| r.nil? ? nil : r * Amr::N3rgyDownloader::KWH_PER_M3_GAS}
+          adjusted = fixture_readings.map { |r| r.nil? ? nil : (r * 11.1).round(2) }
           readings_by_day = readings[meter.meter_type][:readings]
-          expect(readings_by_day[start_date].kwh_data_x48).to eq(adjusted)
+          expect(readings_by_day[start_date].kwh_data_x48.map { |f| f&.round(2) }).to eq(adjusted)
         end
       end
 

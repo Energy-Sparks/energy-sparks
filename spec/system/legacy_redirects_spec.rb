@@ -26,11 +26,6 @@ describe 'legacy redirects', type: :system do
       visit "/schools/#{school.slug}/find_out_more/1234"
       expect(page).to have_current_path(school_advice_path(school), ignore_query: true)
     end
-
-    it 'redirects old scoreboard links' do
-      visit "/schools/#{school.slug}/scoreboard"
-      expect(page).to have_current_path(scoreboards_path, ignore_query: true)
-    end
   end
 
   context 'when accessing old analysis' do
@@ -39,6 +34,19 @@ describe 'legacy redirects', type: :system do
       expect(page).to have_current_path(school_advice_path(school), ignore_query: true)
 
       visit "/schools/#{school.slug}/analysis/1234"
+      expect(page).to have_current_path(school_advice_path(school), ignore_query: true)
+    end
+  end
+
+  context 'when accessing old advice pages' do
+    it 'redirects to new advice' do
+      visit "/schools/#{school.slug}/advice/total_energy_use"
+      expect(page).to have_current_path(school_advice_path(school), ignore_query: true)
+      visit "/schools/#{school.slug}/advice/total_energy_use/insights"
+      expect(page).to have_current_path(school_advice_path(school), ignore_query: true)
+      visit "/schools/#{school.slug}/advice/total_energy_use/analysis"
+      expect(page).to have_current_path(school_advice_path(school), ignore_query: true)
+      visit "/schools/#{school.slug}/advice/total_energy_use/learn_more"
       expect(page).to have_current_path(school_advice_path(school), ignore_query: true)
     end
   end

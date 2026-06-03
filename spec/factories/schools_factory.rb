@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :school do
-    sequence(:urn)
+    sequence(:urn, 10_000)
     sequence(:number_of_pupils)
     sequence(:name, 'School AAAAA1')
     school_type     { :primary }
@@ -24,10 +24,94 @@ FactoryBot.define do
       name { 'test school'}
     end
 
-    trait :with_school_group do
+    trait :with_consent do
       after(:create) do |school, _evaluator|
-        school.update(school_group: create(:school_group))
+        create(:consent_grant, school:)
       end
+    end
+
+    trait :with_school_group do
+      transient do
+        default_issues_admin_user { create(:admin) }
+        school_group { nil }
+      end
+
+      after(:create) do |school, evaluator|
+        group = evaluator.school_group || create(:school_group, default_issues_admin_user: evaluator.default_issues_admin_user)
+        school.update(school_group: group)
+      end
+    end
+
+    trait :with_school_grouping do
+      transient do
+        group_type { :multi_academy_trust }
+        role { :organisation }
+        group { nil }
+      end
+
+      after(:create) do |school, evaluator|
+        group = evaluator.group || create(:school_group, group_type: evaluator.group_type)
+        create(:school_grouping, school:, school_group: group, role: evaluator.role)
+        school.reload
+      end
+    end
+
+    trait :with_trust do
+      with_school_grouping
+
+      transient do
+        group_type { :multi_academy_trust }
+        role { :organisation }
+      end
+    end
+
+    trait :with_diocese do
+      with_school_grouping
+
+      transient do
+        group_type { :diocese }
+        role { :diocese }
+      end
+    end
+
+    trait :with_project do
+      with_school_grouping
+
+      transient do
+        group_type { :project }
+        role { :project }
+      end
+    end
+
+    trait :with_local_authority_area do
+      with_school_grouping
+
+      transient do
+        group_type { :local_authority_area }
+        role { :area }
+      end
+    end
+
+    trait :with_scoreboard do
+      after(:create) do |school, _evaluator|
+        school.update(scoreboard: create(:scoreboard))
+      end
+    end
+
+    trait :with_local_authority do
+      after(:create) do |school, _evaluator|
+        school.update(local_authority_area: create(:local_authority_area))
+      end
+    end
+
+    trait :archived do
+      active { false }
+      removal_date { nil }
+    end
+
+    trait :deleted do
+      active { false }
+      removal_date { Date.new(2023, 1, 1) }
     end
 
     trait :with_calendar do
@@ -73,6 +157,25 @@ FactoryBot.define do
       end
     end
 
+    trait :with_meter_dates do
+      transient do
+        fuel_type { :electricity }
+        reading_start_date { 1.year.ago }
+        reading_end_date { Time.zone.today }
+      end
+
+      after(:create) do |school, evaluator|
+        school.configuration.update!(
+          aggregate_meter_dates: {
+            evaluator.fuel_type => {
+              start_date: evaluator.reading_start_date.iso8601,
+              end_date: evaluator.reading_end_date.iso8601
+            }
+          }
+        )
+      end
+    end
+
     # Creates a school with a school group, calendar, fuel configuration, single meter
     # and tariffs for that meter. Should be sufficient for passing to the analytics for
     # most analysis.
@@ -89,6 +192,7 @@ FactoryBot.define do
       end
       with_school_group
       with_fuel_configuration
+      with_meter_dates
       after(:create) do |school, evaluator|
         if evaluator.calendar
           school.update(calendar: evaluator.calendar)

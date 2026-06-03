@@ -1,14 +1,25 @@
-<%= component 'notice', status: :neutral do |c| %>
-  <% c.with_link { link_to t('advice_pages.electricity_costs.insights.link'), learn_more_school_advice_electricity_costs_path(@school) } %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <% c.with_link do
+       link_to t('advice_pages.electricity_costs.insights.link'),
+               learn_more_school_advice_electricity_costs_path(@school)
+     end %>
   <%= t('advice_pages.electricity_costs.insights.intro_html') %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'current-costs', section_title: t('advice_pages.electricity_costs.insights.current_costs.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'current-costs',
+           section_title: t('advice_pages.electricity_costs.insights.current_costs.title') %>
 
-<%= render 'tariff_note', school: @school, analysis_dates: @analysis_dates, complete_tariff_coverage: @complete_tariff_coverage, periods_with_missing_tariffs: @periods_with_missing_tariffs %>
+<%= render 'tariff_note', school: @school, analysis_dates: @analysis_dates,
+                          complete_tariff_coverage: @complete_tariff_coverage,
+                          periods_with_missing_tariffs: @periods_with_missing_tariffs %>
 
 <p>
-  <%= advice_t('electricity_costs.analysis.cost_breakdown_by_meter.whole_school', cost: format_unit(@annual_costs.£, :£), period: format_unit(@annual_costs.days/365.0, :years)) %>
+  <%= advice_t('electricity_costs.analysis.cost_breakdown_by_meter.whole_school',
+               cost: format_unit(@annual_costs.£, :£), period: format_unit(@annual_costs.days / 365.0, :years)) %>
 </p>
 
-<%= component 'meter_costs_table', monthly_costs: @monthly_costs, change_in_costs: @change_in_costs, school: @school, fuel_type: @advice_page.fuel_type %>
+<%= render MeterCostsTableComponent.new(
+      monthly_costs: @monthly_costs, change_in_costs: @change_in_costs,
+      school: @school, fuel_type: @advice_page.fuel_type
+    ) %>

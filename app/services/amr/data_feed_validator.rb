@@ -32,7 +32,9 @@ module Amr
     end
 
     def handle_header(array_of_rows)
-      if array_of_rows.first.join(',') == @config.header_example
+      if array_of_rows.empty?
+        array_of_rows
+      elsif array_of_rows.first.join(',') == @config.header_example
         array_of_rows[1, array_of_rows.length]
       elsif @config.number_of_header_rows
         if @config.number_of_header_rows > array_of_rows.length

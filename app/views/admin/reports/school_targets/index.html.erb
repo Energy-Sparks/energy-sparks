@@ -1,4 +1,4 @@
-<h1>School Targets</h1>
+<%= render 'admin/reports/title', title: 'School Targets' %>
 
 Listing <strong><%= @currently_active %></strong> currently active school targets.
 
@@ -24,7 +24,8 @@ Listing <strong><%= @currently_active %></strong> currently active school target
         <td><%= school_target.gas %></td>
         <td><%= school_target.storage_heaters %></td>
         <td>
-          <%= link_to "View target", school_school_target_path(school_target.school, school_target), class: "btn btn-secondary" %>
+          <%= link_to 'View target', school_school_target_path(school_target.school, school_target),
+                      class: 'btn btn-secondary' %>
         </td>
       </tr>
     <% end %>

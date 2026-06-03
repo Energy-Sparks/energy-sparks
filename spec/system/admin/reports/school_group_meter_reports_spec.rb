@@ -23,7 +23,6 @@ describe 'school group meter reports', type: :system do
       expect(page).to have_content('School group meter data reports')
       expect(page).to have_content(school_group.name)
       expect(page).to have_button('Meter report')
-      expect(page).to have_link('Download meter collections')
     end
 
     context 'when clicking on the email meter report link', js: true do
@@ -47,7 +46,6 @@ describe 'school group meter reports', type: :system do
     it 'links to downloads and all meters' do
       expect(page).to have_content("#{school_group.name} meter report")
       expect(page).to have_button('Meter report')
-      expect(page).to have_link('Download meter collections')
     end
 
     it 'only shows active meters' do

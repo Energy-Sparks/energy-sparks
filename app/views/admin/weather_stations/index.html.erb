@@ -1,7 +1,8 @@
 <h1>Weather Stations</h1>
 
 <p>
-The following table lists all of the locations for which we are loading temperature data. For more historical data see <%= link_to "Dark Sky Areas", admin_dark_sky_areas_path %>.
+The following table lists all of the locations for which we are loading temperature data.
+For more historical data see <%= link_to 'Dark Sky Areas', admin_dark_sky_areas_path %>.
 </p>
 
 <% if @weather_stations.any? %>
@@ -22,20 +23,27 @@ The following table lists all of the locations for which we are loading temperat
   <tbody>
     <% @weather_stations.each do |station| %>
       <tr>
-        <td><%= link_to "#{station.title}", data_feeds_weather_observations_path(station.id) %></td>
+        <td><%= link_to station.title.to_s, data_feeds_weather_observations_path(station.id) %></td>
         <td><%= station.description %></td>
         <td>
-          <%= link_to "#{station.latitude}, #{station.longitude}", "https://www.openstreetmap.org/?mlat=#{station.latitude}&mlon=#{station.longitude}", target: "_blank" %>
+          <%= link_to "#{station.latitude}, #{station.longitude}",
+                      "https://www.openstreetmap.org/?mlat=#{station.latitude}&mlon=#{station.longitude}",
+                      target: '_blank',
+                      rel: 'noopener' %>
         <td><%= station.observation_count %></td>
-        <td><%= station.first_observation_date %></td>
-        <td><%= station.last_observation_date %></td>
+        <td data-order="<%= station.earliest_observation_date&.iso8601 %>">
+          <%= nice_dates(station.earliest_observation_date) %>
+        </td>
+        <td data-order="<%= station.latest_observation_date&.iso8601 %>">
+          <%= nice_dates(station.latest_observation_date) %>
+        </td>
         <td><%= station.back_fill_years %></td>
         <td><%= station.active? %></td>
         <td>
           <div class='btn-group'>
             <%= link_to 'Edit', edit_admin_weather_station_path(station), class: 'btn btn-sm' %>
-            <%= link_to "Report", data_feeds_weather_observations_path(station.id), class: 'btn btn-sm' %>
-            <%= link_to "CSV", data_feeds_weather_observations_path(station.id, format: "csv"), class: 'btn btn-sm' %>
+            <%= link_to 'Report', data_feeds_weather_observations_path(station.id), class: 'btn btn-sm' %>
+            <%= link_to 'CSV', data_feeds_weather_observations_path(station.id, format: 'csv'), class: 'btn btn-sm' %>
           </div>
         </td>
       </tr>

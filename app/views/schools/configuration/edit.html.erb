@@ -1,1 +1,5 @@
-<%= render 'form', school: @school, submit_text: 'Update configuration', method: :put, edit_template_calendar: false %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Configuration" do %>
+
+  <%= render 'form', school: @school, submit_text: 'Update configuration', method: :put, edit_template_calendar: false %>
+<% end %>

@@ -1,0 +1,23 @@
+.nav-tabs {
+  .nav-item {
+    .nav-link.active {
+      color: $blue-very-dark;
+      font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+.nav-tabs.locales {
+  .nav-item {
+    .nav-link.active {
+      background: $grey-light;
+      border-color: $grey-light;
+    }
+  }
+}
+
+.tab-content.locales {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: $grey-light;
+}

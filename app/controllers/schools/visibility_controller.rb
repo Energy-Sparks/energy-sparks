@@ -13,6 +13,7 @@ module Schools
     def destroy
       authorize! :change_visibility, @school
       @school.update!(visible: false)
+      SchoolCreator.expire_login_cache!
       redirect_back fallback_location: school_path(@school)
     end
   end

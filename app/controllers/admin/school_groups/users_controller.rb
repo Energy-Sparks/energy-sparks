@@ -13,18 +13,6 @@ module Admin
         end
       end
 
-      def unlock
-        user = User.find(params['user_id'])
-        user.unlock_access!
-        redirect_to admin_school_group_users_path(@school_group), notice: "User '#{user.email}' was successfully unlocked."
-      end
-
-      def lock
-        user = User.find(params['user_id'])
-        user.lock_access!(send_instructions: false)
-        redirect_to admin_school_group_users_path(@school_group), notice: "User '#{user.email}' was successfully locked."
-      end
-
       def lock_all
         @school_group.users.each { |user| user.lock_access!(send_instructions: false) }
         redirect_to admin_school_group_users_path(@school_group), notice: 'All group users locked.'
@@ -38,7 +26,7 @@ module Admin
 
       def school_users
         users = {}
-        @school_group.schools.each do |school|
+        @school_group.assigned_schools.each do |school|
           users[school] = (school.users + school.cluster_users).uniq.sort_by(&:email)
         end
         users
@@ -49,6 +37,11 @@ module Admin
           csv << [
             'School Group',
             'School',
+            'School type',
+            'School active',
+            'School data enabled',
+            'Funder',
+            'Region',
             'Name',
             'Email',
             'Role',
@@ -57,12 +50,13 @@ module Admin
             'Last signed in',
             'Alerts',
             'Language',
-            'Locked'
+            'Locked',
+            'Climate Action Lead'
           ]
           group_admins.each do |user|
             add_user_to_csv(csv, school_group, nil, user)
           end
-          school_group.schools.by_name.each do |school|
+          school_group.assigned_schools.by_name.each do |school|
             school_users[school].each do |user|
               add_user_to_csv(csv, school_group, school, user)
             end
@@ -73,16 +67,22 @@ module Admin
       def add_user_to_csv(csv, school_group, school, user)
         csv << [
           school_group.name,
-          school.present? ? school.name : 'N/A',
+          school&.name || '',
+          school&.school_type&.humanize || '',
+          school ? y_n(school&.active?) : '',
+          school ? y_n(school&.data_enabled?) : '',
+          school&.funder&.name || '',
+          school&.region&.to_s&.titleize || '',
           user.name,
           user.pupil? ? 'N/A' : user.email,
           user.role.titleize,
-          user.group_admin? ? 'N/A' : user.staff_role&.title,
+          user.group_user? ? 'N/A' : user.staff_role&.title,
           y_n(user.confirmed?),
           display_last_signed_in_as(user),
-          user.group_admin? ? 'N/A' : y_n(user.contact_for_school),
+          user.group_user? ? 'N/A' : y_n(user.contact_for_school),
           I18n.t("languages.#{user.preferred_locale}"),
-          y_n(user.access_locked?)
+          y_n(user.access_locked?),
+          y_n(user.climate_action_lead)
         ]
       end
     end

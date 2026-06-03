@@ -1,58 +1,67 @@
-<% content_for :page_title do %>
-  <%= @intervention_type.name %>
-<% end %>
+<% cache_if current_user.nil?, [@intervention_type, I18n.locale], expires_in: 1.hour do %>
+  <% content_for :page_title do %>
+    <%= @intervention_type.name %>
+  <% end %>
 
-<div class="row padded-row">
-  <div class="col-md-3">
-    <%= render 'image', intervention_type: @intervention_type, css_class: "" %>
-  </div>
-  <div class="col-md-6">
-    <h2><%= @intervention_type.name %></h2>
-    <p><%= @intervention_type.summary %></p>
-    <div>
-      <%= render 'intervention_types/intervention_type_points', intervention_type: @intervention_type %>
+  <div class="row padded-row">
+    <div class="col-md-3">
+      <%= render 'image', intervention_type: @intervention_type, css_class: '' %>
+    </div>
+    <div class="col-md-6">
+      <h2><%= @intervention_type.name %></h2>
+      <p><%= @intervention_type.summary %></p>
+      <div>
+        <%= render 'intervention_types/intervention_type_points', intervention_type: @intervention_type %>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <%= link_to t('intervention_types.show.view_related_actions',
+                    count: @intervention_type.intervention_type_group.intervention_types.count),
+                  intervention_type_group_path(@intervention_type.intervention_type_group),
+                  class: 'btn btn-default float-right' %>
     </div>
   </div>
-  <div class="col-md-3">
-    <%= link_to t('intervention_types.show.view_related_actions', count: @intervention_type.intervention_type_group.intervention_types.count), intervention_type_group_path(@intervention_type.intervention_type_group), class: 'btn btn-outline-dark rounded-pill font-weight-bold float-right' %>
-  </div>
-</div>
 
-<% if current_user.nil? %>
-  <%= render 'shared/activities/prompt_login_to_record', label: 'action', score: @intervention_type.score, return_path: intervention_type_path(@intervention_type) %>
-<% end %>
-
-<% if can?(:create, Observation) && @can_be_completed_for_schools.present? %>
-  <% if @can_be_completed_for_schools.one? %>
-    <%= render 'intervention_types/prompt_score', intervention_type: @intervention_type, school: @can_be_completed_for_schools.first %>
-  <% else %>
-    <%= render 'intervention_types/prompt_score_for_group', intervention_type: @intervention_type, schools: @can_be_completed_for_schools %>
+  <% if current_user.nil? %>
+    <%= render 'shared/activities/prompt_login_to_record', label: 'action', score: @intervention_type.score,
+                                                           return_path: intervention_type_path(@intervention_type) %>
   <% end %>
-<% end %>
 
-<% if current_user_school && @intervention_type.actions_for_school(current_user_school).any? %>
-  <%= render 'intervention_types/previous_records', interventions: @interventions, school: current_user_school %>
-<% end %>
-
-<div class="row padded-row">
-  <div class="col-md-9">
-    <h3>
-      <%= t('intervention_types.show.overview') %>
-    </h3>
-    <%= @intervention_type.description %>
-  </div>
-  <div class="col-md-3 intervention-type-download-links" data-event-value="<%= @intervention_type.id %>">
-    <% if @intervention_type.download_links.present? %>
-      <h4 style="padding-top: 0px;"><%= t('intervention_types.show.download_resources') %></h4>
-      <div class="activity_type">
-        <%= @intervention_type.download_links %>
-      </div>
+  <% if can?(:create, Observation) && @can_be_completed_for_schools.present? %>
+    <% if @can_be_completed_for_schools.one? %>
+      <%= render 'intervention_types/prompt_score', intervention_type: @intervention_type,
+                                                    school: @can_be_completed_for_schools.first %>
+    <% else %>
+      <%= render 'intervention_types/prompt_score_for_group', intervention_type: @intervention_type,
+                                                              schools: @can_be_completed_for_schools %>
     <% end %>
-  </div>
-</div>
+  <% end %>
 
-<% if can?(:edit, @intervention_type) %>
+  <% if current_user_school && @intervention_type.actions_for_school(current_user_school).any? %>
+    <%= render 'intervention_types/previous_records', interventions: @interventions, school: current_user_school %>
+  <% end %>
+
   <div class="row padded-row">
-    <p><%= link_to t('intervention_types.show.edit'), edit_admin_intervention_type_path(@intervention_type), class: 'btn' %></p>
+    <div class="col-md-9">
+      <h3>
+        <%= t('intervention_types.show.overview') %>
+      </h3>
+      <%= @intervention_type.description %>
+    </div>
+    <div class="col-md-3 intervention-type-download-links" data-event-value="<%= @intervention_type.id %>">
+      <% if @intervention_type.download_links.present? %>
+        <h4 style="padding-top: 0px;"><%= t('intervention_types.show.download_resources') %></h4>
+        <div class="activity_type">
+          <%= @intervention_type.download_links %>
+        </div>
+      <% end %>
+    </div>
   </div>
+
+  <% if can?(:edit, @intervention_type) %>
+    <div class="row padded-row">
+      <p><%= link_to t('intervention_types.show.edit'), edit_admin_intervention_type_path(@intervention_type),
+                     class: 'btn' %></p>
+    </div>
+  <% end %>
 <% end %>

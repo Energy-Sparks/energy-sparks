@@ -22,13 +22,13 @@ describe Calendar do
 
   describe 'does lots of good calendar work' do
     it 'creates a calendar with academic years' do
-      expect(calendar.calendar_events.count).to be 6
+      expect(calendar.calendar_events.count).to be 7
       expect(calendar.holidays.count).to be 3
-      expect(calendar.bank_holidays.count).to be 1
+      expect(calendar.bank_holidays.count).to be 2
     end
 
     it 'creates a holiday between the terms' do
-      expect(calendar.calendar_events.count).to be 6
+      expect(calendar.calendar_events.count).to be 7
       does_holiday_fit_space_between_terms?(calendar)
     end
 
@@ -69,6 +69,22 @@ describe Calendar do
     it 'knows there is a holiday approaching' do
       create(:calendar)
       expect(calendar.holiday_approaching?).to be false
+    end
+  end
+
+  describe '.default_national' do
+    subject(:default_national) { Calendar.default_national }
+
+    context 'when England and Wales exists' do
+      before do
+        create(:calendar, calendar_type: :national, title: 'England and Wales')
+      end
+
+      it { expect(default_national.title).to eq('England and Wales') }
+    end
+
+    context 'when there is no default' do
+      it { expect(default_national).to be_nil }
     end
   end
 end

@@ -1,0 +1,86 @@
+.map {
+  margin-bottom: 30px;
+  height: 800px;
+  width: 100%;
+}
+
+.school-group-map {
+  height: 600px !important;
+  width: 100% !important;
+}
+
+// Leaflet popup styles
+
+.leaflet-popup-content-wrapper {
+  font-family : $default-font-family;
+}
+
+.leaflet-popup-content p {
+  margin: 5px 0 !important;
+}
+
+
+// Leaflet cluster styles
+
+.marker-cluster-small {
+  background-color: $red-light;
+}
+
+.marker-cluster-small div {
+  background-color: $red-dark;
+}
+
+.marker-cluster-medium {
+  background-color: $red-light;
+}
+
+.marker-cluster-medium div {
+  background-color: $red-dark;
+}
+
+.marker-cluster-large {
+  background-color: $red-light;
+}
+.marker-cluster-large div {
+  background-color: $red-dark;
+}
+
+/* IE 6-8 fallback colors */
+.leaflet-oldie .marker-cluster-small {
+  background-color: $red-light;
+}
+.leaflet-oldie .marker-cluster-small div {
+  background-color: $red-dark;
+}
+
+.leaflet-oldie .marker-cluster-medium {
+  background-color: $red-light;
+}
+.leaflet-oldie .marker-cluster-medium div {
+  background-color: $red-dark;
+}
+
+.leaflet-oldie .marker-cluster-large {
+  background-color: $red-light;
+}
+.leaflet-oldie .marker-cluster-large div {
+  background-color: $red-dark;
+}
+
+.marker-cluster {
+  background-clip: padding-box;
+  border-radius: 20px;
+}
+.marker-cluster div {
+  width: 30px;
+  height: 30px;
+  margin-left: 5px;
+  margin-top: 5px;
+
+  text-align: center;
+  border-radius: 15px;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+.marker-cluster span {
+  line-height: 30px;
+}

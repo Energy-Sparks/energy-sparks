@@ -27,6 +27,7 @@ class Schools::ChartsController < ApplicationController
       series_breakdown: params[:series_breakdown],
       date_ranges: get_date_ranges
     }
+    chart_config[:sub_meter_definition] = params[:sub_meter] if params[:sub_meter].present?
     y_axis_units = params[:chart_y_axis_units]
     chart_config[:y_axis_units] = y_axis_units.to_sym if y_axis_units.present?
     provide_advice = params[:provide_advice] || false

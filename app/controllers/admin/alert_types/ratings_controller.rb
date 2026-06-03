@@ -70,7 +70,9 @@ module Admin
           :sms_active, :email_active, :find_out_more_active,
           :pupil_dashboard_alert_active,
           :management_dashboard_alert_active,
-          :management_priorities_active, :analysis_active
+          :management_priorities_active,
+          :analysis_active,
+          :group_dashboard_alert_active
         )
       end
 
@@ -86,7 +88,16 @@ module Admin
       end
 
       def set_template_variables
-        @template_variables = @alert_type.cleaned_template_variables
+        @template_variables = @alert_type.cleaned_template_variables.merge(
+          'Group dashboard alert variables': {
+            number_of_schools: { description: 'Number of schools that have triggered this alert', units: :number },
+            schools: { description: 'Number of schools as a pluralised string, e.g. 1 school, 10 schools', units: :string },
+            total_one_year_saving_kwh: { description: 'Total one year saving if energy use was reduced/maintained across the schools', units: :kwh },
+            total_average_one_year_saving_gbp: { description: 'Total average savings if energy use was reduced/maintained across the schools', units: :£ },
+            total_one_year_saving_co2: { description: 'Total one year change in CO2  if energy use was reduced/maintained across the schools', units: :co2 },
+            describe_schools: { description: 'Description of number of schools: one school, two, a few, some, several, most, almost all, all schools', units: :string }
+          }
+        )
       end
 
       def set_available_charts

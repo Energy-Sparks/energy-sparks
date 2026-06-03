@@ -7,9 +7,7 @@ describe 'managing school times' do
 
   before do
     sign_in(admin)
-    visit root_path
-    click_on('View schools')
-    click_on('Oldfield Park Infants')
+    visit school_path(school)
   end
 
   it 'allows setting of daily values and validates the inputs' do

@@ -1,10 +1,19 @@
-<%= render 'schools/advice/index/advice_index_page', school: @school, advice_pages: @advice_pages, tab: @tab, priority_count: @priority_count, alert_count: @alert_count  do %>
-  <div class="row mt-4">
-    <div class="col">
-      <h2><%= t('advice_pages.index.alerts.title')%></h2>
+<% content_for :page_title, "#{t('advice_pages.index.alerts.title')} | #{@school.name}" %>
+
+<% content_for :dashboard_header do %>
+  <%= render Layout::Cards::PageHeaderComponent.new(title: t('advice_pages.index.alerts.title')) %>
+<% end %>
+
+<div class="container">
+  <div class="row mt-2">
+    <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
+      <%= render 'schools/advice/nav', school: @school, advice_pages: @advice_pages %>
+    </div>
+    <div class="col-md-9 col-lg-9 col-xl-10">
       <% if @dashboard_alerts %>
-        <%= render 'schools/advice/index/alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
+        <%= render 'schools/advice/index/alerts', dashboard_alerts: @dashboard_alerts, school: @school,
+                                                  content_field: :management_dashboard_title %>
       <% end %>
     </div>
   </div>
-<% end %>
+</div>

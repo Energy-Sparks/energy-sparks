@@ -1,0 +1,69 @@
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Alert Exclusions" do %>
+  <div class="row">
+    <div class="col">
+      <p>
+        The following alerts types will not run for this school. As no data will be generated the school will not
+        get dashboard or email alerts for this alert type. They may also be excluded from related comparison reports that
+        use the same data.
+      </p>
+    </div>
+  </div>
+
+  <div class="row" id="exclusions">
+    <div class="col">
+      <% if @exclusions.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Fuel Type</th>
+              <th>Alert Type</th>
+              <th>Created Date</th>
+              <th>Created By</th>
+              <th>Reason</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @exclusions.each do |exclusion| %>
+              <tr>
+                <td><%= exclusion.alert_type.display_fuel_type %></td>
+                <td><%= link_to exclusion.alert_type.title, admin_alert_type_path(exclusion.alert_type) %></td>
+                <td><%= nice_date_times(exclusion.created_at) %></td>
+                <td><%= exclusion.created_by&.name %></td>
+                <td><%= exclusion.reason %></td>
+                <td><%= link_to 'Delete',
+                                school_school_alert_type_exclusion_path(@school, exclusion),
+                                method: :delete,
+                                data: { confirm: 'Are you sure?' },
+                                class: 'btn' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>School does not have any exclusions</p>
+      <% end %>
+    </div>
+  </div>
+
+  <h2>Add New Exclusion</h2>
+
+  <%= form_for [@school, SchoolAlertTypeExclusion.new], method: :post do |form| %>
+    <div class="form-group">
+      <%= form.label :alert_type_id, 'Alert Type' %>
+      <%= form.select(:alert_type_id,
+                      @alert_types.collect { |t| [t.title, t.id] },
+                      { include_blank: false },
+                      class: 'form-control') %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :reason, 'Reason' %>
+      <%= form.text_field :reason, class: 'form-control' %>
+    </div>
+
+    <%= form.submit 'Add Exclusion', class: 'btn btn-primary' %>
+  <% end %>
+<% end %>

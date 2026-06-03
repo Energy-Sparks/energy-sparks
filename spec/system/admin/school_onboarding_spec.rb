@@ -1,13 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'onboarding', :schools, type: :system do
+RSpec.describe 'onboarding', :schools do
   let(:admin) { create(:admin) }
-  let(:school_name)               { 'Oldfield Park Infants'}
+  let(:school_name)               { 'Oldfield Park Infants' }
 
   # This calendar is there to allow for the calendar area selection
   let!(:template_calendar)        { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
-  let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
-  let(:dark_sky_weather_area)     { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let(:scoreboard)                { create(:scoreboard, name: 'BANES scoreboard') }
   let!(:weather_station)          { create(:weather_station, title: 'BANES weather') }
 
@@ -16,23 +16,23 @@ RSpec.describe 'onboarding', :schools, type: :system do
   let!(:school_group) do
     create(
       :school_group,
-      name: 'BANES',
       default_template_calendar: template_calendar,
-      default_solar_pv_tuos_area: solar_pv_area,
-      default_dark_sky_area: dark_sky_weather_area,
       default_weather_station: weather_station,
       default_scoreboard: scoreboard,
-      default_chart_preference: default_chart_preference,
+      default_chart_preference:,
       default_country: 'wales'
     )
   end
+
+  let!(:project_group) { create(:school_group, group_type: :project) }
+  let!(:diocese) { create(:school_group, group_type: :diocese) }
+  let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area) }
   let!(:funder) { create(:funder) }
+  let!(:contract) { create(:commercial_contract) }
 
   let(:last_email) { ActionMailer::Base.deliveries.last }
 
   context 'as an admin' do
-    let!(:other_template_calendar) { create(:regional_calendar, :with_terms, title: 'Oxford calendar') }
-
     before do
       sign_in(admin)
       visit root_path
@@ -48,93 +48,156 @@ RSpec.describe 'onboarding', :schools, type: :system do
       end
     end
 
-    it 'allows a new onboarding to be setup and sends an email to the school' do
-      click_on 'Manage school onboarding'
-      click_on 'New School Onboarding'
+    context 'when setting up a new onboarding' do
+      before do
+        click_on 'Manage school onboarding'
+        click_on 'New School Onboarding'
+      end
 
-      fill_in 'School name', with: school_name
-      fill_in 'Contact email', with: 'oldfield@test.com'
+      it {
+        expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name))
+      }
 
-      expect(page).to have_select('Data Sharing', selected: 'Public')
-      select 'Within Group', from: 'Data Sharing'
+      context 'when completing the first form' do
+        before do
+          fill_in 'School name', with: school_name
+          fill_in 'URN', with: 100_000
+          fill_in 'Contact email', with: 'oldfield@test.com'
+          select school_group.name, from: 'School Group'
+          click_on 'Next'
+        end
 
-      select 'BANES', from: 'Group'
-      select funder.name, from: 'Funder'
-      click_on 'Next'
+        it { expect(page).to have_select('Data Sharing', selected: 'Public') }
+        it { expect(page).to have_select('Funder', options: [''] + Funder.all.by_name.map(&:name)) }
+        it { expect(page).to have_select('Contract', options: [''] + Commercial::Contract.current.by_name.map(&:name)) }
 
-      expect(page).to have_select('Template calendar', selected: 'BANES calendar')
-      expect(page).to have_select('Weather Station', selected: 'BANES weather')
-      expect(page).to have_select('Scoreboard', selected: 'BANES scoreboard')
-      expect(page).to have_select('Country', selected: 'Wales')
+        it {
+          expect(page).to have_select('Project Group', options: [''] + SchoolGroup.project_groups.by_name.map(&:name))
+        }
 
-      click_on 'Next'
+        it { expect(page).to have_select('Template calendar', selected: template_calendar.title) }
+        it { expect(page).to have_select('Weather Station', selected: weather_station.title) }
+        it { expect(page).to have_select('Scoreboard', selected: scoreboard.name) }
+        it { expect(page).to have_select('Country', selected: 'Wales') }
 
-      expect(page).to have_content(school_name)
-      expect(page).to have_content('oldfield@test.com')
+        context 'when the second form is completed' do
+          before do
+            select project_group.name, from: 'Project Group'
+            select diocese.name, from: 'Diocese'
+            select local_authority_area.name, from: 'Local Authority Area'
+            select funder.name, from: 'Funder'
+            select contract.name, from: 'Contract'
+            select 'Within Group', from: 'Data Sharing'
 
-      click_on 'Send setup email'
+            click_on 'Next'
+          end
 
-      onboarding = SchoolOnboarding.first
-      expect(onboarding.data_sharing_within_group?).to be true
-      expect(onboarding.default_chart_preference).to eq 'carbon'
-      expect(onboarding.funder).to eq funder
+          it { expect(page).to have_text(school_name) }
+          it { expect(page).to have_text('oldfield@test.com') }
 
-      email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to include('Set up your school on Energy Sparks')
-      expect(email.html_part.decoded).to include(onboarding_path(onboarding))
+          context 'when the setup is done' do
+            subject(:onboarding) { SchoolOnboarding.first }
+
+            before do
+              click_on 'Send setup email'
+            end
+
+            it { expect(onboarding.data_sharing_within_group?).to be true }
+            it { expect(onboarding.default_chart_preference).to eq 'carbon' }
+            it { expect(onboarding.project_group).to eq(project_group) }
+            it { expect(onboarding.diocese).to eq(diocese) }
+            it { expect(onboarding.local_authority_area).to eq(local_authority_area) }
+            it { expect(onboarding.funder).to eq(funder) }
+            it { expect(onboarding.contract).to eq(contract) }
+
+            it { expect(page).to have_link(contract.name, href: admin_commercial_contract_path(contract)) }
+
+            it 'has sent an email' do
+              expect(last_email.subject).to include('Set up your school on Energy Sparks')
+              expect(last_email.html_part.decoded).to include(onboarding_path(onboarding))
+            end
+          end
+        end
+      end
     end
 
-    it 'sends reminder emails when requested' do
-      onboarding = create :school_onboarding, :with_events
-      click_on 'Manage school onboarding'
-      click_on 'Send reminder email'
+    context 'when reminder emails are sent' do
+      let!(:onboarding) { create(:school_onboarding, :with_events) }
 
-      expect(last_email.subject).to include("Don't forget to set up your school on Energy Sparks")
-      expect(last_email.html_part.decoded).to include(onboarding_path(onboarding))
+      before do
+        click_on 'Manage school onboarding'
+        click_on 'Send reminder'
+      end
+
+      it { expect(last_email.subject).to include("Don't forget to set up your school on Energy Sparks") }
+      it { expect(last_email.html_part.decoded).to include(onboarding_path(onboarding)) }
     end
 
-    it 'allows editing of an onboarding setup' do
-      onboarding = create(:school_onboarding,
-                          school_group: school_group,
-                          weather_station: weather_station,
-                          scoreboard: scoreboard)
+    context 'when there are issues' do
+      before do
+        onboarding = create(:school_onboarding)
+        onboarding.issues.create!(created_by: admin, updated_by: admin, title: 'onboarding issue',
+                                  description: 'description')
+        click_on 'Manage school onboarding'
+        click_on 'Issues'
+      end
 
-      click_on 'Manage school onboarding'
-      click_on 'Edit'
+      it { expect(page).to have_text('Issues & Notes') }
+      it { expect(page).to have_text('onboarding issue') }
+    end
 
-      fill_in 'School name', with: 'A new name'
-      select funder.name, from: 'Funder'
-      click_on 'Next'
+    context 'when editing an onboarding' do
+      let!(:other_template_calendar) { create(:regional_calendar, :with_terms) }
+      let!(:onboarding) do
+        create(:school_onboarding, school_group:, weather_station:, scoreboard:, contract: create(:commercial_contract))
+      end
 
-      select 'Oxford calendar', from: 'Template calendar'
-      select 'Scotland', from: 'Country'
+      before do
+        click_on 'Manage school onboarding'
+        click_on 'Edit'
+        fill_in 'School name', with: 'A new name'
+        click_on 'Next'
 
-      choose('Display chart data in £, where available')
+        select funder.name, from: 'Funder'
+        select contract.name, from: 'Contract'
+        select other_template_calendar.title, from: 'Template calendar'
+        select 'Scotland', from: 'Country'
+        choose('Display chart data in £, where available')
+        click_on 'Next'
 
-      click_on 'Next'
-      onboarding.reload
-      expect(onboarding.school_name).to eq('A new name')
-      expect(onboarding.template_calendar).to eq(other_template_calendar)
-      expect(onboarding.default_chart_preference).to eq 'cost'
-      expect(onboarding.country).to eq 'scotland'
-      expect(onboarding.funder).to eq funder
+        onboarding.reload
+      end
 
-      # check form fields repopulating
-      visit admin_school_onboardings_path
-      click_on 'Edit'
-      expect(page).to have_select('Funder', selected: funder.name)
-      click_on 'Next'
-      expect(page).to have_select('Template calendar', selected: 'Oxford calendar')
-      expect(page).to have_select('Country', selected: 'Scotland')
-      # unchanged
-      expect(page).to have_select('Weather Station', selected: onboarding.weather_station.title)
-      expect(page).to have_select('Scoreboard', selected: onboarding.scoreboard.name)
+      it { expect(onboarding.school_name).to eq('A new name') }
+      it { expect(onboarding.template_calendar).to eq(other_template_calendar) }
+      it { expect(onboarding.default_chart_preference).to eq 'cost' }
+      it { expect(onboarding.country).to eq 'scotland' }
+      it { expect(onboarding.funder).to eq(funder) }
+      it { expect(onboarding.contract).to eq(contract) }
+
+      context 'when revisiting the forms' do
+        before do
+          visit admin_school_onboardings_path
+          click_on 'Edit'
+        end
+
+        it 'is showing right values' do
+          click_on 'Next'
+          expect(page).to have_select('Funder', selected: funder.name)
+          expect(page).to have_select('Contract', selected: contract.name)
+          expect(page).to have_select('Template calendar', selected: onboarding.template_calendar.title)
+          expect(page).to have_select('Country', selected: 'Scotland')
+          # unchanged
+          expect(page).to have_select('Weather Station', selected: onboarding.weather_station.title)
+          expect(page).to have_select('Scoreboard', selected: onboarding.scoreboard.name)
+        end
+      end
     end
 
     context 'when completing onboarding as admin without consents' do
       it 'doesnt allow school to be made visible' do
         click_on 'Manage school onboarding'
-        expect(page).not_to have_selector(:link_or_button, 'Make visible')
+        expect(page).to have_no_selector(:link_or_button, 'Make visible')
       end
     end
 
@@ -146,10 +209,10 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
       after { Wisper.clear }
 
-      let!(:school_onboarding)  { create :school_onboarding, :with_school, created_by: admin }
+      let!(:school_onboarding)  { create(:school_onboarding, :with_school, created_by: admin) }
 
       let(:wisper_subscriber) { Onboarding::OnboardingDataEnabledListener.new }
-      let!(:consent_grant)      { create :consent_grant, school: school_onboarding.school }
+      let!(:consent_grant)      { create(:consent_grant, school: school_onboarding.school) }
 
       it 'allows an onboarding to be completed and data enabled' do
         # school will default to not data_enabled in new flow
@@ -159,7 +222,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
         click_on 'Manage school onboarding'
         click_on 'Make visible'
 
-        expect(page).to have_content('School onboardings')
+        expect(page).to have_text('School onboardings')
 
         school_onboarding.reload
         expect(school_onboarding).to be_complete
@@ -167,7 +230,11 @@ RSpec.describe 'onboarding', :schools, type: :system do
         expect(school_onboarding.school.data_enabled).to be false
 
         visit school_path(school_onboarding.school)
-        click_on 'Data visible'
+        click_on 'Data visible' # goes to the review page
+
+        within('#review-buttons') do
+          click_on 'Data visible' # actually enable the school
+        end
 
         expect(ActionMailer::Base.deliveries.count).to eq(3)
 
@@ -181,47 +248,57 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
         email = ActionMailer::Base.deliveries.last
         expect(email.to).to include(school_onboarding.created_user.email)
-        expect(email.subject).to eq("#{school_onboarding.school.name} energy data is now available on Energy Sparks")
+        expect(email.subject).to \
+          eq("Energy data is now available on Energy Sparks for #{school_onboarding.school.name}")
       end
     end
 
-    it 'I can download a CSV of onboarding schools' do
-      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
-      click_on 'Manage school onboarding'
-      click_link 'Download as CSV', href: admin_school_onboardings_path(format: :csv)
+    context 'when downloading CSV' do
+      let!(:onboarding) { create(:school_onboarding, :with_events, event_names: [:email_sent]) }
 
-      header = page.response_headers['Content-Disposition']
-      expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}\"/)
+      before do
+        click_on 'Manage school onboarding'
+      end
 
-      expect(page.source).to have_content 'Email sent'
-      expect(page.source).to have_content onboarding.school_name
-      expect(page.source).to have_content onboarding.contact_email
-    end
+      context 'when downloading for all groups' do
+        before do
+          click_link 'Download as CSV', href: admin_school_onboardings_path(format: :csv)
+        end
 
-    it 'I can download a CSV of onboarding schools for one group, including manually created schools' do
-      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
+        it 'downloads the CSV' do
+          header = page.response_headers['Content-Disposition']
+          expect(header).to match(/^attachment/)
+          expect(header).to match(/filename="#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}"/o)
 
-      # aother school in the same group
-      create(:school, name: 'Manual school', school_group: onboarding.school_group)
+          expect(page.source).to have_text 'Email sent'
+          expect(page.source).to have_text onboarding.school_name
+          expect(page.source).to have_text onboarding.contact_email
+        end
+      end
 
-      click_on 'Manage school onboarding'
-      click_link 'Download as CSV', href: admin_school_group_school_onboardings_path(onboarding.school_group, format: :csv)
+      context 'when downloading for a single group' do
+        before do
+          create(:school, name: 'Manual school', school_group: onboarding.school_group)
+          click_link 'Download as CSV',
+                     href: admin_school_group_school_onboardings_path(onboarding.school_group, format: :csv)
+        end
 
-      header = page.response_headers['Content-Disposition']
-      expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"#{onboarding.school_group.slug}-onboarding-schools.csv\"/)
-
-      expect(page.source).to have_content 'Email sent'
-      expect(page.source).to have_content 'In progress'
-      expect(page.source).to have_content onboarding.school_name
-      expect(page.source).to have_content onboarding.contact_email
-      expect(page.source).to have_content 'Manual school'
+        it 'downloads the CSV' do
+          header = page.response_headers['Content-Disposition']
+          expect(header).to match(/^attachment/)
+          expect(header).to match(/filename="#{onboarding.school_group.slug}-onboarding-schools.csv"/)
+          expect(page.source).to have_text 'Email sent'
+          expect(page.source).to have_text 'In progress'
+          expect(page.source).to have_text onboarding.school_name
+          expect(page.source).to have_text onboarding.contact_email
+          expect(page.source).to have_text 'Manual school'
+        end
+      end
     end
 
     context 'amending the contact email address when user has not responded' do
-      let!(:onboarding) { create :school_onboarding, :with_events, event_names: [:email_sent] }
-      let(:email_address) { }
+      let!(:onboarding) { create(:school_onboarding, :with_events, event_names: [:email_sent]) }
+      let(:email_address) {}
       let(:email_sent_events_count) { onboarding.events.where(event: :email_sent).count }
 
       before do
@@ -233,13 +310,12 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
       it { expect(email_sent_events_count).to be(1) }
 
-
       context 'to a blank email address' do
         let(:email_address) { '' }
 
         it "doesn't save" do
-          expect(page).to have_content("Contact email *\ncan't be blank")
-          expect(page).to have_content('Change email address')
+          expect(page).to have_text("Contact email *\ncan't be blank")
+          expect(page).to have_text('Change email address')
         end
       end
 
@@ -247,8 +323,8 @@ RSpec.describe 'onboarding', :schools, type: :system do
         let(:email_address) { 'different_address@email.com' }
 
         it 'saves' do
-          expect(page).to have_content('School onboardings currently in progress')
-          expect(page).to have_content(email_address)
+          expect(page).to have_text('School onboardings currently in progress')
+          expect(page).to have_text(email_address)
         end
 
         it 'sends email' do
@@ -270,26 +346,31 @@ RSpec.describe 'onboarding', :schools, type: :system do
     end
 
     it 'shows links to groups' do
-      onboarding = create :school_onboarding, :with_events
+      onboarding = create(:school_onboarding, :with_events)
       click_on 'Manage school onboarding'
       expect(page).to have_link onboarding.school_group.name
     end
 
-    it 'shows recently onboarded schools' do
-      school_group = create :school_group
-      school = create :school, country: :england, school_group: school_group
-      onboarding = create :school_onboarding, :with_events, event_names: [:onboarding_complete], school: school
-      within('#navbarNavDropdown') do
-        click_on 'Manage'
-        click_on 'Reports'
+    context 'when viewing the recently onboarded report' do
+      let!(:onboarding) do
+        create(:school_onboarding,
+               :with_events,
+               event_names: [:onboarding_complete],
+               school: create(:school, :with_school_group, country: :england))
       end
-      click_on 'Recently onboarded'
 
-      expect(page).to have_content 'Schools recently onboarded'
+      before do
+        within('#nav-top') do
+          click_on 'Manage'
+          click_on 'Reports'
+        end
+        click_on 'Recently onboarded'
+      end
 
-      click_on onboarding.school_name
-      within('.dashboard-school-title') do
-        expect(page).to have_content(school.name)
+      it 'shows recently onboarded schools' do
+        expect(page).to have_text 'Schools recently onboarded'
+        click_on onboarding.school_name
+        expect(page).to have_text(onboarding.school.name)
       end
     end
   end

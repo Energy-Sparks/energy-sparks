@@ -1,38 +1,38 @@
-<% content_for :page_title do %>Equivalence report for <%= @school.name %><% end %>
-
-<h1>Current Equivalences</h1>
-
-<% if @equivalences.empty? %>
-  <%= @school.name %> currently has no equivalences. Either they have not been generated or an error was
-  encountered when attempting to produce the equivalences.
-<% else %>
-  <%= pluralize(@equivalences.count, 'equivalence') %> generated on <%= nice_date_times(@equivalences.first.created_at) %>
-  <table class="table table-sorted">
-    <thead>
-      <tr>
-        <th>Meter Type</th>
-        <th>Time Period</th>
-        <th>Image</th>
-        <th>Via Unit</th>
-        <th>From Date</th>
-        <th>To Date</th>
-        <th>Relevant</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @equivalences.each do |equivalence| %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Equivalences" do %>
+  <% if @equivalences.empty? %>
+    <%= @school.name %> currently has no equivalences. Either they have not been generated or an error was
+    encountered when attempting to produce the equivalences.
+  <% else %>
+    <%= pluralize(@equivalences.count, 'equivalence') %>
+    generated on <%= nice_date_times(@equivalences.first.created_at) %>
+    <table class="table table-sorted">
+      <thead>
         <tr>
-          <td><%= equivalence.equivalence_type.meter_type.humanize %></td>
-          <td><%= equivalence.equivalence_type.time_period.humanize %></td>
-          <td><%= equivalence.equivalence_type.image_name.humanize %></td>
-          <td><%= equivalence.via_unit %> </td>
-          <td><%= nice_dates(equivalence.from_date) %></td>
-          <td><%= nice_dates(equivalence.to_date) %></td>
-          <td><%= equivalence.relevant %></td>
-          <td><%= link_to 'View', school_equivalence_report_path(@school, equivalence), class: 'btn' %></td>
+          <th>Meter Type</th>
+          <th>Time Period</th>
+          <th>Image</th>
+          <th>Via Unit</th>
+          <th>From Date</th>
+          <th>To Date</th>
+          <th>Relevant</th>
+          <th></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @equivalences.each do |equivalence| %>
+          <tr>
+            <td><%= equivalence.equivalence_type.meter_type.humanize %></td>
+            <td><%= equivalence.equivalence_type.time_period.humanize %></td>
+            <td><%= equivalence.equivalence_type.image_name.humanize %></td>
+            <td><%= equivalence.via_unit %> </td>
+            <td><%= nice_dates(equivalence.from_date) %></td>
+            <td><%= nice_dates(equivalence.to_date) %></td>
+            <td><%= equivalence.relevant %></td>
+            <td><%= link_to 'View', school_equivalence_report_path(@school, equivalence), class: 'btn' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 <% end %>

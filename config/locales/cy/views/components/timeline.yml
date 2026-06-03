@@ -1,9 +1,0 @@
-cy:
-  components:
-    timeline:
-      action:
-        one: '%{count} weithred'
-        two: '%{count} weithred'
-        many: '%{count} o weithredoedd'
-        other: '%{count} o weithredoedd'
-

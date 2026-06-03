@@ -51,10 +51,6 @@ module Comparisons
         ]
       end
 
-      def advice_page_key
-        :total_energy_use
-      end
-
       def table_configuration
         {
           total: I18n.t('comparisons.tables.total_usage'),

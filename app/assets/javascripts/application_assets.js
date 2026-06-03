@@ -20,7 +20,6 @@
 //= require highcharts-modules/bullet
 //= require highcharts-modules/solid-gauge
 
-// This is used (handlebars) but slight overkill I think
 //= require handlebars
 //= require_tree ./templates
 
@@ -57,7 +56,6 @@
 //= require depends_on
 
 //= require table_sorting
-//= require mailchimp
 //= require map
 //= require live_data
 //= require gtag
@@ -68,3 +66,11 @@
 
 //= require date_picker_form_component
 //= require panel_switcher_component
+//= require carousels
+//= require school_search
+//= require sortable.min
+//= require sort_list
+//= require delete_association
+//= require section_nav
+//= require match_row_height
+//= require ensure_one_checked

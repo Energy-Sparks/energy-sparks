@@ -10,10 +10,13 @@ runs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: "3.2"
+        ruby-version: "3.4"
     - if: ${{ inputs.ruby-only == 'false' }}
       run: bundle exec rails db:schema:load
       shell: bash
     - if: ${{ inputs.ruby-only == 'false' }}
       run: bundle exec rake assets:precompile
+      shell: bash
+    - if: ${{ inputs.ruby-only == 'false' }}
+      run: sudo apt update && sudo apt install -y imagemagick
       shell: bash

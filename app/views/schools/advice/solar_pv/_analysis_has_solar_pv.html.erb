@@ -17,59 +17,68 @@
   </li>
 </ul>
 
-<%= render 'schools/advice/section_title', section_id: 'long_term_trends', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.long_term_trends') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'long_term_trends',
+           section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.long_term_trends') %>
 
-<%= component 'notice', status: :positive do |c| %>
-  <%= t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_panels_have_reduced', annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent, :percent)).html_safe %>
+<%= render PromptComponent.new(icon: :sun, fuel_type: :solar_pv, status: :positive) do |c| %>
+  <%= t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_panels_have_reduced',
+        annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent,
+                                                         :percent)).html_safe %>
 <% end %>
 
-<%= component 'chart', chart_type: :solar_pv_group_by_month, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :solar_pv_group_by_month, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t(
-      'advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.subtitle_html',
-      start_date: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
-      end_date: short_dates(@analysis_dates.end_date)
-    )
-    %>
+    <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.subtitle_html',
+          start_date: short_dates(if @analysis_dates.one_years_data?
+                                    @analysis_dates.one_year_before_end
+                                  else
+                                    @analysis_dates.start_date
+                                  end),
+          end_date: short_dates(@analysis_dates.end_date)) %>
   <% end %>
   <% c.with_footer do %>
     <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.footer_html') %>
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'recent_electricity_consumption_and_solar_production', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.recent_electricity_consumption_and_solar_production') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'recent_electricity_consumption_and_solar_production',
+           section_title: t('advice_pages.solar_pv.has_solar_pv.analysis' \
+                            '.recent_electricity_consumption_and_solar_production') %>
 
-<%= component 'chart', chart_type: :solar_pv_last_7_days_by_submeter, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :solar_pv_last_7_days_by_submeter, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_last_7_days_by_submeter.title') %>
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_last_7_days_by_submeter.subtitle_html',
-    start_date: short_dates(@analysis_dates.end_date - 6.days),
-    end_date: short_dates(@analysis_dates.end_date)
-    ) %>
+          start_date: short_dates(@analysis_dates.end_date - 6.days),
+          end_date: short_dates(@analysis_dates.end_date)) %>
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'benefits_of_having_installed_solar_panels', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.benefits_of_having_installed_solar_panels') %>
+<%= render 'schools/advice/section_title', section_id: 'benefits_of_having_installed_solar_panels',
+                                           section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.' \
+                                                            'benefits_of_having_installed_solar_panels') %>
 
 <p>
   <%= t('advice_pages.solar_pv.has_solar_pv.analysis.installing_solar_panels_has_reduced_html',
-    annual_solar_pv_consumed_onsite_kwh: format_unit(@existing_benefits.annual_solar_pv_consumed_onsite_kwh, :kwh),
-    annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent, :percent)
-    )
-  %>
+        annual_solar_pv_consumed_onsite_kwh: format_unit(@existing_benefits.annual_solar_pv_consumed_onsite_kwh, :kwh),
+        annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent,
+                                                         :percent)) %>
 </p>
 
 <p>
-  <%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_panels_have_reduced', annual_co2_saving_kg: format_unit(@existing_benefits.annual_co2_saving_kg, :kg)
-  ) %>.
+  <%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_panels_have_reduced',
+        annual_co2_saving_kg: format_unit(@existing_benefits.annual_co2_saving_kg, :kg)) %>.
 </p>
 
-<%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_following_table_summarises', start_date: short_dates(@analysis_dates.start_date), end_date: short_dates(@analysis_dates.end_date)) %>:
+<%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_following_table_summarises',
+      start_date: short_dates(@analysis_dates.one_year_before_end), end_date: short_dates(@analysis_dates.end_date)) %>:
 
 <%= render 'insights_has_solar_pv_table' %>
 
@@ -77,7 +86,8 @@
 
 <strong><%= t('advice_pages.solar_pv.has_solar_pv.analysis.if_the_panels_are_owned_by_the_school') %></strong>
 
-<p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_school_will_have_saved_html', saving_current_gbp: format_unit(@existing_benefits.saving_£current, :£)) %>.</p>
+<p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_school_will_have_saved_html',
+         saving_current_gbp: format_unit(@existing_benefits.saving_£current, :£)) %>.</p>
 
 <p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.there_may_be_extra_returns') %>.</p>
 
@@ -94,12 +104,16 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.before_april_2019_content_html', solar_generation: format_unit(@existing_benefits.annual_solar_pv_kwh, :kwh)) %></td>
-      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.after_april_2019_content_html', export_price: BenchmarkMetrics.pricing.solar_export_price * 100, export_value: format_unit(@existing_benefits.export_£, :£)) %></td>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.before_april_2019_content_html',
+                solar_generation: format_unit(@existing_benefits.annual_solar_pv_kwh, :kwh)) %></td>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.after_april_2019_content_html',
+                export_price: BenchmarkMetrics.pricing.solar_export_price * 100,
+                export_value: format_unit(@existing_benefits.export_£, :£)) %></td>
     </tr>
   </tbody>
 </table>
-<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes' %>
 
 <strong>
   <%= t('advice_pages.solar_pv.has_solar_pv.analysis.if_the_panels_are_owned_by_a_third_party') %>

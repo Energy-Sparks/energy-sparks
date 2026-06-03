@@ -1,0 +1,22 @@
+<% if hide %>
+  <%= tag.div class: class_names('border rounded p-2', classes) do %>
+    <span
+      data-toggle="collapse"
+      data-bs-toggle="collapse"
+      href="#target-<%= identifier %>"
+      data-bs-target="#target-<%= identifier %>"
+      role="button"
+      aria-expanded="false"
+      aria-controls="target-<%= identifier %>"
+      class="toggler text-decoration-none collapsed ps-2">
+      <%= toggler %>
+      <strong><%= title %></strong>
+    </span>
+
+    <div id="target-<%= identifier %>" class="collapse">
+      <%= content %>
+    </div>
+  <% end %>
+<% else %>
+  <%= content %>
+<% end %>

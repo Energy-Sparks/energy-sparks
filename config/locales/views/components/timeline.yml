@@ -1,7 +1,0 @@
----
-en:
-  components:
-    timeline:
-      action:
-        one: "%{count} action"
-        other: "%{count} actions"

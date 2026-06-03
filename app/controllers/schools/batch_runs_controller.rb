@@ -11,6 +11,9 @@ module Schools
     end
 
     def create
+      unless @school.process_data?
+        redirect_to(school_batch_runs_path(@school), notice: 'School has not been set to process data') and return
+      end
       school_batch_run = SchoolBatchRun.create!(school: @school)
       SchoolBatchRunJob.perform_later school_batch_run
       redirect_to school_batch_run_path(@school, school_batch_run)

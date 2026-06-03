@@ -16,6 +16,7 @@ shared_examples 'a report page with valid attributes' do |action:, key:|
     fill_in 'Previous end date', with: '01/02/2023'
     fill_in 'Max days out of date', with: 365
     fill_in 'Enough days data', with: 1
+    check 'Disable normalisation'
 
     fill_in_trix '#report_introduction_en', with: 'New introduction'
     fill_in_trix '#report_notes_en', with: 'New notes'

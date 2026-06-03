@@ -1,8 +1,16 @@
-<div class="custom-control custom-checkbox agreements">
-  <%= check_box_tag "privacy", false, false, class: 'custom-control-input multi-select must-check' %>
-  <%= label_tag "privacy",
-                t('terms_and_conditions.message_html',
-                  terms_and_conditions_link: link_to(t('common.terms_and_conditions'), terms_and_conditions_path, target: '_blank'),
-                  privacy_policy_link: link_to(t('common.privacy_policy'), privacy_and_cookie_policy_path, target: '_blank')),
-                class: 'custom-control-label' %>
+<div class="form-check agreements">
+  <%= f.check_box :terms_accepted,
+                  { class:
+                     class_names('form-check-input multi-select', 'must-check': !user.terms_accepted) },
+                  '1',
+                  '0' %>
+  <%= f.label :terms_accepted, t('terms_and_conditions.message_html',
+                                 terms_and_conditions_link: link_to(t('common.terms_and_conditions'),
+                                                                    terms_and_conditions_path,
+                                                                    target: '_blank', rel: 'noopener'),
+                                 privacy_policy_link: link_to(t('common.privacy_policy'),
+                                                              privacy_and_cookie_policy_path,
+                                                              target: '_blank',
+                                                              rel: 'noopener')),
+              class: 'form-check-label' %>
 </div>

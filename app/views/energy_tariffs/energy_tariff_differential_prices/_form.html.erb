@@ -1,11 +1,10 @@
 <%= f.input :start_time,
             minute_step: 30,
-            label: t('schools.user_tariff_differential_prices.form.labels.start_time')
-%>
+            label: t('schools.user_tariff_differential_prices.form.labels.start_time') %>
 <%= f.input :end_time,
             minute_step: 30,
-            label: t('schools.user_tariff_differential_prices.form.labels.end_time')
-%>
-<%= f.input :value, pattern: '[0-9.]+', label: t('schools.user_tariff_differential_prices.form.labels.value') %>
+            label: t('schools.user_tariff_differential_prices.form.labels.end_time') %>
+<%= f.input :value, pattern: '[0-9.]+', label: t('schools.user_tariff_differential_prices.form.labels.value'),
+                    input_html: { step: 0.01 } %>
 <button class="btn" data-dismiss="modal" aria-hidden="true"><%= t('common.labels.cancel') %></button>
 <%= f.submit t('common.labels.save'), class: 'btn btn-primary' %>

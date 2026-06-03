@@ -1,6 +1,6 @@
 <h1>Report for <%= @title %></h1>
 
-<p><%= link_to 'All reports', admin_reports_path, class: 'btn btn-success' %></p>
+<p><%= link_to 'All reports', admin_reports_path, class: 'btn' %></p>
 
 <h2>Missing days summary</h2>
 
@@ -24,11 +24,11 @@
 
 <div class="row">
   <ul>
-    <% @missing_array.group_by{ |m| m[0].year }.each do |year| %>
+    <% @missing_array.group_by { |m| m[0].year }.each do |year| %>
       <h3><%= year[0] %></h3>
       <% year[1].each do |missing| %>
         <li><%= "#{nice_dates(missing[0])} #{missing[1]}" %></li>
       <% end %>
-    <% end %>
+    <% end if @missing_array %>
   </ul>
 </div>

@@ -1,7 +1,7 @@
 <% inactive_meters.each do |meter| %>
   <tr scope="row">
-    <td title="<%= (meter.meter_type.to_s.humanize) %>"><%= fa_icon(fuel_type_icon(meter.meter_type)) %></td>
-    <td>
+    <td class="fit">
+      <%= fa_icon(fuel_type_icon(meter.meter_type)) %>
       <%= link_to meter.mpan_mprn, school_meter_path(@school, meter) %>
     </td>
     <td><%= meter.name %></td>
@@ -10,45 +10,80 @@
         <%= meter.t_meter_system %>
       </td>
       <td>
-        <%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %>
+        <%= if meter.data_source
+              link_to label_with_wbr(meter.data_source.try(:name)),
+                      admin_data_source_path(meter.data_source)
+            end %>
       </td>
       <td>
-        <%= link_to meter.procurement_route.try(:organisation_name), admin_procurement_route_path(meter.procurement_route) if meter.procurement_route %>
+        <%= if meter.procurement_route
+              link_to label_with_wbr(meter.procurement_route.try(:organisation_name)),
+                      admin_procurement_route_path(meter.procurement_route)
+            end %>
       </td>
       <td>
-        <%= meter.admin_meter_status_label %>
+        <%= label_with_wbr(meter.admin_meter_status_label) %>
       </td>
     <% end %>
-    <td><%= meter.amr_data_feed_readings.count %></td>
-    <td><%= meter.number_of_validated_readings %></td>
-    <td><%= short_dates meter.first_validated_reading %></td>
-    <td><%= short_dates meter.last_validated_reading %></td>
-    <td><%= meter.zero_reading_days.count %></td>
-    <td><%= meter.gappy_validated_readings.count %></td>
+    <td class="text-right"><%= meter.amr_data_feed_readings.count %></td>
+    <td class="text-right"><%= meter.number_of_validated_readings %></td>
+    <td class="fit text-right">
+      <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
+        <%= link_to admin_reports_amr_validated_reading_path(meter), title: t('schools.meters.index.report') do %>
+            <%= short_dates meter.first_validated_reading %>-<%= short_dates meter.last_validated_reading %>
+        <% end %>
+      <% else %>
+        <%= short_dates meter.first_validated_reading %>-<%= short_dates meter.last_validated_reading %>
+      <% end %>
+    </td>
+    <td class="text-right"><%= meter.zero_reading_days.count %></td>
+    <td class="text-right"><%= meter.gappy_validated_readings.count %></td>
     <td>
       <div class="btn-group btn-group-sm" role="group">
+        <%= if can?(:edit, meter)
+              link_to t('common.labels.edit'), edit_school_meter_path(@school, meter),
+                      class: 'btn btn-sm btn-primary'
+            end %>
         <% if can?(:view_meter_attributes, meter) %>
-          <%= link_to t('common.labels.attributes'), admin_school_single_meter_attribute_path(@school, meter), class: 'btn btn-sm' %>
+          <%= link_to admin_school_single_meter_attribute_path(@school, meter),
+                      class: 'btn btn-sm', title: t('common.labels.attributes') do %>
+            <i class="fas fa-gear"></i>
+          <% end %>
         <% end %>
         <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-          <%= link_to t('schools.meters.index.report'), admin_reports_amr_validated_reading_path(meter), class: 'btn btn-sm' %>
-        <% end %>
-        <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
-          <%= link_to school_meter_path(@school, meter, format: "csv"), class: 'btn btn-info btn-sm' do %>
-            <%= fa_icon('file-download') %>
+          <%= link_to school_meter_path(@school, meter, format: 'csv'),
+                      class: 'btn btn-secondary btn-sm', title: t('schools.meters.index.readings') do %>
+            <i class="fas fa-file-download"></i>
           <% end %>
         <% end %>
         <%= render 'admin/issues/modal', meter: meter if current_user.admin? %>
-      </div>
-    </td>
-    <td>
-      <div class="btn-group btn-group-sm" role="group">
-        <%= link_to t('common.labels.edit'), edit_school_meter_path(@school, meter), class: 'btn btn-sm' if can?(:edit, meter) %>
-        <%= link_to t('common.labels.activate'), activate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm' if can?(:activate, meter) %>
+        <% if can?(:activate, meter) %>
+          <%= link_to activate_school_meter_path(@school, meter),
+                      method: :put,
+                      class: 'btn btn-sm btn-warning', title: t('common.labels.activate') do %>
+                <% if current_user.admin? %>
+                  <i class="fas fa-play"></i>
+                <% else %>
+                  <% t('common.labels.activate') %>
+                <% end %>
+          <% end %>
+        <% end %>
         <% if can? :delete, meter %>
-          <%= link_to t('common.labels.delete'), school_meter_path(@school, meter), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-sm' %>
+          <%= link_to school_meter_path(@school, meter),
+                      method: :delete,
+                      data: { confirm: t('common.confirm') },
+                      class: 'btn btn-sm btn-danger', title: t('common.labels.delete') do %>
+                <% if current_user.admin? %>
+                  <i class="fas fa-trash"></i>
+                <% else %>
+                  <% t('common.labels.delete') %>
+                <% end %>
+          <% end %>
         <% else %>
-          <button class="btn btn-sm" disabled title="<%= t('schools.meters.index.only_admins_message') %>"><%= t('common.labels.delete') %></button>
+          <button class="btn btn-sm"
+                  disabled
+                  title="<%= t('schools.meters.index.only_admins_message') %>">
+                  <%= t('common.labels.delete') %></button>
         <% end %>
       </div>
     </td>

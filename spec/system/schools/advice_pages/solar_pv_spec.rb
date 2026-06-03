@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'solar pv advice page', type: :system do
+RSpec.describe 'solar pv advice page', :aggregate_failures do
   let(:key) { 'solar_pv' }
 
   include_context 'solar advice page'
@@ -9,8 +11,10 @@ RSpec.describe 'solar pv advice page', type: :system do
     school.has_solar_pv? ? 'Solar PV generation' : 'Benefits of installing solar panels'
   end
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as school admin' do
-    let(:user) { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school:) }
 
     before do
       allow_any_instance_of(Schools::Advice::SolarPvController).to receive_messages(
@@ -27,7 +31,7 @@ RSpec.describe 'solar pv advice page', type: :system do
             annual_exported_solar_pv_kwh: 1295.4532532740932,
             annual_solar_pv_consumed_onsite_kwh: 12_900.481391744512,
             annual_consumed_from_national_grid_kwh: 48_157.39999999996
-                                   ),
+          ),
           build_potential_benefits: OpenStruct.new(
             optimum_kwp: 52.5,
             optimum_payback_years: 5.682322708769174,
@@ -45,7 +49,7 @@ RSpec.describe 'solar pv advice page', type: :system do
               capital_cost_£: 2392.9653,
               payback_years: 17.07143409053209
             )]
-                                    )
+          )
         }
       )
 
@@ -66,7 +70,7 @@ RSpec.describe 'solar pv advice page', type: :system do
 
       it 'shows expected content' do
         expect(page).to have_content('Benefits of installing solar panels')
-        expect(page).not_to have_content('Solar PV generation')
+        expect(page).to have_no_content('Solar PV generation')
 
         expect(page).to have_content('What is solar PV?')
         expect(page).to have_content('Potential benefits for your school')
@@ -76,14 +80,13 @@ RSpec.describe 'solar pv advice page', type: :system do
     context "clicking the 'Insights' tab as a school *with* solar pv" do
       before do
         allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(true)
-
         click_on 'Insights'
       end
 
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
-        expect(page).not_to have_content('Benefits of installing solar panels')
+        expect(page).to have_no_content('Benefits of installing solar panels')
         expect(page).to have_content('Solar PV generation')
 
         expect(page).to have_content('What is solar PV?')
@@ -91,6 +94,8 @@ RSpec.describe 'solar pv advice page', type: :system do
         expect(page).to have_content('Total consumption')
         expect(page).to have_content('61,000')
         expect(page).to have_content('How do you compare?')
+        expect(page).to \
+          have_content("based on usage between #{start_date.to_fs(:es_short)} and #{end_date.to_fs(:es_short)}")
       end
     end
 

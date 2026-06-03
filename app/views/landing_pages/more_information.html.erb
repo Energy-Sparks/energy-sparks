@@ -1,24 +1,18 @@
 <% content_for :page_title, t('campaigns.more_information.title') %>
-
-<div class="row">
-  <div class="col-md-12">
+<div class="container-fluid adult pt-2 pb-3">
+  <div class="container">
     <h1><%= t('campaigns.more_information.title') %></h1>
+    <p><%= t('campaigns.more_information.intro') %></p>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <p>
-      <%= t('campaigns.more_information.intro') %>
-    </p>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6">
-    <%= render 'form', request_type: :more_information %>
-  </div>
-  <div class="col-md-6 d-flex align-items-center">
-    <%= image_tag('pupil-carbon.jpg', class: 'img-fluid rounded-25') %>
+<div class="container my-4">
+  <div class="row">
+    <div class="col-md-12 col-lg-6">
+      <%= render 'form', source: :info %>
+    </div>
+    <div class="d-none d-lg-block col-lg-6">
+      <%= image_tag('pupil-carbon.jpg', class: 'img-fluid rounded-xl') %>
+    </div>
   </div>
 </div>

@@ -9,7 +9,9 @@ module Schools
     def update
       respond_to do |format|
         if @school.update(school_params)
-          format.html { render :edit, notice: I18n.t('schools.your_school_estates.edit.school_was_successfully_updated') }
+          format.html do
+            render :edit, notice: I18n.t('schools.your_school_estates.edit.school_was_successfully_updated')
+          end
         else
           format.html { render :edit }
         end
@@ -23,32 +25,11 @@ module Schools
     end
 
     def school_params
-      params.require(:school).permit(
-        :indicated_has_solar_panels,
-        :indicated_has_storage_heaters,
-        :has_swimming_pool,
-        :alternative_heating_oil,
-        :alternative_heating_lpg,
-        :alternative_heating_biomass,
-        :alternative_heating_district_heating,
-        :alternative_heating_ground_source_heat_pump,
-        :alternative_heating_air_source_heat_pump,
-        :alternative_heating_water_source_heat_pump,
-        :alternative_heating_oil_percent,
-        :alternative_heating_lpg_percent,
-        :alternative_heating_biomass_percent,
-        :alternative_heating_district_heating_percent,
-        :alternative_heating_ground_source_heat_pump_percent,
-        :alternative_heating_air_source_heat_pump_percent,
-        :alternative_heating_water_source_heat_pump_percent,
-        :alternative_heating_oil_notes,
-        :alternative_heating_lpg_notes,
-        :alternative_heating_biomass_notes,
-        :alternative_heating_district_heating_notes,
-        :alternative_heating_ground_source_heat_pump_notes,
-        :alternative_heating_air_source_heat_pump_notes,
-        :alternative_heating_water_source_heat_pump_notes
-      )
+      allowed = %i[indicated_has_solar_panels indicated_has_storage_heaters has_swimming_pool]
+      allowed += School::HEATING_TYPES.flat_map do |type|
+        [:"heating_#{type}", :"heating_#{type}_notes", :"heating_#{type}_percent"]
+      end
+      params.require(:school).permit(*allowed)
     end
   end
 end

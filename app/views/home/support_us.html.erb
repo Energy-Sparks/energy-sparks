@@ -4,19 +4,25 @@
   <div class="row">
     <div>
       <h1><%= t('support_us.title') %></h1>
-      <%= render 'two_column_image_deck', column_one: 'support-us/support_us_1.jpg', column_two: 'support-us/support_us_2.jpg' %>
+      <%= render 'two_column_image_deck',
+                 column_one: 'support-us/support_us_1.jpg',
+                 column_two: 'support-us/support_us_2.jpg' %>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12 pb-6">
       <%= t('support_us.content_html', school_count: School.active.count) %>
       <p><%= link_to t('support_us.our_existing_funders_and_partners'), funders_path %></p>
-      <%= render 'home/testimonial',
-        quote:  t('support_us.quote.text'),
-        by: 'Dan McCallum',
-        title: t('support_us.quote.title'),
-        location: t('support_us.quote.location')
-      %>
+      <div class="row bg-light-blue p-5 justify-content-center">
+        <div class="testimonial col-10">
+          <blockquote class="quotes"><%= sanitize t('support_us.quote.text') %></blockquote>
+          <figcaption class="quote-by">
+            <strong><%= 'Dan McCallum' %></strong>
+            <p class="very-small"><%= t('support_us.quote.title') %></p>
+            <p class="very-small"><%= t('support_us.quote.location') %></p>
+          </figcaption>
+        </div>
+      </div>
     </div>
   </div>
 </div>

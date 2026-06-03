@@ -2,13 +2,9 @@
 
 module Schools
   class InterventionsController < ApplicationController
-    skip_before_action :authenticate_user!, only: %i[index show]
+    skip_before_action :authenticate_user!, only: %i[show]
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
-
-    def index
-      @interventions = @observations.intervention.visible.order('at DESC')
-    end
 
     def show
       if @observation.observation_type == 'activity'
@@ -30,14 +26,26 @@ module Schools
     end
 
     def create
-      @observation = @school.observations.new(observation_params.merge(observation_type: :intervention,
-                                                                       created_by: current_user))
-      authorize! :create, @observation
-      if @observation.save
-        redirect_to completed_school_intervention_path(@school, @observation)
+      if Flipper.enabled?(:todos, current_user)
+        @observation = @school.observations.intervention.new(observation_params)
+
+        authorize! :create, @observation
+        if Tasks::Recorder.new(@observation, current_user).process
+          redirect_to completed_school_intervention_path(@school, @observation)
+        else
+          @intervention_type = @observation.intervention_type
+          render :new
+        end
       else
-        @intervention_type = @observation.intervention_type
-        render :new
+        @observation = @school.observations.new(observation_params.merge(observation_type: :intervention,
+                                                                         created_by: current_user))
+        authorize! :create, @observation
+        if @observation.save
+          redirect_to completed_school_intervention_path(@school, @observation)
+        else
+          @intervention_type = @observation.intervention_type
+          render :new
+        end
       end
     end
 
@@ -53,7 +61,7 @@ module Schools
     def destroy
       authorize! :delete, @observation
       ObservationRemoval.new(@observation).process
-      redirect_back fallback_location: school_interventions_path(@school)
+      redirect_to school_interventions_path(@school)
     end
 
     def completed; end

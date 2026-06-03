@@ -1,0 +1,28 @@
+<%= tag.div id: id, class: class_names(classes, 'carousel slide'),
+            data: { wrap: true, bs_wrap: true, interval: false, bs_interval: false } do %>
+  <div class="carousel-inner">
+    <% panels.each do |panel| %>
+      <%= panel %>
+    <% end %>
+  </div>
+  <% if panels.length > 1 %>
+      <% if show_arrows %>
+        <%= render ArrowComponent.new(id: id, direction: :prev) %>
+        <%= render ArrowComponent.new(id: id, direction: :next) %>
+      <% end %>
+      <% if show_markers %>
+        <%= content_tag (Current.bs5 ? :div : :ol), class: 'carousel-indicators pb-4' do %>
+          <% panels.size.times do |n| %>
+            <% if Current.bs5 %>
+              <%= tag.button type: 'button', data: { bs_target: "##{id}", bs_slide_to: n },
+                             class: ('active' if n.zero?).to_s %>
+            <% else %>
+              <%= tag.li data: { target: "##{id}", slide_to: n },
+                         class: ('active' if n.zero?).to_s %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+  <% end %>
+  <%= placeholder %>
+<% end %>

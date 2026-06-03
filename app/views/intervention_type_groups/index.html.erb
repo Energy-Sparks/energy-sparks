@@ -4,11 +4,9 @@
   <div class="col">
     <div class="d-flex justify-content-between align-items-center">
       <h1><%= t('intervention_type_groups.index.explore_energy_saving_actions') %></h1>
-      <% if EnergySparks::FeatureFlags.active?(:intervention_type_search) %>
-        <%= link_to t('intervention_type_groups.index.search'),
-                    search_intervention_types_path,
-                    class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-      <% end %>
+      <%= link_to t('intervention_type_groups.index.search'),
+                  search_intervention_types_path,
+                  class: 'btn btn-default' %>
     </div>
   </div>
 </div>
@@ -23,6 +21,10 @@
 
 <%= render 'schools/prompt_recommended', scope: :adult %>
 
+<% if Flipper.enabled?(:todos, current_user) %>
+  <%= render 'shared/tasks/programme_types', programme_types: @programme_types %>
+<% end %>
+
 <% @intervention_type_groups.each do |intervention_type_group| %>
   <div class="row mt-3">
     <div class="col">
@@ -32,7 +34,7 @@
           <%= link_to t('intervention_type_groups.index.view_all_actions',
                         count: intervention_type_group.intervention_types.active.count),
                       intervention_type_group_path(intervention_type_group),
-                      class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                      class: 'btn btn-default' %>
         </div>
       </div>
     </div>

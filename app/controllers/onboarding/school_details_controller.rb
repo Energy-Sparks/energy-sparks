@@ -6,10 +6,7 @@ module Onboarding
     end
 
     def new
-      @school = School.new(
-        name: @school_onboarding.school_name,
-        data_enabled: false
-      )
+      @school = School.from_onboarding(@school_onboarding)
     end
 
     def create

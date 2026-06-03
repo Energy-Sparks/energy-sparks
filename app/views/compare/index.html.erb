@@ -18,7 +18,7 @@
 <%= render 'search_tabs' %>
 
 <div class="tab-content" id="compare-content">
-  <%= render 'compare/tab_content/group' if current_school_group %>
+  <%= render 'compare/tab_content/group' if current_user_default_school_group %>
   <%= render 'compare/tab_content/country' %>
   <%= render 'compare/tab_content/type' %>
   <%= render 'compare/tab_content/groups' %>

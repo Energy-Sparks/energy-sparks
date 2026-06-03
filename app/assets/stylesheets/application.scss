@@ -1,17 +1,16 @@
-/*
- *
- *= require trix
- */
-@import "bootstrap";
-@import "bootstrap-xl";
-@import "font-awesome";
-@import "fonts";
+@use 'font-awesome' with ($fa-font-path: 'font-awesome'); // https://github.com/FortAwesome/font-awesome-sass/issues/222
+
 @import "colours";
+@import "fonts";
+@import "bootstrap-overrides";
+@import "bootstrap";
 
 @import "base";
 @import "links";
+@import "buttons";
 @import "headers";
 @import "nav";
+@import "nav-tabs";
 @import "footer";
 @import "home";
 @import "site";
@@ -36,12 +35,11 @@
 
 @import "actiontext";
 @import "trix_content";
+@import "trix_editor";
 
 @import "observations";
-@import "carousels";
 @import "timeline";
 @import "alert_editor";
-@import "benchmarks";
 @import "reports";
 
 @import "map";
@@ -56,5 +54,9 @@
 @import "comparisons";
 @import "standout";
 @import "cookie_banner";
+@import "themes";
+@import "palette";
+@import "tables";
 
-@import "../../components/**/*"; // loaded here so bootstrap SASS variables are available
+// loaded here so bootstrap SASS variables are available
+@import "../../components";

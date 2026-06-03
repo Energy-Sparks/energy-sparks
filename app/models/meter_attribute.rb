@@ -2,16 +2,16 @@
 #
 # Table name: meter_attributes
 #
+#  id             :bigint(8)        not null, primary key
 #  attribute_type :string           not null
+#  input_data     :json
+#  reason         :text
 #  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #  created_by_id  :bigint(8)
 #  deleted_by_id  :bigint(8)
-#  id             :bigint(8)        not null, primary key
-#  input_data     :json
 #  meter_id       :bigint(8)        not null
-#  reason         :text
 #  replaced_by_id :bigint(8)
-#  updated_at     :datetime         not null
 #
 # Indexes
 #
@@ -47,7 +47,7 @@ class MeterAttribute < ApplicationRecord
   end
 
   def self.metered_solar
-    query = <<-SQL.squish
+    query = <<~SQL.squish
       SELECT ma.id, m.id, s.id, s.name, solar.*
       FROM meter_attributes ma
       JOIN meters m ON ma.meter_id = m.id
@@ -83,7 +83,7 @@ class MeterAttribute < ApplicationRecord
   end
 
   def self.solar_pv
-    query = <<-SQL.squish
+    query = <<~SQL.squish
       SELECT ma.id, m.school_id, s.name, ma.meter_id, solar.*
       FROM meter_attributes ma
       JOIN meters m ON ma.meter_id = m.id

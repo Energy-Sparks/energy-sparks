@@ -15,7 +15,6 @@
 #
 
 gemfile: Gemfile
-verify_signatures: false
 
 PreCommit:
   BundleAudit:
@@ -33,6 +32,7 @@ PreCommit:
     exclude:
       - 'app/assets/images/**/*'
       - 'vendor/assets/**/*'
+      - 'spec/fixtures/**/*'
   I18nTasks:
     enabled: true
     requires_files: true # only run if specific files changes
@@ -43,6 +43,8 @@ PreCommit:
     enabled: true
   RuboCop:
     enabled: true
+    env:
+      CI: 'true' # so uses rubocop_todo.yml
   TrailingWhitespace:
     enabled: true
     exclude:
@@ -50,4 +52,11 @@ PreCommit:
       - 'vendor/**/*'
       - 'app/assets/images/**/*'
       - 'public/error-fonts/*'
-
+  ScssColours:
+    enabled: true
+    description: 'Check for needed changes in colours scss'
+    command: ['bin/rake', 'scss:colours[check]']
+  ScssComponents:
+    enabled: true
+    description: 'Check for needed changes in components scss index'
+    command: ['bin/rake', 'scss:components[check]']

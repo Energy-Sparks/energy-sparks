@@ -63,7 +63,13 @@ describe Recommendations::Activities, type: :service do
     context 'when school has no key stages' do
       let(:key_stages) { [] }
 
-      it_behaves_like 'a service making recommendations based on energy use'
+      context without_feature: :todos do
+        it_behaves_like 'a service making recommendations based on energy use'
+      end
+
+      context with_feature: :todos do
+        it_behaves_like 'a service making recommendations based on energy use', with_todos: true
+      end
     end
 
     context 'when school has key stages' do

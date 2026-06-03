@@ -3,11 +3,16 @@
 <p>
   A school administrator at <%= @school.name %> has <%= @updated ? 'updated a previously uploaded' : 'uploaded a new' %> bill.
 </p>
-<%= link_to "View bill", school_consent_document_url(@school, @consent_document), class: 'btn btn-primary mt-3 mb-3' %>
+<%= link_to 'View bill', school_consent_document_url(@school, @consent_document), class: 'btn btn-primary mt-3 mb-3' %>
 
 <% if @school.consent_up_to_date? %>
   <p>
     This school has up to date consent, so its now possible to complete a meter review, if required.
   </p>
-  <%= link_to "Perform review", new_admin_school_meter_review_url(@school), class: 'btn btn-primary mt-3 mb-3' %>
+  <%= link_to 'Perform review', new_admin_school_meter_review_url(@school), class: 'btn btn-primary mt-3 mb-3' %>
+<% else %>
+  <p>
+    This school does not have up-to-date consent. You can request consent to allow a meter review to be completed.
+  </p>
+  <%= link_to 'Request consent', new_admin_school_consent_request_url(@school), class: 'btn btn-primary mt-3 mb-3' %>
 <% end %>

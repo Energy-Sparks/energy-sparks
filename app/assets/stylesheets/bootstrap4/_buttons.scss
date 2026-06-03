@@ -1,0 +1,46 @@
+.btn-default {
+  @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
+
+  &.transparent {
+    background-color: transparent;
+    @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
+  }
+}
+
+.btn {
+  background-color: $white;
+  @extend .btn-default;
+}
+
+@each $color, $value in $theme-colors {
+  @if $color != secondary { // secondary is same as default button design
+    .btn-#{$color} {
+      @include button-variant($value, $value);
+    }
+  }
+
+  .btn-outline-#{$color} {
+    @include button-outline-variant($value);
+
+    &.transparent {
+      background-color: transparent;
+      @include button-outline-variant($value);
+    }
+  }
+}
+
+// primary, secondary and success all break from the normal bootstrap styles
+.btn-primary {
+  @include button-variant($blue-very-dark, $blue-very-dark, $blue-dark, $blue-dark);
+}
+
+.btn-success {
+  @include button-variant($teal-medium, $teal-medium, $teal-dark, $teal-dark);
+  color: $teal-very-dark;
+}
+
+// used in the footer newsletter signup form
+.btn-outline-white {
+  background-color: transparent;
+  @include button-outline-variant($white, $yellow-medium, transparent, $yellow-medium);
+}

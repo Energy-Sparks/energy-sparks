@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe RecentActivitiesMailer do
-  let(:activity_1)            { create(:activity, title: 'first activity') }
-  let(:activity_2)            { create(:activity, title: 'second activity') }
+  let(:activity_1)            { create(:activity, title: 'first activity', school: create(:school, :with_school_group)) }
+  let(:activity_2)            { create(:activity, title: 'second activity', school: create(:school, :with_school_group)) }
   let(:intervention_type_1)   { create(:intervention_type, name: 'first action') }
   let(:intervention_type_2)   { create(:intervention_type, name: 'second action') }
-  let(:observation_1)         { create(:observation, observation_type: :temperature, intervention_type: intervention_type_1) }
-  let(:observation_2)         { create(:observation, observation_type: :temperature, intervention_type: intervention_type_2) }
+  let(:observation_1)         { create(:observation, :intervention, intervention_type: intervention_type_1, school: create(:school, :with_school_group)) }
+  let(:observation_2)         { create(:observation, :intervention, intervention_type: intervention_type_2, school: create(:school, :with_school_group)) }
 
   let(:activity_ids)          { [activity_1.id, activity_2.id] }
   let(:observation_ids)       { [observation_1.id, observation_2.id] }

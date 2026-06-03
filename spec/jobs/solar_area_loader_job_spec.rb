@@ -4,7 +4,7 @@ describe SolarAreaLoaderJob do
   subject(:job) { SolarAreaLoaderJob.new }
 
   let(:area)          { create(:solar_pv_tuos_area) }
-  let(:start_date)    { Date.yesterday - 2.years }
+  let(:start_date)    { Date.yesterday - 1.year }
   let(:result)        { 'Imported xx records, Updated xx records' }
   let(:loader)        { double(DataFeeds::SolarPvTuosLoader, import_area: result) }
 

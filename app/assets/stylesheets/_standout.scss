@@ -1,0 +1,12 @@
+.standout {
+  background-color: $light;
+  border-top: 1px solid $grey-light;
+  border-right: 1px solid $grey-light;
+  border-bottom: 1px solid $grey-light;
+}
+
+@each $color, $value in $theme-colors {
+  .standout.#{$color} {
+    border-left:6px solid $value;
+  }
+}

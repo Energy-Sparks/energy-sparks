@@ -1,0 +1,24 @@
+<h2>Editing Programme: "<%= @programme_type.title %>"</h2>
+
+<% if Flipper.enabled?(:todos_parallel, current_user) %>
+  <p>
+    Update the actions associated with this programme or go back to the list of
+    <%= link_to 'Programme Types', admin_programme_types_path %>
+  </p>
+  <p>
+    When the todos feature is fully switched on, you'll come here to edit both activities and actions
+  </p>
+<% else %>
+  <p>
+    Update the activities and actions associated with this programme or go back to the list of
+    <%= link_to 'Programme Types', admin_programme_types_path %>
+  </p>
+<% end %>
+
+<%= simple_form_for(@programme_type, url: admin_programme_type_todos_path(@programme_type)) do |f| %>
+  <%= render 'shared/errors', subject: @programme_type, subject_name: 'programme' %>
+  <%= render 'shared/todos/form', assignable: @programme_type, f: f %>
+  <%= f.submit 'Save', class: 'btn btn-primary', data:
+        { confirm: 'Note: adding or removing activities will impact currently enrolled schools. Are you sure?' } %>
+  <%= link_to t('common.labels.cancel'), admin_programme_types_path, class: 'btn btn-secondary' %>
+<% end %>

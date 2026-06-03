@@ -36,10 +36,10 @@ RSpec.describe InterventionTypeFilter, type: :service do
     end
   end
 
-  context 'with query limiting results to those unrecorded this year' do
+  context 'with query limiting results to those not recorded this year' do
     let(:current_date) { Date.new(2019, 10, 1) }
-
     let(:academic_year) { create(:academic_year, start_date: '2019-09-01', end_date: '2020-08-31') }
+
     let(:calendar) { create(:calendar, academic_years: [academic_year]) }
     let(:school) { create(:school, calendar: calendar) }
 

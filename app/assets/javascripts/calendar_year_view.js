@@ -15,6 +15,7 @@ function loadCalendarData(dataUrl, calendarDiv) {
           startDate: new Date(returnedData[i].startDate),
           endDate: new Date(returnedData[i].endDate),
           color: returnedData[i].color,
+          basedOn: returnedData[i].basedOn
         });
       }
       calendarDiv.data('calendar').setDataSource(data);
@@ -32,53 +33,79 @@ function loadCurrentEvents(dataUrl, currentEventsDiv) {
 }
 
 $(document).ready(function() {
-
   if ($("#calendar").length) {
+    const id = (id) => document.getElementById(id);
+    const q = (selector) => document.querySelector(selector);
 
     function editEvent(event) {
-
-      var lastEvent =  event.events[event.events.length - 1];
-      var startDate = lastEvent.startDate;
-      var endDate = lastEvent.endDate;
-
-      var calendarId =  $('#event-modal').data('calendar');
-
-      $(".event-action").html('Edit');
-      $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events/' + lastEvent.id)
-      $('#event-modal input[name="_method"]').val('patch');
-
-      $("#calendar_event_calendar_event_type_id").val(lastEvent.calendarEventTypeId);
-
-      $('#event-modal input[name="calendar_event[start_date]"]').val(startDate.toLocaleDateString("en-GB"));
-      $('#event-modal input[name="calendar_event[end_date]"]').val(endDate.toLocaleDateString("en-GB"));
-
-      $('#delete_button').show();
-
-      $('#delete_button').on('click', function(event) {
-        event.preventDefault();
-
-        $('#event-modal input[name="_method"]').val('delete');
-        $('form#event_form').submit();
-      });
-
+      const lastEvent =  event.events[event.events.length - 1];
+      setupModal(lastEvent, lastEvent.startDate, lastEvent.endDate);
+      enableEdit(false, null);
       $('#event-modal').modal();
     }
 
     function newEvent(event) {
-      var calendarId =  $('#event-modal').data('calendar');
-
-      $(".event-action").html('New');
-      $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events')
-      $('#event-modal input[name="_method"]').val('post');
-
-      $("#calendar_event_calendar_event_type_id").val('');
-
-      $('#event-modal input[name="calendar_event[start_date]"]').val(event.date.toLocaleDateString("en-GB"));
-      $('#event-modal input[name="calendar_event[end_date]"]').val(event.date.toLocaleDateString("en-GB"));
-
-      $('#delete_button').hide();
-
+      switch (event.events.length) {
+        case 0:
+          enableEdit(false, null);
+          break
+        case 1:
+          enableEdit(true, event);
+          break;
+        default:
+          return editEvent(event);
+      }
+      setupModal(null, event.date, event.date);
       $('#event-modal').modal();
+    }
+
+    function setupModal(event, start_date, end_date) {
+      let method = 'post';
+      let action_suffix = '';
+      let event_type_id = '';
+      let new_title_display = 'initial';
+      let edit_title_display = 'none';
+      if (event) {
+        method = 'patch';
+        action_suffix = `/${event.id}`;
+        event_type_id = event.calendarEventTypeId;
+        new_title_display = 'none';
+        edit_title_display = 'initial';
+      }
+      const calendarId = id('event-modal').dataset.calendar;
+      id('event_form').setAttribute('action', `/calendars/${calendarId}/calendar_events${action_suffix}`);
+      setFormMethod(method)
+      id('calendar_event_calendar_event_type_id').value = event_type_id;
+      q('#event-modal input[name="calendar_event[start_date]"]').value = start_date.toLocaleDateString('en-GB');
+      q('#event-modal input[name="calendar_event[end_date]"]').value = end_date.toLocaleDateString('en-GB');
+      id('event-model-new-title').style.display = new_title_display;
+      id('event-model-edit-title').style.display = edit_title_display;
+      enableDelete(!!event);
+    }
+
+    function enableEdit(enable, event) {
+      const button = id('edit_button');
+      button.style.display = enable ? 'initial' : 'none';
+      if (enable) {
+        button.onclick = (e) => {
+          e.preventDefault();
+          editEvent(event);
+        };
+      }
+    }
+
+    function enableDelete(enable) {
+      const button = id('delete_button');
+      button.style.display = enable ? 'block' : 'none';
+      button.onclick = (e) => {
+        e.preventDefault();
+        setFormMethod('delete');
+        id('event_form').requestSubmit();
+      };
+    }
+
+    function setFormMethod(method) {
+      q('#event-modal input[name="_method"]').value = method;
     }
 
     $(function() {
@@ -89,11 +116,7 @@ $(document).ready(function() {
         enableRangeSelection: false,
         style: 'background',
         clickDay: function(e) {
-          if(e.events.length){
-            editEvent({ events: e.events });
-          }else{
-            newEvent({ date: e.date });
-          }
+          newEvent({ date: e.date, events: e.events });
         },
         mouseOnDay: function(e) {
           if(e.events.length > 0) {

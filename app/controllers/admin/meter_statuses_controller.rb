@@ -55,7 +55,7 @@ module Admin
     end
 
     def admin_meter_status_params
-      params.require(:admin_meter_status).permit(:label)
+      params.require(:admin_meter_status).permit(:label, :ignore_in_inactive_meter_report)
     end
   end
 end

@@ -2,11 +2,11 @@
 #
 # Table name: school_batch_runs
 #
-#  created_at :datetime         not null
 #  id         :bigint(8)        not null, primary key
-#  school_id  :bigint(8)
 #  status     :integer          default("pending"), not null
+#  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  school_id  :bigint(8)
 #
 # Indexes
 #
@@ -20,7 +20,7 @@ class SchoolBatchRun < ApplicationRecord
   belongs_to :school
   has_many :school_batch_run_log_entries
 
-  enum status: [:pending, :running, :done, :failed]
+  enum :status, { pending: 0, running: 1, done: 2, failed: 3 }
 
   scope :by_date, -> { order(created_at: :desc) }
 

@@ -26,7 +26,7 @@ module ComparisonsHelper
     download_path = comparison_report_path(report, download_params)
     link_to I18n.t('school_groups.download_as_csv'),
             download_path,
-            class: 'btn btn-sm btn-outline-dark rounded-pill font-weight-bold',
+            class: 'btn btn-sm btn-default',
             id: "#{report.key}-#{table_name}-download"
   end
 

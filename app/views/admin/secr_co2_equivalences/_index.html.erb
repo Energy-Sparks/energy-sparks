@@ -1,0 +1,29 @@
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th><%= SecrCo2Equivalence.human_attribute_name(:electricity_co2e) %></th>
+      <th><%= SecrCo2Equivalence.human_attribute_name(:electricity_co2e_co2) %></th>
+      <th><%= SecrCo2Equivalence.human_attribute_name(:transmission_distribution_co2e) %></th>
+      <th><%= SecrCo2Equivalence.human_attribute_name(:natural_gas_co2e) %></th>
+      <th><%= SecrCo2Equivalence.human_attribute_name(:natural_gas_co2e_co2) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @resources.order(:year).each do |equivalence| %>
+      <tr>
+        <td><%= equivalence.year %></td>
+        <td><%= equivalence.electricity_co2e %></td>
+        <td><%= equivalence.electricity_co2e_co2 %></td>
+        <td><%= equivalence.transmission_distribution_co2e %></td>
+        <td><%= equivalence.natural_gas_co2e %></td>
+        <td><%= equivalence.natural_gas_co2e_co2 %></td>
+        <td>
+          <div class='btn-group'>
+            <%= link_to 'Edit', edit_admin_secr_co2_equivalence_path(equivalence), class: 'btn btn-sm' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

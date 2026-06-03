@@ -9,5 +9,6 @@ FactoryBot.define do
     sms_content {'A thing has happened' }
     email_title {'A thing has happened and you should do something about it' }
     email_content {'A thing has happened and you should do something about it' }
+    group_dashboard_title { 'a thing has happened in this group' }
   end
 end

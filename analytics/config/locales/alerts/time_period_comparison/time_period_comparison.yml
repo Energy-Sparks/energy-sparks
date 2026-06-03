@@ -1,0 +1,16 @@
+---
+en:
+  analytics:
+    alert_previous_holiday_comparison_electricity:
+      timescale: last 2 full school holidays (including current if in holiday)
+    alert_previous_holiday_comparison_gas:
+      timescale: last 2 full school holidays (including current if in holiday)
+    alert_previous_year_holiday_comparison_electricity:
+      timescale: this holiday, and the same one the previous year
+    alert_previous_year_holiday_comparison_gas:
+      timescale: this holiday, and the same one the previous year
+    alert_school_week_comparison_electricity:
+      timescale: last 2 full school weeks
+    alert_school_week_comparison_gas:
+      timescale: last 2 full school weeks
+    time_period_comparison: "%{difference} %{adjective} since last %{period_type}, %{relative_percent}"

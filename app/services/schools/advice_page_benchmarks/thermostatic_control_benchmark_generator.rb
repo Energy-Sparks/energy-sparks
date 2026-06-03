@@ -9,7 +9,7 @@ module Schools
       private
 
       def thermostatic_analysis_service
-        @thermostatic_analysis_service ||= Schools::Advice::ThermostaticAnalysisService.new(@school, @aggregate_school)
+        @thermostatic_analysis_service ||= Schools::Advice::ThermostaticAnalysisService.new(@school, aggregate_school_service)
       end
     end
   end

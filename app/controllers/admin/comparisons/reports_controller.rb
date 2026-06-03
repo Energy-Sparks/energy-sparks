@@ -51,8 +51,10 @@ module Admin
           :notes,
           :public,
           :disabled,
+          :fuel_type,
           custom_period_attributes: %i[current_label current_start_date current_end_date previous_label
-                                       previous_start_date previous_end_date max_days_out_of_date enough_days_data]
+                                       previous_start_date previous_end_date max_days_out_of_date enough_days_data
+                                       disable_normalisation]
         )
       end
     end

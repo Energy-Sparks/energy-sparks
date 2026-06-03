@@ -5,11 +5,13 @@ class ApplicationController < ActionController::Base
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  helper_method :site_settings, :current_school_podium, :current_user_school, :current_school_group
+  helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group,
+                :current_user_default_school_group, :current_school, :current_school_group, :utm_params
   before_action :update_trackable!
+  before_action :bootstrap_5_switcher
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    redirect_to root_path, alert: exception.message
   end
 
   def after_sign_in_path_for(user)
@@ -17,39 +19,49 @@ class ApplicationController < ActionController::Base
     root_url(subdomain: subdomain).chomp('/') + session.fetch(:user_return_to, '/')
   end
 
-  def switch_locale(*_args, &action)
+  def switch_locale(*_args, &)
     locale = LocaleFinder.new(params, request).locale
-    I18n.with_locale(locale, &action)
+    I18n.with_locale(locale, &)
   end
 
   def route_not_found
-    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    render 'errors/show', status: :not_found
   end
 
   def site_settings
     @site_settings ||= SiteSettings.current
   end
 
+  def current_school
+    @current_school ||= @school if @school&.persisted?
+  end
+
+  def current_school_group
+    @current_school_group ||= @school_group if @school_group&.persisted?
+  end
+
   def current_school_podium
-    @current_school_podium ||= if @school && @school&.scoreboard
-                                 podium_for(@school)
-                               elsif @tariff_holder && @tariff_holder&.school? && @tariff_holder&.scoreboard
-                                 podium_for(@tariff_holder)
-                               end
+    @current_school_podium ||= podium_for(current_school) if current_school&.scoreboard
   end
 
   def current_user_school
-    if current_user && current_user.school
-      current_user.school
-    end
+    @current_user_school ||= current_user&.school
+  end
+
+  def current_user_school_group
+    @current_user_school_group ||= current_user&.school_group
+  end
+
+  def current_user_default_school_group
+    @current_user_default_school_group ||= current_user&.default_school_group
   end
 
   def current_ip_address
     request.remote_ip
   end
 
-  def current_school_group
-    current_user.try(:default_school_group)
+  def utm_params
+    params.permit(:utm_source, :utm_medium, :utm_campaign).to_h.symbolize_keys
   end
 
   private
@@ -59,9 +71,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_admin_mode
-    if admin_mode? && !current_user_admin? && !login_page?
-      render 'home/maintenance', layout: false
-    end
+    return unless admin_mode? && !current_user_admin? && !login_page?
+
+    render 'home/maintenance', layout: false
   end
 
   def admin_mode?
@@ -77,7 +89,7 @@ class ApplicationController < ActionController::Base
   end
 
   def analytics_code
-    @analytics_code ||= ENV['GOOGLE_ANALYTICS_CODE']
+    @analytics_code ||= ENV.fetch('GOOGLE_ANALYTICS_CODE', nil)
   end
 
   def pagy_locale
@@ -86,9 +98,25 @@ class ApplicationController < ActionController::Base
 
   # user has signed in via devise "remember me" functionality
   def update_trackable!
-    if user_signed_in? && !session[:updated_tracked_fields]
-      current_user.update_tracked_fields!(request)
-      session[:updated_tracked_fields] = true
-    end
+    return unless user_signed_in? && !session[:updated_tracked_fields]
+
+    current_user.update_tracked_fields!(request)
+    session[:updated_tracked_fields] = true
+  end
+
+  def handle_head_request
+    head :ok if request.head?
+  end
+
+  def bootstrap_5_switcher
+    Current.bs5 = Flipper.enabled?(:bootstrap_switcher) && ActiveModel::Type::Boolean.new.cast(params[:bs5])
+  end
+
+  def enable_bootstrap5
+    Current.bs5 = true unless Flipper.enabled?(:bootstrap_switcher) && params[:bs5]
+  end
+
+  def enable_prototype_page
+    Current.prototype_page = true
   end
 end

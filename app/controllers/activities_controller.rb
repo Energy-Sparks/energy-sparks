@@ -6,11 +6,7 @@ class ActivitiesController < ApplicationController
   load_resource :school
   load_and_authorize_resource through: :school
 
-  skip_before_action :authenticate_user!, only: %i[index show]
-
-  def index
-    @activities = @activities.order(happened_on: :desc)
-  end
+  skip_before_action :authenticate_user!, only: %i[show]
 
   def show
     interpolator = TemplateInterpolation.new(@activity.activity_type, render_with: SchoolTemplate.new(@school))
@@ -36,13 +32,21 @@ class ActivitiesController < ApplicationController
   def edit; end
 
   def create
-    respond_to do |format|
-      if ActivityCreator.new(@activity, current_user).process
-        format.html { redirect_to completed_school_activity_path(@school, @activity) }
-        format.json { render :show, status: :created, location: @school }
+    if Flipper.enabled?(:todos, current_user)
+      if Tasks::Recorder.new(@activity, current_user).process
+        redirect_to completed_school_activity_path(@school, @activity)
       else
-        format.html { render :new }
-        format.json { render json: @activity.errors, status: :unprocessable_entity }
+        render :new
+      end
+    else
+      respond_to do |format|
+        if ActivityCreator.new(@activity, current_user).process
+          format.html { redirect_to completed_school_activity_path(@school, @activity) }
+          format.json { render :show, status: :created, location: @school }
+        else
+          format.html { render :new }
+          format.json { render json: @activity.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -66,7 +70,7 @@ class ActivitiesController < ApplicationController
     @activity.destroy
     respond_to do |format|
       format.html do
-        redirect_back fallback_location: school_activities_path(@school), notice: 'Activity was successfully destroyed.'
+        redirect_to school_activities_path(@school), notice: 'Activity was successfully destroyed.'
       end
       format.json { head :no_content }
     end

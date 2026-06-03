@@ -9,6 +9,20 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+      day: "tuesday"
     ignore:
-      - dependency-name: "energy-sparks_analytics"
-      - dependency-name: "statsample"
+      # ignore non patch updates as others require manual intervention
+      - dependency-name: "rails"
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+      # upgrading bootstrap major version will be a bigger manual job
+      - dependency-name: "bootstrap"
+        update-types: ["version-update:semver-major"]
+    open-pull-requests-limit: 20 # default 5
+  - package-ecosystem: "bundler"
+    directory: "/analytics"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

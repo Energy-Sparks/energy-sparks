@@ -1,0 +1,27 @@
+<h1>Missing data</h1>
+<p>The following AMR data feed configurations are missing data according to their missing reading window setting.</p>
+<p>See the <%= link_to('Import Logs', admin_reports_amr_data_feed_import_logs_url) %> for further information.</p>
+<table>
+  <thead>
+    <tr>
+      <th>AMR Data Feed Configuration Name</th>
+      <th>Owned by</th>
+      <th>Missing reading window setting</th>
+      <th>Last reading update</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @missing.each do |config, seconds_out_of_date| %>
+      <tr>
+        <td><%= link_to(config.description, admin_amr_data_feed_config_url(id: config.id)) %></td>
+        <td><%= config.owned_by&.name %></td>
+        <td><%= if config.missing_reading_window
+                  distance_of_time_in_words(config.missing_reading_window.days)
+                else
+                  'nil'
+                end %></td>
+        <td><%= distance_of_time_in_words(seconds_out_of_date) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

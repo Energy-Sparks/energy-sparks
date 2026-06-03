@@ -22,7 +22,7 @@ module Comparisons
       end
 
       def create_charts(results)
-        create_single_number_chart(results, :difference_percent, 100.0, 'change_pct', 'percent')
+        create_single_number_chart(results, :difference_percent, 100.0, 'change_pct', 'percent', x_max_value: 100.0)
       end
 
       def load_data

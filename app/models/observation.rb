@@ -1,27 +1,29 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: observations
 #
-#  _description         :text
-#  activity_id          :bigint(8)
-#  at                   :datetime         not null
-#  audit_id             :bigint(8)
-#  created_at           :datetime         not null
-#  created_by_id        :bigint(8)
 #  id                   :bigint(8)        not null, primary key
-#  intervention_type_id :bigint(8)
+#  _description         :text
+#  at                   :datetime         not null
 #  involved_pupils      :boolean          default(FALSE), not null
-#  observable_id        :bigint(8)
 #  observable_type      :string
 #  observation_type     :integer          not null
 #  points               :integer
-#  programme_id         :bigint(8)
 #  pupil_count          :integer
+#  visible              :boolean          default(TRUE)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  activity_id          :bigint(8)
+#  audit_id             :bigint(8)
+#  created_by_id        :bigint(8)
+#  intervention_type_id :bigint(8)
+#  observable_id        :bigint(8)
+#  programme_id         :bigint(8)
 #  school_id            :bigint(8)        not null
 #  school_target_id     :bigint(8)
-#  updated_at           :datetime         not null
 #  updated_by_id        :bigint(8)
-#  visible              :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -49,13 +51,13 @@
 
 class Observation < ApplicationRecord
   include Description
+  include Todos::Recording
 
   belongs_to :school
-  has_many   :temperature_recordings
-  has_many   :locations, through: :temperature_recordings
+  has_many :temperature_recordings
+  has_many :locations, through: :temperature_recordings
 
   belongs_to :programme, optional: true # to be removed when column is removed
-
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true # to be removed when column is removed
@@ -63,13 +65,19 @@ class Observation < ApplicationRecord
   belongs_to :created_by, optional: true, class_name: 'User'
   belongs_to :updated_by, optional: true, class_name: 'User'
 
-  # If adding a new observation type remember to also modify the timeline component
-  # events: 3 has been removed
-  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, transport_survey: 8 }
+  # When adding a new observation type, use the polymorphic `observable` relationship
+  # instead of adding a new foreign key / relationship. The goal is to transition existing relationships
+  # (e.g., programme, audit, school_target) to `observable` over time.
+  # Prioritize using the new model when working in these areas, as they are the easiest to migrate.
+  # If adding a new observation type, remember to also modify the timeline component
+
+  # NB: events: 3 has been removed
+  enum :observation_type, { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6,
+                            audit_activities_completed: 7, transport_survey: 8 }
 
   belongs_to :observable, polymorphic: true, optional: true
 
-  validates_presence_of :at, :school
+  validates :at, :school, presence: true
   validates_associated :temperature_recordings
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
@@ -79,25 +87,44 @@ class Observation < ApplicationRecord
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 
+  scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
+  scope :most_recent, -> { order(at: :desc, created_at: :desc) }
+
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
-  scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
-  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
-  scope :in_academic_year_for, ->(school, date) { (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
-  scope :recorded_since, ->(date) { where('observations.created_at >= ?', date)}
-  scope :not_including, ->(school) { where.not(school: school).recorded_since(school.current_academic_year.start_date) }
+  scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
+  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date&.end_of_day) }
+  scope :in_academic_year_for, lambda { |school, date|
+    (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
+  }
+  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
+  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
+  scope :recorded_since, ->(range) { where(created_at: range) }
+  scope :not_including, ->(school) { where.not(school:).recorded_since(school.current_academic_year.start_date..) }
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
-  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme, :transport_survey]) }
+  scope :engagement, lambda {
+    where(observation_type: %i[temperature intervention activity audit school_target programme transport_survey])
+  }
+
+  scope :with_academic_year, lambda {
+    # Academic year start/end are dates, not datetimes.
+    # In a comparison, a DATE is treated as the start of that day (midnight).
+    # Without adding INTERVAL '1 day', any observations later on the end date day would be missed.
+    joins('JOIN academic_years ON observations.at >= academic_years.start_date AND observations.at < academic_years.end_date + INTERVAL \'1 day\'')
+  }
+
+  scope :counts_by_academic_year, lambda {
+    with_academic_year.group('academic_years.id').count
+  }
 
   has_rich_text :description
 
-  before_save :add_points_for_interventions, if: :intervention?
-  before_save :add_bonus_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
-
   before_validation :set_defaults, if: -> { observable_id }, on: :create
+  before_save :add_points_for_activities, if: :activity?
+  before_save :add_points_for_interventions, if: :intervention?
+
+  delegate :current_academic_year, to: :school
 
   def description_includes_images?
     if intervention?
@@ -107,31 +134,61 @@ class Observation < ApplicationRecord
     end
   end
 
+  def available_bonus_points
+    description_includes_images? ? SiteSettings.current.photo_bonus_points.to_i : 0
+  end
+
+  def happened_on
+    at.to_date
+  end
+
+  def in_previous_academic_year?
+    # Unlikely but if no current academic year exists, treat as previous (0 points)
+    # also prevents errors as academic years are required when calculating points
+    return true if current_academic_year.nil?
+
+    at < current_academic_year.start_date
+  end
+
+  def academic_year = school.academic_year_for(at)
+
+  def academic_year_was
+    return nil if at_was.nil? # new record
+
+    school.academic_year_for(at_was)
+  end
+
+  def academic_year_changed?
+    return true if at_was.nil? && at # new record
+
+    academic_year_was != academic_year
+  end
+
+  def update_points?
+    return true if new_record?
+
+    # Update points unless it remains in a previous academic year
+    !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)
+  end
+
+  def type_name = intervention_type&.name
+
   private
 
-  def add_bonus_points_for_included_images
-    # Only add bonus points if the site wide photo bonus points is set to non zero
-    return unless SiteSettings.current.photo_bonus_points&.nonzero?
-    # Only add bonus points if the current observation score is non zero
-    return unless self.points&.nonzero?
-    # Only add bonus points if the description has an image
-    return unless description_includes_images?
-
-    self.points = (self.points || 0) + SiteSettings.current.photo_bonus_points
+  def add_points_for_activities
+    self.points = activity.activity_type.calculate_points(self) if update_points?
   end
 
   def add_points_for_interventions
-    self.points = intervention_type.score_when_recorded_at(school, at)
+    self.points = intervention_type.calculate_points(self) if update_points?
   end
 
-  def reject_temperature_recordings(attributes)
-    attributes['centigrade'].blank?
-  end
+  def reject_temperature_recordings(attributes) = attributes['centigrade'].blank?
 
   def set_defaults
     # set the observation type from the observable_type if not already set
     self.observation_type ||= observable_type.underscore.to_sym
-    self.school ||= self.observable.school if self.observable.school
+    self.school ||= observable.school if observable.school
     self.at ||= Time.zone.now
   end
 end

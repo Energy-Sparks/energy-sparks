@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-class SchoolGroupComparisonComponent < ViewComponent::Base
+class SchoolGroupComparisonComponent < ApplicationComponent
+  renders_one :header
   renders_one :footer
   renders_one :csv_download_link
 
@@ -8,11 +9,16 @@ class SchoolGroupComparisonComponent < ViewComponent::Base
 
   CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
 
-  def initialize(id:, comparison:, advice_page_key:, include_cluster: false)
-    @id = id
+  def initialize(comparison:, advice_page_key:, include_cluster: false, show_modal: true, **_kwargs)
+    super
     @comparison = comparison
     @advice_page_key = advice_page_key
     @include_cluster = include_cluster
+    @show_modal = show_modal
+  end
+
+  def show_modal?
+    @show_modal
   end
 
   def modal_title_for(category)

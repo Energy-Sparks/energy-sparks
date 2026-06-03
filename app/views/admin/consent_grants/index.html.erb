@@ -4,11 +4,11 @@
 Find consent records by school name, reference code provided to n3rgy or meter mpxn.
 </p>
 
-<%= simple_form_for :search, url: admin_consent_grants_path, method: "GET", html: { class: 'form' } do |f| %>
-  <%= f.input :school, input_html: {value: params[:search].present? ? params[:search]["school"]: ''} %>
-  <%= f.input :reference, input_html: {value: params[:search].present? ? params[:search]["reference"]: ''} %>
-  <%= f.input :mpxn, input_html: {value: params[:search].present? ? params[:search]["mpxn"]: ''} %>
-  <%= f.submit "Search", class: "btn btn-primary" %>
+<%= simple_form_for :search, url: admin_consent_grants_path, method: 'GET', html: { class: 'form' } do |f| %>
+  <%= f.input :school, input_html: { value: params[:search].present? ? params[:search]['school'] : '' } %>
+  <%= f.input :reference, input_html: { value: params[:search].present? ? params[:search]['reference'] : '' } %>
+  <%= f.input :mpxn, input_html: { value: params[:search].present? ? params[:search]['mpxn'] : '' } %>
+  <%= f.submit 'Search', class: 'btn btn-primary' %>
 <% end %>
 
 <% if @consent_grants.any? %>
@@ -36,7 +36,7 @@ Find consent records by school name, reference code provided to n3rgy or meter m
         <td><%= consent_grant.job_title %></td>
         <td><%= consent_grant.consent_statement.title %></td>
         <td><%= consent_grant.guid %></td>
-        <td><%= nice_dates(consent_grant.created_at) %></td>
+        <td data-order="<%= consent_grant.created_at.iso8601 %>"><%= nice_dates(consent_grant.created_at) %></td>
         <td>
           <div class="btn-group">
             <%= link_to 'View', admin_consent_grant_path(consent_grant), class: 'btn' %>

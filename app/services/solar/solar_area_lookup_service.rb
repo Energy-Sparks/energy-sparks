@@ -2,39 +2,30 @@ require 'dashboard'
 
 module Solar
   class SolarAreaLookupService
-    def initialize(school, school_onboarding = nil)
+    def initialize(school)
       @school = school
-      @school_onboarding = school_onboarding
     end
 
-    def lookup
-      find_nearest_area
+    def lookup(scope: SolarPvTuosArea.assignable)
+      scope.min_by { |item| distance_from_school_km(item) }
     end
 
-    def assign
-      solar_area = lookup
+    def assign(scope: SolarPvTuosArea.assignable, trigger_load: true)
+      solar_area = lookup(scope: scope)
       if solar_area
-        update_and_load_area(solar_area) unless solar_area.active
         @school.update(solar_pv_tuos_area: solar_area)
+        solar_area.update(active: true)
+        load_area(solar_area) if trigger_load
       else
-        Rollbar.error('No solar area found', scope: :solar_area_lookup_service, school: @school_onboarding.school_name)
+        Rollbar.error('No solar area found', scope: :solar_area_lookup_service, school: @school.name)
       end
       solar_area
     end
 
     private
 
-    def update_and_load_area(solar_area)
+    def load_area(solar_area)
       SolarAreaLoaderJob.perform_later solar_area unless solar_area.solar_pv_tuos_readings.any?
-      solar_area.update(active: true)
-    end
-
-    def find_nearest_area
-      # nearest is last in list
-      sorted_list = SolarPvTuosArea.all.sort do |a, b|
-        distance_from_school_km(b) <=> distance_from_school_km(a)
-      end
-      sorted_list.last
     end
 
     def distance_from_school_km(area)

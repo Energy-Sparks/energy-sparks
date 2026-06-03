@@ -57,4 +57,29 @@ FactoryBot.define do
       }
     end
   end
+
+  factory :solar_pv_mpan_meter_mapping, class: 'MeterAttribute' do
+    transient do
+      start_date    { '01/01/2023' }
+      end_date      { '01/01/2024' }
+      production_mpan { '12345' }
+      production_mpan2 { nil }
+      production_mpan3 { nil }
+      production_mpan4 { nil }
+      production_mpan5 { nil }
+    end
+    attribute_type { :solar_pv_mpan_meter_mapping }
+    association :meter, factory: :electricity_meter
+    input_data do
+      {
+        start_date: start_date,
+        end_date: end_date,
+        production_mpan: production_mpan,
+        production_mpan2: production_mpan2,
+        production_mpan3: production_mpan3,
+        production_mpan4: production_mpan4,
+        production_mpan5: production_mpan5
+      }
+    end
+  end
 end

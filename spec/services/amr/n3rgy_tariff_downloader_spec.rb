@@ -6,7 +6,7 @@ describe Amr::N3rgyTariffDownloader, type: :service do
   end
 
   let(:meter)     { create(:electricity_meter) }
-  let(:config)    { create(:amr_data_feed_config)}
+  let(:config)    { create(:amr_data_feed_config) }
 
   let(:stub) { instance_double(DataFeeds::N3rgy::DataApiClient) }
 
@@ -35,20 +35,20 @@ describe Amr::N3rgyTariffDownloader, type: :service do
   context 'with missing tariffs on meter' do
     let(:response) do
       {
-        "devices": [
+        devices: [
           {
-            "deviceId": '1-2-3-4',
-            "tariffs": [
+            deviceId: '1-2-3-4',
+            tariffs: [
               {
-                "firstReading": '20231114005424',
-                "lastReading": '20240227010457',
-                "primaryActiveTariffPrice": 0,
-                "currencyUnitsName": 'Millipence',
-                "currencyUnitsLabel": 'GB Pounds',
-                "standingCharge": 0
+                firstReading: '20231114005424',
+                lastReading: '20240227010457',
+                primaryActiveTariffPrice: 0,
+                currencyUnitsName: 'Millipence',
+                currencyUnitsLabel: 'GB Pounds',
+                standingCharge: 0
               }
             ],
-            "months": []
+            months: []
           }
         ]
       }
@@ -74,25 +74,25 @@ describe Amr::N3rgyTariffDownloader, type: :service do
   context 'with unsupported tariffs' do
     let(:response) do
       {
-        "devices": [
+        devices: [
           {
-            "deviceId": '1-2-3-4',
-            "tariffs": [
+            deviceId: '1-2-3-4',
+            tariffs: [
               {
-                "primaryActiveTariffPrice": 123,
-                "standingCharge": 2
+                primaryActiveTariffPrice: 123,
+                standingCharge: 2
               }
             ],
-            "months": [
+            months: [
               {
-                "days": [{
-                  "timePeriods": [{
-                    "start": '00:00',
-                    "end": '23:59',
-                    "prices": [
-                      "type": 'Block',
-                      "limit": '10.000',
-                      "value": 0.0
+                days: [{
+                  timePeriods: [{
+                    start: '00:00',
+                    end: '23:59',
+                    prices: [
+                      { type: 'Block',
+                        limit: '10.000',
+                        value: 0.0 }
                     ]
                   }]
                 }]
@@ -116,31 +116,31 @@ describe Amr::N3rgyTariffDownloader, type: :service do
   context 'with differential tariffs' do
     let(:response) do
       {
-        "devices": [
+        devices: [
           {
-            "deviceId": '1-2-3-4',
-            "tariffs": [
+            deviceId: '1-2-3-4',
+            tariffs: [
               {
-                "primaryActiveTariffPrice": 123,
-                "standingCharge": 125.246
+                primaryActiveTariffPrice: 123,
+                standingCharge: 125.246
               }
             ],
-            "months": [
+            months: [
               {
-                "days": [{
-                  "timePeriods": [{
-                    "start": '00:00',
-                    "end": '07:00',
-                    "prices": [
-                      "type": 'TOU',
-                      "value": 5.0
+                days: [{
+                  timePeriods: [{
+                    start: '00:00',
+                    end: '07:00',
+                    prices: [
+                      { type: 'TOU',
+                        value: 5.0 }
                     ]
                   }, {
-                    "start": '07:00',
-                    "end": '23:59',
-                    "prices": [
-                      "type": 'TOU',
-                      "value": 10.0
+                    start: '07:00',
+                    end: '23:59',
+                    prices: [
+                      { type: 'TOU',
+                        value: 10.0 }
                     ]
                   }]
                 }]
@@ -158,20 +158,17 @@ describe Amr::N3rgyTariffDownloader, type: :service do
     it 'parses the time periods' do
       differential_prices = service.current_tariff[:differential]
       expect(differential_prices).not_to be_nil
-      expect(differential_prices).to match_array([
-                                                   {
-                                                     start_time: '00:00',
-                                                     end_time: '07:00',
-                                                     value: 0.05,
-                                                     units: 'kwh'
-                                                   },
-                                                   {
-                                                     start_time: '07:00',
-                                                     end_time: '00:00',
-                                                     value: 0.1,
-                                                     units: 'kwh'
-                                                   }
-                                                 ])
+      expect(differential_prices).to contain_exactly({
+                                                       start_time: '00:00',
+                                                       end_time: '07:00',
+                                                       value: 0.05,
+                                                       units: 'kwh'
+                                                     }, {
+                                                       start_time: '07:00',
+                                                       end_time: '00:00',
+                                                       value: 0.1,
+                                                       units: 'kwh'
+                                                     })
     end
   end
 end

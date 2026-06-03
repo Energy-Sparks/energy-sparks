@@ -1,28 +1,29 @@
-<% content_for :page_title, t('school_statistics.page_title') %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('school_statistics.page_title') %>
+  <div class="application container">
+    <div class="row">
+      <div class="col">
+        <h1><%= t('school_statistics.title') %></h1>
+        <p><%= t('school_statistics.introduction') %>.</p>
+      </div>
+    </div>
+    <%= render 'school_statistics_nav' %>
+    <div class="row">
+      <div class="col-6">
+        <%= render 'onboarding_status', report: @report %>
+      </div>
+      <div class="col-6">
+        <%= render 'country_summary', report: @report %>
+      </div>
+    </div>
 
-<div class="application container">
-  <div class="row">
-    <div class="col">
-      <h1><%= t('school_statistics.title') %></h1>
-      <p><%= t('school_statistics.introduction') %>.</p>
+    <div class="row">
+      <div class="col-6">
+        <%= render 'school_meals', report: @report %>
+      </div>
+      <div class="col-6">
+        <%= render 'school_types', report: @report %>
+      </div>
     </div>
   </div>
-  <%= render 'school_statistics_nav' %>
-  <div class="row">
-    <div class="col-6">
-      <%= render 'onboarding_status', report: @report %>
-    </div>
-    <div class="col-6">
-      <%= render 'country_summary', report: @report %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <%= render 'school_meals', report: @report %>
-    </div>
-    <div class="col-6">
-      <%= render 'school_types', report: @report %>
-    </div>
-  </div>
-</div>
+<% end %>

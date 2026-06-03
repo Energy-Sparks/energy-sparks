@@ -1,0 +1,33 @@
+<% if programme_types&.any? && programme_types.count >= 4 %>
+  <div class="row mt-3 bg-light">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4><%= t('activity_categories.our_programmes.title') %></h4>
+        <div>
+          <%= link_to t('activity_categories.view_all_programmes'), programme_types_path,
+                      class: 'btn btn-default' %>
+        </div>
+      </div>
+      <% if Flipper.enabled?(:todos, current_user) %>
+        <p><%= t('activity_categories.our_programmes.introduction') %></p>
+      <% else %>
+        <p><%= t('activity_categories.our_programmes.introduction_activities') %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card-deck justify-content-center bg-light pb-4 activities-deck" id="programme-types">
+    <% programme_types.first(4).each do |programme_type| %>
+      <div class="card col-sm-3">
+        <%= link_to programme_type_path(programme_type) do %>
+          <%= render 'programme_types/image', programme_type: programme_type, css_class: '' %>
+        <% end %>
+        <div class="card-body">
+          <p class="card-text">
+            <%= programme_type.title %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

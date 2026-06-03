@@ -1,16 +1,22 @@
-<%= simple_form_for [school, solar_edge_installation] do |form| %>
-  <%= render 'shared/errors', subject: solar_edge_installation, subject_name: 'solar edge api feed' %>
+<%= simple_form_for [school, installation] do |form| %>
+  <%= render 'shared/errors', subject: installation, subject_name: 'solar edge api feed' %>
 
   <%= form.hidden_field :amr_data_feed_config_id, value: AmrDataFeedConfig.solar_edge_api.first.id %>
 
-  <%= form.input :site_id, as: :string, disabled: solar_edge_installation.persisted?, label: "Site id", hint: "The unique site id in the Solar Edge system. This cannot be changed once the installation has been created." %>
+  <%= form.input :site_id, as: :string, disabled: installation.persisted?, label: 'Site id',
+                           hint: 'The unique site id in the Solar Edge system. ' \
+                                 'This cannot be changed once the installation has been created.' %>
 
-  <%= form.input :mpan, as: :string, disabled: solar_edge_installation.persisted?, label: 'MPAN or unique id', hint: 'When a school has a single array, use the MPAN of the mains meter. Otherwise use the site id. This will ensure the solar meters are correctly generated. This cannot be changed once the installation has been created.' %>
+  <%= form.input :mpan, as: :string, disabled: installation.persisted?, label: 'MPAN or unique id',
+                        hint: 'When a school has a single array, use the MPAN of the mains meter. ' \
+                              'Otherwise use the site id. This will ensure the solar meters are correctly generated. ' \
+                              'This cannot be changed once the installation has been created.' %>
 
-  <%= form.input :api_key, as: :string, label: "API key", hint: 'The code that authorises us to access data for this site.' %>
+  <%= form.input :api_key, as: :string, label: 'API key',
+                           hint: 'The code that authorises us to access data for this site.' %>
 
-  <div class="actions">
-    <%= form.submit "Submit", class: 'btn btn-primary'%>
+  <div class='actions'>
+    <%= form.submit 'Submit', class: 'btn btn-primary' %>
   </div>
 
 <% end %>

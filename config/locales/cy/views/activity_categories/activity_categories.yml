@@ -1,6 +1,6 @@
 cy:
   activity_categories:
-    introduction_1_html: Mae Sbarcynni yn darparu cefnogaeth helaeth i <a href='%{for_teachers_path}'>athrawon</a> a <a href='%{for_pupils_path}'>disgyblion</a> wrth ddysgu am ynni a newid hinsawdd o fewn cyd-destun eich ysgol eich hun.
+    introduction_1_html: Mae Sbarcynni yn darparu cefnogaeth helaeth i athrawon a disgyblion wrth ddysgu am ynni a newid hinsawdd o fewn cyd-destun eich ysgol eich hun.
     introduction_2_html:
       one: Defnyddiwch y dolenni isod i archwilio <strong>%{count}</strong> gweithgaredd sydd ar gael yn rhwydd.
       two: Defnyddiwch y dolenni isod i archwilio <strong>%{count}</strong> o weithgareddau sydd ar gael yn rhwydd.
@@ -10,7 +10,8 @@ cy:
     item_2: Cynlluniau gwersi yn ymwneud ag ynni ac adnoddau y gellir eu lawrlwytho.
     item_3: Cefnogaeth i ddisgyblion wrth ddylunio a chynnal arbrofion i fonitro data yn ymwneud ag ynni a phatrymau ymddygiad yn yr ysgol.
     our_programmes:
-      introduction: Rhaglenni byr o weithgareddau cysylltiedig y gall disgyblion weithio drwyddynt gam wrth gam i gael mwy o effaith.
+      introduction: Rhaglenni byr o dasgau cysylltiedig y gellir gweithio drwyddynt gam wrth gam i gyflawni mwy o effaith
+      introduction_activities: Rhaglenni byr o weithgareddau cysylltiedig y gall disgyblion weithio drwyddynt gam wrth gam i gyflawni mwy o effaith.
       title: Ein Rhaglenni
     page_title: Gweithgareddau
     pupil:

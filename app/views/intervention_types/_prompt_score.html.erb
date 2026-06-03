@@ -1,14 +1,16 @@
-<%= component 'notice', status: :neutral, classes: 'mb-4' do %>
+<%= render NoticeComponent.new(status: :neutral, classes: 'mb-4') do %>
   <div class="row" role="alert">
     <div class="col-lg-1 d-none d-lg-block align-self-center">
       <i class="fas fa-tasks fa-3x"></i>
     </div>
     <div class="col-lg-7 col-sm-12 align-self-center">
-      <%= t('intervention_types.prompt_score.complete_this_action_html', count: intervention_type.score) %><br />
+      <%= t('intervention_types.prompt_score.complete_this_action_html', count: intervention_type.score) %><br>
     </div>
     <div class="col-lg-4 col-sm-12 align-self-center">
       <div class="d-none d-sm-block d-md-block d-lg-none pt-2"></div>
-      <%= link_to t('intervention_types.prompt_score.record_this_action'), new_school_intervention_path(school, intervention_type_id: intervention_type.id), class: 'btn btn-primary float-lg-right' %>
+      <%= link_to t('intervention_types.prompt_score.record_this_action'),
+                  new_school_intervention_path(school, intervention_type_id: intervention_type.id),
+                  class: 'btn btn-primary float-lg-right' %>
     </div>
   </div>
 <% end %>

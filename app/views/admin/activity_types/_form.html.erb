@@ -1,10 +1,6 @@
-<%= simple_form_for([:admin, activity_type], wrapper_mappings: {
-    boolean:       :custom_boolean,
-    check_boxes:   :custom_collection,
-  },
-  html: { id: 'activity_type_form' }) do |f| %>
-
-  <%= render 'shared/trix_components/chart_list', chart_list: @chart_list %>
+<%= simple_form_for([:admin, activity_type],
+                    wrapper_mappings: { boolean: :custom_boolean, check_boxes: :custom_collection },
+                    html: { id: 'activity_type_form' }) do |f| %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
     <%= f.input t_field(:name, locale), label: ActivityType.human_attribute_name(:name), as: :string %>
@@ -14,10 +10,12 @@
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :image do |locale| %>
     <%= f.label 'Image' %>
-    <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
+    <p class="small">
+      This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.
+    </p>
     <div class="upload-preview">
       <div class="col-md-3">
-        <% t_image = ('image_' + locale.to_s).to_sym %>
+        <% t_image = "image_#{locale}".to_sym %>
         <% if !f.object.send(t_image).blank? %>
           <%= image_tag f.object.send(t_image), width: '300px' %>
         <% else %>
@@ -46,23 +44,35 @@
   <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
     <div class="description-trix-editor <%= locale %>">
       <%= f.label ActivityType.human_attribute_name(:description) %>
-      <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
+      <p class="small">
+        Note: This is the non-school specific description for non-logged in users. The site will default to this
+        one if the school specific one has not been set.
+      </p>
       <%= f.rich_text_area t_field(:description, locale) %>
     </div>
   <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :school_specific_description do |locale| %>
-    <div class="school-specific-description-trix-editor chart-list <%= locale %>">
+    <div class="school-specific-description-trix-editor <%= locale %>">
       <%= f.label ActivityType.human_attribute_name(:school_specific_description) %>
-      <%= render 'admin/shared/preview_section', scope: "school-specific-description", preview_url: admin_activity_type_preview_path, no_timings: true, no_weightings: true, locales: [locale] do |locale| %>
-        <%= f.rich_text_area t_field(:school_specific_description, locale), class: 'chart-list' %>
+      <%= render 'admin/shared/preview_section',
+                 scope: 'school-specific-description',
+                 preview_url: admin_activity_type_preview_path,
+                 no_timings: true,
+                 no_weightings: true,
+                 locales: [locale] do |locale| %>
+                  <%= render(Forms::TrixComponent.new(form: f, field: t_field(:school_specific_description, locale),
+                                                      charts: @chart_list)) %>
       <% end %>
     </div>
   <% end %>
 
   <%= f.input :score, as: :string %>
   <%= f.input :maximum_frequency, as: :string %>
-  <p class="small">Note: This is the maximum number of times a school can record the activity their academic year and still be awarded the above score. After this they get zero.</p>
+  <p class="small">
+    Note: This is the maximum number of times a school can record the activity their academic year and
+    still be awarded the above score. After this they get zero.
+  </p>
 
   <%= f.input :active %>
   <%= f.input :data_driven, label: 'Uses data?' %>
@@ -70,7 +80,12 @@
   <%= f.input :show_on_charts, label: 'Show on charts?' %>
 
   <h2>Fuel types</h2>
-  <%= render 'crud_filter_checkboxes', field: :fuel_type, collection: ActivityType::VALID_FUEL_TYPES.map { |fuel_type| OpenStruct.new(id: fuel_type.to_s, name: fuel_type.to_s.capitalize.humanize) }, form: f %>
+  <%= render 'crud_filter_checkboxes',
+             field: :fuel_type,
+             collection: ActivityType::VALID_FUEL_TYPES.map { |fuel_type|
+               OpenStruct.new(id: fuel_type.to_s, name: fuel_type.to_s.capitalize.humanize)
+             },
+             form: f %>
 
   <h2>Key Stages</h2>
   <%= render 'crud_filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>
@@ -102,15 +117,13 @@
     <div class="row">
       <div class="col-md-8 mb-3">
         <%= suggestion.select(
-          :suggested_type_id,
-          grouped_options_for_select(
-            ActivityCategory.listed_with_activity_types.map{|category, types| [category.name, types.map {|type| [type.name_with_key_stages, type.id]}]},
-            suggestion.object.suggested_type_id.to_s
-          ),
-          { include_blank: true },
-          { class: 'form-control select2'}
-        )
-        %>
+              :suggested_type_id,
+              grouped_options_for_select(ActivityCategory.listed_with_activity_types.map do |category, types|
+                [category.name, types.map { |type| [type.name_with_key_stages, type.id] }]
+              end, suggestion.object.suggested_type_id.to_s),
+              { include_blank: true },
+              { class: 'form-control select2' }
+            ) %>
       </div>
       <div class="col-md-1 mb-3">
         <%= suggestion.check_box :_destroy, class: 'form-control' %>

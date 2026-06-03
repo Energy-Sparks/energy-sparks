@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Onboarding
   class UsersController < BaseController
     def index
-      @users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
+      @users = @school_onboarding.school.users.reject { |u| u.id == current_user.id || u.pupil? }
     end
 
     def new
@@ -13,8 +15,18 @@ module Onboarding
       end
     end
 
+    def edit
+      @user = @school_onboarding.school.users.find(params[:id])
+      authorize! :edit, @user
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    end
+
     def create
-      @user = @school_onboarding.school.users.build(user_params.merge(school: @school_onboarding.school))
+      @user = @school_onboarding.school.users
+                                .build(user_params.merge(school: @school_onboarding.school, created_by: current_user))
       @user.skip_confirmation_notification!
       if @user.save
         respond_to do |format|
@@ -26,15 +38,6 @@ module Onboarding
           format.html { render :new }
           format.js { render :new }
         end
-      end
-    end
-
-    def edit
-      @user = @school_onboarding.school.users.find(params[:id])
-      authorize! :edit, @user
-      respond_to do |format|
-        format.html
-        format.js
       end
     end
 

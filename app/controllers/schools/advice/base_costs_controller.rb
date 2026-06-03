@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module Schools
   module Advice
     class BaseCostsController < AdviceBaseController
       protect_from_forgery except: :meter_costs
 
-      before_action :set_tariff_coverage, only: [:insights, :analysis]
+      before_action :set_tariff_coverage, only: %i[insights analysis]
       before_action :set_next_steps, only: [:insights]
-      before_action :set_one_year_breakdown_chart, only: [:analysis, :meter_costs]
+      before_action :set_one_year_breakdown_chart, only: %i[analysis]
       before_action :set_meters, only: [:analysis]
 
       def insights
@@ -25,7 +27,6 @@ module Schools
           @aggregate_meter_adapter = aggregate_meter_adapter
           @options_for_meter_select = options_for_meter_select
         end
-        @analysis_dates = analysis_dates
         @costs_service_analysis_date_range = costs_service.analysis_date_range
       end
 
@@ -36,7 +37,7 @@ module Schools
           @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months
           @change_in_costs = costs_service.calculate_change_in_costs
         else
-          meter = @school.meters.find_by_mpan_mprn(params[:mpan_mprn])
+          meter = @school.meters.find_by(mpan_mprn: params[:mpan_mprn])
           @mpan_mprn = params[:mpan_mprn]
           @label = meter.name_or_mpan_mprn
           analytics_meter = costs_service.analytics_meter_for_mpan(@mpan_mprn)
@@ -47,8 +48,9 @@ module Schools
             @agreed_capacity = Costs::AgreedSupplyCapacityService.new(analytics_meter).summarise
           end
         end
-        @fuel_type = advice_page_fuel_type
-        @analysis_dates = analysis_dates
+        load_advice_page
+        set_analysis_dates
+        set_one_year_breakdown_chart
         respond_to(&:js)
       end
 
@@ -60,11 +62,18 @@ module Schools
       end
 
       def set_next_steps
-        @advice_page_insights_next_steps = @complete_tariff_coverage ? nil : I18n.t("advice_pages.#{advice_page_key}.insights.next_steps_html", link: school_energy_tariffs_path(@school)).html_safe
+        @advice_page_insights_next_steps =
+          if @complete_tariff_coverage
+            nil
+          else
+            I18n.t(
+              "advice_pages.#{advice_page_key}.insights.next_steps_html", link: school_energy_tariffs_path(@school)
+            ).html_safe
+          end
       end
 
       def aggregate_meter_label
-        I18n.t("advice_pages.#{advice_page_key}.analysis.meter_breakdown.whole_school")
+        I18n.t('advice_pages.charts.whole_school')
       end
 
       def aggregate_meter_mpan_mprn
@@ -72,15 +81,15 @@ module Schools
       end
 
       def aggregate_meter_adapter
-        OpenStruct.new(mpan_mprn: aggregate_meter_mpan_mprn, name_or_mpan_mprn: aggregate_meter_label, has_readings?: true)
+        OpenStruct.new(mpan_mprn: aggregate_meter_mpan_mprn, display_name: aggregate_meter_label, has_readings?: true)
       end
 
       def options_for_meter_select
-        [aggregate_meter_adapter] + @meters.sort_by(&:name_or_mpan_mprn)
+        [aggregate_meter_adapter] + @meters.order(:mpan_mprn)
       end
 
       def costs_service
-        Schools::Advice::CostsService.new(@school, aggregate_school, advice_page_fuel_type)
+        Schools::Advice::CostsService.new(@school, aggregate_school_service, advice_page_fuel_type)
       end
     end
   end

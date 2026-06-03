@@ -6,9 +6,9 @@ module Schools
       EXEMPLAR_R2_VALUE = 0.8
       BENCHMARK_R2_VALUE = 0.6
 
-      def initialize(school, meter_collection)
+      def initialize(school, aggregate_school_service)
         @school = school
-        @meter_collection = meter_collection
+        @aggregate_school_service = aggregate_school_service
       end
 
       def enough_data?
@@ -43,7 +43,11 @@ module Schools
       end
 
       def thermostatic_analysis_service
-        @thermostatic_analysis_service ||= Heating::HeatingThermostaticAnalysisService.new(meter_collection: @meter_collection)
+        @thermostatic_analysis_service ||= Heating::HeatingThermostaticAnalysisService.new(meter_collection: meter_collection)
+      end
+
+      def meter_collection
+        @aggregate_school_service.meter_collection
       end
     end
   end

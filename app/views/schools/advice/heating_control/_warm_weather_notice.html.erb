@@ -1,11 +1,12 @@
-<%= component 'notice', status: warm_weather_on_days_status(warm_weather_on_days_rating) do %>
+<%= render PromptComponent.new(icon: :fire, fuel_type: :gas,
+                               status: warm_weather_on_days_status(warm_weather_on_days_rating)) do %>
  <p>
    <%= t('advice_pages.heating_control.analysis.seasonal_control.heating_on_in_warm_weather_days',
-   days: seasonal_analysis.heating_on_in_warm_weather_days.to_i,
-   adjective: warm_weather_on_days_adjective(warm_weather_on_days_rating)) %>
+         days: seasonal_analysis.heating_on_in_warm_weather_days.to_i,
+         adjective: warm_weather_on_days_adjective(warm_weather_on_days_rating)) %>
  </p>
  <p>
    <%= t('advice_pages.heating_control.analysis.seasonal_control.percent_html',
-   percent: format_unit(seasonal_analysis.percent_of_annual_heating, :percent)) %>
+         percent: format_unit(seasonal_analysis.percent_of_annual_heating, :percent)) %>
  </p>
 <% end %>

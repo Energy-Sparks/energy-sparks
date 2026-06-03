@@ -1,0 +1,34 @@
+.target-final-row {
+  border-top-width: thick !important;
+}
+
+.target-final-row {
+  td {
+    border-top-width: thick;
+  }
+  td:first-child {
+    font-weight: bold
+  }
+}
+
+.partial-month {
+  background: white;
+  color: $negative-dark;
+}
+
+.estimated-target-month {
+  font-style: italic;
+}
+
+pre.debug {
+    white-space: pre-wrap;
+}
+
+.work_week {
+  .fa-arrow-circle-down {
+    color: $positive-dark;
+  }
+  .fa-arrow-circle-up {
+    color: $negative-dark;
+  }
+}

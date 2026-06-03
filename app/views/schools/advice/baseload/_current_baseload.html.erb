@@ -1,11 +1,10 @@
 <%= render 'schools/advice/section_title', section_id: 'current',
                                            section_title: t('advice_pages.baseload.current_baseload.title') %>
 
-<%= component 'alerts', school: school,
-                        dashboard_alerts: dashboard_alerts,
-                        alert_types: alert_types_for_class(AlertChangeInElectricityBaseloadShortTerm),
-                        show_links: false,
-                        show_icons: false %>
+<%= render AlertsComponent.new(school: school,
+                               dashboard_alerts: dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertChangeInElectricityBaseloadShortTerm),
+                               show_links: false) %>
 
 <table class="mt-2 table table-sm advice-table" id="current-baseload">
     <thead>

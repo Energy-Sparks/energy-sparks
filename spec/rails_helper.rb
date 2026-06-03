@@ -71,7 +71,10 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   #
-  config.before { ActionMailer::Base.deliveries.clear }
+  config.before do
+    Rack::Attack.enabled = false
+    ActionMailer::Base.deliveries.clear
+  end
 
   config.include ApplicationHelper, include_application_helper: true
   config.include Rails.application.routes.url_helpers, include_url_helpers: true
@@ -84,12 +87,17 @@ RSpec.configure do |config|
   config.include ViewComponent::SystemTestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component
   config.include Devise::Test::ControllerHelpers, type: :component
+  config.include Devise::Test::ControllerHelpers, type: :helper
   config.before(:each, type: :component) do
     @request = vc_test_controller.request
   end
 
   config.include ActiveSupport::Testing::TimeHelpers
   config.include ShowMeTheCookies, type: :system
+
+  config.expect_with :rspec do |expectations|
+    expectations.max_formatted_output_length = 500
+  end
 end
 
 Shoulda::Matchers.configure do |config|
@@ -98,12 +106,6 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
-
-require 'dashboard/test_factory_path'
-FactoryBot.definition_file_paths = [
-  Dashboard::TEST_FACTORY_PATH
-]
-FactoryBot.find_definitions
 
 require 'webmock/rspec'
 WebMock.disable_net_connect!(allow_localhost: true)

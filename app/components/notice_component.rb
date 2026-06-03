@@ -1,24 +1,19 @@
 # frozen_string_literal: true
 
-class NoticeComponent < ViewComponent::Base
+class NoticeComponent < ApplicationComponent
   renders_one :link
 
-  def initialize(status:, classes: nil, style: :normal)
+  def initialize(status:, style: :normal, **_kwargs)
+    super
     @status = status
-    @classes = classes
     @style = style
     validate
+    add_classes(status)
+    add_classes(@style == :compact ? ' p-3' : ' p-4')
   end
 
   def validate
     raise ArgumentError.new(self.class.status_error) unless self.class.statuses.include?(@status.to_sym)
-  end
-
-  def classes
-    classes = " #{@status}"
-    classes += @style == :compact ? ' p-3' : ' p-4'
-    classes += " #{@classes}" if @classes
-    classes
   end
 
   def render?

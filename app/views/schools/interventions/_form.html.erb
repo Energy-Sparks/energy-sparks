@@ -19,7 +19,7 @@
 <fieldset class="form-group mt-4">
   <%= f.label t('interventions.form.when_did_you_complete_this_action'), for: :at %>
   <small class="form-text text-muted"><%= t('interventions.form.you_can_record_label') %>.</small>
-  <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: "form-control form-control-lg" } %>
+  <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: 'form-control form-control-lg' } %>
 </fieldset>
 
 <fieldset class="form-group mt-4">
@@ -36,7 +36,7 @@
   <% end %>
 
   <div class="mt-4">
-    <%= f.rich_text_area :description, wrapper_html: {class: ''}%>
+    <%= render(Forms::TrixComponent.new(form: f, field: :description, button_size: :large, controls: :simple)) %>
   </div>
 </fieldset>
 
@@ -47,4 +47,5 @@
 <fieldset>
   <%= f.hidden_field :intervention_type_id, value: intervention_type.id, required: true %>
 </fieldset>
-<%= f.submit observation.persisted? ? t('interventions.form.update_action') : t('interventions.form.record_action'), class: 'btn btn-success' %>
+<%= f.submit observation.persisted? ? t('interventions.form.update_action') : t('interventions.form.record_action'),
+             class: 'btn btn-primary' %>

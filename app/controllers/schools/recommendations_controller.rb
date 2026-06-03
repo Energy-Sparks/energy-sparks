@@ -28,7 +28,7 @@ module Schools
     end
 
     def scope_from_current_user
-      current_user && (current_user.pupil? || current_user.staff?) ? 'pupil' : 'adult'
+      current_user && (current_user.student_user? || current_user.staff?) ? 'pupil' : 'adult'
     end
   end
 end

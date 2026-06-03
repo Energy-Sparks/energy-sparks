@@ -29,8 +29,6 @@ describe 'electricity_peak_kw_per_pupil' do
   end
 
   context 'when viewing report' do
-    before { visit comparisons_electricity_peak_kw_per_pupil_index_path }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
@@ -55,6 +53,8 @@ describe 'electricity_peak_kw_per_pupil' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end

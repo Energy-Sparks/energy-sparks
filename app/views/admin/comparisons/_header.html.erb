@@ -11,14 +11,14 @@
   <div>
     <% disabled = current_page?(controller: 'report_groups', action: :index) ? ' disabled' : '' %>
     <%= link_to 'Report groups', admin_comparisons_report_groups_path, class:
-          "btn btn-outline-dark rounded-pill font-weight-bold#{disabled}" %>
+          "btn btn-default#{disabled}" %>
 
     <% disabled = current_page?(controller: 'reports', action: :index) ? ' disabled' : '' %>
     <%= link_to 'Reports', admin_comparisons_reports_path,
-                class: "btn btn-outline-dark rounded-pill font-weight-bold#{disabled}" %>
+                class: "btn btn-default#{disabled}" %>
 
     <% disabled = current_page?(controller: 'footnotes', action: :index) ? ' disabled' : '' %>
     <%= link_to 'Footnotes', admin_comparisons_footnotes_path,
-                class: "btn btn-outline-dark rounded-pill font-weight-bold#{disabled}" %>
+                class: "btn btn-default#{disabled}" %>
   </div>
 </div>

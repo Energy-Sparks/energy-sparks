@@ -1,17 +1,22 @@
 <h1><%= @configuration.description %> - data feed config</h1>
-
 <p><%= link_to 'Back to AMR Data Feed Configurations', admin_amr_data_feed_configs_path %></p>
-
-<p><%= link_to 'Upload file', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@configuration), class: 'btn btn-sm' %></p>
-
+<p>
+  <%= link_to('Upload file', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@configuration),
+              class: 'btn btn-sm') %>
+  <%= link_to('Edit', edit_admin_amr_data_feed_config_path(@configuration), class: 'btn btn-sm') %>
+</p>
 <table class="table table-striped">
   <tbody>
-    <% @configuration.attributes.except("id", "created_at", "updated_at").sort.each do |key, value| %>
+    <% @configuration.attributes.except('id', 'created_at', 'updated_at', 'owned_by_id').sort.each do |key, value| %>
       <tr>
         <td><%= key.humanize.capitalize %></td>
         <td><%= value %></td>
       </tr>
     <% end %>
+    <tr>
+      <td>Owned by</td>
+      <td><%= @configuration.owned_by&.name %></td>
+    </tr>
     <tr>
       <td>Notes</td>
       <td><%= @configuration.notes %></td>
@@ -24,6 +29,5 @@
       <td>Updated</td>
       <td><%= nice_dates(@configuration.updated_at) %></td>
     </tr>
-
   </tbody>
 </table>

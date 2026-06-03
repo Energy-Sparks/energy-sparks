@@ -1,0 +1,239 @@
+// outer div has the .home class when we're on the new home page, otherwise it's .home-page for the old css (still used by some marketing pages)
+
+.home-page {
+  section.alerts .alert {
+    margin-bottom: 0px;
+  }
+
+  header {
+    background-size: contain;
+    background-position: center;
+  }
+
+  header .container {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  header img {
+    display: block;
+    margin: 0 auto 0px;
+  }
+
+  .carousel-item {
+    h1 {
+      @include font(f2);
+    }
+  }
+
+  // Extra small devices (portrait phones, less than 576px)
+  @media (max-width: 575.98px) {
+    .masthead-content {
+      background-color: $blue-very-dark;
+    }
+
+    .carousel-item {
+      h2 {
+        @include font(f5);
+      }
+
+      i {
+        @include font(f2);
+      }
+
+      .col-1 {
+        line-height: 80px;
+        margin-right: 20px;
+      }
+    }
+
+    blockquote {
+      @include font(f8);
+    }
+
+    .quote-by {
+      @include font(f8);
+    }
+  }
+
+  .cta .btn {
+    font-family: $header-font-family;
+    @include font(f5);
+  }
+
+  // Small devices (landscape phones, 576px and up)
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    .masthead-content {
+      background-color: $blue-very-dark;
+    }
+
+    .carousel-item {
+      h2 {
+        @include font(f5);
+      }
+
+      i {
+        @include font(f1);
+      }
+
+      .col-1 {
+        line-height: 80px;
+        margin-right: 20px;
+      }
+    }
+  }
+
+  // Medium devices (tablets, 768px and up) // max-width: 991.98px
+  @media (min-width: 768px) and (max-width: 1199.98px) {
+    .masthead .btn {
+      @include font(f4);
+      padding: 10px;
+    }
+
+    .cta .btn {
+      @include font(f4);
+      padding: 10px;
+    }
+
+    .carousel-item {
+      h2 {
+        @include font(f3);
+      }
+
+      i {
+        @include font(f1);
+      }
+
+      .col-1 {
+        line-height: 100px;
+      }
+    }
+
+    header .container {
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+  }
+
+  // Large devices (desktops, 992px and up)
+  // @media (min-width: 992px) and (max-width: 1199.98px) { ... }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @media (min-width: 1140px) {
+    .masthead .btn {
+      @include font(f4);
+      padding: 20px;
+    }
+
+    .cta .btn {
+      @include font(f4);
+      padding: 20px;
+    }
+
+    .carousel-item {
+      h2 {
+        @include font(f1);
+      }
+
+      i {
+        font-size: $f-xl;
+      }
+
+      .col-1 {
+        line-height: 140px;
+      }
+    }
+  }
+
+  .quotes:before, .quotes:after {
+    display: inline-block;
+    vertical-align: top;
+    height: 30px;
+    line-height: 28px;
+    font-size: $f1;
+  }
+
+  .quotes:before {
+    content: '\201C';
+    margin-right: 4px;
+    margin-left: -8px;
+  }
+
+  .quotes:after {
+    content: '\201D';
+    margin-left: 4px;
+    margin-right: -8px;
+  }
+
+  .quote-by {
+    display: block;
+    padding-right: 10px;
+    text-align: right;
+
+    .very-small {
+      margin: 0px;
+    }
+  }
+
+  .mailchimp  {
+    @media (min-width: 992px) and (max-width: 1599.98px) {
+      .card-deck {
+        img {
+          height: 100px;
+        }
+      }
+    }
+    @media (max-width: 991.98px) {
+      .card-deck {
+        width: 332px;
+        img {
+          height: 200px;
+          width: 300px;
+        }
+      }
+    }
+    @media (max-width: 767.98px) {
+      .card-deck {
+        width: 182px;
+        img {
+          height: 100px;
+          width: 150px;
+        }
+      }
+    }
+    // Small devices (landscape phones, 576px and up)
+    @media (min-width: 576px) and (max-width: 767.98px) {
+      .card-deck {
+        width: 257px;
+        img {
+          height: 150px;
+          width: 225px;
+        }
+      }
+    }
+
+    // Extra small devices (portrait phones, less than 576px)
+    @media (max-width: 575.98px) {
+      .card-deck {
+        width: 152px;
+        img {
+          height: 100px;
+          width: 150px;
+        }
+      }
+    }
+  }
+
+  .card-2px-border {
+    border: 2px solid rgba($black, 0.125);
+  }
+}
+
+// outer div has this class when we're on the home page
+
+.home {
+  section.alerts .alert {
+    margin-bottom: 0px;
+  }
+}
+

@@ -3,33 +3,39 @@
 require 'rails_helper'
 
 RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
-  let(:observation) { create(:observation, :activity) }
+  let(:observation) { create(:observation, :activity, points: 10) }
   let(:observations) { [observation] }
-  let(:show_actions) { true }
-  let(:all_params) { { observations: observations, classes: 'my-class', id: 'my-id', show_actions: show_actions } }
-  let(:params) { all_params }
-  let(:current_user) { create(:admin) }
-
-  before do
-    # This allows us to set what the current user is during rendering
-    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
+  let(:classes) { 'my-class' }
+  let(:id) { 'my-id' }
+  let(:params) do
+    {
+      observations: observations,
+      classes: classes,
+      id: id,
+      show_header: true,
+      padding: true,
+      table_opts: { show_actions: true, show_date: true }
+    }
   end
 
-  let(:html) do
-    with_controller_class ApplicationController do
-      render_inline(TimelineComponent.new(**params))
+  subject(:html) do
+    render_inline(TimelineComponent.new(**params)) do |c|
+      c.with_link do
+        ActionController::Base.helpers.link_to I18n.t('activities.show.all_activities'),
+                                               school_timeline_path(observation.school)
+      end
     end
   end
 
-  context 'with all params' do
-    it { expect(html).to have_selector('div.timeline-component') }
-
-    it 'adds specified classes' do
-      expect(html).to have_css('div.timeline-component.my-class')
-    end
-
-    it 'adds specified id' do
-      expect(html).to have_css('div.timeline-component#my-id')
-    end
+  it_behaves_like 'an application component' do
+    let(:expected_classes) { classes }
+    let(:expected_id) { id }
   end
+
+  it { expect(html).to have_content(I18n.t('timeline.whats_been_going_on'))}
+  it { expect(html).to have_content(I18n.t('schools.dashboards.timeline.intro'))}
+  it { expect(html).to have_link(I18n.t('activities.show.all_activities'), href: school_timeline_path(observation.school))}
+  it { expect(html).to have_css('.p-4') }
+  it { expect(html).to have_selector(:table_row, [observation.at.to_fs(:es_short), observation.points, observation.activity.display_name])}
+  it { expect(html).to have_link(observation.activity.display_name, href: school_activity_path(observation.school, observation.activity)) }
 end

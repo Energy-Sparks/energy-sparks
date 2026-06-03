@@ -1,9 +1,10 @@
 # Handles display of page title and subtitle for forms
-class EnergyTariffFormTitleComponent < ViewComponent::Base
+class EnergyTariffFormTitleComponent < ApplicationComponent
   renders_one :page_title
   renders_one :notice
 
-  def initialize(energy_tariff:, skip_fields: [])
+  def initialize(energy_tariff:, skip_fields: [], **_kwargs)
+    super
     @energy_tariff = energy_tariff
     @skip_fields = skip_fields
   end

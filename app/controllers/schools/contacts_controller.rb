@@ -4,6 +4,7 @@ class Schools::ContactsController < ApplicationController
   before_action :set_breadcrumbs
 
   def index
+    authorize! :manage_users, @school
     @standalone_contacts = @contacts.where(user_id: nil)
     @account_contacts = @contacts.where.not(user_id: nil)
     @accounts_without_contacts = @school.users.alertable.left_outer_joins(:contacts).where('contacts.id IS NULL')

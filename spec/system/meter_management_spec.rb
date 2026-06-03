@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.shared_examples_for 'a listed meter' do |admin: true|
+RSpec.shared_examples_for 'a listed meter' do |admin: true, staff: false|
   it 'displays list heading' do
     if meter.active
       expect(page).to have_content('Active meters')
@@ -9,13 +11,19 @@ RSpec.shared_examples_for 'a listed meter' do |admin: true|
     end
   end
 
-  it 'displays meter' do
+  it 'displays meter data' do
     expect(page).to have_content(meter.mpan_mprn)
     expect(page).to have_content(meter.name)
     expect(page).to have_content(short_dates(meter.first_validated_reading))
     expect(page).to have_content(short_dates(meter.last_validated_reading))
     expect(page).to have_content(meter.zero_reading_days.count)
     expect(page).to have_content(meter.gappy_validated_readings.count)
+  end
+
+  it 'displays meter links' do
+    if !staff && meter.active && meter.amr_validated_readings.any?
+      expect(page).to have_link(href: school_meter_path(meter.school, meter, format: 'csv'))
+    end
     if admin
       expect(page).to have_link('Issues')
       expect(page).to have_link(meter.data_source.name)
@@ -26,29 +34,112 @@ RSpec.shared_examples_for 'a listed meter' do |admin: true|
   end
 end
 
-RSpec.describe 'meter management', :include_application_helper, :meters, type: :system do
+RSpec.shared_examples_for 'the show meter page' do |admin:|
+  it 'displays the correct fields' do
+    click_on meter.mpan_mprn.to_s
+    expect(page).to have_text('Basic information')
+    expect(page).to have_text("MPAN/MPRN #{meter.mpan_mprn} Serial Number Type #{meter.meter_type.titleize}")
+    expect(page).to have_selector(:link_or_button, 'Edit', exact: true)
+    if admin
+      expect(page).to have_text('Admin details')
+      expect(page).to have_text('Meter system NHH AMR Data source Data Co Contract Meter status Manual reads? false ' \
+                                'Gas unit Cubic Meters')
+    else
+      expect(page).to have_no_text('Admin details')
+    end
+  end
+end
+
+RSpec.shared_examples_for 'it creates meters' do |email: false, select_data_source: false|
+  context 'when creating meters' do
+    before do
+      stub = instance_double(Meters::N3rgyMeteringService, status: :available,
+                                                           available?: true,
+                                                           consented?: true,
+                                                           inventory: { device_id: 123_999 },
+                                                           available_data: Time.zone.today..Time.zone.today,
+                                                           type: :smets2)
+      allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
+      click_on('Manage meters')
+    end
+
+    it 'requires a type' do
+      click_on 'Create Meter'
+      expect(page).to have_content("Meter type can't be blank")
+    end
+
+    it { expect(page).to have_no_select('Data source') } unless select_data_source
+
+    context 'when filling in the form' do
+      before do
+        fill_in 'Meter Point Number', with: '123543'
+        fill_in 'Name', with: 'Gas'
+        choose 'Gas'
+        select 'Data Co', from: 'Data source' if select_data_source
+        click_on 'Create Meter'
+      end
+
+      it 'allows adding of meters from the management page with validation' do
+        expect(school.meters.pluck(:mpan_mprn)).to eq([123_543])
+        expect(school.meters.first.data_source).to eq(select_data_source ? data_source : nil)
+        perform_enqueued_jobs
+        if email
+          expect(last_email).to have_attributes(subject: 'New smart meters found', to: [admin.email])
+        else
+          expect(ActionMailer::Base.deliveries.length).to eq(0)
+        end
+      end
+    end
+  end
+end
+
+RSpec.shared_examples_for 'it has listed meters' do |staff: true, admin: false|
+  let!(:setup_data) { meter }
+
+  it_behaves_like 'a listed meter', admin:, staff: do
+    let(:meter) { active_meter }
+  end
+  it_behaves_like 'a listed meter', admin:, staff: do
+    let(:meter) { inactive_meter }
+  end
+end
+
+RSpec.shared_examples_for 'the meter management page for staff' do |creates_meters: true|
+  before { visit school_meters_path(school) }
+
+  it_behaves_like 'admin dashboard messages', permitted: false
+  it_behaves_like 'it creates meters' if creates_meters
+  it_behaves_like 'it has listed meters'
+end
+
+describe 'meter management', :include_application_helper, :meters do
+  include ActiveJob::TestHelper
+  include EmailHelpers
+
   let(:school_name)     { 'Oldfield Park Infants' }
-  let!(:school)         { create_active_school(name: school_name) }
-  let!(:admin)          { create(:admin) }
-  let!(:teacher)        { create(:staff) }
-  let!(:school_admin)   { create(:school_admin, school_id: school.id) }
+  let!(:school)         { create_active_school(name: school_name, school_group: create(:school_group)) }
   let!(:data_source)    { create(:data_source, name: 'Data Co') }
   let(:active_meter)    do
-    create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:)
+    create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, gas_unit: :m3)
   end
   let(:inactive_meter) do
     create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, active: false)
   end
   let!(:setup_data) {}
 
-  context 'as school admin' do
+  around do |example|
+    create(:amr_data_feed_config, identifier: 'perse-half-hourly-api')
+    example.run
+  end
+
+  context 'when a school admin' do
     before do
-      sign_in(school_admin)
+      sign_in(create(:school_admin, school:))
       visit root_path
     end
 
     context 'when the school has a meter with no readings' do
-      let!(:gas_meter) { create(:gas_meter, name: 'Gas meter', school:) }
+      before { create(:gas_meter, name: 'Gas meter', school:) }
 
       it 'allows deletion of inactive meters' do
         click_on 'Manage meters'
@@ -63,12 +154,15 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         create(:electricity_meter_with_reading, name: 'Electricity meter', school:, mpan_mprn: 1_234_567_890_123)
       end
 
+      before { click_on 'Manage meters' }
+
       it 'the meter cannot be deleted' do
-        click_on 'Manage meters'
         click_on 'Deactivate'
         expect(meter.amr_data_feed_readings.count).to eq(1)
         expect(page).to have_button('Delete', disabled: true)
       end
+
+      it_behaves_like 'the show meter page', admin: false
     end
 
     context 'when the school has a DCC meter' do
@@ -77,118 +171,98 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
       end
 
       let!(:stub) do
-        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true,
-                                                        consented?: true, available_data: Time.zone.today..Time.zone.today)
+        instance_double(Meters::N3rgyMeteringService, status: :available, available?: true,
+                                                      consented?: true, available_data: Time.zone.today..Time.zone.today)
       end
 
       before do
         allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
+        click_on 'Manage meters'
+        click_on meter.mpan_mprn.to_s
       end
 
       it 'the meter inventory button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Inventory')
+        expect(page).to have_no_selector(:link_or_button, 'Inventory')
       end
 
       it 'the tariff report button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Tariff Report')
+        expect(page).to have_no_selector(:link_or_button, 'Tariff Report')
       end
 
       it 'the attributes button is not shown' do
-        click_on 'Manage meters'
-        click_on meter.mpan_mprn.to_s
-        expect(page).to have_no_button('Attributes')
+        expect(page).to have_no_selector(:link_or_button, 'Attributes')
+      end
+
+      it 'the reload button is not shown' do
+        expect(page).to have_no_selector(:link_or_button, 'Reload')
+      end
+
+      it 'does not admin only sections' do
+        expect(page).to have_no_text('DCC (SMETS2) information')
+        expect(page).to have_no_text('Perse Metering')
       end
     end
 
-    context 'Manage meters page' do
-      before { visit school_meters_path(school) }
-
-      it_behaves_like 'admin dashboard messages', permitted: false
-
-      context 'Add meter form' do
-        it 'does not display admin only fields' do
-          expect(page).to have_no_content('Data source')
-        end
-      end
-
-      context 'listing meters' do
-        let!(:setup_data) { meter }
-
-        it_behaves_like 'a listed meter', admin: false do
-          let(:meter) { active_meter }
-        end
-        it_behaves_like 'a listed meter', admin: false do
-          let(:meter) { inactive_meter }
-        end
-      end
-    end
+    it_behaves_like 'the meter management page for staff'
   end
 
-  context 'as teacher' do
+  context 'when a group admin' do
     before do
-      sign_in(teacher)
+      sign_in(create(:group_admin, school_group: school.school_group))
+      visit root_path
+    end
+
+    it_behaves_like 'the meter management page for staff'
+  end
+
+  context 'when a teacher' do
+    before do
+      sign_in(create(:staff, school:))
       visit school_meters_path(school)
     end
 
-    it 'does not see things it should not' do
+    it 'does not show things it should not' do
       expect(page).to have_no_content('Delete')
       expect(page).to have_no_content('Create Meter')
       expect(page).to have_no_content('Activate')
       expect(page).to have_no_content('Deactivate')
     end
 
-    it_behaves_like 'admin dashboard messages', permitted: false
+    it_behaves_like 'the meter management page for staff', creates_meters: false
 
-    context 'Add meter form' do
-      it 'does not display admin only fields' do
-        expect(page).to have_no_content('Data source')
-      end
-    end
-
-    context 'listing meters' do
+    it_behaves_like 'the show meter page', admin: false do
       let(:setup_data) { meter }
-
-      it_behaves_like 'a listed meter', admin: false do
-        let(:meter) { active_meter }
-      end
-      it_behaves_like 'a listed meter', admin: false do
-        let(:meter) { inactive_meter }
-      end
+      let(:meter) { active_meter }
     end
   end
 
-  context 'as admin' do
+  context 'when an admin' do
+    let!(:admin) { create(:admin) }
+
     before do
       sign_in(admin)
-      visit root_path
-      click_on('View schools')
-      click_on('Oldfield Park Infants')
+      visit school_path(school)
     end
 
-    context 'Manage meters page' do
-      before do
-        stub_request(:get, "https://n3rgy.test/find-mpxn/#{active_meter.mpan_mprn}")
-        click_on 'Manage meters'
-      end
+    context 'with the Manage meters page' do
+      before { click_on 'Manage meters' }
 
       it_behaves_like 'admin dashboard messages' do
         let(:messageable) { school }
       end
 
-      context 'listing meters' do
-        let!(:setup_data) { meter }
-
-        it_behaves_like 'a listed meter', admin: true do
-          let(:meter) { active_meter }
-        end
-        it_behaves_like 'a listed meter', admin: true do
-          let(:meter) { inactive_meter }
-        end
+      it_behaves_like 'the show meter page', admin: true do
+        let(:setup_data) { stub_request(:get, "https://n3rgy.test/find-mpxn/#{active_meter.mpan_mprn}") }
+        let(:meter) { active_meter }
       end
+
+      it_behaves_like 'it has listed meters', staff: false, admin: true
+
+      it_behaves_like 'it creates meters', email: true, select_data_source: true
+    end
+
+    context 'when managing meter issues' do
+      before { visit school_meters_path(school) }
 
       context 'without meter issues' do
         let(:meter) { active_meter }
@@ -200,7 +274,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         it { expect(page).to have_css("i[class*='fa-exclamation-circle']") }
         it { expect(page).to have_no_css("i[class*='fa-exclamation-circle text-danger']") }
 
-        context "Clicking on meter 'Details'" do
+        context "when clicking on meter 'Details'" do
           before do
             click_link meter.mpan_mprn.to_s
           end
@@ -210,19 +284,63 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         end
       end
 
-      context 'with meter issues' do
+      shared_examples 'editing an issue for meter via modal' do
+        context 'when editing an issue' do
+          before do
+            click_on 'Issues'
+            within('.modal') do
+              click_on 'Edit'
+            end
+            click_on 'Save'
+          end
+
+          it 'redirects to manage meters page' do
+            expect(page).to have_link(school.name)
+            expect(page).to have_content('Manage meters')
+          end
+        end
+      end
+
+      context 'when creating meter issues', :js do
+        let(:meter) { active_meter }
+        let!(:setup_data) { meter }
+
+        before do
+          click_on 'Issues'
+          within('.modal') do
+            click_on 'New Issue'
+          end
+
+          fill_in 'Title', with: 'Meter issue title'
+          fill_in_trix 'trix-editor#issue_description', with: 'Meter issue description'
+          click_on 'Save'
+        end
+
+        it 'redirects to manage meters page' do
+          expect(page).to have_link(school.name)
+          expect(page).to have_content('Manage meters')
+        end
+      end
+
+      context 'with meter issues', :js do
         let(:meter) { active_meter }
         let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin) }
         let!(:setup_data) { issue }
 
+        before { stub_request(:get, "https://n3rgy.test/find-mpxn/#{meter.mpan_mprn}") }
+
         it { expect(page).to have_link('Issues') }
         it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
 
-        context "Clicking on meter 'Details'" do
+        it_behaves_like 'editing an issue for meter via modal'
+
+        context "when clicking on meter 'Details'" do
           before { click_link meter.mpan_mprn.to_s }
 
           it { expect(page).to have_link('Issues') }
           it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
+
+          it_behaves_like 'editing an issue for meter via modal'
         end
       end
     end
@@ -232,15 +350,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         create(:electricity_meter, dcc_meter: :smets2, name: 'Electricity meter', school:, mpan_mprn: 1_234_567_890_123)
       end
 
-      let!(:stub) do
-        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true, consented?: true, inventory: { device_id: 123_999 },
-                                                        available_data: Time.zone.today..Time.zone.today)
-      end
-
       before do
         stub_request(:get, 'https://n3rgy.test/find-mpxn/1234567890123').to_return(body: '{}')
         stub_request(:get, 'https://n3rgy.test/mpxn/1234567890123').to_return(body: '{}')
-        stub_request(:get, 'https://n3rgy.test/mpxn/1234567890123/utility/electricity/readingtype/consumption?granularity=halfhour&outputFormat=json')
+        stub_request(:get, %r{^https://n3rgy.test/mpxn/1234567890123/utility/electricity/readingtype/consumption?})
           .to_return(body: { availableCacheRange: { start: Time.zone.today.to_s, end: Time.zone.today.to_s } }.to_json)
         click_on 'Manage meters'
       end
@@ -268,37 +381,59 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
 
       it 'the dcc checkboxes and status are shown on the edit form' do
         click_on 'Edit'
-        check 'DCC Smart Meter'
+        expect(page).to have_select('DCC Smart Meter', selected: 'Smets2')
+        select 'Other', from: 'DCC Smart Meter'
         click_on 'Update Meter'
-        expect(meter.reload.dcc_meter).to eq('smets2')
-      end
-    end
-
-    context 'when creating meters' do
-      let!(:stub) do
-        instance_double('Meters::N3rgyMeteringService', status: :available, available?: true, consented?: true, inventory: { device_id: 123_999 },
-                                                        available_data: Time.zone.today..Time.zone.today)
+        expect(meter.reload.dcc_meter).to eq('other')
       end
 
-      before do
-        allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
+      def expect_meter_reload
+        expect(page).to have_text('Reload queued')
+        expect { perform_enqueued_jobs }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        expect(last_email.subject).to \
+          eq("[energy-sparks-unknown] Reload of Meter Electricity meter for #{school.name} complete")
+        expect(last_email.to).to eq([admin.email])
+        expect(last_email.to_s).to include('0 records were imported and 0 were updated')
       end
 
-      it 'allows adding of meters from the management page with validation' do
-        click_on('Manage meters')
+      it 'allows reloading the meter' do
+        create(:amr_data_feed_config, process_type: :n3rgy_api, source_type: :api)
+        click_on meter.mpan_mprn.to_s
+        expect { click_on 'Reload' }.to have_enqueued_job(N3rgyReloadJob)
+        expect_meter_reload
+      end
 
-        click_on 'Create Meter'
-        expect(page).to have_content("Meter type can't be blank")
+      context 'with Perse' do
+        around do |example|
+          travel_to(Date.new(2024, 12, 10))
+          create(:amr_data_feed_reading, # make sure we're doing a full reload
+                 amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'perse-half-hourly-api'),
+                 reading_date: '2024-12-10',
+                 meter: meter)
+          stub_request(:get, 'http://perse/meterhistory/v2/realtime-data?MPAN=1234567890123&fromDate=2023-10-10')
+          meter.update!(perse_api: :half_hourly)
+          ClimateControl.modify PERSE_API_URL: 'http://perse', PERSE_API_KEY: 'key' do
+            example.run
+          end
+        end
 
-        fill_in 'Meter Point Number', with: '123543'
-        fill_in 'Name', with: 'Gas'
-        choose 'Gas'
-        select 'Data Co', from: 'Data source'
-        click_on 'Create Meter'
+        it 'allows reloading the meter with Perse' do
+          click_on meter.mpan_mprn.to_s
+          expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
+          expect_meter_reload
+        end
 
-        expect(school.meters.count).to eq(1)
-        expect(school.meters.first.mpan_mprn).to eq(123_543)
-        expect(school.meters.first.data_source.name).to eq('Data Co')
+        it 'allows reloading the meter with Perse and no DCC' do
+          meter.update!(dcc_meter: :no)
+          click_on meter.mpan_mprn.to_s
+          expect { click_on 'Reload' }.to have_enqueued_job(PerseReloadJob)
+          expect_meter_reload
+        end
+
+        it 'shows the last reading' do
+          click_on meter.mpan_mprn.to_s
+          expect(page).to have_text("Perse Metering\nPerse API Half Hourly Latest reading 2024-12-10\n")
+        end
       end
     end
 
@@ -313,21 +448,25 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         click_on 'Edit'
         fill_in 'Name', with: 'Natural Gas Meter'
         select 'Data Co', from: 'Data source'
+        check('Manual reads?')
+        select 'Cubic Feet', from: 'Gas unit'
         click_on 'Update Meter'
         gas_meter.reload
         expect(gas_meter.name).to eq('Natural Gas Meter')
         expect(gas_meter.data_source.name).to eq('Data Co')
+        expect(gas_meter.manual_reads).to be true
+        expect(gas_meter.gas_unit).to eq('ft3')
       end
 
       it 'allows deactivation and reactivation of a meter' do
         click_on 'Deactivate'
 
         gas_meter.reload
-        expect(gas_meter.active).to eq(false)
+        expect(gas_meter.active).to be(false)
 
         click_on 'Activate'
         gas_meter.reload
-        expect(gas_meter.active).to eq(true)
+        expect(gas_meter.active).to be(true)
       end
 
       context 'with a school target' do
@@ -351,6 +490,12 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         expect(gas_meter.amr_validated_readings.empty?).to be true
         expect(page).to have_no_content('CSV')
       end
+
+      it 'has Perse details' do
+        stub_request(:get, "https://n3rgy.test/find-mpxn/#{gas_meter.mpan_mprn}")
+        click_on gas_meter.mpan_mprn.to_s
+        expect(page).to have_content('Perse API None')
+      end
     end
 
     context 'when the school has a meter with readings' do
@@ -365,30 +510,6 @@ RSpec.describe 'meter management', :include_application_helper, :meters, type: :
         click_on 'Deactivate'
         click_on 'Delete'
         expect(school.meters.count).to eq(0)
-      end
-    end
-
-    context 'when checking target data' do
-      context 'and there is enough' do
-        before do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-          click_on 'Manage meters'
-        end
-
-        it 'links to detail' do
-          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-        end
-      end
-
-      context 'and there is not enough' do
-        before do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
-          click_on 'Manage meters'
-        end
-
-        it 'links to detail' do
-          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-        end
       end
     end
   end

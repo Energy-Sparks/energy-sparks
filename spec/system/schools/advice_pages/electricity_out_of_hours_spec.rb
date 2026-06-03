@@ -21,6 +21,10 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
     end
   end
 
+  it_behaves_like 'it responds to HEAD requests' do
+    let(:advice_page) { AdvicePage.find_by_key(:electricity_out_of_hours) }
+  end
+
   context 'as school admin' do
     before do
       sign_in(create(:school_admin, school: school))
@@ -163,9 +167,12 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
             end
 
             it 'has holiday usage section' do
-              expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
-              expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
-              expect(page).to have_css('#holiday-usage-table')
+              travel_to reading_end_date do
+                refresh
+                expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
+                expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
+                expect(page).to have_css('#holiday-usage-table')
+              end
             end
           end
         end
@@ -192,9 +199,12 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
           end
 
           it 'has a holiday usage section' do
-            expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
-            expect(page).to have_css('#chart_wrapper_alert_group_by_week_electricity_14_months')
-            expect(page).to have_css('#holiday-usage-table')
+            travel_to school.calendar.holidays.last.end_date do
+              refresh
+              expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title'))
+              expect(page).to have_css('#chart_wrapper_alert_group_by_week_electricity_14_months')
+              expect(page).to have_css('#holiday-usage-table')
+            end
           end
         end
       end

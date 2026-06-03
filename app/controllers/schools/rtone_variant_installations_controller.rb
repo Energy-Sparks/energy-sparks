@@ -1,47 +1,34 @@
-module Schools
-  class RtoneVariantInstallationsController < ApplicationController
-    load_and_authorize_resource :school
-    load_and_authorize_resource through: :school
+# frozen_string_literal: true
 
+module Schools
+  class RtoneVariantInstallationsController < BaseInstallationsController
     before_action :load_non_gas_meters
 
+    ID_PREFIX = 'rtone-variant'
+    NAME = 'Rtone Variant API feed'
+    JOB_CLASS = Solar::RtoneVariantLoaderJob
+
     def new
-      @rtone_variant_installation = RtoneVariantInstallation.new
-      @rtone_variant_installation.meter = @non_gas_meters.first
+      @installation = RtoneVariantInstallation.new
+      @installation.meter = @non_gas_meters.first
     end
 
     def create
-      if @rtone_variant_installation.save
+      if @installation.save
         redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'New Rtone Variant API feed created.'
       else
         render :new
       end
     end
 
-    def edit
-    end
-
-    def update
-      if @rtone_variant_installation.update(rtone_variant_installation_params)
-        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'New Rtone Variant API feed updated.'
-      else
-        render :edit
-      end
-    end
-
     def destroy
-      @rtone_variant_installation.destroy
+      @installation.destroy
       redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'New Rtone Variant API feed deleted.'
     end
 
     def check
-      @api_ok = Solar::LowCarbonHubInstallationFactory.check(@rtone_variant_installation)
+      @api_ok = Solar::LowCarbonHubInstallationFactory.check(@installation)
       respond_to(&:js)
-    end
-
-    def submit_job
-      Solar::RtoneVariantLoaderJob.perform_later(installation: @rtone_variant_installation, notify_email: current_user.email)
-      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Loading job has been submitted. An email will be sent to #{current_user.email} when complete."
     end
 
     private
@@ -50,7 +37,7 @@ module Schools
       @non_gas_meters = @school.meters.where.not(meter_type: :gas)
     end
 
-    def rtone_variant_installation_params
+    def resource_params
       params.require(:rtone_variant_installation).permit(
         :amr_data_feed_config_id, :meter_id, :rtone_meter_id, :rtone_component_type, :username, :password
       )

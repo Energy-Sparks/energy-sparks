@@ -1,7 +1,3 @@
-<h1>New School group</h1>
+<h1>New <%= admin_form_label(@school_group) %></h1>
 
 <%= render 'form', school_group: @school_group %>
-
-<div class="other-actions">
-  <%= link_to 'Back', admin_school_groups_path, class: 'btn btn-secondary' %>
-</div>

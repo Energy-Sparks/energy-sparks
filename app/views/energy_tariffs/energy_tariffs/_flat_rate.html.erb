@@ -1,11 +1,23 @@
 <% if energy_tariff.energy_tariff_prices.any? %>
   <tr class="<%= charge_row_feedback(energy_tariff) %>">
     <td class="description"><%= t('schools.user_tariffs.flat_rate.flat_rate_tariff') %></td>
-    <td class="value"><%= convert_value_to_long_currency(energy_tariff.energy_tariff_prices.first.value) %> <%= t('schools.user_tariffs.flat_rate.per_kwh') %></td>
+    <td class="value">
+      <%= convert_value_to_long_currency(energy_tariff.energy_tariff_prices.first.value) %>
+      <%= t('schools.user_tariffs.flat_rate.per_kwh') %>
+    </td>
     <% if allow_edits %>
       <td>
-        <%= link_to t('common.labels.edit'), edit_school_energy_tariff_energy_tariff_differential_price_path(school, energy_tariff, energy_tariff_price), { class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' } %>
-        <%= link_to t('common.labels.delete'), school_energy_tariff_energy_tariff_differential_price_path(school, energy_tariff, energy_tariff_price), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+        <%= link_to t('common.labels.edit'),
+                    edit_school_energy_tariff_energy_tariff_differential_price_path(school,
+                                                                                    energy_tariff,
+                                                                                    energy_tariff_price),
+                    { class: 'btn', remote: true, 'data-toggle' => 'modal', 'data-target' => '#modal-window' } %>
+        <%= link_to t('common.labels.delete'),
+                    school_energy_tariff_energy_tariff_differential_price_path(school,
+                                                                               energy_tariff,
+                                                                               energy_tariff_price),
+                    method: :delete, data: { confirm: t('common.confirm') },
+                    class: 'btn btn-danger' %>
       </td>
     <% end %>
   </tr>

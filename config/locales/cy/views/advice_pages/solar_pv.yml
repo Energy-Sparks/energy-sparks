@@ -91,7 +91,7 @@ cy:
             <p>Mae gan lawer o ysgolion baneli solar ffotofoltäig sy'n cynhyrchu ynni o olau'r haul.</p>
             <p>Mae'r paneli yn lleihau defnydd yr ysgol o drydan o'r grid cenedlaethol a'i hallyriadau carbon. Ychydig iawn o garbon a gynhyrchir gan drydan a gynhyrchir o baneli solar.</p>
             <p>Mae paneli ffotofoltäig solar yn gweithio'n dda i ysgolion gan mai nhw sy'n cynhyrchu'r rhan fwyaf o ynni tua hanner dydd, sef pan fydd ysgol fel arfer yn defnyddio'r rhan fwyaf o ynni.</p>
-          if_you_do_get_solar_panels_installed_html: Os ydych yn gosod paneli solar, peidiwch ag anghofio rhoi gwybod i ni yn <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a>  fel y gallwn eu ffurfweddu ar gyfer eich ysgol.
+          if_you_do_get_solar_panels_installed_html: Os ydych yn gosod paneli solar, peidiwch ag anghofio rhoi gwybod i ni yn <a href='mailto:support@energysparks.uk'>support@energysparks.uk</a>  fel y gallwn eu ffurfweddu ar gyfer eich ysgol.
           installing_solar_panels_could_reduce_html: Gallai gosod paneli solar leihau'r trydan a ddefnyddiwch o'r grid cenedlaethol gan %{optimum_mains_reduction_percent} bob blwyddyn
           link: Dysgu rhagor
           next_steps_html: |-

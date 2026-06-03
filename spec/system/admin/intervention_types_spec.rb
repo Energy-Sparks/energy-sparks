@@ -63,7 +63,7 @@ describe 'Intervention Types', type: :system do
       expect(page).to have_content(description)
     end
 
-    it 'can does not crash if you forget the score' do
+    it 'does not crash if you forget the score' do
       click_on('New Intervention type', match: :first)
       fill_in :intervention_type_name_en, with: 'New activity'
       fill_in_trix with: 'the description'
