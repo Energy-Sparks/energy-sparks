@@ -349,7 +349,11 @@ describe ApplicationHelper do
       expect(helper.format_price(123.0)).to eq('£123.00')
       expect(helper.format_price(1234.0)).to eq('£1,234.00')
       expect(helper.format_price(1234.50)).to eq('£1,234.50')
-      expect(helper.format_price(1234.567)).to eq('£1,234.567')
+      expect(helper.format_price(1234.567)).to eq('£1,234.57')
+      expect(helper.format_price(1234.5678)).to eq('£1,234.57')
+      expect(helper.format_price(123.44)).to eq('£123.44')
+      expect(helper.format_price(123.45)).to eq('£123.45')
+      expect(helper.format_price(123.456)).to eq('£123.46')
       expect(helper.format_price(0.0)).to eq('£0.00')
     end
 
