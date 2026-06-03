@@ -16,7 +16,12 @@ module Admin
         { id: 'overdue-issues', check: prompt_for_issues_overdue?, status: :negative, icon: 'exclamation',
           link: 'View Issues',
           path: admin_dashboard_issues_path(dashboard_id: @user, user: @user, review_date: 'review_overdue'),
-          content: "You have #{overdue_issues_count} issues overdue for review" },
+          content: "You have #{overdue_issues_count} overdue issues" },
+        { id: 'overdue-group-reviews', check: prompt_for_group_reviews_overdue?, status: :negative,
+          icon: 'file-circle-exclamation', link: 'View Group Reviews',
+          path: admin_dashboard_issues_path(dashboard_id: @user, user: @user, review_date: 'review_overdue',
+                                            issue_tag: IssueTag.where(system_id: :group_review)),
+          content: "You have #{overdue_group_reviews_count} overdue group reviews" },
         { id: 'lagging-data-sources', check: prompt_for_lagging_data_sources?, status: :negative,
           icon: 'plug-circle-exclamation', link: 'View Data Sources',
           path: admin_dashboard_data_sources_path(dashboard_id: @user),
@@ -56,6 +61,10 @@ module Admin
       true unless weekly_issues_count.nil? || weekly_issues_count.zero?
     end
 
+    def prompt_for_group_reviews_overdue?
+      true unless overdue_group_reviews_count.nil? || overdue_group_reviews_count.zero?
+    end
+
     def prompt_for_school_activation?
       true unless school_activations_count.nil? || school_activations_count.zero?
     end
@@ -81,11 +90,17 @@ module Admin
     end
 
     def overdue_issues_count
-      @overdue_issues_count ||= user.owned_issues.where.not(review_date: Date.current..).count
+      @overdue_issues_count ||= user.owned_issues.exclude_issue_tag(group_review_tag)
+                                    .where.not(review_date: Date.current..).count
     end
 
     def weekly_issues_count
       @weekly_issues_count ||= user.owned_issues.where(review_date: Date.current...(Date.current + 7)).count
+    end
+
+    def overdue_group_reviews_count
+      @overdue_group_reviews_count ||= user.owned_issues.for_issue_tag(group_review_tag)
+                                           .where.not(review_date: Date.current..).count
     end
 
     def school_activations_count
@@ -133,6 +148,10 @@ module Admin
                                               .visible
                                               .missing_alert_contacts
                                               .count
+    end
+
+    def group_review_tag
+      @group_review_tag ||= IssueTag.where(system_id: :group_review)
     end
 
     def add_prompt(list:, status:, icon:, check: true, id: nil, link: nil, path: nil) # rubocop:disable Metrics/ParameterLists
