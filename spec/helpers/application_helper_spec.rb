@@ -345,6 +345,11 @@ describe ApplicationHelper do
   end
 
   describe '#format_price' do
+    it 'handles missing prices correctly' do
+      expect(helper.format_price(nil)).to eq('£0.00')
+      expect(helper.format_price('')).to eq('£0.00')
+    end
+
     it 'formats floats correctly' do
       expect(helper.format_price(123.0)).to eq('£123.00')
       expect(helper.format_price(1234.0)).to eq('£1,234.00')

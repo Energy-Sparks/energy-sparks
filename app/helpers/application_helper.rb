@@ -272,6 +272,8 @@ module ApplicationHelper
 
   # When decimals are true, round only to nearest penny and format. Otherwise just format the price
   def format_price(price, decimals: true)
+    return '£0.00' unless price.present?
+
     amount = BigDecimal(price.to_s)
 
     if decimals
