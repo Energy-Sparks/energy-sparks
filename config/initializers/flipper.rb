@@ -5,7 +5,14 @@ Flipper.register(:admins) do |actor, _context|
 end
 
 Flipper.configure do |config|
-  config.use Flipper::Adapters::ActiveSupportCacheStore, ActiveSupport::Cache::MemoryStore.new, 5.minutes
+  config.adapter do
+    Flipper::Adapters::ActiveSupportCacheStore.new(
+      Flipper::Adapters::ActiveRecord.new,
+      Rails.cache,
+      5.minutes,
+      race_condition_ttl: 10
+    )
+  end
 end
 
 Rails.application.configure do
