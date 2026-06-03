@@ -349,8 +349,6 @@ GEM
     google-protobuf (4.33.2-x86_64-linux-gnu)
       bigdecimal
       rake (>= 13)
-    groupdate (6.8.0)
-      activesupport (>= 7.2)
     guard (2.19.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -921,13 +919,13 @@ DEPENDENCIES
   friendly_id
   geocoder
   good_job
-  groupdate
   guard-rspec
   guard-rubocop
   handlebars_assets
   i18n-tasks (~> 1.1.2)
   image_processing (~> 2.0)
   importmap-rails
+  interpolate
   jbuilder (~> 2.15)
   jquery-rails
   knapsack
@@ -989,7 +987,7 @@ DEPENDENCIES
   terser
   test-prof
   twilio-ruby
-  tzinfo-data
+  tzinfo
   view_component
   web-console
   webmock
