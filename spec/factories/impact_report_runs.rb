@@ -19,19 +19,20 @@ FactoryBot.define do
       evaluator.categories.each do |category|
         category_overrides = evaluator.public_send(category)
 
-        ImpactReport::Metric.metrics(category).each do |type|
-          override = category_overrides[type] || {}
+        ImpactReport::Metric.metrics(category).each do |metric_type|
+          override = category_overrides[metric_type] || {}
           attrs = override.is_a?(Hash) ? override : {}
 
           defaults = {
             run: run,
             metric_category: category,
-            metric_type: type,
+            metric_type:,
             value: 2,
             enough_data: true
           }
 
           defaults[:fuel_type] = :electricity if %i[potential_savings energy_efficiency].include?(category)
+          defaults[:unit] = :gbp if category == :energy_efficiency && metric_type == :annual_saving
 
           create(
             :impact_report_metric,

@@ -12,10 +12,7 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
   let(:params) { { run:, id:, classes: } }
 
   context 'with base params' do
-    let(:run) do
-      create(:impact_report_run, categories: %i[overview energy_efficiency], school_group:,
-                                 energy_efficiency: { annual_saving: { unit: :gbp } })
-    end
+    let(:run) { create(:impact_report_run, categories: %i[overview energy_efficiency], school_group:) }
 
     before do
       render_inline(described_class.new(**params))
