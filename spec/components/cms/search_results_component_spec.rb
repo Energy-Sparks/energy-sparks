@@ -36,7 +36,6 @@ RSpec.describe Cms::SearchResultsComponent, :include_application_helper, :includ
                                     href: category_page_path(section.page.category, section.page, anchor: section.slug))
         expect(result).to have_text(section.page.category.title)
       end
-
       expect(results[2]).to have_link(sections[2].title, href: edit_admin_cms_section_path(sections[2].slug))
       expect(results[2]).to have_text('No page')
     end
