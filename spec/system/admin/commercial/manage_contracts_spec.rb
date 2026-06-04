@@ -84,6 +84,13 @@ describe 'manage contracts' do
       it_behaves_like 'it shows the fields for a non-custom contract'
       it_behaves_like 'it applies validation when creating a contract'
 
+      it 'shows default contract dates' do
+        expect(page).to have_field('contract_start_date',
+                                   with: Time.zone.today.strftime('%d/%m/%Y'))
+        expect(page).to have_field('contract_end_date',
+                                   with: (Time.zone.today.next_year - 1.day).strftime('%d/%m/%Y'))
+      end
+
       context 'with valid data', :js do
         before do
           fill_in 'Name', with: 'Standard contract'
@@ -642,6 +649,12 @@ describe 'manage contracts' do
 
     it { expect(page).to have_text(contract.name) }
     it { expect(page).to have_text(contract.comments) }
+    it { expect(page).to have_link('All contracts', href: current_admin_commercial_contracts_path) }
+
+    it do
+      expect(page).to have_link('Contract holder contracts',
+                                href: polymorphic_path([:admin, contract.contract_holder, :contracts]))
+    end
 
     context 'when viewing terms' do
       it {
@@ -752,7 +765,7 @@ describe 'manage contracts' do
     end
 
     context 'when navigating to contract holder page' do
-      before { click_on 'All contracts' }
+      before { click_on 'Contract holder contracts' }
 
       it { expect(page).to have_text("#{contract.contract_holder.name} Contracts") }
 

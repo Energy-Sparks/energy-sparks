@@ -25,7 +25,7 @@ RSpec.shared_examples 'has a contract holder' do
     it 'is invalid' do
       expect(subject).not_to be_valid
       expect(subject.errors[:contract_holder]).to include(
-        'must be a School, SchoolGroup, or Funder'
+        'must select a School, School Group, or Funder'
       )
     end
   end

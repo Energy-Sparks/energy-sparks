@@ -1,6 +1,6 @@
 <%= tag.div id: id, class: classes do %>
   <%= render Layout::GridComponent.new(id: 'potential-savings-cards',
-                                       cols: cols, classes: 'mb-4',
+                                       cols: cols,
                                        cell_classes: 'mb-4',
                                        component_classes: 'theme theme-dark') do |grid| %>
     <% displayable.each do |metric| %>

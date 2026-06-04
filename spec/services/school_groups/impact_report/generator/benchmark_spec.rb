@@ -3,18 +3,14 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Benchmark do
-  subject(:benchmark) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
+  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school_group)) }
 
-  let(:school) { create(:school, :with_school_group) }
+  let(:school_group) { create(:school_group) }
   let!(:advice_pages) do
     %i[electricity_long_term gas_long_term electricity_out_of_hours gas_out_of_hours heating_control baseload]
       .map do |key|
         create(:advice_page, key:)
       end
-  end
-
-  before do
-    AdvicePageSchoolBenchmark.create!(advice_page: advice_pages.first, school:, benchmarked_as: :exemplar_school)
   end
 
   describe '#metrics' do
@@ -31,22 +27,43 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
                           else
                             [advice_page.key == 'heating_control' ? :gas : :electricity, advice_page.key]
                           end
-      %i[exemplar well_managed].map do |type|
-        metric([metric, type].join('_').to_sym, fuel_type:)
-      end
+      metric(metric.to_sym, fuel_type:)
     end
 
     def advice_page_to_metric(advice_page)
       advice_page.key.split('_', 2).last
     end
 
-    it 'has the right metrics' do
-      expect(benchmark.metrics).to match_array(
-        advice_pages.reject { |page| page.key == 'electricity_long_term' }
-                    .flat_map { |page| advice_page_metric(page) } +
-        [metric(:long_term_exemplar, number_of_schools: 1, value: 1, enough_data: true),
-         metric(:long_term_well_managed, number_of_schools: 1, value: 0, enough_data: true)]
-      )
+    context 'with 2 good schools' do
+      before do
+        AdvicePageSchoolBenchmark.create!(advice_page: advice_pages.first, school: create(:school, school_group:),
+                                          benchmarked_as: :exemplar_school)
+        AdvicePageSchoolBenchmark.create!(advice_page: advice_pages.first, school: create(:school, school_group:),
+                                          benchmarked_as: :benchmark_school)
+      end
+
+      it 'has the right metrics' do
+        expect(generator.metrics).to match_array(
+          advice_pages.reject { |page| page.key == 'electricity_long_term' }
+                      .map { |page| advice_page_metric(page) } +
+          [metric(:long_term, number_of_schools: 2, value: 2, enough_data: true)]
+        )
+      end
+    end
+
+    context 'with no good schools' do
+      before do
+        AdvicePageSchoolBenchmark.create!(advice_page: advice_pages.first, school: create(:school, school_group:),
+                                          benchmarked_as: :other_school)
+      end
+
+      it 'has the right metrics' do
+        expect(generator.metrics).to match_array(
+          advice_pages.reject { |page| page.key == 'electricity_long_term' }
+                      .map { |page| advice_page_metric(page) } +
+          [metric(:long_term, number_of_schools: 1, value: 0, enough_data: true)]
+        )
+      end
     end
   end
 end

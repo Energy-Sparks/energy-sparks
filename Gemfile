@@ -6,7 +6,7 @@ ruby '~> 3.4.8'
 
 gem 'rails', '~> 8.1.2'
 
-# Rails/Core
+# Core
 gem 'awesome_print'
 gem 'benchmark'
 gem 'bootsnap'
@@ -21,6 +21,7 @@ gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'ruby-limiter'
 gem 'sprockets-rails'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
+gem 'tzinfo'
 gem 'wisper' # publish subscribe for ruby objects
 
 # Database/Data
@@ -87,10 +88,6 @@ gem 'mustache', '~> 1.1'
 # Auth & Users
 gem 'cancancan', '~> 3' # Use cancancan for authorization
 gem 'devise' # Use devise for authentication
-
-# Utils
-gem 'groupdate' # Use groupdate to group usage stats
-gem 'tzinfo-data', platforms: %i[windows jruby] # for Windows
 
 # Bundle update installs 0.7.0 for some weird reason!
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
