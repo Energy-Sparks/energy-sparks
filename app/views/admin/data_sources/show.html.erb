@@ -43,7 +43,7 @@
   <%= render 'data_source', data_source: @data_source %>
 </div>
 
-<%= render TabsComponent.new(classes: 'tabs-edit-return') do |component| %>
+<%= render TabsComponent.new(classes: 'preserve-tab-link') do |component| %>
   <% component.with_tab(name: :issues,
                         label: label_count('Issues', @data_source.issues.issue.status_open.count)) do %>
     <% if @data_source.issues.any? %>
