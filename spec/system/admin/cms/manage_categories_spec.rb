@@ -23,12 +23,12 @@ describe 'manage categories' do
 
       it 'creates the model' do
         expect { click_on 'Save' }.to change(Cms::Category, :count).by(1)
-        expect(page).to have_content('Category Title')
+        expect(page).to have_text('Category Title')
         model = Cms::Category.last
         expect(model.created_by).to eq(user)
         expect(model.updated_by).to be_nil
         expect(page).to have_link('Edit', href: edit_admin_cms_category_path(model))
-        expect(page).not_to have_link('Publish')
+        expect(page).to have_no_link('Publish')
       end
     end
 
@@ -44,11 +44,11 @@ describe 'manage categories' do
 
       it 'updates the model' do
         expect { click_on 'Save' }.not_to change(Cms::Category, :count)
-        expect(page).to have_content('Category Title')
+        expect(page).to have_text('Category Title')
         model = Cms::Category.last
         expect(model.updated_by).to eq(user)
         expect(page).to have_link('Edit', href: edit_admin_cms_category_path(model))
-        expect(page).not_to have_link('Publish')
+        expect(page).to have_no_link('Publish')
       end
     end
   end
@@ -61,7 +61,7 @@ describe 'manage categories' do
     end
 
     it 'shows page counts' do
-      expect(page).to have_content('1 / 1')
+      expect(page).to have_text('1 / 1')
     end
 
     it_behaves_like 'a publishable model' do

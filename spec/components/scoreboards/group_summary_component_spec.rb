@@ -3,19 +3,19 @@
 require 'rails_helper'
 
 RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :component do
+  subject(:html) do
+    render_inline(described_class.new(**params))
+  end
+
   let(:school_group) { create(:school_group, :with_default_scoreboard, :with_active_schools) }
 
   let(:params) do
     { school_group: school_group, user: create(:admin) }
   end
 
-  subject(:html) do
-    render_inline(described_class.new(**params))
-  end
-
   context 'when there are no activities in group' do
-    it { expect(html).to have_content(I18n.t('components.scoreboards.group_summary.podium.no_points_this_year'))}
-    it { expect(html).not_to have_css('.timeline-component')}
+    it { expect(html).to have_text(I18n.t('components.scoreboards.group_summary.podium.no_points_this_year')) }
+    it { expect(html).to have_no_css('.timeline-component') }
   end
 
   context 'when there are activities' do
@@ -24,7 +24,7 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
       html
     end
 
-    it { expect(html).not_to have_content(I18n.t('components.scoreboards.group_summary.podium.no_points_this_year'))}
+    it { expect(html).to have_no_text(I18n.t('components.scoreboards.group_summary.podium.no_points_this_year')) }
 
     it 'shows podium correctly' do
       podium = page.find('.scoreboards-podium-component')
@@ -37,6 +37,6 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
                                 href: scores_school_group_advice_path(school_group))
     end
 
-    it { expect(html).to have_content(I18n.t('components.scoreboards.group_summary.timeline.title'))}
+    it { expect(html).to have_text(I18n.t('components.scoreboards.group_summary.timeline.title')) }
   end
 end

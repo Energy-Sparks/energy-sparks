@@ -21,15 +21,21 @@ describe EnergyTariff do
       energy_tariff_prices: energy_tariff_prices,
       energy_tariff_charges: energy_tariff_charges,
       meters: meters
-      )
+    )
   end
 
   context 'validations' do
-    let(:energy_tariff_price_1)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 0.23, units: 'kwh') }
-    let(:energy_tariff_price_2)  { EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 0.46, units: 'kwh') }
+    let(:energy_tariff_price_1) do
+      EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 0.23, units: 'kwh')
+    end
+    let(:energy_tariff_price_2) do
+      EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 0.46, units: 'kwh')
+    end
 
     let(:energy_tariff_charge_1)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
-    let(:energy_tariff_charge_2)  { EnergyTariffCharge.new(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+    let(:energy_tariff_charge_2)  do
+      EnergyTariffCharge.new(charge_type: :agreed_availability_charge, value: 6.78, units: :kva)
+    end
 
     let(:energy_tariff_prices)  { [energy_tariff_price_1, energy_tariff_price_2] }
     let(:energy_tariff_charges) { [energy_tariff_charge_1, energy_tariff_charge_2] }
@@ -56,7 +62,8 @@ describe EnergyTariff do
         expect(energy_tariff).to be_valid
         energy_tariff.update(start_date: nil, end_date: nil)
         expect(energy_tariff).not_to be_valid
-        expect(energy_tariff.errors.messages).to eq({ end_date: ["start and end date can't both be empty"], start_date: ["start and end date can't both be empty"] })
+        expect(energy_tariff.errors.messages).to eq({ end_date: ["start and end date can't both be empty"],
+                                                      start_date: ["start and end date can't both be empty"] })
       end
     end
 
@@ -123,7 +130,8 @@ describe EnergyTariff do
       energy_tariff_price_1.update(start_time: '08:00', end_time: '09:00')
       energy_tariff.update(tariff_type: 'differential')
       expect(energy_tariff_price_1).not_to be_valid
-      expect(energy_tariff_price_1.errors.messages).to eq({ end_time: ['overlaps with another time range'], start_time: ['overlaps with another time range'] })
+      expect(energy_tariff_price_1.errors.messages).to eq({ end_time: ['overlaps with another time range'],
+                                                            start_time: ['overlaps with another time range'] })
       energy_tariff.update(tariff_type: 'flat_rate')
       expect(energy_tariff_price_1).to be_valid
     end
@@ -145,7 +153,9 @@ describe EnergyTariff do
       end
     end
 
-    it { is_expected.to validate_numericality_of(:vat_rate).is_greater_than_or_equal_to(0.0).is_less_than_or_equal_to(100.0).allow_nil }
+    it {
+      expect(subject).to validate_numericality_of(:vat_rate).is_greater_than_or_equal_to(0.0).is_less_than_or_equal_to(100.0).allow_nil
+    }
   end
 
   describe '.meter_attribute' do
@@ -155,7 +165,7 @@ describe EnergyTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:name]).to eq('My First Tariff')
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
-      expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(:"5%")
+      expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(:'5%')
       expect(meter_attribute[:accounting_tariff_generic][0][:tariff_holder]).to eq :school
       expect(meter_attribute[:accounting_tariff_generic][0][:created_at].iso8601).to eq energy_tariff.created_at.to_datetime.iso8601
     end
@@ -225,7 +235,9 @@ describe EnergyTariff do
     context 'with flat rate electricity tariff' do
       let(:tariff_type)     { :flat_rate }
 
-      let(:energy_tariff_price)   { EnergyTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 0.23, units: :kwh) }
+      let(:energy_tariff_price) do
+        EnergyTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 0.23, units: :kwh)
+      end
       let(:energy_tariff_charge)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
 
       let(:energy_tariff_prices)  { [energy_tariff_price] }
@@ -250,10 +262,16 @@ describe EnergyTariff do
     context 'with differential electricity tariff' do
       let(:tariff_type) { :differential }
 
-      let(:energy_tariff_price_1)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 0.23, units: 'kwh') }
-      let(:energy_tariff_price_2)  { EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 0.46, units: 'kwh') }
+      let(:energy_tariff_price_1) do
+        EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 0.23, units: 'kwh')
+      end
+      let(:energy_tariff_price_2) do
+        EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 0.46, units: 'kwh')
+      end
       let(:energy_tariff_charge_1)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
-      let(:energy_tariff_charge_2)  { EnergyTariffCharge.new(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+      let(:energy_tariff_charge_2)  do
+        EnergyTariffCharge.new(charge_type: :agreed_availability_charge, value: 6.78, units: :kva)
+      end
 
       let(:energy_tariff_prices)  { [energy_tariff_price_1, energy_tariff_price_2] }
       let(:energy_tariff_charges) { [energy_tariff_charge_1, energy_tariff_charge_2] }
@@ -279,7 +297,9 @@ describe EnergyTariff do
         end
 
         context 'and agreed_availability_charge is present' do
-          let(:agreed_availability_charge) { EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+          let(:agreed_availability_charge) do
+            EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva)
+          end
           let(:energy_tariff_charges) { [asc_limit_kw_charge, agreed_availability_charge] }
 
           it 'is included' do
@@ -292,7 +312,9 @@ describe EnergyTariff do
         end
 
         context 'and excess_availability_charge is present' do
-          let(:excess_availability_charge) { EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
+          let(:excess_availability_charge) do
+            EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva)
+          end
           let(:energy_tariff_charges) { [asc_limit_kw_charge, excess_availability_charge] }
 
           it 'is included' do
@@ -305,7 +327,9 @@ describe EnergyTariff do
         end
 
         context 'only agreed availability charge is present' do
-          let(:agreed_availability_charge) { EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+          let(:agreed_availability_charge) do
+            EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva)
+          end
           let(:energy_tariff_charges) { [agreed_availability_charge] }
 
           it 'is not included' do
@@ -318,7 +342,9 @@ describe EnergyTariff do
         end
 
         context 'only excess_availability_charge charge is present' do
-          let(:excess_availability_charge) { EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
+          let(:excess_availability_charge) do
+            EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva)
+          end
           let(:energy_tariff_charges) { [excess_availability_charge] }
 
           it 'is not included' do
@@ -331,8 +357,12 @@ describe EnergyTariff do
         end
 
         context 'all charges are present' do
-          let(:agreed_availability_charge)  { EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
-          let(:excess_availability_charge)  { EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
+          let(:agreed_availability_charge) do
+            EnergyTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva)
+          end
+          let(:excess_availability_charge) do
+            EnergyTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva)
+          end
           let(:energy_tariff_charges) { [asc_limit_kw_charge, agreed_availability_charge, excess_availability_charge] }
 
           it 'is included' do
@@ -340,15 +370,15 @@ describe EnergyTariff do
           end
 
           it 'includes the charges' do
-            expect(attributes[:rates][:agreed_availability_charge]).to eq({ :per => 'kva', :rate => '6.78' })
-            expect(attributes[:rates][:excess_availability_charge]).to eq({ :per => 'kva', :rate => '6.78' })
+            expect(attributes[:rates][:agreed_availability_charge]).to eq({ per: 'kva', rate: '6.78' })
+            expect(attributes[:rates][:excess_availability_charge]).to eq({ per: 'kva', rate: '6.78' })
           end
         end
       end
 
       it 'includes standing charges' do
         rates = attributes[:rates]
-        expect(rates[:fixed_charge]).to eq({ :per => 'month', :rate => '4.56' })
+        expect(rates[:fixed_charge]).to eq({ per: 'month', rate: '4.56' })
       end
 
       it 'includes rates with adjusted end times' do
@@ -367,25 +397,25 @@ describe EnergyTariff do
 
   describe '#for_schools_in_group' do
     let!(:school_group)     { create(:school_group) }
-    let!(:school)           { create(:school, school_group: school_group)}
-    let!(:energy_tariff)    { create(:energy_tariff, tariff_holder: school)}
-    let!(:energy_tariff_2)  { create(:energy_tariff, tariff_holder: school, enabled: false)}
-    let!(:energy_tariff_3)  { create(:energy_tariff)}
-    let!(:energy_tariff_4)  { create(:energy_tariff, tariff_holder: school_group)}
+    let!(:school)           { create(:school, school_group: school_group) }
+    let!(:energy_tariff)    { create(:energy_tariff, tariff_holder: school) }
+    let!(:energy_tariff_2)  { create(:energy_tariff, tariff_holder: school, enabled: false) }
+    let!(:energy_tariff_3)  { create(:energy_tariff) }
+    let!(:energy_tariff_4)  { create(:energy_tariff, tariff_holder: school_group) }
     let!(:remove_school_tariff) do
       removed_school = create(:school, school_group: school_group, active: false)
       create(:energy_tariff, tariff_holder: removed_school)
     end
 
     it 'returns expected schools' do
-      expect(EnergyTariff.for_schools_in_group(school.school_group)).to match_array([energy_tariff])
+      expect(EnergyTariff.for_schools_in_group(school.school_group)).to contain_exactly(energy_tariff)
     end
   end
 
   describe '#count_schools_with_tariff_by_group' do
-    let!(:school)           { create(:school, school_group: create(:school_group))}
-    let!(:energy_tariff)    { create(:energy_tariff, tariff_holder: school)}
-    let!(:energy_tariff_2)  { create(:energy_tariff)}
+    let!(:school)           { create(:school, school_group: create(:school_group)) }
+    let!(:energy_tariff)    { create(:energy_tariff, tariff_holder: school) }
+    let!(:energy_tariff_2)  { create(:energy_tariff) }
 
     it 'returns expected count' do
       expect(EnergyTariff.count_schools_with_tariff_by_group(school.school_group)).to eq 1
@@ -397,9 +427,9 @@ describe EnergyTariff do
     let!(:school_group_2)     { create(:school_group) }
     let!(:school_group_3)     { create(:school_group) }
 
-    let!(:energy_tariff)      { create(:energy_tariff, tariff_holder: school_group_1)}
-    let!(:energy_tariff_2)    { create(:energy_tariff, tariff_holder: school_group_2)}
-    let!(:energy_tariff_3)    { create(:energy_tariff, tariff_holder: school_group_2)}
+    let!(:energy_tariff)      { create(:energy_tariff, tariff_holder: school_group_1) }
+    let!(:energy_tariff_2)    { create(:energy_tariff, tariff_holder: school_group_2) }
+    let!(:energy_tariff_3)    { create(:energy_tariff, tariff_holder: school_group_2) }
 
     let(:counts)              { EnergyTariff.count_by_school_group }
 
@@ -439,11 +469,14 @@ describe EnergyTariff do
         meters: meters
       )
       expect(EnergyTariff.all.usable).to eq([])
-      EnergyTariffPrice.create(start_time: '00:00', end_time: '00:00', value: 0.001, units: 'kwh', energy_tariff: flat_rate_energy_tariff)
+      EnergyTariffPrice.create(start_time: '00:00', end_time: '00:00', value: 0.001, units: 'kwh',
+                               energy_tariff: flat_rate_energy_tariff)
       expect(EnergyTariff.all.usable).to eq([flat_rate_energy_tariff])
-      EnergyTariffPrice.create(start_time: '00:00', end_time: '12:00', value: 0.001, units: 'kwh', energy_tariff: differential_energy_tariff)
+      EnergyTariffPrice.create(start_time: '00:00', end_time: '12:00', value: 0.001, units: 'kwh',
+                               energy_tariff: differential_energy_tariff)
       expect(EnergyTariff.all.usable).to eq([flat_rate_energy_tariff])
-      EnergyTariffPrice.create(start_time: '12:00', end_time: '00:00', value: 0.001, units: 'kwh', energy_tariff: differential_energy_tariff)
+      EnergyTariffPrice.create(start_time: '12:00', end_time: '00:00', value: 0.001, units: 'kwh',
+                               energy_tariff: differential_energy_tariff)
       expect(EnergyTariff.all.usable).to eq([flat_rate_energy_tariff, differential_energy_tariff])
     end
   end
@@ -457,7 +490,8 @@ describe EnergyTariff do
         expect(energy_tariff).to be_valid
         expect(energy_tariff.energy_tariff_prices.count).to eq(0)
         expect(energy_tariff.usable?).to eq(false)
-        energy_tariff_price = EnergyTariffPrice.create(start_time: '00:00', end_time: '00:00', value: nil, units: 'kwh', energy_tariff: energy_tariff)
+        energy_tariff_price = EnergyTariffPrice.create(start_time: '00:00', end_time: '00:00', value: nil,
+                                                       units: 'kwh', energy_tariff: energy_tariff)
         expect(energy_tariff.reload.usable?).to eq(false)
         energy_tariff_price.update(value: 0)
         expect(energy_tariff.reload.usable?).to eq(false)
@@ -472,9 +506,11 @@ describe EnergyTariff do
         expect(energy_tariff).to be_valid
         expect(energy_tariff.energy_tariff_prices.count).to eq(0)
         expect(energy_tariff.usable?).to eq(false)
-        energy_tariff_price_1 = EnergyTariffPrice.create(start_time: '00:00', end_time: '12:00', value: nil, units: 'kwh', energy_tariff: energy_tariff)
+        energy_tariff_price_1 = EnergyTariffPrice.create(start_time: '00:00', end_time: '12:00', value: nil,
+                                                         units: 'kwh', energy_tariff: energy_tariff)
         expect(energy_tariff.reload.usable?).to eq(false)
-        energy_tariff_price_2 = EnergyTariffPrice.create(start_time: '12:00', end_time: '00:00', value: nil, units: 'kwh', energy_tariff: energy_tariff)
+        energy_tariff_price_2 = EnergyTariffPrice.create(start_time: '12:00', end_time: '00:00', value: nil,
+                                                         units: 'kwh', energy_tariff: energy_tariff)
         expect(energy_tariff.reload.usable?).to eq(false)
         energy_tariff_price_1.update(value: 0)
         energy_tariff_price_2.update(value: 0)

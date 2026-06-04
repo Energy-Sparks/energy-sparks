@@ -63,7 +63,7 @@ describe 'School group charts page' do
         end
 
         it 'has correct default title' do
-          expect(page).to have_content(
+          expect(page).to have_text(
             I18n.t('school_groups.advice.chart_types.electricity.management_dashboard_group_by_week_electricity.title')
           )
         end
@@ -84,7 +84,7 @@ describe 'School group charts page' do
         before { select 'Electricity use by meter', from: 'Choose chart' }
 
         it 'has updated the title' do
-          expect(page).to have_content(
+          expect(page).to have_text(
             I18n.t('school_groups.advice.chart_types.electricity.group_by_week_electricity_meter_breakdown_one_year.title')
           )
         end
@@ -109,7 +109,7 @@ describe 'School group charts page' do
         end
 
         it 'has updated the title' do
-          expect(page).to have_content(
+          expect(page).to have_text(
             I18n.t('school_groups.advice.chart_types.gas.management_dashboard_group_by_week_gas.title')
           )
         end
@@ -126,10 +126,10 @@ describe 'School group charts page' do
     context 'with parameters' do
       before do
         visit charts_school_group_advice_path(school_group, {
-        school: gas_school.slug,
-        fuel_type: :gas,
-        chart_type: :gas_by_day_of_week_tolerant
-      })
+                                                school: gas_school.slug,
+                                                fuel_type: :gas,
+                                                chart_type: :gas_by_day_of_week_tolerant
+                                              })
       end
 
       it 'uses the defaults school' do
@@ -141,7 +141,7 @@ describe 'School group charts page' do
       end
 
       it 'has updated the title' do
-        expect(page).to have_content(
+        expect(page).to have_text(
           I18n.t('school_groups.advice.chart_types.gas.gas_by_day_of_week_tolerant.title')
         )
       end

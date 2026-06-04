@@ -110,7 +110,7 @@ RSpec.describe Elements::TableComponent, :include_application_helper, type: :com
       let(:cell_param) { { invalid: 'value' } }
 
       it 'does not render invalid attributes' do
-        expect(html).not_to have_css("table tr #{type}[invalid]")
+        expect(html).to have_no_css("table tr #{type}[invalid]")
       end
     end
 
@@ -157,7 +157,9 @@ RSpec.describe Elements::TableComponent, :include_application_helper, type: :com
   end
 
   describe 'header cells' do
-    let(:cell_param) { { colspan: 2, rowspan: 2, headers: 'header1', width: '100px', height: '50px', scope: 'col', abbr: 'abbr' } }
+    let(:cell_param) do
+      { colspan: 2, rowspan: 2, headers: 'header1', width: '100px', height: '50px', scope: 'col', abbr: 'abbr' }
+    end
 
     let(:html) do
       render_inline(described_class.new(**params)) do |component|

@@ -15,7 +15,8 @@ RSpec.describe MeterCostsTableComponent, type: :component do
       month_start_date: january,
       start_date: january,
       end_date: january.end_of_month,
-      bill_component_costs: simple_bill_component_costs)
+      bill_component_costs: simple_bill_component_costs
+    )
   end
 
   let(:monthly_costs)   { { january => january_costs } }
@@ -23,7 +24,10 @@ RSpec.describe MeterCostsTableComponent, type: :component do
 
   let(:meter) { create(:electricity_meter) }
 
-  let(:params)  { { id: 'cost-table-id', monthly_costs: monthly_costs, change_in_costs: change_in_costs, school: meter.school, fuel_type: :electricity } }
+  let(:params)  do
+    { id: 'cost-table-id', monthly_costs: monthly_costs, change_in_costs: change_in_costs, school: meter.school,
+      fuel_type: :electricity }
+  end
 
   context 'basic rendering' do
     let(:html) do
@@ -56,22 +60,25 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     end
 
     it 'includes two rows in thead' do
-      expect(html).to have_css('thead tr', :count => 2)
+      expect(html).to have_css('thead tr', count: 2)
     end
 
     it 'includes three rows in tbody' do
-      expect(html).to have_css('tbody tr', :count => 3)
+      expect(html).to have_css('tbody tr', count: 3)
     end
   end
 
   context 'with alternate thead' do
-    let(:params) { { id: 'cost-table-id', year_header: false, month_format: '%b %Y', monthly_costs: monthly_costs, change_in_costs: change_in_costs, school: meter.school, fuel_type: :electricity } }
+    let(:params) do
+      { id: 'cost-table-id', year_header: false, month_format: '%b %Y', monthly_costs: monthly_costs,
+        change_in_costs: change_in_costs, school: meter.school, fuel_type: :electricity }
+    end
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
 
     it 'includes two rows in thead' do
-      expect(html).to have_css('thead tr', :count => 1)
+      expect(html).to have_css('thead tr', count: 1)
     end
 
     it 'includes month' do
@@ -87,7 +94,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     end
 
     it 'does not include month' do
-      expect(html).not_to have_text('Feb')
+      expect(html).to have_no_text('Feb')
     end
   end
 
@@ -109,7 +116,8 @@ RSpec.describe MeterCostsTableComponent, type: :component do
         month_start_date: february,
         start_date: february,
         end_date: february.end_of_month,
-        bill_component_costs: complex_bill_component_costs)
+        bill_component_costs: complex_bill_component_costs
+      )
     end
 
     let(:monthly_costs) { { january => january_costs, february => february_costs } }
@@ -144,7 +152,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     end
 
     it 'includes five rows in tbody' do
-      expect(html).to have_css('tbody tr', :count => 7)
+      expect(html).to have_css('tbody tr', count: 7)
     end
 
     it 'has correct total' do
@@ -161,7 +169,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
       let(:change_in_costs) { { january => 80.0 } }
 
       it 'includes change in cost row' do
-        expect(html).to have_css('tbody tr', :count => 4)
+        expect(html).to have_css('tbody tr', count: 4)
         expect(html).to have_text('£80')
       end
     end
@@ -170,7 +178,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
       let(:change_in_costs) { { january => nil } }
 
       it 'does not include change in cost row' do
-        expect(html).to have_css('tbody tr', :count => 3)
+        expect(html).to have_css('tbody tr', count: 3)
       end
     end
   end

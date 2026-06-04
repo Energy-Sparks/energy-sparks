@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 describe Podium do
-  let!(:scoreboard) { create :scoreboard }
+  let!(:scoreboard) { create(:scoreboard) }
 
-  let!(:school_0) { create :school, scoreboard: scoreboard }
-  let!(:school_1) { create :school, :with_points, score_points: 1, scoreboard: scoreboard }
-  let!(:school_2) { create :school, :with_points, score_points: 2, scoreboard: scoreboard }
-  let!(:school_3) { create :school, :with_points, score_points: 3, scoreboard: scoreboard }
-  let!(:school_4) { create :school, :with_points, score_points: 4, scoreboard: scoreboard }
-  let!(:school_5) { create :school, :with_points, score_points: 5, scoreboard: scoreboard }
+  let!(:school_0) { create(:school, scoreboard: scoreboard) }
+  let!(:school_1) { create(:school, :with_points, score_points: 1, scoreboard: scoreboard) }
+  let!(:school_2) { create(:school, :with_points, score_points: 2, scoreboard: scoreboard) }
+  let!(:school_3) { create(:school, :with_points, score_points: 3, scoreboard: scoreboard) }
+  let!(:school_4) { create(:school, :with_points, score_points: 4, scoreboard: scoreboard) }
+  let!(:school_5) { create(:school, :with_points, score_points: 5, scoreboard: scoreboard) }
 
   it 'includes the calculated points' do
     podium = Podium.create(scoreboard: scoreboard, school: school_3)

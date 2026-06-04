@@ -4,8 +4,10 @@ describe 'alert type management', type: :system do
   let!(:admin)                    { create(:admin) }
 
   let(:gas_fuel_alert_type_title) { 'Your gas usage is too high' }
-  let!(:gas_fuel_alert_type)      { create(:alert_type, fuel_type: :gas, frequency: :termly, title: gas_fuel_alert_type_title, has_ratings: true) }
-  let!(:school)                   { create(:school, :with_school_group) }
+  let!(:gas_fuel_alert_type)      do
+    create(:alert_type, fuel_type: :gas, frequency: :termly, title: gas_fuel_alert_type_title, has_ratings: true)
+  end
+  let!(:school) { create(:school, :with_school_group) }
 
   before do
     sign_in(admin)
@@ -22,12 +24,12 @@ describe 'alert type management', type: :system do
       within('ul.alert-type') do
         click_on 'School alert type exclusions'
       end
-      expect(page).to have_content('No school exclusions for this alert')
+      expect(page).to have_text('No school exclusions for this alert')
     end
 
     it 'can see a list of schools' do
       click_on 'Manage exclusions'
-      expect(page).to have_content(school.name)
+      expect(page).to have_text(school.name)
     end
 
     it 'can add and delete some exclusions with the right reasons' do
@@ -42,11 +44,11 @@ describe 'alert type management', type: :system do
       fill_in "school_reasons_#{school_2.id}", with: reason_2
 
       expect { click_on 'Create exclusions' }.to change(SchoolAlertTypeExclusion, :count).by(2)
-      expect(page).not_to have_content('No school exclusions for this alert')
+      expect(page).to have_no_text('No school exclusions for this alert')
 
       within 'table' do
-        expect(page).to have_content(school.name)
-        expect(page).to have_content(reason_1)
+        expect(page).to have_text(school.name)
+        expect(page).to have_text(reason_1)
       end
 
       within('tr', text: school.name) do
@@ -54,23 +56,23 @@ describe 'alert type management', type: :system do
       end
 
       within 'table' do
-        expect(page).not_to have_content(school.name)
-        expect(page).not_to have_content(reason_1)
-        expect(page).to have_content(school_2.name)
-        expect(page).to have_content(reason_2)
+        expect(page).to have_no_text(school.name)
+        expect(page).to have_no_text(reason_1)
+        expect(page).to have_text(school_2.name)
+        expect(page).to have_text(reason_2)
       end
     end
   end
 
   describe 'general editing' do
-    it 'allows fields to be edited and validates title', js: true do
+    it 'allows fields to be edited and validates title', :js do
       click_on gas_fuel_alert_type_title
       click_on 'Edit'
 
       fill_in 'Title', with: ''
       click_on 'Update Alert type'
 
-      expect(page).to have_content("Title *\ncan't be blank")
+      expect(page).to have_text("Title *\ncan't be blank")
 
       new_title = 'New title'
       new_description = 'New description'
@@ -80,10 +82,10 @@ describe 'alert type management', type: :system do
       choose 'Weekly'
       click_on 'Update Alert type'
 
-      expect(page).to have_content('Alert type updated')
-      expect(page).to have_content(new_title)
-      expect(page).to have_content(new_description)
-      expect(page).to have_content('Weekly')
+      expect(page).to have_text('Alert type updated')
+      expect(page).to have_text(new_title)
+      expect(page).to have_text(new_description)
+      expect(page).to have_text('Weekly')
     end
   end
 end

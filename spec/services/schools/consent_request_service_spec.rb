@@ -18,7 +18,7 @@ RSpec.describe Schools::ConsentRequestService do
       let!(:pupil)        { create(:pupil, school: school) }
 
       it 'returns only staff and school admins' do
-        expect(service.users).to match_array([staff, school_admin])
+        expect(service.users).to contain_exactly(staff, school_admin)
       end
     end
   end
@@ -39,7 +39,7 @@ RSpec.describe Schools::ConsentRequestService do
       end
 
       it 'sends to the correct users' do
-        expect(@email.to).to match_array([school_admin.email])
+        expect(@email.to).to contain_exactly(school_admin.email)
       end
 
       it 'has the expected subject line' do

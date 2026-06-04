@@ -25,9 +25,9 @@ RSpec.shared_examples_for 'a group long term advice page' do
 
   before do
     create(:advice_page_school_benchmark,
-            school: school,
-            advice_page: advice_page,
-            benchmarked_as: :benchmark_school)
+           school: school,
+           advice_page: advice_page,
+           benchmarked_as: :benchmark_school)
 
     alert_run = create(:alert_generation_run, school: school)
 
@@ -70,16 +70,16 @@ RSpec.shared_examples_for 'a group long term advice page' do
       end
 
       it 'has the comparisons section' do
-        expect(page).to have_content(I18n.t("advice_pages.#{advice_page.key}.insights.comparison.title"))
+        expect(page).to have_text(I18n.t("advice_pages.#{advice_page.key}.insights.comparison.title"))
         expect(page).to have_css('.school-group-comparison-component')
         expect(page).to have_link(href: analysis_path)
       end
 
       it 'has the current use section' do
-        expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.insights.current_use.title'))
+        expect(page).to have_text(I18n.t('school_groups.advice_pages.long_term.insights.current_use.title'))
         expect(page).to have_css("##{report_key}-table")
         within("##{report_key}-table") do
-          expect(page).to have_content(school.name)
+          expect(page).to have_text(school.name)
         end
       end
     end
@@ -101,7 +101,9 @@ RSpec.shared_examples_for 'a group long term advice page' do
       end
 
       context 'with potential savings' do
-        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.analysis.potential_savings.title')) }
+        it {
+          expect(page).to have_text(I18n.t('school_groups.advice_pages.long_term.analysis.potential_savings.title'))
+        }
 
         it_behaves_like 'it contains the expected data table' do
           let(:table_id) { "##{advice_page.key}-savings" }
@@ -120,7 +122,7 @@ RSpec.shared_examples_for 'a group long term advice page' do
       end
 
       context 'with comparison section' do
-        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.analysis.comparisons.title')) }
+        it { expect(page).to have_text(I18n.t('school_groups.advice_pages.long_term.analysis.comparisons.title')) }
 
         it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { report }

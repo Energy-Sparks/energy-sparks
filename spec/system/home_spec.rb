@@ -4,7 +4,7 @@ RSpec.describe 'home', type: :system do
   describe 'Home page' do
     it 'has a home page' do
       visit root_path
-      expect(page).to have_content 'Helping schools cut energy costs and fight climate change'
+      expect(page).to have_text 'Helping schools cut energy costs and fight climate change'
     end
 
     context 'with all components available' do
@@ -37,8 +37,8 @@ RSpec.describe 'home', type: :system do
       end
 
       it 'does not render the blog components' do
-        expect(page).not_to have_css('#blog-header')
-        expect(page).not_to have_css('#blog')
+        expect(page).to have_no_css('#blog-header')
+        expect(page).to have_no_css('#blog')
       end
     end
 
@@ -49,7 +49,7 @@ RSpec.describe 'home', type: :system do
       end
 
       it 'does not render the tesimonials component' do
-        expect(page).not_to have_css('#testimonials')
+        expect(page).to have_no_css('#testimonials')
       end
     end
   end
@@ -77,7 +77,7 @@ RSpec.describe 'home', type: :system do
       end
 
       it 'does not render the tesimonials component' do
-        expect(page).not_to have_css('#testimonials')
+        expect(page).to have_no_css('#testimonials')
       end
     end
   end
@@ -104,9 +104,9 @@ RSpec.describe 'home', type: :system do
   context 'with marketing pages' do
     let(:utm_params) do
       {
-      utm_medium: 'email',
-      utm_campaign: 'test',
-      utm_source: 'somewhere'
+        utm_medium: 'email',
+        utm_campaign: 'test',
+        utm_source: 'somewhere'
       }
     end
 
@@ -142,7 +142,7 @@ RSpec.describe 'home', type: :system do
       end
     end
 
-    it { expect(page).to have_content('Contact us') }
+    it { expect(page).to have_text('Contact us') }
   end
 
   describe 'Team page' do
@@ -154,7 +154,7 @@ RSpec.describe 'home', type: :system do
       end
     end
 
-    it { expect(page).to have_content('Our Team') }
+    it { expect(page).to have_text('Our Team') }
   end
 
   describe 'Product page' do
@@ -183,7 +183,7 @@ RSpec.describe 'home', type: :system do
       click_on('Support us')
     end
 
-    it { expect(page).to have_content 'Support us' }
+    it { expect(page).to have_text 'Support us' }
   end
 
   describe 'Training page' do
@@ -205,16 +205,16 @@ RSpec.describe 'home', type: :system do
         end
       end
 
-      it { expect(page).to have_content('Training') }
+      it { expect(page).to have_text('Training') }
 
       it 'has available event' do
-        expect(page).to have_content('Event 1')
-        expect(page).to have_content('Spaces available')
+        expect(page).to have_text('Event 1')
+        expect(page).to have_text('Spaces available')
       end
 
       it 'has sold out event' do
-        expect(page).to have_content('Event 2')
-        expect(page).to have_content('Sold out')
+        expect(page).to have_text('Event 2')
+        expect(page).to have_text('Sold out')
       end
     end
 
@@ -241,33 +241,36 @@ RSpec.describe 'home', type: :system do
 
         it { expect(page).to have_css('#events') }
         it { expect(displayed_events.count).to eq 4 }
-        it { expect(page).to have_content('Training') }
-        it { expect(page).to have_content('This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.') }
+        it { expect(page).to have_text('Training') }
+
+        it {
+          expect(page).to have_text('This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.')
+        }
 
         it 'has available event' do
           expect(available).to have_css("img[src*='https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F113596237%2F481005514167%2F1%2Foriginal.20201005-092822?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C161%2C1086%2C543&s=1279466ca350155300d6b315d128f3d9']")
-          expect(available).to have_content('Energy Sparks induction session')
-          expect(available).to have_content('An online induction to help you get started reducing energy consumption with Energy Sparks.')
-          expect(available).to have_content('Spaces available')
+          expect(available).to have_text('Energy Sparks induction session')
+          expect(available).to have_text('An online induction to help you get started reducing energy consumption with Energy Sparks.')
+          expect(available).to have_text('Spaces available')
           expect(available).to have_link('Sign up', href: 'https://www.eventbrite.co.uk/e/energy-sparks-induction-session-tickets-138294742297')
         end
 
         it 'has sold out event' do
           expect(sold_out).to have_css("img[src*='https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F113596237%2F481005514167%2F1%2Foriginal.20201005-092822?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C161%2C1086%2C543&s=1279466ca350155300d6b315d128f3d9']")
-          expect(sold_out).to have_content('Another Energy Sparks induction session')
-          expect(sold_out).to have_content('Another online induction to help you get started reducing energy consumption with Energy Sparks.')
-          expect(sold_out).to have_content('Sold out')
+          expect(sold_out).to have_text('Another Energy Sparks induction session')
+          expect(sold_out).to have_text('Another online induction to help you get started reducing energy consumption with Energy Sparks.')
+          expect(sold_out).to have_text('Sold out')
           expect(sold_out).to have_link('More information', href: 'https://www.eventbrite.co.uk/e/energy-sparks-induction-session-tickets-141010286563')
         end
       end
 
       context 'when there are no events' do
-        let(:response) { { 'events': [] } }
+        let(:response) { { events: [] } }
 
-        it { expect(page).not_to have_css('#events') }
+        it { expect(page).to have_no_css('#events') }
         it { expect(displayed_events.count).to eq 0 }
-        it { expect(page).to have_content('No events are currently scheduled')}
-        it { expect(page).to have_content('New events are added regularly, so please check again soon')}
+        it { expect(page).to have_text('No events are currently scheduled') }
+        it { expect(page).to have_text('New events are added regularly, so please check again soon') }
       end
     end
   end
@@ -279,7 +282,7 @@ RSpec.describe 'home', type: :system do
         click_on('Newsletters')
       end
 
-      it { expect(page).to have_content('Newsletters') }
+      it { expect(page).to have_text('Newsletters') }
     end
 
     context with_feature: :new_newsletters_page do
@@ -297,11 +300,11 @@ RSpec.describe 'home', type: :system do
       context 'when signed in' do
         let(:user) { create(:school_admin) }
 
-        it { expect(page).to have_link('Sign-up now', href: user_emails_path(user))}
+        it { expect(page).to have_link('Sign-up now', href: user_emails_path(user)) }
       end
 
       context 'when not signed in' do
-        it { expect(page).to have_link('Sign-up now', href: new_mailchimp_signup_path)}
+        it { expect(page).to have_link('Sign-up now', href: new_mailchimp_signup_path) }
       end
     end
   end
@@ -312,7 +315,7 @@ RSpec.describe 'home', type: :system do
       click_on('Datasets')
     end
 
-    it { expect(page).to have_content('Dataset attributions') }
+    it { expect(page).to have_text('Dataset attributions') }
   end
 
   describe 'Open data page' do
@@ -321,7 +324,7 @@ RSpec.describe 'home', type: :system do
       click_on('Open data')
     end
 
-    it { expect(page).to have_content('Data used in Energy Sparks') }
+    it { expect(page).to have_text('Data used in Energy Sparks') }
   end
 
   describe 'School statistics page' do
@@ -332,12 +335,12 @@ RSpec.describe 'home', type: :system do
       end
     end
 
-    it { expect(page).to have_content('School Statistics') }
+    it { expect(page).to have_text('School Statistics') }
   end
 
   context 'school admin user' do
-    let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
-    let(:school_admin) { create(:school_admin, school: school)}
+    let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants') }
+    let(:school_admin) { create(:school_admin, school: school) }
 
     before do
       sign_in(school_admin)
@@ -351,12 +354,12 @@ RSpec.describe 'home', type: :system do
       end
 
       it 'redirects to holding page' do
-        expect(page).to have_content('We are still in the process of setting up your school on Energy Sparks')
+        expect(page).to have_text('We are still in the process of setting up your school on Energy Sparks')
       end
 
       it 'does not have navigation options' do
-        expect(page).not_to have_css('#my-school-menu')
-        expect(page).not_to have_content('Dashboards')
+        expect(page).to have_no_css('#my-school-menu')
+        expect(page).to have_no_text('Dashboards')
       end
     end
   end

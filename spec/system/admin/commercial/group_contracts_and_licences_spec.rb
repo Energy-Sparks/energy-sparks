@@ -17,7 +17,7 @@ describe 'group contracts and licences' do
     before { click_on 'Licence Summaries' }
 
     it { expect(page).to have_css('div.commercial-licensing-summary-component') }
-    it { expect(page).to have_content(licence.school.name) }
+    it { expect(page).to have_text(licence.school.name) }
     it { expect(page).to have_link('Licences', href: admin_school_licences_path(licence.school)) }
   end
 
@@ -27,6 +27,6 @@ describe 'group contracts and licences' do
     before { click_on 'Contracts' }
 
     it { expect(page).to have_css('div.commercial-contracts-component') }
-    it { expect(page).to have_content(contract.name) }
+    it { expect(page).to have_text(contract.name) }
   end
 end

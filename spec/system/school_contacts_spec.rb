@@ -15,13 +15,13 @@ RSpec.describe 'school', type: :system do
     end
 
     it 'allows me to add a contact for an existing user' do
-      expect(page).not_to have_content('Standalone contacts')
+      expect(page).to have_no_text('Standalone contacts')
 
       find("#enable_alerts_#{teacher.id}").click
       expect(find_field('Email address').value).to eq teacher.email
 
       click_on('Enable alerts')
-      expect(page).to have_content "Alerts enabled for #{teacher.name}"
+      expect(page).to have_text "Alerts enabled for #{teacher.name}"
 
       contacts = school.contacts
       expect(contacts.pluck(:user_id)).to include(teacher.id)
@@ -42,12 +42,12 @@ RSpec.describe 'school', type: :system do
 
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
-        expect(page).to have_content('Standalone contacts')
-        expect(page).to have_content contact.name
+        expect(page).to have_text('Standalone contacts')
+        expect(page).to have_text contact.name
 
         click_on('Reports')
         click_on('Alert subscribers')
-        expect(page).to have_content contact.name
+        expect(page).to have_text contact.name
       end
 
       it 'allows contacts to be edited' do
@@ -56,7 +56,7 @@ RSpec.describe 'school', type: :system do
         click_on('Edit')
         fill_in 'Mobile phone number', with: '01122333444'
         click_on('Update details')
-        expect(page).to have_content contact.name
+        expect(page).to have_text contact.name
 
         contact.reload
         expect(contact.mobile_phone_number).to eq('01122333444')
@@ -79,7 +79,7 @@ RSpec.describe 'school', type: :system do
         click_on('Edit phone number')
         fill_in 'Mobile phone number', with: '01122333444'
         click_on('Update details')
-        expect(page).to have_content teacher.name
+        expect(page).to have_text teacher.name
 
         contact.reload
         expect(contact.mobile_phone_number).to eq('01122333444')
@@ -99,23 +99,23 @@ RSpec.describe 'school', type: :system do
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
 
-        expect(page).to have_content('Standalone contacts')
-        expect(page).to have_content contact.name
+        expect(page).to have_text('Standalone contacts')
+        expect(page).to have_text contact.name
 
         click_on('Reports')
         click_on('Alert subscribers')
-        expect(page).to have_content contact.name
+        expect(page).to have_text contact.name
       end
 
       it 'allows existing contacts to be edited' do
         visit school_contacts_path(school)
 
         click_on('Edit')
-        expect(page).not_to have_content('Preferred language')
+        expect(page).to have_no_text('Preferred language')
 
         fill_in 'Mobile phone number', with: '01122333444'
         click_on('Update details')
-        expect(page).to have_content contact.name
+        expect(page).to have_text contact.name
 
         contact.reload
         expect(contact.mobile_phone_number).to eq('01122333444')

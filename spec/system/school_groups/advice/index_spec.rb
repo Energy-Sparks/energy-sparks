@@ -11,7 +11,7 @@ describe 'School group advice index page' do
           visit school_group_advice_path(school_group)
         end
 
-        it { expect(page).to have_no_content(message.message) }
+        it { expect(page).to have_no_text(message.message) }
       end
 
       context 'when signed in as a group user' do
@@ -20,13 +20,13 @@ describe 'School group advice index page' do
           visit school_group_advice_path(school_group)
         end
 
-        it { expect(page).to have_content(message.message) }
+        it { expect(page).to have_text(message.message) }
       end
     end
 
     it 'displays the charts' do
       within('div.charts-group-dashboard-charts-component') do
-        expect(page).to have_content(I18n.t('school_groups.show.energy_use.title'))
+        expect(page).to have_text(I18n.t('school_groups.show.energy_use.title'))
       end
     end
   end

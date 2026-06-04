@@ -34,7 +34,7 @@ describe 'School Alert Type Exclusions', :include_application_helper do
     end
 
     context 'with no exclusions' do
-      it { expect(page).to have_content('School does not have any exclusions') }
+      it { expect(page).to have_text('School does not have any exclusions') }
     end
 
     context 'with exclusions' do
@@ -42,9 +42,9 @@ describe 'School Alert Type Exclusions', :include_application_helper do
 
       it 'displays detail' do
         within('#exclusions') do
-          expect(page).to have_content(exclusion.alert_type.title)
-          expect(page).to have_content(exclusion.reason)
-          expect(page).to have_content(exclusion.created_by.name)
+          expect(page).to have_text(exclusion.alert_type.title)
+          expect(page).to have_text(exclusion.reason)
+          expect(page).to have_text(exclusion.created_by.name)
         end
       end
 
@@ -58,8 +58,8 @@ describe 'School Alert Type Exclusions', :include_application_helper do
         end
 
         it 'deletes the exclusion' do
-          expect(page).to have_content('Exclusion deleted')
-          expect(page).to have_content('School does not have any exclusions')
+          expect(page).to have_text('Exclusion deleted')
+          expect(page).to have_text('School does not have any exclusions')
         end
       end
     end
@@ -71,10 +71,10 @@ describe 'School Alert Type Exclusions', :include_application_helper do
       end
 
       it 'allows exclusion to be created' do
-        expect(page).to have_content('Exclusion created')
+        expect(page).to have_text('Exclusion created')
         within('#exclusions') do
-          expect(page).to have_content('This is my reason')
-          expect(page).to have_content(user.name)
+          expect(page).to have_text('This is my reason')
+          expect(page).to have_text(user.name)
         end
       end
     end

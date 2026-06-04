@@ -164,9 +164,12 @@ describe 'Meter', :meters do
     context 'when finding meters with stale readings' do
       it 'returns only active meters with stale readings' do
         data_source = create(:data_source)
-        create(:gas_meter_with_validated_reading_dates, active: false, data_source:, school: create(:school, active: true))
-        stale_meter = create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, data_source:, school: create(:school, active: true))
-        create(:gas_meter_with_validated_reading_dates, end_date: 2.days.ago, data_source:, school: create(:school, active: true))
+        create(:gas_meter_with_validated_reading_dates, active: false, data_source:,
+                                                        school: create(:school, active: true))
+        stale_meter = create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, data_source:,
+                                                                      school: create(:school, active: true))
+        create(:gas_meter_with_validated_reading_dates, end_date: 2.days.ago, data_source:,
+                                                        school: create(:school, active: true))
         expect(Meter.with_stale_readings).to contain_exactly(stale_meter)
       end
     end

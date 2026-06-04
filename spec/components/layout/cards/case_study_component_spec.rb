@@ -36,10 +36,10 @@ RSpec.describe Layout::Cards::CaseStudyComponent, :include_application_helper, :
 
     it { expect(html).to have_css('h4') }
     it { expect(html).to have_no_css('.main') }
-    it { expect(html).to have_content('Header') }
-    it { expect(html).to have_content('Description text') }
-    it { expect(html).to have_content('Tag 1') }
-    it { expect(html).to have_content('Tag 2') }
+    it { expect(html).to have_text('Header') }
+    it { expect(html).to have_text('Description text') }
+    it { expect(html).to have_text('Tag 1') }
+    it { expect(html).to have_text('Tag 2') }
   end
 
   context 'when passed a case_study object' do
@@ -50,8 +50,8 @@ RSpec.describe Layout::Cards::CaseStudyComponent, :include_application_helper, :
     end
 
     it { expect(html).to have_css('h4') }
-    it { expect(html).to have_content(case_study.title) }
-    it { expect(html).to have_content(/Description for case study/) }
+    it { expect(html).to have_text(case_study.title) }
+    it { expect(html).to have_text(/Description for case study/) }
     it { expect(html).to have_link('Read case study', href: case_study_download_path(case_study)) }
   end
 end

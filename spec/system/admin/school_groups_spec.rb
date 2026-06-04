@@ -44,7 +44,9 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
 
         let(:reviewable_school_group) { create(:school_group) }
 
-        let!(:issue) { create(:issue, :with_group_review, issueable: reviewable_school_group, review_date: 1.day.from_now) }
+        let!(:issue) do
+          create(:issue, :with_group_review, issueable: reviewable_school_group, review_date: 1.day.from_now)
+        end
 
         before do
           create_data_for_school_groups(school_groups)
@@ -240,7 +242,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'New school group'
         end
 
-        it { expect(page).to have_content('New School group') }
+        it { expect(page).to have_text('New School group') }
         it { expect(page).to have_css('#group-defaults') }
 
         context 'when required data has not been entered' do
@@ -248,8 +250,8 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
             click_on 'Create School group'
           end
 
-          it { expect(page).to have_content('New School group') }
-          it { expect(page).to have_content("Name can't be blank") }
+          it { expect(page).to have_text('New School group') }
+          it { expect(page).to have_text("Name can't be blank") }
         end
 
         context 'when all data has been entered' do
@@ -280,7 +282,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'New Project group'
         end
 
-        it { expect(page).to have_content('New Project group') }
+        it { expect(page).to have_text('New Project group') }
         it { expect(page).to have_no_css('#group-defaults') }
 
         context 'when required data has not been entered' do
@@ -288,8 +290,8 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
             click_on 'Create School group'
           end
 
-          it { expect(page).to have_content('New Project group') }
-          it { expect(page).to have_content("Name can't be blank") }
+          it { expect(page).to have_text('New Project group') }
+          it { expect(page).to have_text("Name can't be blank") }
         end
 
         context 'when all data has been entered' do

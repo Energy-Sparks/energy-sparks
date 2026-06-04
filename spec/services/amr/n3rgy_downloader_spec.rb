@@ -6,7 +6,7 @@ describe Amr::N3rgyDownloader do
   end
 
   let(:meter)     { create(:electricity_meter) }
-  let(:config)    { create(:amr_data_feed_config)}
+  let(:config)    { create(:amr_data_feed_config) }
   let(:end_date)  { Time.zone.today }
   let(:start_date) { end_date - 1 }
 
@@ -27,13 +27,16 @@ describe Amr::N3rgyDownloader do
       end
 
       it 'makes multiple API requests' do
-        allow(stub).to receive(:readings).at_least(:twice).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
+        allow(stub).to receive(:readings).at_least(:twice).with(meter.mpan_mprn, meter.fuel_type.to_s,
+                                                                DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
 
         # split into 89 day first range, with correct start and end time
-        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, start_date, DateTime.new(2023, 3, 31, 0, 0))
+        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s,
+                                                DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, start_date, DateTime.new(2023, 3, 31, 0, 0))
 
         # split into final 11 day range with correct start and end time
-        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, DateTime.new(2023, 3, 31, 0, 30), end_date)
+        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s,
+                                                DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, DateTime.new(2023, 3, 31, 0, 30), end_date)
         service.readings
       end
     end
@@ -46,7 +49,8 @@ describe Amr::N3rgyDownloader do
       end
 
       it 'returns empty results' do
-        allow(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
+        allow(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s,
+                                               DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
         readings = service.readings
         expect(readings[meter.meter_type][:readings]).to be_empty
       end
@@ -56,17 +60,19 @@ describe Amr::N3rgyDownloader do
       subject(:readings) { service.readings }
 
       # Match dates in fixture
-      let(:start_date) { Date.new(2012, 4, 27)}
-      let(:end_date) { Date.new(2012, 4, 28)}
+      let(:start_date) { Date.new(2012, 4, 27) }
+      let(:end_date) { Date.new(2012, 4, 28) }
 
       let(:response) { JSON.parse(File.read('spec/fixtures/n3rgy/get-reading-type-consumption.json')) }
 
       let(:fixture_readings) do
-        [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0.214, 0.158, 0.064, 0.062, 0.1, 0.096, 0.061, 0.097, 0.102, 0.129, 0.1, 0.101, 0.123, 0.245, 0.109, 0.018, 0.058, 0.057, 0.019, 0.03, 0.107, 0.058, 0.025, 0.019, 0.1, 0.219, 0.132, 0.091, 0.105, 0.11, 0.09]
+        [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0.214, 0.158, 0.064,
+         0.062, 0.1, 0.096, 0.061, 0.097, 0.102, 0.129, 0.1, 0.101, 0.123, 0.245, 0.109, 0.018, 0.058, 0.057, 0.019, 0.03, 0.107, 0.058, 0.025, 0.019, 0.1, 0.219, 0.132, 0.091, 0.105, 0.11, 0.09]
       end
 
       before do
-        allow(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response.with_indifferent_access)
+        allow(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s,
+                                               DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response.with_indifferent_access)
       end
 
       it 'extracts the readings' do

@@ -17,8 +17,8 @@ RSpec.describe ActivityTypeFilter, type: :service do
   let!(:pie_charts) { Topic.create(name: 'Pie charts') }
   let!(:energy) { Topic.create(name: 'Energy') }
 
-  let!(:activity_category_1) { create(:activity_category, name: 'cat1')}
-  let!(:activity_category_2) { create(:activity_category, name: 'cat2')}
+  let!(:activity_category_1) { create(:activity_category, name: 'cat1') }
+  let!(:activity_category_2) { create(:activity_category, name: 'cat2') }
   let!(:activity_type_1) do
     create(
       :activity_type,
@@ -59,19 +59,19 @@ RSpec.describe ActivityTypeFilter, type: :service do
     context 'when no parameters are passed in' do
       it 'does not use the school key stages when a school is set' do
         service = ActivityTypeFilter.new(school: school)
-        expect(service.selected_key_stages).to match_array([])
+        expect(service.selected_key_stages).to be_empty
       end
 
       it 'uses none when no school is set' do
         service = ActivityTypeFilter.new(school: nil)
-        expect(service.selected_key_stages).to match_array([])
+        expect(service.selected_key_stages).to be_empty
       end
     end
 
     context 'when parameters are passed in' do
       it 'loads the key stages from the ids' do
         service = ActivityTypeFilter.new(query: { key_stage_ids: [ks2.id] }, school: school)
-        expect(service.selected_key_stages).to match_array([ks2])
+        expect(service.selected_key_stages).to contain_exactly(ks2)
       end
     end
   end
@@ -80,14 +80,14 @@ RSpec.describe ActivityTypeFilter, type: :service do
     context 'when no parameters are passed in' do
       it 'uses none' do
         service = ActivityTypeFilter.new
-        expect(service.selected_subjects).to match_array([])
+        expect(service.selected_subjects).to be_empty
       end
     end
 
     context 'when parameters are passed in' do
       it 'loads the subjects from the ids' do
         service = ActivityTypeFilter.new(query: { subject_ids: [science.id] })
-        expect(service.selected_subjects).to match_array([science])
+        expect(service.selected_subjects).to contain_exactly(science)
       end
     end
   end
@@ -96,14 +96,14 @@ RSpec.describe ActivityTypeFilter, type: :service do
     context 'when no parameters are passed in' do
       it 'uses none' do
         service = ActivityTypeFilter.new
-        expect(service.selected_topics).to match_array([])
+        expect(service.selected_topics).to be_empty
       end
     end
 
     context 'when parameters are passed in' do
       it 'loads the topics from the ids' do
         service = ActivityTypeFilter.new(query: { topic_ids: [pie_charts.id] })
-        expect(service.selected_topics).to match_array([pie_charts])
+        expect(service.selected_topics).to contain_exactly(pie_charts)
       end
     end
   end
@@ -112,19 +112,19 @@ RSpec.describe ActivityTypeFilter, type: :service do
     context 'when no parameters are passed in' do
       it 'uses none' do
         service = ActivityTypeFilter.new
-        expect(service.selected_topics).to match_array([])
+        expect(service.selected_topics).to be_empty
       end
     end
 
     context 'when parameters are passed in' do
       it 'loads the timings from the ids' do
         service = ActivityTypeFilter.new(query: { activity_timing_ids: [half_hour.id] })
-        expect(service.selected_activity_timings).to match_array([half_hour])
+        expect(service.selected_activity_timings).to contain_exactly(half_hour)
       end
 
       it 'includes lower timings when selected' do
         service = ActivityTypeFilter.new(query: { activity_timing_ids: [hour.id] })
-        expect(service.selected_activity_timings).to match_array([half_hour, hour])
+        expect(service.selected_activity_timings).to contain_exactly(half_hour, hour)
       end
     end
   end
@@ -133,14 +133,14 @@ RSpec.describe ActivityTypeFilter, type: :service do
     context 'when no parameters are passed in' do
       it 'uses none' do
         service = ActivityTypeFilter.new
-        expect(service.selected_impacts).to match_array([])
+        expect(service.selected_impacts).to be_empty
       end
     end
 
     context 'when parameters are passed in' do
       it 'loads the impacts from the ids' do
         service = ActivityTypeFilter.new(query: { impact_ids: [reducing_gas.id] })
-        expect(service.selected_impacts).to match_array([reducing_gas])
+        expect(service.selected_impacts).to contain_exactly(reducing_gas)
       end
     end
   end
@@ -149,37 +149,37 @@ RSpec.describe ActivityTypeFilter, type: :service do
     subject { ActivityTypeFilter.new(query: query).activity_types.to_a }
 
     context 'when a key stage is selected' do
-      let(:query) { { key_stage_ids: ks2.id }}
+      let(:query) { { key_stage_ids: ks2.id } }
 
-      it { is_expected.to match_array([activity_type_1]) }
+      it { is_expected.to contain_exactly(activity_type_1) }
     end
 
     context 'when a subject is selected' do
-      let(:query) { { subject_ids: maths.id }}
+      let(:query) { { subject_ids: maths.id } }
 
-      it { is_expected.to match_array([activity_type_2, activity_type_3]) }
+      it { is_expected.to contain_exactly(activity_type_2, activity_type_3) }
     end
 
     context 'when a topic is selected' do
-      let(:query) { { topic_ids: pie_charts.id }}
+      let(:query) { { topic_ids: pie_charts.id } }
 
-      it { is_expected.to match_array([activity_type_3]) }
+      it { is_expected.to contain_exactly(activity_type_3) }
     end
 
     context 'when a timing is selected' do
-      let(:query) { { activity_timing_ids: half_hour.id }}
+      let(:query) { { activity_timing_ids: half_hour.id } }
 
-      it { is_expected.to match_array([activity_type_1, activity_type_3]) }
+      it { is_expected.to contain_exactly(activity_type_1, activity_type_3) }
     end
 
     context 'when an impact is selected' do
-      let(:query) { { impact_ids: reducing_electricity.id }}
+      let(:query) { { impact_ids: reducing_electricity.id } }
 
       it { is_expected.to match_array([]) }
     end
 
     context 'when nothing is selected' do
-      let(:query) {{}}
+      let(:query) { {} }
 
       it 'has custom activity type last' do
         expect(subject.last).to eq activity_type_1
@@ -187,7 +187,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
       it 'includes the active activity types only' do
         activity_type_1.update!(active: false)
-        expect(subject).to match_array [activity_type_2, activity_type_3]
+        expect(subject).to contain_exactly(activity_type_2, activity_type_3)
       end
     end
 
@@ -199,11 +199,14 @@ RSpec.describe ActivityTypeFilter, type: :service do
   end
 
   describe 'exclude_if_done_this_year' do
+    subject do
+      ActivityTypeFilter.new(school: school, query: { exclude_if_done_this_year: true },
+                             current_date: Date.parse('2020-04-01'))
+    end
+
     let(:academic_year) { create(:academic_year, start_date: '2019-09-01', end_date: '2020-08-31') }
     let(:calendar) { create(:calendar, academic_years: [academic_year]) }
     let(:school) { create(:school, calendar: calendar) }
-
-    subject { ActivityTypeFilter.new(school: school, query: { exclude_if_done_this_year: true }, current_date: Date.parse('2020-04-01')) }
 
     before do
       create(:activity, activity_type: activity_type_1, school: school, happened_on: '2019-01-01')
@@ -211,14 +214,14 @@ RSpec.describe ActivityTypeFilter, type: :service do
     end
 
     it 'excludes activity types where activity was completed within the academic year' do
-      expect(subject.activity_types).to match_array([activity_type_1, activity_type_3])
+      expect(subject.activity_types).to contain_exactly(activity_type_1, activity_type_3)
     end
   end
 
   describe 'with live data categories' do
-    let(:school) { create(:school) }
-
     subject { ActivityTypeFilter.new(school: school) }
+
+    let(:school) { create(:school) }
 
     before do
       activity_category_1.update(live_data: true)
@@ -226,7 +229,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
 
     context 'when school does not have active CAD' do
       it 'excludes activity types where activity category is live data' do
-        expect(subject.activity_types).to match_array([activity_type_2])
+        expect(subject.activity_types).to contain_exactly(activity_type_2)
       end
     end
 
@@ -234,7 +237,7 @@ RSpec.describe ActivityTypeFilter, type: :service do
       let!(:cad) { create(:cad, school: school, active: true) }
 
       it 'includes activity types where activity category is live data' do
-        expect(subject.activity_types).to match_array([activity_type_1, activity_type_2, activity_type_3])
+        expect(subject.activity_types).to contain_exactly(activity_type_1, activity_type_2, activity_type_3)
       end
     end
   end

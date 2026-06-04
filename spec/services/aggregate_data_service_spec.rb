@@ -72,7 +72,9 @@ describe AggregateDataService, type: :service do
       it 'creates an AggregateMeter' do
         expect(aggregate_meter).to be_a Dashboard::AggregateMeter
         expect(aggregate_meter.constituent_meters).to eq(electricity_meters)
-        expect(aggregate_meter.mpan_mprn).to eq(Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(meter_collection.urn, :electricity))
+        expect(aggregate_meter.mpan_mprn).to eq(Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(
+                                                  meter_collection.urn, :electricity
+                                                ))
       end
 
       it 'correctly identifies presence of solar' do
@@ -120,7 +122,9 @@ describe AggregateDataService, type: :service do
 
         it 'creates an AggregateMeter' do
           expect(aggregate_meter).to be_a Dashboard::AggregateMeter
-          expect(aggregate_meter.mpan_mprn).to eq(Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(meter_collection.urn, :electricity))
+          expect(aggregate_meter.mpan_mprn).to eq(Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(
+                                                    meter_collection.urn, :electricity
+                                                  ))
         end
 
         it 'has updated the list of electricity meters' do

@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe Amr::DataFeedUpserter do
-  subject(:service) { described_class.new(amr_data_feed_config, amr_data_feed_import_log, array_of_readings)}
+  subject(:service) { described_class.new(amr_data_feed_config, amr_data_feed_import_log, array_of_readings) }
 
   let!(:meter) { create(:electricity_meter) }
   let!(:amr_data_feed_config) { create(:amr_data_feed_config) }
-  let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config)}
+  let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config) }
   let(:array_of_readings) { [] }
 
   def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'))
@@ -69,7 +69,9 @@ describe Amr::DataFeedUpserter do
 
   shared_examples 'it correctly identifies records when upserting' do
     context 'with data for different meter' do
-      let!(:todays_reading) { create(:amr_data_feed_reading, reading_date: Time.zone.today.iso8601, readings: Array.new(48, '2.0')) }
+      let!(:todays_reading) do
+        create(:amr_data_feed_reading, reading_date: Time.zone.today.iso8601, readings: Array.new(48, '2.0'))
+      end
 
       let(:array_of_readings) do
         [create_reading(meter)]
@@ -93,9 +95,9 @@ describe Amr::DataFeedUpserter do
     context 'with data for same meter but different date formats' do
       let!(:todays_reading) do
         create(:amr_data_feed_reading,
-        meter: meter,
-        reading_date: Time.zone.today.strftime('%d %b %Y %H:%M'),
-        readings: Array.new(48, '2.0'))
+               meter: meter,
+               reading_date: Time.zone.today.strftime('%d %b %Y %H:%M'),
+               readings: Array.new(48, '2.0'))
       end
 
       let(:array_of_readings) do
@@ -119,14 +121,18 @@ describe Amr::DataFeedUpserter do
   end
 
   shared_examples 'it updates existing readings' do
-    let!(:todays_reading) { create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48, 2.0)) }
+    let!(:todays_reading) do
+      create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601,
+                                     readings: Array.new(48, 2.0))
+    end
 
     let(:array_of_readings) do
       [create_reading(meter)]
     end
 
     before do
-      create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: '2024-01-01', readings: Array.new(48, '2.0'))
+      create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: '2024-01-01',
+                                     readings: Array.new(48, '2.0'))
     end
 
     it 'does not insert new data' do
@@ -200,7 +206,9 @@ describe Amr::DataFeedUpserter do
 
           context 'when the new partial readings do not overlap the existing' do
             let!(:existing) do
-              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) { |i| i < 2 ? '1.0' : nil })
+              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) do |i|
+                i < 2 ? '1.0' : nil
+              end)
             end
 
             let(:array_of_readings) do
@@ -216,7 +224,9 @@ describe Amr::DataFeedUpserter do
 
           context 'when the new partial readings partially overlap the existing' do
             let!(:existing) do
-              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) { |i| i < 3 ? '1.0' : nil })
+              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) do |i|
+                i < 3 ? '1.0' : nil
+              end)
             end
 
             let(:array_of_readings) do
@@ -232,7 +242,9 @@ describe Amr::DataFeedUpserter do
 
           context 'with a full day of new readings' do
             let!(:existing) do
-              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) { |i| i < 2 ? '2.0' : nil })
+              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) do |i|
+                i < 2 ? '2.0' : nil
+              end)
             end
 
             let(:array_of_readings) do
@@ -248,7 +260,9 @@ describe Amr::DataFeedUpserter do
 
           context 'when there are still gaps in new data' do
             let!(:existing) do
-              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) { |i| i < 2 ? '1.0' : nil })
+              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) do |i|
+                i < 2 ? '1.0' : nil
+              end)
             end
 
             let(:array_of_readings) do
