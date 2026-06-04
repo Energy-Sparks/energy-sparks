@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'adult dashboard prompts', type: :system do
-  before do
-    SiteSettings.create!(audit_activities_bonus_points: 50)
-    sign_in(user) if user.present?
-    visit school_path(school, switch: true) # don't redirect pupils to pupil dashboard
-  end
-
   let(:data_enabled)                    { true }
   let(:confirmed_at)                    { 1.day.ago }
   let(:school)                          { create(:school, :with_school_group, data_enabled: data_enabled) }
@@ -16,6 +10,12 @@ RSpec.describe 'adult dashboard prompts', type: :system do
   let!(:school_dashboard_message)       { school.create_dashboard_message(message: 'School message') }
   let!(:programme)                      {}
   let!(:audit)                          { create(:audit, :with_activity_and_intervention_types, school: school) }
+
+  before do
+    SiteSettings.create!(audit_activities_bonus_points: 50)
+    sign_in(user) if user.present?
+    visit school_path(school, switch: true) # don't redirect pupils to pupil dashboard
+  end
 
   context 'as guest' do
     let(:user) { nil }
