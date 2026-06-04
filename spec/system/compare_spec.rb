@@ -269,12 +269,12 @@ describe 'compare pages', :compare, type: :system do
          benchmarks: { baseload_per_pupil: 'Baseload per pupil' } }]
     end
 
+    include_context 'index page context'
+
     before do
       sign_in(user) if user
       visit compare_index_path
     end
-
-    include_context 'index page context'
 
     context 'when the logged in user has a school group' do
       let(:user) { create(:group_admin, school_group: school_group) }
