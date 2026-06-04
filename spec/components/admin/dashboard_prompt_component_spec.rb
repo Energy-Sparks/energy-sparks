@@ -16,6 +16,17 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       end
     end
 
+    context 'when there are only closed issues' do
+      before do
+        create_list(:issue, 2, status: 'closed', owned_by: user, review_date: Date.current - 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue issues prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
     context 'when there are overdue issues' do
       before do
         create_list(:issue, 2, owned_by: user, review_date: Date.current - 2)
@@ -43,6 +54,17 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       end
     end
 
+    context 'when there are only closed issues' do
+      before do
+        create_list(:issue, 2, status: 'closed', owned_by: user, review_date: Date.current + 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the weekly issues prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
     context 'when there are issues due in the coming week' do
       before do
         create_list(:issue, 2, owned_by: user, review_date: Date.current + 2)
@@ -67,6 +89,17 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
 
       it 'does not display the overdue group reviews prompt' do
         expect(page).to have_no_text('overdue group reviews')
+      end
+    end
+
+    context 'when there are only closed issues' do
+      before do
+        create(:issue, :with_group_review, status: 'closed', owned_by: user, review_date: Date.current - 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue group reviews prompt' do
+        expect(page).to have_no_text('issues overdue')
       end
     end
 
@@ -98,6 +131,17 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
 
       it 'does not display the monthly group reviews prompt' do
         expect(page).to have_no_text('group reviews due in the next 30 days')
+      end
+    end
+
+    context 'when there are only closed issues' do
+      before do
+        create(:issue, :with_group_review, status: 'closed', owned_by: user, review_date: Date.current + 5)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the monthly group reviews prompt' do
+        expect(page).to have_no_text('issues overdue')
       end
     end
 
