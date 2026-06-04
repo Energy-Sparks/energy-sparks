@@ -8,7 +8,13 @@ module Admin
       layout 'group_settings'
 
       def show
-        @academic_year = Calendar.default_national.current_academic_year
+        @current_year = Calendar.default_national.current_academic_year
+        @next_year = Calendar.default_national.current_academic_year.next_year
+        @selected_year = if params[:academic_year].present?
+                           AcademicYear.find(params.expect(:academic_year))
+                         else
+                           @current_year
+                         end
       end
     end
   end

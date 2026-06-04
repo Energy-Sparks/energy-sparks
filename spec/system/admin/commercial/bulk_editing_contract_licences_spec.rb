@@ -93,6 +93,7 @@ describe 'bulk editing contract licences' do
       it 'lists the school' do
         within("#contract-#{contract.id}-additional-schools-table") do
           expect(page).to have_content(additional_school.name)
+          expect(page).to have_link('View issues', href: admin_school_issues_path(additional_school))
         end
       end
 
@@ -143,35 +144,6 @@ describe 'bulk editing contract licences' do
           it 'updates the newly added licence' do
             expect(page).to have_content('Licences updated')
             expect(additional_school.licences.reload.last.comments).to eq('Some comments')
-          end
-        end
-      end
-
-      context 'when toggling school funding status' do
-        before do
-          click_on 'Make Self funded'
-          within("#contract-#{contract.id}-additional-schools-table") do
-            find('tr', text: 'Self funding')
-          end
-        end
-
-        it 'toggles the button and text' do
-          within("#contract-#{contract.id}-additional-schools-table") do
-            find('tr', text: 'Make MAT funded')
-          end
-          expect(additional_school.reload.default_contract_holder).to be_nil
-        end
-
-        context 'when toggling back' do
-          before do
-            click_on 'Make MAT funded'
-            within("#contract-#{contract.id}-additional-schools-table") do
-              find('tr', text: 'Make Self funded')
-            end
-          end
-
-          it 'reverts the change' do
-            expect(additional_school.reload.default_contract_holder).to eq(contract.contract_holder)
           end
         end
       end

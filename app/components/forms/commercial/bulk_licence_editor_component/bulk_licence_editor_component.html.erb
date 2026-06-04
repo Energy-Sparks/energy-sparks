@@ -63,7 +63,7 @@
       </p>
       <%= render ::Commercial::LicensingSummaryComponent.new(
             table_id: "contract-#{@contract.id}-additional-schools-table",
-            date_range: @contract.as_range
+            second_range: @contract.as_range
           ) do |c| %>
         <% @additional_schools.each do |school| %>
           <% c.with_row id: "additional-school-#{school.id}", school: school do |r| %>
@@ -77,22 +77,10 @@
                             class: 'btn btn-sm btn-primary' %>
             <% end %>
             <% r.with_button do %>
-              <div id="self-funded-toggle-<%= school.id %>">
-                <% if school.self_funded_in_future? %>
-                  <%= button_to 'Make MAT funded',
-                                school_self_funded_path(school),
-                                method: :create,
-                                remote: true,
-                                class: 'btn btn-sm btn-secondary' %>
-                <% else %>
-                  <%= button_to 'Make Self funded',
-                                school_self_funded_path(school),
-                                method: :delete,
-                                remote: true,
-                                class: 'btn btn-sm btn-secondary' %>
-
-                <% end %>
-              </div>
+              <%= link_to 'View issues',
+                          admin_school_issues_path(school),
+                          target: '_new',
+                          class: 'btn btn-sm' %>
             <% end %>
           <% end %>
         <% end %>
