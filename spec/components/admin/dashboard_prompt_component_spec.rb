@@ -23,12 +23,11 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       end
 
       it 'displays the overdue issues prompt' do
-        expect(page).to have_text('You have 2 issues overdue for review')
+        expect(page).to have_text('You have 2 overdue issues')
         expect(page).to have_link('View Issues',
                                   href: admin_dashboard_issues_path(dashboard_id: user,
                                                                     user: user.id,
-                                                                    review_date: 'review_overdue',
-                                                                    issue_tag:))
+                                                                    review_date: 'review_overdue'))
       end
     end
   end
@@ -67,22 +66,25 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       end
 
       it 'does not display the overdue group reviews prompt' do
-        expect(page).to have_no_text('group reviews overdue')
+        expect(page).to have_no_text('overdue group reviews')
       end
     end
 
     context 'when there are overdue group reviews' do
+      let(:group_review_tag) { IssueTag.where(system_id: :group_review).first }
+
       before do
-        create_list(:issue, :with_group_review, 2, owned_by: user, review_date: Date.current - 2)
+        create(:issue, :with_group_review, owned_by: user, review_date: Date.current - 2)
         render_inline described_class.new(user: user)
       end
 
       it 'displays the overdue group reviews prompt' do
-        expect(page).to have_text('You have 2 group reviews overdue for review')
-        expect(page).to have_link('View Issues',
+        expect(page).to have_text('You have 1 overdue group reviews')
+        expect(page).to have_link('View Group Reviews',
                                   href: admin_dashboard_issues_path(dashboard_id: user,
                                                                     user: user.id,
-                                                                    review_date: 'review_overdue'))
+                                                                    review_date: 'review_overdue',
+                                                                    issue_tag: group_review_tag))
       end
     end
   end
@@ -90,26 +92,29 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
   describe 'monthly group reviews prompt' do
     context 'when there are no overdue group reviews' do
       before do
+        puts render_inline(described_class.new(user: user)).content
         render_inline described_class.new(user: user)
       end
 
       it 'does not display the monthly group reviews prompt' do
-        expect(page).to have_no_text('next 30 days')
+        expect(page).to have_no_text('group reviews due in the next 30 days')
       end
     end
 
     context 'when there are monthly group reviews' do
+      let(:group_review_tag) { IssueTag.where(system_id: :group_review).first }
+
       before do
-        create_list(:issue, :with_group_review, 2, owned_by: user, review_date: Date.current - 2)
+        create(:issue, :with_group_review, owned_by: user, review_date: Date.current + 5)
         render_inline described_class.new(user: user)
       end
 
       it 'displays the monthly group reviews prompt' do
-        expect(page).to have_text('You have 2 group reviews due in the next 30 day')
-        expect(page).to have_link('View Issues',
+        expect(page).to have_text('You have 1 group reviews due in the next 30 day')
+        expect(page).to have_link('View Group Reviews',
                                   href: admin_dashboard_issues_path(dashboard_id: user,
                                                                     user: user.id,
-                                                                    issue_tag:))
+                                                                    issue_tag: group_review_tag))
       end
     end
   end
