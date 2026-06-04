@@ -1,16 +1,9 @@
+# frozen_string_literal: true
+
 module EnergySparks
   class Calculator
-    # Calculate percentage change across two values or sum of values in two arrays
-    def self.percent_change_sum(base, new_val)
-      base = sum_data(base)
-      new_val = sum_data(new_val)
-      return 0.0 if base == 0.0
-
-      percent_change(base, new_val)
-    end
-
     def self.percent_change(base, new_val)
-      return nil if base.nil? || new_val.nil? || base == 0.0
+      return nil if base.nil? || new_val.nil? || base.zero?
 
       (new_val - base) / base
     end
