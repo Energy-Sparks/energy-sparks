@@ -1,6 +1,6 @@
 <!-- Button trigger modal -->
-<button type="button" class="<%= local_assigns[:class] %>" data-toggle="modal"
-    data-target="#data_source_report-<%= data_source.id %>">
+<button type="button" class="<%= local_assigns[:class] %>" data-bs-toggle="modal"
+    data-bs-target="#data_source_report-<%= data_source.id %>">
   <%= fa_icon('envelope') %> Email Data Source Report
 </button>
 
@@ -10,7 +10,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="data_source_report_label">Email data source report & csv</h4>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -26,13 +26,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <%= button_tag(type: 'submit', class: 'btn btn-sm',
+          <%= button_tag(type: 'submit', class: 'btn btn-secondary btn-sm',
                          data: {
                            confirm: "Are you sure you want to send the data source report to #{current_user.email}?"
                          }) do %>
             <%= fa_icon('envelope') %> Email Data Source Report
           <% end %>
-          <button type="button" class="btn btn-sm" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
         </div>
       <% end %>
     </div>

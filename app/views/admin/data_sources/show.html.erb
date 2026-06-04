@@ -28,14 +28,14 @@
 
 <div class="bg-light border rounded py-2 mb-2">
   <div class="col-12 clearfix">
-    <span data-toggle="collapse" href="#data-source" role="button" aria-expanded="true" aria-controls="data-source" class="badge text-bg-light toggler text-decoration-none collapsed">
+    <span data-bs-toggle="collapse" href="#data-source" role="button" aria-expanded="true" aria-controls="data-source" class="badge text-bg-light toggler text-decoration-none collapsed ps-3">
       <%= toggler %>
     </span>
     <%= render 'admin/issues/issueable', issueable: @data_source %>
     <span class="badge text-bg-info"><%= @data_source.organisation_type.try(:humanize) %></span>
-    <span class='float-end'>
-      <%= render 'email_report_button', data_source: @data_source, class: 'btn btn-sm' %>
-      <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: 'btn btn-sm' %>
+    <span class='float-end pe-2'>
+      <%= render 'email_report_button', data_source: @data_source, class: 'btn btn-secondary btn-sm' %>
+      <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: 'btn btn-secondary btn-sm' %>
       <%= link_to 'Delete', admin_data_source_path(@data_source), method: :delete, data: { confirm: 'Are you sure?' },
                                                                   class: 'btn btn-sm btn-danger' %>
     </span>
@@ -43,21 +43,27 @@
   <%= render 'data_source', data_source: @data_source %>
 </div>
 
-<ul class="nav nav-tabs url-aware" id="data-source-tabs" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="issues-tab" data-toggle="tab" href="#issues" role="tab" aria-controls="issues-content" aria-selected="true">
-      Issues <span class="badge text-bg-secondary"><%= @data_source.issues.count %></span>
-    </a>
-  </li>
-</ul>
-
-<div class="tab-content" id="data-source-content">
-  <div class="tab-pane fade show active" id="issues" role="tabpanel" aria-labelledby="issues-tab">
+<%= render TabsComponent.new(classes: 'preserve-tab-link') do |component| %>
+  <% component.with_tab(name: :issues,
+                        label: label_count('Issues', @data_source.issues.issue.status_open.count)) do %>
     <% if @data_source.issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @data_source.issues, issueable_type: 'Data source' %>
+      <%= render 'admin/issues/issues_list', issues: @data_source.issues.by_priority_order,
+                                             issueable_type: 'Data source' %>
     <% else %>
       <div class="bg-light p-2">No issues for <%= @data_source.name %>.</div>
     <% end %>
-    <%= render 'admin/issues/issues_links', issueable: @data_source %>
-  </div>
-</div>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @data_source %></div>
+  <% end %>
+
+  <% component.with_tab(name: :meter_issues,
+                        label: label_count('Meter issues', @data_source.active_meter_issues.issue.status_open.count)) do %>
+    <% if @data_source.active_meter_issues.issue.any? %>
+      <%= render 'admin/issues/issues_list', issues: @data_source.active_meter_issues.issue
+                                                                 .status_open.by_priority_order,
+                                             issuable_type: 'Data source' %>
+    <% else %>
+      <div class="bg-light p-2">No meter issues for <%= @data_source.name %>.</div>
+    <% end %>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @data_source %></div>
+  <% end %>
+<% end %>
