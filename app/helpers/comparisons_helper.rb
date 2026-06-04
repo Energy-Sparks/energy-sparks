@@ -30,17 +30,13 @@ module ComparisonsHelper
             id: "#{report.key}-#{table_name}-download"
   end
 
-  def percent_change(base, new_val, to_nil_if_sum_zero = false)
-    EnergySparks::Calculator.percent_change(base, new_val, to_nil_if_sum_zero)
-  end
+  delegate :percent_change, to: :'EnergySparks::Calculator'
 
   def sum_data(data, to_nil_if_sum_zero = false)
     EnergySparks::Calculator.sum_data(data, to_nil_if_sum_zero)
   end
 
-  def sum_if_complete(previous_year_values, current_year_values)
-    EnergySparks::Calculator.sum_if_complete(previous_year_values, current_year_values)
-  end
+  delegate :sum_if_complete, to: :'EnergySparks::Calculator'
 
   def gas_or_electricity_data_stale?(result, window = 90)
     threshold = Time.zone.today - window

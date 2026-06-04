@@ -40,7 +40,7 @@ module MultipleFuelComparisonView
 
   # Calculate percentage change, for a specific unit across the two periods
   def total_percentage_change(unit:)
-    EnergySparks::Calculator.percent_change(total_previous_period(unit: unit), total_current_period(unit: unit))
+    EnergySparks::Calculator.percent_change_sum(total_previous_period(unit: unit), total_current_period(unit: unit))
   end
 
   # Returns an array of values for the specified unit, for the previous period
