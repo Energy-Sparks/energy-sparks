@@ -15,7 +15,7 @@ module Commercial
     def validate_contract_holder_type
       return if contract_holder && ALLOWED_HOLDERS.include?(contract_holder.class)
 
-      errors.add(:contract_holder, 'must be a School, SchoolGroup, or Funder')
+      errors.add(:contract_holder, 'must select a School, School Group, or Funder')
     end
   end
 end

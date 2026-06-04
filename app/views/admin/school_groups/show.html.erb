@@ -80,7 +80,7 @@
 
 <%= render 'button_panel' %>
 
-<%= render TabsComponent.new do |component| %>
+<%= render TabsComponent.new(classes: 'preserve-tab-link') do |component| %>
   <% component.with_tab(name: :active, label: 'Active') do %>
     <% if @school_group.assigned_schools.active.any? %>
       <%= render 'active_schools', school_group: @school_group %>
@@ -154,12 +154,3 @@
     <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @school_group %></div>
   <% end %>
 <% end %>
-
-<script>
-document.querySelectorAll('.tab-content a.btn.edit').forEach((element) => {
-  element.addEventListener('click', (event) => {
-    event.preventDefault();
-    window.location.href = `${element.href}${encodeURIComponent(window.location.hash)}`;
-  });
-});
-</script>
