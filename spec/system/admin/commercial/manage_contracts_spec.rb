@@ -84,6 +84,13 @@ describe 'manage contracts' do
       it_behaves_like 'it shows the fields for a non-custom contract'
       it_behaves_like 'it applies validation when creating a contract'
 
+      it 'shows default contract dates' do
+        expect(page).to have_field('contract_start_date',
+                                   with: Time.zone.today.strftime('%d/%m/%Y'))
+        expect(page).to have_field('contract_end_date',
+                                   with: (Time.zone.today.next_year - 1.day).strftime('%d/%m/%Y'))
+      end
+
       context 'with valid data', :js do
         before do
           fill_in 'Name', with: 'Standard contract'
