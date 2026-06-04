@@ -8,9 +8,12 @@ module Commercial
       RowComponent.new(**kwargs)
     }
 
-    def initialize(first_range: nil, second_range: nil, table_id: 'summary-table', **)
+    def initialize(first_range: nil, second_range: nil,
+                   labels: { first: 'Current Academic Year', second: nil },
+                   table_id: 'summary-table', **)
       super(**)
       @table_id = table_id
+      @labels = labels
       @first_range = first_range || Calendar.default_national.current_academic_year.then do |year|
         year.start_date..year.end_date
       end

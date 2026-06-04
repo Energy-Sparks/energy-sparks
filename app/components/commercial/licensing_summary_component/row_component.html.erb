@@ -11,15 +11,17 @@
   <td>
     <%= contract_holder_for_first_range.join(',') %>
   </td>
-  <td>
-    <%= render(Elements::BadgeComponent.new(licensed_for_second_range.to_s.humanize,
-                                            pill: true,
-                                            colour: helpers.period_badge_colour(licensed_for_second_range))) %>
+  <% if @second_range.present? %>
+    <td>
+      <%= render(Elements::BadgeComponent.new(licensed_for_second_range.to_s.humanize,
+                                              pill: true,
+                                              colour: helpers.period_badge_colour(licensed_for_second_range))) %>
 
-  </td>
-  <td>
-    <%= contract_holder_for_second_range.join(',') %>
-  </td>
+    </td>
+    <td>
+      <%= contract_holder_for_second_range.join(',') %>
+    </td>
+  <% end %>
   <td>
     <% buttons.each do |button| %>
       <%= button %>

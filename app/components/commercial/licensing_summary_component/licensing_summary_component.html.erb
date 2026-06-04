@@ -2,11 +2,21 @@
   <table id="<%= @table_id %>" class="table table-sorted table-sm advice-table">
     <thead>
       <tr>
+        <th></th>
+        <th colspan="2"><%= @labels[:first] %></th>
+        <% if @second_range.present? %>
+          <th colspan="2"><%= @labels[:second] %></th>
+        <% end %>
+        <th></th>
+      </tr>
+      <tr>
         <th>School</th>
-        <th>Licensed for First Range?</th>
-        <th>Funder for First Range</th>
-        <th>Licensed for Second Range?</th>
-        <th>Funder for Second Range</th>
+        <th>Licensed?</th>
+        <th>Funder</th>
+        <% if @second_range.present? %>
+          <th>Licensed?</th>
+          <th>Funder</th>
+        <% end %>
         <th></th>
       </tr>
     </thead>
