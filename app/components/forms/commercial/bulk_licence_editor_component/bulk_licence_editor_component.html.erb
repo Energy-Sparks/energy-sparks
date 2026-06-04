@@ -36,34 +36,30 @@
   <%= link_to 'Cancel', admin_commercial_contract_path(@contract), class: 'btn btn-secondary' %>
 
   <% if @additional_schools.any? %>
+    <h2>Add schools to contract</h2>
+    <p>
+      The following schools in this school group are not currently part of this contract.
+    </p>
+    <p>
+      The table identifies whether they are licensed for the current academic year and
+      the relevant contract holder(s) for the licence(s) for that period.
+    </p>
+    <p>
+      "Full" means they are already licensed. "Partial" means they a licence that covers part of this contracted period.
+      "No" means there are no licences for that period.
+    </p>
+    <p>
+      The table also indicates whether the school already has a licence for the period defined by the
+      contract start and end dates. This is presented similarly to the above.
+    </p>
+    <p>
+      Use the "<strong>Add Licence</strong>" button to add a licence for the school under this contract.
+    </p>
     <div class="mt-4 licence-editor-table-wrapper">
-      <h2>Add schools to contract</h2>
-      <p>
-        The following schools in this school group are not currently part of this contract. The table identifies whether
-        they are currently licensed, who their current and future funder is expected to be, and whether they have
-        any (future) licence that covers the period of this contact.
-      </p>
-      <p>
-        If a school has a current licence (valid for today) then the "<strong>Current Funder</strong>" column includes the name of
-        the contract holder for that licence. "<strong>Future Funder</strong>" indicates whether we are expecting the school to be
-        self-funded or covered by a MAT contract in future.
-      </p>
-
-      <p>
-        "<strong>Licensed for Period?</strong>" indicates whether school has any existing licences that cover the period of this contract.
-        "Full" means they are already licensed. "Partial" means they a licence that covers part of this contracted period.
-      </p>
-      <p>
-        Use the "<strong>Add Licence</strong>" button to add a licence for the school under this contract.
-      </p>
-      <p>
-        Use the "<strong>Make Self funded</strong> / <strong>Make MAT funded</strong>" toggle to set whether the school is expected to be
-        MAT or self-funded in future. If a school was self-funded and is going to be added to this contract, then change their status before
-        adding a licence.
-      </p>
       <%= render ::Commercial::LicensingSummaryComponent.new(
             table_id: "contract-#{@contract.id}-additional-schools-table",
-            second_range: @contract.as_range
+            second_range: @contract.as_range,
+            labels: { first: 'Current Academic Year', second: 'Contract Period' }
           ) do |c| %>
         <% @additional_schools.each do |school| %>
           <% c.with_row id: "additional-school-#{school.id}", school: school do |r| %>
