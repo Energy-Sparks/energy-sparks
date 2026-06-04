@@ -9,7 +9,8 @@ module ImpactReports
       end
 
       def displayable
-        run.potential_savings.take(@max)
+        metrics = run.potential_savings
+        @max ? metrics.take(@max) : metrics
       end
     end
   end
