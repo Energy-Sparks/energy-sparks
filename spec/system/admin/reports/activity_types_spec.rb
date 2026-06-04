@@ -18,8 +18,8 @@ describe 'activity type reports', type: :system do
     end
 
     it 'displays the report' do
-      expect(page).to have_content('Activity Type Management Report')
-      expect(page).to have_content(activity_type.name)
+      expect(page).to have_text('Activity Type Management Report')
+      expect(page).to have_text(activity_type.name)
       expect(page).to have_link(activity_type.name, href: admin_reports_activity_type_path(activity_type))
       expect(page).to have_link('Report', href: admin_reports_activity_type_path(activity_type))
     end
@@ -34,8 +34,8 @@ describe 'activity type reports', type: :system do
     it 'displays the report' do
       click_on activity_type.name
 
-      expect(page).to have_content activity_type.name
-      expect(page).to have_content school.name
+      expect(page).to have_text activity_type.name
+      expect(page).to have_text school.name
       expect(page).to have_link(school.name, href: school_url(school, host: 'example.com'))
     end
 
@@ -44,7 +44,7 @@ describe 'activity type reports', type: :system do
 
       it 'includes a summary' do
         click_on activity_type.name
-        expect(page).to have_content('This activity has been recorded multiple times by some schools')
+        expect(page).to have_text('This activity has been recorded multiple times by some schools')
       end
     end
   end

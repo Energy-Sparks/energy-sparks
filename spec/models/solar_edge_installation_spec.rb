@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 describe SolarEdgeInstallation do
   subject(:solar_edge_installation) { create(:solar_edge_installation) }
 
@@ -41,7 +40,10 @@ describe SolarEdgeInstallation do
 
     context 'when there is an electricity meter' do
       context 'with no readings' do
-        let!(:electricity_meter) { create(:electricity_meter, mpan_mprn: 60000000000000 + solar_edge_installation.mpan.to_i, pseudo: true, solar_edge_installation: solar_edge_installation) }
+        let!(:electricity_meter) do
+          create(:electricity_meter, mpan_mprn: 60_000_000_000_000 + solar_edge_installation.mpan.to_i, pseudo: true,
+                                     solar_edge_installation: solar_edge_installation)
+        end
 
         it 'returns nil' do
           expect(latest_electricity_reading).to be_nil
@@ -49,7 +51,10 @@ describe SolarEdgeInstallation do
       end
 
       context 'with readings' do
-        let!(:electricity_meter) { create(:electricity_meter_with_reading, mpan_mprn: 60000000000000 + solar_edge_installation.mpan.to_i, pseudo: true, solar_edge_installation: solar_edge_installation) }
+        let!(:electricity_meter) do
+          create(:electricity_meter_with_reading, mpan_mprn: 60_000_000_000_000 + solar_edge_installation.mpan.to_i,
+                                                  pseudo: true, solar_edge_installation: solar_edge_installation)
+        end
 
         it 'returns the latest date' do
           expect(latest_electricity_reading).to eq(Date.parse(AmrDataFeedReading.first.reading_date))

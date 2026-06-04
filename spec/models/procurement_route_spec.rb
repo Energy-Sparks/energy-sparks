@@ -9,11 +9,14 @@ RSpec.describe ProcurementRoute, type: :model do
   end
 
   describe '.to_csv' do
-    let(:procurement_route) { create(:procurement_route) }
-    let(:data_source) { create(:data_source) }
     subject(:csv) { procurement_route.to_csv }
 
-    let(:header) { 'School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues' }
+    let(:procurement_route) { create(:procurement_route) }
+    let(:data_source) { create(:data_source) }
+
+    let(:header) do
+      'School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues'
+    end
 
     before { freeze_time }
 
@@ -21,9 +24,12 @@ RSpec.describe ProcurementRoute, type: :model do
       let(:admin_meter_status) { AdminMeterStatus.create(label: 'On Data Feed') }
       let!(:meters) do
         [
-          create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, active: true), admin_meter_status: admin_meter_status),
-          create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, :with_school_group, active: true), admin_meter_status: admin_meter_status),
-          create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, active: false), admin_meter_status: admin_meter_status)
+          create(:gas_meter, data_source: data_source, procurement_route: procurement_route,
+                             school: create(:school, active: true), admin_meter_status: admin_meter_status),
+          create(:gas_meter, data_source: data_source, procurement_route: procurement_route,
+                             school: create(:school, :with_school_group, active: true), admin_meter_status: admin_meter_status),
+          create(:gas_meter, data_source: data_source, procurement_route: procurement_route,
+                             school: create(:school, active: false), admin_meter_status: admin_meter_status)
         ]
       end
       let(:first_reading_date) { 1.year.ago.to_date + 2.days }

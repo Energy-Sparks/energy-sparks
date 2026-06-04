@@ -8,7 +8,7 @@ describe 'School group engagement' do
   context 'when not logged in' do
     it do
       visit school_group_school_engagement_index_path(school.school_group)
-      expect(page).to have_content('You need to sign in or sign up before continuing')
+      expect(page).to have_text('You need to sign in or sign up before continuing')
     end
   end
 
@@ -23,7 +23,7 @@ describe 'School group engagement' do
 
     it 'displays title' do
       expect(page).to have_title('School engagement')
-      expect(page).to have_content('School engagement')
+      expect(page).to have_text('School engagement')
     end
 
     it 'displays the table' do

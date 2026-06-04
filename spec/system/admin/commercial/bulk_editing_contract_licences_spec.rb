@@ -22,7 +22,7 @@ describe 'bulk editing contract licences' do
     click_on('Manage All Licences')
   end
 
-  it { expect(page).to have_content("#{contract.name} Bulk Licence Editor") }
+  it { expect(page).to have_text("#{contract.name} Bulk Licence Editor") }
 
   def field_name(licence, name)
     "commercial_contract[licences_attributes][#{licence.id}][#{name}]"
@@ -39,13 +39,13 @@ describe 'bulk editing contract licences' do
       end
     end
 
-    it { expect(page).to have_content('Undo') }
+    it { expect(page).to have_text('Undo') }
 
     context 'when the changes are saved' do
       before { click_on 'Save changes' }
 
       it 'deletes the licence' do
-        expect(page).to have_content('Licences updated')
+        expect(page).to have_text('Licences updated')
         expect(Commercial::Licence.all).to eq([licence])
       end
     end
@@ -62,7 +62,7 @@ describe 'bulk editing contract licences' do
     end
 
     it 'updates the licence' do
-      expect(page).to have_content('Licences updated')
+      expect(page).to have_text('Licences updated')
       expect(licence_to_be_modified.reload).to have_attributes({
                                                                  school_specific_price: 200.0,
                                                                  status: 'confirmed',
@@ -88,17 +88,17 @@ describe 'bulk editing contract licences' do
 
       before { refresh }
 
-      it { expect(page).to have_content('Add schools to contract') }
+      it { expect(page).to have_text('Add schools to contract') }
 
       it 'lists the school' do
         within("#contract-#{contract.id}-additional-schools-table") do
-          expect(page).to have_content(additional_school.name)
+          expect(page).to have_text(additional_school.name)
         end
       end
 
       it 'does not show a licence for the school' do
         within("#contract-#{contract.id}-licence-table") do
-          expect(page).to have_no_content(additional_school.name)
+          expect(page).to have_no_text(additional_school.name)
         end
       end
 
@@ -114,7 +114,7 @@ describe 'bulk editing contract licences' do
 
         it 'updates the licence table to include the licence' do
           within("#contract-#{contract.id}-licence-table") do
-            expect(page).to have_content(additional_school.name)
+            expect(page).to have_text(additional_school.name)
           end
           expect(additional_school.reload.licences.count).to eq(1)
         end
@@ -129,7 +129,7 @@ describe 'bulk editing contract licences' do
           end
 
           it 'deletes the licence' do
-            expect(page).to have_content('Licences updated')
+            expect(page).to have_text('Licences updated')
             expect(additional_school.licences.reload).to be_empty
           end
         end
@@ -141,7 +141,7 @@ describe 'bulk editing contract licences' do
           end
 
           it 'updates the newly added licence' do
-            expect(page).to have_content('Licences updated')
+            expect(page).to have_text('Licences updated')
             expect(additional_school.licences.reload.last.comments).to eq('Some comments')
           end
         end

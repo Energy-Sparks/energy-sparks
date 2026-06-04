@@ -52,8 +52,13 @@ describe Programmes::Creator do
       end
 
       context 'when school has recent recordings in programme' do
-        let!(:activity) { create(:activity_without_creator, school: school, activity_type: programme_type.activity_type_tasks.first)}
-        let!(:observation) { create(:observation, :intervention, school: school, intervention_type: programme_type.intervention_type_tasks.first)}
+        let!(:activity) do
+          create(:activity_without_creator, school: school, activity_type: programme_type.activity_type_tasks.first)
+        end
+        let!(:observation) do
+          create(:observation, :intervention, school: school,
+                                              intervention_type: programme_type.intervention_type_tasks.first)
+        end
 
         before do
           service.create
@@ -75,12 +80,14 @@ describe Programmes::Creator do
       context 'when school has multiple activities' do
         let!(:activities) do
           [1.hour.ago, 3.days.ago, 1.year.ago].map do |time|
-            create(:activity_without_creator, school: school, activity_type: programme_type.activity_type_tasks.first, happened_on: time)
+            create(:activity_without_creator, school: school, activity_type: programme_type.activity_type_tasks.first,
+                                              happened_on: time)
           end
         end
         let!(:observations) do
           [1.hour.ago, 3.days.ago, 1.year.ago].map do |time|
-            create(:observation, :intervention, school: school, intervention_type: programme_type.intervention_type_tasks.first, at: time)
+            create(:observation, :intervention, school: school,
+                                                intervention_type: programme_type.intervention_type_tasks.first, at: time)
           end
         end
 
@@ -123,7 +130,10 @@ describe Programmes::Creator do
       end
 
       context 'when school recorded an activity last year' do
-        let!(:activity) { create(:activity_without_creator, school: school, activity_type: programme_type.activity_type_tasks.first, happened_on: Time.zone.today.last_year)}
+        let!(:activity) do
+          create(:activity_without_creator, school: school, activity_type: programme_type.activity_type_tasks.first,
+                                            happened_on: Time.zone.today.last_year)
+        end
 
         before do
           service.create
@@ -185,7 +195,7 @@ describe Programmes::Creator do
       end
 
       context 'when school has recent activity in programme' do
-        let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first)}
+        let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first) }
 
         before do
           service.create
@@ -242,7 +252,10 @@ describe Programmes::Creator do
       end
 
       context 'when school recorded an activity last year' do
-        let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.today.last_year)}
+        let!(:activity) do
+          create(:activity, school: school, activity_type: programme_type.activity_types.first,
+                            happened_on: Time.zone.today.last_year)
+        end
 
         before do
           service.create

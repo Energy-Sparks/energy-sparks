@@ -16,21 +16,21 @@ RSpec.describe 'find school by urn' do
     end
 
     it 'displays the search page' do
-      expect(page).to have_content('Find schools by URN')
+      expect(page).to have_text('Find schools by URN')
     end
 
     it 'finds a single meter' do
       fill_in 'query', with: school.urn
       click_on 'Search'
 
-      expect(page).to have_content school.urn
-      expect(page).to have_content school.name
+      expect(page).to have_text school.urn
+      expect(page).to have_text school.name
     end
 
     it 'reports empty results' do
       fill_in 'query', with: '9999'
       click_on 'Search'
-      expect(page).to have_content('No schools were found using this URN')
+      expect(page).to have_text('No schools were found using this URN')
     end
   end
 end

@@ -74,9 +74,9 @@ RSpec.describe SchoolComparisonComponent, type: :component do
     end
 
     it 'includes the values' do
-      expect(html).to have_content('10 kW')
-      expect(html).to have_content('15 kW')
-      expect(html).to have_content('20 kW')
+      expect(html).to have_text('10 kW')
+      expect(html).to have_text('15 kW')
+      expect(html).to have_text('20 kW')
     end
 
     it 'classifies the school' do
@@ -85,7 +85,7 @@ RSpec.describe SchoolComparisonComponent, type: :component do
 
     it 'adds responsive classes to other categories' do
       expect(html).to have_css('div.exemplar_school.d-none')
-      expect(html).not_to have_css('div.benchmark_school.d-none')
+      expect(html).to have_no_css('div.benchmark_school.d-none')
       expect(html).to have_css('div.other_school.d-none')
     end
   end
@@ -108,7 +108,7 @@ RSpec.describe SchoolComparisonComponent, type: :component do
     it 'adds responsive classes to other categories' do
       expect(html).to have_css('div.exemplar_school.d-none')
       expect(html).to have_css('div.benchmark_school.d-none')
-      expect(html).not_to have_css('div.other_school.d-none')
+      expect(html).to have_no_css('div.other_school.d-none')
     end
   end
 

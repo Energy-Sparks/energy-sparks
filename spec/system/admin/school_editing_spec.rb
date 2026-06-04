@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe 'editing school details', type: :system do
-  let!(:admin)              { create(:admin)}
+  let!(:admin)              { create(:admin) }
 
   let!(:ks1)                { KeyStage.create(name: 'KS1') }
   let!(:ks2)                { KeyStage.create(name: 'KS2') }
   let!(:ks3)                { KeyStage.create(name: 'KS3') }
 
   let(:school_name)         { 'Oldfield Park Infants' }
-  let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
+  let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142) }
 
   before do
     sign_in(admin)
@@ -57,7 +57,7 @@ RSpec.describe 'editing school details', type: :system do
   it 'can see when the school was created on Energy Sparks' do
     click_on('Edit school details')
     date = school.created_at
-    expect(page).to have_content "#{school.name} was created on #{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')}"
+    expect(page).to have_text "#{school.name} was created on #{date.strftime('%a')} #{date.day.ordinalize} #{date.strftime('%b %Y')}"
   end
 
   it 'can edit lat/lng' do

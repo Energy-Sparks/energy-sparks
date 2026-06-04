@@ -2,8 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: true do
-  let(:all_params) { { title: 'Title text', description: 'Description text', selected: 'name_2', classes: 'my-class', id: 'my-id' } }
+RSpec.describe PanelSwitcherComponent, :include_url_helpers, type: :component do
+  let(:all_params) do
+    { title: 'Title text', description: 'Description text', selected: 'name_2', classes: 'my-class', id: 'my-id' }
+  end
   let(:panels) { html.css('div.panel') }
   let(:radios) { html.css("input[type='radio']") }
   let(:html) do
@@ -28,8 +30,8 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
   context 'with all params' do
     let(:params) { all_params }
 
-    it { expect(html).to have_selector('h4', text: 'Title text') }
-    it { expect(html).to have_selector('div.panel-switcher-component>p', text: 'Description text') }
+    it { expect(html).to have_css('h4', text: 'Title text') }
+    it { expect(html).to have_css('div.panel-switcher-component>p', text: 'Description text') }
 
     it 'adds specified classes' do
       expect(html).to have_css('div.panel-switcher-component.my-class')
@@ -46,12 +48,12 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
     end
 
     it 'shows selected panel' do
-      expect(html).to have_selector('.panel.name_2', visible: :visible)
+      expect(html).to have_css('.panel.name_2', visible: :visible)
     end
 
     it 'hides other panel' do
-      expect(html).to have_selector('.panel.name_1', visible: :hidden)
-      expect(html).to have_selector('.panel.name_3', visible: :hidden)
+      expect(html).to have_css('.panel.name_1', visible: :hidden)
+      expect(html).to have_css('.panel.name_3', visible: :hidden)
     end
   end
 
@@ -79,7 +81,7 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
     end
 
     it 'displays the panel with content' do
-      expect(html).to have_selector('.panel.name_1', visible: :visible)
+      expect(html).to have_css('.panel.name_1', visible: :visible)
     end
 
     it 'selects the radio button for the panel with content' do
@@ -87,11 +89,11 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
     end
 
     it 'does not display the empty panel' do
-      expect(html).not_to have_selector('.panel.name_2', visible: :visible)
+      expect(html).to have_no_css('.panel.name_2', visible: :visible)
     end
 
     it 'does not display radio button for the empty panel' do
-      expect(html).not_to have_field('Label 2')
+      expect(html).to have_no_field('Label 2')
     end
   end
 
@@ -99,19 +101,19 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
     let(:params) { all_params.except(:title, :description, :selected, :classes, :id) }
 
     it 'does not display title' do
-      expect(html).not_to have_selector('h4 strong')
+      expect(html).to have_no_css('h4 strong')
     end
 
     it 'does not display description' do
-      expect(html).not_to have_selector('div.panel-switcher-component>p')
+      expect(html).to have_no_css('div.panel-switcher-component>p')
     end
 
     it 'does not add css' do
-      expect(html).not_to have_css('div.panel-switcher-component.my-class')
+      expect(html).to have_no_css('div.panel-switcher-component.my-class')
     end
 
     it 'does not add id' do
-      expect(html).not_to have_css('div.panel-switcher-component#my-id')
+      expect(html).to have_no_css('div.panel-switcher-component#my-id')
     end
 
     it 'checks the first radio by default' do
@@ -119,12 +121,12 @@ RSpec.describe PanelSwitcherComponent, type: :component, include_url_helpers: tr
     end
 
     it 'shows selected panel' do
-      expect(html).to have_selector('.panel.name_1', visible: :visible)
+      expect(html).to have_css('.panel.name_1', visible: :visible)
     end
 
     it 'hides other panels' do
-      expect(html).to have_selector('.panel.name_2', visible: :hidden)
-      expect(html).to have_selector('.panel.name_3', visible: :hidden)
+      expect(html).to have_css('.panel.name_2', visible: :hidden)
+      expect(html).to have_css('.panel.name_3', visible: :hidden)
     end
   end
 end

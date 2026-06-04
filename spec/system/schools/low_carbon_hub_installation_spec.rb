@@ -20,7 +20,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
       end
 
       it 'I can add and delete a low carbon hub installation' do
-        expect(page).to have_content('This school has no Rtone API feeds')
+        expect(page).to have_text('This school has no Rtone API feeds')
         click_on 'New Rtone API feed'
 
         allow(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(username,
@@ -34,25 +34,25 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
                                     .and change(LowCarbonHubInstallation, :count).by(1)
                                     .and change(AmrDataFeedReading, :count).by(6)
 
-        expect(page).to have_no_content('This school has no Rtone API feeds')
-        expect(page).to have_content(rbee_meter_id)
+        expect(page).to have_no_text('This school has no Rtone API feeds')
+        expect(page).to have_text(rbee_meter_id)
         expect(school.low_carbon_hub_installations.count).to be 1
         expect(school.low_carbon_hub_installations.first.username).to eql username
         expect(school.low_carbon_hub_installations.first.password).to eql password
         expect(school.meters.count).to be 3
 
         click_on rbee_meter_id
-        expect(page).to have_content(info_text)
+        expect(page).to have_text(info_text)
         click_on 'All Solar API feeds'
 
-        expect(page).to have_content('Delete')
+        expect(page).to have_text('Delete')
         expect { click_on 'Delete' }.to change(Meter, :count).by(-3).and change(LowCarbonHubInstallation, :count).by(-1)
 
-        expect(page).to have_content('This school has no Rtone API feeds')
+        expect(page).to have_text('This school has no Rtone API feeds')
       end
 
       it 'I can edit an installation' do
-        expect(page).to have_content('This school has no Rtone API feeds')
+        expect(page).to have_text('This school has no Rtone API feeds')
         click_on 'New Rtone API feed'
 
         allow(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(username,
@@ -66,9 +66,9 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
                                     .and change(LowCarbonHubInstallation, :count).by(1)
                                     .and change(AmrDataFeedReading, :count).by(6)
 
-        expect(page).to have_content(rbee_meter_id)
+        expect(page).to have_text(rbee_meter_id)
         click_on 'Edit'
-        expect(page).to have_content('Update Rtone')
+        expect(page).to have_text('Update Rtone')
 
         expect(find_field(:low_carbon_hub_installation_username).value).to eql username
         expect(find_field(:low_carbon_hub_installation_password).value).to eql password
@@ -77,7 +77,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
         fill_in(:low_carbon_hub_installation_password, with: 'changed-pass')
 
         click_on 'Submit'
-        expect(page).to have_content('API feed was updated')
+        expect(page).to have_text('API feed was updated')
 
         click_on 'Edit'
         expect(find_field(:low_carbon_hub_installation_username).value).to eql 'changed-user'
@@ -85,14 +85,14 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
       end
 
       it 'handles being run out of hours properly' do
-        expect(page).to have_content('This school has no Rtone API feeds')
+        expect(page).to have_text('This school has no Rtone API feeds')
         click_on 'New Rtone API feed'
 
         allow(Solar::LowCarbonHubInstallationFactory).to receive(:new).and_raise(EnergySparksUnexpectedStateException)
 
         click_on 'Submit'
-        expect(page).to have_content('This school has no Rtone API feeds')
-        expect(page).to have_content('Rtone API is not available at the moment')
+        expect(page).to have_text('This school has no Rtone API feeds')
+        expect(page).to have_text('Rtone API is not available at the moment')
       end
 
       it 'I delete a low carbon hub installation and meter readings get removed' do
@@ -106,7 +106,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
 
         low_carbon_hub_installation = LowCarbonHubInstallation.first
 
-        expect(page).to have_content low_carbon_hub_installation.rbee_meter_id
+        expect(page).to have_text low_carbon_hub_installation.rbee_meter_id
         expect do
           click_on 'Delete'
         end.to change(Meter,
@@ -124,7 +124,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
 
       it 'displays the check button with a question mark by default' do
         within "#low-carbon-hub-#{installation.id}-test" do
-          expect(page).to have_content('Check')
+          expect(page).to have_text('Check')
           expect(page).to have_css("i[class*='fa-circle-question']")
         end
       end
@@ -167,9 +167,9 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
           # ...but check the method is called
           expect(Solar::LowCarbonHubLoaderJob).to receive(:perform_later).with(installation: installation,
                                                                                notify_email: admin.email)
-          expect(page).to have_content('Run Loader')
+          expect(page).to have_text('Run Loader')
           find("#low-carbon-hub-#{installation.id}-run-load").click
-          expect(page).to have_content("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
+          expect(page).to have_text("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
         end
       end
     end

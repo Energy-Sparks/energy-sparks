@@ -24,16 +24,16 @@ describe Alerts::GenerateDashboardAlerts do
     let(:rating) { 5.0 }
     let(:pupil_active) { true }
     let(:management_active) { true }
-    let!(:alert) { create(:alert, :with_run, school: school, rating: rating)}
+    let!(:alert) { create(:alert, :with_run, school: school, rating: rating) }
     let!(:alert_type_rating) do
-      create :alert_type_rating,
-        alert_type: alert.alert_type,
-        rating_from: 1,
-        rating_to: 6,
-        pupil_dashboard_alert_active: pupil_active,
-        management_dashboard_alert_active: management_active
+      create(:alert_type_rating,
+             alert_type: alert.alert_type,
+             rating_from: 1,
+             rating_to: 6,
+             pupil_dashboard_alert_active: pupil_active,
+             management_dashboard_alert_active: management_active)
     end
-    let!(:content_version) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
+    let!(:content_version) { create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating) }
 
     context 'where the rating matches the range' do
       it 'creates a dashboard alert pairing the alert and the content for each active dashboard' do
@@ -51,15 +51,17 @@ describe Alerts::GenerateDashboardAlerts do
       end
 
       it 'assigns a find out more from the run, if it matches the content version' do
-        find_out_more = create(:find_out_more, content_version: content_version, alert: alert, content_generation_run: content_generation_run)
+        find_out_more = create(:find_out_more, content_version: content_version, alert: alert,
+                                               content_generation_run: content_generation_run)
         service.perform(school.latest_alerts_without_exclusions)
         dashboard_alert = content_generation_run.dashboard_alerts.first
         expect(dashboard_alert.find_out_more).to eq(find_out_more)
       end
 
       it 'does not assign the find out more if it is from different content' do
-        content_version_2 = create :alert_type_rating_content_version, alert_type_rating: alert_type_rating
-        create(:find_out_more, content_version: content_version_2, alert: alert, content_generation_run: content_generation_run)
+        content_version_2 = create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)
+        create(:find_out_more, content_version: content_version_2, alert: alert,
+                               content_generation_run: content_generation_run)
 
         service.perform(school.latest_alerts_without_exclusions)
         dashboard_alert = content_generation_run.dashboard_alerts.first

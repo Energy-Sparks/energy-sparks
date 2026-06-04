@@ -27,11 +27,9 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
         .with(body: { sn: serial, money: 'GBP', time: time.to_date.iso8601, timeZone: 0 }.to_json)
   end
 
-  # rubocop:disable RSpec/LeakyConstantDeclaration -- don't think this is leaky because of self?
+  # -- don't think this is leaky because of self?
   self::LIST_JSON = File.read('spec/fixtures/solis_cloud/inverter_detail_list.json').freeze
   self::DAY_JSON = File.read('spec/fixtures/solis_cloud/inverter_day.json').freeze
-  # rubocop:enable RSpec/LeakyConstantDeclaration
-
   it 'downloads and saves readings' do
     travel_to(Date.new(2025, 1, 10))
     stub_inverter_day(meter.meter_serial_number, '2025-01-09', self.class::DAY_JSON)

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe 'Recommendations Page', type: :system, include_application_helper: true do
-  let(:key_stage_1) { create :key_stage, name: 'KS1'}
-  let!(:school) { create :school, name: 'School Name', key_stages: [key_stage_1] }
-  let!(:programme_type) { }
+describe 'Recommendations Page', :include_application_helper, type: :system do
+  let(:key_stage_1) { create(:key_stage, name: 'KS1') }
+  let!(:school) { create(:school, name: 'School Name', key_stages: [key_stage_1]) }
+  let!(:programme_type) {}
 
   let!(:setup_data) {}
   let(:user) {}
@@ -53,28 +53,35 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
   it_behaves_like 'a page with breadcrumbs', ['Schools', 'School Name', 'Recommended activities and actions']
 
   it 'has the title' do
-    expect(page).to have_content('Recommended activities and actions')
+    expect(page).to have_text('Recommended activities and actions')
   end
 
   it 'has the intro' do
-    expect(page).to have_content('Find your next energy saving activity to score points for your school,')
+    expect(page).to have_text('Find your next energy saving activity to score points for your school,')
   end
 
   context 'with prompts', without_feature: :todos do
     context 'programme prompt' do
       let(:programme_type) { create(:programme_type_with_activity_types, bonus_score: 12) }
-      let(:setup_data) { create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school) }
+      let(:setup_data) do
+        create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school)
+      end
 
       it_behaves_like 'a complete programme prompt', with_programme: true
     end
 
     context 'join programme prompt' do
       let(:bonus_points) { 14 }
-      let(:programme_type) { create(:programme_type_with_activity_types, title: 'Programme A', bonus_score: bonus_points) }
+      let(:programme_type) do
+        create(:programme_type_with_activity_types, title: 'Programme A', bonus_score: bonus_points)
+      end
 
       context 'when one programme activity has been completed' do
         let(:activity_type) { programme_type.activity_types.first }
-        let(:setup_data) { school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now) }
+        let(:setup_data) do
+          school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category,
+                                    happened_on: Time.zone.now)
+        end
 
         it_behaves_like 'a join programme prompt', programme: 'Programme A', task_count: 1
       end
@@ -82,7 +89,8 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       context 'when two programme activities have been completed' do
         let(:setup_data) do
           programme_type.activity_types.first(2).each do |activity_type|
-            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category,
+                                      happened_on: Time.zone.now)
           end
         end
 
@@ -92,7 +100,8 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       context 'when all programme activities have been completed' do
         let(:setup_data) do
           programme_type.activity_types.each do |activity_type|
-            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category,
+                                      happened_on: Time.zone.now)
           end
         end
 
@@ -123,7 +132,9 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
     context 'programme prompt' do
       let(:programme_type) { create(:programme_type, :with_todos, bonus_score: 12) }
-      let(:setup_data) { create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school) }
+      let(:setup_data) do
+        create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school)
+      end
 
       it_behaves_like 'a complete programme prompt', with_programme: true
     end
@@ -134,7 +145,10 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
 
       context 'when one programme activity has been completed' do
         let(:activity_type) { programme_type.activity_type_tasks.first }
-        let(:setup_data) { school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now) }
+        let(:setup_data) do
+          school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category,
+                                    happened_on: Time.zone.now)
+        end
 
         it_behaves_like 'a join programme prompt', programme: 'Programme A', task_count: 1
       end
@@ -142,7 +156,8 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       context 'when two programme activities have been completed' do
         let(:setup_data) do
           programme_type.activity_type_tasks.first(2).each do |activity_type|
-            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category,
+                                      happened_on: Time.zone.now)
           end
         end
 
@@ -152,7 +167,8 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       context 'when all programme tasks have been completed' do
         let(:setup_data) do
           programme_type.activity_type_tasks.each do |activity_type|
-            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category,
+                                      happened_on: Time.zone.now)
           end
           programme_type.intervention_type_tasks.each do |intervention_type|
             school.observations.intervention.create!(intervention_type: intervention_type, at: Time.zone.now)
@@ -180,50 +196,58 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
   end
 
   context 'based on your energy usage section' do
-    let(:section) { find(:css, '#energy-usage') }
+    let(:section) { find_by_id('energy-usage') }
     let(:setup_data) do
-      allow_any_instance_of(Recommendations::Actions).to receive(:based_on_energy_use).and_return(create_list(:intervention_type, 1))
-      allow_any_instance_of(Recommendations::Activities).to receive(:based_on_energy_use).and_return(create_list(:activity_type, 1))
+      allow_any_instance_of(Recommendations::Actions).to receive(:based_on_energy_use).and_return(create_list(
+                                                                                                    :intervention_type, 1
+                                                                                                  ))
+      allow_any_instance_of(Recommendations::Activities).to receive(:based_on_energy_use).and_return(create_list(
+                                                                                                       :activity_type, 1
+                                                                                                     ))
     end
 
     it 'has a title' do
-      expect(section).to have_content('Based on your energy usage')
+      expect(section).to have_text('Based on your energy usage')
     end
 
     it 'has description' do
-      expect(section).to have_content('These suggestions are based on our analysis of your energy usage data')
+      expect(section).to have_text('These suggestions are based on our analysis of your energy usage data')
     end
 
     it_behaves_like 'a panel selector with scope'
   end
 
   context 'based on your recent activity section' do
-    let(:section) { find(:css, '#recent-activity') }
+    let(:section) { find_by_id('recent-activity') }
     let(:setup_data) do
-      allow_any_instance_of(Recommendations::Actions).to receive(:based_on_recent_activity).and_return(create_list(:intervention_type, 1))
-      allow_any_instance_of(Recommendations::Activities).to receive(:based_on_recent_activity).and_return(create_list(:activity_type, 1))
+      allow_any_instance_of(Recommendations::Actions).to receive(:based_on_recent_activity).and_return(create_list(
+                                                                                                         :intervention_type, 1
+                                                                                                       ))
+      allow_any_instance_of(Recommendations::Activities).to receive(:based_on_recent_activity).and_return(create_list(
+                                                                                                            :activity_type, 1
+                                                                                                          ))
     end
 
     it 'has a title' do
-      expect(section).to have_content('Based on your recent activity')
+      expect(section).to have_text('Based on your recent activity')
     end
 
     it 'has description' do
-      expect(section).to have_content('These suggestions are based on your most recently recorded activity')
+      expect(section).to have_text('These suggestions are based on your most recently recorded activity')
     end
 
     it_behaves_like 'a panel selector with scope'
   end
 
   context 'more ideas section' do
-    let(:section) { find(:css, '#more-ideas') }
+    let(:section) { find_by_id('more-ideas') }
 
     it 'has a title' do
-      expect(section).to have_content('More ideas')
+      expect(section).to have_text('More ideas')
     end
 
     it 'has description' do
-      expect(section).to have_content('Looking for more ideas? Explore some of these options')
+      expect(section).to have_text('Looking for more ideas? Explore some of these options')
     end
 
     it 'has a link to programmes' do
@@ -247,11 +271,11 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
     end
 
     context 'when school is not data enabled' do
-      let!(:school) { create :school, name: 'School Name', key_stages: [key_stage_1], data_enabled: false }
+      let!(:school) { create(:school, name: 'School Name', key_stages: [key_stage_1], data_enabled: false) }
 
       it 'does not have advice or alerts links' do
-        expect(section).not_to have_link(href: "/schools/#{school.slug}/advice")
-        expect(section).not_to have_link(href: "/schools/#{school.slug}/advice/alerts")
+        expect(section).to have_no_link(href: "/schools/#{school.slug}/advice")
+        expect(section).to have_no_link(href: "/schools/#{school.slug}/advice/alerts")
       end
     end
   end

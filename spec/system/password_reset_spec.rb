@@ -23,7 +23,7 @@ describe 'User password reset' do
       let(:preferred_locale) { :en }
 
       it 'has text in english' do
-        expect(current_email).to have_content(I18n.t('devise.mailer.reset_password_instructions.energy_sparks_password_reset'))
+        expect(current_email).to have_text(I18n.t('devise.mailer.reset_password_instructions.energy_sparks_password_reset'))
       end
 
       it 'email links to non-locale specific site' do
@@ -35,7 +35,8 @@ describe 'User password reset' do
       let(:preferred_locale) { :cy }
 
       it 'has text in Welsh' do
-        expect(email).to have_content(I18n.t('devise.mailer.reset_password_instructions.energy_sparks_password_reset', locale: :cy))
+        expect(email).to have_text(I18n.t('devise.mailer.reset_password_instructions.energy_sparks_password_reset',
+                                          locale: :cy))
       end
 
       it 'emails link to locale specific site' do
@@ -46,10 +47,9 @@ describe 'User password reset' do
 
   context 'when resetting password for an existing user' do
     let(:valid_password) { 'valid password' }
+    let(:user) { create(:staff) }
 
     include_context 'with a stubbed audience manager'
-
-    let(:user) { create(:staff) }
 
     before do
       visit new_user_session_path
@@ -60,14 +60,14 @@ describe 'User password reset' do
       current_email.click_link I18n.t('devise.mailer.reset_password_instructions.change_my_password')
     end
 
-    it { expect(page).to have_content('Set your password') }
+    it { expect(page).to have_text('Set your password') }
 
     it 'does not show checkboxes for alerts' do
-      expect(page).not_to have_content('Energy Sparks alerts:')
+      expect(page).to have_no_text('Energy Sparks alerts:')
     end
 
     it 'does not show checkboxes for newsletter' do
-      expect(page).not_to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+      expect(page).to have_no_text(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
     end
 
     context 'with valid password and confirmation' do
@@ -77,7 +77,7 @@ describe 'User password reset' do
         click_button 'Set my password'
       end
 
-      it { expect(page).to have_content('Your password has been changed successfully') }
+      it { expect(page).to have_text('Your password has been changed successfully') }
     end
   end
 end

@@ -3,7 +3,7 @@ require 'rails_helper'
 module Cads
   describe RealtimePowerConsumptionService do
     let!(:school)              { create(:school) }
-    let!(:meter)               { create(:electricity_meter, school: school)}
+    let!(:meter)               { create(:electricity_meter, school: school) }
     let!(:cad)                 { create(:cad, school: school, meter: meter) }
     let(:meter_collection)    { double(:meter_collection).as_null_object }
 
@@ -21,7 +21,8 @@ module Cads
       it 'uses the right meter' do
         expect(meter_collection).to receive(:meter?).with(meter.mpan_mprn.to_s).and_return(analytics_meter)
 
-        allow(::PowerConsumptionService).to receive(:create_service).with(meter_collection, analytics_meter).and_return(power_consumption_service)
+        allow(::PowerConsumptionService).to receive(:create_service).with(meter_collection,
+                                                                          analytics_meter).and_return(power_consumption_service)
 
         RealtimePowerConsumptionService.cache_power_consumption_service(meter_collection, cad)
       end
@@ -31,7 +32,8 @@ module Cads
 
         expect(meter_collection).to receive(:aggregated_electricity_meters).and_return(analytics_meter)
 
-        allow(::PowerConsumptionService).to receive(:create_service).with(meter_collection, analytics_meter).and_return(power_consumption_service)
+        allow(::PowerConsumptionService).to receive(:create_service).with(meter_collection,
+                                                                          analytics_meter).and_return(power_consumption_service)
 
         RealtimePowerConsumptionService.cache_power_consumption_service(meter_collection, cad)
       end
@@ -41,7 +43,8 @@ module Cads
       let(:power_consumption_service) { double(:power_consumption_service) }
 
       before do
-        allow(::PowerConsumptionService).to receive(:create_service).with(meter_collection, analytics_meter).and_return(power_consumption_service)
+        allow(::PowerConsumptionService).to receive(:create_service).with(meter_collection,
+                                                                          analytics_meter).and_return(power_consumption_service)
       end
 
       it 'calls the service' do

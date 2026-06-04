@@ -3,7 +3,8 @@ require 'rails_helper'
 module Schools
   describe GenerateFuelConfiguration do
     it 'uses the results of the calls to the analytics' do
-      aggregated_meter_collection = double electricity?: true, gas?: false, solar_pv_panels?: true, storage_heaters?: false, report_group: :electric_and_solar_pv
+      aggregated_meter_collection = double electricity?: true, gas?: false, solar_pv_panels?: true,
+                                           storage_heaters?: false, report_group: :electric_and_solar_pv
 
       fuel_config = GenerateFuelConfiguration.new(aggregated_meter_collection).generate
 

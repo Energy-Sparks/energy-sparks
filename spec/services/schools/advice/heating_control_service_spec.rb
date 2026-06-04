@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Schools::Advice::HeatingControlService, type: :service do
   let(:school) { create(:school) }
   let(:meter_collection) { build(:meter_collection) }
-  let(:aggregate_school_service) { instance_double(AggregateSchoolService, meter_collection: meter_collection)}
+  let(:aggregate_school_service) { instance_double(AggregateSchoolService, meter_collection: meter_collection) }
   let(:service) { described_class.new(school, aggregate_school_service) }
 
   describe '#meters' do
@@ -49,8 +49,8 @@ RSpec.describe Schools::Advice::HeatingControlService, type: :service do
 
     let(:meter_collection) do
       build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :gas,
-                                                                start_date: 1.year.ago.to_date,
-                                                                kwh_data_x48: ([1] * 10) + ([2] * 20) + ([1] * 18))
+                                                                 start_date: 1.year.ago.to_date,
+                                                                 kwh_data_x48: ([1] * 10) + ([2] * 20) + ([1] * 18))
     end
 
     it 'returns true when not a holiday and a holiday in the previous week' do

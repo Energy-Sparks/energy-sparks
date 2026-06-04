@@ -1,4 +1,3 @@
 class TogglerDropdownComponentPreview < ViewComponent::Preview
-  def examples
-  end
+  def examples; end
 end

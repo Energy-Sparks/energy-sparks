@@ -2,16 +2,18 @@ require 'rails_helper'
 
 describe 'TransportSurvey', type: :model do
   context 'with valid attributes' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     it { is_expected.to be_valid }
   end
 
   describe '#responses=' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     describe 'adding a response' do
-      let(:attributes) { attributes_for(:transport_survey_response, surveyed_at: surveyed_at, run_identifier: run_identifier) }
+      let(:attributes) do
+        attributes_for(:transport_survey_response, surveyed_at: surveyed_at, run_identifier: run_identifier)
+      end
       let(:surveyed_at) { DateTime.new(2021, 0o3, 18, 9, 0, 0) }
       let(:run_identifier) { 1234 }
 
@@ -20,7 +22,9 @@ describe 'TransportSurvey', type: :model do
       it { expect(transport_survey.responses.length).to be 1 }
 
       describe 'adding another response' do
-        let(:new_attributes) { attributes_for(:transport_survey_response, surveyed_at: new_surveyed_at, run_identifier: new_run_identifier) }
+        let(:new_attributes) do
+          attributes_for(:transport_survey_response, surveyed_at: new_surveyed_at, run_identifier: new_run_identifier)
+        end
 
         before { transport_survey.responses = [new_attributes] }
 
@@ -60,7 +64,7 @@ describe 'TransportSurvey', type: :model do
   end
 
   describe '#total_responses' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     context 'with no responses' do
       it { expect(transport_survey.total_responses).to be 0 }
@@ -68,7 +72,7 @@ describe 'TransportSurvey', type: :model do
 
     context 'with one response' do
       before do
-        create :transport_survey_response, transport_survey: transport_survey, passengers: 2
+        create(:transport_survey_response, transport_survey: transport_survey, passengers: 2)
       end
 
       it { expect(transport_survey.total_responses).to be 1 }
@@ -76,8 +80,8 @@ describe 'TransportSurvey', type: :model do
 
     context 'with more than one response' do
       before do
-        create :transport_survey_response, transport_survey: transport_survey, passengers: 2
-        create :transport_survey_response, transport_survey: transport_survey, passengers: 3
+        create(:transport_survey_response, transport_survey: transport_survey, passengers: 2)
+        create(:transport_survey_response, transport_survey: transport_survey, passengers: 3)
       end
 
       it { expect(transport_survey.total_responses).to be 2 }
@@ -85,7 +89,7 @@ describe 'TransportSurvey', type: :model do
   end
 
   describe '#total_carbon' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     context 'with no responses' do
       it { expect(transport_survey.total_carbon).to be 0 }
@@ -110,14 +114,15 @@ describe 'TransportSurvey', type: :model do
   end
 
   describe 'Category based methods' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     let(:categories) { TransportSurvey::TransportType.categories.keys << nil }
 
     def create_responses(cats)
       cats.each do |cat|
         transport_type = create(:transport_type, category: cat)
-        create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type, passengers: 3)
+        create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type,
+                                           passengers: 3)
       end
     end
 
@@ -126,7 +131,8 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(categories) }
 
         it 'returns a hash of responses per category' do
-          expect(transport_survey.responses_per_category).to eql({ 'car' => 1, 'walking_and_cycling' => 1, 'public_transport' => 1, 'park_and_stride' => 1, 'other' => 1 })
+          expect(transport_survey.responses_per_category).to eql({ 'car' => 1, 'walking_and_cycling' => 1,
+                                                                   'public_transport' => 1, 'park_and_stride' => 1, 'other' => 1 })
         end
       end
 
@@ -134,21 +140,24 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(categories.excluding('car', 'walking_and_cycling')) }
 
         it 'returns a hash with zero values for missing categories' do
-          expect(transport_survey.responses_per_category).to eql({ 'car' => 0, 'walking_and_cycling' => 0, 'public_transport' => 1, 'park_and_stride' => 1, 'other' => 1 })
+          expect(transport_survey.responses_per_category).to eql({ 'car' => 0, 'walking_and_cycling' => 0,
+                                                                   'public_transport' => 1, 'park_and_stride' => 1, 'other' => 1 })
         end
 
         context 'when categories have multiple responses' do
           before { create_responses(categories) }
 
           it 'adds them up' do
-            expect(transport_survey.responses_per_category).to eql({ 'car' => 1, 'walking_and_cycling' => 1, 'public_transport' => 2, 'park_and_stride' => 2, 'other' => 2 })
+            expect(transport_survey.responses_per_category).to eql({ 'car' => 1, 'walking_and_cycling' => 1,
+                                                                     'public_transport' => 2, 'park_and_stride' => 2, 'other' => 2 })
           end
         end
       end
 
       context 'when there are no responses' do
         it 'returns a hash with zero values for missing categories' do
-          expect(transport_survey.responses_per_category).to eql({ 'car' => 0, 'walking_and_cycling' => 0, 'public_transport' => 0, 'park_and_stride' => 0, 'other' => 0 })
+          expect(transport_survey.responses_per_category).to eql({ 'car' => 0, 'walking_and_cycling' => 0,
+                                                                   'public_transport' => 0, 'park_and_stride' => 0, 'other' => 0 })
         end
       end
     end
@@ -158,7 +167,8 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(categories) }
 
         it 'returns a hash of responses percentages per category' do
-          expect(transport_survey.percentage_per_category).to eql({ 'car' => 20.0, 'walking_and_cycling' => 20.0, 'public_transport' => 20.0, 'park_and_stride' => 20.0, 'other' => 20.0 })
+          expect(transport_survey.percentage_per_category).to eql({ 'car' => 20.0, 'walking_and_cycling' => 20.0,
+                                                                    'public_transport' => 20.0, 'park_and_stride' => 20.0, 'other' => 20.0 })
         end
       end
 
@@ -166,21 +176,24 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(categories.excluding('car', 'park_and_stride', nil)) }
 
         it 'returns zero values for missing categories' do
-          expect(transport_survey.percentage_per_category).to eql({ 'car' => 0, 'walking_and_cycling' => 50.0, 'public_transport' => 50.0, 'park_and_stride' => 0, 'other' => 0 })
+          expect(transport_survey.percentage_per_category).to eql({ 'car' => 0, 'walking_and_cycling' => 50.0,
+                                                                    'public_transport' => 50.0, 'park_and_stride' => 0, 'other' => 0 })
         end
 
         context 'when categories have multiple responses' do
           before { create_responses(categories) }
 
           it 'adds them up' do
-            expect(transport_survey.percentage_per_category).to eql({ 'car' => 14.285714285714285, 'walking_and_cycling' => 28.57142857142857, 'public_transport' => 28.57142857142857, 'park_and_stride' => 14.285714285714285, 'other' => 14.285714285714285 })
+            expect(transport_survey.percentage_per_category).to eql({ 'car' => 14.285714285714285,
+                                                                      'walking_and_cycling' => 28.57142857142857, 'public_transport' => 28.57142857142857, 'park_and_stride' => 14.285714285714285, 'other' => 14.285714285714285 })
           end
         end
       end
 
       context 'when there are no responses' do
         it 'returns zero values for missing categories' do
-          expect(transport_survey.percentage_per_category).to eql({ 'car' => 0, 'walking_and_cycling' => 0, 'public_transport' => 0, 'park_and_stride' => 0, 'other' => 0 })
+          expect(transport_survey.percentage_per_category).to eql({ 'car' => 0, 'walking_and_cycling' => 0,
+                                                                    'public_transport' => 0, 'park_and_stride' => 0, 'other' => 0 })
         end
       end
     end
@@ -190,7 +203,8 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(categories) }
 
         it 'returns passenger percentages per category' do
-          expect(transport_survey.pie_chart_data).to eql([{ name: 'Walking and cycling', y: 20.0 }, { name: 'Car', y: 20.0 }, { name: 'Public transport', y: 20.0 }, { name: 'Park and stride', y: 20.0 }, { name: 'Other', y: 20.0 }])
+          expect(transport_survey.pie_chart_data).to eql([{ name: 'Walking and cycling', y: 20.0 },
+                                                          { name: 'Car', y: 20.0 }, { name: 'Public transport', y: 20.0 }, { name: 'Park and stride', y: 20.0 }, { name: 'Other', y: 20.0 }])
         end
       end
 
@@ -198,25 +212,28 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(categories.excluding('car', 'park_and_stride', nil)) }
 
         it 'returns zero values for missing categories' do
-          expect(transport_survey.pie_chart_data).to eql([{ name: 'Walking and cycling', y: 50.0 }, { name: 'Car', y: 0 }, { name: 'Public transport', y: 50.0 }, { name: 'Park and stride', y: 0 }, { name: 'Other', y: 0 }])
+          expect(transport_survey.pie_chart_data).to eql([{ name: 'Walking and cycling', y: 50.0 },
+                                                          { name: 'Car', y: 0 }, { name: 'Public transport', y: 50.0 }, { name: 'Park and stride', y: 0 }, { name: 'Other', y: 0 }])
         end
       end
 
       context 'when there are no responses' do
         it 'returns zero values for missing categories' do
-          expect(transport_survey.pie_chart_data).to eql([{ name: 'Walking and cycling', y: 0 }, { name: 'Car', y: 0 }, { name: 'Public transport', y: 0 }, { name: 'Park and stride', y: 0 }, { name: 'Other', y: 0 }])
+          expect(transport_survey.pie_chart_data).to eql([{ name: 'Walking and cycling', y: 0 }, { name: 'Car', y: 0 },
+                                                          { name: 'Public transport', y: 0 }, { name: 'Park and stride', y: 0 }, { name: 'Other', y: 0 }])
         end
       end
     end
   end
 
   describe 'time based methods' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     def create_responses(times, cat)
       times.each do |time|
         transport_type = create(:transport_type, category: cat)
-        create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type, journey_minutes: time)
+        create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type,
+                                           journey_minutes: time)
       end
     end
 
@@ -227,7 +244,8 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(TransportSurvey::Response.journey_minutes_options, category) }
 
         it 'returns a hash of responses count per time' do
-          expect(transport_survey.responses_per_time_for_category(category)).to eql({ 5 => 1, 10 => 1, 15 => 1, 20 => 1, 30 => 1, 45 => 1, 60 => 1 })
+          expect(transport_survey.responses_per_time_for_category(category)).to eql({ 5 => 1, 10 => 1, 15 => 1,
+                                                                                      20 => 1, 30 => 1, 45 => 1, 60 => 1 })
         end
       end
 
@@ -238,7 +256,8 @@ describe 'TransportSurvey', type: :model do
         end
 
         it 'adds up responses' do
-          expect(transport_survey.responses_per_time_for_category(category)).to eql({ 5 => 1, 10 => 2, 15 => 2, 20 => 2, 30 => 2, 45 => 2, 60 => 2 })
+          expect(transport_survey.responses_per_time_for_category(category)).to eql({ 5 => 1, 10 => 2, 15 => 2,
+                                                                                      20 => 2, 30 => 2, 45 => 2, 60 => 2 })
         end
       end
 
@@ -246,7 +265,8 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(TransportSurvey::Response.journey_minutes_options[..0], category) }
 
         it 'has zero values for those times' do
-          expect(transport_survey.responses_per_time_for_category(category)).to eql({ 5 => 1, 10 => 0, 15 => 0, 20 => 0, 30 => 0, 45 => 0, 60 => 0 })
+          expect(transport_survey.responses_per_time_for_category(category)).to eql({ 5 => 1, 10 => 0, 15 => 0,
+                                                                                      20 => 0, 30 => 0, 45 => 0, 60 => 0 })
         end
       end
 
@@ -257,7 +277,8 @@ describe 'TransportSurvey', type: :model do
         end
 
         it 'only counts those in specified category' do
-          expect(transport_survey.responses_per_time_for_category(category)).to eql({ 5 => 1, 10 => 0, 15 => 0, 20 => 0, 30 => 0, 45 => 0, 60 => 0 })
+          expect(transport_survey.responses_per_time_for_category(category)).to eql({ 5 => 1, 10 => 0, 15 => 0,
+                                                                                      20 => 0, 30 => 0, 45 => 0, 60 => 0 })
         end
       end
     end
@@ -269,7 +290,8 @@ describe 'TransportSurvey', type: :model do
         before { create_responses(TransportSurvey::Response.journey_minutes_options, category) }
 
         it 'sums 30+ minutes together' do
-          expect(transport_survey.responses_per_time_for_category_car).to eql({ 5 => 1, 10 => 1, 15 => 1, 20 => 1, '30+' => 3 })
+          expect(transport_survey.responses_per_time_for_category_car).to eql({ 5 => 1, 10 => 1, 15 => 1, 20 => 1,
+                                                                                '30+' => 3 })
         end
       end
 
@@ -280,7 +302,8 @@ describe 'TransportSurvey', type: :model do
         end
 
         it 'sums 30+ minutes together' do
-          expect(transport_survey.responses_per_time_for_category_car).to eql({ 5 => 1, 10 => 2, 15 => 2, 20 => 2, '30+' => 6 })
+          expect(transport_survey.responses_per_time_for_category_car).to eql({ 5 => 1, 10 => 2, 15 => 2, 20 => 2,
+                                                                                '30+' => 6 })
         end
       end
     end
@@ -288,13 +311,13 @@ describe 'TransportSurvey', type: :model do
 
   describe '#today?' do
     context 'when survey has a run_on date of today' do
-      subject(:transport_survey) { create :transport_survey, run_on: Time.zone.today }
+      subject(:transport_survey) { create(:transport_survey, run_on: Time.zone.today) }
 
       it { expect(transport_survey.today?).to be true }
     end
 
     context 'when survey has a run_on date other than today' do
-      subject(:transport_survey) { create :transport_survey, run_on: 3.days.ago }
+      subject(:transport_survey) { create(:transport_survey, run_on: 3.days.ago) }
 
       it { expect(transport_survey.today?).to be false }
     end
@@ -302,7 +325,7 @@ describe 'TransportSurvey', type: :model do
 
   describe '#add_observation' do
     context 'when there are no responses' do
-      subject(:transport_survey) { create :transport_survey, run_on: Time.zone.today, responses: [] }
+      subject(:transport_survey) { create(:transport_survey, run_on: Time.zone.today, responses: []) }
 
       it 'does not add an observation' do
         expect(transport_survey.observations).to be_empty
@@ -310,9 +333,11 @@ describe 'TransportSurvey', type: :model do
     end
 
     context 'when there are responses' do
-      subject(:transport_survey) { create :transport_survey, run_on: Time.zone.today }
+      subject(:transport_survey) { create(:transport_survey, run_on: Time.zone.today) }
 
-      let(:attributes) { attributes_for(:transport_survey_response, surveyed_at: Time.zone.now, run_identifier: '2345') }
+      let(:attributes) do
+        attributes_for(:transport_survey_response, surveyed_at: Time.zone.now, run_identifier: '2345')
+      end
 
       before { transport_survey.responses = [attributes] }
 
@@ -333,7 +358,9 @@ describe 'TransportSurvey', type: :model do
       end
 
       context 'when more responses are added' do
-        let(:new_attributes) { attributes_for(:transport_survey_response, surveyed_at: Time.zone.now, run_identifier: '4567') }
+        let(:new_attributes) do
+          attributes_for(:transport_survey_response, surveyed_at: Time.zone.now, run_identifier: '4567')
+        end
 
         before { transport_survey.responses = [new_attributes] }
 

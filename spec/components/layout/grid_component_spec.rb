@@ -80,7 +80,6 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
     it { expect(html).to have_css('div.theme.theme-dark') }
   end
 
-
   context 'with inline component classes' do
     let(:html) do
       render_inline(described_class.new(**params)) do |c|
@@ -139,8 +138,8 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
     end
 
     it { expect(rows[0]).to have_css('div.col-12.col-lg-6', count: 2) }
-    it { expect(html).to have_content('cell 1') }
-    it { expect(html).to have_content('cell 2') }
+    it { expect(html).to have_text('cell 1') }
+    it { expect(html).to have_text('cell 2') }
   end
 
   context 'with responsive classes' do
@@ -161,7 +160,7 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
       end
 
       it 'the other cell does not have the responsive classes' do
-        expect(rows.first.css('div')[1]).not_to have_css('.order-first-md-down.pb-4.pb-lg-0')
+        expect(rows.first.css('div')[1]).to have_no_css('.order-first-md-down.pb-4.pb-lg-0')
       end
     end
   end
@@ -175,11 +174,11 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
     end
 
     it 'renders cell when if: true' do
-      expect(html).to have_content('cell 1')
+      expect(html).to have_text('cell 1')
     end
 
     it 'does not render cell when if: false' do
-      expect(html).not_to have_content('cell 2')
+      expect(html).to have_no_text('cell 2')
     end
   end
 end

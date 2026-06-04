@@ -7,9 +7,11 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
     described_class.new(**params)
   end
 
-  let(:id) { 'custom-id'}
+  let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:school) { create(:school, :with_fuel_configuration, has_solar_pv: false, has_gas: false, has_storage_heaters: false) }
+  let(:school) do
+    create(:school, :with_fuel_configuration, has_solar_pv: false, has_gas: false, has_storage_heaters: false)
+  end
 
   let(:params) do
     {
@@ -29,15 +31,18 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
   shared_examples 'a properly rended prompt' do
     let(:expected_summary) { nil }
     it { expect(html).to have_link(I18n.t('schools.show.find_out_more'), href: expected_path) }
-    it { expect(html).to have_content(I18n.t("advice_pages.nav.pages.#{expected_page.key}")) }
-    it { expect(html).to have_content(I18n.t("advice_pages.index.show.page_summary.#{expected_summary || expected_page.key}")) }
+    it { expect(html).to have_text(I18n.t("advice_pages.nav.pages.#{expected_page.key}")) }
+
+    it {
+      expect(html).to have_text(I18n.t("advice_pages.index.show.page_summary.#{expected_summary || expected_page.key}"))
+    }
   end
 
   describe '#render?' do
     context 'when school is not data enabled' do
       let(:school) { create(:school, data_enabled: false) }
 
-      it { expect(component.render?).to be(false)}
+      it { expect(component.render?).to be(false) }
     end
   end
 
@@ -51,15 +56,15 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_content(I18n.t('components.advice_page_list.title')) }
-    it { expect(html).to have_content(I18n.t('components.advice_page_list.intro')) }
+    it { expect(html).to have_text(I18n.t('components.advice_page_list.title')) }
+    it { expect(html).to have_text(I18n.t('components.advice_page_list.intro')) }
 
     context 'when school has electricity' do
       let(:school) do
         create(:school, :with_fuel_configuration, has_gas: false, has_solar_pv: false, has_storage_heaters: false)
       end
 
-      it { expect(html).to have_content(I18n.t('advice_pages.nav.sections.electricity')) }
+      it { expect(html).to have_text(I18n.t('advice_pages.nav.sections.electricity')) }
 
       it_behaves_like 'a properly rended prompt' do
         let(:expected_path) { insights_school_advice_baseload_path(school) }
@@ -72,21 +77,21 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
         let(:expected_page) { solar_pv }
       end
 
-      it { expect(html).to have_no_content(I18n.t("advice_pages.nav.pages.#{electricity_meter_breakdown.key}")) }
+      it { expect(html).to have_no_text(I18n.t("advice_pages.nav.pages.#{electricity_meter_breakdown.key}")) }
 
       context 'with multiple meters' do
         before do
           create_list(:electricity_meter, 2, school: school)
         end
 
-        it { expect(html).to have_content(I18n.t("advice_pages.nav.pages.#{electricity_meter_breakdown.key}")) }
+        it { expect(html).to have_text(I18n.t("advice_pages.nav.pages.#{electricity_meter_breakdown.key}")) }
       end
     end
 
     context 'when school has gas' do
       let(:school) { create(:school, :with_fuel_configuration, has_solar_pv: false, has_storage_heaters: false) }
 
-      it { expect(html).to have_content(I18n.t('advice_pages.nav.sections.gas')) }
+      it { expect(html).to have_text(I18n.t('advice_pages.nav.sections.gas')) }
 
       it_behaves_like 'a properly rended prompt' do
         let(:expected_path) { insights_school_advice_heating_control_path(school) }
@@ -103,7 +108,7 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
     context 'when school has storage heaters' do
       let(:school) { create(:school, :with_fuel_configuration, has_solar_pv: false, has_gas: false) }
 
-      it { expect(html).to have_content(I18n.t('advice_pages.nav.sections.storage_heater')) }
+      it { expect(html).to have_text(I18n.t('advice_pages.nav.sections.storage_heater')) }
 
       it_behaves_like 'a properly rended prompt' do
         let(:expected_path) { insights_school_advice_storage_heaters_path(school) }
@@ -120,7 +125,7 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
     context 'when school has solar' do
       let(:school) { create(:school, :with_fuel_configuration, has_storage_heaters: false, has_gas: false) }
 
-      it { expect(html).to have_content(I18n.t('advice_pages.nav.sections.solar_pv')) }
+      it { expect(html).to have_text(I18n.t('advice_pages.nav.sections.solar_pv')) }
 
       it_behaves_like 'a properly rended prompt' do
         let(:expected_path) { insights_school_advice_baseload_path(school) }
@@ -137,7 +142,7 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
     context 'when school has a benchmark' do
       let!(:benchmark) { create(:advice_page_school_benchmark, school: school, advice_page: baseload) }
 
-      it { expect(html).to have_content(I18n.t("advice_pages.benchmarks.#{benchmark.benchmarked_as}"))}
+      it { expect(html).to have_text(I18n.t("advice_pages.benchmarks.#{benchmark.benchmarked_as}")) }
     end
   end
 end

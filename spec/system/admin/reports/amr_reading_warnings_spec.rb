@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe AmrReadingWarning, type: :system, include_application_helper: true do
+describe AmrReadingWarning, :include_application_helper, type: :system do
   let(:mpan)      { '123' }
   let!(:admin)    { create(:admin) }
   let!(:log)      { create(:amr_data_feed_import_log) }
@@ -17,7 +17,7 @@ describe AmrReadingWarning, type: :system, include_application_helper: true do
     click_on 'Data feed import logs'
     click_on 'Warnings'
 
-    expect(page).to have_content('Warnings')
-    expect(page).to have_content(nice_date_times(log.import_time))
+    expect(page).to have_text('Warnings')
+    expect(page).to have_text(nice_date_times(log.import_time))
   end
 end

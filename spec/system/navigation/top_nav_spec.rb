@@ -24,7 +24,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
   end
 
   context 'with an Our schools menu' do
-    let(:our_schools) { nav.find(:css, '#our-schools') }
+    let(:our_schools) { nav.find_by_id('our-schools') }
 
     it 'has all menu options' do
       expect(our_schools).to have_link('View schools')
@@ -38,7 +38,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
   end
 
   context 'with an Our services menu' do
-    let(:our_services) { nav.find(:css, '#our-services') }
+    let(:our_services) { nav.find_by_id('our-services') }
 
     it 'has all menu options' do
       expect(our_services).to have_link('Energy management tool')
@@ -56,7 +56,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
   end
 
   context 'with an About us menu' do
-    let(:about_us) { nav.find(:css, '#about-us') }
+    let(:about_us) { nav.find_by_id('about-us') }
 
     it 'has all menu options' do
       expect(about_us).to have_link('Contact')
