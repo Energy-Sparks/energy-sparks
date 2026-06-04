@@ -19,15 +19,15 @@
       <%= f.input :default_product,
                   hint: 'Is this our default product? If true, will be used to display prices on website' %>
       <%= f.input :small_school_price,
-                  hint: 'Price for smaller schools in £' %>
+                  hint: 'Annual price for smaller schools, in £' %>
       <%= f.input :large_school_price,
-                  hint: 'Price for larger schools in £' %>
+                  hint: 'Annual price for larger schools, in £' %>
       <%= f.input :size_threshold,
                   hint: 'Specifies the threshold, in number of pupils, for deciding whether a school is small '\
                   'or large for price calculations' %>
-      <%= f.input :mat_price, hint: 'Price for MAT wide contracts in £' %>
+      <%= f.input :mat_price, hint: 'Annual price for MAT wide contracts, in £' %>
       <%= f.input :private_account_fee,
-                  hint: 'Annual price for a school to have a private account, in £' %>
+                  hint: 'Annual fee for a school to have a private account, in £' %>
       <%= f.input :metering_fee,
                   hint: 'Annual fee for schools with more than 5 meters. Price is per meter, per year in £' %>
 

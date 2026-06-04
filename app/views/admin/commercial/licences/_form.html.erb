@@ -63,7 +63,9 @@
                         include_blank: false,
                         input_html: { class: 'select2' } %>
           <% end %>
-          <%= f.input :school_specific_price %>
+          <%= f.input :school_specific_price,
+                      hint: 'Override contract price. Set annual price for this specific school, in £. ' \
+                            'Set to zero to make free and waive all additional fees' %>
           <%= f.input :status, collection: collection_from_enum(Commercial::Licence.statuses), include_blank: false %>
         </div>
 
