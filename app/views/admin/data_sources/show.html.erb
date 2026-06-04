@@ -43,7 +43,7 @@
   <%= render 'data_source', data_source: @data_source %>
 </div>
 
-<%= render TabsComponent.new do |component| %>
+<%= render TabsComponent.new(classes: 'tabs-edit-return') do |component| %>
   <% component.with_tab(name: :issues,
                         label: label_count('Issues', @data_source.issues.issue.status_open.count)) do %>
     <% if @data_source.issues.any? %>
@@ -67,12 +67,3 @@
     <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @data_source %></div>
   <% end %>
 <% end %>
-
-<script>
-document.querySelectorAll('.tab-content a.btn.edit').forEach((element) => {
-  element.addEventListener('click', (event) => {
-    event.preventDefault();
-    window.location.href = `${element.href}${encodeURIComponent(window.location.hash)}`;
-  });
-});
-</script>

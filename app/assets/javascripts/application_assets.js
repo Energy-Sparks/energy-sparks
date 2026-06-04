@@ -74,3 +74,4 @@
 //= require section_nav
 //= require match_row_height
 //= require ensure_one_checked
+//= require preserve_tab_links
