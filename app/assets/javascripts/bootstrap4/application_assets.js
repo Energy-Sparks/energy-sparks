@@ -73,3 +73,4 @@
 //= require section_nav
 //= require match_row_height
 //= require bootstrap4/ensure_one_checked
+//= require preserve_tab_link
