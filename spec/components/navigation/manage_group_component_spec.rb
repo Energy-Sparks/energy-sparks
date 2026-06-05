@@ -54,7 +54,7 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
         expect(html).to have_link('Issues',
                                   href: admin_school_group_issues_path(school_group))
         expect(html).to have_link('Impact report',
-                                  href: edit_admin_impact_report_path(school_group))
+                                  href: edit_school_group_impact_configuration_path(school_group))
         expect(html).to have_link(I18n.t('school_groups.sub_nav.manage_users'),
                                   href: admin_school_group_users_path(school_group))
         expect(html).to have_link(I18n.t('school_groups.sub_nav.manage_partners'),

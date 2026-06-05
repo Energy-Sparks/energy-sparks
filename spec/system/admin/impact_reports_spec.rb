@@ -26,7 +26,7 @@ RSpec.describe 'Admin impact report configuration' do
 
     context 'when editing a configuration' do
       before do
-        visit edit_admin_impact_report_path(school_group)
+        visit edit_school_group_impact_configuration_path(school_group)
       end
 
       it 'does not authorise viewing' do
@@ -52,7 +52,7 @@ RSpec.describe 'Admin impact report configuration' do
 
     context 'when editing a configuration' do
       before do
-        visit edit_admin_impact_report_path(school_group)
+        visit edit_school_group_impact_configuration_path(school_group)
       end
 
       it 'does not authorise viewing' do
@@ -104,7 +104,7 @@ RSpec.describe 'Admin impact report configuration' do
 
     context 'when editing page' do
       before do
-        visit edit_admin_impact_report_path(school_group)
+        visit edit_school_group_impact_configuration_path(school_group)
       end
 
       it { expect(page).to have_link('View report', href: school_group_impact_index_path(school_group)) }

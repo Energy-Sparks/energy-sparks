@@ -270,19 +270,23 @@ module ApplicationHelper
     format('%04d', school_time).insert(2, ':')
   end
 
+  # When decimals are true, round only to nearest penny and format. Otherwise just format the price
   def format_price(price, decimals: true)
-    raw = price.to_s
-    integer, decimal = raw.split('.')
+    return '£0.00' unless price.present?
 
-    formatted_int = ActiveSupport::NumberHelper.number_to_delimited(integer)
+    amount = BigDecimal(price.to_s)
 
-    return "£#{formatted_int}" unless decimals
+    if decimals
+      rounded = amount.round(2)
+      raw = format('%.2f', rounded)
+      integer, decimal = raw.split('.')
 
-    if decimal
-      padded = decimal.ljust(2, '0')
-      "£#{formatted_int}.#{padded}"
+      formatted_int = ActiveSupport::NumberHelper.number_to_delimited(integer)
+      "£#{formatted_int}.#{decimal}"
     else
-      "£#{formatted_int}.00"
+      integer = amount.truncate.to_i
+      formatted_int = ActiveSupport::NumberHelper.number_to_delimited(integer)
+      "£#{formatted_int}"
     end
   end
 

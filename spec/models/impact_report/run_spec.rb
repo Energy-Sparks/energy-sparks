@@ -199,9 +199,13 @@ describe ImpactReport::Run do
     let(:metric_category) { :energy_efficiency }
     let(:run) { create(:impact_report_run) }
 
-    context 'with all metrics' do
+    context 'with all metrics' do # rubocop:disable RSpec/MultipleMemoizedHelpers
       let!(:annual_saving_gbp_gas) { create_metric(:annual_saving_gbp, :gas, 300) }
       let!(:annual_saving_gbp_electricity) { create_metric(:annual_saving_gbp, :electricity, 400) }
+      let!(:holiday_previous_year_gbp_electricity) { create_metric(:holiday_previous_year_gbp, :electricity, 500) }
+      let!(:holiday_previous_year_gbp_gas) { create_metric(:holiday_previous_year_gbp, :gas, 4500) }
+      let!(:holiday_previous_gbp_electricity) { create_metric(:holiday_previous_gbp, :electricity, 500) }
+      let!(:holiday_previous_gbp_gas) { create_metric(:holiday_previous_gbp, :gas, 4500) }
       let!(:annual_saving_co2_gas) { create_metric(:annual_saving_co2, :gas, 500) }
       let!(:annual_saving_co2_electricity) { create_metric(:annual_saving_co2, :electricity, 600) }
       let!(:targets_gas) { create_metric(:targets, :gas, 12) }
@@ -210,6 +214,8 @@ describe ImpactReport::Run do
       it 'returns metrics in configured order, gas first, then electricity' do
         expect(energy_efficiency).to eq(
           [annual_saving_gbp_gas, annual_saving_gbp_electricity,
+           holiday_previous_year_gbp_gas, holiday_previous_year_gbp_electricity,
+           holiday_previous_gbp_gas, holiday_previous_gbp_electricity,
            annual_saving_co2_gas, annual_saving_co2_electricity,
            targets_gas, targets_electricity]
         )
@@ -241,6 +247,23 @@ describe ImpactReport::Run do
       end
 
       it { expect(energy_efficiency).to eq([ok_metric]) }
+    end
+
+    context 'with gbp_threshold' do
+      let(:gbp_threshold) { 100 }
+      let!(:above_threshold) do
+        create(:impact_report_metric, run:, metric_category:,
+                                      fuel_type: :electricity, metric_type: :annual_saving_gbp, value: 150)
+      end
+
+      before do
+        create(:impact_report_metric, run:, metric_category:,
+                                      fuel_type: :gas, metric_type: :annual_saving_gbp, value: 50)
+      end
+
+      it 'filters out metrics below the threshold' do
+        expect(run.energy_efficiency(gbp_threshold:)).to eq([above_threshold])
+      end
     end
   end
 

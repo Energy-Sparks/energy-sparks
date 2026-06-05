@@ -28,7 +28,13 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving_gbp annual_saving_co2 targets].freeze
+    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[
+      annual_saving_gbp
+      holiday_previous_year_gbp
+      holiday_previous_gbp
+      annual_saving_co2
+      targets
+    ].freeze
 
     def end_date
       run_date - 1.day
@@ -72,14 +78,14 @@ module ImpactReport
                 end
     end
 
-    def energy_efficiency
+    def energy_efficiency(gbp_threshold: self.class.gbp_threshold)
       fuel_order = %w[gas electricity]
 
       SUPPORTED_ENERGY_EFFICIENCY_METRICS.flat_map do |metric_type|
         fuel_order.filter_map do |fuel_type|
           by_category(:energy_efficiency).dig(metric_type, fuel_type).then do |m|
             # all values have to be non-zero and gbp values have to be above threshold
-            m if m&.nonzero? && (m.unit != :gbp || m.value > self.class.gbp_threshold)
+            m if m&.nonzero? && (m.unit != :gbp || m.value > gbp_threshold)
           end
         end
       end
