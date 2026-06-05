@@ -277,8 +277,6 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :impact, only: [:index]
-
       resources :clusters do
         member do
           post :unassign
@@ -287,6 +285,17 @@ Rails.application.routes.draw do
           post :assign
         end
       end
+
+      resources :impact, only: [:index]
+      namespace :impact, path: 'impact' do
+        resource :configuration, only: %i[show edit update]
+        resources :runs, only: %i[index show] do
+          collection do
+            get :latest
+          end
+        end
+      end
+
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
       resources :status, only: [:index] do
@@ -642,7 +651,7 @@ Rails.application.routes.draw do
 
         get :contract_holder_options, on: :collection
         get :choose, on: :collection
-        resources :licences, controller: "contracts/licences" do
+        resources :licences, controller: 'contracts/licences' do
           collection do
             get :edit
             put :update
@@ -696,7 +705,7 @@ Rails.application.routes.draw do
       resources :sections, except: [:show], concerns: [:publishable]
     end
 
-    resources :impact_reports, only: %i[index edit update]
+    resources :impact_reports, only: %i[index]
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent

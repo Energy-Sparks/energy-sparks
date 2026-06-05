@@ -83,8 +83,14 @@
                       } %>
         <% end %>
 
-        <%= f.input :agreed_school_price if contract.editable_attribute?(:agreed_school_price) %>
-        <%= f.input :number_of_schools if contract.editable_attribute?(:number_of_schools) %>
+        <%= if contract.editable_attribute?(:agreed_school_price)
+              f.input :agreed_school_price,
+                      hint: 'Override product pricing based on size of schools. ' \
+                      'Specify annual price for all schools in contract, in £'
+            end %>
+        <%= if contract.editable_attribute?(:number_of_schools)
+              f.input :number_of_schools, hint: 'Expected number of schools for this contract'
+            end %>
         <%= if contract.editable_attribute?(:status)
               f.input :status,
                       collection: collection_from_enum(Commercial::Contract.statuses),
@@ -120,21 +126,25 @@
 
           <%= f.input :invoice_terms, as: :hidden %>
           <%= f.input :licence_period, as: :hidden %>
-          <%= f.input :licence_years if contract.custom? && contract.editable_attribute?(:licence_years) %>
+          <%= if contract.custom? && contract.editable_attribute?(:licence_years)
+                f.input :licence_years, hint: 'Length of custom licence in years. E.g. 1.0, 2.0, 3.0, 1.2, 1.5, etc'
+              end %>
 
-          <div class="form-group">
-            <div class="form-check">
-              <%= f.check_box :update_licences, class: 'form-check-input' %>
+          <% if local_assigns[:original].present? || contract.persisted? %>
+            <div class="form-group">
+              <div class="form-check">
+                <%= f.check_box :update_licences, class: 'form-check-input' %>
 
-              <% if local_assigns[:original].present? %>
-                <% label = 'Automatically add licences for all schools associated with the original contract?' %>
-              <% else %>
-                <% label = 'Automatically update existing licences based on changes?' %>
-              <% end %>
+                <% if local_assigns[:original].present? %>
+                  <% label = 'Automatically add licences for all schools associated with the original contract?' %>
+                <% else contract.persisted? %>
+                  <% label = 'Automatically update existing licences based on changes?' %>
+                <% end %>
 
-              <%= f.label :update_licences, label, class: 'form-check-label' %>
+                <%= f.label :update_licences, label, class: 'form-check-label' %>
+              </div>
             </div>
-          </div>
+          <% end %>
         </div>
       <% end %>
 

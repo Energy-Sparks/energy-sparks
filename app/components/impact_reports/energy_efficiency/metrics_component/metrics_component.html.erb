@@ -2,22 +2,17 @@
   <%= render Layout::GridComponent.new(
         id: 'energy-efficiency-cards',
         cols: 2,
-        classes: 'mb-4',
         cell_classes: 'mb-4',
         component_classes: 'theme theme-dark'
       ) do |grid| %>
     <% displayable.each do |metric| %>
-      <% grid.with_stats_card(if: metric.metric_category == 'energy_efficiency' &&
-                                    %w[annual_saving targets].include?(metric.metric_type)) do |card| %>
+      <% grid.with_stats_card do |card| %>
         <% key = metric.metric_type == 'annual_saving' ? "#{metric.metric_type}.#{metric.unit}" : metric.metric_type %>
-        <%= card.with_header(title: impact_t("energy_efficiency.metric_types.#{key}.title",
-                                             fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}", metric:))) %>
-        <% figure = if metric.unit.present?
-                      format_unit(metric.value, metric.unit.to_sym, false)
-                    else
-                      number_with_delimiter(metric.value)
-                    end %>
-        <%= card.with_figure(figure) %>
+        <%= card.with_header title: impact_t("energy_efficiency.metric_types.#{key}.title",
+                                             fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}")) %>
+        <%= card.with_figure(
+              metric.unit ? format_unit(metric.value, metric.unit.to_sym, false) : number_with_delimiter(metric.value)
+            ) %>
         <%= card.with_subtext do
               impact_t("energy_efficiency.metric_types.#{key}.subtext",
                        count: metric.number_of_schools,

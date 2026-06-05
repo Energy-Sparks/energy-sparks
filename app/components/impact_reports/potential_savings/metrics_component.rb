@@ -3,12 +3,14 @@
 module ImpactReports
   module PotentialSavings
     class MetricsComponent < ImpactReports::MetricsBaseComponent # rubocop:disable ViewComponent/PreferComposition
-      def max
-        2
+      def initialize(max: 2, **)
+        super(**)
+        @max = max
       end
 
       def displayable
-        run.potential_savings.take(max)
+        metrics = run.potential_savings
+        @max ? metrics.take(@max) : metrics
       end
     end
   end

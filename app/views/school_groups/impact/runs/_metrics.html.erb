@@ -1,0 +1,21 @@
+  <table class="table table-sm bg-light">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Fuel</th>
+        <th>Enough data</th>
+        <th>Number of schools</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% metrics.each do |metric| %>
+        <tr>
+          <td><%= metric.metric_type %></td>
+          <td><%= metric.fuel_type %></td>
+          <td><%= metric.enough_data? ? 'Yes' : 'No' %></td>
+          <td><%= metric.number_of_schools %></td>
+          <td><%= metric.value %></td>
+        </tr>
+      <% end %>
+  </table>

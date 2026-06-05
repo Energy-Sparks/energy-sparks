@@ -145,7 +145,12 @@ module Admin
       end
 
       def build_contract
-        attributes = CONTRACT_DEFAULTS[chosen_params[:chosen_type]]
+        attributes = {
+          start_date: Time.zone.today,
+          end_date: Time.zone.today.next_year - 1.day
+        }
+
+        attributes.merge!(CONTRACT_DEFAULTS[chosen_params[:chosen_type]])
 
         if contract_holder_request?
           attributes[:contract_holder] = find_contract_holder

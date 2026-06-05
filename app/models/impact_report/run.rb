@@ -28,7 +28,13 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving targets].freeze
+    SUPPORTED_ENERGY_EFFICIENCY_METRICS = [
+      %i[annual_saving gbp],
+      %i[holiday_previous_year gbp],
+      %i[holiday_previous gbp],
+      %i[annual_saving co2],
+      [:targets, nil]
+    ].freeze
 
     def end_date
       run_date - 1.day
@@ -72,11 +78,11 @@ module ImpactReport
                 end
     end
 
-    def energy_efficiency
+    def energy_efficiency(gbp_threshold: self.class.gbp_threshold)
       fuel_order = %w[gas electricity]
       unit_order = %w[gbp co2 kwh]
-      metrics.filter { |m| displayable_energy_efficiency_metric?(m) }.sort_by do |metric|
-        [SUPPORTED_ENERGY_EFFICIENCY_METRICS.index(metric.metric_type),
+      metrics.filter { |metric| displayable_energy_efficiency_metric?(metric, gbp_threshold) }.sort_by do |metric|
+        [SUPPORTED_ENERGY_EFFICIENCY_METRICS.index([metric.metric_type, metric.unit]),
          unit_order.index(metric.unit),
          fuel_order.index(metric.fuel_type)]
       end
@@ -125,11 +131,11 @@ module ImpactReport
         .presence
     end
 
-    def displayable_energy_efficiency_metric?(metric)
+    def displayable_energy_efficiency_metric?(metric, gbp_threshold)
       metric.metric_category == 'energy_efficiency' &&
-        SUPPORTED_ENERGY_EFFICIENCY_METRICS.include?(metric.metric_type) &&
+        SUPPORTED_ENERGY_EFFICIENCY_METRICS.include?([metric.metric_type, metric.unit]) &&
         metric.nonzero? &&
-        (metric.unit != 'gbp' || metric.value > self.class.gbp_threshold)
+        (metric.unit != 'gbp' || metric.value > gbp_threshold)
     end
   end
 end
