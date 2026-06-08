@@ -4,7 +4,7 @@ namespace :after_party do
   desc 'Deployment task: migrate_potential_saving_metrics'
   task migrate_potential_saving_metrics: :environment do
     puts "Running deploy task 'migrate_potential_saving_metrics'"
-
+    require 'dashboard'
     %i[heating_down heating_early heating_off insulate_pipes peak solar_panels thermostatic_control
        use].each do |metric_type|
       ImpactReport::Metric.where(metric_type: "#{metric_type}_gbp").update_all(metric_type:) # rubocop:disable Rails/SkipsModelValidations
