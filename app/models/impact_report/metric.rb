@@ -65,7 +65,8 @@ module ImpactReport
       GENERATOR::AnnualSaving,
       GENERATOR::Benchmark,
       GENERATOR::Targets,
-      GENERATOR::Holiday
+      GENERATOR::Holiday,
+      GENERATOR::OutOfHours
     ].freeze
 
     ENERGY_EFFICIENCY_METRICS = (
@@ -130,7 +131,7 @@ module ImpactReport
     ## I would like to see the unit in it's own field on metric as this is clunky
     def key_and_unit
       @key_and_unit ||= metric_type.match(
-        /(.+?)(?:_(#{GENERATOR::PotentialSavings::TYPES.join('|')}))?$/
+        /(.+?)(?:_(#{GENERATOR::OutOfHours::TYPES.join('|')}))?$/
       ).captures
     end
   end

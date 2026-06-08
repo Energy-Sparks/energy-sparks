@@ -41,12 +41,11 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
     end
 
     it 'adds sets up the meter selection form' do
-      expect(html).to have_selector('form#chart-filter')
-      within('form#chart-filter') do
-        expect(html).to have_selector(:configuration, visible: :hidden)
-        expect(html).to have_selector(:descriptions, visible: :hidden)
-        expect(html).to have_selector(:meter, visible: :visible)
-      end
+      expect(html).to have_css('form#chart-filter')
+      form = page.find('form#chart-filter')
+      expect(form).to have_css('#configuration', visible: :hidden)
+      expect(form).to have_css('#descriptions', visible: :hidden)
+      expect(form).to have_css('#meter', visible: :visible)
     end
 
     context 'when there is only a single meter' do

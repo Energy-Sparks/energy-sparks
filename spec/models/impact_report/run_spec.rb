@@ -128,23 +128,16 @@ describe ImpactReport::Run do
       subject(:run) { create(:impact_report_run) }
 
       let(:fuel_type) { :electricity }
-      let!(:non_gbp_metric) do
-        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :baseload_kwh)
-      end
       let!(:zero_metric) do
-        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :out_of_hours_gbp, value: 0)
+        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :out_of_hours, value: 0)
       end
       let!(:no_data_metric) do
-        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :peak_gbp, enough_data: false)
+        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :peak, enough_data: false)
       end
-      let!(:ok_metric) { create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :baseload_gbp) }
+      let!(:ok_metric) { create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :baseload) }
 
       it 'includes nonzero gbp metrics with enough_data' do
         expect(run.potential_savings).to include(ok_metric)
-      end
-
-      it 'filters out non-gbp metrics' do
-        expect(run.potential_savings).not_to include(non_gbp_metric)
       end
 
       it 'filters out zero metrics' do
@@ -163,36 +156,36 @@ describe ImpactReport::Run do
 
       context 'when there are only electricity metrics' do
         before do
-          create_metric(:baseload_gbp, :electricity, 3)
-          create_metric(:out_of_hours_gbp, :electricity, 4)
+          create_metric(:baseload, :electricity, 3)
+          create_metric(:out_of_hours, :electricity, 4)
         end
 
         it 'returns metrics with the highest value first' do
-          expect(potential_savings).to eq(%w[out_of_hours_gbp baseload_gbp])
+          expect(potential_savings).to eq(%w[out_of_hours baseload])
         end
       end
 
       context 'when there are 2 electicity metrics and a gas metric' do
         before do
-          create_metric(:baseload_gbp, :electricity, 3)
-          create_metric(:out_of_hours_gbp, :electricity, 4)
-          create_metric(:insulate_pipes_gbp, :gas, 3)
+          create_metric(:baseload, :electricity, 3)
+          create_metric(:out_of_hours, :electricity, 4)
+          create_metric(:insulate_pipes, :gas, 3)
         end
 
         it 'returns highest electricity, then gas, then next elec' do
-          expect(potential_savings).to eq(%w[out_of_hours_gbp insulate_pipes_gbp baseload_gbp])
+          expect(potential_savings).to eq(%w[out_of_hours insulate_pipes baseload])
         end
       end
 
       context 'when there are 2 electricity metrics and a solar metric' do
         before do
-          create_metric(:baseload_gbp, :electricity, 3)
-          create_metric(:out_of_hours_gbp, :electricity, 4)
-          create_metric(:solar_panels_gbp, :solar_pv, 3)
+          create_metric(:baseload, :electricity, 3)
+          create_metric(:out_of_hours, :electricity, 4)
+          create_metric(:solar_panels, :solar_pv, 3)
         end
 
         it 'returns highest electricity, then solar, then next elec' do
-          expect(potential_savings).to eq(%w[out_of_hours_gbp solar_panels_gbp baseload_gbp])
+          expect(potential_savings).to eq(%w[out_of_hours solar_panels baseload])
         end
       end
     end
@@ -303,12 +296,12 @@ describe ImpactReport::Run do
              metric_type: 'points')
     end
 
-    let!(:baseload_gbp) do
+    let!(:baseload) do
       create(:impact_report_metric,
              run: run,
              fuel_type: 'electricity',
              metric_category: 'potential_savings',
-             metric_type: 'baseload_gbp')
+             metric_type: 'baseload')
     end
 
     let!(:annual_saving_gbp) do
@@ -336,7 +329,7 @@ describe ImpactReport::Run do
     end
 
     it 'stores potential savings metrics in an array' do
-      expect(index['potential_savings']['electricity']).to eq([baseload_gbp])
+      expect(index['potential_savings']['electricity']).to eq([baseload])
     end
   end
 end

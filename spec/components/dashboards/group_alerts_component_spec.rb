@@ -89,9 +89,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
     it 'produces the correct prompt' do
       expect(html).to have_css('div.prompt-component.negative')
       expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
-      within('span.fa-stack') do
-        expect(html).to have_css('i.fa-bolt')
-      end
+      expect(page.find('span.fa-stack')).to have_css('i.fa-fire')
     end
 
     it 'does not include group headings' do
