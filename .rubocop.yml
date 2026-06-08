@@ -63,3 +63,7 @@ ViewComponent/MissingPreview:
   PreviewPaths:
     - spec/components/previews
     - spec/components/previews/commercial
+
+Rails/I18nLocaleTexts:
+  Exclude:
+    - 'app/controllers/admin/**/*'

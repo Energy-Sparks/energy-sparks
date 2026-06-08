@@ -44,15 +44,22 @@ module Admin
       def update
         meter_attribute = @school_group.meter_attributes.find(params[:id])
         authorize! :edit, @meter_attribute
-        new_attribute = @school_group.meter_attributes.create!(
-          attribute_type: meter_attribute.attribute_type,
-          reason: params[:attribute][:reason],
-          input_data: params[:attribute][:root],
-          meter_types: params[:attribute][:meter_types],
-          created_by: current_user
-        )
-        meter_attribute.update!(replaced_by: new_attribute)
-        redirect_to admin_school_group_meter_attributes_path(@school_group)
+        if params[:restore]
+          meter_attribute.deleted_by = nil
+          meter_attribute.save(validate: false)
+          notice = 'Meter attribute successfully restored'
+        else
+          new_attribute = @school_group.meter_attributes.create!(
+            attribute_type: meter_attribute.attribute_type,
+            reason: params[:attribute][:reason],
+            input_data: params[:attribute][:root],
+            meter_types: params[:attribute][:meter_types],
+            created_by: current_user
+          )
+          meter_attribute.update!(replaced_by: new_attribute)
+          notice = 'Meter attribute successfully updated'
+        end
+        redirect_to admin_school_group_meter_attributes_path(@school_group), notice: notice
       rescue => e
         redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
       end
@@ -62,7 +69,8 @@ module Admin
         authorize! :delete, meter_attribute
         meter_attribute.deleted_by = current_user
         meter_attribute.save(validate: false)
-        redirect_to admin_school_group_meter_attributes_path(@school_group)
+        redirect_to admin_school_group_meter_attributes_path(@school_group),
+                    notice: 'Meter attribute successfully deleted'
       rescue => e
         redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
       end
