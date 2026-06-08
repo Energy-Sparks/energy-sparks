@@ -210,6 +210,12 @@ describe ImpactReport::Run do
       let!(:annual_saving_co2_electricity) { create_metric(:annual_saving_co2, :electricity, 600) }
       let!(:targets_gas) { create_metric(:targets, :gas, 12) }
       let!(:targets_electricity) { create_metric(:targets, :electricity, 1) }
+      let!(:out_of_hours_electricity) { create_metric(:out_of_hours, :electricity, 2) }
+      let!(:out_of_hours_gas) { create_metric(:out_of_hours, :gas, 3) }
+      let!(:long_term_electricity) { create_metric(:long_term, :electricity, 2) }
+      let!(:long_term_gas) { create_metric(:long_term, :gas, 4) }
+      let!(:baseload_electricity) { create_metric(:baseload, :electricity, 5) }
+      let!(:heating_control_gas) { create_metric(:heating_control, :gas, 8) }
 
       it 'returns metrics in configured order, gas first, then electricity' do
         expect(energy_efficiency).to eq(
@@ -217,7 +223,11 @@ describe ImpactReport::Run do
            holiday_previous_year_gbp_gas, holiday_previous_year_gbp_electricity,
            holiday_previous_gbp_gas, holiday_previous_gbp_electricity,
            annual_saving_co2_gas, annual_saving_co2_electricity,
-           targets_gas, targets_electricity]
+           targets_gas, targets_electricity,
+           out_of_hours_gas, out_of_hours_electricity,
+           long_term_gas, long_term_electricity,
+           baseload_electricity,
+           heating_control_gas]
         )
       end
     end
