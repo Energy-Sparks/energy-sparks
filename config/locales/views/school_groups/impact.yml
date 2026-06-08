@@ -35,8 +35,8 @@ en:
               other: Cost saving by reducing %{fuel_type} use in %{count} schools between the last holiday and same holiday in previous year using current tariffs
             title: Yearly holiday %{fuel_type} savings
           long_term:
-            subtext: Schools achieving a well managed or exemplar rating for managing long term %{fuel_type} use
-            title: Reducing long term %{fuel_type} use
+            subtext: Schools achieving a well managed or exemplar rating for their %{fuel_type} use
+            title: Reducing %{fuel_type} use
           out_of_hours:
             subtext: Schools achieving a well managed or exemplar rating for managing out of hours %{fuel_type} use
             title: Reducing out of hours %{fuel_type} use
