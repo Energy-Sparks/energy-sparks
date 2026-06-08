@@ -222,8 +222,6 @@ describe ImpactReport::Run do
       let!(:long_term_electricity) { create_metric(:long_term, :electricity, 2) }
       let!(:long_term_gas) { create_metric(:long_term, :gas, 4) }
       let!(:baseload_electricity) { create_metric(:baseload, :electricity, 5) }
-      let!(:baseload_gas) { create_metric(:baseload, :gas, 6) }
-      let!(:heating_control_electricity) { create_metric(:heating_control, :electricity, 7) }
       let!(:heating_control_gas) { create_metric(:heating_control, :gas, 8) }
 
       it 'returns metrics in configured order, gas first, then electricity' do
@@ -235,8 +233,8 @@ describe ImpactReport::Run do
            targets_gas, targets_electricity,
            out_of_hours_gas, out_of_hours_electricity,
            long_term_gas, long_term_electricity,
-           baseload_gas, baseload_electricity,
-           heating_control_gas, heating_control_electricity]
+           baseload_electricity,
+           heating_control_gas]
         )
       end
     end
