@@ -200,25 +200,21 @@ describe ImpactReport::Run do
     let(:run) { create(:impact_report_run) }
 
     context 'with all metrics' do # rubocop:disable RSpec/MultipleMemoizedHelpers
-      let!(:annual_saving_gbp_gas) { create_metric(:annual_saving, :gas, 300, :gbp) }
-      let!(:annual_saving_gbp_electricity) { create_metric(:annual_saving, :electricity, 400, :gbp) }
-      let!(:holiday_previous_year_gbp_electricity) { create_metric(:holiday_previous_year, :electricity, 500, :gbp) }
-      let!(:holiday_previous_year_gbp_gas) { create_metric(:holiday_previous_year, :gas, 4500, :gbp) }
-      let!(:holiday_previous_gbp_electricity) { create_metric(:holiday_previous, :electricity, 500, :gbp) }
-      let!(:holiday_previous_gbp_gas) { create_metric(:holiday_previous, :gas, 4500, :gbp) }
-      let!(:annual_saving_co2_gas) { create_metric(:annual_saving, :gas, 500, :co2) }
-      let!(:annual_saving_co2_electricity) { create_metric(:annual_saving, :electricity, 600, :co2) }
-      let!(:targets_gas) { create_metric(:targets, :gas, 12) }
-      let!(:targets_electricity) { create_metric(:targets, :electricity, 1) }
+      let!(:metrics) do
+        [create_metric(:annual_saving, :gas, 300, :gbp),
+         create_metric(:annual_saving, :electricity, 400, :gbp),
+         create_metric(:holiday_previous_year, :gas, 4500, :gbp),
+         create_metric(:holiday_previous_year, :electricity, 500, :gbp),
+         create_metric(:holiday_previous, :gas, 4500, :gbp),
+         create_metric(:holiday_previous, :electricity, 500, :gbp),
+         create_metric(:annual_saving, :gas, 500, :co2),
+         create_metric(:annual_saving, :electricity, 600, :co2),
+         create_metric(:targets, :gas, 12),
+         create_metric(:targets, :electricity, 1)]
+      end
 
       it 'returns metrics in configured order, gas first, then electricity' do
-        expect(energy_efficiency).to eq(
-          [annual_saving_gbp_gas, annual_saving_gbp_electricity,
-           holiday_previous_year_gbp_gas, holiday_previous_year_gbp_electricity,
-           holiday_previous_gbp_gas, holiday_previous_gbp_electricity,
-           annual_saving_co2_gas, annual_saving_co2_electricity,
-           targets_gas, targets_electricity]
-        )
+        expect(energy_efficiency).to eq(metrics)
       end
     end
 
@@ -251,12 +247,12 @@ describe ImpactReport::Run do
       let(:gbp_threshold) { 100 }
       let!(:above_threshold) do
         create(:impact_report_metric, run:, metric_category:,
-                                      fuel_type: :electricity, metric_type: :annual_saving_gbp, value: 150)
+                                      fuel_type: :electricity, metric_type: :annual_saving, value: 150, unit: :gbp)
       end
 
       before do
         create(:impact_report_metric, run:, metric_category:,
-                                      fuel_type: :gas, metric_type: :annual_saving_gbp, value: 50)
+                                      fuel_type: :gas, metric_type: :annual_saving, value: 50, unit: :gbp)
       end
 
       it 'filters out metrics below the threshold' do

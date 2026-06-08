@@ -29,12 +29,13 @@ module ImpactReport
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
     SUPPORTED_ENERGY_EFFICIENCY_METRICS = [
-      %i[annual_saving gbp],
-      %i[holiday_previous_year gbp],
-      %i[holiday_previous gbp],
-      %i[annual_saving co2],
-      [:targets, nil]
+      %w[annual_saving gbp],
+      %w[holiday_previous_year gbp],
+      %w[holiday_previous gbp],
+      %w[annual_saving co2],
+      ['targets', nil]
     ].freeze
+    private_constant :SUPPORTED_ENERGY_EFFICIENCY_METRICS
 
     def end_date
       run_date - 1.day
