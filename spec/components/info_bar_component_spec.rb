@@ -23,7 +23,7 @@ RSpec.describe InfoBarComponent, type: :component do
 
   let(:component) { InfoBarComponent.new(**params) }
 
-  let(:html) do
+  let!(:html) do
     render_inline(component)
   end
 
@@ -48,21 +48,15 @@ RSpec.describe InfoBarComponent, type: :component do
   end
 
   it 'includes icon' do
-    within('.row .col-md-1') do
-      expect(html).to have_css('.fa-school')
-    end
+    expect(page.find('.row .col-md-1')).to have_css('.fa-school')
   end
 
   it 'includes the title' do
-    within('.row .col-md-8') do
-      expect(html).to have_content(title)
-    end
+    expect(page.find('.row .col-md-9')).to have_text(title)
   end
 
   it 'includes the link' do
-    within('.row .col-md-2') do
-      expect(html).to have_link(button_title, href: button_link)
-    end
+    expect(page.find('.row .col-md-2')).to have_link(button_title, href: button_link)
   end
 
   it 'has additional classes' do
