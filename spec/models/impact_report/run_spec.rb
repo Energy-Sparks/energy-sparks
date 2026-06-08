@@ -199,7 +199,7 @@ describe ImpactReport::Run do
     let(:metric_category) { :energy_efficiency }
     let(:run) { create(:impact_report_run) }
 
-    context 'with all metrics' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+    context 'with all metrics' do
       let!(:metrics) do
         [create_metric(:annual_saving, :gas, 300, :gbp),
          create_metric(:annual_saving, :electricity, 400, :gbp),
