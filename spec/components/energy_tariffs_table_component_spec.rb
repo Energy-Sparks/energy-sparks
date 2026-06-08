@@ -89,6 +89,8 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
   end
 
   context 'basic rendering' do
+    let(:row) { page.find('#tariff-table tbody tr[1]') }
+
     it 'renders table' do
       expect(page).to have_css('#tariff-table')
     end
@@ -98,22 +100,18 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     it 'includes the tariff details' do
-      within('#tariff-table tbody tr[1]') do
-        expect(page).to have_content(energy_tariffs.first.name)
-        expect(page).to have_content('schools.user_tariffs.tariff_partial.flat_rate_tariff')
-        expect(page).to have_content(energy_tariffs.first.start_date.to_fs(:es_compact))
-        expect(page).to have_content(energy_tariffs.first.end_date.to_fs(:es_compact))
-        expect(page).to have_content(energy_tariffs.first.energy_tariff_price.first)
-      end
+      expect(row).to have_text(energy_tariffs.first.name)
+      expect(row).to have_text(I18n.t('schools.user_tariffs.tariff_partial.flat_rate_tariff'))
+      expect(row).to have_text(energy_tariffs.first.start_date.to_fs(:es_compact))
+      expect(row).to have_text(energy_tariffs.first.end_date.to_fs(:es_compact))
+      expect(row).to have_text(energy_tariffs.first.energy_tariff_prices.first.value)
     end
 
     context 'with show no prices option' do
-      let(:show_prices) { true }
+      let(:show_prices) { false }
 
       it 'doesnt show price' do
-        within('#tariff-table tbody tr[1]') do
-          expect(page).not_to have_content(energy_tariffs.first.energy_tariff_price.first)
-        end
+        expect(row).to have_no_text(energy_tariffs.first.energy_tariff_prices.first.value)
       end
     end
 
@@ -121,9 +119,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)]}
 
       it 'returns expected label' do
-        within('#tariff-table tbody tr[1]') do
-          expect(page).to eq I18n.t('schools.user_tariffs.tariff_partial.day_night_tariff')
-        end
+        expect(row).to have_text(I18n.t('schools.user_tariffs.tariff_partial.differential_tariff'))
       end
     end
 

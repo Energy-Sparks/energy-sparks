@@ -73,11 +73,11 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     it 'adds the notes' do
-      within('table tfoot') do
-        expect(html).to have_content(note_1)
-        expect(html).to have_content(note_2)
-        expect(html).to have_content(note_3)
-      end
+      html
+      tfoot = page.find('table tfoot')
+      expect(tfoot).to have_text(note_1)
+      expect(tfoot).to have_text(note_2)
+      expect(tfoot).to have_text(note_3)
     end
 
     context 'when conditon is false' do
