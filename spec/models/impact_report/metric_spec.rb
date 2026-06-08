@@ -47,13 +47,13 @@ describe ImpactReport::Metric do
     end
   end
 
-  describe 'potential savings keys and units' do
-    context 'when valid potential savings metric' do
+  describe 'keys and units' do
+    context 'with a valid metric' do
       subject(:metric_gbp) do
-        create(:impact_report_metric, metric_category: :potential_savings, metric_type: 'baseload_gbp')
+        create(:impact_report_metric, metric_category: :energy_efficiency, metric_type: :out_of_hours_gbp)
       end
 
-      it { expect(metric_gbp.key).to eq(:baseload) }
+      it { expect(metric_gbp.key).to eq(:out_of_hours) }
       it { expect(metric_gbp.unit).to eq(:gbp) }
     end
   end

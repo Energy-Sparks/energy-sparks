@@ -30,11 +30,11 @@ RSpec.describe ImpactReports::PotentialSavings::MetricsComponent, :include_appli
     let(:metric_category) { :potential_savings }
     let!(:run) { create(:impact_report_run, school_group:) }
     let!(:gas) do
-      create(:impact_report_metric, run:, metric_category:, metric_type: :insulate_pipes_gbp, fuel_type: :gas, value: 4,
+      create(:impact_report_metric, run:, metric_category:, metric_type: :insulate_pipes, fuel_type: :gas, value: 4,
                                     number_of_schools: 7)
     end
     let!(:electricity) do
-      create(:impact_report_metric, run:, metric_category:, metric_type: :use_gbp, fuel_type: :electricity, value: 5,
+      create(:impact_report_metric, run:, metric_category:, metric_type: :use, fuel_type: :electricity, value: 5,
                                     number_of_schools: 6)
     end
 
