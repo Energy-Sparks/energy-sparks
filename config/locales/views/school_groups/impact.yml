@@ -25,12 +25,14 @@ en:
           heating_control:
             subtext: Schools achieving %{rating} rating for heating control
             title: Improved heating control
-          holiday_previous_gbp:
-            subtext: Cost saving by reducing %{fuel_type} use in %{count} schools between the last two holidays using current tariffs
-            title: Last holiday %{fuel_type} savings
-          holiday_previous_year_gbp:
-            subtext: Cost saving by reducing %{fuel_type} use in %{count} schools between the last holiday and same holiday in previous year using current tariffs
-            title: Yearly holiday %{fuel_type} savings
+          holiday_previous:
+            gbp:
+              subtext: Cost saving by reducing %{fuel_type} use in %{count} schools between the last two holidays using current tariffs
+              title: Last holiday %{fuel_type} savings
+          holiday_previous_year:
+            gbp:
+              subtext: Cost saving by reducing %{fuel_type} use in %{count} schools between the last holiday and same holiday in previous year using current tariffs
+              title: Yearly holiday %{fuel_type} savings
           long_term:
             subtext: Schools achieving %{rating} rating for managing long term %{fuel_type} use
             title: Reducing long term %{fuel_type} use

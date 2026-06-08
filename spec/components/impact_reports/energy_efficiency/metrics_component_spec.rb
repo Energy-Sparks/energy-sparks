@@ -55,9 +55,9 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
     end
 
     context 'with holiday_previous_year_gbp metric' do
-      let!(:metric_type) { :holiday_previous_year_gbp }
+      let!(:metric_type) { :holiday_previous_year }
       let!(:metric) do
-        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity)
+        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity, unit: :gbp)
       end
       let(:card) { card_with_title('Yearly holiday electricity savings') }
 
@@ -68,15 +68,15 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       it { expect(card).to have_css('.figure', exact_text: "£#{metric.value}") }
 
       it {
-        expect(card).to have_text(impact_t("energy_efficiency.metric_types.#{metric_type}.subtext",
+        expect(card).to have_text(impact_t("energy_efficiency.metric_types.#{metric_type}.gbp.subtext",
                                            fuel_type: 'electricity', count: metric.number_of_schools))
       }
     end
 
     context 'with holiday_previous_gbp metric' do
-      let!(:metric_type) { :holiday_previous_gbp }
+      let!(:metric_type) { :holiday_previous }
       let!(:metric) do
-        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity)
+        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity, unit: :gbp)
       end
       let(:card) { card_with_title('Last holiday electricity savings') }
 
@@ -87,7 +87,7 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       it { expect(card).to have_css('.figure', exact_text: "£#{metric.value}") }
 
       it {
-        expect(card).to have_text(impact_t("energy_efficiency.metric_types.#{metric_type}.subtext",
+        expect(card).to have_text(impact_t("energy_efficiency.metric_types.#{metric_type}.gbp.subtext",
                                            fuel_type: 'electricity', count: metric.number_of_schools))
       }
     end
