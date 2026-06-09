@@ -26,7 +26,8 @@ module ImpactReport
     belongs_to :school_group
     has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :run, dependent: :destroy
 
-    scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
+    scope :latest_first, -> { order(run_date: :desc, created_at: :desc) }
+    scope :latest, -> { includes(:metrics).latest_first.first }
 
     SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[
       annual_saving_gbp
