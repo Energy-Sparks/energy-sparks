@@ -8,11 +8,10 @@ module EnergySparks
       (new_val - base) / base
     end
 
-    def self.sum_data(data, to_nil_if_sum_zero = false)
+    def self.sum_data(data)
       data = Array(data)
       data.map! { |value| value || 0.0 } # create array 1st to avoid statsample map/sum bug
-      val = data.sum
-      to_nil_if_sum_zero && val == 0.0 ? nil : val
+      data.sum
     end
 
     # Accepts 2 arrays of kwh, co2 or £ values.
