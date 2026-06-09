@@ -32,9 +32,7 @@ module ComparisonsHelper
 
   delegate :percent_change, to: :'EnergySparks::Calculator'
 
-  def sum_data(data, to_nil_if_sum_zero = false)
-    EnergySparks::Calculator.sum_data(data, to_nil_if_sum_zero)
-  end
+  delegate :sum_data, to: :'EnergySparks::Calculator'
 
   delegate :sum_if_complete, to: :'EnergySparks::Calculator'
 
