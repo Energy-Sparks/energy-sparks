@@ -3,21 +3,26 @@
     <%= link_to school.name, school_path(school) %>
   </td>
   <td>
-    <%= helpers.checkmark(school.currently_licenced?) %>
-  </td>
-  <td>
-    <%= school.current_licence&.contract&.contract_holder&.name %>
-  </td>
-  <td id="future-funder-<%= school.id %>">
-    <%= school.default_contract_holder&.name || 'Self funding' %>
-  </td>
-  <td>
-    <% licenced_for = school.licenced_for_period(date_range) %>
-    <%= render(Elements::BadgeComponent.new(licenced_for.to_s.humanize,
+    <%= render(Elements::BadgeComponent.new(licensed_for(@first_range).to_s.humanize,
                                             pill: true,
-                                            colour: helpers.period_badge_colour(licenced_for))) %>
+                                            colour: helpers.period_badge_colour(licensed_for(@first_range)))) %>
+
   </td>
-  <td class="d-flex gap-2">
+  <td>
+    <%= contract_holder_for(@first_range).join(',') %>
+  </td>
+  <% if @second_range.present? %>
+    <td>
+      <%= render(Elements::BadgeComponent.new(licensed_for(@second_range).to_s.humanize,
+                                              pill: true,
+                                              colour: helpers.period_badge_colour(licensed_for(@second_range)))) %>
+
+    </td>
+    <td>
+      <%= contract_holder_for(@second_range).join(',') %>
+    </td>
+  <% end %>
+  <td>
     <% buttons.each do |button| %>
       <%= button %>
     <% end %>

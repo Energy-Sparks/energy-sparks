@@ -31,18 +31,32 @@ describe ImpactReport::Run do
   describe '.latest' do
     subject(:run) { described_class.latest }
 
-    let!(:latest_run) { create(:impact_report_run, run_date: 1.day.ago) }
+    context 'with runs on different days' do
+      let!(:latest_run) { create(:impact_report_run, run_date: 1.day.ago) }
 
-    before do
-      create(:impact_report_run, run_date: 2.days.ago)
+      before do
+        create(:impact_report_run, run_date: 2.days.ago)
+      end
+
+      it 'returns the run with the most recent run_date' do
+        expect(run).to eq(latest_run)
+      end
+
+      it 'includes metrics' do
+        expect(run.association(:metrics)).to be_loaded
+      end
     end
 
-    it 'returns the run with the most recent run_date' do
-      expect(run).to eq(latest_run)
-    end
+    context 'when there are two runs on the same day' do
+      let(:today) { Time.zone.today }
 
-    it 'includes metrics' do
-      expect(run.association(:metrics)).to be_loaded
+      let!(:first_run) { create(:impact_report_run, run_date: today, created_at: today + 1.hour) }
+      let!(:latest_run) { create(:impact_report_run, run_date: today, created_at: today + 2.hours) }
+
+      it 'returns the latest created run' do
+        expect(described_class.latest_first).to eq([latest_run, first_run])
+        expect(run).to eq(latest_run)
+      end
     end
   end
 
@@ -201,16 +215,16 @@ describe ImpactReport::Run do
 
     context 'with all metrics' do
       let!(:metrics) do
-        [create_metric(:annual_saving, :gas, 300, :gbp),
-         create_metric(:annual_saving, :electricity, 400, :gbp),
+        [create_metric(:annual_saving, :gas, 300, :gbp), create_metric(:annual_saving, :electricity, 400, :gbp),
          create_metric(:holiday_previous_year, :gas, 4500, :gbp),
          create_metric(:holiday_previous_year, :electricity, 500, :gbp),
-         create_metric(:holiday_previous, :gas, 4500, :gbp),
-         create_metric(:holiday_previous, :electricity, 500, :gbp),
-         create_metric(:annual_saving, :gas, 500, :co2),
-         create_metric(:annual_saving, :electricity, 600, :co2),
-         create_metric(:targets, :gas, 12),
-         create_metric(:targets, :electricity, 1)]
+         create_metric(:holiday_previous, :gas, 4500, :gbp), create_metric(:holiday_previous, :electricity, 500, :gbp),
+         create_metric(:annual_saving, :gas, 500, :co2), create_metric(:annual_saving, :electricity, 600, :co2),
+         create_metric(:targets, :gas, 12), create_metric(:targets, :electricity, 1),
+         create_metric(:out_of_hours, :gas, 3), create_metric(:out_of_hours, :electricity, 2),
+         create_metric(:long_term, :gas, 4), create_metric(:long_term, :electricity, 2),
+         create_metric(:baseload, :electricity, 5),
+         create_metric(:heating_control, :gas, 8)]
       end
 
       it 'returns metrics in configured order, gas first, then electricity' do

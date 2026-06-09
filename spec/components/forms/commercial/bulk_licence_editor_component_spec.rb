@@ -17,6 +17,9 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
   end
 
   before do
+    calendar = create(:calendar, :default_national)
+    create(:academic_year, calendar:)
+
     render_inline described_class.new(
       contract:,
       id: 'custom-id',
@@ -200,16 +203,20 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
 
         it { expect(page).to have_text('Add schools to contract') }
 
+        it { expect(page).to have_link('Issues', href: admin_school_issues_path(additional_school)) }
+        it { expect(page).to have_link('Licences', href: admin_school_licences_path(additional_school)) }
+
         it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
           let(:table_id) { "#contract-#{contract.id}-additional-schools-table" }
           let(:expected_header) do
             [
-              ['School', 'Current Licence?', 'Current Funder', 'Future Funder', 'Licenced for Period?', '']
+              ['', 'Current Academic Year', 'Contract Period', ''],
+              ['School', 'Licensed?', 'Funder', 'Licensed?', 'Funder', '']
             ]
           end
           let(:expected_rows) do
             [
-              [additional_school.name, '', '', 'Self funding', 'No', 'Add licence Make MAT funded']
+              [additional_school.name, 'No', '', 'No', '', 'Add licence Licences Issues']
             ]
           end
         end

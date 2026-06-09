@@ -26,14 +26,19 @@ module ImpactReport
     belongs_to :school_group
     has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :run, dependent: :destroy
 
-    scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
+    scope :latest_first, -> { order(run_date: :desc, created_at: :desc) }
+    scope :latest, -> { includes(:metrics).latest_first.first }
 
     SUPPORTED_ENERGY_EFFICIENCY_METRICS = [
       %w[annual_saving gbp],
       %w[holiday_previous_year gbp],
       %w[holiday_previous gbp],
       %w[annual_saving co2],
-      ['targets', nil]
+      ['targets', nil],
+      ['out_of_hours', nil],
+      ['long_term', nil],
+      ['baseload', nil],
+      ['heating_control', nil]
     ].freeze
     private_constant :SUPPORTED_ENERGY_EFFICIENCY_METRICS
 

@@ -13,19 +13,23 @@ describe SchoolGroups::ImpactReport::Generator::Holiday do
       create(:alert, school: school, alert_generation_run:,
                      alert_type: create(:alert_type, class_name: AlertPreviousHolidayComparisonElectricity),
                      variables: { difference_gbpcurrent: -1,
-                                  difference_kwh: -2 })
+                                  difference_kwh: -2,
+                                  difference_percent: -1.5 })
       create(:alert, school: school, alert_generation_run:,
                      alert_type: create(:alert_type, class_name: AlertPreviousYearHolidayComparisonElectricity),
                      variables: { difference_gbpcurrent: -3,
-                                  difference_kwh: -4 })
+                                  difference_kwh: -4,
+                                  difference_percent: -3.5 })
       create(:alert, school: school, alert_generation_run:,
                      alert_type: create(:alert_type, class_name: AlertPreviousHolidayComparisonGas),
                      variables: { difference_gbpcurrent: -5,
-                                  difference_kwh: -6 })
+                                  difference_kwh: -6,
+                                  difference_percent: -5.5 })
       create(:alert, school: school, alert_generation_run:,
                      alert_type: create(:alert_type, class_name: AlertPreviousYearHolidayComparisonGas),
                      variables: { difference_gbpcurrent: -7,
-                                  difference_kwh: -8 })
+                                  difference_kwh: -8,
+                                  difference_percent: -7.5 })
       [Comparison::ChangeInElectricityHolidayConsumptionPreviousHoliday,
        Comparison::ChangeInElectricityHolidayConsumptionPreviousYearsHoliday,
        Comparison::ChangeInGasHolidayConsumptionPreviousHoliday,

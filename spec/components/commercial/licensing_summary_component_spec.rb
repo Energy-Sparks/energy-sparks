@@ -14,41 +14,80 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
 
   let(:date_range) { Date.new(2025, 9, 1)..Date.new(2026, 8, 31) }
 
-  before do
-    render_inline described_class.new(date_range:
-      date_range.begin..date_range.end,
-                                      id: 'custom-id',
-                                      classes: 'extra-classes') do |c|
-      c.with_row id: "custom-school-id-#{school.id}", school: school
+  context 'when showing a single range' do
+    before do
+      render_inline described_class.new(first_range:
+        date_range.begin..date_range.end,
+                                        id: 'custom-id',
+                                        classes: 'extra-classes') do |c|
+        c.with_row id: "custom-school-id-#{school.id}", school: school
+      end
+    end
+
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { 'extra-classes' }
+      let(:expected_id) { 'custom-id' }
+      let(:html) { page }
+    end
+
+    it 'includes the school id' do
+      expect(page).to have_css("#custom-school-id-#{school.id}")
+    end
+
+    context 'when school has a current licence' do
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+        let(:table_id) { '#summary-table' }
+        let(:expected_header) do
+          [
+            ['', 'Current Academic Year', ''],
+            ['School', 'Licensed?', 'Funder', '']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              school.name,
+              'Full',
+              licence.contract.contract_holder.name,
+              ''
+            ]
+          ]
+        end
+      end
     end
   end
 
-  it_behaves_like 'an application component' do
-    let(:expected_classes) { 'extra-classes' }
-    let(:expected_id) { 'custom-id' }
-    let(:html) { page }
-  end
+  context 'when showing two ranges' do
+    before do
+      create(:commercial_licence,
+             school:,
+             start_date: date_range.end + 1,
+             end_date: date_range.end + 30)
+      render_inline described_class.new(first_range: date_range.begin..date_range.end,
+                                        second_range: (date_range.end + 1)..(date_range.end + 364),
+                                        labels: { first: 'Current Year', second: 'Following Year' },
+                                        id: 'custom-id',
+                                        classes: 'extra-classes') do |c|
+        c.with_row id: "custom-school-id-#{school.id}", school: school
+      end
+    end
 
-  it 'includes the school id' do
-    expect(page).to have_css("#custom-school-id-#{school.id}")
-  end
-
-  context 'when school has a current licence' do
     it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
       let(:table_id) { '#summary-table' }
       let(:expected_header) do
         [
-          ['School', 'Current Licence?', 'Current Funder', 'Future Funder', 'Licenced for Period?', '']
+          ['', 'Current Year', 'Following Year', ''],
+          ['School', 'Licensed?', 'Funder', 'Licensed?', 'Funder', '']
         ]
       end
       let(:expected_rows) do
         [
           [
             school.name,
-            '',
-            licence.contract.contract_holder.name,
-            school.default_contract_holder&.name,
             'Full',
+            licence.contract.contract_holder.name,
+            'Partial',
+            school.licences.by_start_date.last.contract_holder.name,
             ''
           ]
         ]

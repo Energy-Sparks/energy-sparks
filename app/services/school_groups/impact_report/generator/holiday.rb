@@ -28,7 +28,7 @@ module SchoolGroups
               holiday_previous: Comparison::ChangeInElectricityHolidayConsumptionPreviousHoliday,
               holiday_previous_year: Comparison::ChangeInElectricityHolidayConsumptionPreviousYearsHoliday
             } }[fuel][metric]
-            .where(school: @impact_report.visible_schools)
+            .where(school: @impact_report.visible_schools).where.not(difference_percent: nil)
         end
 
         def column(model, unit) = model.arel_table[[:difference, unit == :gbp ? :gbpcurrent : unit].join('_')]

@@ -2,12 +2,22 @@
   <table id="<%= @table_id %>" class="table table-sorted table-sm advice-table">
     <thead>
       <tr>
-        <th>School</th>
-        <th>Current Licence?</th>
-        <th>Current Funder</th>
-        <th>Future Funder</th>
-        <th>Licenced for Period?</th>
         <th></th>
+        <th colspan="2"><%= @labels[:first] %></th>
+        <% if @second_range.present? %>
+          <th colspan="2"><%= @labels[:second] %></th>
+        <% end %>
+        <th></th>
+      </tr>
+      <tr>
+        <th class="col-3">School</th>
+        <th class="col-1">Licensed?</th>
+        <th class="col-2">Funder</th>
+        <% if @second_range.present? %>
+          <th class="col-1">Licensed?</th>
+          <th class="col-2">Funder</th>
+        <% end %>
+        <th class="col-2"></th>
       </tr>
     </thead>
     <tbody>

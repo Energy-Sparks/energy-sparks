@@ -18,8 +18,8 @@
 #
 # Indexes
 #
-#  idx_impact_report_metrics_unique                     (impact_report_run_id,metric_category,fuel_type,metric_type) UNIQUE
 #  index_impact_report_metrics_on_impact_report_run_id  (impact_report_run_id)
+#  index_impact_report_metrics_unique                   (impact_report_run_id,metric_category,fuel_type,metric_type,unit) UNIQUE
 #
 # Foreign Keys
 #
@@ -32,6 +32,7 @@ module ImpactReport
     include Enums::FuelType
 
     belongs_to :run, foreign_key: :impact_report_run_id, class_name: 'ImpactReport::Run', inverse_of: :metrics
+    validates :metric_type, uniqueness: { scope: %i[impact_report_run_id metric_category fuel_type unit] }
 
     scope :enough_data, -> { where(enough_data: true) }
 

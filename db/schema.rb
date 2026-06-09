@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_01_174255) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1253,6 +1253,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_174255) do
     t.enum "unit", enum_type: "impact_report_metric_units"
     t.datetime "updated_at", null: false
     t.integer "value"
+    t.index ["impact_report_run_id", "metric_category", "fuel_type", "metric_type", "unit"], name: "index_impact_report_metrics_unique", unique: true
     t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
   end
 
@@ -3342,8 +3343,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_174255) do
       energy.current_year_electricity_kwh AS current_year_kwh,
       energy.previous_year_electricity_co2 AS previous_year_co2,
       energy.current_year_electricity_co2 AS current_year_co2,
-      energy.previous_year_electricity_gbp AS previous_year_gbp,
-      energy.current_year_electricity_gbp AS current_year_gbp,
+      energy.previous_year_electricity_gbpcurrent AS previous_year_gbp,
+      energy.current_year_electricity_gbpcurrent AS current_year_gbp,
       energy.solar_type
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
@@ -3351,12 +3352,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_174255) do
               data.current_year_electricity_kwh,
               data.previous_year_electricity_co2,
               data.current_year_electricity_co2,
-              data.previous_year_electricity_gbp,
-              data.current_year_electricity_gbp,
+              data.previous_year_electricity_gbpcurrent,
+              data.current_year_electricity_gbpcurrent,
               data.solar_type
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbpcurrent double precision, current_year_electricity_gbpcurrent double precision, solar_type text)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
@@ -3603,11 +3604,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_174255) do
               json.current_year_gas_kwh AS current_year_kwh,
               json.previous_year_gas_co2 AS previous_year_co2,
               json.current_year_gas_co2 AS current_year_co2,
-              json.previous_year_gas_gbp AS previous_year_gbp,
-              json.current_year_gas_gbp AS current_year_gbp
+              json.previous_year_gas_gbpcurrent AS previous_year_gbp,
+              json.current_year_gas_gbpcurrent AS current_year_gbp
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbp double precision, current_year_gas_gbp double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbpcurrent double precision, current_year_gas_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
@@ -3668,11 +3669,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_174255) do
               json.current_year_storage_heaters_kwh AS current_year_kwh,
               json.previous_year_storage_heaters_co2 AS previous_year_co2,
               json.current_year_storage_heaters_co2 AS current_year_co2,
-              json.previous_year_storage_heaters_gbp AS previous_year_gbp,
-              json.current_year_storage_heaters_gbp AS current_year_gbp
+              json.previous_year_storage_heaters_gbpcurrent AS previous_year_gbp,
+              json.current_year_storage_heaters_gbpcurrent AS current_year_gbp
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbp double precision, current_year_storage_heaters_gbp double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbpcurrent double precision, current_year_storage_heaters_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,

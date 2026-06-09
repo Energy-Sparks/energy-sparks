@@ -11,7 +11,6 @@ module SchoolGroups
     before_action :redirect_unless_authorised
     before_action :redirect_unless_visible
     before_action :redirect_not_enough_data
-    before_action :enable_prototype_page
     before_action :enable_bootstrap5
     before_action :breadcrumbs
 
