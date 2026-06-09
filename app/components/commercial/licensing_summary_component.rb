@@ -35,24 +35,16 @@ module Commercial
 
       private
 
-      def licensed_for_first_range
-        @licenced_for_first_range = @school.licensed_for_period(@first_range)
+      def licensed_for(range)
+        return nil unless range
+
+        @school.licensed_for_period(range)
       end
 
-      def contract_holder_for_first_range
-        @school.licences.for_period(@first_range).map { |x| x.contract_holder.name }
-      end
+      def contract_holder_for(range)
+        return nil unless range
 
-      def licensed_for_second_range
-        return nil unless @second_range
-
-        @licenced_for_second_range = @school.licensed_for_period(@second_range)
-      end
-
-      def contract_holder_for_second_range
-        return nil unless @second_range
-
-        @school.licences.for_period(@second_range).map { |x| x.contract_holder.name }
+        @school.licences.for_period(range).map { |x| x.contract_holder.name }
       end
     end
   end
