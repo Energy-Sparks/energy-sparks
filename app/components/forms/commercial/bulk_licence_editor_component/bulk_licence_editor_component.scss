@@ -5,6 +5,11 @@
     overflow-y: auto;
   }
 
+  .licence-editor-table-wrapper form.button_to {
+    display: inline-block !important;
+    white-space: nowrap;
+  }
+
   .licence-editor-table > thead > tr > th {
     background-color: $header-dark !important;
     border-bottom: 0;
