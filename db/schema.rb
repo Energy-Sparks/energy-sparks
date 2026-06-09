@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_09_090311) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_09_123818) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -3667,11 +3667,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_090311) do
               json.current_year_storage_heaters_kwh AS current_year_kwh,
               json.previous_year_storage_heaters_co2 AS previous_year_co2,
               json.current_year_storage_heaters_co2 AS current_year_co2,
-              json.previous_year_storage_heaters_gbp AS previous_year_gbp,
-              json.current_year_storage_heaters_gbp AS current_year_gbp
+              json.previous_year_storage_heaters_gbpcurrent AS previous_year_gbp,
+              json.current_year_storage_heaters_gbpcurrent AS current_year_gbp
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbp double precision, current_year_storage_heaters_gbp double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbpcurrent double precision, current_year_storage_heaters_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
