@@ -3350,8 +3350,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_090311) do
               data.current_year_electricity_kwh,
               data.previous_year_electricity_co2,
               data.current_year_electricity_co2,
-              data.previous_year_electricity_gbp,
-              data.current_year_electricity_gbp,
+              data.previous_year_electricity_gbpcurrent,
+              data.current_year_electricity_gbpcurrent,
               data.solar_type
              FROM alerts,
               alert_types,
