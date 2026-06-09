@@ -29,6 +29,14 @@ module TemporalRange
       where("#{table_name}.updated_at >= ? AND #{table_name}.updated_at > #{table_name}.created_at", updated_at)
     }
 
+    scope :for_period, lambda { |period|
+      where(
+        'start_date <= ? AND end_date >= ?',
+        period.end,
+        period.begin
+      ).by_start_date
+    }
+
     # Define in model, returning array of attributes
     def temporal_group_keys
       raise NotImplementedError

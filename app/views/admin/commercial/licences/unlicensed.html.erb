@@ -46,10 +46,10 @@
                         <%= checkmark(school.licences.expired.any?) %>
                     </td>
                     <td class="text-end">
-                        <% licenced_for = school.licenced_for_period(@academic_year.start_date..@academic_year.end_date) %>
-                        <%= render(Elements::BadgeComponent.new(licenced_for.to_s.humanize,
+                        <% licensed_for = school.licensed_for_period(@academic_year.start_date..@academic_year.end_date) %>
+                        <%= render(Elements::BadgeComponent.new(licensed_for.to_s.humanize,
                                                                 pill: true,
-                                                                colour: period_badge_colour(licenced_for))) %>
+                                                                colour: period_badge_colour(licensed_for))) %>
                     </td>
                     <td class="text-end">
                         <%= link_to 'Licences', admin_school_licences_path(school), class: 'btn btn-sm' %>

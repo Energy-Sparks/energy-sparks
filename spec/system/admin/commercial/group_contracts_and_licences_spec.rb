@@ -8,7 +8,11 @@ describe 'group contracts and licences' do
 
   before do
     calendar = create(:national_calendar, title: 'England and Wales')
-    create(:academic_year, calendar:)
+    academic_year = create(:academic_year, calendar:)
+    create(:academic_year,
+           calendar:,
+           start_date: academic_year.end_date + 1.day,
+           end_date: academic_year.end_date + 12.months)
     sign_in(create(:admin))
     visit settings_school_group_path(school_group)
   end
@@ -17,7 +21,7 @@ describe 'group contracts and licences' do
     before { click_on 'Licence Summaries' }
 
     it { expect(page).to have_css('div.commercial-licensing-summary-component') }
-    it { expect(page).to have_content(licence.school.name) }
+    it { expect(page).to have_text(licence.school.name) }
     it { expect(page).to have_link('Licences', href: admin_school_licences_path(licence.school)) }
   end
 
@@ -27,6 +31,6 @@ describe 'group contracts and licences' do
     before { click_on 'Contracts' }
 
     it { expect(page).to have_css('div.commercial-contracts-component') }
-    it { expect(page).to have_content(contract.name) }
+    it { expect(page).to have_text(contract.name) }
   end
 end

@@ -45,16 +45,12 @@ module Schools
       end
       helper_method :formatted_target_date
 
-      def percent_change(current_consumption, previous_consumption)
-        (current_consumption - previous_consumption) / previous_consumption.to_f
-      end
-
       def formatted_target_change(current_consumption, previous_consumption)
         if @data_warning || current_consumption.nil? || previous_consumption.nil? || previous_consumption.zero?
           return '-'
         end
 
-        change = percent_change(current_consumption, previous_consumption)
+        change = EnergySparks::Calculator.percent_change(previous_consumption.to_f, current_consumption)
         up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
       end
       helper_method :formatted_target_change
