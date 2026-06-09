@@ -31,18 +31,32 @@ describe ImpactReport::Run do
   describe '.latest' do
     subject(:run) { described_class.latest }
 
-    let!(:latest_run) { create(:impact_report_run, run_date: 1.day.ago) }
+    context 'with runs on different days' do
+      let!(:latest_run) { create(:impact_report_run, run_date: 1.day.ago) }
 
-    before do
-      create(:impact_report_run, run_date: 2.days.ago)
+      before do
+        create(:impact_report_run, run_date: 2.days.ago)
+      end
+
+      it 'returns the run with the most recent run_date' do
+        expect(run).to eq(latest_run)
+      end
+
+      it 'includes metrics' do
+        expect(run.association(:metrics)).to be_loaded
+      end
     end
 
-    it 'returns the run with the most recent run_date' do
-      expect(run).to eq(latest_run)
-    end
+    context 'when there are two runs on the same day' do
+      let(:today) { Time.zone.today }
 
-    it 'includes metrics' do
-      expect(run.association(:metrics)).to be_loaded
+      let!(:first_run) { create(:impact_report_run, run_date: today, created_at: today + 1.hour) }
+      let!(:latest_run) { create(:impact_report_run, run_date: today, created_at: today + 2.hours) }
+
+      it 'returns the latest created run' do
+        expect(described_class.latest_first).to eq([latest_run, first_run])
+        expect(run).to eq(latest_run)
+      end
     end
   end
 
@@ -128,23 +142,16 @@ describe ImpactReport::Run do
       subject(:run) { create(:impact_report_run) }
 
       let(:fuel_type) { :electricity }
-      let!(:non_gbp_metric) do
-        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :baseload_kwh)
-      end
       let!(:zero_metric) do
-        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :out_of_hours_gbp, value: 0)
+        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :out_of_hours, value: 0)
       end
       let!(:no_data_metric) do
-        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :peak_gbp, enough_data: false)
+        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :peak, enough_data: false)
       end
-      let!(:ok_metric) { create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :baseload_gbp) }
+      let!(:ok_metric) { create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :baseload) }
 
       it 'includes nonzero gbp metrics with enough_data' do
         expect(run.potential_savings).to include(ok_metric)
-      end
-
-      it 'filters out non-gbp metrics' do
-        expect(run.potential_savings).not_to include(non_gbp_metric)
       end
 
       it 'filters out zero metrics' do
@@ -163,36 +170,36 @@ describe ImpactReport::Run do
 
       context 'when there are only electricity metrics' do
         before do
-          create_metric(:baseload_gbp, :electricity, 3)
-          create_metric(:out_of_hours_gbp, :electricity, 4)
+          create_metric(:baseload, :electricity, 3)
+          create_metric(:out_of_hours, :electricity, 4)
         end
 
         it 'returns metrics with the highest value first' do
-          expect(potential_savings).to eq(%w[out_of_hours_gbp baseload_gbp])
+          expect(potential_savings).to eq(%w[out_of_hours baseload])
         end
       end
 
       context 'when there are 2 electicity metrics and a gas metric' do
         before do
-          create_metric(:baseload_gbp, :electricity, 3)
-          create_metric(:out_of_hours_gbp, :electricity, 4)
-          create_metric(:insulate_pipes_gbp, :gas, 3)
+          create_metric(:baseload, :electricity, 3)
+          create_metric(:out_of_hours, :electricity, 4)
+          create_metric(:insulate_pipes, :gas, 3)
         end
 
         it 'returns highest electricity, then gas, then next elec' do
-          expect(potential_savings).to eq(%w[out_of_hours_gbp insulate_pipes_gbp baseload_gbp])
+          expect(potential_savings).to eq(%w[out_of_hours insulate_pipes baseload])
         end
       end
 
       context 'when there are 2 electricity metrics and a solar metric' do
         before do
-          create_metric(:baseload_gbp, :electricity, 3)
-          create_metric(:out_of_hours_gbp, :electricity, 4)
-          create_metric(:solar_panels_gbp, :solar_pv, 3)
+          create_metric(:baseload, :electricity, 3)
+          create_metric(:out_of_hours, :electricity, 4)
+          create_metric(:solar_panels, :solar_pv, 3)
         end
 
         it 'returns highest electricity, then solar, then next elec' do
-          expect(potential_savings).to eq(%w[out_of_hours_gbp solar_panels_gbp baseload_gbp])
+          expect(potential_savings).to eq(%w[out_of_hours solar_panels baseload])
         end
       end
     end
@@ -217,6 +224,12 @@ describe ImpactReport::Run do
       let!(:annual_saving_co2_electricity) { create_metric(:annual_saving_co2, :electricity, 600) }
       let!(:targets_gas) { create_metric(:targets, :gas, 12) }
       let!(:targets_electricity) { create_metric(:targets, :electricity, 1) }
+      let!(:out_of_hours_electricity) { create_metric(:out_of_hours, :electricity, 2) }
+      let!(:out_of_hours_gas) { create_metric(:out_of_hours, :gas, 3) }
+      let!(:long_term_electricity) { create_metric(:long_term, :electricity, 2) }
+      let!(:long_term_gas) { create_metric(:long_term, :gas, 4) }
+      let!(:baseload_electricity) { create_metric(:baseload, :electricity, 5) }
+      let!(:heating_control_gas) { create_metric(:heating_control, :gas, 8) }
 
       it 'returns metrics in configured order, gas first, then electricity' do
         expect(energy_efficiency).to eq(
@@ -224,7 +237,11 @@ describe ImpactReport::Run do
            holiday_previous_year_gbp_gas, holiday_previous_year_gbp_electricity,
            holiday_previous_gbp_gas, holiday_previous_gbp_electricity,
            annual_saving_co2_gas, annual_saving_co2_electricity,
-           targets_gas, targets_electricity]
+           targets_gas, targets_electricity,
+           out_of_hours_gas, out_of_hours_electricity,
+           long_term_gas, long_term_electricity,
+           baseload_electricity,
+           heating_control_gas]
         )
       end
     end
@@ -293,12 +310,12 @@ describe ImpactReport::Run do
              metric_type: 'points')
     end
 
-    let!(:baseload_gbp) do
+    let!(:baseload) do
       create(:impact_report_metric,
              run: run,
              fuel_type: 'electricity',
              metric_category: 'potential_savings',
-             metric_type: 'baseload_gbp')
+             metric_type: 'baseload')
     end
 
     let!(:annual_saving_gbp) do
@@ -326,7 +343,7 @@ describe ImpactReport::Run do
     end
 
     it 'stores potential savings metrics in an array' do
-      expect(index['potential_savings']['electricity']).to eq([baseload_gbp])
+      expect(index['potential_savings']['electricity']).to eq([baseload])
     end
   end
 end

@@ -456,11 +456,11 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
     end
 
     it 'displays the default prompts' do
-      within('#custom-id') do
-        expect(html).to have_css('#add_pupils')
-        expect(html).to have_css('#add_contacts')
-        expect(html).to have_css('#set_target')
-      end
+      html
+      custom_id = page.find_by_id('custom-id')
+      expect(custom_id).to have_css('#add_pupils')
+      expect(custom_id).to have_css('#add_contacts')
+      expect(custom_id).to have_css('#set_target')
     end
   end
 end

@@ -17,6 +17,7 @@
 #
 # Indexes
 #
+#  idx_impact_report_metrics_unique  (impact_report_run_id,metric_category,fuel_type,metric_type) UNIQUE
 #  index_impact_report_metrics_on_impact_report_run_id  (impact_report_run_id)
 #
 # Foreign Keys
@@ -30,6 +31,7 @@ module ImpactReport
     include Enums::FuelType
 
     belongs_to :run, foreign_key: :impact_report_run_id, class_name: 'ImpactReport::Run', inverse_of: :metrics
+    validates :metric_type, uniqueness: { scope: %i[impact_report_run_id metric_category fuel_type] }
 
     scope :enough_data, -> { where(enough_data: true) }
 
@@ -63,7 +65,8 @@ module ImpactReport
       GENERATOR::AnnualSaving,
       GENERATOR::Benchmark,
       GENERATOR::Targets,
-      GENERATOR::Holiday
+      GENERATOR::Holiday,
+      GENERATOR::OutOfHours
     ].freeze
 
     ENERGY_EFFICIENCY_METRICS = (
@@ -128,7 +131,7 @@ module ImpactReport
     ## I would like to see the unit in it's own field on metric as this is clunky
     def key_and_unit
       @key_and_unit ||= metric_type.match(
-        /(.+?)(?:_(#{GENERATOR::PotentialSavings::TYPES.join('|')}))?$/
+        /(.+?)(?:_(#{GENERATOR::OutOfHours::TYPES.join('|')}))?$/
       ).captures
     end
   end
