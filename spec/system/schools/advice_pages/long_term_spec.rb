@@ -63,7 +63,7 @@ shared_examples 'a long term advice page' do
     end
 
     def manual_readings_prompt_text
-      "We don't have enough data at show a complete year."
+      "We don't have enough data to show a complete year."
     end
 
     context "when on the 'Insights' tab" do

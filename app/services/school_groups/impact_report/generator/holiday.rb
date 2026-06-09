@@ -45,7 +45,7 @@ module SchoolGroups
               previous: Comparison::ChangeInElectricityHolidayConsumptionPreviousHoliday,
               previous_year: Comparison::ChangeInElectricityHolidayConsumptionPreviousYearsHoliday
             } }[fuel][holiday]
-            .where(school: @impact_report.visible_schools)
+            .where(school: @impact_report.visible_schools).where.not(difference_percent: nil)
         end
 
         def column(model, (_holiday, metric))
