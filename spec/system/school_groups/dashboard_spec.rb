@@ -85,9 +85,9 @@ describe 'School group dashboard page', :school_groups do
     end
 
     context 'when displaying impact prompt component', with_feature: :impact_reporting do
+      include_context 'with impact report'
+
       before do
-        create(:impact_report_run, categories: %i[overview], school_group:)
-        create(:impact_report_configuration, school_group:, visible: true)
         visit school_group_path(school_group)
       end
 
