@@ -34,6 +34,10 @@ module ImpactReport
       holiday_previous_gbp
       annual_saving_co2
       targets
+      out_of_hours
+      long_term
+      baseload
+      heating_control
     ].freeze
 
     def end_date
