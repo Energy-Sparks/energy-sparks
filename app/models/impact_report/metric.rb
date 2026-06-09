@@ -18,6 +18,7 @@
 #
 # Indexes
 #
+#  idx_impact_report_metrics_unique                     (impact_report_run_id,metric_category,fuel_type,metric_type) UNIQUE
 #  index_impact_report_metrics_on_impact_report_run_id  (impact_report_run_id)
 #
 # Foreign Keys
