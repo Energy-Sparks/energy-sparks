@@ -30,6 +30,11 @@ FactoryBot.define do
       calendar_type { :national }
     end
 
+    trait :default_national do
+      calendar_type { :national }
+      title { 'England and Wales' }
+    end
+
     # For creating a school calendar with associated regional and national calendars with academic years
     trait :for_school do
       calendar_type { :school }
@@ -42,11 +47,10 @@ FactoryBot.define do
       after(:create) do |calendar, evaluator|
         # Create the national calendar first, with years
         national_calendar = create(:calendar,
-          :with_academic_years,
-          calendar_type: :national,
-          previous_academic_year_count: evaluator.previous_academic_year_count,
-          academic_year_count: evaluator.academic_year_count
-        )
+                                   :with_academic_years,
+                                   calendar_type: :national,
+                                   previous_academic_year_count: evaluator.previous_academic_year_count,
+                                   academic_year_count: evaluator.academic_year_count)
         regional_calendar = create(:calendar, calendar_type: :regional, based_on: national_calendar)
 
         calendar.update!(based_on: regional_calendar)
@@ -91,7 +95,8 @@ FactoryBot.define do
         start_year = today.year - (today.month < 9 ? 2 : 1)
         end_year = today.year + 1
         (start_year..end_year).each do |year|
-          create(:academic_year, calendar: calendar, start_date: Date.new(year, 9, 1), end_date: Date.new(year + 1, 8, 31))
+          create(:academic_year, calendar: calendar, start_date: Date.new(year, 9, 1),
+                                 end_date: Date.new(year + 1, 8, 31))
         end
       end
     end

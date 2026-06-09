@@ -73,7 +73,13 @@
                             class: 'btn btn-sm btn-primary' %>
             <% end %>
             <% r.with_button do %>
-              <%= link_to 'View issues',
+              <%= link_to 'Licences',
+                          admin_school_licences_path(school),
+                          target: '_new',
+                          class: 'btn btn-sm' %>
+            <% end %>
+            <% r.with_button do %>
+              <%= link_to 'Issues',
                           admin_school_issues_path(school),
                           target: '_new',
                           class: 'btn btn-sm' %>
