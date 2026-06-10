@@ -1,19 +1,17 @@
+# frozen_string_literal: true
+
 module EnergySparks
   class Calculator
-    # Calculate percentage change across two values or sum of values in two arrays
-    def self.percent_change(base, new_val, to_nil_if_sum_zero = false)
-      return nil if to_nil_if_sum_zero && sum_data(base) == 0.0
-      return 0.0 if sum_data(base) == 0.0
+    def self.percent_change(base, new_val)
+      return nil if base.nil? || new_val.nil? || base.zero?
 
-      change = (sum_data(new_val) - sum_data(base)) / sum_data(base)
-      to_nil_if_sum_zero && change == 0.0 ? nil : change
+      (new_val - base) / base
     end
 
-    def self.sum_data(data, to_nil_if_sum_zero = false)
+    def self.sum_data(data)
       data = Array(data)
       data.map! { |value| value || 0.0 } # create array 1st to avoid statsample map/sum bug
-      val = data.sum
-      to_nil_if_sum_zero && val == 0.0 ? nil : val
+      data.sum
     end
 
     # Accepts 2 arrays of kwh, co2 or £ values.

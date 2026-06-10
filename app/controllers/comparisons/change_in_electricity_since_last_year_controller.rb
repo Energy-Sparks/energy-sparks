@@ -25,7 +25,7 @@ module Comparisons
     # i18n-tasks-use t('analytics.benchmarking.configuration.column_headings.change_in_kwh_pct')
     def create_charts(results)
       calculation = lambda do |result|
-        percent_change(result.previous_year_kwh, result.current_year_kwh) * 100.0
+        percent_change(result.previous_year_kwh, result.current_year_kwh)&.*(100.0)
       end
       [
         Charts::ComparisonChartData.new(results).create_calculated_chart(calculation, 'change_in_kwh_pct', 'percent')
