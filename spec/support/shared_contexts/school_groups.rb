@@ -1,6 +1,6 @@
 RSpec.shared_context 'school group recent usage' do
   before do
-    allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return([:electricity, :gas, :storage_heaters])
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return(%i[electricity gas storage_heaters])
     electricity_changes = OpenStruct.new(
       change: '-16%',
       usage: '910',
@@ -44,7 +44,8 @@ RSpec.shared_context 'school group recent usage' do
       OpenStruct.new(
         electricity: OpenStruct.new(week: electricity_changes, month: electricity_changes, year: electricity_changes),
         gas: OpenStruct.new(week: gas_changes, month: gas_changes, year: gas_changes),
-        storage_heaters: OpenStruct.new(week: storage_heater_changes, month: storage_heater_changes, year: storage_heater_changes)
+        storage_heaters: OpenStruct.new(week: storage_heater_changes, month: storage_heater_changes,
+                                        year: storage_heater_changes)
       )
     end
   end
@@ -66,7 +67,7 @@ RSpec.shared_context 'school group priority actions' do
     create(
       :alert_type_rating_content_version,
       alert_type_rating: alert_type_rating,
-      management_priorities_title: 'Spending too much money on heating',
+      management_priorities_title: 'Spending too much money on heating'
     )
   end
   let(:saving) do
@@ -109,12 +110,21 @@ RSpec.shared_context 'school group current scores' do
       OpenStruct.new(
         with_points: OpenStruct.new(
           schools_with_positions: {
-           1 => [OpenStruct.new(name: 'School 1', sum_points: 20, school_group_cluster_name: 'My Cluster'), OpenStruct.new(name: 'School 2', sum_points: 20, school_group_cluster_name: 'Not set')],
-           2 => [OpenStruct.new(name: 'School 3', sum_points: 18, school_group_cluster_name: 'Not set')]
+            1 => [OpenStruct.new(name: 'School 1', sum_points: 20, school_group_cluster_name: 'My Cluster'),
+                  OpenStruct.new(name: 'School 2', sum_points: 20, school_group_cluster_name: 'Not set')],
+            2 => [OpenStruct.new(name: 'School 3', sum_points: 18, school_group_cluster_name: 'Not set')]
           }
-                     ),
-        without_points: [OpenStruct.new(name: 'School 4', school_group_cluster_name: 'Not set'), OpenStruct.new(name: 'School 5', school_group_cluster_name: 'Not set')]
+        ),
+        without_points: [OpenStruct.new(name: 'School 4', school_group_cluster_name: 'Not set'),
+                         OpenStruct.new(name: 'School 5', school_group_cluster_name: 'Not set')]
       )
     end
+  end
+end
+
+RSpec.shared_context 'with impact report' do
+  before do
+    create(:impact_report_run, categories: %i[overview], school_group:)
+    create(:impact_report_configuration, school_group:, visible: true)
   end
 end

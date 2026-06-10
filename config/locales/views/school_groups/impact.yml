@@ -145,3 +145,6 @@ en:
           electricity: Potential electricity savings
           gas: Potential gas savings
           solar_pv: Install solar panels
+      prompt:
+        title: Latest impact report
+        view_report: View impact report
