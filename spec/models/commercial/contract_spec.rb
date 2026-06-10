@@ -7,6 +7,13 @@ describe Commercial::Contract do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:name) }
+
+    context 'when validating names' do
+      subject { build(:commercial_contract, :with_school) }
+
+      it { is_expected.to validate_uniqueness_of(:name) }
+    end
+
     it { is_expected.to validate_presence_of(:start_date) }
     it { is_expected.to validate_presence_of(:end_date) }
     it { is_expected.to validate_numericality_of(:number_of_schools).is_greater_than(0) }

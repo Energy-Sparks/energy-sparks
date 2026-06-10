@@ -36,14 +36,15 @@ module Commercial
 
     self.table_name = 'commercial_products'
 
-    validates_presence_of :name
+    validates :name, presence: true, uniqueness: true
+
     validates :default_product, uniqueness: { message: 'already exists' }, if: :default_product?
 
-    scope :default_product, -> {
+    scope :default_product, lambda {
       where(default_product: true).first
     }
 
-    scope :with_default_first, -> {
+    scope :with_default_first, lambda {
       order(default_product: :desc).order(:name)
     }
 
@@ -54,6 +55,7 @@ module Commercial
     def deletable?
       return false if default_product?
       return false if contracts.exists?
+
       true
     end
 
