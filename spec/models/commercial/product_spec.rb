@@ -8,6 +8,12 @@ describe Commercial::Product do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:name) }
 
+    context 'when validating names' do
+      subject { create(:commercial_product) }
+
+      it { is_expected.to validate_uniqueness_of(:name) }
+    end
+
     context 'when setting default product' do
       context 'when no default exists' do
         it { expect(build(:commercial_product, default_product: true)).to be_valid }

@@ -83,6 +83,7 @@ module Commercial
     enum :invoice_terms, CONTRACT_INVOICE_TERMS
 
     validates :name, :start_date, :end_date, presence: true
+    validates :name, uniqueness: true
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
