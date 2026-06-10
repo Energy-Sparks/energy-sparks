@@ -155,7 +155,7 @@ RSpec.describe 'Admin impact report configuration' do
             visit school_group_impact_index_path(school_group)
           end
 
-          it 'shows feauture' do
+          it 'shows feature' do
             expect(page).to have_text('Note about energy efficiency')
             expect(page).to have_css("img[src*='boiler.jpg']")
             expect(page).to have_link('View dashboard', href: school_path(school))
