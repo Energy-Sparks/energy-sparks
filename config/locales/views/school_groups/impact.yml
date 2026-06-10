@@ -63,7 +63,16 @@ en:
             title: Current targets
         description: How are schools in this group engaging with the Energy Sparks education programme?
         featured:
-          description: "%{school} is currently the most active school in this group, having recorded %{activities} pupil activities and %{actions} adult actions in the last 12 months"
+          actions:
+            one: "%{count} adult action"
+            other: "%{count} adult actions"
+          activities:
+            one: "%{count} pupil activity"
+            other: "%{count} pupil activities"
+          description:
+            actions: "%{school} is currently the most active school in this group, having recorded %{actions} in the last 12 months"
+            activities: "%{school} is currently the most active school in this group, having recorded %{activities} in the last 12 months"
+            both: "%{school} is currently the most active school in this group, having recorded %{activities} and %{actions} in the last 12 months"
           title: Featured school
         looking_for_more_detail: Looking for more detail?
         title: Engagement
