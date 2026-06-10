@@ -192,12 +192,12 @@ module Commercial
           :agreed_school_price,
           :contract_holder_type,
           :contract_holder_id,
-          :invoice_terms,
           :licence_period,
           :licence_years,
           :number_of_schools,
           :product
         ).merge(
+          invoice_terms: original.custom? ? :full : :pro_rata,
           comments: "Renewed from #{original.name}",
           end_date: original.end_date.next_year,
           start_date: original.end_date + 1.day,
