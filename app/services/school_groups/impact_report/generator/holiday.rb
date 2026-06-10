@@ -23,12 +23,12 @@ module SchoolGroups
         end
 
         def value(fuel, (holiday, metric))
-          model = model(fuel, holiday, metric)
-          -model.sum(column(model, metric))
+          model, column = model(fuel, holiday, metric)
+          -model.sum(column)
         end
 
         def number_of_schools(fuel, (holiday, metric))
-          model(fuel, holiday, metric).count
+          model(fuel, holiday, metric).first.count
         end
 
         def enough_data?(_fuel, _metric, number_of_schools)
@@ -44,7 +44,8 @@ module SchoolGroups
                       previous: Comparison::ChangeInElectricityHolidayConsumptionPreviousHoliday,
                       previous_year: Comparison::ChangeInElectricityHolidayConsumptionPreviousYearsHoliday
                     } }[fuel][holiday]
-          model.where(school: @impact_report.visible_schools).where(column(model, metric).lt(0))
+          column = column(model, metric)
+          [model.where(school: @impact_report.visible_schools).where(column.lt(0)), column]
         end
 
         def column(model, metric) = model.arel_table[[:difference, metric == :gbp ? :gbpcurrent : metric].join('_')]
