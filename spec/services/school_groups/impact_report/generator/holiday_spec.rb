@@ -26,6 +26,7 @@ describe SchoolGroups::ImpactReport::Generator::Holiday do
                      alert_type: create(:alert_type, class_name: AlertPreviousYearHolidayComparisonGas),
                      variables: { difference_gbpcurrent: -7,
                                   difference_kwh: -8 })
+      # school with increase that should be ignored
       create(:alert, school: create(:school, school_group: school.school_group), alert_generation_run:,
                      alert_type: create(:alert_type, class_name: AlertPreviousHolidayComparisonElectricity),
                      variables: { difference_gbpcurrent: 1,
@@ -43,16 +44,14 @@ describe SchoolGroups::ImpactReport::Generator::Holiday do
     end
 
     it 'has the right metrics' do
-      expect(generator.metrics).to contain_exactly(
-        metric(:previous, :gbp, 1, :electricity),
-        metric(:previous, :kwh, 2, :electricity),
-        metric(:previous_year, :gbp, 3, :electricity),
-        metric(:previous_year, :kwh, 4, :electricity),
-        metric(:previous, :gbp, 5, :gas),
-        metric(:previous, :kwh, 6, :gas),
-        metric(:previous_year, :gbp, 7, :gas),
-        metric(:previous_year, :kwh, 8, :gas)
-      )
+      expect(generator.metrics).to contain_exactly(metric(:previous, :gbp, 1, :electricity),
+                                                   metric(:previous, :kwh, 2, :electricity),
+                                                   metric(:previous_year, :gbp, 3, :electricity),
+                                                   metric(:previous_year, :kwh, 4, :electricity),
+                                                   metric(:previous, :gbp, 5, :gas),
+                                                   metric(:previous, :kwh, 6, :gas),
+                                                   metric(:previous_year, :gbp, 7, :gas),
+                                                   metric(:previous_year, :kwh, 8, :gas))
     end
   end
 end
