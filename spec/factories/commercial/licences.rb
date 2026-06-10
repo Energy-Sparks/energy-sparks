@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :commercial_licence, class: 'Commercial::Licence' do
     school
-    association :contract, factory: :commercial_contract
+    contract factory: %i[commercial_contract]
 
     sequence(:comments) { |n| "Licence #{n} comments" }
 
     start_date { Time.zone.today }
     end_date { Time.zone.today + 364 }
 
-    association :created_by, factory: :user
-    association :updated_by, factory: :user
+    created_by factory: %i[user]
+    updated_by factory: %i[user]
 
     trait :expired do
       start_date { Time.zone.today - 1.year }

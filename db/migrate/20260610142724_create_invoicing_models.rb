@@ -5,7 +5,7 @@ class CreateInvoicingModels < ActiveRecord::Migration[8.1]
     create_table :commercial_invoices do |t|
       t.references :contract, null: false, foreign_key: { to_table: :commercial_contracts }
       t.string :purchase_order_number
-      t.references :created_by, foreign_key: { to_table: :users }
+      t.references :created_by, null: false, foreign_key: { to_table: :users }
 
       t.timestamps
     end
