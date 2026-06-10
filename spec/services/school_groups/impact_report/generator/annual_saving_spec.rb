@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::AnnualSaving do
-  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
+  subject(:generator) { described_class.new(school.school_group) }
 
   let(:school) { create(:school, :with_school_group) }
 

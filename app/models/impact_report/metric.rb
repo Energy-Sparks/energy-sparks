@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Layout/LineLength
 # == Schema Information
 #
 # Table name: impact_report_metrics
@@ -25,6 +26,8 @@
 #
 #  fk_rails_...  (impact_report_run_id => impact_report_runs.id)
 #
+# rubocop:enable Layout/LineLength
+
 module ImpactReport
   class Metric < ApplicationRecord
     self.table_name = 'impact_report_metrics'
@@ -40,8 +43,6 @@ module ImpactReport
       values.index_with(&:to_s)
     end
 
-    GENERATOR = SchoolGroups::ImpactReport::Generator
-
     METRIC_CATEGORIES = %i[
       overview
       energy_efficiency
@@ -49,19 +50,11 @@ module ImpactReport
       potential_savings
       footnote
     ].freeze
-
     enum :metric_category, enum_map(METRIC_CATEGORIES).freeze
 
-    OVERVIEW_METRICS = %i[
-      visible_schools
-      data_visible_schools
-      users
-      active_users
-      pupils
-      enrolled_schools
-      enrolling_schools
-    ].freeze
-
+    GENERATOR = SchoolGroups::ImpactReport::Generator
+    private_constant :GENERATOR
+    OVERVIEW_METRICS = GENERATOR::Overview::METRICS
     ENERGY_EFFICIENCY_GENERATORS = [
       GENERATOR::AnnualSaving,
       GENERATOR::Benchmark,
@@ -69,23 +62,14 @@ module ImpactReport
       GENERATOR::Holiday,
       GENERATOR::OutOfHours
     ].freeze
-
+    private_constant :ENERGY_EFFICIENCY_GENERATORS
     ENERGY_EFFICIENCY_METRICS = (
       %i[total_savings] + # not sure we need this now. Remove from DB too?
       ENERGY_EFFICIENCY_GENERATORS.flat_map { |type| type::METRICS }
     ).freeze
-
-    ENGAGEMENT_METRICS = %i[
-      activities
-      actions
-      points
-      targets
-    ].freeze
-
+    ENGAGEMENT_METRICS = GENERATOR::Engagement::METRICS
     POTENTIAL_SAVINGS_METRICS = GENERATOR::PotentialSavings::METRICS
-
     FOOTNOTE_METRICS = %i[].freeze
-
     METRIC_TYPES = (
       OVERVIEW_METRICS +
       ENGAGEMENT_METRICS +
@@ -93,7 +77,6 @@ module ImpactReport
       POTENTIAL_SAVINGS_METRICS +
       FOOTNOTE_METRICS
     ).uniq.freeze # uniq because targets is found in engagement and potential_savings
-
     enum :metric_type, enum_map(METRIC_TYPES).freeze, suffix: :metric
 
     def self.categories
@@ -110,13 +93,6 @@ module ImpactReport
 
     def nonzero?
       available? && value.to_i.nonzero?
-    end
-
-    def energy_efficiency_type
-      return unless energy_efficiency?
-
-      ENERGY_EFFICIENCY_GENERATORS.find { |type| type::METRICS.include?(metric_type.to_sym) }
-                                  &.name.to_s.demodulize.underscore.to_sym
     end
   end
 end
