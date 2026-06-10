@@ -22,35 +22,32 @@ module SchoolGroups
           %i[electricity gas].product(METRICS_ARRAY)
         end
 
-        def value(fuel, metric)
-          model = model(fuel, metric)
-          column = column(model, metric)
-          -model.where(column.lt(0)).sum(column)
+        def value(fuel, (holiday, metric))
+          model = model(fuel, holiday, metric)
+          -model.sum(column(model, metric))
         end
 
-        def number_of_schools(fuel, metric)
-          model(fuel, metric).count
+        def number_of_schools(fuel, (holiday, metric))
+          model(fuel, holiday, metric).count
         end
 
         def enough_data?(_fuel, _metric, number_of_schools)
           number_of_schools.positive?
         end
 
-        def model(fuel, (holiday, _metric))
-          { gas: {
-              previous: Comparison::ChangeInGasHolidayConsumptionPreviousHoliday,
-              previous_year: Comparison::ChangeInGasHolidayConsumptionPreviousYearsHoliday
-            },
-            electricity: {
-              previous: Comparison::ChangeInElectricityHolidayConsumptionPreviousHoliday,
-              previous_year: Comparison::ChangeInElectricityHolidayConsumptionPreviousYearsHoliday
-            } }[fuel][holiday]
-            .where(school: @impact_report.visible_schools).where.not(difference_percent: nil)
+        def model(fuel, holiday, metric)
+          model = { gas: {
+                      previous: Comparison::ChangeInGasHolidayConsumptionPreviousHoliday,
+                      previous_year: Comparison::ChangeInGasHolidayConsumptionPreviousYearsHoliday
+                    },
+                    electricity: {
+                      previous: Comparison::ChangeInElectricityHolidayConsumptionPreviousHoliday,
+                      previous_year: Comparison::ChangeInElectricityHolidayConsumptionPreviousYearsHoliday
+                    } }[fuel][holiday]
+          model.where(school: @impact_report.visible_schools).where(column(model, metric).lt(0))
         end
 
-        def column(model, (_holiday, metric))
-          model.arel_table[[:difference, metric == :gbp ? :gbpcurrent : metric].join('_')]
-        end
+        def column(model, metric) = model.arel_table[[:difference, metric == :gbp ? :gbpcurrent : metric].join('_')]
       end
     end
   end
