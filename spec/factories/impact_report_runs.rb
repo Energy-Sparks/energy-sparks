@@ -16,27 +16,17 @@ FactoryBot.define do
     end
 
     after(:create) do |run, evaluator|
+      all_metrics = SchoolGroups::ImpactReport::Generator.metric_names
+
       evaluator.categories.each do |category|
         category_overrides = evaluator.public_send(category)
 
-        ImpactReport::Metric.metrics(category).each do |type|
-          override = category_overrides[type] || {}
+        all_metrics.filter { |metric| metric[:metric_category] == category }
+                   .each do |metric|
+          override = category_overrides[metric[:metric_type]] || {}
           attrs = override.is_a?(Hash) ? override : {}
-
-          defaults = {
-            run: run,
-            metric_category: category,
-            metric_type: type,
-            value: 2,
-            enough_data: true
-          }
-
-          defaults[:fuel_type] = :electricity if %i[potential_savings energy_efficiency].include?(category)
-
-          create(
-            :impact_report_metric,
-            defaults.merge(attrs)
-          )
+          defaults = metric.merge(run:, value: 2, enough_data: true)
+          create(:impact_report_metric, defaults.merge(attrs))
         end
       end
     end

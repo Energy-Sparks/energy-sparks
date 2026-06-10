@@ -7,13 +7,14 @@
       ) do |grid| %>
     <% displayable.each do |metric| %>
       <% grid.with_stats_card do |card| %>
-        <%= card.with_header title: impact_t("energy_efficiency.metric_types.#{metric.metric_type}.title",
+        <% key = metric.unit.nil? ? metric.metric_type : "#{metric.metric_type}.#{metric.unit}" %>
+        <%= card.with_header title: impact_t("energy_efficiency.metric_types.#{key}.title",
                                              fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}")) %>
         <%= card.with_figure(
               metric.unit ? format_unit(metric.value, metric.unit.to_sym, false) : number_with_delimiter(metric.value)
             ) %>
         <%= card.with_subtext do
-              impact_t("energy_efficiency.metric_types.#{metric.metric_type}.subtext",
+              impact_t("energy_efficiency.metric_types.#{key}.subtext",
                        count: metric.number_of_schools,
                        fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}"))
             end %>

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Targets do
-  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
+  subject(:generator) { described_class.new(school.school_group) }
 
   let(:school) { create(:school, :with_school_group) }
 
@@ -16,8 +16,8 @@ describe SchoolGroups::ImpactReport::Generator::Targets do
     end
 
     def metric(**)
-      { enough_data: true, metric_category: :energy_efficiency, metric_type: :targets, number_of_schools: 1, value: 1 }
-        .merge(**)
+      { enough_data: true, metric_category: :energy_efficiency, metric_type: :targets, number_of_schools: 1, value: 1,
+        unit: nil }.merge(**)
     end
 
     it 'has the right metrics' do

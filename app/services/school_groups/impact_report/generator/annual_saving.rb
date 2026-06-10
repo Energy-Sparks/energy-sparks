@@ -1,51 +1,37 @@
 # frozen_string_literal: true
 
 module SchoolGroups
-  class ImpactReport
+  module ImpactReport
     class Generator
       class AnnualSaving < Base
-        def self.metric_type(metric)
-          [:annual_saving, metric].join('_').to_sym
-        end
-
-        TYPES = %i[gbp co2 kwh].freeze
-        METRICS = TYPES.map { |type| metric_type(type) }.freeze
+        METRIC_CATEGORY = :energy_efficiency
+        METRICS = %i[annual_saving].freeze
+        FUEL_TYPES = %i[electricity gas].freeze
+        UNITS = %i[gbp co2 kwh].freeze
 
         private
 
-        def metric_category
-          :energy_efficiency
-        end
+        def value(metric) = sum(metric)
 
-        def value(fuel, metric)
-          sum(fuel, metric)
-        end
+        def number_of_schools(metric) = savings(metric).count
 
-        def number_of_schools(fuel, metric)
-          savings(fuel, metric).count
-        end
+        def enough_data?(number_of_schools) = number_of_schools.positive?
 
-        def enough_data?(_fuel, _metric, number_of_schools)
-          number_of_schools.positive?
-        end
-
-        def savings(fuel, metric)
-          model = if fuel == :gas
+        def savings(metric)
+          model = if metric[:fuel_type] == :gas
                     Comparison::ChangeInGasSinceLastYear
                   else
                     Comparison::ChangeInElectricitySinceLastYear
                   end
-          model.where(school: @impact_report.visible_schools)
-               .where(column(model, metric, :current).lt(column(model, metric, :previous)))
+          model.where(school: visible_schools)
+               .where(column(model, metric[:unit], :current).lt(column(model, metric[:unit], :previous)))
         end
 
-        def column(model, metric, type)
-          model.arel_table["#{type}_year_#{metric}"]
-        end
+        def column(model, unit, type) = model.arel_table["#{type}_year_#{unit}"]
 
-        def sum(fuel, metric)
-          scope = savings(fuel, metric)
-          scope.sum(column(scope, metric, :previous) - column(scope, metric, :current))
+        def sum(metric)
+          scope = savings(metric)
+          scope.sum(column(scope, metric[:unit], :previous) - column(scope, metric[:unit], :current))
         end
       end
     end

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SchoolGroups::ImpactReport::Generator::PotentialSavings do
-  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school_group)) }
+  subject(:generator) { described_class.new(school_group) }
 
   let(:school_group) { create(:school_group) }
   let(:schools) { create_list(:school, 3, school_group:) }

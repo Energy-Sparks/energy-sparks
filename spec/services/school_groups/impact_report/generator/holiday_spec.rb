@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Holiday do
-  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
+  subject(:generator) { described_class.new(school.school_group) }
 
   let(:school) { create(:school, :with_school_group) }
 
@@ -37,8 +37,8 @@ describe SchoolGroups::ImpactReport::Generator::Holiday do
        Comparison::ChangeInGasHolidayConsumptionPreviousYearsHoliday].map(&:refresh)
     end
 
-    def metric(holiday, type, value, fuel_type, **)
-      { enough_data: true, metric_category: :energy_efficiency, metric_type: :"holiday_#{holiday}_#{type}",
+    def metric(holiday, unit, value, fuel_type, **)
+      { enough_data: true, metric_category: :energy_efficiency, metric_type: :"holiday_#{holiday}", unit:,
         fuel_type:, number_of_schools: 1, value: }
         .merge(**)
     end

@@ -8,32 +8,35 @@ en:
         featured:
           title: Featured energy efficient school
         metric_types:
-          annual_saving_co2:
-            subtext:
-              one: Reduced emissions by reducing %{fuel_type} use in %{count} school in the last 12 months
-              other: Reduced emissions by reducing %{fuel_type} use in %{count} schools in the last 12 months
-            title: Reduced %{fuel_type} emissions
-          annual_saving_gbp:
-            subtext:
-              one: Cost saving by reducing %{fuel_type} use in %{count} school in the last 12 months using current tariffs
-              other: Cost saving by reducing %{fuel_type} use in %{count} schools in the last 12 months using current tariffs
-            title: Total %{fuel_type} savings
+          annual_saving:
+            co2:
+              subtext:
+                one: Reduced emissions by reducing %{fuel_type} use in %{count} school in the last 12 months
+                other: Reduced emissions by reducing %{fuel_type} use in %{count} schools in the last 12 months
+              title: Reduced %{fuel_type} emissions
+            gbp:
+              subtext:
+                one: Cost saving by reducing %{fuel_type} use in %{count} school in the last 12 months using current tariffs
+                other: Cost saving by reducing %{fuel_type} use in %{count} schools in the last 12 months using current tariffs
+              title: Total %{fuel_type} savings
           baseload:
             subtext: Schools achieving a well managed or exemplar rating for managing electricity baseload
             title: Baseload management
           heating_control:
             subtext: Schools achieving a well managed or exemplar rating for heating control
             title: Improved heating control
-          holiday_previous_gbp:
-            subtext:
-              one: Cost saving by reducing %{fuel_type} use in %{count} school between the last two holidays using current tariffs
-              other: Cost saving by reducing %{fuel_type} use in %{count} schools between the last two holidays using current tariffs
-            title: Last holiday %{fuel_type} savings
-          holiday_previous_year_gbp:
-            subtext:
-              one: Cost saving by reducing %{fuel_type} use in %{count} school between the last holiday and same holiday in previous year using current tariffs
-              other: Cost saving by reducing %{fuel_type} use in %{count} schools between the last holiday and same holiday in previous year using current tariffs
-            title: Yearly holiday %{fuel_type} savings
+          holiday_previous:
+            gbp:
+              subtext:
+                one: Cost saving by reducing %{fuel_type} use in %{count} school between the last two holidays using current tariffs
+                other: Cost saving by reducing %{fuel_type} use in %{count} schools between the last two holidays using current tariffs
+              title: Last holiday %{fuel_type} savings
+          holiday_previous_year:
+            gbp:
+              subtext:
+                one: Cost saving by reducing %{fuel_type} use in %{count} school between the last holiday and same holiday in previous year using current tariffs
+                other: Cost saving by reducing %{fuel_type} use in %{count} schools between the last holiday and same holiday in previous year using current tariffs
+              title: Yearly holiday %{fuel_type} savings
           long_term:
             subtext: Schools achieving a well managed or exemplar rating for their %{fuel_type} use
             title: Reducing %{fuel_type} use
