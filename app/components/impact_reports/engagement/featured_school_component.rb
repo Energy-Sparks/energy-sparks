@@ -30,6 +30,10 @@ module ImpactReports
                 action_count.zero? ? 'activities' : 'both'
               end
 
+        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.actions')
+        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.activities')
+        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.both')
+
         impact_t("engagement.featured.description.#{key}",
                  school: school.name,
                  activities: impact_t('engagement.featured.activities', count: activity_count),
