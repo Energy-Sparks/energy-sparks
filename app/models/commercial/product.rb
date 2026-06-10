@@ -36,8 +36,7 @@ module Commercial
 
     self.table_name = 'commercial_products'
 
-    validates :name, presence: true
-    validates :name, uniqueness: true
+    validates :name, presence: true, uniqueness: true
 
     validates :default_product, uniqueness: { message: 'already exists' }, if: :default_product?
 
