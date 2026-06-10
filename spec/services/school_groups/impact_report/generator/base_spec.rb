@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe SchoolGroups::ImpactReport do
-  subject(:report) { described_class.new(school_group) }
+describe SchoolGroups::ImpactReport::Generator::Base do
+  subject(:generator) { described_class.new(school_group) }
 
   let(:school_group) { create(:school_group) }
   let!(:visible_school) { create(:school, data_enabled: false, school_group:) }
@@ -11,7 +11,7 @@ describe SchoolGroups::ImpactReport do
 
   describe '#visible_schools' do
     it 'returns only visible schools assigned to the school group' do
-      expect(report.visible_schools).to contain_exactly(visible_school, data_visible_school)
+      expect(generator.send(:visible_schools)).to contain_exactly(visible_school, data_visible_school)
     end
   end
 
@@ -19,7 +19,7 @@ describe SchoolGroups::ImpactReport do
     before { create(:school, :with_school_group) }
 
     it 'returns only data-visible schools assigned to the school group' do
-      expect(report.data_visible_schools).to eq([data_visible_school])
+      expect(generator.send(:data_visible_schools)).to eq([data_visible_school])
     end
   end
 end

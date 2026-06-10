@@ -73,7 +73,7 @@ RSpec.configure do |config|
   def with_retry(exception_class = RSpec::Expectations::ExpectationNotMetError)
     retry_count = 0
     begin
-      puts 'running with retry'
+      puts 'running with retry' unless retry_count.zero?
       yield
     rescue exception_class => e
       puts "exception #{e} - #{e.message}"

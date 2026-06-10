@@ -34,7 +34,7 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
     ImpactReport::Run.all.map do |run|
       run.metrics.group_by(&:metric_category).transform_values do |metrics|
         metrics.select(&:enough_data).to_h do |metric|
-          [metric.fuel_type ? [metric.fuel_type, metric.metric_type].join('_') : metric.metric_type, metric.value]
+          [[metric.fuel_type, metric.metric_type, metric.unit].compact.join('_'), metric.value]
         end
       end.deep_symbolize_keys
     end

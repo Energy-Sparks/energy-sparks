@@ -38,4 +38,3 @@ FROM
 WHERE
   energy.alert_generation_run_id = latest_runs.id AND
   gas.alert_generation_run_id = latest_runs.id;
-
