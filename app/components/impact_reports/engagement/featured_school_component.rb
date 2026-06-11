@@ -24,30 +24,40 @@ module ImpactReports
       end
 
       def default_description
-        impact_t('engagement.featured.description',
+        key = if activity_count.zero?
+                'actions'
+              else
+                action_count.zero? ? 'activities' : 'both'
+              end
+
+        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.actions')
+        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.activities')
+        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.both')
+
+        impact_t("engagement.featured.description.#{key}",
                  school: school.name,
-                 activities: activity_count,
-                 actions: action_count)
+                 activities: impact_t('engagement.featured.activities', count: activity_count),
+                 actions: impact_t('engagement.featured.actions', count: action_count))
       end
 
-      def today
-        @today ||= Time.zone.today
+      def now
+        @now ||= Time.zone.now
       end
 
       def twelve_months_ago
-        @twelve_months_ago ||= today - 12.months
+        @twelve_months_ago ||= now - 12.months
       end
 
       def activity_count
         @activity_count ||= school.activities
-                                  .between(twelve_months_ago, today)
+                                  .between(twelve_months_ago, now)
                                   .count
       end
 
       def action_count
         @action_count ||= school.observations
                                 .intervention
-                                .between(twelve_months_ago, today)
+                                .between(twelve_months_ago, now)
                                 .count
       end
 

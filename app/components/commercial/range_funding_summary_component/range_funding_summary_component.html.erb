@@ -1,0 +1,12 @@
+<%= tag.div id: id, class: classes do %>
+<p>For <%= @range_label %> this group has:</p>
+  <ul>
+    <% CATEGORIES.each do |category| %>
+      <% if categorised_schools[category]&.any? %>
+        <li>
+          <%= categorised_schools[category].size %> <%= category.to_s.humanize.downcase %> schools
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
