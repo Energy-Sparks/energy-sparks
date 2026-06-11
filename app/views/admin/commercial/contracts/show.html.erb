@@ -157,6 +157,12 @@
         </div>
       <% end %>
       <%= grid.with_block do %>
+        <% unless @contract.contract_holder.is_a?(School) %>
+          <h3>School Summary</h3>
+          <div id="contract-holder-schools" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+            <%= render Commercial::ContractSchoolSummaryComponent.new(contract: @contract) %>
+          </div>
+        <% end %>
         <h3>Licence Summary</h3>
         <div id="licence-summary" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
           <table id='licence-summary-table' class="table table-sm">
@@ -259,6 +265,15 @@
     </table>
   </div>
 </div>
+
+<% if @contract.invoices.any? %>
+  <div class="mt-4 row">
+    <div class="col-12">
+      <h3>Invoices</h3>
+      <%= render Commercial::InvoicesComponent.new(invoices: @contract.invoices.by_date, show_contract: false) %>
+    </div>
+  </div>
+<% end %>
 
 <div class="row">
   <div class="col-12">

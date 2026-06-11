@@ -7,6 +7,13 @@ describe Commercial::Contract do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:name) }
+
+    context 'when validating names' do
+      subject { build(:commercial_contract, :with_school) }
+
+      it { is_expected.to validate_uniqueness_of(:name) }
+    end
+
     it { is_expected.to validate_presence_of(:start_date) }
     it { is_expected.to validate_presence_of(:end_date) }
     it { is_expected.to validate_numericality_of(:number_of_schools).is_greater_than(0) }
@@ -32,6 +39,18 @@ describe Commercial::Contract do
       context 'with invoiced licences' do
         before do
           create(:commercial_licence, contract:, status: :invoiced)
+        end
+
+        it 'does not allow the contract to be destroyed' do
+          expect(contract.destroy).to be(false)
+          expect(contract.errors[:base]).to include('Cannot delete a contract with an invoiced licence')
+          expect(contract).to be_persisted
+        end
+      end
+
+      context 'with an invoice' do
+        before do
+          create(:commercial_invoice, contract:)
         end
 
         it 'does not allow the contract to be destroyed' do
@@ -201,6 +220,54 @@ describe Commercial::Contract do
         start_date: original.end_date + 1.day,
         end_date: original.end_date.next_year
       )
+    end
+
+    context 'when the original licence terms were pro_rata' do
+      let(:original) do
+        create(:commercial_contract,
+               licence_period: :contract,
+               invoice_terms: :pro_rata,
+               agreed_school_price: 450.0,
+               number_of_schools: 15)
+      end
+
+      it 'correctly populates the defaults' do
+        expect(renewed).to have_attributes(
+          agreed_school_price: original.agreed_school_price,
+          comments: "Renewed from #{original.name}",
+          contract_holder: original.contract_holder,
+          invoice_terms: 'pro_rata',
+          licence_period: original.licence_period,
+          number_of_schools: original.number_of_schools,
+          product: original.product,
+          start_date: original.end_date + 1.day,
+          end_date: original.end_date.next_year
+        )
+      end
+    end
+
+    context 'when the original licence terms were full' do
+      let(:original) do
+        create(:commercial_contract,
+               licence_period: :contract,
+               invoice_terms: :full,
+               agreed_school_price: 450.0,
+               number_of_schools: 15)
+      end
+
+      it 'switches to a pro-rata contract' do
+        expect(renewed).to have_attributes(
+          agreed_school_price: original.agreed_school_price,
+          comments: "Renewed from #{original.name}",
+          contract_holder: original.contract_holder,
+          invoice_terms: 'pro_rata',
+          licence_period: original.licence_period,
+          number_of_schools: original.number_of_schools,
+          product: original.product,
+          start_date: original.end_date + 1.day,
+          end_date: original.end_date.next_year
+        )
+      end
     end
   end
 

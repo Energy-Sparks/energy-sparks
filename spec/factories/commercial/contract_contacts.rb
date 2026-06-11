@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :commercial_contract_contact, class: 'Commercial::ContractContact' do
-    sequence(:name) {|n| "Contract Name #{n}"}
+    sequence(:name) { |n| "Contract Name #{n}" }
     sequence(:email) { |n| "user_#{n}@test.com" }
-    sequence(:comments) {|n| "Contract #{n} comments"}
-    association :contract_holder, factory: :funder
+    sequence(:comments) { |n| "Contract #{n} comments" }
+    contract_holder factory: %i[funder]
 
     contact_type { :procurement }
 
-    association :created_by, factory: :user
-    association :updated_by, factory: :user
+    created_by factory: %i[user]
+    updated_by factory: %i[user]
 
     trait :with_user do
       user

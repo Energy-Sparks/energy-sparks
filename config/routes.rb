@@ -670,6 +670,7 @@ Rails.application.routes.draw do
         end
       end
       resources :contract_holders, only: [:index]
+      resources :invoices, only: [:index, :show]
       resources :licences do
         collection do
           get :current

@@ -8,20 +8,47 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
   let!(:config) { create(:impact_report_configuration, school_group: school_group) }
   let(:school) { create(:school, :with_school_group, school_group: school_group) }
 
-  before do
-    create_list(:observation, 3, :activity, school: school)
-    school.reload
-  end
-
   context 'without override' do
-    before do
-      render_inline(described_class.new(school_group: school_group))
+    context 'with activities and actions' do
+      before do
+        create_list(:activity, 2, school: school)
+        create_list(:observation, 2, :intervention, school: school)
+        render_inline(described_class.new(school_group: school_group))
+      end
+
+      it { expect(page).to have_css('#engagement-featured') }
+      it { expect(page).to have_text('Featured school') }
+      it { expect(page).to have_text(school.name) }
+      it { expect(page).to have_text('2 pupil activities and 2 adult actions in the last 12 months') }
+      it { expect(page).to have_link('View dashboard', href: school_path(school)) }
+      it { expect(page).to have_css('.bg-white.p-4.rounded-3') }
     end
 
-    it { expect(page).to have_css('#engagement-featured') }
-    it { expect(page).to have_text(school.name) }
-    it { expect(page).to have_link('View dashboard', href: school_path(school)) }
-    it { expect(page).to have_css('.bg-white.p-4.rounded-3') }
+    context 'with a single action and no activities recorded' do
+      before do
+        create_list(:observation, 1, :intervention, school: school)
+        render_inline(described_class.new(school_group: school_group))
+      end
+
+      it { expect(page).to have_text('recorded 1 adult action in the last 12 months') }
+    end
+
+    context 'with a single activity and no actions recorded' do
+      before do
+        create_list(:activity, 1, school: school)
+        render_inline(described_class.new(school_group: school_group))
+      end
+
+      it { expect(page).to have_text('recorded 1 pupil activity in the last 12 months') }
+    end
+
+    context 'with no points' do
+      before do
+        render_inline(described_class.new(school_group: school_group))
+      end
+
+      it { expect(rendered_content).to be_blank }
+    end
   end
 
   context 'with override' do
@@ -46,6 +73,8 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
     let(:override_school) { create(:school, school_group: school_group) }
 
     before do
+      create_list(:observation, 1, :intervention, school: school)
+
       config.update(
         engagement_school: override_school,
         engagement_school_expiry_date: 1.day.ago
@@ -66,7 +95,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
     end
 
     it 'does not render' do
-      expect(render_inline(described_class.new(school_group: school_group)).to_html).to be_blank
+      expect(rendered_content).to be_blank
     end
   end
 end

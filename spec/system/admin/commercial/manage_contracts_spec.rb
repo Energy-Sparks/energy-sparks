@@ -57,7 +57,7 @@ shared_examples 'it successfully creates a contract' do
   end
 end
 
-describe 'manage contracts' do
+describe 'manage contracts', :include_application_helper do
   let(:user) { create(:admin) }
 
   before do
@@ -579,7 +579,7 @@ describe 'manage contracts' do
 
       it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
       it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
-      it { expect(page).to have_field('contract_invoice_terms', with: 'full', type: :hidden, visible: :all) }
+      it { expect(page).to have_field('contract_invoice_terms', with: 'pro_rata', type: :hidden, visible: :all) }
       it { expect(page).to have_field('contract_licence_period', with: 'contract', type: :hidden, visible: :all) }
 
       it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }
@@ -790,6 +790,33 @@ describe 'manage contracts' do
               '0',
               contract.status.humanize,
               'Edit Renew Confirm Delete'
+            ]
+          ]
+        end
+      end
+    end
+
+    context 'when viewing invoices' do
+      let!(:invoice) { create(:commercial_invoice, contract:) }
+
+      before { refresh }
+
+      it { expect(page).to have_text('Invoices') }
+
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+        let(:table_id) { '#invoices-table' }
+        let(:expected_header) do
+          [
+            %w[Number User Date Total]
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              invoice.invoice_number,
+              invoice.created_by.display_name,
+              invoice.date.to_fs(:es_short),
+              format_price(invoice.value.total)
             ]
           ]
         end

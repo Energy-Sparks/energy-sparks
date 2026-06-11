@@ -70,6 +70,8 @@
         <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
           <div class="btn-group">
             <%= link_to 'History', admin_school_school_attribute_path(@school, meter_attribute), class: 'btn btn-sm' %>
+            <%= link_to 'Restore', admin_school_school_attribute_path(@school, meter_attribute, restore: true),
+                        method: :put, class: 'btn btn-sm' %>
           </div>
         <% end %>
       <% end %>

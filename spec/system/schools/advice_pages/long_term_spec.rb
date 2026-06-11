@@ -74,8 +74,8 @@ shared_examples 'a long term advice page' do
 
         it 'includes expected sections' do
           data_available_from = reading_start_date + 89.days # TODO: not sure why this isn't 90 days
-          expect(page).to have_content('Assuming we continue to regularly receive data we expect this analysis to be ' \
-                                       "available after #{data_available_from.to_fs(:es_short)}")
+          expect(page).to have_text('Assuming we continue to regularly receive data we expect this analysis to be ' \
+                                    "available after #{data_available_from.to_fs(:es_short)}")
         end
       end
 
@@ -85,10 +85,10 @@ shared_examples 'a long term advice page' do
         it_behaves_like 'a long term advice page tab', tab: 'Insights'
 
         it 'includes expected sections' do
-          expect(page).to have_content(manual_readings_prompt_text)
-          expect(page).to have_content('Tracking long term trends')
-          expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
-          expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
+          expect(page).to have_text(manual_readings_prompt_text)
+          expect(page).to have_text('Tracking long term trends')
+          expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
+          expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
         end
 
         it_behaves_like 'it contains the expected data table', sortable: false, aligned: 2 do
@@ -105,9 +105,9 @@ shared_examples 'a long term advice page' do
 
         it 'includes expected data' do
           if fuel_type == :gas
-            expect(page).to have_content('130,000kWh of gas')
+            expect(page).to have_text('130,000kWh of gas')
           else
-            expect(page).to have_content('220kWh of electricity')
+            expect(page).to have_text('220kWh of electricity')
           end
         end
 
@@ -123,7 +123,7 @@ shared_examples 'a long term advice page' do
           end
 
           it "doesn't show manual readings prompt" do
-            expect(page).to have_no_content(manual_readings_prompt_text)
+            expect(page).to have_no_text(manual_readings_prompt_text)
           end
         end
       end
@@ -132,10 +132,10 @@ shared_examples 'a long term advice page' do
         it_behaves_like 'a long term advice page tab', tab: 'Insights'
 
         it 'includes expected sections' do
-          expect(page).to have_content(manual_readings_prompt_text)
-          expect(page).to have_content('Tracking long term trends')
-          expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
-          expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
+          expect(page).to have_text(manual_readings_prompt_text)
+          expect(page).to have_text('Tracking long term trends')
+          expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
+          expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
         end
 
         it_behaves_like 'it contains the expected data table', sortable: false, aligned: 2 do
@@ -152,8 +152,8 @@ shared_examples 'a long term advice page' do
         end
 
         it 'includes expected data' do
-          expect(page).to have_content("Exemplar\n<#{{ gas: '100,000', electricity: '200' }[fuel_type]} kWh")
-          expect(page).to have_content("Well managed\n<#{{ gas: '130,000', electricity: '220' }[fuel_type]} kWh")
+          expect(page).to have_text("Exemplar\n<#{{ gas: '100,000', electricity: '200' }[fuel_type]} kWh")
+          expect(page).to have_text("Well managed\n<#{{ gas: '130,000', electricity: '220' }[fuel_type]} kWh")
         end
 
         it 'includes the comparison' do
@@ -168,7 +168,7 @@ shared_examples 'a long term advice page' do
         let(:reading_start_date) { 730.days.ago }
 
         it "doesn't show the manual reading prompt" do
-          expect(page).to have_no_content(manual_readings_prompt_text)
+          expect(page).to have_no_text(manual_readings_prompt_text)
         end
       end
     end
@@ -178,13 +178,13 @@ shared_examples 'a long term advice page' do
 
       shared_examples 'the analysis tab' do |recent:, comparison:, high:, longterm_chart:, limited_data_charts:|
         def expect_content(should_have, content)
-          should_have ? (expect(page).to have_content(content)) : (expect(page).to have_no_content(content))
+          should_have ? (expect(page).to have_text(content)) : (expect(page).to have_no_text(content))
         end
 
         it 'includes expected sections' do
           expect_content(recent, I18n.t("advice_pages.#{fuel_type}_long_term.analysis.recent_trend.title"))
           expect_content(comparison, I18n.t("advice_pages.#{fuel_type}_long_term.analysis.comparison.title"))
-          expect(page).to have_no_content(I18n.t("advice_pages.#{fuel_type}_long_term.analysis.meter_breakdown.title"))
+          expect(page).to have_no_text(I18n.t("advice_pages.#{fuel_type}_long_term.analysis.meter_breakdown.title"))
         end
 
         it 'displays the manual reading prompt correctly' do
