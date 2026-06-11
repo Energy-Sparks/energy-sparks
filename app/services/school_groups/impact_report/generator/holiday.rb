@@ -35,7 +35,7 @@ module SchoolGroups
           [model.where(school: visible_schools).where(column.lt(0)), column]
         end
 
-        def column(model, metric) = model.arel_table[[:difference, metric == :gbp ? :gbpcurrent : metric].join('_')]
+        def column(model, unit) = model.arel_table[[:difference, unit == :gbp ? :gbpcurrent : unit].join('_')]
       end
     end
   end
