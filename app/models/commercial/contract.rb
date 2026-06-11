@@ -55,6 +55,18 @@ module Commercial
         .having('COUNT(commercial_licences.id) > commercial_contracts.number_of_schools')
     }
 
+    scope :with_invoiced_contract_holders, lambda {
+      joins('LEFT JOIN funders ON funders.id = commercial_contracts.contract_holder_id AND ' \
+            "commercial_contracts.contract_holder_type = 'Funder'")
+        .where("commercial_contracts.contract_holder_type != 'Funder' OR funders.invoiced = TRUE")
+    }
+
+    scope :pending_invoicing, lambda {
+      joins(:licences)
+        .where(licences: { status: :pending_invoice })
+        .distinct
+    }
+
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
 

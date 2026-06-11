@@ -665,6 +665,7 @@ Rails.application.routes.draw do
           get :future
           get :over_licensed
           get :overlapping
+          get :pending_invoicing
           get :provisional
           get :recent
         end

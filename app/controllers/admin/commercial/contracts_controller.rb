@@ -36,6 +36,10 @@ module Admin
         @contracts = ::Commercial::Contract.over_licensed
       end
 
+      def pending_invoicing
+        @contracts = ::Commercial::Contract.with_invoiced_contract_holders.pending_invoicing
+      end
+
       def contract_holder_options
         records = case params[:contract_holder_type]
                   when 'School'      then School.active.order(:name)

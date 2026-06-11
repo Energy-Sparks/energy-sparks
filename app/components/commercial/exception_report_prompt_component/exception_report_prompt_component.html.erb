@@ -26,5 +26,13 @@
             <% end %>
         <% end %>
     <% end %>
+    <% if pending_invoices.positive? %>
+        <%= list.with_prompt icon: 'calendar-xmark', status: :negative do |prompt| %>
+            There are currently <%= pending_invoices %> contracts with pending invoices.
+            <% prompt.with_link do %>
+                <%= link_to 'Pending invoices', pending_invoicing_admin_commercial_contracts_path %>
+            <% end %>
+        <% end %>
+    <% end %>
   <% end %>
 <% end %>

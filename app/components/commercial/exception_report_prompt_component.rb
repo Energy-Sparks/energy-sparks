@@ -3,7 +3,10 @@
 module Commercial
   class ExceptionReportPromptComponent < ApplicationComponent
     def render?
-      onboardings_with_no_contracts.positive? || unlicensed_schools.positive? || overlapping_licences.positive?
+      onboardings_with_no_contracts.positive? ||
+        unlicensed_schools.positive? ||
+        overlapping_licences.positive? ||
+        pending_invoices.positive?
     end
 
     private
@@ -18,6 +21,10 @@ module Commercial
 
     def overlapping_licences
       @overlapping_licences ||= Commercial::Licence.overlapping.count
+    end
+
+    def pending_invoices
+      @pending_invoices ||= ::Commercial::Contract.with_invoiced_contract_holders.pending_invoicing.count
     end
   end
 end
