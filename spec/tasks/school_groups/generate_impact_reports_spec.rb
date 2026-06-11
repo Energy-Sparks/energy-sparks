@@ -34,7 +34,7 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
     ImpactReport::Run.all.map do |run|
       run.metrics.group_by(&:metric_category).transform_values do |metrics|
         metrics.select(&:enough_data).to_h do |metric|
-          [metric.fuel_type ? [metric.fuel_type, metric.metric_type].join('_') : metric.metric_type, metric.value]
+          [[metric.fuel_type, metric.metric_type, metric.unit].compact.join('_'), metric.value]
         end
       end.deep_symbolize_keys
     end
@@ -50,7 +50,7 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
                      users: 1,
                      visible_schools: 1 },
          engagement: { actions: 1, activities: 1, points: 65, targets: 1 },
-         potential_savings: { gas_use_co2: 1100, gas_use_gbp: 1000, gas_use_kwh: 1111 },
+         potential_savings: { gas_use: 1000 },
          energy_efficiency: { electricity_annual_saving_co2: 400,
                               electricity_annual_saving_kwh: 500,
                               electricity_annual_saving_gbp: 800 } }]

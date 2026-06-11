@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Benchmark do
-  subject(:generator) { described_class.new(SchoolGroups::ImpactReport.new(school_group)) }
+  subject(:generator) { described_class.new(school_group) }
 
   let(:school_group) { create(:school_group) }
   let!(:advice_pages) do

@@ -579,7 +579,7 @@ describe 'manage contracts' do
 
       it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
       it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
-      it { expect(page).to have_field('contract_invoice_terms', with: 'full', type: :hidden, visible: :all) }
+      it { expect(page).to have_field('contract_invoice_terms', with: 'pro_rata', type: :hidden, visible: :all) }
       it { expect(page).to have_field('contract_licence_period', with: 'contract', type: :hidden, visible: :all) }
 
       it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }

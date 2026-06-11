@@ -41,15 +41,22 @@ module Admin
 
       def update
         meter_attribute = @school.meter_attributes.find(params[:id])
-        new_attribute = @school.meter_attributes.create!(
-          attribute_type: meter_attribute.attribute_type,
-          reason: params[:attribute][:reason],
-          input_data: params[:attribute][:root],
-          meter_types: params[:attribute][:meter_types],
-          created_by: current_user
-        )
-        meter_attribute.update!(replaced_by: new_attribute)
-        redirect_to admin_school_school_attributes_path(@school)
+        if params[:restore]
+          meter_attribute.deleted_by = nil
+          meter_attribute.save(validate: false)
+          notice = 'Meter attribute successfully restored'
+        else
+          new_attribute = @school.meter_attributes.create!(
+            attribute_type: meter_attribute.attribute_type,
+            reason: params[:attribute][:reason],
+            input_data: params[:attribute][:root],
+            meter_types: params[:attribute][:meter_types],
+            created_by: current_user
+          )
+          meter_attribute.update!(replaced_by: new_attribute)
+          notice = 'Meter attribute successfully updated'
+        end
+        redirect_to admin_school_school_attributes_path(@school), notice: notice
       rescue => e
         redirect_back fallback_location: admin_school_school_attributes_path(@school), notice: e.message
       end
@@ -57,7 +64,7 @@ module Admin
       def destroy
         meter_attribute = @school.meter_attributes.find(params[:id])
         meter_attribute.update!(deleted_by: current_user)
-        redirect_to admin_school_school_attributes_path(@school)
+        redirect_to admin_school_school_attributes_path(@school), notice: 'Meter attribute successfully deleted'
       end
     end
   end

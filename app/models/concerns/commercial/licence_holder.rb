@@ -32,7 +32,7 @@ module Commercial
     #   :no    – no licence overlaps the period at all
     #   :partial – some overlap, but not full coverage
     #   :full    – the entire period is covered by one or more licences
-    def licenced_for_period(period)
+    def licensed_for_period(period)
       # Collect all overlapping licence ranges
       overlapping = licences.filter_map do |licence|
         licence_range = (licence.start_date..licence.end_date)

@@ -3,37 +3,38 @@ module Layout
     class FeatureComponent < LayoutComponent
       attr_reader :size, :position
 
-      renders_one :header, ->(**kwargs) do
-        Elements::HeaderComponent.new(**{ level: header_size }.merge(kwargs))
-      end
-      renders_one :price, ->(**kwargs) do
+      renders_one :header, lambda { |**kwargs|
+        Elements::HeaderComponent.new(level: header_size, **kwargs)
+      }
+      renders_one :price, lambda { |**kwargs|
         Elements::PriceComponent.new(**merge_classes('', kwargs))
-      end
-      renders_many :tags, ->(*args, **kwargs) do
-        Elements::BadgeComponent.new(*args, **{ classes: 'fw-normal text-uppercase' }.merge(kwargs))
-      end
+      }
+      renders_many :tags, lambda { |*args, **kwargs|
+        Elements::BadgeComponent.new(*args, classes: 'fw-normal text-uppercase', **kwargs)
+      }
       renders_one :date, ->(date) { short_dates(date.to_s.to_date) }
       renders_one :datetime, ->(datetime) { nice_date_times(datetime.to_s.to_datetime) }
-      renders_one :author, ->(*args, **kwargs) do
+      renders_one :author, lambda { |*args, **kwargs|
         Elements::TagComponent.new(:a, *args, **merge_classes('', kwargs))
-      end
-      renders_one :description, ->(**kwargs) do
+      }
+      renders_one :description, lambda { |**kwargs|
         Elements::TagComponent.new(:div, **merge_classes('pt-2 pb-4', kwargs))
-      end
-      renders_many :buttons, ->(*args, **kwargs) do
-        Elements::ButtonComponent.new(*args, **merge_classes('mb-1 me-2', kwargs))
-      end
-      renders_many :links, ->(*args, **kwargs) do
+      }
+      renders_many :buttons, lambda { |*args, **kwargs|
+        Elements::ButtonComponent.new(*args,  classes: 'mb-1 me-2', **kwargs)
+      }
+      renders_many :links, lambda { |*args, **kwargs|
         Elements::TagComponent.new(:a, *args, **merge_classes('mb-1 mt-auto', kwargs))
-      end
-      renders_many :blocks, ->(**kwargs) do
+      }
+      renders_many :blocks, lambda { |**kwargs|
         Elements::TagComponent.new(:div, **merge_classes('mt-auto', kwargs))
-      end
+      }
 
       def initialize(size: :md, **_kwargs)
         super
         @size = size
         raise ArgumentError.new(self.class.size_error) unless self.class.sizes.key?(@size.to_sym)
+
         add_classes('d-flex flex-column')
       end
 
@@ -46,7 +47,7 @@ module Layout
       end
 
       def self.size_error
-        'Size must be: ' + self.sizes.keys.to_sentence(two_words_connector: ' or ')
+        'Size must be: ' + sizes.keys.to_sentence(two_words_connector: ' or ')
       end
     end
   end

@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 module SchoolGroups
-  class ImpactReport
+  module ImpactReport
     class Generator
       class PotentialSavings < Base
-        def self.metric_type(base, type) = [base, type].join('_').to_sym
-
+        METRIC_CATEGORY = :potential_savings
         ALERTS = {
           %i[electricity baseload] => AlertElectricityBaseloadVersusBenchmark,
           %i[electricity out_of_hours] => AlertOutOfHoursElectricityUsage,
@@ -21,32 +20,27 @@ module SchoolGroups
           %i[solar_pv solar_panels] => AlertSolarPVBenefitEstimator,
           %i[storage_heater heating_off] => AlertSeasonalHeatingSchoolDaysStorageHeaters
         }.freeze
-        TYPES = %i[gbp co2 kwh].freeze
-        TYPES_TO_METHOD = TYPES.zip(%i[average_one_year_saving_gbp one_year_saving_co2 one_year_saving_kwh]).to_h
-        private_constant :ALERTS, :TYPES_TO_METHOD
-        METRICS = ALERTS.keys.product(TYPES).map { |(_fuel_type, metric), type| metric_type(metric, type) }.uniq.freeze
+        private_constant :ALERTS
+        METRICS = ALERTS.keys.map(&:second).uniq.freeze
+
+        def self.metric_names
+          ALERTS.map { |(fuel_type, metric_type), alert| [{ metric_category:, metric_type:, fuel_type: }, alert] }
+        end
 
         def metrics
-          ALERTS.flat_map do |(fuel_type, metric), alert|
-            TYPES.map do |type|
-              number_of_schools = actions[alert]&.schools&.count
-              { fuel_type:,
-                metric_type: self.class.metric_type(metric, type),
-                metric_category: :potential_savings,
-                value: value(alert, type),
-                number_of_schools: number_of_schools || 0,
-                enough_data: number_of_schools.present? }
-            end
+          self.class.metric_names.map do |metric, alert|
+            number_of_schools = actions[alert]&.schools&.count
+            metric.merge(value: actions[alert]&.average_one_year_saving_gbp || 0,
+                         number_of_schools: number_of_schools || 0,
+                         enough_data: number_of_schools.present?)
           end
         end
 
         private
 
-        def value(alert, type) = actions[alert]&.public_send(TYPES_TO_METHOD[type]) || 0
-
         def actions
           @actions ||= SchoolGroups::PriorityActions
-                       .new(@impact_report.visible_schools).total_savings
+                       .new(visible_schools).total_savings
                        .transform_keys { |key| Object.const_get(key.alert_type.class_name) }
         end
       end

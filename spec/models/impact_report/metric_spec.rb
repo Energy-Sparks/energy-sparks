@@ -3,12 +3,32 @@
 require 'rails_helper'
 
 describe ImpactReport::Metric do
-  context 'with valid attributes' do
-    let(:metric) { create(:impact_report_metric) }
+  describe 'validations' do
+    subject(:metric) { create(:impact_report_metric, metric_type: :active_users) }
 
-    it 'is valid' do
-      expect(metric).to be_valid
+    it { expect(metric).to be_valid }
+
+    context 'when validates uniqueness of metric_type within specified scope' do
+      let(:run) { create(:impact_report_run) }
+      let(:metric_category) { :overview }
+      let(:metric_type) { :active_users }
+
+      before do
+        create(:impact_report_metric, metric_type:, impact_report_run_id: run.id, metric_category:, fuel_type: nil)
+      end
+
+      it 'validates uniqueness within the scope' do
+        duplicate = build(:impact_report_metric,
+                          metric_type:, run:, metric_category:, fuel_type: nil)
+
+        expect(duplicate).not_to be_valid
+        expect(duplicate.errors[:metric_type]).to include('has already been taken')
+      end
     end
+  end
+
+  context 'with valid attributes' do
+    subject(:metric) { create(:impact_report_metric) }
 
     it 'belongs to run' do
       expect(metric).to belong_to(:run)
@@ -44,17 +64,6 @@ describe ImpactReport::Metric do
       subject(:metric) { create(:impact_report_metric, value: 0, enough_data: true) }
 
       it { expect(metric.available?).to be(true) }
-    end
-  end
-
-  describe 'potential savings keys and units' do
-    context 'when valid potential savings metric' do
-      subject(:metric_gbp) do
-        create(:impact_report_metric, metric_category: :potential_savings, metric_type: 'baseload_gbp')
-      end
-
-      it { expect(metric_gbp.key).to eq(:baseload) }
-      it { expect(metric_gbp.unit).to eq(:gbp) }
     end
   end
 end

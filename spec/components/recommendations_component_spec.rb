@@ -36,9 +36,7 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
     it 'has recommendation content' do
       cards.each_with_index do |card, i|
         expect(card).to have_link(activity_types[i].name, href: polymorphic_path(activity_types[i]))
-        within('a') do
-          expect(card.to_s).to include('placeholder300x200')
-        end
+        expect(card.css('a').first.to_s).to include('placeholder300x200')
         expect(card.css('.card-text')).to have_link(activity_types[i].name, href: polymorphic_path(activity_types[i]))
       end
     end

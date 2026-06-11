@@ -56,13 +56,14 @@
     </div>
     <div class="row border-top grey">
       <% podium.low_to_high.each do |position| %>
-        <div class="col-4 text-center px-3 small">
-          <% if podium.current_school?(position) %>
+        <% current = podium.current_school?(position) %>
+        <%= tag.div class: class_names('col-4 text-center px-3 small', current && 'fw-bold') do %>
+          <% if helpers.current_school == position.school %>
             <%= position.school.name %>
           <% else %>
-            <%= link_to position.school.name, pupils_school_path(position.school) %>
+            <%= link_to position.school.name, path_to_school(position.school) %>
           <% end %>
-        </div>
+        <% end %>
       <% end %>
     </div>
   <% end %>

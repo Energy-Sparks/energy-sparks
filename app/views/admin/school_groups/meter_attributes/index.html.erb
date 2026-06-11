@@ -26,6 +26,9 @@
           <div class="btn-group">
             <%= link_to 'History', admin_school_group_meter_attribute_path(@school_group, meter_attribute),
                         class: 'btn btn-sm' %>
+            <%= link_to 'Restore',
+                        admin_school_group_meter_attribute_path(@school_group, meter_attribute, restore: true),
+                        method: :put, class: 'btn btn-sm' %>
           </div>
         <% end %>
       <% end %>

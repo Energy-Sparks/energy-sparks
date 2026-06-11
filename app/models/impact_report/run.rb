@@ -26,15 +26,21 @@ module ImpactReport
     belongs_to :school_group
     has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :run, dependent: :destroy
 
-    scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
+    scope :latest_first, -> { order(run_date: :desc, created_at: :desc) }
+    scope :latest, -> { includes(:metrics).latest_first.first }
 
-    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[
-      annual_saving_gbp
-      holiday_previous_year_gbp
-      holiday_previous_gbp
-      annual_saving_co2
-      targets
+    SUPPORTED_ENERGY_EFFICIENCY_METRICS = [
+      %w[annual_saving gbp],
+      %w[holiday_previous_year gbp],
+      %w[holiday_previous gbp],
+      %w[annual_saving co2],
+      ['targets', nil],
+      ['out_of_hours', nil],
+      ['long_term', nil],
+      ['baseload', nil],
+      ['heating_control', nil]
     ].freeze
+    private_constant :SUPPORTED_ENERGY_EFFICIENCY_METRICS
 
     def end_date
       run_date - 1.day
@@ -80,14 +86,11 @@ module ImpactReport
 
     def energy_efficiency(gbp_threshold: self.class.gbp_threshold)
       fuel_order = %w[gas electricity]
-
-      SUPPORTED_ENERGY_EFFICIENCY_METRICS.flat_map do |metric_type|
-        fuel_order.filter_map do |fuel_type|
-          by_category(:energy_efficiency).dig(metric_type, fuel_type).then do |m|
-            # all values have to be non-zero and gbp values have to be above threshold
-            m if m&.nonzero? && (m.unit != :gbp || m.value > gbp_threshold)
-          end
-        end
+      unit_order = %w[gbp co2 kwh]
+      metrics.filter { |metric| displayable_energy_efficiency_metric?(metric, gbp_threshold) }.sort_by do |metric|
+        [SUPPORTED_ENERGY_EFFICIENCY_METRICS.index([metric.metric_type, metric.unit]),
+         unit_order.index(metric.unit),
+         fuel_order.index(metric.fuel_type)]
       end
     end
 
@@ -132,6 +135,13 @@ module ImpactReport
         .select(&:nonzero?)
         .sort_by { |m| -m.value }
         .presence
+    end
+
+    def displayable_energy_efficiency_metric?(metric, gbp_threshold)
+      metric.metric_category == 'energy_efficiency' &&
+        SUPPORTED_ENERGY_EFFICIENCY_METRICS.include?([metric.metric_type, metric.unit]) &&
+        metric.nonzero? &&
+        (metric.unit != 'gbp' || metric.value > gbp_threshold)
     end
   end
 end

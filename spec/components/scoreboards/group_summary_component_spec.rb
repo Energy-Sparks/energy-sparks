@@ -20,16 +20,16 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
 
   context 'when there are activities' do
     before do
-      create :school, :with_points, score_points: 50, school_group: school_group
+      create(:school, :with_points, score_points: 50, school_group: school_group)
+      html
     end
 
     it { expect(html).not_to have_content(I18n.t('components.scoreboards.group_summary.podium.no_points_this_year'))}
 
     it 'shows podium correctly' do
-      within('.scoreboards-podium-component') do
-        expect(html).to have_content('Your highest scoring school')
-        expect(html).to have_link(href: scores_school_group_advice_path(school_group))
-      end
+      podium = page.find('.scoreboards-podium-component')
+      expect(podium).to have_text('Your highest scoring school')
+      expect(podium).to have_link(href: scores_school_group_advice_path(school_group))
     end
 
     it 'links to scoreboard' do

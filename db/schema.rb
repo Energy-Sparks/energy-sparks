@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_29_101824) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -30,7 +30,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_101824) do
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
   create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings", "footnotes"]
-  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings", "baseload_gbp", "baseload_co2", "baseload_kwh", "out_of_hours_gbp", "out_of_hours_co2", "out_of_hours_kwh", "peak_gbp", "peak_co2", "peak_kwh", "use_gbp", "use_co2", "use_kwh", "heating_down_gbp", "heating_down_co2", "heating_down_kwh", "heating_early_gbp", "heating_early_co2", "heating_early_kwh", "heating_off_gbp", "heating_off_co2", "heating_off_kwh", "insulate_pipes_gbp", "insulate_pipes_co2", "insulate_pipes_kwh", "thermostatic_control_gbp", "thermostatic_control_co2", "thermostatic_control_kwh", "solar_panels_gbp", "solar_panels_co2", "solar_panels_kwh", "annual_saving_gbp", "annual_saving_co2", "annual_saving_kwh", "out_of_hours_exemplar", "out_of_hours_well_managed", "long_term_exemplar", "long_term_well_managed", "baseload_exemplar", "baseload_well_managed", "heating_control_exemplar", "heating_control_well_managed", "holiday_previous_gbp", "holiday_previous_kwh", "holiday_previous_year_gbp", "holiday_previous_year_kwh", "out_of_hours", "long_term", "baseload", "heating_control"]
+  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings", "baseload_gbp", "baseload_co2", "baseload_kwh", "out_of_hours_gbp", "out_of_hours_co2", "out_of_hours_kwh", "peak_gbp", "peak_co2", "peak_kwh", "use_gbp", "use_co2", "use_kwh", "heating_down_gbp", "heating_down_co2", "heating_down_kwh", "heating_early_gbp", "heating_early_co2", "heating_early_kwh", "heating_off_gbp", "heating_off_co2", "heating_off_kwh", "insulate_pipes_gbp", "insulate_pipes_co2", "insulate_pipes_kwh", "thermostatic_control_gbp", "thermostatic_control_co2", "thermostatic_control_kwh", "solar_panels_gbp", "solar_panels_co2", "solar_panels_kwh", "annual_saving_gbp", "annual_saving_co2", "annual_saving_kwh", "out_of_hours_exemplar", "out_of_hours_well_managed", "long_term_exemplar", "long_term_well_managed", "baseload_exemplar", "baseload_well_managed", "heating_control_exemplar", "heating_control_well_managed", "holiday_previous_gbp", "holiday_previous_kwh", "holiday_previous_year_gbp", "holiday_previous_year_kwh", "out_of_hours", "long_term", "baseload", "heating_control", "peak", "use", "heating_down", "heating_early", "heating_off", "insulate_pipes", "thermostatic_control", "solar_panels", "holiday_previous", "holiday_previous_year", "annual_saving"]
+  create_enum "impact_report_metric_units", ["kwh", "co2", "gbp"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
@@ -1249,8 +1250,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_101824) do
     t.enum "metric_category", null: false, enum_type: "impact_report_metric_categories"
     t.enum "metric_type", null: false, enum_type: "impact_report_metric_types"
     t.integer "number_of_schools"
+    t.enum "unit", enum_type: "impact_report_metric_units"
     t.datetime "updated_at", null: false
     t.integer "value"
+    t.index ["impact_report_run_id", "metric_category", "fuel_type", "metric_type", "unit"], name: "index_impact_report_metrics_unique", unique: true
     t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
   end
 
@@ -3340,8 +3343,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_101824) do
       energy.current_year_electricity_kwh AS current_year_kwh,
       energy.previous_year_electricity_co2 AS previous_year_co2,
       energy.current_year_electricity_co2 AS current_year_co2,
-      energy.previous_year_electricity_gbp AS previous_year_gbp,
-      energy.current_year_electricity_gbp AS current_year_gbp,
+      energy.previous_year_electricity_gbpcurrent AS previous_year_gbp,
+      energy.current_year_electricity_gbpcurrent AS current_year_gbp,
       energy.solar_type
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
@@ -3349,12 +3352,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_101824) do
               data.current_year_electricity_kwh,
               data.previous_year_electricity_co2,
               data.current_year_electricity_co2,
-              data.previous_year_electricity_gbp,
-              data.current_year_electricity_gbp,
+              data.previous_year_electricity_gbpcurrent,
+              data.current_year_electricity_gbpcurrent,
               data.solar_type
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbp double precision, current_year_electricity_gbp double precision, solar_type text)
+              LATERAL jsonb_to_record(alerts.variables) data(previous_year_electricity_kwh double precision, current_year_electricity_kwh double precision, previous_year_electricity_co2 double precision, current_year_electricity_co2 double precision, previous_year_electricity_gbpcurrent double precision, current_year_electricity_gbpcurrent double precision, solar_type text)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
@@ -3601,11 +3604,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_101824) do
               json.current_year_gas_kwh AS current_year_kwh,
               json.previous_year_gas_co2 AS previous_year_co2,
               json.current_year_gas_co2 AS current_year_co2,
-              json.previous_year_gas_gbp AS previous_year_gbp,
-              json.current_year_gas_gbp AS current_year_gbp
+              json.previous_year_gas_gbpcurrent AS previous_year_gbp,
+              json.current_year_gas_gbpcurrent AS current_year_gbp
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbp double precision, current_year_gas_gbp double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(previous_year_gas_kwh double precision, current_year_gas_kwh double precision, previous_year_gas_co2 double precision, current_year_gas_co2 double precision, previous_year_gas_gbpcurrent double precision, current_year_gas_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
@@ -3666,11 +3669,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_29_101824) do
               json.current_year_storage_heaters_kwh AS current_year_kwh,
               json.previous_year_storage_heaters_co2 AS previous_year_co2,
               json.current_year_storage_heaters_co2 AS current_year_co2,
-              json.previous_year_storage_heaters_gbp AS previous_year_gbp,
-              json.current_year_storage_heaters_gbp AS current_year_gbp
+              json.previous_year_storage_heaters_gbpcurrent AS previous_year_gbp,
+              json.current_year_storage_heaters_gbpcurrent AS current_year_gbp
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) json(previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbp double precision, current_year_storage_heaters_gbp double precision)
+              LATERAL jsonb_to_record(alerts.variables) json(previous_year_storage_heaters_kwh double precision, current_year_storage_heaters_kwh double precision, previous_year_storage_heaters_co2 double precision, current_year_storage_heaters_co2 double precision, previous_year_storage_heaters_gbpcurrent double precision, current_year_storage_heaters_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertEnergyAnnualVersusBenchmark'::text))) energy,
       ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
