@@ -120,6 +120,8 @@ class User < ApplicationRecord
   scope :confirmed, -> { where.not(confirmed_at: nil) }
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 
+  scope :operations, -> { where(operations: true) }
+
   scope :mailchimp_roles, lambda {
     where.not(role: %i[pupil student school_onboarding]).where.not(confirmed_at: nil)
   }
