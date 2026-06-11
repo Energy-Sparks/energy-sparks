@@ -594,6 +594,7 @@ Rails.application.routes.draw do
       resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
       resources :data_sources, module: :dashboard
+      resources :suppliers, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
       resources :issues, module: :dashboard
       resources :school_onboardings, path: 'school_setup', module: :dashboard do
@@ -827,6 +828,11 @@ Rails.application.routes.draw do
     resources :data_sources do
       post :deliver
       scope module: :data_sources do
+        concerns :issueable
+      end
+    end
+    resources :suppliers do
+      scope module: :suppliers do
         concerns :issueable
       end
     end
