@@ -48,6 +48,18 @@ describe Commercial::Contract do
         end
       end
 
+      context 'with an invoice' do
+        before do
+          create(:commercial_invoice, contract:)
+        end
+
+        it 'does not allow the contract to be destroyed' do
+          expect(contract.destroy).to be(false)
+          expect(contract.errors[:base]).to include('Cannot delete a contract with an invoiced licence')
+          expect(contract).to be_persisted
+        end
+      end
+
       context 'with confirmed licences' do
         before do
           create(:commercial_licence, contract:, status: :confirmed)

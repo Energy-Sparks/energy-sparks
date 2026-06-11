@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_10_142724) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -737,6 +737,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
     t.index ["updated_by_id"], name: "index_commercial_contracts_on_updated_by_id"
   end
 
+  create_table "commercial_invoices", force: :cascade do |t|
+    t.bigint "contract_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id", null: false
+    t.string "purchase_order_number"
+    t.datetime "updated_at", null: false
+    t.index ["contract_id"], name: "index_commercial_invoices_on_contract_id"
+    t.index ["created_by_id"], name: "index_commercial_invoices_on_created_by_id"
+  end
+
   create_table "commercial_licences", force: :cascade do |t|
     t.text "comments"
     t.bigint "contract_id", null: false
@@ -754,6 +764,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
     t.index ["created_by_id"], name: "index_commercial_licences_on_created_by_id"
     t.index ["school_id"], name: "index_commercial_licences_on_school_id"
     t.index ["updated_by_id"], name: "index_commercial_licences_on_updated_by_id"
+  end
+
+  create_table "commercial_line_items", force: :cascade do |t|
+    t.decimal "base_price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.bigint "invoice_id", null: false
+    t.bigint "licence_id", null: false
+    t.decimal "metering_fee", precision: 10, scale: 2, null: false
+    t.integer "number_of_meters", default: 0, null: false
+    t.boolean "private_account", default: false, null: false
+    t.decimal "private_account_fee", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_commercial_line_items_on_invoice_id"
+    t.index ["licence_id"], name: "index_commercial_line_items_on_licence_id"
   end
 
   create_table "commercial_products", force: :cascade do |t|
@@ -2508,9 +2532,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
   add_foreign_key "commercial_contracts", "commercial_products", column: "product_id"
   add_foreign_key "commercial_contracts", "users", column: "created_by_id"
   add_foreign_key "commercial_contracts", "users", column: "updated_by_id"
+  add_foreign_key "commercial_invoices", "commercial_contracts", column: "contract_id"
+  add_foreign_key "commercial_invoices", "users", column: "created_by_id"
   add_foreign_key "commercial_licences", "commercial_contracts", column: "contract_id"
   add_foreign_key "commercial_licences", "users", column: "created_by_id"
   add_foreign_key "commercial_licences", "users", column: "updated_by_id"
+  add_foreign_key "commercial_line_items", "commercial_invoices", column: "invoice_id"
+  add_foreign_key "commercial_line_items", "commercial_licences", column: "licence_id"
   add_foreign_key "commercial_products", "users", column: "created_by_id"
   add_foreign_key "commercial_products", "users", column: "updated_by_id"
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"

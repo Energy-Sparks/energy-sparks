@@ -57,7 +57,7 @@ shared_examples 'it successfully creates a contract' do
   end
 end
 
-describe 'manage contracts' do
+describe 'manage contracts', :include_application_helper do
   let(:user) { create(:admin) }
 
   before do
@@ -790,6 +790,33 @@ describe 'manage contracts' do
               '0',
               contract.status.humanize,
               'Edit Renew Confirm Delete'
+            ]
+          ]
+        end
+      end
+    end
+
+    context 'when viewing invoices' do
+      let!(:invoice) { create(:commercial_invoice, contract:) }
+
+      before { refresh }
+
+      it { expect(page).to have_text('Invoices') }
+
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+        let(:table_id) { '#invoices-table' }
+        let(:expected_header) do
+          [
+            %w[Number User Date Total]
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              invoice.invoice_number,
+              invoice.created_by.display_name,
+              invoice.date.to_fs(:es_short),
+              format_price(invoice.value.total)
             ]
           ]
         end

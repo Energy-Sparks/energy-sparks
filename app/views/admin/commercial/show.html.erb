@@ -66,6 +66,13 @@
       <%= grid.with_block do %>
         <h3>Invoicing</h3>
         <div id="invoicing" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+            <ul>
+                <li>Invoices
+                  <ul>
+                    <li><%= link_to 'All Invoices', admin_commercial_invoices_path %></li>
+                  </ul>
+                </li>
+            </ul>
         </div>
       <% end %>
       <%= grid.with_block do %>
