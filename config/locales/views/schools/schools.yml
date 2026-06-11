@@ -231,6 +231,7 @@ en:
         name: Name
         procurement_route: Procurement route
         serial_number: Serial number
+        supplier: Supplier
         title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
         type: Type
         update_meter: Update Meter
@@ -261,6 +262,7 @@ en:
         report: Report
         review_meters: Pending DCC meter reviews
         school_downloads: School downloads
+        supplier: Supplier
         title: Manage meters
         validate_meter_readings: Validate meter readings
         validated: Validated
