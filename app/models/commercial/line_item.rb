@@ -35,5 +35,9 @@ module Commercial
     validates :base_price, :metering_fee, :private_account_fee, presence: true
 
     delegate :school, to: :licence
+
+    def value
+      Price.new(base_price:, metering_fee:, private_account_fee:)
+    end
   end
 end

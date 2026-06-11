@@ -34,8 +34,23 @@ module Commercial
 
     delegate :contract_holder, to: :contract
 
+    def date
+      created_at.to_date
+    end
+
     def invoice_number
       "ES#{id.to_s.rjust(4, '0')}"
+    end
+
+    def value
+      @value ||= begin
+        prices = line_items.map(&:value)
+        Price.new(
+          base_price: prices.sum(&:base_price),
+          metering_fee: prices.sum(&:metering_fee),
+          private_account_fee: prices.sum(&:private_account_fee)
+        )
+      end
     end
   end
 end

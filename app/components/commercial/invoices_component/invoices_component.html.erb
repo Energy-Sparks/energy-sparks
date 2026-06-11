@@ -1,0 +1,32 @@
+<%= tag.div id: id, class: classes do %>
+  <table id='invoices-table' class="table table-sm table-paged">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <% if @show_contract %>
+          <th>Contract</th>
+          <th>Contract Holder</th>
+        <% end %>
+        <th>Date</th>
+        <th>User</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoices.each do |invoice| %>
+        <tr>
+          <td><%= link_to invoice.invoice_number, admin_commercial_invoice_path(invoice) %></td>
+          <% if @show_contract %>
+            <td><%= link_to invoice.contract.name, admin_commercial_contract_path(invoice.contract) %></td>
+            <td><%= invoice.contract_holder.name %></td>
+          <% end %>
+          <td data-order="<%= invoice.date.iso8601 %>">
+            <%= invoice.date.to_fs(:es_short) %>
+          </td>
+          <td>
+            <%= link_to email_with_wbr(invoice.created_by.display_name), user_path(invoice.created_by) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
