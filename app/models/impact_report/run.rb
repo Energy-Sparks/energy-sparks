@@ -20,7 +20,7 @@
 #
 
 module ImpactReport
-  class Run < ApplicationRecord
+  class Run < ApplicationRecord # rubocop:disable Metrics/ClassLength
     self.table_name = 'impact_report_runs'
 
     belongs_to :school_group
@@ -29,17 +29,14 @@ module ImpactReport
     scope :latest_first, -> { order(run_date: :desc, created_at: :desc) }
     scope :latest, -> { includes(:metrics).latest_first.first }
 
-    SUPPORTED_ENERGY_EFFICIENCY_METRICS = [
-      %w[annual_saving gbp],
-      %w[holiday_previous_year gbp],
-      %w[holiday_previous gbp],
-      %w[annual_saving co2],
-      ['targets', nil],
-      ['out_of_hours', nil],
-      ['long_term', nil],
-      ['baseload', nil],
-      ['heating_control', nil]
-    ].freeze
+    INDEXED_CATEGORIES = %w[overview engagement].freeze
+    private_constant :INDEXED_CATEGORIES
+
+    SUPPORTED_ENERGY_EFFICIENCY_METRICS = {
+      gbp: %w[annual_saving holiday_previous_year holiday_previous],
+      count: %w[targets out_of_hours long_term baseload heating_control],
+      co2: %w[annual_saving]
+    }.freeze
     private_constant :SUPPORTED_ENERGY_EFFICIENCY_METRICS
 
     def end_date
@@ -64,84 +61,94 @@ module ImpactReport
       end
     end
 
-    # e.g. overview(:active_users)
     def overview(metric_type)
-      by_category(:overview).dig(metric_type.to_s, nil)
+      metrics_index['overview']&.[](metric_type.to_s)
     end
 
-    # e.g. engagement(:points)
     def engagement(metric_type)
-      by_category(:engagement).dig(metric_type.to_s, nil)
+      metrics_index['engagement']&.[](metric_type.to_s)
+    end
+
+    def energy_efficiency(gbp_threshold: self.class.gbp_threshold)
+      unit_order = SUPPORTED_ENERGY_EFFICIENCY_METRICS.keys
+
+      metrics
+        .filter { |metric| displayable_energy_efficiency_metric?(metric, gbp_threshold) }
+        .sort_by do |metric|
+          [
+            unit_order.index(metric.unit&.to_sym || :count),
+            -metric.value.to_f
+          ]
+        end
     end
 
     def potential_savings
       fuel_order = %w[electricity gas solar_pv]
-      fuel_order.filter_map { |fuel| sorted_potential_savings(fuel) }
-                .then do |groups|
-                  groups.map(&:size).max.to_i.times.flat_map do |i|
-                    groups.filter_map { |g| g[i] }
-                  end
-                end
-    end
+      grouped = grouped_potential_savings
+      max_size = grouped.values.map(&:size).max || 0
 
-    def energy_efficiency(gbp_threshold: self.class.gbp_threshold)
-      fuel_order = %w[gas electricity]
-      unit_order = %w[gbp co2 kwh]
-      metrics.filter { |metric| displayable_energy_efficiency_metric?(metric, gbp_threshold) }.sort_by do |metric|
-        [SUPPORTED_ENERGY_EFFICIENCY_METRICS.index([metric.metric_type, metric.unit]),
-         unit_order.index(metric.unit),
-         fuel_order.index(metric.fuel_type)]
+      (0...max_size).flat_map do |i|
+        fuel_order.filter_map do |fuel_type|
+          grouped[fuel_type]&.[](i)
+        end
       end
     end
 
     class << self
+      def gbp_threshold_product
+        Commercial::Product.default_product
+      end
+
+      def gbp_threshold_price
+        :large_school_price
+      end
+
       def gbp_threshold
-        Commercial::Product.default_product.try(:large_school_price).to_i
+        gbp_threshold_product.try(gbp_threshold_price).to_i
       end
     end
 
     private
 
-    def by_category(category)
-      metrics_index[category.to_s] || {}
-    end
-
     def metrics_index
       @metrics_index ||= metrics.each_with_object({}) do |metric, hash|
-        hash[metric.metric_category] ||= {}
-
-        if metric.metric_category == 'potential_savings'
-          store_potential_savings_metric(hash, metric)
-        else
-          store_metric(hash, metric)
+        if INDEXED_CATEGORIES.include?(metric.metric_category)
+          hash[metric.metric_category] ||= {}
+          hash[metric.metric_category][metric.metric_type] ||= metric
         end
       end
     end
 
-    def store_potential_savings_metric(hash, metric)
-      return if metric.unit.present? && metric.unit != :gbp
-
-      (hash[metric.metric_category][metric.fuel_type] ||= []) << metric
-    end
-
-    def store_metric(hash, metric)
-      (hash[metric.metric_category][metric.metric_type] ||= {})[metric.fuel_type] = metric
-    end
-
-    def sorted_potential_savings(fuel)
-      by_category(:potential_savings)
-        .to_h
-        .fetch(fuel) { [] }
-        .select(&:nonzero?)
-        .sort_by { |m| -m.value }
-        .presence
+    # Displayable potential savings metrics grouped by fuel type, highest value first
+    def grouped_potential_savings
+      @grouped_potential_savings ||=
+        metrics
+        .filter { |metric| displayable_potential_savings_metric?(metric) }
+        .group_by(&:fuel_type)
+        .transform_values do |metrics|
+          metrics.sort_by do |metric|
+            -metric.value.to_f
+          end
+        end
     end
 
     def displayable_energy_efficiency_metric?(metric, gbp_threshold)
       metric.metric_category == 'energy_efficiency' &&
-        SUPPORTED_ENERGY_EFFICIENCY_METRICS.include?([metric.metric_type, metric.unit]) &&
+        supported_energy_efficiency_metric?(metric) &&
         metric.nonzero? &&
         (metric.unit != 'gbp' || metric.value > gbp_threshold)
+    end
+
+    def supported_energy_efficiency_metric?(metric)
+      unit = metric.unit&.to_sym || :count
+
+      SUPPORTED_ENERGY_EFFICIENCY_METRICS
+        .fetch(unit) { [] }
+        .include?(metric.metric_type)
+    end
+
+    def displayable_potential_savings_metric?(metric)
+      metric.metric_category == 'potential_savings' && metric.nonzero?
     end
   end
 end

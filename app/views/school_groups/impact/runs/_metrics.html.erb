@@ -1,9 +1,9 @@
 <% show_fuel_type = metrics.any?(&:fuel_type) %>
 <% show_unit = metrics.any?(&:unit) %>
-<table class="table table-sm">
+<table class="table table-sm table-sorted">
   <thead>
     <tr>
-      <th></th>
+      <th class='no-sort'></th>
       <% if show_fuel_type %>
         <th>Fuel</th>
       <% end %>

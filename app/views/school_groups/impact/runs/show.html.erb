@@ -26,7 +26,10 @@
       <%= render 'metrics', metrics: @run.metrics.energy_efficiency %>
     </div>
     <h3>Displayable metrics</h3>
-    <p>The live report takes the first 4 from the following list, excluding any GBP metrics under £<%= ImpactReport::Run.gbp_threshold %> (default product - large school cost)</p>
+    <p>
+      The live report takes the first 4 from the following list, excluding any under £<%= ImpactReport::Run.gbp_threshold %>
+      (<%= ImpactReport::Run.gbp_threshold_product.name %>: <%= ImpactReport::Run.gbp_threshold_price.to_s.humanize %>)
+    </p>
 
     <%= render ImpactReports::EnergyEfficiency::MetricsComponent.new(run: @run, max: nil, gbp_threshold: 0,
                                                                      classes: 'mt-4') %>

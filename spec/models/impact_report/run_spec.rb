@@ -213,8 +213,8 @@ describe ImpactReport::Run do
     let(:metric_category) { :energy_efficiency }
     let(:run) { create(:impact_report_run) }
 
-    context 'with all metrics' do
-      let!(:metrics) do
+    context 'with all supported metrics' do
+      before do
         [create_metric(:annual_saving, :gas, 300, :gbp), create_metric(:annual_saving, :electricity, 400, :gbp),
          create_metric(:holiday_previous_year, :gas, 4500, :gbp),
          create_metric(:holiday_previous_year, :electricity, 500, :gbp),
@@ -227,17 +227,31 @@ describe ImpactReport::Run do
          create_metric(:heating_control, :gas, 8)]
       end
 
-      it 'returns metrics in configured order, gas first, then electricity' do
-        expect(energy_efficiency).to eq(metrics)
-      end
-    end
+      it 'orders metrics by unit group and value descending' do # rubocop:disable RSpec/ExampleLength
+        expect(
+          energy_efficiency.map { |m| [m.metric_type, m.unit, m.value] }
+        ).to eq(
+          [
+            ['holiday_previous_year', 'gbp', 4500],
+            ['holiday_previous', 'gbp', 4500],
+            ['holiday_previous_year', 'gbp', 500],
+            ['holiday_previous', 'gbp', 500],
+            ['annual_saving', 'gbp', 400],
+            ['annual_saving', 'gbp', 300],
 
-    context 'with just gas metrics' do
-      let!(:annual_saving_gbp_gas) { create_metric(:annual_saving, :gas, 300, :gbp) }
-      let!(:annual_saving_co2_gas) { create_metric(:annual_saving, :gas, 500, :co2) }
+            ['targets', nil, 12],
+            ['heating_control', nil, 8],
+            ['baseload', nil, 5],
+            ['long_term', nil, 4],
+            ['out_of_hours', nil, 3],
+            ['out_of_hours', nil, 2],
+            ['long_term', nil, 2],
+            ['targets', nil, 1],
 
-      it 'returns metrics in configured order, gas first, then electricity' do
-        expect(energy_efficiency).to eq([annual_saving_gbp_gas, annual_saving_co2_gas])
+            ['annual_saving', 'co2', 600],
+            ['annual_saving', 'co2', 500]
+          ]
+        )
       end
     end
 
@@ -297,28 +311,16 @@ describe ImpactReport::Run do
              metric_type: 'points')
     end
 
-    let!(:baseload) do
-      create(:impact_report_metric,
-             run: run,
-             fuel_type: 'electricity',
-             metric_category: 'potential_savings',
-             metric_type: 'baseload')
-    end
-
     it 'memoizes the index' do
       expect(index).to equal(run.send(:metrics_index))
     end
 
     it 'stores overview metrics in a hash' do
-      expect(index['overview']['active_users'][nil]).to equal(active_users)
+      expect(index['overview']['active_users']).to equal(active_users)
     end
 
     it 'stores engagemement metrics in a hash' do
-      expect(index['engagement']['points'][nil]).to equal(points)
-    end
-
-    it 'stores potential savings metrics in an array' do
-      expect(index['potential_savings']['electricity']).to eq([baseload])
+      expect(index['engagement']['points']).to equal(points)
     end
   end
 end
