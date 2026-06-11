@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
 module SchoolGroups
-  class ImpactReport
+  module ImpactReport
     class Generator
+      GENERATORS = [Overview, Engagement, PotentialSavings, AnnualSaving, Benchmark, Targets, OutOfHours,
+                    Holiday].freeze
+      private_constant :GENERATORS
+
+      def self.metric_names = GENERATORS.flat_map { |generator| generator.metric_names.map(&:first) }
+
       def initialize(school_group)
         @school_group = school_group
-        @import_report = ImpactReport.new(school_group)
       end
 
       def create_metrics!
@@ -20,8 +25,7 @@ module SchoolGroups
       private
 
       def metrics
-        [Overview, Engagement, PotentialSavings, AnnualSaving, Benchmark, Targets, OutOfHours, Holiday]
-          .lazy.flat_map { |metric_category| metric_category.new(@import_report).metrics }
+        GENERATORS.lazy.flat_map { |metric_category| metric_category.new(@school_group).metrics }
       end
     end
   end

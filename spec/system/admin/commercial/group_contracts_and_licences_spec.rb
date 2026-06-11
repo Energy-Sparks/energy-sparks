@@ -23,6 +23,11 @@ describe 'group contracts and licences' do
     it { expect(page).to have_css('div.commercial-licensing-summary-component') }
     it { expect(page).to have_text(licence.school.name) }
     it { expect(page).to have_link('Licences', href: admin_school_licences_path(licence.school)) }
+
+    it {
+      expect(page).to have_link('Emailable summary',
+                                href: admin_school_group_licence_summaries_path(school_group, format: :text))
+    }
   end
 
   context 'when visiting contracts' do

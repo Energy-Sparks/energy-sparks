@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Overview do
-  subject(:overview) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
+  subject(:overview) { described_class.new(school.school_group) }
 
   let(:school) { create(:school, :with_school_group) }
   let(:school_group) { school.school_group }
@@ -15,7 +15,8 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
     end
 
     def expected(**)
-      { enough_data: true, fuel_type: nil, metric_category: :overview, number_of_schools: 1, value: 1 }.merge(**)
+      { enough_data: true, fuel_type: nil, unit: nil, metric_category: :overview, number_of_schools: 1, value: 1 }
+        .merge(**)
     end
 
     context 'with users' do
@@ -124,7 +125,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
 
         it 'counts correctly' do
           expect(metrics[:enrolling_schools]).to eq({ enough_data: true, fuel_type: nil, metric_category: :overview,
-                                                      number_of_schools: 1, value: 1 })
+                                                      number_of_schools: 1, value: 1, unit: nil })
         end
       end
 
@@ -133,7 +134,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
 
         it 'is zero' do
           expect(metrics[:enrolling_schools]).to eq({ enough_data: true, fuel_type: nil, metric_category: :overview,
-                                                      number_of_schools: 1, value: 0 })
+                                                      number_of_schools: 1, value: 0, unit: nil })
         end
       end
     end
