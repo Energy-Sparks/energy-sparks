@@ -30,7 +30,7 @@ module SchoolGroups
 
       def fetch_config_and_run
         @configuration = @school_group.impact_report_configuration || @school_group.build_impact_report_configuration
-        @run = @school_group.impact_report_runs.latest
+        @run = @school_group.latest_impact_report_run
       end
 
       def configuration_params

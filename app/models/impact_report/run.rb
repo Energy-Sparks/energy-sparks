@@ -27,7 +27,6 @@ module ImpactReport
     has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :run, dependent: :destroy
 
     scope :latest_first, -> { order(run_date: :desc, created_at: :desc) }
-    scope :latest, -> { includes(:metrics).latest_first.first }
 
     INDEXED_CATEGORIES = %w[overview engagement].freeze
     private_constant :INDEXED_CATEGORIES
