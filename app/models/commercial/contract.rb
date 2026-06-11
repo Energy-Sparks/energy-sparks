@@ -82,7 +82,8 @@ module Commercial
     enum :licence_period, CONTRACT_LICENCE_PERIOD
     enum :invoice_terms, CONTRACT_INVOICE_TERMS
 
-    validates :name, :start_date, :end_date, presence: true
+    validates :start_date, :end_date, presence: true
+    validates :name, presence: true, uniqueness: true
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
@@ -92,6 +93,7 @@ module Commercial
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
     has_many :schools, -> { distinct }, through: :licences
     has_many :school_onboardings, dependent: :nullify
+    has_many :invoices, class_name: 'Commercial::Invoice', dependent: :restrict_with_error
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
@@ -192,12 +194,12 @@ module Commercial
           :agreed_school_price,
           :contract_holder_type,
           :contract_holder_id,
-          :invoice_terms,
           :licence_period,
           :licence_years,
           :number_of_schools,
           :product
         ).merge(
+          invoice_terms: original.custom? ? :full : :pro_rata,
           comments: "Renewed from #{original.name}",
           end_date: original.end_date.next_year,
           start_date: original.end_date + 1.day,
@@ -217,7 +219,7 @@ module Commercial
     end
 
     def deletable?
-      !licences.invoiced.exists?
+      !invoiced?
     end
 
     def editable_attribute?(name)
@@ -251,7 +253,7 @@ module Commercial
     end
 
     def invoiced?
-      licences.invoiced.exists?
+      invoices.any? || licences.invoiced.exists?
     end
 
     private

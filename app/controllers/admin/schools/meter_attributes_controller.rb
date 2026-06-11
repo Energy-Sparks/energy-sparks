@@ -41,21 +41,33 @@ module Admin
 
       def update
         service = Meters::MeterAttributeManager.new(@school)
-        attribute = service.update!(
-          params[:id],
-          params[:attribute][:root],
-          params[:attribute][:reason],
-          current_user
-        )
-        redirect_to admin_school_single_meter_attribute_path(@school, attribute.meter)
+        if params[:restore]
+          service.restore!(
+            params[:id]
+          )
+
+          redirect_to admin_school_meter_attributes_path(@school), notice: 'Meter attribute successfully restored'
+        else
+          attribute = service.update!(
+            params[:id],
+            params[:attribute][:root],
+            params[:attribute][:reason],
+            current_user
+          )
+          redirect_to admin_school_single_meter_attribute_path(@school, attribute.meter)
+        end
       rescue => e
-        redirect_back fallback_location: edit_admin_school_meter_attribute_path(@school, meter_attribute), notice: e.message
+        if params[:restore]
+          redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
+        else
+          redirect_back fallback_location: edit_admin_school_meter_attribute_path(@school, meter_attribute), notice: e.message
+        end
       end
 
       def destroy
         service = Meters::MeterAttributeManager.new(@school)
         attribute = service.delete!(params[:id], current_user)
-        redirect_to admin_school_single_meter_attribute_path(@school, attribute.meter)
+        redirect_to admin_school_single_meter_attribute_path(@school, attribute.meter), notice: 'Meter attribute successfully deleted'
       rescue => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
       end

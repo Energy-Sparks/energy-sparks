@@ -31,7 +31,19 @@
       "Full" indicates that their licences cover the entire year, "Partial" means that they are only funded
       for part of that year.
     </p>
+  </div>
+</div>
 
+<div class="row">
+  <div class="col">
+    <%= render Commercial::RangeFundingSummaryComponent.new(
+          school_group: @school_group,
+          range: @next_year.start_date..@next_year.end_date,
+          range_label: 'the next academic year'
+        ) %>
+    <%= link_to 'Emailable summary',
+                admin_school_group_licence_summaries_path(@school_group, format: :text),
+                class: 'btn btn-sm' %>
   </div>
 </div>
 
