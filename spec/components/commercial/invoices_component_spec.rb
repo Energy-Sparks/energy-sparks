@@ -14,7 +14,7 @@ RSpec.describe Commercial::InvoicesComponent, :include_application_helper, :incl
       let(:table_id) { '#invoices-table' }
       let(:expected_header) do
         [
-          ['Number', 'Contract', 'Contract Holder', 'Date', 'User']
+          ['Number', 'Contract', 'Contract Holder', 'User', 'Date', 'Total']
         ]
       end
       let(:expected_rows) do
