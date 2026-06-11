@@ -23,8 +23,9 @@ RSpec.describe Commercial::InvoicesComponent, :include_application_helper, :incl
             invoice.invoice_number,
             invoice.contract.name,
             invoice.contract_holder.name,
+            invoice.created_by.display_name,
             invoice.date.to_fs(:es_short),
-            invoice.created_by.display_name
+            format_price(invoice.value.total)
           ]
         ]
       end
