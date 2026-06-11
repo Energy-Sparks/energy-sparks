@@ -1,0 +1,30 @@
+<%= tag.div id: id, class: classes do %>
+  <table id="invoice-<%= @invoice.id %>-line-items-table" class="table table-paged table-sm">
+    <thead>
+      <tr>
+        <th>School Group</th>
+        <th>School</th>
+        <th>Private Account?</th>
+        <th>Number of Meters</th>
+        <th>Base price</th>
+        <th>Metering fee</th>
+        <th>Private account fee</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoice.line_items.each do |line_item| %>
+        <tr>
+          <td><%= line_item.school&.school_group&.name %></td>
+          <td><%= line_item.school.name %></td>
+          <td><%= helpers.y_n line_item.private_account %></td>
+          <td><%= line_item.number_of_meters %></td>
+          <td><%= helpers.format_price line_item.value.base_price %></td>
+          <td><%= helpers.format_price line_item.value.metering_fee %></td>
+          <td><%= helpers.format_price line_item.value.private_account_fee %></td>
+          <td><%= helpers.format_price line_item.value.total %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

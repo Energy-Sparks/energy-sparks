@@ -93,6 +93,7 @@ module Commercial
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
     has_many :schools, -> { distinct }, through: :licences
     has_many :school_onboardings, dependent: :nullify
+    has_many :invoices, class_name: 'Commercial::Invoice', dependent: :restrict_with_error
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
@@ -218,7 +219,7 @@ module Commercial
     end
 
     def deletable?
-      !licences.invoiced.exists?
+      !invoiced?
     end
 
     def editable_attribute?(name)
@@ -252,7 +253,7 @@ module Commercial
     end
 
     def invoiced?
-      licences.invoiced.exists?
+      invoices.any? || licences.invoiced.exists?
     end
 
     private

@@ -19,6 +19,8 @@ module Commercial
                as: :default_contract_holder,
                class_name: 'School',
                dependent: :nullify
+
+      has_many :invoices, through: :contracts
     end
   end
 end
