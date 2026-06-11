@@ -17,7 +17,7 @@
         <tr>
           <td>Data Visible</td>
           <td class='<%= class_names('text-danger' => over_licensed?) %>'>
-            <%= @contract.schools.visible.data_enabled.count %>
+            <%= @contract.schools.data_visible.count %>
           </td>
         </tr>
         <tr>
@@ -48,9 +48,9 @@
         <tr>
           <td>Data Visible</td>
           <td class='<%= class_names('text-danger' => over_licensed?) %>'>
-            <%= @contract.schools.where(id: @contract.contract_holder.assigned_schools.visible.data_enabled).count %>
+            <%= @contract.schools.where(id: @contract.contract_holder.assigned_schools.data_visible).count %>
           </td>
-          <td><%= @contract.contract_holder.assigned_schools.visible.data_enabled.count %></td>
+          <td><%= @contract.contract_holder.assigned_schools.data_visible.count %></td>
         </tr>
         <tr>
           <td>Onboarding</td>
