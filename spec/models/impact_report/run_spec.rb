@@ -243,8 +243,11 @@ describe ImpactReport::Run do
 
     context 'when filtering metrics' do
       before do
+        # below threshold of 200
         create(:impact_report_metric, run:, metric_category:, metric_type: :annual_saving,
                                       fuel_type: :electricity, unit: :gbp, value: 45)
+
+        # enough data is false
         create(:impact_report_metric, run:, metric_category:, metric_type: :annual_saving,
                                       fuel_type: :gas, unit: :co2, enough_data: false)
       end

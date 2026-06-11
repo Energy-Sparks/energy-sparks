@@ -96,7 +96,7 @@ module ImpactReport
 
     class << self
       def gbp_threshold
-        @gbp_threshold ||= Commercial::Product.default_product.try(:large_school_price).to_i
+        Commercial::Product.default_product.try(:large_school_price).to_i
       end
     end
 

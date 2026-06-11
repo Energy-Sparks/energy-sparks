@@ -12,15 +12,19 @@
 <%= render Layout::GridComponent.new(cols: 1, cell_classes: 'mb-2 rounded-2 px-3 bg-light') do |grid| %>
   <%= grid.with_cell do |row| %>
     <h2>Overview</h2>
-    <h3>Metrics</h3>
-    <%= render 'metrics', metrics: @run.metrics.overview %>
+    <div class='bg-white px-3 pb-3 mb-2 rounded-2'>
+      <h3>Metrics</h3>
+      <%= render 'metrics', metrics: @run.metrics.overview %>
+    </div>
     <h3>Displayed as</h3>
     <%= render ImpactReports::Overview::MetricsComponent.new(run: @run, classes: 'mt-4') %>
   <% end %>
   <%= grid.with_cell do |row| %>
     <h2>Energy efficiency</h2>
-    <h3>Metrics</h3>
-    <%= render 'metrics', metrics: @run.metrics.energy_efficiency %>
+    <div class='bg-white px-3 pb-3 mb-2 rounded-2'>
+      <h3>Metrics</h3>
+      <%= render 'metrics', metrics: @run.metrics.energy_efficiency %>
+    </div>
     <h3>Displayable metrics</h3>
     <p>The live report takes the first 4 from the following list, excluding any GBP metrics under £<%= ImpactReport::Run.gbp_threshold %> (default product - large school cost)</p>
 
@@ -29,15 +33,19 @@
   <% end %>
   <%= grid.with_cell do |row| %>
     <h2>Engagement</h2>
-    <h3>Metrics</h3>
-    <%= render 'metrics', metrics: @run.metrics.engagement %>
+    <div class='bg-white px-3 pb-3 mb-2 rounded-2'>
+      <h3>Metrics</h3>
+      <%= render 'metrics', metrics: @run.metrics.engagement %>
+    </div>
     <h3>Displayed as</h3>
     <%= render ImpactReports::Engagement::MetricsComponent.new(run: @run, classes: 'mt-4') %>
   <% end %>
   <%= grid.with_cell do |row| %>
     <h2>Potential savings</h2>
-    <h3>Metrics</h3>
-    <%= render 'metrics', metrics: @run.metrics.potential_savings %>
+    <div class='bg-white px-3 pb-3 mb-2 rounded-2'>
+      <h3>Metrics</h3>
+      <%= render 'metrics', metrics: @run.metrics.potential_savings %>
+    </div>
     <h3>Displayable metrics</h3>
     <p>The live report takes the first 2 from the following list</p>
     <%= render ImpactReports::PotentialSavings::MetricsComponent.new(run: @run, max: nil, classes: 'mt-4') %>
