@@ -24,7 +24,7 @@ module Commercial
     end
 
     def pending_invoices
-      @pending_invoices ||= ::Commercial::Contract.with_invoiced_contract_holders.pending_invoicing.count
+      @pending_invoices ||= ::Commercial::Contract.pending_invoicing.count
     end
   end
 end

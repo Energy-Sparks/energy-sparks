@@ -62,9 +62,9 @@ module Commercial
     }
 
     scope :pending_invoicing, lambda {
-      joins(:licences)
-        .where(licences: { status: :pending_invoice })
-        .distinct
+      with_invoiced_contract_holders.joins(:licences)
+                                    .where(licences: { status: :pending_invoice })
+                                    .distinct
     }
 
     belongs_to :product, class_name: 'Commercial::Product'
