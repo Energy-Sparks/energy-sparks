@@ -105,7 +105,7 @@ describe 'manage invoices', :include_application_helper do
       create(:commercial_licence,
              contract:,
              status: :pending_invoice,
-             school: create(:school, :with_school_group))
+             school: create(:school, :with_school_group, number_of_pupils: 1))
     end
 
     before do
