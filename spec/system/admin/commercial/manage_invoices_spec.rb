@@ -98,4 +98,59 @@ describe 'manage invoices', :include_application_helper do
       end
     end
   end
+
+  context 'with a pending invoice' do
+    let!(:contract) { create(:commercial_contract) }
+    let!(:licence) do
+      create(:commercial_licence,
+             contract:,
+             status: :pending_invoice,
+             school: create(:school, :with_school_group))
+    end
+
+    before do
+      click_on 'Pending invoicing'
+    end
+
+    it { expect(page).to have_css('div.commercial-pending-invoicing-component') }
+    it { expect(page).to have_text(contract.name) }
+
+    context 'when choosing to raise an invoice' do
+      before { click_on 'Raise invoice' }
+
+      it { expect(page).to have_text('Raise New Invoice') }
+
+      it { expect(page).to have_link('edit the contract', href: edit_admin_commercial_contract_path(contract)) }
+
+      it {
+        expect(page).to have_link('manage all licences', href: edit_admin_commercial_contract_licences_path(contract))
+      }
+
+      it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+        let(:table_id) { '#raise-invoice-table' }
+        let(:expected_header) do
+          [
+            ['', '', 'School', 'Licence', ''],
+            ['', 'Id', 'School Group', 'School', 'Data Status',
+             'Start date', 'End date', 'Price', 'Actions']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              '',
+              "##{licence.id}",
+              licence.school.school_group.name,
+              licence.school.name,
+              'No data',
+              licence.start_date.to_fs(:es_short),
+              licence.end_date.to_fs(:es_short),
+              format_price(contract.product.small_school_price),
+              'Edit'
+            ]
+          ]
+        end
+      end
+    end
+  end
 end
