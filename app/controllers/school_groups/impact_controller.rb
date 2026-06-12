@@ -20,7 +20,7 @@ module SchoolGroups
 
     def load_data
       @config = @school_group.impact_report_configuration
-      @run = @school_group.impact_report_runs.latest
+      @run = @school_group.latest_impact_report_run
     end
 
     def breadcrumbs
@@ -44,7 +44,7 @@ module SchoolGroups
     end
 
     def redirect_not_enough_data
-      return if @run.enough_data?
+      return if @run&.enough_data?
 
       redirect_to(school_group_path(@school_group),
                   alert: I18n.t('advice_pages.index.show.not_available'))
