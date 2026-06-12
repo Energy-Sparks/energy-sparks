@@ -18,7 +18,7 @@
                         label: label_count('Meter issues', @supplier.active_meter_issues.issue.status_open.count)) do %>
     <% if @supplier.active_meter_issues.issue.any? %>
       <%= render 'admin/issues/issues_list', issues: @supplier.active_meter_issues.issue.status_open.by_priority_order,
-                                             issuable_type: 'Supplier' %>
+                                             issueable_type: 'Supplier' %>
     <% else %>
       <div class="bg-light p-2">No meter issues for <%= @supplier.name %>.</div>
     <% end %>

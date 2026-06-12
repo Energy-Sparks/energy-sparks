@@ -60,7 +60,7 @@
     <% if @data_source.active_meter_issues.issue.any? %>
       <%= render 'admin/issues/issues_list', issues: @data_source.active_meter_issues.issue
                                                                  .status_open.by_priority_order,
-                                             issuable_type: 'Data source' %>
+                                             issueable_type: 'Data source' %>
     <% else %>
       <div class="bg-light p-2">No meter issues for <%= @data_source.name %>.</div>
     <% end %>
