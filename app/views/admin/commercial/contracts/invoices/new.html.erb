@@ -1,0 +1,24 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Create Invoice' %>
+  <% header_nav.with_button 'Contract', admin_commercial_contract_path(@contract) %>
+<% end %>
+
+<p>
+  Creating a new invoice for <%= @contract.name %>.
+</p>
+
+<p>
+  Completing the next step will allocate a unique invoice number and store the current pricing information for
+  all of the below schools.
+</p>
+
+<p>
+  If anything is incorrect then please
+  <%= link_to 'click here to start again', raise_invoice_admin_commercial_contract_invoices_path(@contract) %>
+</p>
+
+<%= simple_form_for [:admin, @invoice] do |f| %>
+  <%= f.input :purchase_order_number %>
+
+  <%= f.submit 'Create invoice', class: 'btn btn-primary' %>
+<% end %>
