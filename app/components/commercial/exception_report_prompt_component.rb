@@ -38,7 +38,7 @@ module Commercial
     end
 
     def onboardings_with_no_contracts?
-      onboardings_with_no_contracts&.positive?
+      onboardings_with_no_contracts.positive?
     end
 
     def onboardings_with_no_contracts
