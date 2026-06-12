@@ -6,7 +6,7 @@ module ImpactReports
 
     def initialize(run: nil, school_group: nil, **)
       super(**)
-      @run = run || school_group&.impact_report_runs&.latest
+      @run = run || school_group&.latest_impact_report_run
       @school_group = school_group || run&.school_group
       @config = @school_group.impact_report_configuration
     end

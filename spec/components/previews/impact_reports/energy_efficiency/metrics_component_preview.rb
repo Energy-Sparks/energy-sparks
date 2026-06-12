@@ -7,7 +7,7 @@ module ImpactReports
       # @param bs5 toggle
       def default(bs5: true, slug: nil) # rubocop:disable Lint/UnusedMethodArgument
         school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
-        render(ImpactReports::EnergyEfficiency::MetricsComponent.new(run: school_group.impact_report_runs.latest))
+        render(ImpactReports::EnergyEfficiency::MetricsComponent.new(run: school_group.latest_impact_report_run))
       end
 
       private
