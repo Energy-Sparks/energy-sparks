@@ -1,30 +1,17 @@
 <%= tag.div id: id, class: classes do %>
   <%= render PromptListComponent.new do |list| %>
     <% list.with_title(level: 3) { 'Exception reporting' } %>
-    <% if unlicensed_schools.positive? %>
-        <%= list.with_prompt icon: 'school-circle-xmark', status: :negative do |prompt| %>
-            There are currently <%= unlicensed_schools %> schools without licences.
-            <% prompt.with_link do %>
-                <%= link_to 'Unlicensed Schools', unlicensed_admin_commercial_licences_path %>
-            <% end %>
-        <% end %>
-    <% end %>
-    <% if onboardings_with_no_contracts.positive? %>
-        <%= list.with_prompt icon: 'file-contract', status: :negative do |prompt| %>
-            There are currently <%= onboardings_with_no_contracts %> incomplete onboardings
-            without a contract specified.
-            <% prompt.with_link do %>
-                <%= link_to 'Onboardings', admin_school_onboardings_path %>
-            <% end %>
-        <% end %>
-    <% end %>
-    <% if overlapping_licences.positive? %>
-        <%= list.with_prompt icon: 'calendar-xmark', status: :negative do |prompt| %>
-            There are currently <%= overlapping_licences %> overlapping licences for the same school.
-            <% prompt.with_link do %>
-                <%= link_to 'Overlapping Licences', overlapping_admin_commercial_licences_path %>
-            <% end %>
-        <% end %>
+
+    <% prompts.each do |prompt| %>
+      <% add_prompt(id: prompt[:id],
+                    check: prompt[:check],
+                    list: list,
+                    status: prompt[:status],
+                    icon: prompt[:icon],
+                    link: prompt[:link],
+                    path: prompt[:path]) do %>
+      <p><%= prompt[:content] %></p>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
