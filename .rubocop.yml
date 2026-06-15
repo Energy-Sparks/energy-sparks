@@ -25,6 +25,7 @@ AllCops:
     - config/puma.rb
     - config/routes.rb
     - db/migrate/202604211056*.rb # goodjob migrations
+
 plugins:
   - rubocop-capybara
   - rubocop-factory_bot
@@ -58,6 +59,7 @@ Style/Documentation:
 Lint/MissingSuper: # per https://github.com/andyw8/rubocop-view_component
   Exclude:
     - 'app/components/**/*'
+
 ViewComponent/MissingPreview:
   PreviewPaths:
     - spec/components/previews
@@ -66,3 +68,7 @@ ViewComponent/MissingPreview:
 Rails/I18nLocaleTexts:
   Exclude:
     - 'app/controllers/admin/**/*'
+
+Style/FileWrite: # generating errors with rubocop 1.87.0
+   Exclude:
+     - analytics/**/*
