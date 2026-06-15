@@ -1,10 +1,10 @@
 RSpec.shared_examples 'a standard prompt' do |displayed:|
   it 'is displayed', if: displayed do
-    expect(page).to have_text(message)
+    expect(page).to have_content(message)
   end
 
   it 'is hidden', unless: displayed do
-    expect(page).to have_no_text(message)
+    expect(page).not_to have_content(message)
   end
 end
 
@@ -19,9 +19,7 @@ RSpec.shared_examples 'dashboard message prompts' do |displayed: true|
 end
 
 RSpec.shared_examples 'a training prompt' do |displayed: true|
-  let(:message) do
-    'New to Energy Sparks? Sign up to one of our upcoming free online training courses to help you get the most from the service.'
-  end
+  let(:message) { 'New to Energy Sparks? Sign up to one of our upcoming free online training courses to help you get the most from the service.' }
   include_examples 'a standard prompt', displayed: displayed
 end
 
@@ -37,7 +35,7 @@ RSpec.shared_examples 'a complete programme prompt' do |displayed: true, with_pr
   include_examples 'a standard prompt', displayed: displayed
 end
 
-RSpec.shared_examples 'a join programme prompt' do |programme:, displayed: true, task_count: nil, bonus_points: nil, completed: false|
+RSpec.shared_examples 'a join programme prompt' do |displayed: true, programme:, task_count: nil, bonus_points: nil, completed: false|
   let(:incomplete) do
     if Flipper.enabled?(:todos)
       "You've recently completed #{task_count == 1 ? 'a task that is' : "#{task_count} tasks that are"} part of the #{programme} programme. Do you want to enrol in the programme?"
@@ -47,16 +45,16 @@ RSpec.shared_examples 'a join programme prompt' do |programme:, displayed: true,
   end
 
   let(:complete) do
-    message = if Flipper.enabled?(:todos)
-                "You've completed all the tasks in the #{programme} programme. "
-              else
-                "You've completed all the activities in the #{programme} programme. "
-              end
-    message += if bonus_points == 0
-                 'Mark it as complete?'
-               else
-                 "Mark it done to score #{bonus_points} bonus points?"
-               end
+    if Flipper.enabled?(:todos)
+      message = "You've completed all the tasks in the #{programme} programme. "
+    else
+      message = "You've completed all the activities in the #{programme} programme. "
+    end
+    if bonus_points == 0
+      message += 'Mark it as complete?'
+    else
+      message += "Mark it done to score #{bonus_points} bonus points?"
+    end
     message
   end
 
@@ -72,9 +70,7 @@ RSpec.shared_examples 'a join programme prompt' do |programme:, displayed: true,
 end
 
 RSpec.shared_examples 'a no active programmes prompt' do |displayed: true|
-  let(:message) do
-    "Congratulations you've completed all your energy saving programmes! Time to choose your next programme"
-  end
+  let(:message) { "Congratulations you've completed all your energy saving programmes! Time to choose your next programme" }
 
   include_examples 'a standard prompt', displayed: displayed
 end
@@ -86,9 +82,7 @@ RSpec.shared_examples 'a recommendations prompt' do |displayed: true|
 end
 
 RSpec.shared_examples 'a transport survey prompt' do |displayed: true|
-  let(:message) do
-    'Start a transport survey so that you can find out how much carbon your school community generates by travelling to school'
-  end
+  let(:message) { 'Start a transport survey so that you can find out how much carbon your school community generates by travelling to school' }
   include_examples 'a standard prompt', displayed: displayed
 end
 
@@ -114,9 +108,7 @@ RSpec.shared_examples 'a rich audit prompt' do |displayed: true|
 end
 
 RSpec.shared_examples 'a recommended prompt' do |displayed: true|
-  let(:message) do
-    "View our recommended activities and actions based on your school's programmes and our analysis of your energy data"
-  end
+  let(:message) { "View our recommended activities and actions based on your school's programmes and our analysis of your energy data" }
 
   include_examples 'a standard prompt', displayed: displayed
 end

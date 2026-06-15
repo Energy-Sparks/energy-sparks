@@ -2,9 +2,9 @@ FactoryBot.define do
   factory :report, class: 'Comparison::Report' do
     reporting_period { :last_12_months }
     report_group
-    sequence(:title) { |n| "Title #{n}" }
-    sequence(:introduction) { |n| "Introduction #{n}" }
-    sequence(:notes) { |n| "Notes #{n}" }
+    sequence(:title) {|n| "Title #{n}"}
+    sequence(:introduction) {|n| "Introduction #{n}"}
+    sequence(:notes) {|n| "Notes #{n}"}
     public { true }
   end
 

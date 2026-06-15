@@ -5,8 +5,7 @@ require 'rails_helper'
 describe OpenCloseTimes do
   describe '#convert_frontend_times' do
     let(:school_times) do
-      [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 30),
-         closing_time: TimeOfDay.new(16, 20), calendar_period: :term_times }]
+      [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 30), closing_time: TimeOfDay.new(16, 20), calendar_period: :term_times }]
     end
     let(:community_use_times)   { [] }
     let(:holidays)              { build(:holidays, :with_calendar_year) }
@@ -29,8 +28,7 @@ describe OpenCloseTimes do
 
     describe 'with both' do
       let(:community_use_times) do
-        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0),
-           closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
+        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0), closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
       end
 
       it 'creates both times' do

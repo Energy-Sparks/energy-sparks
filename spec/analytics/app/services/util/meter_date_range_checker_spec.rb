@@ -89,7 +89,7 @@ describe Util::MeterDateRangeChecker, type: :service do
 
   describe '#date_when_enough_data_available' do
     it 'returns expected value' do
-      expect(service.date_when_enough_data_available(365)).to be_nil
+      expect(service.date_when_enough_data_available(365)).to be nil
     end
 
     context 'when we have 200 days' do

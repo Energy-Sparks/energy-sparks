@@ -1,15 +1,13 @@
 require 'rails_helper'
 
 describe 'help pages', type: :system do
-  let(:help_page) do
-    create(:help_page, title: 'The page', feature: :school_targets, description: 'Content', published: true)
-  end
+  let(:help_page) { create(:help_page, title: 'The page', feature: :school_targets, description: 'Content', published: true)}
 
   context 'as a user' do
     it 'lets me view help pages' do
       visit help_path(help_page)
-      expect(page).to have_text('The page')
-      expect(page).to have_text('Content')
+      expect(page).to have_content('The page')
+      expect(page).to have_content('Content')
     end
 
     context 'with an hidden page' do
@@ -36,8 +34,8 @@ describe 'help pages', type: :system do
 
       it 'lets me view help pages' do
         visit help_path(help_page)
-        expect(page).to have_text('The page')
-        expect(page).to have_text('Content')
+        expect(page).to have_content('The page')
+        expect(page).to have_content('Content')
       end
     end
   end

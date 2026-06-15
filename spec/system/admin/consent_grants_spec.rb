@@ -7,9 +7,7 @@ RSpec.describe 'consent_grants', type: :system do
   let(:job_title) { 'Chief Granter' }
   let(:ip_address) { '123.456.789.000' }
 
-  let(:consent_statement) do
-    ConsentStatement.create!(title: 'First consent statement', content: 'You may use my data..')
-  end
+  let(:consent_statement) { ConsentStatement.create!(title: 'First consent statement', content: 'You may use my data..') }
 
   context 'as admin' do
     let(:admin) { create(:admin) }
@@ -40,12 +38,12 @@ RSpec.describe 'consent_grants', type: :system do
 
       shared_examples 'a search page with a result' do
         it 'shows consent granted' do
-          expect(page).to have_text('Consents Granted')
-          expect(page).to have_text(school.name)
-          expect(page).to have_text(name)
-          expect(page).to have_text(job_title)
-          expect(page).to have_text(consent_statement.title)
-          expect(page).to have_text(grant.guid)
+          expect(page).to have_content('Consents Granted')
+          expect(page).to have_content(school.name)
+          expect(page).to have_content(name)
+          expect(page).to have_content(job_title)
+          expect(page).to have_content(consent_statement.title)
+          expect(page).to have_content(grant.guid)
         end
       end
 
@@ -53,7 +51,7 @@ RSpec.describe 'consent_grants', type: :system do
         context 'when term is not found' do
           let(:term) { 'none' }
 
-          it { expect(page).to have_text 'No results were found' }
+          it { expect(page).to have_content 'No results were found' }
         end
       end
 
@@ -105,12 +103,12 @@ RSpec.describe 'consent_grants', type: :system do
         end
 
         it 'shows consent details and contents' do
-          expect(page).to have_text(school.name)
-          expect(page).to have_text(name)
-          expect(page).to have_text(job_title)
-          expect(page).to have_text(ip_address)
-          expect(page).to have_text('First consent statement')
-          expect(page).to have_text('You may use my data..')
+          expect(page).to have_content(school.name)
+          expect(page).to have_content(name)
+          expect(page).to have_content(job_title)
+          expect(page).to have_content(ip_address)
+          expect(page).to have_content('First consent statement')
+          expect(page).to have_content('You may use my data..')
         end
       end
     end
@@ -146,17 +144,17 @@ RSpec.describe 'consent_grants', type: :system do
 
       it 'shows all consents granted' do
         visit school_consent_grants_path(school)
-        expect(page).to have_text("Consents Granted for #{school.name}")
-        expect(page).to have_text(name)
-        expect(page).to have_no_text(other_name)
+        expect(page).to have_content("Consents Granted for #{school.name}")
+        expect(page).to have_content(name)
+        expect(page).not_to have_content(other_name)
       end
 
       it 'shows consent details and contents' do
         visit school_consent_grants_path(school)
         click_on 'View'
-        expect(page).to have_text("Consent Granted for #{school.name}")
-        expect(page).to have_text(school.name)
-        expect(page).to have_text(name)
+        expect(page).to have_content("Consent Granted for #{school.name}")
+        expect(page).to have_content(school.name)
+        expect(page).to have_content(name)
       end
     end
   end

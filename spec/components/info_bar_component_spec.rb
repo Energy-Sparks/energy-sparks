@@ -65,7 +65,7 @@ RSpec.describe InfoBarComponent, type: :component do
 
   context 'with :style' do
     context 'when :style is :normal' do
-      let(:params) { all_params.merge({ style: :normal }) }
+      let(:params) { all_params.merge({ style: :normal })}
 
       it 'adds normal classes' do
         expect(html).to have_css('div.notice-component.p-4.mb-4')
@@ -73,7 +73,7 @@ RSpec.describe InfoBarComponent, type: :component do
     end
 
     context 'when :style is :compact' do
-      let(:params) { all_params.merge({ style: :compact }) }
+      let(:params) { all_params.merge({ style: :compact })}
 
       it 'adds compact classes' do
         expect(html).to have_css('div.notice-component.p-3.mb-3')

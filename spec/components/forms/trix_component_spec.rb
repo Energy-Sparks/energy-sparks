@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Forms::TrixComponent, :include_application_helper, type: :component do
-  subject(:component) { described_class.new(**params, **kwargs) }
-
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:kwargs) { { id: id, classes: classes } }
@@ -20,6 +18,8 @@ RSpec.describe Forms::TrixComponent, :include_application_helper, type: :compone
   let(:params) do
     { form: form, field: field }
   end
+
+  subject(:component) { described_class.new(**params, **kwargs) }
 
   context 'when rendering' do
     let(:html) { render_inline(component) }

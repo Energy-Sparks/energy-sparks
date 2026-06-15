@@ -27,7 +27,7 @@ RSpec.describe Elements::ButtonComponent, :include_application_helper, type: :co
 
     it { expect(html).to have_link('name', href: url) }
     it { expect(html).to have_css('a.btn.btn-secondary') }
-    it { expect(html).to have_text('Content') }
+    it { expect(html).to have_content('Content') }
   end
 
   context 'with style' do

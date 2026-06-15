@@ -3,12 +3,12 @@
 RSpec.shared_examples 'an admin meter report' do |help: true|
   let(:frequency) { :on_demand }
   it 'has title and description' do
-    expect(page).to have_text(title)
-    expect(page).to have_text(description)
+    expect(page).to have_content(title)
+    expect(page).to have_content(description)
   end
 
   it 'has metadata' do
-    expect(page).to have_text(frequency.to_s.humanize)
+    expect(page).to have_content(frequency.to_s.humanize)
   end
 
   it 'has controls' do

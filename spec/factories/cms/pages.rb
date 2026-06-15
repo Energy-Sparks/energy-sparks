@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :page, class: 'Cms::Page' do
     category
-    sequence(:title) { |n| "Page #{n}" }
-    sequence(:description) { |n| "Page #{n} body" }
+    sequence(:title) {|n| "Page #{n}"}
+    sequence(:description) {|n| "Page #{n} body"}
     # sequence(:audience)  {|n| "Page #{n} audience"}
     published { false }
 

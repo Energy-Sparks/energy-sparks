@@ -6,7 +6,7 @@ RSpec.shared_examples 'a date ranged model' do
       build(
         described_class.model_name.singular,
         start_date: Time.zone.today,
-        end_date: Date.yesterday
+        end_date:   Date.yesterday
       )
     end
 
@@ -21,7 +21,7 @@ RSpec.shared_examples 'a date ranged model' do
       build(
         described_class.model_name.singular,
         start_date: Time.zone.today,
-        end_date: Time.zone.today
+        end_date:   Time.zone.today
       )
     end
 
@@ -35,7 +35,7 @@ RSpec.shared_examples 'a date ranged model' do
       build(
         described_class.model_name.singular,
         start_date: Time.zone.today,
-        end_date: Date.tomorrow
+        end_date:   Date.tomorrow
       )
     end
 

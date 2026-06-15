@@ -12,9 +12,9 @@ class CampaignMailerPreview < ActionMailer::Preview
       }
     }
     CampaignMailer.with(request_type: request_type,
-                        contact: contact(['primary']),
-                        party: party,
-                        opportunity: opportunity).notify_admin
+                     contact: contact(['primary']),
+                     party: party,
+                     opportunity: opportunity).notify_admin
   end
 
   def send_information_school

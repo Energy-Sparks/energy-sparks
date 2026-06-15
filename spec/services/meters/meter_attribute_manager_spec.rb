@@ -14,15 +14,11 @@ describe Meters::MeterAttributeManager, type: :service do
   describe '#create!' do
     context 'with valid attributes' do
       it 'creates the attribute' do
-        expect do
-          service.create!(meter.id, attribute_type, input_data, reason, admin)
-        end.to change(MeterAttribute, :count).from(0).to(1)
+        expect { service.create!(meter.id, attribute_type, input_data, reason, admin) }.to change(MeterAttribute, :count).from(0).to(1)
       end
 
       it 'broadcasts an event' do
-        expect do
-          service.create!(meter.id, attribute_type, input_data, reason, admin)
-        end.to broadcast(:meter_attribute_created)
+        expect { service.create!(meter.id, attribute_type, input_data, reason, admin) }.to broadcast(:meter_attribute_created)
       end
 
       it 'registers the target event listener' do
@@ -43,11 +39,9 @@ describe Meters::MeterAttributeManager, type: :service do
 
     context 'with valid attributes' do
       it 'creates a new linked attribute' do
-        expect do
-          service.update!(meter_attribute.id, input_data, reason, admin)
-        end.to change(MeterAttribute, :count).from(1).to(2)
+        expect { service.update!(meter_attribute.id, input_data, reason, admin) }.to change(MeterAttribute, :count).from(1).to(2)
         meter_attribute.reload
-        expect(meter_attribute.replaced_by).not_to be_nil
+        expect(meter_attribute.replaced_by).not_to be nil
       end
 
       it 'broadcasts an event' do

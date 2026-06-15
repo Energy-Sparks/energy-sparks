@@ -38,7 +38,7 @@ RSpec.describe Elements::TooltipComponent, :include_application_helper, type: :c
     let(:text) { nil }
 
     it 'does not render span' do
-      expect(html).to have_no_css('span[data-bs-toggle="tooltip"]')
+      expect(html).not_to have_css('span[data-bs-toggle="tooltip"]')
     end
 
     it 'still renders content' do

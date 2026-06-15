@@ -68,16 +68,16 @@ describe TemplateInterpolation do
     end
 
     it 'interpolates multiple fields' do
-      view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, :template_2,
-                                                                      with: { usage: 'low', position: 3 })
+      view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, :template_2, with: { usage: 'low', position: 3 })
       expect(view_object.template_1).to eq('Your energy usage is quite low')
       expect(view_object.template_2).to eq('Your school is 3 in the leaderboard')
     end
 
     it 'interpolates from string keyed hashes' do
-      view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, with: { usage: 'low' })
+      view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, with: { 'usage': 'low' })
       expect(view_object.template_1).to eq('Your energy usage is quite low')
     end
+
 
     it 'leaves missing variables blank' do
       view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, with: {})
@@ -86,8 +86,7 @@ describe TemplateInterpolation do
 
     it 'sets the object' do
       instance = object.new
-      view_object = TemplateInterpolation.new(instance, with_objects: { alert: instance }).interpolate(:template_1,
-                                                                                                       with: {})
+      view_object = TemplateInterpolation.new(instance, with_objects: { alert: instance }).interpolate(:template_1, with: {})
       expect(view_object.alert).to eq(instance)
     end
 

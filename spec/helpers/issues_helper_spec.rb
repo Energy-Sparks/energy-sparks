@@ -18,7 +18,7 @@ describe IssuesHelper do
           let(:count) { 0 }
 
           it { expect(subject).to have_css('i.fa-sticky-note') }
-          it { expect(subject).to have_no_css('i.fa-sticky-note.text-warning') }
+          it { expect(subject).not_to have_css('i.fa-sticky-note.text-warning') }
         end
       end
 
@@ -35,38 +35,38 @@ describe IssuesHelper do
           let(:count) { 0 }
 
           it { expect(subject).to have_css('i.fa-exclamation-circle') }
-          it { expect(subject).to have_no_css('i.fa-exclamation-circle.text-danger') }
+          it { expect(subject).not_to have_css('i.fa-exclamation-circle.text-danger') }
         end
       end
     end
   end
 
   describe '.issue_type_icons' do
-    subject { helper.issue_type_icons(school.issues, hide_empty: hide_empty) }
-
     let(:school) { create(:school) }
     let(:note) { create(:issue, issue_type: :note) }
     let(:issue) { create(:issue, issue_type: :issue) }
 
+    subject { helper.issue_type_icons(school.issues, hide_empty: hide_empty) }
+
     context 'showing icons when no issues of type present' do
       let(:hide_empty) { false }
 
-      it { expect(subject).to have_no_css('i.fa-sticky-note.text-warning') }
-      it { expect(subject).to have_no_css('i.fa-exclamation-circle.text-danger') }
+      it { expect(subject).not_to have_css('i.fa-sticky-note.text-warning') }
+      it { expect(subject).not_to have_css('i.fa-exclamation-circle.text-danger') }
       it { expect(subject).to have_css("span[title='0 issues & 0 notes']") }
 
       context 'issues includes a note' do
         before { school.issues << note }
 
         it { expect(subject).to have_css('i.fa-sticky-note.text-warning') }
-        it { expect(subject).to have_no_css('i.fa-exclamation-circle.text-danger') }
+        it { expect(subject).not_to have_css('i.fa-exclamation-circle.text-danger') }
         it { expect(subject).to have_css("span[title='0 issues & 1 note']") }
       end
 
       context 'issues includes an issue' do
         before { school.issues << issue }
 
-        it { expect(subject).to have_no_css('i.fa-sticky-note.text-warning') }
+        it { expect(subject).not_to have_css('i.fa-sticky-note.text-warning') }
         it { expect(subject).to have_css('i.fa-exclamation-circle.text-danger') }
         it { expect(subject).to have_css("span[title='1 issue & 0 notes']") }
       end
@@ -75,22 +75,22 @@ describe IssuesHelper do
     context 'hiding when no issues of type present' do
       let(:hide_empty) { true }
 
-      it { expect(subject).to have_no_css('i.fa-sticky-note') }
-      it { expect(subject).to have_no_css('i.fa-exclamation-circle') }
-      it { expect(subject).to have_no_css('span') }
+      it { expect(subject).not_to have_css('i.fa-sticky-note') }
+      it { expect(subject).not_to have_css('i.fa-exclamation-circle') }
+      it { expect(subject).not_to have_css('span') }
 
       context 'issues includes a note' do
         before { school.issues << note }
 
         it { expect(subject).to have_css('i.fa-sticky-note.text-warning') }
-        it { expect(subject).to have_no_css('i.fa-exclamation-circle') }
+        it { expect(subject).not_to have_css('i.fa-exclamation-circle') }
         it { expect(subject).to have_css("span[title='1 note']") }
       end
 
       context 'issues includes an issue' do
         before { school.issues << issue }
 
-        it { expect(subject).to have_no_css('i.fa-sticky-note') }
+        it { expect(subject).not_to have_css('i.fa-sticky-note') }
         it { expect(subject).to have_css('i.fa-exclamation-circle.text-danger') }
         it { expect(subject).to have_css("span[title='1 issue']") }
       end

@@ -94,7 +94,7 @@ RSpec.shared_examples 'a group page with schools filtered by permissions' do
 
   context 'when not signed in' do
     it 'does not show the school' do
-      expect(page).to have_no_text(filtered_school.name)
+      expect(page).to have_no_content(filtered_school.name)
     end
   end
 
@@ -102,7 +102,7 @@ RSpec.shared_examples 'a group page with schools filtered by permissions' do
     let(:user) { create(:school_admin, school: create(:school, school_group:)) }
 
     it 'does not show the school' do
-      expect(page).to have_no_text(filtered_school.name)
+      expect(page).to have_no_content(filtered_school.name)
     end
   end
 
@@ -117,9 +117,9 @@ RSpec.shared_examples 'a group page with schools filtered by permissions' do
 
     it 'filters correctly' do
       if school_group.organisation?
-        expect(page).to have_text(filtered_school.name)
+        expect(page).to have_content(filtered_school.name)
       else
-        expect(page).to have_no_text(filtered_school.name)
+        expect(page).to have_no_content(filtered_school.name)
       end
     end
   end
@@ -128,7 +128,7 @@ RSpec.shared_examples 'a group page with schools filtered by permissions' do
     let(:user) { create(:group_admin, school_group: create(:school_group)) }
 
     it 'does not show the school' do
-      expect(page).to have_no_text(filtered_school.name)
+      expect(page).to have_no_content(filtered_school.name)
     end
   end
 
@@ -136,7 +136,7 @@ RSpec.shared_examples 'a group page with schools filtered by permissions' do
     let(:user) { create(:admin) }
 
     it 'shows all the schools' do
-      expect(page).to have_text(filtered_school.name)
+      expect(page).to have_content(filtered_school.name)
     end
   end
 end

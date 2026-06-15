@@ -101,7 +101,7 @@ describe GenericAccountingTariff, :aggregate_failures do
       end
     end
 
-    context 'with differential' do
+    context 'with differential ' do
       let(:tariff_type)       { :differential }
       let(:rates)             { create_differential_rate }
 
@@ -287,7 +287,7 @@ describe GenericAccountingTariff, :aggregate_failures do
 
         it 'calculates vat' do
           # ap accounting_cost.all_costs_x48
-          expect(accounting_cost.all_costs_x48[:'vat@10%']).to eq Array.new(48, 0.01 * 0.15 * 0.10)
+          expect(accounting_cost.all_costs_x48[:"vat@10%"]).to eq Array.new(48, 0.01 * 0.15 * 0.10)
         end
 
         context 'with a standing charge' do
@@ -296,7 +296,7 @@ describe GenericAccountingTariff, :aggregate_failures do
           it 'calculates vat' do
             usage_plus_vat = (0.01 * 0.15 * 0.10)
             standing_charge_plus_vat_x48 = (1.0 * 0.10) / 48
-            expect(accounting_cost.all_costs_x48[:'vat@10%']).to eq Array.new(48,
+            expect(accounting_cost.all_costs_x48[:"vat@10%"]).to eq Array.new(48,
                                                                               usage_plus_vat + standing_charge_plus_vat_x48)
           end
         end

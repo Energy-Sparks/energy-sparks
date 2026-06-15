@@ -26,7 +26,7 @@ class Navigation::ManageSchoolComponentPreview < ViewComponent::Preview
 
   def user_type_options
     {
-      choices: %i[admin school_admin].map { |t| [t.to_s.humanize, t] }
+      choices: [:admin, :school_admin].map { |t| [t.to_s.humanize, t] }
     }
   end
 

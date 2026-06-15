@@ -27,11 +27,11 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
     end
 
     it 'shows newsletter options' do
-      expect(page).to have_text(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+      expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
     end
 
     it 'does not show alert subscription options' do
-      expect(page).to have_no_text('Energy Sparks alerts:')
+      expect(page).not_to have_content('Energy Sparks alerts:')
     end
   end
 
@@ -103,7 +103,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
           fill_in_password_and_register('', '')
         end
 
-        it { expect(page).to have_text("Password can't be blank") }
+        it { expect(page).to have_content("Password can't be blank") }
       end
 
       context 'with invalid password' do
@@ -111,7 +111,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
           fill_in_password_and_register('password', 'password')
         end
 
-        it { expect(page).to have_text('Password is too short') }
+        it { expect(page).to have_content('Password is too short') }
       end
 
       context 'with mismatched passwords' do
@@ -119,7 +119,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
           fill_in_password_and_register('thisismynewpassword!', 'invalid')
         end
 
-        it { expect(page).to have_text("Password confirmation doesn't match") }
+        it { expect(page).to have_content("Password confirmation doesn't match") }
       end
     end
 
@@ -130,7 +130,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
         fill_in_password_and_register('', '')
       end
 
-      it { expect(page).to have_no_css('input.must-check') } # terms already pre-selected
+      it { expect(page).not_to have_css('input.must-check') } # terms already pre-selected
       it { expect(page).to have_unchecked_field('Subscribe to school alerts') }
       it { expect(page).to have_unchecked_field('Getting the most out of Energy Sparks') }
     end
@@ -141,7 +141,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
           fill_in_password_and_register(valid_password, valid_password)
         end
 
-        it { expect(page).to have_text(I18n.t('devise.confirmations.confirmed')) }
+        it { expect(page).to have_content(I18n.t('devise.confirmations.confirmed')) }
         it { expect(page).to have_current_path(school_path(school)) }
         it { expect(user.reload.confirmed?).to be(true) }
         it { expect(user.reload.terms_accepted?).to be(true) }
@@ -177,7 +177,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
       end
 
       it 'does not show newsletter options' do
-        expect(page).to have_no_text(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+        expect(page).not_to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
       end
 
       context 'when successfully registering' do
@@ -196,9 +196,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
   end
 
   context 'when following an emailed confirmation link' do
-    let!(:user) do
-      create(:staff, confirmation_token: confirmation_token, confirmed_at: nil, email: 'unconfirmed@test.com')
-    end
+    let!(:user) { create(:staff, confirmation_token: confirmation_token, confirmed_at: nil, email: 'unconfirmed@test.com') }
 
     before do
       open_email 'unconfirmed@test.com'
@@ -207,7 +205,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
     end
 
     it 'logs me in and confirms my account' do
-      expect(page).to have_text('Sign Out')
+      expect(page).to have_content('Sign Out')
       expect(user.reload.confirmed?).to be(true)
     end
   end
@@ -241,10 +239,10 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
         visit user_confirmation_path(confirmation_token: confirmation_token)
       end
 
-      it { expect(page).to have_text(I18n.t('errors.messages.already_confirmed')) }
+      it { expect(page).to have_content(I18n.t('errors.messages.already_confirmed')) }
 
       it 'prompts for login' do
-        expect(page).to have_text(I18n.t('devise.sessions.new.title'))
+        expect(page).to have_content(I18n.t('devise.sessions.new.title'))
       end
     end
 
@@ -254,7 +252,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
         visit user_confirmation_path(confirmation_token: confirmation_token)
       end
 
-      it { expect(page).to have_text(I18n.t('devise.failure.already_authenticated')) }
+      it { expect(page).to have_content(I18n.t('devise.failure.already_authenticated')) }
 
       it 'redirects' do
         expect(page).to have_current_path(school_group_path(user.school_group))

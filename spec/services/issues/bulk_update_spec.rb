@@ -3,6 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Issues::BulkUpdate do
+  let(:issueable) { create(:school) }
+  let(:user_from) { create(:admin) }
+  let(:user_to) { create(:admin) }
+  let(:updated_by) { create(:admin) }
+
   subject(:service) do
     described_class.new(
       issueable: issueable,
@@ -11,11 +16,6 @@ RSpec.describe Issues::BulkUpdate do
       updated_by: updated_by&.id
     )
   end
-
-  let(:issueable) { create(:school) }
-  let(:user_from) { create(:admin) }
-  let(:user_to) { create(:admin) }
-  let(:updated_by) { create(:admin) }
 
   describe '#perform' do
     context 'when issueable is missing' do
@@ -49,11 +49,11 @@ RSpec.describe Issues::BulkUpdate do
     end
 
     context 'when valid' do
-      subject(:bulk_update) { service.perform }
-
       let!(:issues) { create_list(:issue, 3, issueable: issueable, owned_by: user_from) }
       let!(:other_owner) { create(:issue, issueable: issueable, owned_by: create(:user)) }
       let!(:other_issueable) { create(:issue, issueable: create(:school), owned_by: user_from) }
+
+      subject(:bulk_update) { service.perform }
 
       before do
         travel_to(1.day.ago)

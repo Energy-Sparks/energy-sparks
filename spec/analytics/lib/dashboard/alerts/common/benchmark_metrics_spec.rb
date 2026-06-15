@@ -93,10 +93,7 @@ describe BenchmarkMetrics do
     let(:amr_end_date)    { Date.new(2022, 12, 31) }
     let(:amr_data) { build(:amr_data, :with_date_range, start_date: amr_start_date, end_date: amr_end_date) }
 
-    let(:meter) do
-      build(:meter, :with_flat_rate_tariffs, amr_data: amr_data, tariff_start_date: amr_start_date,
-                                             tariff_end_date: amr_end_date)
-    end
+    let(:meter) { build(:meter, :with_flat_rate_tariffs, amr_data: amr_data, tariff_start_date: amr_start_date, tariff_end_date: amr_end_date) }
 
     let(:benchmark_type) { :benchmark }
     let(:asof_date) { Date.new(2022, 12, 31) }

@@ -28,6 +28,6 @@ RSpec.describe Layout::Cards::StatementComponent, :include_application_helper, t
     end
 
     it { expect(html).to have_css('span.badge.bg-secondary') }
-    it { expect(html).to have_text('Statement') }
+    it { expect(html).to have_content('Statement') }
   end
 end

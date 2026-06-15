@@ -85,10 +85,7 @@ describe Mailchimp::Contact do
     let(:contact) { described_class.from_user(user, tags: tags, interests: interests) }
 
     context 'with a school admin' do
-      let!(:school) do
-        create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands,
-                                                                                     percentage_free_school_meals: 35)
-      end
+      let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35) }
       let!(:user) { create(:school_admin, school: school) }
 
       it_behaves_like 'it correctly creates a contact', school_user: true
@@ -121,10 +118,7 @@ describe Mailchimp::Contact do
       end
 
       context 'with archived school' do
-        let!(:school) do
-          create(:school, :with_school_group, :with_scoreboard, :with_local_authority, :archived,
-                 region: :east_midlands)
-        end
+        let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, :archived, region: :east_midlands) }
 
         it 'uses correct status' do
           expect(contact.school_status).to eq 'Archived'
@@ -169,9 +163,7 @@ describe Mailchimp::Contact do
       end
 
       context 'when account is disabled' do
-        let!(:user) do
-          create(:group_admin, school_group: create(:school_group, :with_default_scoreboard), active: false)
-        end
+        let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard), active: false) }
 
         it 'switches user to Organic' do
           expect(contact.contact_source).to eq 'Organic'
@@ -201,10 +193,7 @@ describe Mailchimp::Contact do
       end
 
       context 'when account is disabled' do
-        let!(:user) do
-          create(:group_manager, school_group: create(:school_group, :project_group, :with_default_scoreboard),
-                                 active: false)
-        end
+        let!(:user) { create(:group_manager, school_group: create(:school_group, :project_group, :with_default_scoreboard), active: false) }
 
         it 'switches user to Organic' do
           expect(contact.contact_source).to eq 'Organic'
@@ -213,10 +202,7 @@ describe Mailchimp::Contact do
     end
 
     context 'with a cluster admin' do
-      let!(:school) do
-        create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35,
-                                                                 school_group: create(:school_group, :with_default_scoreboard))
-      end
+      let!(:school) { create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35, school_group: create(:school_group, :with_default_scoreboard)) }
       let!(:user) { create(:school_admin, :with_cluster_schools, school: school) }
 
       it_behaves_like 'it correctly creates a contact', school_user: false, cluster_admin: true
@@ -319,7 +305,7 @@ describe Mailchimp::Contact do
 
     shared_examples 'it maps all the roles correctly' do
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Business manager')) }
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Business manager'))}
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -331,7 +317,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Building/site manager or caretaker')) }
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Building/site manager or caretaker'))}
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -343,7 +329,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Governor')) }
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Governor'))}
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -355,7 +341,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Teacher or teaching assistant')) }
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Teacher or teaching assistant'))}
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -367,7 +353,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Headteacher or Deputy Head')) }
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Headteacher or Deputy Head'))}
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -380,7 +366,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Council or MAT staff')) }
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Council or MAT staff'))}
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -392,7 +378,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Parent or volunteer')) }
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Parent or volunteer'))}
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -404,7 +390,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Public')) }
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Public'))}
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -424,10 +410,10 @@ describe Mailchimp::Contact do
       end
     end
 
-    %i[group_admin group_manager].each do |role|
+    [:group_admin, :group_manager].each do |role|
       context "with #{role}" do
         it_behaves_like 'interests have been selected' do
-          let(:user) { create(role) }
+          let(:user) { create(role)}
           let(:selected) do
             [
               described_class::GETTING_THE_MOST,

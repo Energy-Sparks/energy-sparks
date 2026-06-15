@@ -50,7 +50,7 @@ RSpec.shared_examples 'a displayed list issue' do |type: 'Filter'|
 
   it "doesn't show other issues", if: defined? all_issues do
     all_issues - [issue].each do |issue|
-      expect(page).to have_no_text issue.title
+      expect(page).not_to have_text issue.title
     end
   end
 end

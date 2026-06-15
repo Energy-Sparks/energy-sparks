@@ -64,8 +64,8 @@ RSpec.describe 'manual readings' do
     end
 
     it 'shows the correct target text' do
-      expect(page).to have_text('In order to calculate progress towards your target of reducing your energy use by ' \
-                                '15th August 2025 we need readings going back to August 2023.')
+      expect(page).to have_content('In order to calculate progress towards your target of reducing your energy use by ' \
+                                   '15th August 2025 we need readings going back to August 2023.')
     end
 
     it 'has the correct inputs' do
@@ -78,7 +78,7 @@ RSpec.describe 'manual readings' do
 
     it 'saves the correct readings' do
       complete_form
-      expect(page).to have_text('Your manual readings have been saved')
+      expect(page).to have_content('Your manual readings have been saved')
       expect(actual_manual_readings).to eq([[Date.new(2023, 8), 5, 5], [Date.new(2024, 9), nil, 5]])
     end
 
@@ -249,13 +249,13 @@ RSpec.describe 'manual readings' do
 
     it 'shows the enough data message' do
       expect(page).to \
-        have_text("We have enough data from your meters so you don't need to enter any readings manually.")
+        have_content("We have enough data from your meters so you don't need to enter any readings manually.")
     end
   end
 
   it 'validates invalid readings' do
     visit school_manual_readings_path(school)
     complete_form(single: true, with: 'a')
-    expect(page).to have_text(['August 2023', 'is not a number'].join("\n"))
+    expect(page).to have_content(['August 2023', 'is not a number'].join("\n"))
   end
 end

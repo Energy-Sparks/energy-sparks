@@ -82,11 +82,11 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
       let(:school) { create(:school, data_enabled: false) }
 
       it 'shows default equivalences' do
-        expect(html).to have_text('the average school')
-        expect(html).to have_text('How will your school compare?')
+        expect(html).to have_content('the average school')
+        expect(html).to have_content('How will your school compare?')
       end
 
-      it { expect(html).to have_no_text('Your school spent £2.00 on electricity last year!') }
+      it { expect(html).to have_no_content('Your school spent £2.00 on electricity last year!') }
 
       it {
         expect(html).to have_no_link(I18n.t('pupils.schools.show.find_how_much_energy_used'))
@@ -101,7 +101,7 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
     context 'with equivalences' do
       include_context 'with equivalences'
 
-      it { expect(html).to have_text('Your school spent £2.00 on electricity last year!') }
+      it { expect(html).to have_content('Your school spent £2.00 on electricity last year!') }
 
       it {
         expect(html).to have_link(I18n.t('pupils.analysis.explore_energy_data_html',

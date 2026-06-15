@@ -7,11 +7,12 @@ describe SchoolsHelper do
   let(:alert_type)        { create(:alert_type) }
   let!(:alert) do
     create(:alert, :with_run,
-           alert_type: alert_type,
-           run_on: Time.zone.today, school: school,
-           rating: 9.0)
+      alert_type: alert_type,
+      run_on: Time.zone.today, school: school,
+      rating: 9.0
+    )
   end
-  let(:find_out_more) { create(:find_out_more, alert: alert) }
+  let(:find_out_more) { create(:find_out_more, alert: alert)}
 
   let(:alert_content) { OpenStruct.new(alert: alert, find_out_more: find_out_more) }
 
@@ -35,9 +36,7 @@ describe SchoolsHelper do
 
         context 'and link_to_content' do
           let(:anchor) { 'some-section' }
-          let(:alert_type) do
-            create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor)
-          end
+          let(:alert_type) { create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor) }
 
           it 'returns the expected path' do
             path = helper.find_out_more_path_from_alert_content(school, alert_content, params: params)
@@ -67,9 +66,7 @@ describe SchoolsHelper do
 
       context 'and link_to_content' do
         let(:anchor) { 'some-section' }
-        let(:alert_type) do
-          create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor)
-        end
+        let(:alert_type) { create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor) }
 
         it 'returns the expected path' do
           buttons = helper.dashboard_alert_buttons(school, alert_content)

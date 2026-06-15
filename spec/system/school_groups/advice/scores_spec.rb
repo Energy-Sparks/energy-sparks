@@ -11,7 +11,7 @@ describe 'School group scores page' do
       let(:table_id) { '#scoreboard' }
       let(:expected_header) do
         [
-          %w[Position School Score]
+          ['Position', 'School', 'Score']
         ]
       end
       let(:expected_rows) do
@@ -29,8 +29,9 @@ describe 'School group scores page' do
       it_behaves_like 'it exports a group CSV correctly' do
         let(:action_name) { I18n.t('school_groups.titles.current_scores') }
         let(:expected_csv) do
-          [%w[Position School Score],
-           ['1', school.name, '100']]
+          [['Position', 'School', 'Score'],
+           ['1', school.name, '100']
+          ]
         end
       end
     end
@@ -41,9 +42,9 @@ describe 'School group scores page' do
       end
 
       it 'displays the right page' do
-        expect(page).to have_text(I18n.t('scoreboard.previous_scores'))
+        expect(page).to have_content(I18n.t('scoreboard.previous_scores'))
         click_on(I18n.t('school_groups.current_scores.view_current_scores'))
-        expect(page).to have_text(I18n.t('school_groups.current_scores.introduction'))
+        expect(page).to have_content(I18n.t('school_groups.current_scores.introduction'))
       end
 
       context 'when the download button is clicked' do
@@ -55,7 +56,8 @@ describe 'School group scores page' do
           let(:action_name) { I18n.t('school_groups.titles.previous_scores') }
           let(:expected_csv) do
             [['Position', 'School', 'Score'],
-             ['-', school.name, '0']]
+             ['-', school.name, '0']
+            ]
           end
         end
       end
@@ -106,7 +108,7 @@ describe 'School group scores page' do
         let(:table_id) { '#scoreboard' }
         let(:expected_header) do
           [
-            %w[Position School Cluster Score]
+            ['Position', 'School', 'Cluster', 'Score']
           ]
         end
         let(:expected_rows) do
@@ -124,8 +126,9 @@ describe 'School group scores page' do
         it_behaves_like 'it exports a group CSV correctly' do
           let(:action_name) { I18n.t('school_groups.titles.current_scores') }
           let(:expected_csv) do
-            [%w[Position School Cluster Score],
-             ['1', school.name, I18n.t('common.labels.not_set'), '100']]
+            [['Position', 'School', 'Cluster', 'Score'],
+             ['1', school.name, I18n.t('common.labels.not_set'), '100']
+            ]
           end
         end
       end
@@ -141,7 +144,7 @@ describe 'School group scores page' do
           let(:table_id) { '#scoreboard' }
           let(:expected_header) do
             [
-              %w[Position School Cluster Score]
+              ['Position', 'School', 'Cluster', 'Score']
             ]
           end
           let(:expected_rows) do
@@ -159,8 +162,9 @@ describe 'School group scores page' do
           it_behaves_like 'it exports a group CSV correctly' do
             let(:action_name) { I18n.t('school_groups.titles.current_scores') }
             let(:expected_csv) do
-              [%w[Position School Cluster Score],
-               ['1', school.name, cluster.name, '100']]
+              [['Position', 'School', 'Cluster', 'Score'],
+               ['1', school.name, cluster.name, '100']
+              ]
             end
           end
         end
@@ -206,8 +210,9 @@ describe 'School group scores page' do
         it_behaves_like 'it exports a group CSV correctly' do
           let(:action_name) { I18n.t('school_groups.titles.current_scores') }
           let(:expected_csv) do
-            [%w[Position School Score],
-             ['1', school.name, '100']]
+            [['Position', 'School', 'Score'],
+             ['1', school.name, '100']
+            ]
           end
         end
       end

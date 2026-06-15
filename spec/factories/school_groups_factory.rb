@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :school_group do
-    sequence(:name) { |n| "School group #{n}" }
+    sequence(:name) {|n| "School group #{n}"}
     default_issues_admin_user { create(:admin) }
     public { true }
 
@@ -30,17 +30,13 @@ FactoryBot.define do
       after(:build) do |school_group, evaluator|
         case school_group.group_type.to_sym
         when :project
-          school_group.project_schools = create_list(:school, evaluator.count, :with_project, group: school_group,
-                                                                                              active: true, public: true)
+          school_group.project_schools = create_list(:school, evaluator.count, :with_project, group: school_group, active: true, public: true)
         when :local_authority_area
-          school_group.area_schools = create_list(:school, evaluator.count, :with_local_authority_area,
-                                                  group: school_group, active: true, public: true)
+          school_group.area_schools = create_list(:school, evaluator.count, :with_local_authority_area, group: school_group, active: true, public: true)
         when :diocese
-          school_group.area_schools = create_list(:school, evaluator.count, :with_diocese, group: school_group,
-                                                                                           active: true, public: true)
+          school_group.area_schools = create_list(:school, evaluator.count, :with_diocese, group: school_group, active: true, public: true)
         else
-          school_group.schools = create_list(:school, evaluator.count, school_group: school_group, active: true,
-                                                                       public: true)
+          school_group.schools = create_list(:school, evaluator.count, school_group: school_group, active: true, public: true)
         end
       end
     end

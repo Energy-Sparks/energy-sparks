@@ -55,32 +55,29 @@ describe AggregatorBenchmarks do
 
       context 'with an electricity series' do
         let(:meter_collection) do
-          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :electricity,
-                                                                     start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
+          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :electricity, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
         end
-        let(:series_name) { 'electricity' }
-
         before { aggregator.inject_benchmarks }
+
+        let(:series_name) { 'electricity' }
 
         it_behaves_like 'the benchmark series have been injected', fuels: ['electricity']
       end
 
       context 'with a gas series' do
         let(:meter_collection) do
-          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :gas, start_date: Date.new(2023, 1, 1),
-                                                                     end_date: Date.new(2023, 12, 31))
+          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :gas, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
         end
-        let(:series_name) { 'gas' }
-
         before { aggregator.inject_benchmarks }
+
+        let(:series_name) { 'gas' }
 
         it_behaves_like 'the benchmark series have been injected', fuels: ['gas']
       end
 
       context 'with a storage heater series' do
         let(:meter_collection) do
-          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :electricity,
-                                                                     start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31), storage_heaters: true)
+          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :electricity, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31), storage_heaters: true)
         end
         let(:series_name) { 'storage heaters' }
 

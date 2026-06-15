@@ -35,7 +35,7 @@ describe MeterAttributes do
     end
 
     it 'converts non-strings to symbols' do
-      expect(described_class.new(allowed_values: [:'0']).parse(0)).to eq(:'0')
+      expect(described_class.new(allowed_values: [:"0"]).parse(0)).to eq(:"0")
     end
 
     it 'leaves nils as nil' do
@@ -84,7 +84,7 @@ describe MeterAttributes do
       expect(described_class.new.parse(nil)).to eq(nil)
     end
 
-    it 'leaves floats as floats' do
+    it 'leaves floats  as floats ' do
       expect(described_class.new.parse(1.0)).to eq(1.0)
     end
 

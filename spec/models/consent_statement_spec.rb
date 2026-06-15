@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe 'ConsentStatement' do
-  let!(:consent_statement) do
-    ConsentStatement.create!(title: 'First consent statement', content: 'You may use my data..', current: true)
-  end
+  let!(:consent_statement) { ConsentStatement.create!(title: 'First consent statement', content: 'You may use my data..', current: true) }
 
   it 'can only have one current' do
     expect do

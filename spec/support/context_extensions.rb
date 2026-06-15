@@ -11,29 +11,28 @@ module ContextExtensions
   # context with_feature: :todos
   # context without_feature: :todos
   #
-  def context(description = nil, *, with_feature: nil, without_feature: nil, toggle_feature: nil, **metadata,
-              &)
+  def context(description = nil, *args, with_feature: nil, without_feature: nil, toggle_feature: nil, **metadata, &block)
     description = "#{description} " if description
     if (name = toggle_feature || with_feature || without_feature)
       if toggle_feature || with_feature
-        super("#{description}with #{name} feature switched on", *, **metadata) do
+        super("#{description}with #{name} feature switched on", *args, **metadata) do
           before { Flipper.enable(name) }
 
-          instance_eval(&)
+          instance_eval(&block)
 
           after { Flipper.disable(name) }
         end
       end
 
       if toggle_feature || without_feature
-        super("#{description}with #{name} feature switched off", *, **metadata) do
+        super("#{description}with #{name} feature switched off", *args, **metadata) do
           before { Flipper.disable(name) }
 
-          instance_eval(&)
+          instance_eval(&block)
         end
       end
     else
-      super(description, *, **metadata, &)
+      super(description, *args, **metadata, &block)
     end
   end
 end

@@ -167,8 +167,7 @@ describe Tables::SummaryTableData do
 
   describe 'when 1 fuel type' do
     let(:template_data) do
-      { electricity: { year: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 },
-                       workweek: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 } } }
+      { electricity: { year: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 }, workweek: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 } } }
     end
 
     it 'gives 2 entries' do
@@ -240,7 +239,7 @@ describe Tables::SummaryTableData do
 
   describe 'percent change' do
     let(:template_data) do
-      { electricity: { year: { percent_change: 0.11050 }, workweek: { percent_change: -0.0923132131 } } }
+      { electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } }
     end
 
     it 'formats percentage' do
@@ -251,7 +250,7 @@ describe Tables::SummaryTableData do
 
   describe 'percent change not calculable' do
     let(:template_data) do
-      { electricity: { year: { percent_change: '-' } } }
+      { electricity: { year: { :percent_change => '-' } } }
     end
 
     it 'formats percentage' do

@@ -34,16 +34,16 @@ describe 'viewing and recording action' do
       end
 
       it 'displays title' do
-        expect(page).to have_text(title)
+        expect(page).to have_content(title)
       end
 
       it 'displays score' do
-        expect(page).to have_text("#{intervention_type.score} points for this action")
+        expect(page).to have_content("#{intervention_type.score} points for this action")
       end
 
       it 'displays description' do
-        expect(page).to have_text(intervention_type.description.to_plain_text)
-        expect(page).to have_text(intervention_type.summary)
+        expect(page).to have_content(intervention_type.description.to_plain_text)
+        expect(page).to have_content(intervention_type.summary)
       end
 
       it 'displays navigation' do
@@ -51,11 +51,11 @@ describe 'viewing and recording action' do
       end
 
       it 'displays resource links' do
-        expect(page).to have_text(intervention_type.download_links.to_plain_text)
+        expect(page).to have_content(intervention_type.download_links.to_plain_text)
       end
 
       it 'displays prompt to login' do
-        expect(page).to have_text('Are you an Energy Sparks user?')
+        expect(page).to have_content('Are you an Energy Sparks user?')
         expect(page).to have_link('Sign in to record action')
       end
     end
@@ -74,8 +74,8 @@ describe 'viewing and recording action' do
         within '#staff' do
           click_on 'Sign in'
         end
-        expect(page).to have_text(intervention_type.name)
-        expect(page).to have_text("Complete this action to score your school #{intervention_type.score} points!")
+        expect(page).to have_content(intervention_type.name)
+        expect(page).to have_content("Complete this action to score your school #{intervention_type.score} points!")
       end
     end
   end
@@ -88,15 +88,15 @@ describe 'viewing and recording action' do
 
     context 'viewing an intervention type' do
       it 'sees prompt to record it' do
-        expect(page).to have_text("Complete this action on behalf of a school to score #{intervention_type.score} points!")
+        expect(page).to have_content("Complete this action on behalf of a school to score #{intervention_type.score} points!")
         expect(page).to have_button('Record this action')
       end
 
       it 'redirects to new intervention recording page' do
         select other_school.name, from: :school_id
         click_on 'Record this action'
-        expect(page).to have_text('Record an energy saving action for your school')
-        expect(page).to have_text(other_school.name)
+        expect(page).to have_content('Record an energy saving action for your school')
+        expect(page).to have_content(other_school.name)
       end
     end
 
@@ -109,7 +109,7 @@ describe 'viewing and recording action' do
       end
 
       it 'associates intervention with correct school from group' do
-        expect(page).to have_text('Congratulations!')
+        expect(page).to have_content('Congratulations!')
         expect(other_school.observations.count).to eq(1)
         expect(other_school.observations.first.at).to eq(Time.zone.today)
         expect(other_school.observations.first.created_by).to eq(group_user)
@@ -121,7 +121,7 @@ describe 'viewing and recording action' do
 
       it 'does not allow recording an intervention' do
         visit new_school_intervention_path(school_not_in_group, intervention_type_id: intervention_type.id)
-        expect(page).to have_text('You are not authorized to access this page')
+        expect(page).to have_content('You are not authorized to access this page')
         expect(page).to have_no_button('Record action')
       end
     end
@@ -155,15 +155,15 @@ describe 'viewing and recording action' do
 
     context 'viewing an intervention type' do
       it 'sees prompt to record it' do
-        expect(page).to have_text("Complete this action on behalf of a school to score #{intervention_type.score} points!")
+        expect(page).to have_content("Complete this action on behalf of a school to score #{intervention_type.score} points!")
         expect(page).to have_button('Record this action')
       end
 
       it 'redirects to new activity recording page' do
         select school_1.name, from: :school_id
         click_on 'Record this action'
-        expect(page).to have_text('Record an energy saving action for your school')
-        expect(page).to have_text(school_1.name)
+        expect(page).to have_content('Record an energy saving action for your school')
+        expect(page).to have_content(school_1.name)
       end
     end
   end
@@ -182,7 +182,7 @@ describe 'viewing and recording action' do
       end
 
       it 'sees prompt to record it' do
-        expect(page).to have_text("Complete this action to score your school #{intervention_type.score} points!")
+        expect(page).to have_content("Complete this action to score your school #{intervention_type.score} points!")
         expect(page).to have_link('Record this action')
       end
     end
@@ -195,8 +195,8 @@ describe 'viewing and recording action' do
       end
 
       it 'sees previous records' do
-        expect(page).to have_text('Action previously completed')
-        expect(page).to have_text('once')
+        expect(page).to have_content('Action previously completed')
+        expect(page).to have_content('once')
       end
 
       it 'links to the intervention' do
@@ -211,9 +211,8 @@ describe 'viewing and recording action' do
         end
 
         it 'shows prompt to add detail' do
-          expect(page).to have_text(I18n.t('activities.form.tell_us_more_label'))
-          expect(page).to have_link(I18n.t('activities.actions.edit'),
-                                    href: edit_school_intervention_path(school, observation))
+          expect(page).to have_content(I18n.t('activities.form.tell_us_more_label'))
+          expect(page).to have_link(I18n.t('activities.actions.edit'), href: edit_school_intervention_path(school, observation))
         end
       end
 
@@ -224,7 +223,7 @@ describe 'viewing and recording action' do
           visit school_intervention_path(school, observation)
         end
 
-        it { expect(page).to have_text(I18n.t('common.pupil_count', count: observation.pupil_count)) }
+        it { expect(page).to have_content(I18n.t('common.pupil_count', count: observation.pupil_count)) }
       end
     end
 
@@ -244,7 +243,7 @@ describe 'viewing and recording action' do
       end
 
       it 'shows score and threshold' do
-        expect(page).to have_text('Completing this action up to 10 times this academic year will earn you 30 points')
+        expect(page).to have_content('Completing this action up to 10 times this academic year will earn you 30 points')
       end
 
       context "when time isn't provided" do
@@ -253,7 +252,7 @@ describe 'viewing and recording action' do
           click_on 'Record action'
         end
 
-        it { expect(page).to have_text("can't be blank") }
+        it { expect(page).to have_content("can't be blank") }
       end
 
       context with_feature: :todos do
@@ -318,7 +317,7 @@ describe 'viewing and recording action' do
             end
 
             it 'displays action' do
-              expect(page).to have_text('We changed to a more efficient boiler')
+              expect(page).to have_content('We changed to a more efficient boiler')
             end
           end
         end
@@ -328,19 +327,19 @@ describe 'viewing and recording action' do
         context 'site settings photo_bonus_points is nil' do
           let(:photo_bonus_points) { nil }
 
-          it { expect(page).to have_no_text('Adding a photo to document your action can score you') }
+          it { expect(page).to have_no_content('Adding a photo to document your action can score you') }
         end
 
         context 'site settings photo_bonus_points is set' do
           let(:photo_bonus_points) { 5 }
 
-          it { expect(page).to have_text('Adding a photo to document your action can score you 5 bonus points') }
+          it { expect(page).to have_content('Adding a photo to document your action can score you 5 bonus points') }
         end
 
         context 'site settings photo_bonus_points is 0' do
           let(:photo_bonus_points) { 0 }
 
-          it { expect(page).to have_no_text('Adding a photo to document your action can score you') }
+          it { expect(page).to have_no_content('Adding a photo to document your action can score you') }
         end
       end
 
@@ -351,7 +350,7 @@ describe 'viewing and recording action' do
           fill_in 'observation_at', with: today
           fill_in_trix with: content_with_attachment
           click_on 'Record action'
-          expect(page).to have_text("You've just scored #{intervention_type.score + photo_bonus_points} points")
+          expect(page).to have_content("You've just scored #{intervention_type.score + photo_bonus_points} points")
         end
       end
 
@@ -370,7 +369,7 @@ describe 'viewing and recording action' do
           let(:time) { today - 2.years }
 
           it 'records action' do
-            expect(page).to have_text("Congratulations! We've recorded your action")
+            expect(page).to have_content("Congratulations! We've recorded your action")
           end
         end
 
@@ -378,8 +377,8 @@ describe 'viewing and recording action' do
           let(:school) { create(:school, :with_points, score_points: 20, scoreboard:) }
 
           it 'records action' do
-            expect(page).to have_text("Congratulations! You've just scored #{intervention_type.score} points")
-            expect(page).to have_text('You are in 1st place')
+            expect(page).to have_content("Congratulations! You've just scored #{intervention_type.score} points")
+            expect(page).to have_content('You are in 1st place')
           end
         end
 
@@ -387,8 +386,8 @@ describe 'viewing and recording action' do
           let(:school) { create(:school, :with_points, score_points: 5, scoreboard:) }
 
           it 'records action' do
-            expect(page).to have_text("Congratulations! You've just scored #{intervention_type.score} points")
-            expect(page).to have_text('You are in 2nd place')
+            expect(page).to have_content("Congratulations! You've just scored #{intervention_type.score} points")
+            expect(page).to have_content('You are in 2nd place')
           end
         end
       end
@@ -400,7 +399,7 @@ describe 'viewing and recording action' do
         end
 
         it 'shows message about exceeded threshold' do
-          expect(page).to have_text('You have already completed this action 10 times this academic year. You will not score additional points for recording it')
+          expect(page).to have_content('You have already completed this action 10 times this academic year. You will not score additional points for recording it')
         end
       end
     end
@@ -428,7 +427,7 @@ describe 'viewing and recording action' do
         expect(observation.updated_by).to eq(school_admin)
 
         click_on 'Changed boiler'
-        expect(page).to have_text('We changed to a more efficient boiler')
+        expect(page).to have_content('We changed to a more efficient boiler')
       end
 
       it 'can be deleted' do

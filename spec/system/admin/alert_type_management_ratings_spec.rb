@@ -1,29 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe 'alert type management', type: :system do
-  let!(:admin) { create(:admin) }
+  let!(:admin) { create(:admin)}
 
   let(:gas_fuel_alert_type_title) { 'Your gas usage is too high' }
-  let!(:gas_fuel_alert_type) do
-    create(:alert_type, fuel_type: :gas, frequency: :termly, title: gas_fuel_alert_type_title, has_ratings: has_ratings)
-  end
+  let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, title: gas_fuel_alert_type_title, has_ratings: has_ratings) }
   let(:has_ratings) { true }
 
+
   describe 'managing associated activities' do
-    let!(:alert_type_rating) { create(:alert_type_rating, alert_type: gas_fuel_alert_type) }
-    let!(:activity_category) { create(:activity_category) }
-    let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
-    let!(:activity_type_2) do
-      create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)
-    end
+    let!(:alert_type_rating) { create(:alert_type_rating, alert_type: gas_fuel_alert_type)}
+    let!(:activity_category) { create(:activity_category)}
+    let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
+    let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
 
     let!(:intervention_type_group) { create(:intervention_type_group) }
-    let!(:intervention_type_1) do
-      create(:intervention_type, name: 'Install cladding', intervention_type_group: intervention_type_group)
-    end
-    let!(:intervention_type_2) do
-      create(:intervention_type, name: 'Check the boiler', intervention_type_group: intervention_type_group)
-    end
+    let!(:intervention_type_1) { create(:intervention_type, name: 'Install cladding', intervention_type_group: intervention_type_group)}
+    let!(:intervention_type_2) { create(:intervention_type, name: 'Check the boiler', intervention_type_group: intervention_type_group)}
 
     before do
       sign_in(admin)
@@ -48,7 +41,7 @@ RSpec.describe 'alert type management', type: :system do
       expect(page.find_field('Install cladding').value).to be_blank
       expect(page.find_field('Check the boiler').value).to eq('1')
 
-      expect(alert_type_rating.intervention_types).to contain_exactly(intervention_type_2)
+      expect(alert_type_rating.intervention_types).to match_array([intervention_type_2])
       expect(alert_type_rating.alert_type_rating_intervention_types.first.position).to eq(1)
     end
 
@@ -69,15 +62,14 @@ RSpec.describe 'alert type management', type: :system do
       expect(page.find_field('Turn off the light').value).to be_blank
       expect(page.find_field('Turn down the heating').value).to eq('1')
 
-      expect(alert_type_rating.activity_types).to contain_exactly(activity_type_2)
+      expect(alert_type_rating.activity_types).to match_array([activity_type_2])
       expect(alert_type_rating.alert_type_rating_activity_types.first.position).to eq(1)
     end
   end
 
   describe 'creating alert content' do
     let!(:alert) do
-      create(:alert, alert_type: gas_fuel_alert_type,
-                     template_data: { gas_percentage: '10%', chart_a: :example_chart_value }, school: create(:school))
+      create(:alert, alert_type: gas_fuel_alert_type, template_data: { gas_percentage: '10%', chart_a: :example_chart_value }, school: create(:school))
     end
 
     before do
@@ -89,7 +81,7 @@ RSpec.describe 'alert type management', type: :system do
     end
 
     context 'with ratings' do
-      it 'allows creation and editing of alert content', :js do
+      it 'allows creation and editing of alert content', js: true do
         click_on gas_fuel_alert_type_title
         click_on 'Content management'
 
@@ -107,7 +99,7 @@ RSpec.describe 'alert type management', type: :system do
         within '.pupil_dashboard_alert_active' do
           click_on 'Preview (English)'
           within '#pupil_dashboard_alert-preview-en .content' do
-            expect(page).to have_text(gas_fuel_alert_type_title)
+            expect(page).to have_content(gas_fuel_alert_type_title)
           end
         end
 
@@ -125,7 +117,7 @@ RSpec.describe 'alert type management', type: :system do
         within '.management_dashboard_alert_active' do
           click_on 'Preview (Welsh)'
           within '#management_dashboard_alert-preview-cy .content' do
-            expect(page).to have_text('MDASH WELSH - Your school is using gas')
+            expect(page).to have_content('MDASH WELSH - Your school is using gas')
           end
         end
 
@@ -135,7 +127,7 @@ RSpec.describe 'alert type management', type: :system do
         within '.management_priorities_active' do
           click_on 'Preview (English)'
           within '#management_priorities-preview-en .content' do
-            expect(page).to have_text('Your school is spending too much on gas')
+            expect(page).to have_content('Your school is spending too much on gas')
           end
         end
 
@@ -146,7 +138,7 @@ RSpec.describe 'alert type management', type: :system do
           click_on 'Preview (English)'
 
           within '#sms-preview-en .content' do
-            expect(page).to have_text(gas_fuel_alert_type_title)
+            expect(page).to have_content(gas_fuel_alert_type_title)
           end
         end
 
@@ -159,7 +151,7 @@ RSpec.describe 'alert type management', type: :system do
           click_on 'Preview (English)'
 
           within '#email-preview-en .content' do
-            expect(page).to have_text('You are using 10% too much gas!')
+            expect(page).to have_content('You are using 10% too much gas!')
           end
         end
 
@@ -183,7 +175,7 @@ RSpec.describe 'alert type management', type: :system do
         click_on 'Edit'
 
         click_on 'Dummy alert'
-        expect(page).to have_text('chart description A chart example_chart_value')
+        expect(page).to have_content('chart description A chart example_chart_value')
 
         fill_in 'Email title en', with: 'Stop using so much gas!'
         click_on 'Update content'

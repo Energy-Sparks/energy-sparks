@@ -42,7 +42,7 @@ describe Baseload::BaseloadAnnualBreakdownService, type: :service do
     context 'when theres is a years worth' do
       it 'returns true' do
         expect(service.enough_data?).to be true
-        expect(service.data_available_from).to be_nil
+        expect(service.data_available_from).to be nil
       end
     end
 
@@ -56,7 +56,7 @@ describe Baseload::BaseloadAnnualBreakdownService, type: :service do
 
       it 'returns false' do
         expect(service.enough_data?).to be false
-        expect(service.data_available_from).not_to be_nil
+        expect(service.data_available_from).not_to be nil
       end
     end
   end

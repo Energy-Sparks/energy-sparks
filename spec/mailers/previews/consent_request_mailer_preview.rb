@@ -6,6 +6,6 @@ class ConsentRequestMailerPreview < ActionMailer::Preview
   private
 
   def locale
-    @params['locale'].presence || 'en'
+    @params['locale'].present? ? @params['locale'] : 'en'
   end
 end

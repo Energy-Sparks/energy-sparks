@@ -3,8 +3,8 @@
 class OnboardingMailerPreview < ActionMailer::Preview
   def onboarded_email
     OnboardingMailer.with(school: School.visible.first,
-                          users: School.visible.first.users.school_admin,
-                          locale:).onboarded_email
+                              users: School.visible.first.users.school_admin,
+                              locale:).onboarded_email
   end
 
   def self.welcome_email_params(users, data_enabled)

@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe TabsComponent, type: :component do
-  def render_component(**)
-    render_inline(described_class.new(**)) do |component|
+  def render_component(**kwargs)
+    render_inline(described_class.new(**kwargs)) do |component|
       component.with_tab(name: :first, label: 'First') { 'first tab content' }
       component.with_tab(name: :second, label: 'Second') { 'second tab content' }
     end

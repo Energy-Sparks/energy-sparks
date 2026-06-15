@@ -12,9 +12,7 @@ RSpec.describe ConsentGrantMailer do
   end
 
   before do
-    ConsentGrantMailer.with_user_locales(users: [user], consent_grant: consent_grant) do |mailer|
-      mailer.email_consent.deliver_now
-    end
+    ConsentGrantMailer.with_user_locales(users: [user], consent_grant: consent_grant) { |mailer| mailer.email_consent.deliver_now }
     @email = ActionMailer::Base.deliveries.last
   end
 

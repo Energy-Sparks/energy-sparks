@@ -5,9 +5,7 @@ require 'rails_helper'
 describe 'intervention type reports' do
   let(:admin) { create(:admin) }
   let!(:intervention_type) { create(:intervention_type) }
-  let!(:observation) do
-    create(:observation, :intervention, intervention_type:, school: create(:school, :with_school_group))
-  end
+  let!(:observation) { create(:observation, :intervention, intervention_type:, school: create(:school, :with_school_group)) }
 
   before do
     sign_in(admin)
@@ -20,8 +18,8 @@ describe 'intervention type reports' do
     end
 
     it 'displays the report' do
-      expect(page).to have_text('Intervention Type Management Report')
-      expect(page).to have_text(intervention_type.name)
+      expect(page).to have_content('Intervention Type Management Report')
+      expect(page).to have_content(intervention_type.name)
       expect(page).to have_link(intervention_type.name, href: admin_reports_intervention_type_path(intervention_type))
       expect(page).to have_link('Report', href: admin_reports_intervention_type_path(intervention_type))
     end
@@ -33,8 +31,8 @@ describe 'intervention type reports' do
     end
 
     it 'displays the report' do
-      expect(page).to have_text intervention_type.name
-      expect(page).to have_text observation.school.name
+      expect(page).to have_content intervention_type.name
+      expect(page).to have_content observation.school.name
       expect(page).to have_link(observation.school.name,
                                 href: school_url(observation.school, host: 'example.com'))
     end
@@ -43,7 +41,7 @@ describe 'intervention type reports' do
       it 'includes a summary' do
         create(:observation, :intervention, intervention_type:, school: observation.school)
         refresh
-        expect(page).to have_text('This intervention has been recorded multiple times by some schools')
+        expect(page).to have_content('This intervention has been recorded multiple times by some schools')
       end
     end
   end

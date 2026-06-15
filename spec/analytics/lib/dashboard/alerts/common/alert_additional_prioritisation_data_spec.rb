@@ -10,10 +10,7 @@ describe AlertAdditionalPrioritisationData do
   let(:amr_data) { build(:amr_data, :with_date_range, start_date: amr_start_date, end_date: amr_end_date) }
 
   # Meter to use as the aggregate
-  let(:meter) do
-    build(:meter, :with_flat_rate_tariffs, type: fuel_type, amr_data: amr_data, tariff_start_date: amr_start_date,
-                                           tariff_end_date: amr_end_date)
-  end
+  let(:meter) { build(:meter, :with_flat_rate_tariffs, type: fuel_type, amr_data: amr_data, tariff_start_date: amr_start_date, tariff_end_date: amr_end_date) }
 
   let(:meter_collection) { build(:meter_collection) }
 

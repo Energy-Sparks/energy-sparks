@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'admin transport type', :include_application_helper, type: :system do
+describe 'admin transport type', type: :system, include_application_helper: true do
   let!(:admin)  { create(:admin) }
   let!(:transport_type) { create(:transport_type, can_share: false, park_and_stride: false) }
 
@@ -11,7 +11,7 @@ describe 'admin transport type', :include_application_helper, type: :system do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_text('You need to sign in or sign up before continuing.')
+        expect(page).to have_content('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -21,7 +21,7 @@ describe 'admin transport type', :include_application_helper, type: :system do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_text('You need to sign in or sign up before continuing.')
+        expect(page).to have_content('You need to sign in or sign up before continuing.')
       end
     end
   end
@@ -33,41 +33,39 @@ describe 'admin transport type', :include_application_helper, type: :system do
 
     let(:attributes) do
       {
-        'Name' => transport_type.name,
-        'Image' => transport_type.image,
-        'Speed (km/h)' => transport_type.speed_km_per_hour,
-        'Carbon (kg co2e/km)' => transport_type.kg_co2e_per_km,
-        'Can share' => y_n(transport_type.can_share),
-        'Park and stride' => y_n(transport_type.park_and_stride),
-        'Note' => transport_type.note,
-        'Category' => transport_type.category.humanize,
-        'Position' => transport_type.position,
-        'Created at' => nice_date_times(transport_type.created_at),
-        'Updated at' => nice_date_times(transport_type.updated_at)
-      }
+      'Name' => transport_type.name,
+      'Image' => transport_type.image,
+      'Speed (km/h)' => transport_type.speed_km_per_hour,
+      'Carbon (kg co2e/km)' => transport_type.kg_co2e_per_km,
+      'Can share' => y_n(transport_type.can_share),
+      'Park and stride' => y_n(transport_type.park_and_stride),
+      'Note' => transport_type.note,
+      'Category' => transport_type.category.humanize,
+      'Position' => transport_type.position,
+      'Created at' => nice_date_times(transport_type.created_at),
+      'Updated at' => nice_date_times(transport_type.updated_at)
+    }
     end
 
     let(:new_valid_attributes) do
       {
-        'Name' => 'Plane',
-        'Image' => '✈️',
-        'Speed (km/h)' => 740,
-        'Carbon (kg co2e/km)' => 0.146,
-        'Can share' => 'Yes',
-        'Park and stride' => 'Yes',
-        'Category' => 'Public transport',
-        'Position' => 1,
-        'Note' => 'Why not?'
-      }
+      'Name' => 'Plane',
+      'Image' => '✈️',
+      'Speed (km/h)' => 740,
+      'Carbon (kg co2e/km)' => 0.146,
+      'Can share' => 'Yes',
+      'Park and stride' => 'Yes',
+      'Category' => 'Public transport',
+      'Position' => 1,
+      'Note' => 'Why not?'
+    }
     end
 
     let(:translated_fields) { { 'Name' => :transport_type_name_en } }
     let(:checkbox_fields) { ['Can share', 'Park and stride'] }
     let(:select_fields) { ['Category'] }
     let(:date_fields) { ['Created at', 'Updated at'] }
-    let(:text_fields) do
-      attributes.keys.excluding(translated_fields.keys + checkbox_fields + select_fields + date_fields)
-    end
+    let(:text_fields) { attributes.keys.excluding(translated_fields.keys + checkbox_fields + select_fields + date_fields) }
 
     let(:display_attributes) { attributes.slice(*attributes.keys.excluding(date_fields)) }
 
@@ -136,10 +134,10 @@ describe 'admin transport type', :include_application_helper, type: :system do
 
       it 'shows all attributes' do
         within('dl') do
-          expect(page).to have_text("Name (English) #{attributes['Name']}")
-          expect(page).to have_text('Name (Welsh) No name present')
+          expect(page).to have_content("Name (English) #{attributes['Name']}")
+          expect(page).to have_content('Name (Welsh) No name present')
           attributes.except(*translated_fields.keys).each do |key, value|
-            expect(page).to have_text("#{key} #{value}")
+            expect(page).to have_content("#{key} #{value}")
           end
         end
       end
@@ -232,7 +230,7 @@ describe 'admin transport type', :include_application_helper, type: :system do
           end
 
           it 'has a flash message' do
-            expect(page).to have_text 'Transport type was successfully updated.'
+            expect(page).to have_content 'Transport type was successfully updated.'
           end
         end
 
@@ -243,11 +241,11 @@ describe 'admin transport type', :include_application_helper, type: :system do
           end
 
           it 'renders edit page' do
-            expect(page).to have_text 'Edit Transport type'
+            expect(page).to have_content 'Edit Transport type'
           end
 
           it 'has error message on field' do
-            expect(page).to have_text "Name\ncan't be blank"
+            expect(page).to have_content "Name\ncan't be blank"
           end
         end
       end
@@ -307,7 +305,7 @@ describe 'admin transport type', :include_application_helper, type: :system do
           end
 
           it 'has a flash message' do
-            expect(page).to have_text 'Transport type was successfully created.'
+            expect(page).to have_content 'Transport type was successfully created.'
           end
         end
 
@@ -318,11 +316,11 @@ describe 'admin transport type', :include_application_helper, type: :system do
           end
 
           it 'renders new page' do
-            expect(page).to have_text 'New Transport type'
+            expect(page).to have_content 'New Transport type'
           end
 
           it 'has error message on field' do
-            expect(page).to have_text "Name\ncan't be blank"
+            expect(page).to have_content "Name\ncan't be blank"
           end
         end
       end
@@ -343,7 +341,7 @@ describe 'admin transport type', :include_application_helper, type: :system do
           end
         end
 
-        context 'when there are no associated responses', :js do
+        context 'when there are no associated responses', js: true do
           before do
             visit admin_transport_types_path
           end
@@ -362,12 +360,12 @@ describe 'admin transport type', :include_application_helper, type: :system do
             end
 
             it 'shows a flash message' do
-              expect(page).to have_text 'Transport type was successfully deleted.'
+              expect(page).to have_content 'Transport type was successfully deleted.'
             end
 
             it 'removes transport type' do
               within('table') do
-                expect(page).to have_no_selector(:table_row, display_attributes)
+                expect(page).not_to have_selector(:table_row, display_attributes)
               end
             end
           end
@@ -394,9 +392,7 @@ describe 'admin transport type', :include_application_helper, type: :system do
         context 'when the transport type appears deletable but is not' do
           before do
             visit admin_transport_types_path
-            allow_any_instance_of(TransportSurvey::TransportType).to receive(:safe_destroy).and_raise(
-              EnergySparks::SafeDestroyError, 'Transport type has associated responses'
-            )
+            allow_any_instance_of(TransportSurvey::TransportType).to receive(:safe_destroy).and_raise(EnergySparks::SafeDestroyError, 'Transport type has associated responses')
             click_link('Delete')
           end
 
@@ -405,7 +401,7 @@ describe 'admin transport type', :include_application_helper, type: :system do
           end
 
           it 'has an error message' do
-            expect(page).to have_text 'Delete failed: Transport type has associated responses.'
+            expect(page).to have_content 'Delete failed: Transport type has associated responses.'
           end
         end
       end

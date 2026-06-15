@@ -113,10 +113,8 @@ describe Transifex::Service, type: :service do
     end
 
     context 'and upload never finishes' do
-      let(:tx_get_response) do
-        File.read('spec/fixtures/transifex/get_resource_strings_async_upload_pending.json')
-      end
-      let(:response) { Transifex::Response.new(completed: false, data: get_data) }
+      let(:tx_get_response)       { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_pending.json') }
+      let(:response)              { Transifex::Response.new(completed: false, data: get_data) }
 
       before do
         expect(client).to receive(:get_resource_strings_async_upload).exactly(max_tries).times.and_return(response)
@@ -141,10 +139,8 @@ describe Transifex::Service, type: :service do
   end
 
   describe '#pull' do
-    let(:tx_create_response) do
-      File.read('spec/fixtures/transifex/create_resource_translations_async_downloads.json')
-    end
-    let(:create_data) { JSON.parse(tx_create_response)['data'] }
+    let(:tx_create_response)     { File.read('spec/fixtures/transifex/create_resource_translations_async_downloads.json') }
+    let(:create_data)            { JSON.parse(tx_create_response)['data'] }
 
     before do
       expect(client).to receive(:create_resource_translations_async_downloads).and_return(create_data)
@@ -165,9 +161,7 @@ describe Transifex::Service, type: :service do
     end
 
     context 'and download never completes' do
-      let(:tx_get_response) do
-        File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_pending.json')
-      end
+      let(:tx_get_response)        { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_pending.json') }
       let(:get_data)               { JSON.parse(tx_get_response)['data'] }
       let(:response)               { Transifex::Response.new(completed: false, data: get_data) }
 
@@ -194,13 +188,9 @@ describe Transifex::Service, type: :service do
   end
 
   describe '#clear_resources' do
-    let(:item_1) do
-      { 'id' => 'o:energy-sparks:p:es-development:r:activity_type_1', 'attributes' => { 'slug' => 'activity_type_1' } }
-    end
-    let(:item_2) do
-      { 'id' => 'o:energy-sparks:p:es-development:r:activity_type_2', 'attributes' => { 'slug' => 'activity_type_2' } }
-    end
-    let(:items) { [item_1, item_2] }
+    let(:item_1)          { { 'id' => 'o:energy-sparks:p:es-development:r:activity_type_1', 'attributes' => { 'slug' => 'activity_type_1' } } }
+    let(:item_2)          { { 'id' => 'o:energy-sparks:p:es-development:r:activity_type_2', 'attributes' => { 'slug' => 'activity_type_2' } } }
+    let(:items)           { [item_1, item_2] }
 
     context 'when deletions succeed' do
       before do

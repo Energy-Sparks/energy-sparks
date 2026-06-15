@@ -16,7 +16,7 @@ RSpec.shared_examples 'a page without a manage school group menu or link' do
   end
 
   it { expect(page).to have_no_selector(id: 'manage-school-group') }
-  it { expect(page).to have_no_link('Manage group', href: settings_school_group_path(school_group)) }
+  it { expect(page).not_to have_link('Manage group', href: settings_school_group_path(school_group)) }
 end
 
 RSpec.shared_examples 'a page with a limited manage school group menu' do
@@ -76,6 +76,6 @@ end
 
 RSpec.shared_examples 'a page without the school group settings nav' do
   it 'does not show school group settings nav' do
-    expect(page).to have_no_css('#page-nav .navigation-manage-group-component')
+    expect(page).not_to have_css('#page-nav .navigation-manage-group-component')
   end
 end

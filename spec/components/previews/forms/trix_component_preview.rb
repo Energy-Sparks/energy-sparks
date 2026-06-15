@@ -1,13 +1,18 @@
 module Forms
   class TrixComponentPreview < ViewComponent::Preview
-    def default; end
+    def default
+    end
 
-    def simple; end
+    def simple
+    end
 
-    def advanced; end
+    def advanced
+    end
 
-    def large; end
+    def large
+    end
 
-    def chart_button; end
+    def chart_button
+    end
   end
 end

@@ -1,20 +1,15 @@
 require 'rails_helper'
 
 describe CalendarResyncService do
-  let!(:bank_holiday) { create(:calendar_event_type, :bank_holiday, title: 'Bank Holiday') }
-  let!(:holiday) { create(:calendar_event_type, :holiday, title: 'Holiday') }
+  let!(:bank_holiday) { create(:calendar_event_type, :bank_holiday, title: 'Bank Holiday')}
+  let!(:holiday) { create(:calendar_event_type, :holiday, title: 'Holiday')}
 
   let!(:national_calendar)  { create(:calendar, calendar_type: :national) }
   let!(:regional_calendar)  { create(:calendar, calendar_type: :regional, based_on: national_calendar) }
   let!(:school_calendar)    { create(:calendar, calendar_type: :school, based_on: regional_calendar) }
 
-  let!(:national_calendar_event) do
-    create(:calendar_event, calendar_event_type: bank_holiday, calendar: national_calendar, description: 'national event',
-                            start_date: '2020-01-01', end_date: '2020-01-02')
-  end
-  let!(:regional_calendar_event) do
-    create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'regional event')
-  end
+  let!(:national_calendar_event) { create(:calendar_event, calendar_event_type: bank_holiday, calendar: national_calendar, description: 'national event', start_date: '2020-01-01', end_date: '2020-01-02') }
+  let!(:regional_calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'regional event') }
 
   context 'when child has no events' do
     it 'creates new events based on parent' do
@@ -39,10 +34,7 @@ describe CalendarResyncService do
 
   context 'when restricting earliest event to sync' do
     let(:from_date) { Date.parse('2021-06-06') }
-    let(:old_regional_calendar_event) do
-      create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'old regional event',
-                              start_date: '2020-01-01', end_date: '2020-01-01')
-    end
+    let(:old_regional_calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'old regional event', start_date: '2020-01-01', end_date: '2020-01-01') }
 
     before do
       old_regional_calendar_event.update(updated_at: from_date - 1.day)
@@ -59,10 +51,7 @@ describe CalendarResyncService do
   end
 
   context 'when child has event based on parent' do
-    let!(:calendar_event) do
-      create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar, description: 'school event',
-                              based_on: regional_calendar_event)
-    end
+    let!(:calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar, description: 'school event', based_on: regional_calendar_event) }
 
     it 'updates child events' do
       expect(school_calendar.calendar_events.count).to eq(1)
@@ -85,14 +74,8 @@ describe CalendarResyncService do
   end
 
   context 'when child has conflicting event' do
-    let!(:conflicting_regional_calendar_event) do
-      create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'new regional event',
-                              start_date: '2021-01-01', end_date: '2021-02-01')
-    end
-    let!(:conflicting_school_calendar_event) do
-      create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar,
-                              description: 'conflicting school event', start_date: '2021-01-01', end_date: '2021-02-01')
-    end
+    let!(:conflicting_regional_calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'new regional event', start_date: '2021-01-01', end_date: '2021-02-01') }
+    let!(:conflicting_school_calendar_event) { create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar, description: 'conflicting school event', start_date: '2021-01-01', end_date: '2021-02-01') }
 
     it 'skips child with conflicting events' do
       regional_calendar.reload
@@ -105,10 +88,8 @@ describe CalendarResyncService do
     end
 
     it 'does not delete other events on child during failed sync' do
-      other_regional_calendar_event = create(:calendar_event, calendar_event_type: holiday,
-                                                              calendar: regional_calendar, description: 'ealier regional event', start_date: '2009-01-01', end_date: '2009-02-01')
-      create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar,
-                              description: 'earlier school event', start_date: '2009-01-01', end_date: '2009-02-01', based_on: other_regional_calendar_event)
+      other_regional_calendar_event = create(:calendar_event, calendar_event_type: holiday, calendar: regional_calendar, description: 'ealier regional event', start_date: '2009-01-01', end_date: '2009-02-01')
+      create(:calendar_event, calendar_event_type: holiday, calendar: school_calendar, description: 'earlier school event', start_date: '2009-01-01', end_date: '2009-02-01', based_on: other_regional_calendar_event)
       school_calendar.reload
       expect(school_calendar.calendar_events.count).to eq(2)
       CalendarResyncService.new(regional_calendar).resync
@@ -118,14 +99,8 @@ describe CalendarResyncService do
   end
 
   context 'when grandchild has conflicting event' do
-    let!(:other_national_calendar_event) do
-      create(:calendar_event, calendar_event_type: bank_holiday, calendar: national_calendar,
-                              description: 'new national event', start_date: '2009-01-01', end_date: '2009-01-02')
-    end
-    let!(:conflicting_school_calendar_event) do
-      create(:calendar_event, calendar_event_type: bank_holiday, calendar: school_calendar,
-                              description: 'conflicting school event', start_date: '2009-01-01', end_date: '2009-01-02')
-    end
+    let!(:other_national_calendar_event) { create(:calendar_event, calendar_event_type: bank_holiday, calendar: national_calendar, description: 'new national event', start_date: '2009-01-01', end_date: '2009-01-02') }
+    let!(:conflicting_school_calendar_event) { create(:calendar_event, calendar_event_type: bank_holiday, calendar: school_calendar, description: 'conflicting school event', start_date: '2009-01-01', end_date: '2009-01-02') }
 
     it 'does not create regional events during failed sync to school from national' do
       expect(national_calendar.calendar_events.count).to eq(2)
@@ -141,8 +116,7 @@ describe CalendarResyncService do
 
     it 'still updates other child where no conflicting events' do
       other_calendar = create(:school_calendar, based_on: regional_calendar)
-      create(:calendar_event, calendar_event_type: holiday, calendar: other_calendar,
-                              description: 'other calendar event', start_date: '2019-01-01', end_date: '2019-02-01')
+      create(:calendar_event, calendar_event_type: holiday, calendar: other_calendar, description: 'other calendar event', start_date: '2019-01-01', end_date: '2019-02-01')
       expect(other_calendar.calendar_events.count).to eq(1)
       CalendarResyncService.new(regional_calendar).resync
       expect(other_calendar.calendar_events.count).to eq(2)

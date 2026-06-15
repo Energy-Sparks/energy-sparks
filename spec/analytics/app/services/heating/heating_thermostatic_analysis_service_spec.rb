@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 describe Heating::HeatingThermostaticAnalysisService do
   # using before(:all) here to avoid slow loading of YAML and then
   # running the aggregation code for each test.
@@ -54,3 +55,4 @@ describe Heating::HeatingThermostaticAnalysisService do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

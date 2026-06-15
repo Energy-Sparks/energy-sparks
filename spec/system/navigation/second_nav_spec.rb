@@ -52,22 +52,22 @@ RSpec.describe 'Navigation -> second nav' do
 
   shared_examples 'a school inactive pill' do |display: false|
     it 'displays the archived pill', if: display == :archived do
-      expect(left_link).to have_text('Archived')
+      expect(left_link).to have_content('Archived')
     end
 
     it 'displays the deleted pill', if: display == :deleted do
-      expect(left_link).to have_text('Deleted')
+      expect(left_link).to have_content('Deleted')
     end
 
     it 'the inactive pill is not displayed', unless: display do
-      expect(left_link).to have_no_text('Archived')
-      expect(left_link).to have_no_text('Deleted')
+      expect(left_link).to have_no_content('Archived')
+      expect(left_link).to have_no_content('Deleted')
     end
   end
 
   describe 'Second nav left link' do
     let!(:school) { create(:school, school_group:) }
-    let(:left_link) { nav.find_by_id('left-link') }
+    let(:left_link) { nav.find('#left-link') }
 
     context 'when user is not logged in' do
       context 'when on a page with school context' do
@@ -93,7 +93,7 @@ RSpec.describe 'Navigation -> second nav' do
 
         it_behaves_like 'a group name and group dashboard link', display: false
         it 'displays group name (without link)' do
-          expect(left_link).to have_text(school_group.name)
+          expect(left_link).to have_content(school_group.name)
         end
       end
     end

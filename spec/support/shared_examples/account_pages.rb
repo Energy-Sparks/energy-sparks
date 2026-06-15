@@ -4,7 +4,7 @@ RSpec.shared_examples 'an account page with navigation' do |admin: false|
   it 'displays profile header' do
     expect(page).to have_css('#profile-header')
     within('#profile-header') do
-      expect(page).to have_text(user.name)
+      expect(page).to have_content(user.name)
     end
   end
 
@@ -34,7 +34,7 @@ RSpec.shared_examples 'an account page with navigation' do |admin: false|
 
   it 'does not link to schools page', if: admin do
     within('#profile-page-navigation') do
-      expect(page).to have_no_link(I18n.t('users.show.manage_alerts'), href: user_contacts_path(user))
+      expect(page).not_to have_link(I18n.t('users.show.manage_alerts'), href: user_contacts_path(user))
     end
   end
 

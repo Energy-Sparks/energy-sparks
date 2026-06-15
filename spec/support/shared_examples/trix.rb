@@ -25,11 +25,11 @@ RSpec.shared_examples 'a form with a customised trix component' do |controls: :d
   it 'has simplified controls', if: controls == :simple do
     expect(page).to have_css("#{selector}.controls-#{controls}")
     within(selector) do
-      expect(page).to have_no_css('button[data-trix-attribute="quote"]')
-      expect(page).to have_no_css('button[data-trix-attribute="code"]')
-      expect(page).to have_no_css('button[data-trix-attribute="chart"]')
-      expect(page).to have_no_css('button[data-trix-action="x-heading"]')
-      expect(page).to have_no_css('button[data-trix-action="youtube"]')
+      expect(page).not_to have_css('button[data-trix-attribute="quote"]')
+      expect(page).not_to have_css('button[data-trix-attribute="code"]')
+      expect(page).not_to have_css('button[data-trix-attribute="chart"]')
+      expect(page).not_to have_css('button[data-trix-action="x-heading"]')
+      expect(page).not_to have_css('button[data-trix-action="youtube"]')
     end
   end
 
@@ -45,7 +45,7 @@ RSpec.shared_examples 'a form with a customised trix component' do |controls: :d
 
   it 'does not have chart button', unless: charts do
     within(selector) do
-      expect(page).to have_no_css('button[data-trix-action="chart"]')
+      expect(page).not_to have_css('button[data-trix-action="chart"]')
     end
   end
 

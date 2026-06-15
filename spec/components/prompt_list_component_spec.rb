@@ -9,7 +9,7 @@ RSpec.describe PromptListComponent, :include_application_helper, type: :componen
   let(:params) { all_params }
   let(:title) { 'Title' }
   let(:prompt_text) { 'Prompt text' }
-  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning') }
+  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning')}
   let(:link) { ActionController::Base.helpers.link_to 'Link text', 'href' }
 
   context 'with all params' do
@@ -59,7 +59,7 @@ RSpec.describe PromptListComponent, :include_application_helper, type: :componen
     end
 
     it { expect(html).to have_text(title) }
-    it { expect(html).to have_no_link('Link text', href: 'href') }
+    it { expect(html).not_to have_link('Link text', href: 'href') }
   end
 
   context 'with no title' do
@@ -73,6 +73,6 @@ RSpec.describe PromptListComponent, :include_application_helper, type: :componen
     end
 
     it { expect(html).to have_link('Link text', href: 'href') }
-    it { expect(html).to have_no_text(title) }
+    it { expect(html).not_to have_text(title) }
   end
 end

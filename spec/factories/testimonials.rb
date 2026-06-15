@@ -14,6 +14,6 @@ FactoryBot.define do
     role_en { 'Testimonial role in English' }
     role_cy { 'Testimonial role in Welsh' }
 
-    association :case_study
+    association :case_study, factory: :case_study
   end
 end

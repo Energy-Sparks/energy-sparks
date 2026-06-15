@@ -11,9 +11,7 @@ module DataFeeds
     let(:gsp_name)                        { 'MELK_1' }
     let(:distance_km)                     { 123.45 }
     let(:start_date)                      { Date.parse('2019-05-01') }
-    let!(:solar_pv_tuos_area)             do
-      create(:solar_pv_tuos_area, title: 'The sun has got his hat on', gsp_name: gsp_name)
-    end
+    let!(:solar_pv_tuos_area)             { create(:solar_pv_tuos_area, title: 'The sun has got his hat on', gsp_name: gsp_name) }
 
     describe 'with disabled area' do
       before do
@@ -59,7 +57,7 @@ module DataFeeds
         end
       end
 
-      it 'rejects duff data record per day' do
+      it 'rejects duff data  record per day' do
         spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
         expect { spvtl.import }.not_to(change(SolarPvTuosReading, :count))
       end

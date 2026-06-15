@@ -28,14 +28,13 @@ describe MeterAttribute do
 
       expect(results).to eq(
         {
-          function: %i[heating_only kitchen_only]
+          function: [:heating_only, :kitchen_only]
         }
       )
     end
 
     it 'uses the key for normal attribute types' do
-      attribute_1 = described_class.new(attribute_type: :targeting_and_tracking_profiles_maximum_retries,
-                                        input_data: { number_of_retries: 1 })
+      attribute_1 = described_class.new(attribute_type: :targeting_and_tracking_profiles_maximum_retries, input_data: { number_of_retries: 1 })
 
       results = described_class.to_analytics([attribute_1])
 
@@ -49,11 +48,8 @@ describe MeterAttribute do
 
   describe '.solar_pv' do
     let(:config) { { start_date: '2022-01-01', kwp: '10', end_date: '2023-01-01' } }
-    let!(:solar_attribute) { create(:meter_attribute, attribute_type: :solar_pv, input_data: config) }
-    let!(:other_attribute) do
-      create(:meter_attribute, attribute_type: :targeting_and_tracking_profiles_maximum_retries,
-                               input_data: { number_of_retries: 1 })
-    end
+    let!(:solar_attribute) { create(:meter_attribute, attribute_type: :solar_pv, input_data: config)}
+    let!(:other_attribute) { create(:meter_attribute, attribute_type: :targeting_and_tracking_profiles_maximum_retries, input_data: { number_of_retries: 1 })}
     let(:solar_panels)  { described_class.solar_pv }
     let(:panel)         { solar_panels.first }
 
@@ -82,13 +78,8 @@ describe MeterAttribute do
         production_mpan5: '5'
       }
     end
-    let!(:solar_attribute) do
-      create(:meter_attribute, attribute_type: :solar_pv_mpan_meter_mapping, input_data: config)
-    end
-    let!(:other_attribute) do
-      create(:meter_attribute, attribute_type: :targeting_and_tracking_profiles_maximum_retries,
-                               input_data: { number_of_retries: 1 })
-    end
+    let!(:solar_attribute) { create(:meter_attribute, attribute_type: :solar_pv_mpan_meter_mapping, input_data: config)}
+    let!(:other_attribute) { create(:meter_attribute, attribute_type: :targeting_and_tracking_profiles_maximum_retries, input_data: { number_of_retries: 1 })}
     let(:solar_panels) { described_class.metered_solar }
     let(:mapping) { solar_panels.first }
 

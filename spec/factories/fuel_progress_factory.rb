@@ -8,8 +8,6 @@ FactoryBot.define do
       recent_data { true }
     end
 
-    initialize_with do
-      new(fuel_type: fuel_type, progress: progress, usage: usage, target: target, recent_data: recent_data)
-    end
+    initialize_with { new(fuel_type: fuel_type, progress: progress, usage: usage, target: target, recent_data: recent_data) }
   end
 end

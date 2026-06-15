@@ -16,8 +16,7 @@ describe PartnersHelper do
   describe '.list_of_partners_as_links' do
     it 'formats as a sentence' do
       expect(helper.list_of_partners_as_links([partner1])).to eql '<a target="_new" href="http://e.org">Egni</a>'
-      expect(helper.list_of_partners_as_links([partner1,
-                                               partner2])).to eql '<a target="_new" href="http://e.org">Egni</a> and <a target="_new" href="http://c.org">Carbon Coop</a>'
+      expect(helper.list_of_partners_as_links([partner1, partner2])).to eql '<a target="_new" href="http://e.org">Egni</a> and <a target="_new" href="http://c.org">Carbon Coop</a>'
     end
   end
 end

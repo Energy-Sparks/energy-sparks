@@ -11,8 +11,6 @@ FactoryBot.define do
       kwh_data_x48    { Array.new(48, rand.to_f) }
     end
 
-    initialize_with do
-      OneDayAMRReading.new(dashboard_meter.id, date, status, substitute_date, upload_datetime, kwh_data_x48)
-    end
+    initialize_with { OneDayAMRReading.new(dashboard_meter.id, date, status, substitute_date, upload_datetime, kwh_data_x48) }
   end
 end

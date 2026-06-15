@@ -26,12 +26,12 @@ describe 'manage pages' do
 
       it 'creates the model' do
         expect { click_on 'Save' }.to change(Cms::Page, :count).by(1)
-        expect(page).to have_text('Page Title')
+        expect(page).to have_content('Page Title')
         model = Cms::Page.last
         expect(model.created_by).to eq(user)
         expect(model.updated_by).to be_nil
         expect(page).to have_link('Edit', href: edit_admin_cms_page_path(model))
-        expect(page).to have_no_link('Publish')
+        expect(page).not_to have_link('Publish')
       end
     end
 
@@ -48,11 +48,11 @@ describe 'manage pages' do
 
       it 'updates the model' do
         expect { click_on 'Save' }.not_to change(Cms::Page, :count)
-        expect(page).to have_text('Page Title')
+        expect(page).to have_content('Page Title')
         model = Cms::Page.last
         expect(model.updated_by).to eq(user)
         expect(page).to have_link('Edit', href: edit_admin_cms_page_path(model))
-        expect(page).to have_no_link('Publish')
+        expect(page).not_to have_link('Publish')
       end
     end
   end
@@ -65,7 +65,7 @@ describe 'manage pages' do
     end
 
     it 'shows page counts' do
-      expect(page).to have_text('1 / 1')
+      expect(page).to have_content('1 / 1')
     end
 
     it_behaves_like 'a publishable model' do
@@ -76,7 +76,7 @@ describe 'manage pages' do
       click_on('Edit')
       expect(page).to have_link('New Section', href: new_admin_cms_section_path(page_id: cms_page.id))
       cms_page.sections.each do |section|
-        expect(page).to have_text(section.title)
+        expect(page).to have_content(section.title)
         expect(page).to have_link('Hide', href: hide_admin_cms_section_path(section))
       end
     end

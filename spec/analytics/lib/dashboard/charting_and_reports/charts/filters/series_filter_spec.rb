@@ -82,8 +82,12 @@ describe Charts::Filters::SeriesFilter do
 
         it 'filters to the submeters' do
           # should drop just the Solar PV production (:generation) meter
-          expect(aggregator_results.bucketed_data.keys).to contain_exactly(
-            SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME, SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME, SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME
+          expect(aggregator_results.bucketed_data.keys).to match_array(
+            [
+              SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME,
+              SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME,
+              SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME
+            ]
           )
         end
 
@@ -118,8 +122,13 @@ describe Charts::Filters::SeriesFilter do
 
           it 'keeps the y2 axis as well' do
             # should drop just the Solar PV production (:generation) meters
-            expect(aggregator_results.bucketed_data.keys).to contain_exactly(
-              SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME, SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME, SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME, Series::Irradiance::IRRADIANCE
+            expect(aggregator_results.bucketed_data.keys).to match_array(
+              [
+                SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME,
+                SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME,
+                SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME,
+                Series::Irradiance::IRRADIANCE
+              ]
             )
           end
         end
@@ -148,7 +157,9 @@ describe Charts::Filters::SeriesFilter do
 
       it 'filters to just heating days' do
         filter.filter
-        expect(aggregator_results.bucketed_data.keys).to contain_exactly(Series::HeatingNonHeating::HEATINGDAY)
+        expect(aggregator_results.bucketed_data.keys).to match_array(
+          [Series::HeatingNonHeating::HEATINGDAY]
+        )
       end
     end
 
@@ -176,7 +187,9 @@ describe Charts::Filters::SeriesFilter do
 
       it 'filters to just those day types' do
         filter.filter
-        expect(aggregator_results.bucketed_data.keys).to contain_exactly(Series::DayType::SCHOOLDAYOPEN, Series::DayType::SCHOOLDAYCLOSED)
+        expect(aggregator_results.bucketed_data.keys).to match_array(
+          [Series::DayType::SCHOOLDAYOPEN, Series::DayType::SCHOOLDAYCLOSED]
+        )
       end
     end
   end

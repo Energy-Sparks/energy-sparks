@@ -41,10 +41,8 @@ describe Transifex::Loader, type: :service do
     end
 
     it 'logs errors in Rollbar' do
-      expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load,
-                                                                            record_type: 'ActivityType', record_id: activity_type.id)
-      expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load,
-                                                                            record_type: 'ActivityCategory', record_id: activity_category.id)
+      expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load, record_type: 'ActivityType', record_id: activity_type.id)
+      expect(Rollbar).to receive(:error).with(an_instance_of(RuntimeError), job: :transifex_load, record_type: 'ActivityCategory', record_id: activity_category.id)
       service.perform
     end
   end
@@ -55,12 +53,8 @@ describe Transifex::Loader, type: :service do
     let!(:intervention_type_group)  { create(:intervention_type_group) }
     let!(:activity_type)            { create(:activity_type, active: true, activity_category: activity_category) }
     let!(:activity_type2)           { create(:activity_type, active: false, activity_category: activity_category) }
-    let!(:intervention_type)        do
-      create(:intervention_type, active: true, intervention_type_group: intervention_type_group)
-    end
-    let!(:intervention_type2) do
-      create(:intervention_type, active: false, intervention_type_group: intervention_type_group)
-    end
+    let!(:intervention_type)        { create(:intervention_type, active: true, intervention_type_group: intervention_type_group) }
+    let!(:intervention_type2)       { create(:intervention_type, active: false, intervention_type_group: intervention_type_group) }
     let!(:help_page)                { create(:help_page) }
     let!(:case_study)               { create(:case_study) }
     let!(:programme_type)           { create(:programme_type) }

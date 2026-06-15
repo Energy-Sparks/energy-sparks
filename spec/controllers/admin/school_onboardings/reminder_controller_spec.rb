@@ -2,12 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Admin::SchoolOnboardings::ReminderController, type: :controller do
   let(:admin)             { create(:admin) }
-  let(:school_group)      { create(:school_group, name: 'My Super Group') }
+  let(:school_group)      { create :school_group, name: 'My Super Group' }
   let(:expected_anchor)   { 'my-super-group' }
 
-  let(:onboarding)        do
-    create(:school_onboarding, :with_events, event_names: [:email_sent], school_group: school_group)
-  end
+  let(:onboarding)        { create :school_onboarding, :with_events, event_names: [:email_sent], school_group: school_group }
 
   before do
     sign_in(admin)

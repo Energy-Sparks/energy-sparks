@@ -21,18 +21,18 @@ RSpec.describe TogglerDropdownComponent, type: :component do
     let(:title) { 'Deprecated' }
 
     it 'has the title' do
-      expect(html).to have_text(title)
+      expect(html).to have_content(title)
     end
 
     it 'has the content' do
-      expect(html).to have_text(content)
+      expect(html).to have_content(content)
     end
 
     it 'adds toggler' do
-      expect(html).to have_css(
+      expect(html).to have_selector(
         'span' \
         "[data-toggle='collapse']" \
-      )
+        )
     end
   end
 
@@ -41,18 +41,18 @@ RSpec.describe TogglerDropdownComponent, type: :component do
     let(:title) { 'Deprecated' }
 
     it 'does not have the title' do
-      expect(html).to have_no_text(title)
+      expect(html).not_to have_content(title)
     end
 
     it 'has the content' do
-      expect(html).to have_text(content)
+      expect(html).to have_content(content)
     end
 
     it 'does not add toggler' do
-      expect(html).to have_no_css(
+      expect(html).not_to have_selector(
         'span' \
         "[data-toggle='collapse']" \
-      )
+        )
     end
   end
 end

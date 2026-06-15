@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Schools::ChartsController, type: :controller do
   context 'GET #show' do
-    before { @school = FactoryBot.create(:school, visible: false) }
+    before { @school = FactoryBot.create :school, visible: false }
 
     describe 'format json' do
       it 'returns a json error message with 400 bad request if a chart type param is missing' do
@@ -16,8 +16,7 @@ RSpec.describe Schools::ChartsController, type: :controller do
       context 'with a chart type param' do
         context 'but we cannot run the chart' do
           let(:response) do
-            get :show,
-                params: { school_id: @school.to_param, chart_type: 'pupil_dashboard_group_by_week_electricity_kwh' }, format: :json
+            get :show, params: { school_id: @school.to_param, chart_type: 'pupil_dashboard_group_by_week_electricity_kwh' }, format: :json
           end
 
           it 'still returns a json response' do

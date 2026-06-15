@@ -2,16 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe RecommendationsComponent, :include_url_helpers, type: :component do
-  let(:image) do
-    { io: File.open(Rails.root.join('spec/fixtures/images/sheffield.png')), filename: 'sheffield.png',
-      content_type: 'image/png' }
-  end
+RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: true do
+  let(:image) { { io: File.open(Rails.root.join('spec', 'fixtures', 'images', 'sheffield.png')), filename: 'sheffield.png', content_type: 'image/png' } }
   let(:activity_types) { 6.times.collect { create(:activity_type) } }
-  let(:all_params) do
-    { recommendations: activity_types, title: 'Title text', description: 'Description text', classes: 'my-class',
-      id: 'my-id', limit: 5, limit_lg: 4 }
-  end
+  let(:all_params) { { recommendations: activity_types, title: 'Title text', description: 'Description text', classes: 'my-class', id: 'my-id', limit: 5, limit_lg: 4 } }
   let(:cards) { html.css('div.card') }
   let(:items) { [] }
 
@@ -24,8 +18,8 @@ RSpec.describe RecommendationsComponent, :include_url_helpers, type: :component 
   context 'with all params' do
     let(:params) { all_params }
 
-    it { expect(html).to have_css('h4', text: 'Title text') }
-    it { expect(html).to have_css('div.recommendations-component>p', text: 'Description text') }
+    it { expect(html).to have_selector('h4', text: 'Title text') }
+    it { expect(html).to have_selector('div.recommendations-component>p', text: 'Description text') }
 
     it 'adds specified classes' do
       expect(html).to have_css('div.recommendations-component.my-class')
@@ -57,7 +51,9 @@ RSpec.describe RecommendationsComponent, :include_url_helpers, type: :component 
     end
 
     it 'adds responsive clasess' do
-      expect(cards[0..3]).to all(have_no_css('.d-none.d-xl-block'))
+      cards[0..3].each do |card|
+        expect(card).not_to have_css('.d-none.d-xl-block')
+      end
       expect(cards[4]).to have_css('.d-none.d-xl-block')
     end
   end
@@ -66,19 +62,19 @@ RSpec.describe RecommendationsComponent, :include_url_helpers, type: :component 
     let(:params) { all_params.except(:title, :description, :classes, :id, :limit, :limit_lg) }
 
     it 'does not display title' do
-      expect(html).to have_no_css('h4 strong')
+      expect(html).not_to have_selector('h4 strong')
     end
 
     it 'does not display description' do
-      expect(html).to have_no_css('div.recommendations-component>p')
+      expect(html).not_to have_selector('div.recommendations-component>p')
     end
 
     it 'does not add css' do
-      expect(html).to have_no_css('div.recommendations-component.my-class')
+      expect(html).not_to have_css('div.recommendations-component.my-class')
     end
 
     it 'does not add id' do
-      expect(html).to have_no_css('div.recommendations-component#my-id')
+      expect(html).not_to have_css('div.recommendations-component#my-id')
     end
 
     it 'limits to 4' do
@@ -86,7 +82,9 @@ RSpec.describe RecommendationsComponent, :include_url_helpers, type: :component 
     end
 
     it 'sets limit_lg to 3' do
-      expect(cards[0..2]).to all(have_no_css('.d-none.d-xl-block'))
+      cards[0..2].each do |card|
+        expect(card).not_to have_css('.d-none.d-xl-block')
+      end
       expect(cards[3]).to have_css('.d-none.d-xl-block')
     end
   end

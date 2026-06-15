@@ -4,12 +4,12 @@ describe 'School group dashboard page', :school_groups do
   shared_examples 'a group dashboard' do
     it 'shows the page header' do
       within('div.layout-cards-page-header-component') do
-        expect(page).to have_text(I18n.t('common.labels.welcome'))
+        expect(page).to have_content(I18n.t('common.labels.welcome'))
       end
 
       within('div.layout-cards-page-header-component-callout-component') do
-        expect(page).to have_text(I18n.t('school_count', count: school_group.assigned_schools.count))
-        expect(page).to have_text(I18n.t(school_group.group_type, scope: 'school_groups.clusters.group_type'))
+        expect(page).to have_content(I18n.t('school_count', count: school_group.assigned_schools.count))
+        expect(page).to have_content(I18n.t(school_group.group_type, scope: 'school_groups.clusters.group_type'))
         expect(page).to have_link(href: map_school_group_path(school_group))
       end
     end
@@ -75,11 +75,11 @@ describe 'School group dashboard page', :school_groups do
 
     context 'when displaying school and advice links' do
       it 'shows select school section' do
-        expect(page).to have_text I18n.t('components.dashboards.group_learn_more.schools.title')
+        expect(page).to have_content I18n.t('components.dashboards.group_learn_more.schools.title')
       end
 
       it 'shows learn more section' do
-        expect(page).to have_text I18n.t('components.dashboards.group_learn_more.advice.title')
+        expect(page).to have_content I18n.t('components.dashboards.group_learn_more.advice.title')
         expect(page).to have_link(href: school_group_advice_path(school_group))
       end
     end
@@ -110,7 +110,7 @@ describe 'School group dashboard page', :school_groups do
 
     context 'when showing school activity' do
       it 'displays the scoreboard summary' do
-        expect(page).to have_text(I18n.t('components.scoreboards.group_summary.timeline.title'))
+        expect(page).to have_content(I18n.t('components.scoreboards.group_summary.timeline.title'))
       end
     end
 
@@ -155,10 +155,7 @@ describe 'School group dashboard page', :school_groups do
 
   context 'with a project group' do
     let!(:school_group) { create(:school_group, :with_partners, group_type: :project) }
-    # for recent usage
-    let!(:school) do
-      create(:school, :with_fuel_configuration, :with_school_grouping, role: :project, group: school_group)
-    end
+    let!(:school) { create(:school, :with_fuel_configuration, :with_school_grouping, role: :project, group: school_group) } # for recent usage
 
     include_context 'with a group dashboard alert' do
       let(:schools) { school_group.assigned_schools }
@@ -179,11 +176,8 @@ describe 'School group dashboard page', :school_groups do
     end
 
     it_behaves_like 'a group page with schools filtered by permissions' do
-      # override to match spec context
-      let!(:filtered_school) do
-        create(:school, :with_fuel_configuration, :with_school_group, :with_school_grouping, role: :project,
-                                                                                             group: school_group, data_sharing: :private)
-      end
+      let!(:filtered_school) { create(:school, :with_fuel_configuration, :with_school_group, :with_school_grouping, role: :project, group: school_group, data_sharing: :private) } # override to match spec context
+
       let(:path) { school_group_path(school_group) }
     end
 

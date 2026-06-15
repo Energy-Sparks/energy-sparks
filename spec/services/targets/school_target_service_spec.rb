@@ -8,8 +8,7 @@ RSpec.describe Targets::SchoolTargetService do
 
   let(:fuel_configuration) do
     Schools::FuelConfiguration.new(
-      has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true
-    )
+      has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true)
   end
 
   before do
@@ -38,8 +37,7 @@ RSpec.describe Targets::SchoolTargetService do
       context 'and school has limited fuel types' do
         let(:fuel_configuration) do
           Schools::FuelConfiguration.new(
-            has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true
-          )
+            has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true)
         end
 
         before do
@@ -48,14 +46,14 @@ RSpec.describe Targets::SchoolTargetService do
 
         it 'only sets defaults for those' do
           expect(target.electricity).to eql Targets::SchoolTargetService::DEFAULT_ELECTRICITY_TARGET
-          expect(target.gas).to be_nil
-          expect(target.storage_heaters).to be_nil
+          expect(target.gas).to be nil
+          expect(target.storage_heaters).to be nil
         end
       end
     end
 
     context 'an updated target' do
-      let(:start_date)      { Time.zone.today.last_year }
+      let(:start_date)      { Time.zone.today.last_year}
       let(:target_date)     { start_date.next_year }
 
       let!(:old_target) { create(:school_target, school: school, start_date: start_date, target_date: target_date) }
@@ -107,8 +105,7 @@ RSpec.describe Targets::SchoolTargetService do
       expect(service.enough_data_for_storage_heater?).to be true
 
       school.configuration.update(fuel_configuration: Schools::FuelConfiguration.new(
-        has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true
-      ))
+        has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true))
       expect(service.enough_data_for_electricity?).to be true
       expect(service.enough_data_for_gas?).to be false
       expect(service.enough_data_for_storage_heater?).to be false

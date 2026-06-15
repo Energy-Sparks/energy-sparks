@@ -16,23 +16,23 @@ describe User do
     subject(:user) { build(:user) }
 
     describe 'created by and updated by' do
-      %i[activities case_studies cms_categories
-         cms_pages cms_sections energy_tariffs
-         issues newsletters observations].each do |name|
+      [:activities, :case_studies, :cms_categories,
+       :cms_pages, :cms_sections, :energy_tariffs,
+       :issues, :newsletters, :observations].each do |name|
         it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
         it { expect(user).to have_many("#{name}_updated").dependent(:nullify) }
       end
     end
 
     describe 'created by and deleted by' do
-      %i[meter_attributes school_group_meter_attributes school_meter_attributes
-         global_meter_attributes].each do |name|
+      [:meter_attributes, :school_group_meter_attributes, :school_meter_attributes,
+       :global_meter_attributes].each do |name|
         it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
         it { expect(user).to have_many("#{name}_deleted").dependent(:nullify) }
       end
     end
 
-    %i[school_onboardings school_alert_type_exclusions users].each do |name|
+    [:school_onboardings, :school_alert_type_exclusions, :users].each do |name|
       it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
     end
   end
@@ -58,7 +58,7 @@ describe User do
   end
 
   describe 'when role is changed' do
-    %i[group_admin group_manager].each do |role|
+    [:group_admin, :group_manager].each do |role|
       describe "when #{role} becomes school admin" do
         let!(:user) { create(role) }
 
@@ -95,7 +95,7 @@ describe User do
   describe '#default_school_group' do
     subject(:default_school_group) { user.default_school_group }
 
-    %i[group_admin group_manager].each do |role|
+    [:group_admin, :group_manager].each do |role|
       context "when user is a #{role} with a school group (required)" do
         let(:user) { create(role) }
 
@@ -130,7 +130,7 @@ describe User do
   describe '#default_school_group_name' do
     subject(:default_school_group_name) { user.default_school_group_name }
 
-    %i[group_admin group_manager].each do |role|
+    [:group_admin, :group_manager].each do |role|
       context "when user is a #{role} with a school group (required)" do
         let(:user) { create(role) }
 
@@ -396,7 +396,7 @@ describe User do
       end
     end
 
-    %i[group_admin group_manager].each do |role|
+    [:group_admin, :group_manager].each do |role|
       context "when exporting #{role}" do
         let!(:user) { create(role) }
         let(:school_group) { user.default_school_group }
@@ -562,7 +562,7 @@ describe User do
           end
         end
 
-        %i[group_admin group_manager].each do |role|
+        [:group_admin, :group_manager].each do |role|
           context "with #{role}" do
             let!(:user) { create(role, mailchimp_status: :subscribed) }
 
@@ -722,7 +722,7 @@ describe User do
       end
     end
 
-    %i[group_admin group_manager].each do |role|
+    [:group_admin, :group_manager].each do |role|
       context "with #{role}" do
         let!(:user) { create(role) }
 

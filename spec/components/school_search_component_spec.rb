@@ -29,14 +29,12 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
   let!(:a_school) { create(:school, school_group: a_school_group, active: true, visible: true, name: 'A School') }
   let!(:b_school) { create(:school, school_group: b_school_group, active: true, visible: true, name: 'B School') }
   let!(:c_school) { create(:school, :with_school_group, active: true, visible: true, name: 'C School') }
-  let!(:numbered_school) do
-    create(:school, school_group: numbered_school_group, active: true, visible: true, name: '5 School')
-  end
+  let!(:numbered_school) { create(:school, school_group: numbered_school_group, active: true, visible: true, name: '5 School') }
 
   before do
     Flipper.enable(:find_new_group_types)
     %w[A B C 5].each do |letter|
-      create(:school, :with_school_group, active: false, name: "#{letter} Inactive School")
+      create(:school, :with_school_group, active: false, name: "#{letter} Inactive School",)
     end
   end
 
@@ -104,9 +102,9 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
   end
 
   describe '#label' do
-    it { expect(component.label(:schools)).to eq('schools') }
-    it { expect(component.label(:schools, 'content')).to eq('schools-content') }
-    it { expect(component.label(:school_groups, 'tab')).to eq('school-groups-tab') }
+    it { expect(component.label(:schools)).to eq('schools')}
+    it { expect(component.label(:schools, 'content')).to eq('schools-content')}
+    it { expect(component.label(:school_groups, 'tab')).to eq('school-groups-tab')}
   end
 
   describe '#default_results' do
@@ -114,7 +112,7 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with keyword' do
         let(:keyword) { 'B' }
 
-        it { expect(component.default_results(:schools)).to eq([b_school]) }
+        it { expect(component.default_results(:schools)).to eq([b_school])}
       end
 
       context 'with longer keyword' do
@@ -126,20 +124,20 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with letter' do
         let(:letter) { 'C' }
 
-        it { expect(component.default_results(:schools)).to eq([c_school]) }
+        it { expect(component.default_results(:schools)).to eq([c_school])}
       end
 
       context 'with #' do
         let(:letter) { '#' }
 
-        it { expect(component.default_results(:schools)).to eq([numbered_school]) }
+        it { expect(component.default_results(:schools)).to eq([numbered_school])}
       end
 
       context 'with the inactive school group tab' do
         context 'with letter' do
           let(:letter) { 'C' } # ignored as on the default tab we should show the first letter of alphabet
 
-          it { expect(component.default_results(:school_groups)).to eq([a_school_group]) }
+          it { expect(component.default_results(:school_groups)).to eq([a_school_group])}
         end
       end
     end
@@ -150,13 +148,13 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with letter' do
         let(:letter) { 'B' }
 
-        it { expect(component.default_results(:school_groups)).to eq([b_school_group]) }
+        it { expect(component.default_results(:school_groups)).to eq([b_school_group])}
       end
 
       context 'with keyword' do
         let(:keyword) { 'B' }
 
-        it { expect(component.default_results(:school_groups)).to eq([b_school_group]) }
+        it { expect(component.default_results(:school_groups)).to eq([b_school_group])}
       end
     end
 
@@ -172,13 +170,13 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with letter' do
         let(:letter) { 'B' }
 
-        it { expect(component.default_results(:diocese)).to eq([diocese]) }
+        it { expect(component.default_results(:diocese)).to eq([diocese])}
       end
 
       context 'with keyword' do
         let(:keyword) { 'B' }
 
-        it { expect(component.default_results(:diocese)).to eq([diocese]) }
+        it { expect(component.default_results(:diocese)).to eq([diocese])}
       end
     end
   end
@@ -188,21 +186,19 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with keyword' do
         let(:keyword) { 'B' }
 
-        it {
-          expect(component.default_results_title(:schools)).to eq(I18n.t('components.search_results.keyword.title'))
-        }
+        it { expect(component.default_results_title(:schools)).to eq(I18n.t('components.search_results.keyword.title'))}
       end
 
       context 'with letter' do
         let(:letter) { 'C' }
 
-        it { expect(component.default_results_title(:schools)).to eq(letter) }
+        it { expect(component.default_results_title(:schools)).to eq(letter)}
       end
 
       context 'with number' do
         let(:letter) { '#' }
 
-        it { expect(component.default_results_title(:schools)).to eq(letter) }
+        it { expect(component.default_results_title(:schools)).to eq(letter)}
       end
     end
 
@@ -210,7 +206,7 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with letter' do
         let(:letter) { 'C' } # ignored as on the default tab we should first letter of alphabet
 
-        it { expect(component.default_results_title(:school_groups)).to eq('A') }
+        it { expect(component.default_results_title(:school_groups)).to eq('A')}
       end
     end
   end
@@ -220,28 +216,19 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with keyword' do
         let(:keyword) { 'B' }
 
-        it {
-          expect(component.default_results_subtitle(:schools)).to eq(I18n.t('components.search_results.schools.subtitle',
-                                                                            count: 1))
-        }
+        it { expect(component.default_results_subtitle(:schools)).to eq(I18n.t('components.search_results.schools.subtitle', count: 1))}
       end
 
       context 'with letter' do
         let(:letter) { 'C' }
 
-        it {
-          expect(component.default_results_subtitle(:schools)).to eq(I18n.t('components.search_results.schools.subtitle',
-                                                                            count: 1))
-        }
+        it { expect(component.default_results_subtitle(:schools)).to eq(I18n.t('components.search_results.schools.subtitle', count: 1))}
       end
 
       context 'with number' do
         let(:letter) { '#' }
 
-        it {
-          expect(component.default_results_subtitle(:schools)).to eq(I18n.t('components.search_results.schools.subtitle',
-                                                                            count: 1))
-        }
+        it { expect(component.default_results_subtitle(:schools)).to eq(I18n.t('components.search_results.schools.subtitle', count: 1))}
       end
     end
 
@@ -249,11 +236,7 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with letter' do
         let(:letter) { 'C' } # ignored as on the default tab we should first letter of alphabet
 
-        it {
-          expect(component.default_results_subtitle(:school_groups)).to eq(I18n.t(
-                                                                             'components.search_results.school_groups.subtitle', count: 1
-                                                                           ))
-        }
+        it { expect(component.default_results_subtitle(:school_groups)).to eq(I18n.t('components.search_results.school_groups.subtitle', count: 1))}
       end
     end
   end
@@ -275,13 +258,13 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
     end
 
     context 'with schools tab' do
-      it { expect(html).to have_link('A', href: schools_path(letter: 'A', scope: :schools)) }
+      it { expect(html).to have_link('A', href: schools_path(letter: 'A', scope: :schools))}
       it { expect(html).to have_link(a_school.name, href: school_path(a_school)) }
-      it { expect(html).to have_text(a_school.school_group.name) }
+      it { expect(html).to have_content(a_school.school_group.name)}
     end
 
     context 'with school groups' do
-      it { expect(html).to have_link('A', href: schools_path(letter: 'A', scope: :school_groups)) }
+      it { expect(html).to have_link('A', href: schools_path(letter: 'A', scope: :school_groups))}
       it { expect(html).to have_link(a_school_group.name, href: school_group_path(a_school_group)) }
     end
   end

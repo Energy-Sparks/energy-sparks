@@ -4,7 +4,6 @@ require 'rails_helper'
 
 describe Solar::SolisCloudLoaderJob do
   include Rails.application.routes.url_helpers
-
   subject(:job) { described_class.new }
 
   let!(:installation) do

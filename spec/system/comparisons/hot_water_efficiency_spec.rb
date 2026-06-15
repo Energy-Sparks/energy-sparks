@@ -65,8 +65,7 @@ describe 'hot_water_efficiency' do
     let!(:other_school) { create(:school, has_swimming_pool: true) }
 
     before do
-      create(:alert, school: other_school, alert_generation_run: alert_run, alert_type: alert_type,
-                     variables: variables)
+      create(:alert, school: other_school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
       Comparison.const_get(key.to_s.camelize).refresh
       visit "/comparisons/#{key}"
     end
@@ -74,21 +73,21 @@ describe 'hot_water_efficiency' do
     it 'still has a single school' do
       within("##{report.key}-table") do
         expect(page).to have_link(school.name)
-        expect(page).to have_no_link(other_school.name)
+        expect(page).not_to have_link(other_school.name)
       end
     end
 
     it 'has custom unlisted message' do
-      expect(page).to have_text('1 school could not be shown in this report as it does not have enough data to be analysed, or has a swimming pool so its hot water usage cannot be accurately estimated')
+      expect(page).to have_content('1 school could not be shown in this report as it does not have enough data to be analysed, or has a swimming pool so its hot water usage cannot be accurately estimated')
     end
 
-    context 'when opening the modal', :js do
+    context 'when opening the modal', js: true do
       before { click_on 'View school' }
 
       it 'displays the school name and whether it has a swimming pool' do
         within '.modal-body' do
           expect(page).to have_link other_school.name, href: school_path(other_school)
-          expect(page).to have_text 'Yes'
+          expect(page).to have_content 'Yes'
         end
       end
     end

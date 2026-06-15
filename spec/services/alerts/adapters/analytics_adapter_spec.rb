@@ -11,7 +11,8 @@ module Alerts
         true
       end
 
-      def analyse(_analysis_date, _max_as_of_date = nil); end
+      def analyse(_analysis_date, _max_as_of_date = nil)
+      end
 
       def rating
         5.0
@@ -66,9 +67,9 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAnalyticsAlertClass',
-                          source: :analytics)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAnalyticsAlertClass',
+          source: :analytics
       end
 
       def self.benchmark_template_variables
@@ -82,9 +83,9 @@ module Alerts
 
     class DummyAnalyticsAlertFailedClass < DummyAnalyticsAlertClass
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAnalyticsAlertFailedClass',
-                          source: :analytics)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAnalyticsAlertFailedClass',
+          source: :analytics
       end
     end
 
@@ -94,9 +95,9 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAnalyticsAlertNotEnoughDataClass',
-                          source: :analytics)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAnalyticsAlertNotEnoughDataClass',
+          source: :analytics
       end
     end
 
@@ -106,17 +107,17 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAnalyticsAlertNotRelevantClass',
-                          source: :analytics)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAnalyticsAlertNotRelevantClass',
+          source: :analytics
       end
     end
 
     class DummyAdviceAlertClass < DummyAnalyticsAlertClass
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAdviceAlertClass',
-                          source: :analysis)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAdviceAlertClass',
+          source: :analysis
       end
     end
 
@@ -126,9 +127,9 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAnalyticsAlertNotValidClass',
-                          source: :analytics)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAnalyticsAlertNotValidClass',
+          source: :analytics
       end
     end
 
@@ -136,9 +137,9 @@ module Alerts
       STRUCTURED_CONTENT = [{ title: 'Bit A', content: [{ type: :html, content: '<h1>Bit A</h1>' }] }].freeze
 
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAdviceWithStructuredClass',
-                          source: :analytics)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAdviceWithStructuredClass',
+          source: :analytics
       end
 
       def has_structured_content?
@@ -160,28 +161,28 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAlertWithTranslatedData',
-                          source: :analytics)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAlertWithTranslatedData',
+          source: :analytics
       end
     end
 
     class DummyAlertWithVariables < DummyAnalyticsAlertClass
       def variables_for_reporting
         {
-          a_integer: 10,
-          a_float: 15.2,
-          a_boolean: true,
-          positive_infinity: Float::INFINITY,
-          negative_infinity: -Float::INFINITY,
-          nan: Float::NAN
+          'a_integer': 10,
+          'a_float': 15.2,
+          'a_boolean': true,
+          'positive_infinity': Float::INFINITY,
+          'negative_infinity': -Float::INFINITY,
+          'nan': Float::NAN
         }
       end
 
       def self.alert_type
-        FactoryBot.create(:alert_type,
-                          class_name: 'Alerts::DummyAlertWithVariables',
-                          source: :analytics)
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAlertWithVariables',
+          source: :analytics
       end
     end
 
@@ -191,9 +192,7 @@ module Alerts
     let(:analysis_date) { Date.parse('2019-01-01') }
 
     it 'returns an analysis report' do
-      normalised_report = Alerts::Adapters::AnalyticsAdapter.new(
-        alert_type: Alerts::DummyAnalyticsAlertClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school
-      ).report
+      normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAnalyticsAlertClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
       expect(normalised_report.valid).to eq true
       expect(normalised_report.enough_data).to eq :enough
       expect(normalised_report.rating).to eq 5.0
@@ -206,15 +205,13 @@ module Alerts
     end
 
     it 'returns structured data' do
-      adapter = Adapters::AnalyticsAdapter.new(alert_type: DummyAdviceWithStructuredClass.alert_type, school: school,
-                                               analysis_date: analysis_date, aggregate_school: aggregate_school)
+      adapter = Adapters::AnalyticsAdapter.new(alert_type: DummyAdviceWithStructuredClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school)
       expect(adapter.has_structured_content?).to be true
       expect(adapter.structured_content).to eq DummyAdviceWithStructuredClass::STRUCTURED_CONTENT
     end
 
     it 'returns an analysis report but no benchmark data as an advice class' do
-      normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAdviceAlertClass.alert_type,
-                                                                 school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
+      normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAdviceAlertClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
       expect(normalised_report.valid).to eq true
       expect(normalised_report.enough_data).to eq :enough
       expect(normalised_report.rating).to eq 5.0
@@ -228,9 +225,7 @@ module Alerts
 
     context 'where the alert type does not have enough data' do
       it 'does not add the variables to the report' do
-        normalised_report = Adapters::AnalyticsAdapter.new(
-          alert_type: DummyAnalyticsAlertNotEnoughDataClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school
-        ).report
+        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotEnoughDataClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
         expect(normalised_report.template_data).to eq({})
         expect(normalised_report.chart_data).to eq({})
         expect(normalised_report.table_data).to eq({})
@@ -241,8 +236,7 @@ module Alerts
 
     context 'where the alert type is not relevant' do
       it 'does not add the variables to the report' do
-        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotRelevantClass.alert_type,
-                                                           school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
+        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotRelevantClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
         expect(normalised_report.template_data).to eq({})
         expect(normalised_report.chart_data).to eq({})
         expect(normalised_report.table_data).to eq({})
@@ -253,19 +247,17 @@ module Alerts
 
     context 'when the alert is not valid' do
       it 'returns an invalid report' do
-        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotValidClass.alert_type,
-                                                           school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
+        normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotValidClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
         expect(normalised_report.valid).to eq false
         expect(normalised_report.enough_data).to eq nil
         expect(normalised_report.rating).to eq nil
       end
     end
 
+
     context 'when generating multi-lingual template data' do
       it 'returns Welsh and English' do
-        normalised_report = Alerts::Adapters::AnalyticsAdapter.new(
-          alert_type: Alerts::DummyAlertWithTranslatedData.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school
-        ).report
+        normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAlertWithTranslatedData.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
         expect(normalised_report.valid).to eq true
         expect(normalised_report.template_data).to eq({ template: 'variables' })
         expect(normalised_report.template_data_cy).to eq({ template: 'welsh variables' })
@@ -279,19 +271,18 @@ module Alerts
 
     context 'when storing variables from the analytics' do
       subject(:report) do
-        Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAlertWithVariables.alert_type, school: school,
-                                               analysis_date: analysis_date, aggregate_school: aggregate_school).report
+        Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAlertWithVariables.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
       end
 
       it 'converts the values for storing in Postgres' do
         expect(report.variables).to eq(
           {
-            a_integer: 10,
-            a_float: 15.2,
-            a_boolean: 'true',
-            positive_infinity: 'Infinity',
-            negative_infinity: '-Infinity',
-            nan: 'NaN'
+            'a_integer': 10,
+            'a_float': 15.2,
+            'a_boolean': 'true',
+            'positive_infinity': 'Infinity',
+            'negative_infinity': '-Infinity',
+            'nan': 'NaN'
           }
         )
       end
@@ -302,9 +293,9 @@ module Alerts
         undef_method :reporting_period
 
         def self.alert_type
-          FactoryBot.create(:alert_type,
-                            class_name: 'Alerts::DummyAlertWithMissingMethod',
-                            source: :analytics)
+          FactoryBot.create :alert_type,
+            class_name: 'Alerts::DummyAlertWithMissingMethod',
+            source: :analytics
         end
       end
 

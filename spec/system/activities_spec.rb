@@ -37,21 +37,21 @@ describe 'viewing and recording activities' do
 
     context 'viewing an activity type' do
       it 'displays title' do
-        expect(page).to have_text(activity_type_name)
+        expect(page).to have_content(activity_type_name)
       end
 
       it 'displays tags' do
-        expect(page).to have_text(ks1.name)
-        expect(page).to have_text(subject.name)
+        expect(page).to have_content(ks1.name)
+        expect(page).to have_content(subject.name)
       end
 
       it 'displays score' do
-        expect(page).to have_text(activity_type.score)
+        expect(page).to have_content(activity_type.score)
       end
 
       it 'displays description' do
-        expect(page).to have_text(activity_type.description.to_plain_text)
-        expect(page).to have_no_text(activity_type.school_specific_description.to_plain_text)
+        expect(page).to have_content(activity_type.description.to_plain_text)
+        expect(page).to have_no_content(activity_type.school_specific_description.to_plain_text)
       end
 
       it 'displays navigation' do
@@ -59,11 +59,11 @@ describe 'viewing and recording activities' do
       end
 
       it 'displays resource links' do
-        expect(page).to have_text(activity_type.download_links.to_plain_text)
+        expect(page).to have_content(activity_type.download_links.to_plain_text)
       end
 
       it 'displays prompt to login' do
-        expect(page).to have_text('Are you an Energy Sparks user?')
+        expect(page).to have_content('Are you an Energy Sparks user?')
         expect(page).to have_link('Sign in to record activity')
       end
     end
@@ -78,8 +78,8 @@ describe 'viewing and recording activities' do
         within '#staff' do
           click_on 'Sign in'
         end
-        expect(page).to have_text(activity_type.name)
-        expect(page).to have_text("Complete this activity to score your school #{activity_type.score} points!")
+        expect(page).to have_content(activity_type.name)
+        expect(page).to have_content("Complete this activity to score your school #{activity_type.score} points!")
       end
     end
   end
@@ -94,8 +94,8 @@ describe 'viewing and recording activities' do
 
     context 'viewing an activity type' do
       it 'sees school specific content' do
-        expect(page).to have_text(activity_type.school_specific_description.to_plain_text)
-        expect(page).to have_no_text(activity_type.description.to_plain_text)
+        expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+        expect(page).to have_no_content(activity_type.description.to_plain_text)
       end
 
       it 'does not see prompt to login' do
@@ -103,7 +103,7 @@ describe 'viewing and recording activities' do
       end
 
       it 'sees prompt to record it' do
-        expect(page).to have_text("Complete this activity to score your school #{activity_type.score} points!")
+        expect(page).to have_content("Complete this activity to score your school #{activity_type.score} points!")
         expect(page).to have_link('Record this activity')
       end
     end
@@ -123,9 +123,8 @@ describe 'viewing and recording activities' do
         end
 
         it 'shows prompt to add detail' do
-          expect(page).to have_text(I18n.t('activities.form.tell_us_more_label'))
-          expect(page).to have_link(I18n.t('activities.actions.edit'),
-                                    href: edit_school_activity_path(school, activity))
+          expect(page).to have_content(I18n.t('activities.form.tell_us_more_label'))
+          expect(page).to have_link(I18n.t('activities.actions.edit'), href: edit_school_activity_path(school, activity))
         end
       end
 
@@ -136,7 +135,7 @@ describe 'viewing and recording activities' do
           visit school_activity_path(school, activity)
         end
 
-        it { expect(page).to have_text(I18n.t('common.pupil_count', count: activity.pupil_count)) }
+        it { expect(page).to have_content(I18n.t('common.pupil_count', count: activity.pupil_count)) }
       end
 
       context 'when updating the activity' do
@@ -150,8 +149,8 @@ describe 'viewing and recording activities' do
         end
 
         it 'shows the updates' do
-          expect(page).to have_text(activity_type.name)
-          expect(page).to have_text(updated_date.strftime('%A, %d %B %Y'))
+          expect(page).to have_content(activity_type.name)
+          expect(page).to have_content(updated_date.strftime('%A, %d %B %Y'))
           activity.reload
           expect(activity.happened_on).to eq(updated_date)
           expect(activity.observations.first.at).to eq(updated_date)
@@ -160,8 +159,8 @@ describe 'viewing and recording activities' do
 
       context 'when school is data enabled' do
         it 'sees previous records' do
-          expect(page).to have_text('Activity previously completed')
-          expect(page).to have_text('once')
+          expect(page).to have_content('Activity previously completed')
+          expect(page).to have_content('once')
         end
 
         it 'links to the activity' do
@@ -170,8 +169,8 @@ describe 'viewing and recording activities' do
 
         it 'shows school specific description' do
           visit school_activity_path(school, activity)
-          expect(page).to have_text(activity_type.school_specific_description.to_plain_text)
-          expect(page).to have_no_text(activity_type.description.to_plain_text)
+          expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to have_no_content(activity_type.description.to_plain_text)
         end
       end
 
@@ -180,8 +179,8 @@ describe 'viewing and recording activities' do
 
         it 'shows generic description' do
           visit school_activity_path(school, activity)
-          expect(page).to have_no_text(activity_type.school_specific_description.to_plain_text)
-          expect(page).to have_text(activity_type.description.to_plain_text)
+          expect(page).to have_no_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to have_content(activity_type.description.to_plain_text)
         end
 
         context 'when activity not data driven' do
@@ -189,8 +188,8 @@ describe 'viewing and recording activities' do
 
           it 'shows school specific description' do
             visit school_activity_path(school, activity)
-            expect(page).to have_text(activity_type.school_specific_description.to_plain_text)
-            expect(page).to have_no_text(activity_type.description.to_plain_text)
+            expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+            expect(page).to have_no_content(activity_type.description.to_plain_text)
           end
         end
       end
@@ -212,7 +211,7 @@ describe 'viewing and recording activities' do
         end
 
         it 'shows score and threshold' do
-          expect(page).to have_text('Completing this activity up to 10 times this academic year will earn you 25 points')
+          expect(page).to have_content('Completing this activity up to 10 times this academic year will earn you 25 points')
         end
 
         context 'with non-custom activity' do
@@ -230,8 +229,8 @@ describe 'viewing and recording activities' do
             end
 
             it 'shows activity page' do
-              expect(page).to have_text(activity_type_name)
-              expect(page).to have_text(today.strftime('%A, %d %B %Y'))
+              expect(page).to have_content(activity_type_name)
+              expect(page).to have_content(today.strftime('%A, %d %B %Y'))
             end
           end
         end
@@ -273,11 +272,11 @@ describe 'viewing and recording activities' do
             end
 
             it 'shows description' do
-              expect(page).to have_text(activity_description)
+              expect(page).to have_content(activity_description)
             end
 
             it 'shows title' do
-              expect(page).to have_text(custom_title)
+              expect(page).to have_content(custom_title)
             end
           end
         end
@@ -289,7 +288,7 @@ describe 'viewing and recording activities' do
           end
 
           it 'shows message about exceeded threshold' do
-            expect(page).to have_text('You have already completed this activity 10 times this academic year. You will not score additional points for recording it')
+            expect(page).to have_content('You have already completed this activity 10 times this academic year. You will not score additional points for recording it')
           end
         end
 
@@ -308,7 +307,7 @@ describe 'viewing and recording activities' do
             let(:time) { today - 2.years }
 
             it 'shows the activity completed page' do
-              expect(page).to have_text("Congratulations! We've recorded your activity")
+              expect(page).to have_content("Congratulations! We've recorded your activity")
             end
           end
 
@@ -316,8 +315,8 @@ describe 'viewing and recording activities' do
             let(:school) { create(:school, :with_points, score_points: 20, scoreboard:) }
 
             it 'shows the activity completed page' do
-              expect(page).to have_text("Congratulations! You've just scored #{activity_type.score} points")
-              expect(page).to have_text('You are in 1st place')
+              expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
+              expect(page).to have_content('You are in 1st place')
             end
           end
 
@@ -325,8 +324,8 @@ describe 'viewing and recording activities' do
             let(:school) { create(:school, :with_points, score_points: 5, scoreboard:) }
 
             it 'shows the activity completed page' do
-              expect(page).to have_text("Congratulations! You've just scored #{activity_type.score} points")
-              expect(page).to have_text('You are in 2nd place')
+              expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
+              expect(page).to have_content('You are in 2nd place')
             end
           end
         end
@@ -342,7 +341,7 @@ describe 'viewing and recording activities' do
 
     context 'viewing an activity type' do
       it 'sees prompt to record it' do
-        expect(page).to have_text("Complete this activity on behalf of a school to score #{activity_type.score} points!")
+        expect(page).to have_content("Complete this activity on behalf of a school to score #{activity_type.score} points!")
         expect(page).to have_button('Record this activity')
       end
 
@@ -355,8 +354,8 @@ describe 'viewing and recording activities' do
       it 'redirects to new activity recording page' do
         select other_school.name, from: :school_id
         click_on 'Record this activity'
-        expect(page).to have_text('Record a new energy saving activity for your school')
-        expect(page).to have_text(other_school.name)
+        expect(page).to have_content('Record a new energy saving activity for your school')
+        expect(page).to have_content(other_school.name)
       end
     end
 
@@ -369,7 +368,7 @@ describe 'viewing and recording activities' do
 
       it 'associates activity with correct school from group' do
         expect { click_on 'Save activity' }.to change(other_school.activities, :count).by(1)
-        expect(page).to have_text('Congratulations!')
+        expect(page).to have_content('Congratulations!')
         expect(other_school.activities.most_recent.first.happened_on).to eq(Time.zone.today)
         expect(other_school.activities.most_recent.first.created_by).to eq(group_user)
         expect(other_school.activities.most_recent.first.observations.first.created_by).to eq(group_user)
@@ -381,7 +380,7 @@ describe 'viewing and recording activities' do
 
       it 'does not allow recording an activity' do
         visit new_school_activity_path(school_not_in_group, activity_type_id: activity_type.id)
-        expect(page).to have_text('You are not authorized to access this page')
+        expect(page).to have_content('You are not authorized to access this page')
         expect(page).to have_no_button('Save activity')
       end
     end
@@ -415,7 +414,7 @@ describe 'viewing and recording activities' do
       end
 
       it 'sees prompt to record it' do
-        expect(page).to have_text("Complete this activity on behalf of a school to score #{activity_type.score} points!")
+        expect(page).to have_content("Complete this activity on behalf of a school to score #{activity_type.score} points!")
         expect(page).to have_button('Record this activity')
       end
 
@@ -427,8 +426,8 @@ describe 'viewing and recording activities' do
       it 'redirects to new activity recording page' do
         select school_1.name, from: :school_id
         click_on 'Record this activity'
-        expect(page).to have_text('Record a new energy saving activity for your school')
-        expect(page).to have_text(school_1.name)
+        expect(page).to have_content('Record a new energy saving activity for your school')
+        expect(page).to have_content(school_1.name)
       end
     end
   end
@@ -444,8 +443,8 @@ describe 'viewing and recording activities' do
 
       context 'when school is data enabled' do
         it 'sees school specific content' do
-          expect(page).to have_text(activity_type.school_specific_description.to_plain_text)
-          expect(page).to have_no_text(activity_type.description.to_plain_text)
+          expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to have_no_content(activity_type.description.to_plain_text)
         end
 
         it 'does not see prompt to login' do
@@ -453,7 +452,7 @@ describe 'viewing and recording activities' do
         end
 
         it 'sees prompt to record it' do
-          expect(page).to have_text("Complete this activity to score your school #{activity_type.score} points!")
+          expect(page).to have_content("Complete this activity to score your school #{activity_type.score} points!")
           expect(page).to have_link('Record this activity')
         end
       end
@@ -463,8 +462,8 @@ describe 'viewing and recording activities' do
 
         it 'sees generic content if school if activity is data driven' do
           visit activity_type_path(activity_type)
-          expect(page).to have_no_text(activity_type.school_specific_description.to_plain_text)
-          expect(page).to have_text(activity_type.description.to_plain_text)
+          expect(page).to have_no_content(activity_type.school_specific_description.to_plain_text)
+          expect(page).to have_content(activity_type.description.to_plain_text)
         end
 
         context 'when activity not data driven' do
@@ -472,8 +471,8 @@ describe 'viewing and recording activities' do
 
           it 'sees school specific content' do
             visit activity_type_path(activity_type)
-            expect(page).to have_text(activity_type.school_specific_description.to_plain_text)
-            expect(page).to have_no_text(activity_type.description.to_plain_text)
+            expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
+            expect(page).to have_no_content(activity_type.description.to_plain_text)
           end
         end
       end

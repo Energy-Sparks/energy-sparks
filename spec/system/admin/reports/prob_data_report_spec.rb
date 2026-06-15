@@ -9,10 +9,10 @@ describe 'Prob Data Report', type: :system do
 
   let!(:meter) do
     create(:gas_meter_with_validated_reading_dates,
-           school: school,
-           start_date: Time.zone.today - 5,
-           end_date: Time.zone.today,
-           status: 'PROB')
+      school: school,
+      start_date: Time.zone.today - 5,
+      end_date: Time.zone.today,
+      status: 'PROB')
   end
 
   before do
@@ -32,8 +32,7 @@ describe 'Prob Data Report', type: :system do
     rows = all('tr').map { |tr| tr.all('th, td').map(&:text) }
     expect(rows).to eq([
                          ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter Type', 'Count'],
-                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name,
-                          meter.school.name, meter.mpan_mprn.to_s, meter.name, '', '6']
+                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, '', '6']
                        ])
   end
 

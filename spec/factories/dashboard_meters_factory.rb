@@ -29,12 +29,12 @@ FactoryBot.define do
         meter.external_meter_id = evaluator.actual_meter.id
         (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |date|
           reading = build(:dashboard_one_day_amr_reading,
-                          dashboard_meter: meter,
-                          date: date,
-                          status: evaluator.status,
-                          substitute_date: evaluator.substitute_date,
-                          upload_datetime: evaluator.upload_datetime,
-                          kwh_data_x48: evaluator.kwh_data_x48)
+                      dashboard_meter: meter,
+                      date: date,
+                      status: evaluator.status,
+                      substitute_date: evaluator.substitute_date,
+                      upload_datetime: evaluator.upload_datetime,
+                      kwh_data_x48: evaluator.kwh_data_x48)
           meter.amr_data.add(date, reading)
         end
       end
@@ -54,9 +54,7 @@ FactoryBot.define do
 
         after(:build) do |meter, evaluator|
           meter.external_meter_id = evaluator.actual_meter.id
-          readings = evaluator.reading_count.times.map do |index|
-            build(:dashboard_one_day_amr_reading, dashboard_meter: meter, date: evaluator.start_reading_date + index)
-          end
+          readings = evaluator.reading_count.times.map { |index| build(:dashboard_one_day_amr_reading, dashboard_meter: meter, date: evaluator.start_reading_date + index) }
           readings.each { |r| meter.amr_data.add(r.date, r) }
         end
       end

@@ -5,13 +5,11 @@ RSpec.shared_examples_for 'a csvimportable' do |zipped_sample_path|
 
   describe '.read_csv_from_zip' do
     it 'finds data csv in zip file' do
-      expect { described_class.read_csv_from_zip(zipped_sample_path) }.not_to raise_error
+      expect {described_class.read_csv_from_zip(zipped_sample_path)}.not_to raise_error
     end
 
     it 'throws error when no data csv is found' do
-      expect do
-        described_class.read_csv_from_zip('./spec/fixtures/csv_importable/zip_with_invalid_csv.zip')
-      end.to raise_error(LoadError)
+      expect {described_class.read_csv_from_zip('./spec/fixtures/csv_importable/zip_with_invalid_csv.zip')}.to raise_error(LoadError)
     end
 
     describe '.import_from_zip' do

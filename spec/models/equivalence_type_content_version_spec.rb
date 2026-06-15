@@ -3,18 +3,12 @@ require 'rails_helper'
 describe EquivalenceTypeContentVersion do
   context 'serialising for transifex' do
     let(:equivalence_type) { create(:equivalence_type) }
-    let!(:content_version) do
-      EquivalenceTypeContentVersion.create(equivalence_type: equivalence_type,
-                                           equivalence: 'some content with {{position}}')
-    end
-    let!(:prior_content_version) do
-      EquivalenceTypeContentVersion.create(equivalence_type: equivalence_type, equivalence: 'replaced',
-                                           replaced_by: content_version)
-    end
+    let!(:content_version) { EquivalenceTypeContentVersion.create(equivalence_type: equivalence_type, equivalence: 'some content with {{position}}') }
+    let!(:prior_content_version) { EquivalenceTypeContentVersion.create(equivalence_type: equivalence_type, equivalence: 'replaced', replaced_by: content_version) }
 
     context 'when fetching records for sync' do
       it 'includes only current content records' do
-        expect(EquivalenceTypeContentVersion.tx_resources).to contain_exactly(content_version)
+        expect(EquivalenceTypeContentVersion.tx_resources).to match_array([content_version])
       end
     end
 
@@ -22,7 +16,7 @@ describe EquivalenceTypeContentVersion do
       it 'includes equivalance' do
         data = content_version.tx_serialise
         key = data['en'].keys.first
-        expect(data['en'][key].keys).to contain_exactly('equivalence_html')
+        expect(data['en'][key].keys).to match_array(['equivalence_html'])
       end
     end
 
@@ -40,7 +34,7 @@ describe EquivalenceTypeContentVersion do
       end
 
       it 'created categories' do
-        expect(content_version.tx_categories).to contain_exactly('equivalence_type')
+        expect(content_version.tx_categories).to match_array(['equivalence_type'])
       end
 
       it 'overrides default name' do

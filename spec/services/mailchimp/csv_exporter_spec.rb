@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 describe Mailchimp::CsvExporter do
-  subject(:service) do
-    described_class.new(add_default_interests: add_default_interests, subscribed: subscribed,
-                        nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
-  end
-
   include_context 'with a stubbed audience manager'
+
+  subject(:service) do
+    described_class.new(add_default_interests: add_default_interests, subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
+  end
 
   let(:add_default_interests) { true }
   let(:subscribed) { [] }
@@ -92,10 +91,7 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a school admin' do
-      let!(:school) do
-        create(:school, :with_school_group, :with_scoreboard, :with_local_authority, default_issues_admin_user: nil,
-                                                                                     region: :east_midlands, percentage_free_school_meals: 35)
-      end
+      let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, default_issues_admin_user: nil, region: :east_midlands, percentage_free_school_meals: 35) }
       let!(:user) { create(:school_admin, school: school) }
 
       it 'matches the contact' do
@@ -175,10 +171,7 @@ describe Mailchimp::CsvExporter do
       end
 
       context 'with archived school' do
-        let!(:school) do
-          create(:school, :with_school_group, :with_scoreboard, :with_local_authority, :archived,
-                 default_issues_admin_user: nil, region: :east_midlands)
-        end
+        let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, :archived, default_issues_admin_user: nil, region: :east_midlands) }
 
         it 'uses correct status' do
           expect(contact.school_status).to eq 'Archived'
@@ -214,18 +207,14 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a group admin' do
-      let!(:user) do
-        create(:group_admin,
-               school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil))
-      end
+      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil)) }
 
       it_behaves_like 'it correctly creates a contact', group_admin: true
       it_behaves_like 'it adds interests correctly'
 
       context 'when subscribed to alerts' do
         let!(:user) do
-          school_group = create(:school_group, :with_default_scoreboard, :with_active_schools,
-                                default_issues_admin_user: nil)
+          school_group = create(:school_group, :with_default_scoreboard, :with_active_schools, default_issues_admin_user: nil)
           user = create(:group_admin, school_group: school_group)
           user.contacts << create(:contact_with_name_email_phone, school: school_group.schools.first)
           user
@@ -238,10 +227,7 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a cluster admin' do
-      let!(:school) do
-        create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35,
-                                                                 school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil))
-      end
+      let!(:school) { create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35, school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil)) }
       let!(:user) { create(:school_admin, :with_cluster_schools, school: school) }
 
       it_behaves_like 'it correctly creates a contact', school_user: false, cluster_admin: true
@@ -279,8 +265,7 @@ describe Mailchimp::CsvExporter do
 
     context 'with a post-migration contact' do
       let(:subscribed) do
-        [create_contact('user@example.org', name: 'John Smith', staff_role: 'School management',
-                                            school_group: 'Unity Schools Partnership', school_or_organisation: 'DfE', tags: 'trustee,external support')]
+        [create_contact('user@example.org', name: 'John Smith', staff_role: 'School management', school_group: 'Unity Schools Partnership', school_or_organisation: 'DfE', tags: 'trustee,external support')]
       end
 
       it_behaves_like 'it adds interests correctly'
@@ -312,10 +297,7 @@ describe Mailchimp::CsvExporter do
     let(:contact) { service.new_nonsubscribed.first }
 
     context 'with a school admin' do
-      let!(:school) do
-        create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands,
-                                                                                     default_issues_admin_user: nil, percentage_free_school_meals: 35)
-      end
+      let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands, default_issues_admin_user: nil, percentage_free_school_meals: 35) }
       let!(:user) { create(:school_admin, school: school) }
 
       before do
@@ -342,10 +324,7 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a group admin' do
-      let!(:user) do
-        create(:group_admin,
-               school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil))
-      end
+      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil)) }
 
       before do
         service.perform
@@ -391,7 +370,7 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a school onboarding user' do
-      let!(:user) { create(:onboarding_user) }
+      let!(:user) { create(:onboarding_user)}
 
       before do
         service.perform
@@ -405,10 +384,7 @@ describe Mailchimp::CsvExporter do
 
   context 'when there is a mixture of user types' do
     let!(:school_group) { create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil) }
-    let!(:school) do
-      create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35,
-                                                               school_group: school_group)
-    end
+    let!(:school) { create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35, school_group: school_group) }
     let!(:school_admin) { create(:school_admin, school: school) }
     let!(:group_admin) { create(:group_admin, school_group: school_group) }
     let!(:staff) { create(:staff) }
@@ -417,8 +393,7 @@ describe Mailchimp::CsvExporter do
 
     let(:subscribed) do
       [
-        create_contact('user@example.org', first_name: 'John', last_name: 'Smith', school_or_organisation: 'DfE',
-                                           user_type: 'School management', other_la: 'bhcc', other_mat: 'Unity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support'),
+        create_contact('user@example.org', first_name: 'John', last_name: 'Smith', school_or_organisation: 'DfE', user_type: 'School management', other_la: 'bhcc', other_mat: 'Unity Schools Partnership', local_authority_and_mats: 'Other', tags: 'trustee,external support'),
         create_contact(school_admin.email)
       ]
     end
@@ -440,8 +415,7 @@ describe Mailchimp::CsvExporter do
     end
 
     it 'creates contacts for all user types' do
-      expect(service.updated_audience[:subscribed].map(&:email_address)).to contain_exactly('user@example.org',
-                                                                                            school_admin.email)
+      expect(service.updated_audience[:subscribed].map(&:email_address)).to contain_exactly('user@example.org', school_admin.email)
 
       expect(service.updated_audience[:unsubscribed].map(&:email_address)).to contain_exactly(staff.email)
 

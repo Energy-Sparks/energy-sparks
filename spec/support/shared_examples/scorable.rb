@@ -32,8 +32,7 @@ RSpec.shared_examples 'a scorable' do
       end
 
       it 'also defaults to the current academic year' do
-        create(:school, :with_points, score_points: 6, school_group: school_group, scoreboard: scoreboard,
-                                      activities_happened_on: 18.months.ago)
+        create :school, :with_points, score_points: 6, school_group: school_group, scoreboard: scoreboard, activities_happened_on: 18.months.ago
         expect(subject.scored_schools(academic_year: last_academic_year).to_a.size).to be 6
         expect(subject.scored_schools(academic_year: this_academic_year).to_a.size).to be 6
         expect(subject.scored_schools.to_a.size).to be 6
@@ -48,10 +47,7 @@ RSpec.shared_examples 'a scorable' do
   end
 
   describe '#previous_academic_year' do
-    let!(:previous_year) do
-      create(:academic_year, calendar: subject.scorable_calendar, start_date: AcademicYear.first.start_date.prev_year,
-                             end_date: AcademicYear.first.start_date.prev_day)
-    end
+    let!(:previous_year) { create(:academic_year, calendar: subject.scorable_calendar, start_date: AcademicYear.first.start_date.prev_year, end_date: AcademicYear.first.start_date.prev_day) }
 
     it 'finds the right year' do
       expect(subject.previous_academic_year).to eq subject.scorable_calendar.academic_year_for(Time.zone.today).previous_year

@@ -57,7 +57,7 @@ describe EconomicCosts do
 
     it 'has expected bill_component_types' do
       # no standing charge as this is economic costs
-      expect(combined_costs.bill_component_types).to contain_exactly('flat_rate')
+      expect(combined_costs.bill_component_types).to match_array(['flat_rate'])
     end
 
     it 'has expected cost for start date' do
@@ -120,7 +120,7 @@ describe EconomicCosts do
 
     it 'has expected bill_component_types' do
       # no standing charge as this is economic costs
-      expect(combined_costs.bill_component_types).to contain_exactly('flat_rate')
+      expect(combined_costs.bill_component_types).to match_array(['flat_rate'])
     end
 
     # should be using cost for latest tariff, not earliest

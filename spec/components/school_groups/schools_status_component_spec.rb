@@ -3,15 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type: :component do
-  subject(:html) { render_inline(described_class.new(**params)) }
-
   let(:school_group) { create(:school_group) }
-  let(:fuel_configuration) do
-    { has_electricity: false,
-      has_gas: false,
-      has_storage_heaters: false,
-      has_solar_pv: false }
-  end
   let!(:school) { create(:school, school_group:, visible: true, data_enabled: true) }
 
   let(:params) do
@@ -23,13 +15,22 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
     }
   end
 
+  subject(:html) { render_inline(described_class.new(**params)) }
+
   it_behaves_like 'an application component' do
     let(:expected_classes) { params[:classes] }
     let(:expected_id) { params[:id] }
   end
 
+  let(:fuel_configuration) do
+    { has_electricity: false,
+      has_gas: false,
+      has_storage_heaters: false,
+      has_solar_pv: false }
+  end
+
   it 'shows the school name' do
-    expect(html).to have_text(school.name)
+    expect(html).to have_content(school.name)
   end
 
   shared_examples 'fuel type icon headers' do |include_storage_heaters: false|
@@ -60,11 +61,11 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
     let!(:onboarding) { create(:school_onboarding, school_group:) }
 
     it 'shows the school name' do
-      expect(html).to have_text(onboarding.name)
+      expect(html).to have_content(onboarding.name)
     end
 
     it 'does not link to a school specific page' do
-      expect(html).to have_no_link(onboarding.name)
+      expect(html).not_to have_link(onboarding.name)
     end
 
     it 'shows the school status as onboarding' do
@@ -112,7 +113,7 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
 
   Schools::FuelConfiguration.fuel_types.each do |fuel_type|
     context "when school has #{fuel_type}" do
-      let!(:school) { create(:school, :with_fuel_configuration, **fuel_configuration, **fuel, school_group:) }
+      let!(:school) { create(:school, :with_fuel_configuration, **fuel_configuration.merge(fuel), school_group:) }
 
       let(:fuel) { { "has_#{fuel_type}": true } }
 

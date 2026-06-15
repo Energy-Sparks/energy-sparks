@@ -6,12 +6,12 @@ describe NavHelper do
 
   describe '.group_for_nav' do
     it 'handles missing user' do
-      expect(helper.group_for_nav(nil)).to be_nil
+      expect(helper.group_for_nav(nil)).to be nil
     end
 
     it 'handles missing group' do
       create(:staff, school: create(:school))
-      expect(helper.group_for_nav(nil)).to be_nil
+      expect(helper.group_for_nav(nil)).to be nil
     end
 
     it 'returns group if group admin' do

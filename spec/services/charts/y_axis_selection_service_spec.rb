@@ -65,7 +65,7 @@ describe Charts::YAxisSelectionService do
       end
 
       context 'no co2' do
-        let(:options) { %i[kwh £] }
+        let(:options) { [:kwh, :£] }
 
         it 'returns nil' do
           expect(service.select_y_axis).to be_nil

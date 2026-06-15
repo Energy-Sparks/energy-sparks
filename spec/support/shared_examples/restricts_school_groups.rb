@@ -1,7 +1,7 @@
 RSpec.shared_examples 'restricted school group association' do |factory|
-  subject { build(factory, school_group: restricted_group) }
-
   let(:restricted_group) { create(:school_group, group_type: :diocese) }
+
+  subject { build(factory, school_group: restricted_group) }
 
   before { subject.valid? }
 

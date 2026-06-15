@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 describe SchoolGroup, :school_groups, type: :model do
-  subject { school_group }
-
-  let!(:school_group) { create(:school_group, public: public) }
+  let!(:school_group) { create :school_group, public: public }
   let(:public) { true }
+
+  subject { school_group }
 
   describe '#safe_destroy' do
     it 'does not let you delete if there is an associated school' do
@@ -80,7 +80,7 @@ describe SchoolGroup, :school_groups, type: :model do
       SchoolGroupPartner.create(school_group: school_group, partner: partner, position: 1)
       SchoolGroupPartner.create(school_group: school_group, partner: other_partner, position: 0)
       expect(school_group.partners.first).to eql(other_partner)
-      expect(school_group.partners).to contain_exactly(other_partner, partner)
+      expect(school_group.partners).to match_array([other_partner, partner])
     end
   end
 
@@ -90,22 +90,22 @@ describe SchoolGroup, :school_groups, type: :model do
     context 'with gas and electricity' do
       before do
         create(:school, :with_fuel_configuration, school_group: school_group,
-                                                  has_gas: true, has_electricity: true, has_storage_heaters: false, has_solar_pv: false)
+                has_gas: true, has_electricity: true, has_storage_heaters: false, has_solar_pv: false)
       end
 
       it 'returns expected fuel types' do
-        expect(school_group.fuel_types.sort).to eq(%i[electricity gas])
+        expect(school_group.fuel_types.sort).to eq([:electricity, :gas])
       end
     end
 
     context 'with gas and electricity and solar' do
       before do
         create(:school, :with_fuel_configuration, school_group: school_group,
-                                                  has_gas: true, has_electricity: true, has_solar_pv: true, has_storage_heaters: false)
+                has_gas: true, has_electricity: true, has_solar_pv: true, has_storage_heaters: false)
       end
 
       it 'returns expected fuel types' do
-        expect(school_group.fuel_types.sort).to eq(%i[electricity gas solar_pv])
+        expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :solar_pv])
       end
     end
 
@@ -115,7 +115,7 @@ describe SchoolGroup, :school_groups, type: :model do
       end
 
       it 'returns expected fuel types' do
-        expect(school_group.fuel_types.sort).to eq(%i[electricity gas solar_pv storage_heaters])
+        expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :solar_pv, :storage_heaters])
       end
     end
 
@@ -149,55 +149,28 @@ describe SchoolGroup, :school_groups, type: :model do
        issue.updated_at].join(',')
     end
 
-    subject(:csv) { school_group.all_issues.to_csv }
-
-    let(:header) do
-      'For,Name,Title,Description,Fuel type,Type,Status,Status summary,Tags,Meters,Meter status,Data sources,Owned by,Next review date,Created by,Created at,Updated by,Updated at'
-    end
+    let(:header) { 'For,Name,Title,Description,Fuel type,Type,Status,Status summary,Tags,Meters,Meter status,Data sources,Owned by,Next review date,Created by,Created at,Updated by,Updated at' }
     let(:user) { create(:admin) }
     let(:data_source) { create(:data_source) }
+
+    subject(:csv) { school_group.all_issues.to_csv }
 
     context 'with issues' do
       let(:school) { create(:school, school_group: school_group) }
 
-      let!(:school_in_school_group_issue) do
-        create(:issue, updated_by: user, owned_by: user, issueable: school, fuel_type: nil)
-      end
-      let!(:school_group_issue) do
-        create(:issue, updated_by: user, issueable: school_group, fuel_type: :electricity)
-      end
-      let!(:different_school_in_school_group_issue) do
-        create(:issue, updated_by: user, issueable: create(:school, school_group: school_group), fuel_type: :gas)
-      end
-      let!(:school_issue_with_meters) do
-        create(:issue, updated_by: user, issueable: school, meters: create_list(:gas_meter, 2))
-      end
-      let!(:school_issue_with_data_sources) do
-        create(:issue, updated_by: user, issueable: school, meters: 2.times.map do
-          create(:gas_meter, data_source: data_source)
-        end)
-      end
-      let!(:closed_school_group_issue) do
-        create(:issue, status: :closed, updated_by: user, issueable: school_group, fuel_type: :gas)
-      end
-      let!(:school_group_note) do
-        create(:issue, issue_type: :note, updated_by: user, issueable: school_group, fuel_type: :gas)
-      end
-      let!(:school_in_different_school_group_issue) do
-        create(:issue, updated_by: user, issueable: create(:school, school_group: create(:school_group)),
-                       fuel_type: :electricity)
-      end
-      let!(:different_school_group_issue) do
-        create(:issue, updated_by: user, issueable: create(:school_group), fuel_type: :electricity)
-      end
+      let!(:school_in_school_group_issue) { create(:issue, updated_by: user, owned_by: user, issueable: school, fuel_type: nil) }
+      let!(:school_group_issue) {           create(:issue, updated_by: user, issueable: school_group, fuel_type: :electricity) }
+      let!(:different_school_in_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school, school_group: school_group), fuel_type: :gas) }
+      let!(:school_issue_with_meters) {     create(:issue, updated_by: user, issueable: school, meters: create_list(:gas_meter, 2)) }
+      let!(:school_issue_with_data_sources) { create(:issue, updated_by: user, issueable: school, meters: 2.times.map { create(:gas_meter, data_source: data_source) }) }
+      let!(:closed_school_group_issue) {    create(:issue, status: :closed, updated_by: user, issueable: school_group, fuel_type: :gas) }
+      let!(:school_group_note) {            create(:issue, issue_type: :note, updated_by: user, issueable: school_group, fuel_type: :gas) }
+      let!(:school_in_different_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school, school_group: create(:school_group)), fuel_type: :electricity) }
+      let!(:different_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school_group), fuel_type: :electricity) }
 
       let!(:school_for_bug) { School.find_by(id: school_group.id) || create(:school, id: school_group.id) }
-      let!(:school_issue_with_issueable_id_same_as_school_group_id) do
-        create(:issue, updated_by: user, issueable_type: 'School', issueable_id: school_group.id)
-      end
-      let!(:review_date_issue) do
-        create(:issue, issueable: school_group, review_date: 3.days.ago, fuel_type: :electricity)
-      end
+      let!(:school_issue_with_issueable_id_same_as_school_group_id) { create(:issue, updated_by: user, issueable_type: 'School', issueable_id: school_group.id) }
+      let!(:review_date_issue) { create(:issue, issueable: school_group, review_date: 3.days.ago, fuel_type: :electricity) }
 
       it { expect(csv.lines.count).to eq(9) }
       it { expect(csv.lines.first.chomp).to eq(header) }
@@ -263,7 +236,7 @@ describe SchoolGroup, :school_groups, type: :model do
 
       context 'as staff' do
         let(:group) { school_group }
-        let!(:user) { create(:pupil, school: school) }
+        let!(:user) { create(:pupil, school: school)}
 
         it 'allows viewing' do
           expect(ability).to be_able_to(:show, school_group)
@@ -292,8 +265,8 @@ describe SchoolGroup, :school_groups, type: :model do
   end
 
   context 'as a Scorable' do
-    let!(:school_group)      { create(:school_group, default_template_calendar: template_calendar) }
-    let!(:template_calendar) { create(:template_calendar, :with_previous_and_next_academic_years) }
+    let!(:school_group)      { create :school_group, default_template_calendar: template_calendar }
+    let!(:template_calendar) { create :template_calendar, :with_previous_and_next_academic_years }
     let(:scoreboard)   { nil }
 
     it_behaves_like 'a scorable'
@@ -305,7 +278,7 @@ describe SchoolGroup, :school_groups, type: :model do
     it_behaves_like 'a MailchimpUpdateable' do
       let(:mailchimp_field_changes) do
         {
-          name: 'New name'
+          name: 'New name',
         }
       end
     end

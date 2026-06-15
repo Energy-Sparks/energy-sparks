@@ -14,13 +14,11 @@ describe HelpPageHelper, type: :helper do
       let!(:help_page) { create(:help_page, feature: :school_targets, title: 'My School Targets', published: true) }
 
       it 'formats title' do
-        expect(helper.link_to_help_for_feature(:school_targets,
-                                               title: 'Info for school targets')).to have_text('Info for school targets')
+        expect(helper.link_to_help_for_feature(:school_targets, title: 'Info for school targets')).to have_content('Info for school targets')
       end
 
       it 'formats link' do
-        expect(helper.link_to_help_for_feature(:school_targets,
-                                               title: 'Info for school targets')).to include('/help/my-school-targets')
+        expect(helper.link_to_help_for_feature(:school_targets, title: 'Info for school targets')).to include('/help/my-school-targets')
       end
     end
   end

@@ -3,7 +3,8 @@ class Scoreboards::SchoolSummaryComponentPreview < ViewComponent::Preview
   class AllScorableSchools
     include Scorable
 
-    def initialize; end
+    def initialize
+    end
 
     def schools
       School

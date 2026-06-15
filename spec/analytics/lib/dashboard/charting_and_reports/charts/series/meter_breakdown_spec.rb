@@ -31,8 +31,7 @@ describe Series::MeterBreakdown do
       let(:meters)  { [meter_1, meter_2, meter_3] }
 
       it 'adjusts the individual series names' do
-        expect(series_manager.series_names).to contain_exactly(meter_1.qualified_series_name,
-                                                               meter_2.qualified_series_name, meter_3.series_name)
+        expect(series_manager.series_names).to contain_exactly(meter_1.qualified_series_name, meter_2.qualified_series_name, meter_3.series_name)
       end
     end
   end

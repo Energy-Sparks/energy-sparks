@@ -8,8 +8,8 @@ RSpec.describe 'Managing school group partners', :include_application_helper, :s
 
   shared_examples 'a partner management form' do
     it 'has a partner link' do
-      expect(page).to have_text(school_group.name)
-      expect(page).to have_text(partners.first.display_name)
+      expect(page).to have_content(school_group.name)
+      expect(page).to have_content(partners.first.display_name)
     end
 
     it 'has blank partner fields for all partners' do

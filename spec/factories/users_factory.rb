@@ -8,7 +8,7 @@ FactoryBot.define do
     factory :school_admin do
       name { 'School manager' }
       role { :school_admin }
-      association :staff_role, factory: %i[staff_role management]
+      association :staff_role, factory: [:staff_role, :management]
       school
 
       trait :with_cluster_schools do
@@ -34,7 +34,7 @@ FactoryBot.define do
     factory :staff do
       name { 'A Teacher' }
       role { :staff }
-      association :staff_role, factory: %i[staff_role teacher]
+      association :staff_role, factory: [:staff_role, :teacher]
       school
     end
 
@@ -47,16 +47,16 @@ FactoryBot.define do
     factory :onboarding_user do
       name { 'A Teacher' }
       role { :school_onboarding }
-      association :staff_role, factory: %i[staff_role teacher]
+      association :staff_role, factory: [:staff_role, :teacher]
     end
 
     factory :admin do
-      name { 'Admin' }
+      name { 'Admin'}
       role { :admin }
     end
 
     factory :analytics do
-      name { 'Analytics' }
+      name { 'Analytics'}
       role { :analytics }
     end
 
@@ -65,13 +65,13 @@ FactoryBot.define do
     end
 
     factory :group_admin do
-      name { 'Group admin' }
+      name { 'Group admin'}
       role { :group_admin }
       school_group
     end
 
     factory :group_manager do
-      name { 'Group manager' }
+      name { 'Group manager'}
       role { :group_manager }
       school_group { association :school_group, :project_group }
     end

@@ -14,7 +14,7 @@ RSpec.describe 'Admin case studies' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_text('You need to sign in or sign up before continuing.')
+        expect(page).to have_content('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe 'Admin case studies' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_text('You need to sign in or sign up before continuing.')
+        expect(page).to have_content('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe 'Admin case studies' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_text('You need to sign in or sign up before continuing.')
+        expect(page).to have_content('You need to sign in or sign up before continuing.')
       end
     end
   end
@@ -50,7 +50,7 @@ RSpec.describe 'Admin case studies' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_text('You are not authorized to view that page.')
+        expect(page).to have_content('You are not authorized to view that page.')
       end
     end
 
@@ -60,7 +60,7 @@ RSpec.describe 'Admin case studies' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_text('You are not authorized to view that page.')
+        expect(page).to have_content('You are not authorized to view that page.')
       end
     end
   end
@@ -74,10 +74,10 @@ RSpec.describe 'Admin case studies' do
       end
 
       it 'lists the case study' do
-        expect(page).to have_text(case_study.title)
-        expect(page).to have_text(case_study.description.to_plain_text)
+        expect(page).to have_content(case_study.title)
+        expect(page).to have_content(case_study.description.to_plain_text)
         case_study.tag_list.each do |tag|
-          expect(page).to have_text(tag)
+          expect(page).to have_content(tag)
         end
         expect(page).to have_link('Download', href: case_study_download_path(case_study, locale: :en))
       end
@@ -122,10 +122,10 @@ RSpec.describe 'Admin case studies' do
             click_on 'Save'
           end
 
-          it { expect(page).to have_text("Title *\ncan't be blank") }
+          it { expect(page).to have_content("Title *\ncan't be blank") }
 
           it {
-            expect(page).to have_text("Image\nhas an invalid content type (authorized content types are PNG, JPG)")
+            expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)")
           }
         end
 
@@ -144,12 +144,12 @@ RSpec.describe 'Admin case studies' do
             click_on 'Save'
           end
 
-          it { expect(page).to have_text('Updated title') }
-          it { expect(page).to have_text(school_group.name) }
-          it { expect(page).to have_text('Updated description') }
-          it { expect(page).to have_text('en1 en2') }
-          it { expect(page).to have_text('3') }
-          it { expect(page).to have_text('Case study was successfully updated.') }
+          it { expect(page).to have_content('Updated title') }
+          it { expect(page).to have_content(school_group.name) }
+          it { expect(page).to have_content('Updated description') }
+          it { expect(page).to have_content('en1 en2') }
+          it { expect(page).to have_content('3') }
+          it { expect(page).to have_content('Case study was successfully updated.') }
 
           it 'resizes images to 1400px width max' do
             case_study.reload.image.analyze
@@ -169,10 +169,10 @@ RSpec.describe 'Admin case studies' do
             click_on 'Save'
           end
 
-          it { expect(page).to have_text("Title *\ncan't be blank") }
+          it { expect(page).to have_content("Title *\ncan't be blank") }
 
           it {
-            expect(page).to have_text("Image\nhas an invalid content type (authorized content types are PNG, JPG)")
+            expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)")
           }
         end
 
@@ -182,7 +182,7 @@ RSpec.describe 'Admin case studies' do
             click_on 'Save'
           end
 
-          it { expect(page).to have_text('No image attached') }
+          it { expect(page).to have_content('No image attached') }
         end
 
         context 'with valid attributes' do
@@ -204,12 +204,12 @@ RSpec.describe 'Admin case studies' do
             expect(page).to have_current_path(admin_case_study_path(CaseStudy.last))
           end
 
-          it { expect(page).to have_text('New Case Study Title') }
-          it { expect(page).to have_text(school_group.name) }
-          it { expect(page).to have_text('This is a new case study description.') }
-          it { expect(page).to have_text('new example') }
-          it { expect(page).to have_text('7') }
-          it { expect(page).to have_text('Case study was successfully created.') }
+          it { expect(page).to have_content('New Case Study Title') }
+          it { expect(page).to have_content(school_group.name) }
+          it { expect(page).to have_content('This is a new case study description.') }
+          it { expect(page).to have_content('new example') }
+          it { expect(page).to have_content('7') }
+          it { expect(page).to have_content('Case study was successfully created.') }
 
           it 'resizes images to 1400px width max' do
             case_study = CaseStudy.last
@@ -241,7 +241,7 @@ RSpec.describe 'Admin case studies' do
         end
 
         it 'no longer lists the case study' do
-          expect(page).to have_no_text('Delete me')
+          expect(page).to have_no_content('Delete me')
         end
       end
     end

@@ -19,13 +19,12 @@ describe Equivalences::Calculator do
       }
     )
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 },
-                                                                          :electricity).and_return(
-                                                                            {
-                                                                              formatted_equivalence: '200,000',
-                                                                              show_equivalence: true
-                                                                            }
-                                                                          )
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 }, :electricity).and_return(
+      {
+        formatted_equivalence: '200,000',
+        show_equivalence: true
+      }
+    )
 
     equivalence = Equivalences::Calculator.new(school, analytics).perform(equivalence_type)
 
@@ -64,13 +63,12 @@ describe Equivalences::Calculator do
       }
     )
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 },
-                                                                          :electricity).and_return(
-                                                                            {
-                                                                              formatted_equivalence: '200,000',
-                                                                              show_equivalence: false
-                                                                            }
-                                                                          )
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 }, :electricity).and_return(
+      {
+        formatted_equivalence: '200,000',
+        show_equivalence: false
+      }
+    )
 
     equivalence = Equivalences::Calculator.new(school, analytics).perform(equivalence_type)
 
@@ -97,15 +95,14 @@ describe Equivalences::Calculator do
       }
     )
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 },
-                                                                          :electricity).and_return(
-                                                                            {
-                                                                              formatted_equivalence: '200,000',
-                                                                              show_equivalence: true,
-                                                                              from_date: Date.new(2017, 1, 1),
-                                                                              to_date: Date.new(2019, 1, 1)
-                                                                            }
-                                                                          )
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 }, :electricity).and_return(
+      {
+        formatted_equivalence: '200,000',
+        show_equivalence: true,
+        from_date: Date.new(2017, 1, 1),
+        to_date: Date.new(2019, 1, 1)
+      }
+    )
 
     equivalence = Equivalences::Calculator.new(school, analytics).perform(equivalence_type)
 

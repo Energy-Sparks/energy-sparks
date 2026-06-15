@@ -225,14 +225,12 @@ describe SchoolCreator, :schools, type: :service do
         let(:school) { create(:school, :with_consent, school_group:, data_enabled: false, visible:) }
 
         it 'touches the group' do
-          expect { service.make_data_enabled! }.to(change { school_group.reload.updated_at })
+          expect { service.make_data_enabled! }.to(change {school_group.reload.updated_at })
         end
       end
 
       context 'when there is an activation date' do
-        let(:school) do
-          create(:school, :with_consent, data_enabled: false, visible:, activation_date: Time.zone.today - 1)
-        end
+        let(:school) { create(:school, :with_consent, data_enabled: false, visible:, activation_date: Time.zone.today - 1) }
 
         it 'does not change the activation date' do
           service.make_data_enabled!
@@ -285,7 +283,7 @@ describe SchoolCreator, :schools, type: :service do
       let(:school) { create(:school, school_group:, visible: false) }
 
       it 'touches the group' do
-        expect { service.make_visible! }.to(change { school_group.reload.updated_at })
+        expect { service.make_visible! }.to(change {school_group.reload.updated_at })
       end
     end
 

@@ -123,7 +123,7 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: 1.day.from_now)
       visit_tab(tab)
       expect(content(tab)).to \
-        have_text('Target date is in the future so no consumption has yet been recorded.')
+        have_content('Target date is in the future so no consumption has yet been recorded.')
     end
 
     it 'missing previous years data' do
@@ -277,7 +277,7 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: 1.day.from_now)
       visit_tab(tab)
       expect(content(tab)).to \
-        have_text('Target date is in the future so no consumption has yet been recorded.')
+        have_content('Target date is in the future so no consumption has yet been recorded.')
     end
 
     it 'missing previous years data' do

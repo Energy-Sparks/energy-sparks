@@ -5,19 +5,19 @@ require 'rails_helper'
 RSpec.shared_examples_for 'a listed meter' do |admin: true, staff: false|
   it 'displays list heading' do
     if meter.active
-      expect(page).to have_text('Active meters')
+      expect(page).to have_content('Active meters')
     else
-      expect(page).to have_text('Inactive meters')
+      expect(page).to have_content('Inactive meters')
     end
   end
 
   it 'displays meter data' do
-    expect(page).to have_text(meter.mpan_mprn)
-    expect(page).to have_text(meter.name)
-    expect(page).to have_text(short_dates(meter.first_validated_reading))
-    expect(page).to have_text(short_dates(meter.last_validated_reading))
-    expect(page).to have_text(meter.zero_reading_days.count)
-    expect(page).to have_text(meter.gappy_validated_readings.count)
+    expect(page).to have_content(meter.mpan_mprn)
+    expect(page).to have_content(meter.name)
+    expect(page).to have_content(short_dates(meter.first_validated_reading))
+    expect(page).to have_content(short_dates(meter.last_validated_reading))
+    expect(page).to have_content(meter.zero_reading_days.count)
+    expect(page).to have_content(meter.gappy_validated_readings.count)
   end
 
   it 'displays meter links' do
@@ -65,7 +65,7 @@ RSpec.shared_examples_for 'it creates meters' do |email: false, select_data_sour
 
     it 'requires a type' do
       click_on 'Create Meter'
-      expect(page).to have_text("Meter type can't be blank")
+      expect(page).to have_content("Meter type can't be blank")
     end
 
     it { expect(page).to have_no_select('Data source') } unless select_data_source
@@ -222,10 +222,10 @@ describe 'meter management', :include_application_helper, :meters do
     end
 
     it 'does not show things it should not' do
-      expect(page).to have_no_text('Delete')
-      expect(page).to have_no_text('Create Meter')
-      expect(page).to have_no_text('Activate')
-      expect(page).to have_no_text('Deactivate')
+      expect(page).to have_no_content('Delete')
+      expect(page).to have_no_content('Create Meter')
+      expect(page).to have_no_content('Activate')
+      expect(page).to have_no_content('Deactivate')
     end
 
     it_behaves_like 'the meter management page for staff', creates_meters: false
@@ -296,7 +296,7 @@ describe 'meter management', :include_application_helper, :meters do
 
           it 'redirects to manage meters page' do
             expect(page).to have_link(school.name)
-            expect(page).to have_text('Manage meters')
+            expect(page).to have_content('Manage meters')
           end
         end
       end
@@ -318,7 +318,7 @@ describe 'meter management', :include_application_helper, :meters do
 
         it 'redirects to manage meters page' do
           expect(page).to have_link(school.name)
-          expect(page).to have_text('Manage meters')
+          expect(page).to have_content('Manage meters')
         end
       end
 
@@ -360,8 +360,8 @@ describe 'meter management', :include_application_helper, :meters do
 
       it 'shows the status and dates' do
         click_on meter.mpan_mprn.to_s
-        expect(page).to have_text('Available')
-        expect(page).to have_text(Time.zone.today.rfc2822)
+        expect(page).to have_content('Available')
+        expect(page).to have_content(Time.zone.today.rfc2822)
       end
 
       it 'the meter inventory button can be shown' do
@@ -369,14 +369,14 @@ describe 'meter management', :include_application_helper, :meters do
         stub_request(:get, 'https://n3rgy.test/details').to_return(body: { details: 999 }.to_json)
         click_on meter.mpan_mprn.to_s
         click_on 'Inventory'
-        expect(page).to have_text('details')
-        expect(page).to have_text('999')
+        expect(page).to have_content('details')
+        expect(page).to have_content('999')
       end
 
       it 'the tariff report can be shown' do
         click_on meter.mpan_mprn.to_s
         click_on 'Tariff Report'
-        expect(page).to have_text('Smart meter tariffs')
+        expect(page).to have_content('Smart meter tariffs')
       end
 
       it 'the dcc checkboxes and status are shown on the edit form' do
@@ -488,13 +488,13 @@ describe 'meter management', :include_application_helper, :meters do
 
       it 'does not show the CSV download button if no readings' do
         expect(gas_meter.amr_validated_readings.empty?).to be true
-        expect(page).to have_no_text('CSV')
+        expect(page).to have_no_content('CSV')
       end
 
       it 'has Perse details' do
         stub_request(:get, "https://n3rgy.test/find-mpxn/#{gas_meter.mpan_mprn}")
         click_on gas_meter.mpan_mprn.to_s
-        expect(page).to have_text('Perse API None')
+        expect(page).to have_content('Perse API None')
       end
     end
 

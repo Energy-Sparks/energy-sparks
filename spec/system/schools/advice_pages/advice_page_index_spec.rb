@@ -38,8 +38,8 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
         context 'displays the holding page template' do
           it 'renders a loading page' do
             visit school_advice_path(school)
-            expect(page).to have_text("Energy Sparks is processing all of this school's data to provide today's analysis")
-            expect(page).to have_text("Once we've finished, we will re-direct you to the school dashboard")
+            expect(page).to have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
+            expect(page).to have_content("Once we've finished, we will re-direct you to the school dashboard")
           end
         end
 
@@ -48,20 +48,19 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
             visit school_advice_path(school)
             expect(page).to have_title(I18n.t('advice_pages.index.title'))
             # if redirect fails it will still be processing
-            expect(page).to have_no_text('processing')
-            expect(page).to have_no_text("we're having trouble processing your energy data today")
+            expect(page).not_to have_content('processing')
+            expect(page).not_to have_content("we're having trouble processing your energy data today")
           end
         end
 
         context 'with an ajax loading error', :js do
           before do
-            allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_raise(StandardError,
-                                                                                                  'It went wrong')
+            allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_raise(StandardError, 'It went wrong')
           end
 
           it 'shows an error message', :errors_expected do
             visit school_advice_path(school)
-            expect(page).to have_text("we're having trouble processing your energy data today")
+            expect(page).to have_content("we're having trouble processing your energy data today")
           end
         end
       end
@@ -80,7 +79,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
         end
 
         it 'and redirects to pupil dashboard' do
-          expect(page).to have_text("We're setting up this school's energy data and will update this page when it is ready to explore")
+          expect(page).to have_content("We're setting up this school's energy data and will update this page when it is ready to explore")
         end
       end
     end
@@ -92,13 +91,13 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     end
 
     it { expect(page).to have_title(I18n.t('advice_pages.index.title')) }
-    it { expect(page).to have_text(I18n.t('advice_pages.index.title')) }
+    it { expect(page).to have_content(I18n.t('advice_pages.index.title')) }
     it { expect(page.body).to include(I18n.t('advice_pages.index.show.intro_html')) }
     it { expect(page).to have_link(I18n.t('advice_pages.nav.overview'), href: school_advice_path(school)) }
 
     # no links if no alerts or priorities to display
-    it { expect(page).to have_no_link(href: alerts_school_advice_path(school)) }
-    it { expect(page).to have_no_link(href: priorities_school_advice_path(school)) }
+    it { expect(page).not_to have_link(href: alerts_school_advice_path(school)) }
+    it { expect(page).not_to have_link(href: priorities_school_advice_path(school)) }
 
     it 'shows links in navbar' do
       within('#page-nav') do
@@ -107,8 +106,8 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     end
 
     it 'shows the list of pages' do
-      expect(page).to have_text(I18n.t("advice_pages.nav.pages.#{key}"))
-      expect(page).to have_text(I18n.t("advice_pages.index.show.page_summary.#{key}"))
+      expect(page).to have_content(I18n.t("advice_pages.nav.pages.#{key}"))
+      expect(page).to have_content(I18n.t("advice_pages.index.show.page_summary.#{key}"))
     end
 
     context 'when school has no public analysis' do
@@ -123,7 +122,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
         let(:user) { create(:staff, school: school) }
 
         it 'does not show login page' do
-          expect(page).to have_no_link(login_text)
+          expect(page).not_to have_link(login_text)
         end
       end
     end
@@ -138,15 +137,15 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
 
     context 'when rendering charts' do
       context 'with no charts to display' do
-        it { expect(page).to have_no_css('#management-energy-overview') }
+        it { expect(page).not_to have_css('#management-energy-overview') }
       end
 
       context 'with charts available' do
         let(:dashboard_charts) do
-          %i[management_dashboard_group_by_week_electricity
-             management_dashboard_group_by_week_gas
-             management_dashboard_group_by_week_storage_heater
-             management_dashboard_group_by_month_solar_pv]
+          [:management_dashboard_group_by_week_electricity,
+           :management_dashboard_group_by_week_gas,
+           :management_dashboard_group_by_week_storage_heater,
+           :management_dashboard_group_by_month_solar_pv]
         end
 
         it 'displays the expected charts' do
@@ -174,7 +173,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
                                   href: alerts_school_advice_path(school))
       }
 
-      it { expect(page).to have_text('(2)') }
+      it { expect(page).to have_content('(2)') }
 
       context 'it shows the alerts' do
         before do
@@ -182,11 +181,11 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
         end
 
         it 'displays the alert group' do
-          expect(page).to have_text('Long term trends and advice')
+          expect(page).to have_content('Long term trends and advice')
         end
 
         it 'displays English alert text' do
-          expect(page).to have_text('You can save £5,000 on heating in 1 year')
+          expect(page).to have_content('You can save £5,000 on heating in 1 year')
         end
       end
     end
@@ -203,7 +202,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
                                   href: priorities_school_advice_path(school))
       }
 
-      it { expect(page).to have_text('(2)') }
+      it { expect(page).to have_content('(2)') }
 
       context 'it shows the priorities' do
         before do
@@ -211,8 +210,8 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
         end
 
         it 'displays English alert text' do
-          expect(page).to have_text('Save on heating')
-          expect(page).to have_text('High baseload')
+          expect(page).to have_content('Save on heating')
+          expect(page).to have_content('High baseload')
         end
       end
     end
@@ -221,14 +220,13 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
       before do
         create(:advice_page, key: :electricity_long_term, fuel_type: :electricity)
         meter_collection = AggregateSchoolService.new(school).aggregate_school
-        Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: school,
-                                                              aggregate_school: meter_collection).generate!
+        Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: school, aggregate_school: meter_collection).generate!
         refresh
       end
 
       it 'shows the fuel comparison' do
         expect(page).to have_css('#electricity-comparison')
-        expect(page).to have_text(I18n.t('components.comparison_overview.title'))
+        expect(page).to have_content(I18n.t('components.comparison_overview.title'))
       end
     end
   end

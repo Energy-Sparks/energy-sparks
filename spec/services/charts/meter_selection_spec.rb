@@ -40,9 +40,7 @@ describe Charts::MeterSelection do
     end
 
     context 'with a filter' do
-      subject(:selection) do
-        described_class.new(school, aggregate_school_service, :electricity, filter: :non_heating_only?)
-      end
+      subject(:selection) { described_class.new(school, aggregate_school_service, :electricity, filter: :non_heating_only?) }
 
       it 'applies the filter' do
         allow(meters.first).to receive(:non_heating_only?).and_return(true)

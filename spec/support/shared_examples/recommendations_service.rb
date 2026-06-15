@@ -18,7 +18,7 @@ RSpec.shared_examples 'a service making recommendations based on recent activity
     end
 
     it 'returns random from rest of available types' do
-      expect(recent_activity[1..]).to contain_exactly(task_type_2, task_type_4)
+      expect(recent_activity[1..]).to match_array([task_type_2, task_type_4])
     end
   end
 
@@ -36,7 +36,7 @@ RSpec.shared_examples 'a service making recommendations based on recent activity
     end
 
     it 'returns random from available types' do
-      expect(recent_activity[1..]).to contain_exactly(task_type_2, task_type_3, task_type_4)
+      expect(recent_activity[1..]).to match_array([task_type_2, task_type_3, task_type_4])
     end
   end
 
@@ -63,42 +63,40 @@ RSpec.shared_examples 'a service making recommendations based on recent activity
 
   context 'with no tasks completed' do
     it 'suggests from random' do
-      expect(recent_activity).to contain_exactly(task_type_1, task_type_2, task_type_3, task_type_4)
+      expect(recent_activity).to match_array([task_type_1, task_type_2, task_type_3, task_type_4])
     end
   end
 end
 
 RSpec.shared_examples 'a service making recommendations based on energy use' do |with_todos: false|
-  let!(:alert_generation_run) { create(:alert_generation_run, school: school) }
-  let!(:alert_type_elec) { create(:alert_type, fuel_type: :electricity) }
-  let!(:alert_type_gas) { create(:alert_type, fuel_type: :gas) }
+  let!(:alert_generation_run) { create(:alert_generation_run, school: school)}
+  let!(:alert_type_elec) { create(:alert_type, fuel_type: :electricity)}
+  let!(:alert_type_gas) { create(:alert_type, fuel_type: :gas)}
 
-  let!(:elec) { 3.times.collect { |i| create(task_type, name: "elec #{i}") } }
-  let!(:gas) { 3.times.collect { |i| create(task_type, name: "gas #{i}") } }
+  let!(:elec) { 3.times.collect {|i| create(task_type, name: "elec #{i}") } }
+  let!(:gas) { 3.times.collect {|i| create(task_type, name: "gas #{i}") } }
 
-  let!(:alert_type_rating_elec) do
-    create(:alert_type_rating, rating_from: 2.0, rating_to: 6.0, alert_type: alert_type_elec, "#{task_types}": elec)
-  end
-  let!(:alert_type_rating_gas) do
-    create(:alert_type_rating, rating_from: 2.0, rating_to: 6.0, alert_type: alert_type_gas, "#{task_types}": gas)
-  end
+  let!(:alert_type_rating_elec) { create(:alert_type_rating, rating_from: 2.0, rating_to: 6.0, alert_type: alert_type_elec, "#{task_types}": elec) }
+  let!(:alert_type_rating_gas) { create(:alert_type_rating, rating_from: 2.0, rating_to: 6.0, alert_type: alert_type_gas, "#{task_types}": gas) }
 
   let(:alert_rating_elec) { 4.0 }
 
   let!(:alert_elec) do
     create(:alert,
-           alert_generation_run: alert_generation_run,
-           alert_type: alert_type_elec,
-           school: school,
-           rating: alert_rating_elec)
+      alert_generation_run: alert_generation_run,
+      alert_type: alert_type_elec,
+      school: school,
+      rating: alert_rating_elec
+    )
   end
 
   let!(:alert_gas) do
     create(:alert,
-           alert_generation_run: alert_generation_run,
-           alert_type: alert_type_gas,
-           school: school,
-           rating: 5.0)
+      alert_generation_run: alert_generation_run,
+      alert_type: alert_type_gas,
+      school: school,
+      rating: 5.0
+    )
   end
 
   it 'includes ratings suggestions alternating by fuel type' do
@@ -133,17 +131,15 @@ RSpec.shared_examples 'a service making recommendations based on energy use' do 
 
   context 'when there is an alert with higher rating' do
     let!(:one_gas) { [create(task_type, name: 'another gas')] }
-    let!(:another_alert_type_gas) { create(:alert_type, fuel_type: :gas) }
-    let!(:another_alert_type_rating_gas) do
-      create(:alert_type_rating, rating_from: 1.0, rating_to: 10.0, alert_type: another_alert_type_gas,
-                                 "#{task_types}": one_gas)
-    end
+    let!(:another_alert_type_gas) { create(:alert_type, fuel_type: :gas)}
+    let!(:another_alert_type_rating_gas) { create(:alert_type_rating, rating_from: 1.0, rating_to: 10.0, alert_type: another_alert_type_gas, "#{task_types}": one_gas) }
     let!(:another_alert_gas) do
       create(:alert,
-             alert_generation_run: alert_generation_run,
-             alert_type: another_alert_type_gas,
-             school: school,
-             rating: 2.0)
+        alert_generation_run: alert_generation_run,
+        alert_type: another_alert_type_gas,
+        school: school,
+        rating: 2.0
+      )
     end
 
     it 'picks from alert with higher rating' do
@@ -157,19 +153,17 @@ RSpec.shared_examples 'a service making recommendations based on energy use' do 
   end
 
   context 'when the alert type has no fuel' do
-    let!(:no_fuel) { 3.times.collect { |i| create(task_type, name: "no fuel #{i}") } }
-    let!(:alert_type_no_fuel) { create(:alert_type, fuel_type: nil) }
-    let!(:alert_type_rating_no_fuel) do
-      create(:alert_type_rating, rating_from: 1.0, rating_to: 10.0, alert_type: alert_type_no_fuel,
-                                 "#{task_types}": no_fuel)
-    end
+    let!(:no_fuel) { 3.times.collect {|i| create(task_type, name: "no fuel #{i}") } }
+    let!(:alert_type_no_fuel) { create(:alert_type, fuel_type: nil)}
+    let!(:alert_type_rating_no_fuel) { create(:alert_type_rating, rating_from: 1.0, rating_to: 10.0, alert_type: alert_type_no_fuel, "#{task_types}": no_fuel) }
 
     let!(:alert_no_fuel) do
       create(:alert,
-             alert_generation_run: alert_generation_run,
-             alert_type: alert_type_no_fuel,
-             school: school,
-             rating: 2.0)
+        alert_generation_run: alert_generation_run,
+        alert_type: alert_type_no_fuel,
+        school: school,
+        rating: 2.0
+      )
     end
 
     it 'includes ratings suggestions alternating by fuel type' do

@@ -167,8 +167,8 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
 
       it 'prompts user to choose' do
-        expect(page).to have_text(I18n.t('redirects.choose_school.title'))
-        expect(page).to have_text(I18n.t('redirects.choose_school.intro'))
+        expect(page).to have_content(I18n.t('redirects.choose_school.title'))
+        expect(page).to have_content(I18n.t('redirects.choose_school.intro'))
         expect(page).to have_link(user.cluster_schools.first.name,
                                   href: school_advice_path(user.cluster_schools.first))
       end
@@ -183,8 +183,8 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
 
       it 'prompts user to choose' do
-        expect(page).to have_text(I18n.t('redirects.choose_school.title'))
-        expect(page).to have_text(I18n.t('redirects.choose_school.intro'))
+        expect(page).to have_content(I18n.t('redirects.choose_school.title'))
+        expect(page).to have_content(I18n.t('redirects.choose_school.intro'))
         expect(page).to have_link(user.school_group.schools.first.name,
                                   href: school_advice_path(user.school_group.schools.first))
       end

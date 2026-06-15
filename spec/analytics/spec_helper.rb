@@ -141,6 +141,7 @@ RSpec.configure do |config|
   end
 
   config.include ActiveSupport::Testing::TimeHelpers
+  config.after { travel_back } # not needed in rails as has it already
 
   # Adapted from https://makandracards.com/makandra/505308-rspec-matcher-to-compare-two-html-fragments
   RSpec::Matchers.define :match_html do |expected_html, **options|
