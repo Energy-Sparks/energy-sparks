@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe SchoolOnboardingDeletor, type: :service do
-  let(:school)                    { build :school}
-  let(:onboarding_user)           { create :onboarding_user }
+  let(:school)                    { build(:school) }
+  let(:onboarding_user)           { create(:onboarding_user) }
   let!(:template_calendar) { create(:template_calendar, title: 'BANES calendar') }
   let(:dark_sky_area)       { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:school_group)       { create(:school_group, name: 'BANES') }
@@ -11,15 +11,15 @@ describe SchoolOnboardingDeletor, type: :service do
   let!(:consent_grant)      { create(:consent_grant, school: school) }
 
   let(:school_onboarding) do
-    create :school_onboarding,
-      :with_events,
-      event_names: [:email_sent],
-      created_user: onboarding_user,
-      template_calendar: template_calendar,
-      dark_sky_area: dark_sky_area,
-      school_group: school_group,
-      scoreboard: scoreboard,
-      weather_station: weather_station
+    create(:school_onboarding,
+           :with_events,
+           event_names: [:email_sent],
+           created_user: onboarding_user,
+           template_calendar: template_calendar,
+           dark_sky_area: dark_sky_area,
+           school_group: school_group,
+           scoreboard: scoreboard,
+           weather_station: weather_station)
   end
 
   let(:service) { SchoolOnboardingDeletor.new(school_onboarding) }
@@ -62,7 +62,7 @@ describe SchoolOnboardingDeletor, type: :service do
 
   it 'removes school from the onboarding user' do
     service.delete!
-    expect(onboarding_user.reload.school).to be nil
+    expect(onboarding_user.reload.school).to be_nil
   end
 
   it 'changes role of onboarding user so that can save with no school' do
