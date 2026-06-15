@@ -58,7 +58,7 @@ describe AccountingCosts do
     end
 
     it 'has expected bill_component_types' do
-      expect(combined_costs.bill_component_types).to match_array(['flat_rate', :standing_charge])
+      expect(combined_costs.bill_component_types).to contain_exactly('flat_rate', :standing_charge)
     end
 
     it 'has expected cost for start date' do

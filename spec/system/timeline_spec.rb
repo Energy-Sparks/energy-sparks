@@ -7,7 +7,11 @@ describe 'timelines' do
   let!(:observations) do
     {
       # create observations for this year, last year and 3 years ago, for each school
-      by_year: [0, 1, 3].map { |i| schools.map { |school| create(:observation, :activity, school:, at: i.years.ago) } },
+      by_year: [0, 1, 3].map do |i|
+        schools.map do |school|
+          create(:observation, :activity, school:, at: i.years.ago)
+        end
+      end,
       # create invisible observations for current year
       invisible: create(:observation, :activity, school: schools.first, at: Time.current, visible: false)
     }
@@ -17,17 +21,17 @@ describe 'timelines' do
     let(:academic_year) { calendar.national_calendar.current_academic_year }
 
     it 'shows summary' do
-      expect(page).to have_content("Showing 1 - #{schools.count} of #{schools.count} " \
-                                   "activities recorded between #{academic_year.start_date.to_fs(:es_long)} " \
-                                   "and #{Time.zone.today.to_fs(:es_long)}")
+      expect(page).to have_text("Showing 1 - #{schools.count} of #{schools.count} " \
+                                "activities recorded between #{academic_year.start_date.to_fs(:es_long)} " \
+                                "and #{Time.zone.today.to_fs(:es_long)}")
     end
 
     it 'shows recent observations in table' do
       within('.table') do
         observations[:by_year].first.each do |observation|
-          expect(page).to have_content(observation.activity.display_name)
-          expect(page).to have_content(observation.points)
-          expect(page).to have_content(observation.at.to_fs(:es_short))
+          expect(page).to have_text(observation.activity.display_name)
+          expect(page).to have_text(observation.points)
+          expect(page).to have_text(observation.at.to_fs(:es_short))
         end
       end
     end
@@ -35,7 +39,7 @@ describe 'timelines' do
     it 'does show school name in table', if: show_school do
       within('.table') do
         schools.each do |school|
-          expect(page).to have_content(school.name)
+          expect(page).to have_text(school.name)
         end
       end
     end
@@ -43,22 +47,22 @@ describe 'timelines' do
     it 'does not show school name in table', unless: show_school do
       within('.table') do
         schools.each do |school|
-          expect(page).to have_no_content(school.name)
+          expect(page).to have_no_text(school.name)
         end
       end
     end
 
     it 'does not show old observations' do
       observations[:by_year].second.each do |observation|
-        expect(page).to have_no_content(observation.activity.display_name)
+        expect(page).to have_no_text(observation.activity.display_name)
       end
       observations[:by_year].last.each do |observation|
-        expect(page).to have_no_content(observation.activity.display_name)
+        expect(page).to have_no_text(observation.activity.display_name)
       end
     end
 
     it 'does not show invisible observations' do
-      expect(page).to have_no_content(observations[:invisible].activity.display_name)
+      expect(page).to have_no_text(observations[:invisible].activity.display_name)
     end
 
     it 'shows links to previous years, including missing ones' do
@@ -83,13 +87,13 @@ describe 'timelines' do
       end
 
       it 'shows summary' do
-        expect(page).to have_content("Showing 1 - #{schools.count} of #{schools.count} activities recorded between #{previous_academic_year.start_date.to_fs(:es_long)} and #{previous_academic_year.end_date.to_fs(:es_long)}")
+        expect(page).to have_text("Showing 1 - #{schools.count} of #{schools.count} activities recorded between #{previous_academic_year.start_date.to_fs(:es_long)} and #{previous_academic_year.end_date.to_fs(:es_long)}")
       end
 
       it 'shows observations from that year' do
         within('.table') do
           observations[:by_year].second.each do |observation|
-            expect(page).to have_content(observation.activity.display_name)
+            expect(page).to have_text(observation.activity.display_name)
           end
         end
       end
@@ -97,11 +101,11 @@ describe 'timelines' do
       it 'does not show observations from other years' do
         within('.table') do
           observations[:by_year].first.each do |observation|
-            expect(page).to have_no_content(observation.activity.display_name)
+            expect(page).to have_no_text(observation.activity.display_name)
           end
 
           observations[:by_year].last.each do |observation|
-            expect(page).to have_no_content(observation.activity.display_name)
+            expect(page).to have_no_text(observation.activity.display_name)
           end
         end
       end
@@ -117,9 +121,7 @@ describe 'timelines' do
       schools.first
     end
 
-    def school_group
-      school.school_group
-    end
+    delegate :school_group, to: :school
 
     def visit_timeline(user: false)
       sign_in(create(:school_admin, school: create(:school, school_group:))) if user
@@ -140,13 +142,13 @@ describe 'timelines' do
       let(:data_sharing) { :private }
 
       context 'when not logged in' do
-        it { expect(page).to have_content('has no public data') }
+        it { expect(page).to have_text('has no public data') }
       end
 
       context 'when user is school admin to a school in same group' do
         before { visit_timeline(user: true) }
 
-        it { expect(page).to have_content('has no public data') }
+        it { expect(page).to have_text('has no public data') }
       end
     end
 
@@ -154,7 +156,7 @@ describe 'timelines' do
       let(:data_sharing) { :within_group }
 
       context 'when not logged in' do
-        it { expect(page).to have_content('has no public data') }
+        it { expect(page).to have_text('has no public data') }
       end
 
       context 'when user is school admin to a school in same group' do
@@ -198,5 +200,4 @@ describe 'timelines' do
       it_behaves_like 'a timeline', show_school: true
     end
   end
-  # rubocop:enable RSpec/MultipleMemoizedHelpers
 end

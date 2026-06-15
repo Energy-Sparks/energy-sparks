@@ -8,13 +8,14 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
   end
 
   let(:fuel_types) do
-    [:electricity, :gas, :solar_pv]
+    %i[electricity gas solar_pv]
   end
 
   let(:schools) do
     [
       create(:school, :with_fuel_configuration, name: 'All Fuel School'),
-      create(:school, :with_fuel_configuration, has_electricity: false, has_solar_pv: false, has_storage_heaters: false, name: 'Limited Fuel School')
+      create(:school, :with_fuel_configuration, has_electricity: false, has_solar_pv: false,
+                                                has_storage_heaters: false, name: 'Limited Fuel School')
     ]
   end
 
@@ -35,7 +36,7 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
       gas: {
         management_dashboard_group_by_week_gas: {
           label: 'Group by week gas'
-        },
+        }
       },
       solar_pv: {
         management_dashboard_group_by_month_solar_pv: {
@@ -67,11 +68,11 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
   it { expect(html).to have_css('div.usage-chart') }
 
   it 'sets the default title' do
-    expect(html).to have_content(charts[:electricity][:baseload][:title])
+    expect(html).to have_text(charts[:electricity][:baseload][:title])
   end
 
   it 'sets the default subtitle' do
-    expect(html).to have_content("This chart shows the electricity baseload for #{schools.first.name} using all available data.")
+    expect(html).to have_text("This chart shows the electricity baseload for #{schools.first.name} using all available data.")
   end
 
   it 'sets the default footer link' do
@@ -96,15 +97,15 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
 
     it 'adds labels for all the fuel types' do
       fuel_types.each do |fuel_type|
-        expect(html).to have_content(I18n.t("common.#{fuel_type}"))
+        expect(html).to have_text(I18n.t("common.#{fuel_type}"))
       end
     end
 
     context 'when there are limited types' do
       let(:fuel_types) { [:electricity] }
 
-      it { expect(html).not_to have_css('#chart-selection-fuel-type-gas')}
-      it { expect(html).not_to have_content(I18n.t('common.gas'))}
+      it { expect(html).to have_no_css('#chart-selection-fuel-type-gas') }
+      it { expect(html).to have_no_text(I18n.t('common.gas')) }
     end
   end
 
@@ -114,11 +115,13 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
     end
 
     it 'adds hidden options for other charts' do
-      expect(html).to have_css("option[value='management_dashboard_group_by_week_gas'][data-fuel-type='gas']", visible: :hidden)
+      expect(html).to have_css("option[value='management_dashboard_group_by_week_gas'][data-fuel-type='gas']",
+                               visible: :hidden)
     end
 
     it 'uses the chart labels' do
-      expect(html).to have_select('chart-selection-chart-type', with_options: ['Baseload', 'Group by week gas', 'Solar generation and use by month'])
+      expect(html).to have_select('chart-selection-chart-type',
+                                  with_options: ['Baseload', 'Group by week gas', 'Solar generation and use by month'])
     end
   end
 

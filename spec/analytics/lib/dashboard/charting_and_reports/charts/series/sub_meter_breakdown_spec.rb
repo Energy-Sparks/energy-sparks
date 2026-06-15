@@ -9,7 +9,9 @@ describe Series::SubMeterBreakdown do
 
   let(:meters)      { build_list(:meter, 3) }
   let(:sub_meters)  { {} }
-  let(:meter_collection) { build(:meter_collection, :with_electricity_meters, :with_sub_meters, meters: meters, sub_meters: sub_meters) }
+  let(:meter_collection) do
+    build(:meter_collection, :with_electricity_meters, :with_sub_meters, meters: meters, sub_meters: sub_meters)
+  end
 
   let(:chart_config) do
     {

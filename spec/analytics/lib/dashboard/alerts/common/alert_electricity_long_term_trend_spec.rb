@@ -20,13 +20,12 @@ describe AlertElectricityLongTermTrend do
     include_context 'with today'
 
     let(:asof_date) { Date.new(2024, 12, 31) }
+    let(:unchanged_annual_use) do
+      364 * daily_usage # values from shared context over a year
+    end
 
     before do
       alert.analyse(asof_date)
-    end
-
-    let(:unchanged_annual_use) do
-      364 * daily_usage # values from shared context over a year
     end
 
     context 'with increased usage' do

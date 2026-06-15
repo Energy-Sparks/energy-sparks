@@ -33,8 +33,8 @@ describe NavHelper do
       # With production application host environment values
       ENV['APPLICATION_HOST'] = 'energysparks.uk'
       ENV['WELSH_APPLICATION_HOST'] = 'cy.energysparks.uk'
-      expect(ENV['APPLICATION_HOST']).to eq('energysparks.uk')
-      expect(ENV['WELSH_APPLICATION_HOST']).to eq('cy.energysparks.uk')
+      expect(ENV.fetch('APPLICATION_HOST', nil)).to eq('energysparks.uk')
+      expect(ENV.fetch('WELSH_APPLICATION_HOST', nil)).to eq('cy.energysparks.uk')
       expect(helper.subdomain_for('en')).to eq('')
       expect(helper.subdomain_for('cy')).to eq('cy')
       expect(helper.subdomain_for('fr')).to eq('fr')
@@ -42,8 +42,8 @@ describe NavHelper do
       # With test application host environment values
       ENV['APPLICATION_HOST'] = 'test.energysparks.uk'
       ENV['WELSH_APPLICATION_HOST'] = 'test-cy.energysparks.uk'
-      expect(ENV['APPLICATION_HOST']).to eq('test.energysparks.uk')
-      expect(ENV['WELSH_APPLICATION_HOST']).to eq('test-cy.energysparks.uk')
+      expect(ENV.fetch('APPLICATION_HOST', nil)).to eq('test.energysparks.uk')
+      expect(ENV.fetch('WELSH_APPLICATION_HOST', nil)).to eq('test-cy.energysparks.uk')
       expect(helper.subdomain_for('en')).to eq('test')
       expect(helper.subdomain_for('cy')).to eq('test-cy')
       expect(helper.subdomain_for('fr')).to eq('fr')
@@ -51,8 +51,8 @@ describe NavHelper do
       # Without application host environment values set
       ENV.delete('APPLICATION_HOST')
       ENV.delete('WELSH_APPLICATION_HOST')
-      expect(ENV['APPLICATION_HOST']).to eq(nil)
-      expect(ENV['WELSH_APPLICATION_HOST']).to eq(nil)
+      expect(ENV.fetch('APPLICATION_HOST', nil)).to eq(nil)
+      expect(ENV.fetch('WELSH_APPLICATION_HOST', nil)).to eq(nil)
       expect(helper.subdomain_for('en')).to eq('')
       expect(helper.subdomain_for('cy')).to eq('cy')
       expect(helper.subdomain_for('fr')).to eq('fr')

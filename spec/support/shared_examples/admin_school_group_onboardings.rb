@@ -38,7 +38,7 @@ RSpec.shared_examples 'admin school group onboardings' do
 
             after { Wisper.clear }
 
-            it { expect(page).to have_content("#{school_group.name} schools made visible") }
+            it { expect(page).to have_text("#{school_group.name} schools made visible") }
             it { expect(onboarding.reload.school).to be_visible }
             it { expect(ActionMailer::Base.deliveries.count).to eq(2) }
 
@@ -64,7 +64,7 @@ RSpec.shared_examples 'admin school group onboardings' do
 
           it { expect(page).to have_current_path(@back) }
           it { expect(onboarding.reload.events.map(&:event)).to include('reminder_sent') }
-          it { expect(page).to have_content("#{school_group.name} schools reminders sent") }
+          it { expect(page).to have_text("#{school_group.name} schools reminders sent") }
 
           it 'sends email' do
             email = ActionMailer::Base.deliveries.last
@@ -81,8 +81,8 @@ RSpec.shared_examples 'admin school group onboardings' do
           click_button 'Make selected visible'
         end
 
-        it { expect(page).to have_no_content('schools made visible') }
-        it { expect(page).to have_content('Nothing selected') }
+        it { expect(page).to have_no_text('schools made visible') }
+        it { expect(page).to have_text('Nothing selected') }
       end
 
       describe 'Send reminders to selected' do
@@ -90,8 +90,8 @@ RSpec.shared_examples 'admin school group onboardings' do
           click_button 'Send reminders to selected'
         end
 
-        it { expect(page).to have_no_content('schools reminders sent') }
-        it { expect(page).to have_content('Nothing selected') }
+        it { expect(page).to have_no_text('schools reminders sent') }
+        it { expect(page).to have_text('Nothing selected') }
       end
     end
 

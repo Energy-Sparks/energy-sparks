@@ -7,12 +7,15 @@ describe CommunityUseBreakdown do
   let(:amr_start_date)  { Date.new(2023, 10, 1) }
   let(:amr_end_date)    { Date.new(2023, 10, 31) }
 
-  let(:amr_data)     { build(:amr_data, :with_date_range, start_date: amr_start_date, end_date: amr_end_date, kwh_data_x48: kwh_data_x48) }
+  let(:amr_data) do
+    build(:amr_data, :with_date_range, start_date: amr_start_date, end_date: amr_end_date, kwh_data_x48: kwh_data_x48)
+  end
   let(:meter)        { build(:meter, type: :electricity, amr_data: amr_data) }
   let(:holidays)     { build(:holidays, :with_calendar_year) }
 
   let(:school_times) do
-    [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 30), closing_time: TimeOfDay.new(16, 20), calendar_period: :term_times }]
+    [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 30), closing_time: TimeOfDay.new(16, 20),
+       calendar_period: :term_times }]
   end
 
   let(:open_close_times)      { OpenCloseTimes.convert_frontend_times(school_times, community_use_times, holidays) }
@@ -48,7 +51,8 @@ describe CommunityUseBreakdown do
     context 'with single community use time period' do
       # The times correspond to the HH index starting at 38 and ending at 42 (exclusive range), so 5 periods in total
       let(:community_use_times) do
-        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0), closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
+        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0),
+           closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
       end
 
       context 'with default filter' do
@@ -92,11 +96,13 @@ describe CommunityUseBreakdown do
         let(:kwh_data_x48) { Array.new(48) { 1.0 } }
 
         let(:school_times) do
-          [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 30), closing_time: TimeOfDay.new(16, 15), calendar_period: :term_times }]
+          [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 30),
+             closing_time: TimeOfDay.new(16, 15), calendar_period: :term_times }]
         end
 
         let(:community_use_times) do
-          [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(16, 15), closing_time: TimeOfDay.new(21, 0), calendar_period: :term_times }]
+          [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(16, 15),
+             closing_time: TimeOfDay.new(21, 0), calendar_period: :term_times }]
         end
 
         it 'returns the expected breakdown for the day' do
@@ -129,11 +135,13 @@ describe CommunityUseBreakdown do
         let(:kwh_data_x48) { Array.new(48) { 1.0 } }
 
         let(:school_times) do
-          [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 30), closing_time: TimeOfDay.new(16, 10), calendar_period: :term_times }]
+          [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 30),
+             closing_time: TimeOfDay.new(16, 10), calendar_period: :term_times }]
         end
 
         let(:community_use_times) do
-          [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(16, 15), closing_time: TimeOfDay.new(21, 0), calendar_period: :term_times }]
+          [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(16, 15),
+             closing_time: TimeOfDay.new(21, 0), calendar_period: :term_times }]
         end
 
         it 'returns the expected breakdown across the day' do
@@ -234,7 +242,8 @@ describe CommunityUseBreakdown do
             end
 
             it 'includes the baseload' do
-              expect(days_kwh_x48.keys).to match_array(%i[school_day_closed school_day_open community community_baseload])
+              expect(days_kwh_x48.keys).to match_array(%i[school_day_closed school_day_open community
+                                                          community_baseload])
             end
           end
 
@@ -266,8 +275,10 @@ describe CommunityUseBreakdown do
     context 'with multiple community use times' do
       let(:community_use_times)          do
         [
-          { day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(6, 0), closing_time: TimeOfDay.new(7, 30), calendar_period: :term_times },
-          { day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0), closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }
+          { day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(6, 0),
+            closing_time: TimeOfDay.new(7, 30), calendar_period: :term_times },
+          { day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0),
+            closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }
         ]
       end
 
@@ -302,7 +313,8 @@ describe CommunityUseBreakdown do
 
     context 'with single community use time period' do
       let(:community_use_times) do
-        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0), closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
+        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0),
+           closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
       end
 
       context 'with default filter' do
@@ -374,7 +386,8 @@ describe CommunityUseBreakdown do
             end
 
             it 'includes the baseload' do
-              expect(one_day_kwh.keys).to match_array(%i[school_day_closed school_day_open community community_baseload])
+              expect(one_day_kwh.keys).to match_array(%i[school_day_closed school_day_open community
+                                                         community_baseload])
             end
           end
 
@@ -413,7 +426,9 @@ describe CommunityUseBreakdown do
     let(:start_date)            { Date.new(last_year, 10, 16) - 7 }
     let(:end_date)              { Date.new(last_year, 10, 16) }
 
-    let(:kwh_date_range)        { open_close_breakdown.kwh_date_range(start_date, end_date, :kwh, community_use: community_use) }
+    let(:kwh_date_range)        do
+      open_close_breakdown.kwh_date_range(start_date, end_date, :kwh, community_use: community_use)
+    end
 
     context 'with no community use time period' do
       context 'with default filter' do
@@ -425,16 +440,19 @@ describe CommunityUseBreakdown do
 
     context 'with single community use time period' do
       let(:community_use_times) do
-        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0), closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
+        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0),
+           closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
       end
 
       context 'with default filter' do
         it 'returns the breakdown of all periods' do
-          expect(kwh_date_range.keys).to match_array(%i[school_day_closed school_day_open community community_baseload weekend])
+          expect(kwh_date_range.keys).to match_array(%i[school_day_closed school_day_open community community_baseload
+                                                        weekend])
         end
 
         it 'returns the same total as the amr_data class' do
-          expect(kwh_date_range.values.flatten.sum).to be_within(0.0001).of(meter.amr_data.kwh_date_range(start_date, end_date))
+          expect(kwh_date_range.values.flatten.sum).to be_within(0.0001).of(meter.amr_data.kwh_date_range(start_date,
+                                                                                                          end_date))
         end
       end
     end
@@ -460,7 +478,8 @@ describe CommunityUseBreakdown do
 
     context 'with single community use time period' do
       let(:community_use_times) do
-        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0), closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
+        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0),
+           closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
       end
 
       context 'with default filter' do
@@ -518,17 +537,20 @@ describe CommunityUseBreakdown do
 
     context 'with no community use time period' do
       it 'returns the default series' do
-        expect(open_close_breakdown.series_names(nil)).to match_array(%i[school_day_closed school_day_open holiday weekend])
+        expect(open_close_breakdown.series_names(nil)).to match_array(%i[school_day_closed school_day_open holiday
+                                                                         weekend])
       end
     end
 
     context 'with a single community use time period' do
       let(:community_use_times) do
-        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0), closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
+        [{ day: :monday, usage_type: :community_use, opening_time: TimeOfDay.new(19, 0),
+           closing_time: TimeOfDay.new(21, 30), calendar_period: :term_times }]
       end
 
       it 'includes the community use series' do
-        expect(open_close_breakdown.series_names(nil)).to match_array(%i[school_day_closed school_day_open holiday weekend community])
+        expect(open_close_breakdown.series_names(nil)).to match_array(%i[school_day_closed school_day_open holiday
+                                                                         weekend community])
       end
     end
   end

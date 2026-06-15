@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe Audits::Progress, type: :service do
+  subject(:service) { Audits::Progress.new(audit) }
+
   let!(:site_settings) { SiteSettings.create!(audit_activities_bonus_points: 50) }
   let!(:school) { create(:school) }
 
   # Audit has 3 activities of score 25 each & 3 interventions of score 30 each
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school, created_at: 3.days.ago) }
-
-  subject(:service) { Audits::Progress.new(audit) }
 
   context 'when the audit was created less than a year ago' do
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school, created_at: 3.days.ago) }
@@ -27,7 +27,9 @@ describe Audits::Progress, type: :service do
 
   context 'with no actions or activities completed' do
     describe '#notification' do
-      it { expect(service.notification).to eq('You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>165</strong> points and <strong>50</strong> bonus points for completing all audit tasks') }
+      it {
+        expect(service.notification).to eq('You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>165</strong> points and <strong>50</strong> bonus points for completing all audit tasks')
+      }
     end
 
     describe '#completed_activities_count' do
@@ -64,24 +66,38 @@ describe Audits::Progress, type: :service do
   end
 
   context 'with an activity & an action completed after audit created' do
-    let(:activity) { build(:activity, school: school, activity_type: audit.activity_types.first, happened_on: 1.day.ago) }
-    let!(:observation) { create(:observation, school: school, observation_type: :intervention, intervention_type: audit.intervention_types.first, at: 1.day.ago) }
+    let(:activity) do
+      build(:activity, school: school, activity_type: audit.activity_types.first, happened_on: 1.day.ago)
+    end
+    let!(:observation) do
+      create(:observation, school: school, observation_type: :intervention,
+                           intervention_type: audit.intervention_types.first, at: 1.day.ago)
+    end
 
     before { ActivityCreator.new(activity, nil).process }
 
     describe '#notification' do
-      it { expect(service.notification).to eq('You have completed <strong>1/3</strong> of the activities and <strong>1/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>110</strong> points and <strong>50</strong> bonus points for completing all audit tasks') }
+      it {
+        expect(service.notification).to eq('You have completed <strong>1/3</strong> of the activities and <strong>1/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>110</strong> points and <strong>50</strong> bonus points for completing all audit tasks')
+      }
     end
   end
 
   context 'with an activity & an action completed before audit created' do
-    let(:activity) { build(:activity, school: school, activity_type: audit.activity_types.first, happened_on: 5.days.ago) }
-    let!(:observation) { create(:observation, school: school, observation_type: :intervention, intervention_type: audit.intervention_types.first, at: 5.days.ago) }
+    let(:activity) do
+      build(:activity, school: school, activity_type: audit.activity_types.first, happened_on: 5.days.ago)
+    end
+    let!(:observation) do
+      create(:observation, school: school, observation_type: :intervention,
+                           intervention_type: audit.intervention_types.first, at: 5.days.ago)
+    end
 
     before { ActivityCreator.new(activity, nil).process }
 
     describe '#notification' do
-      it { expect(service.notification).to eq('You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>165</strong> points and <strong>50</strong> bonus points for completing all audit tasks') }
+      it {
+        expect(service.notification).to eq('You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>165</strong> points and <strong>50</strong> bonus points for completing all audit tasks')
+      }
     end
   end
 
@@ -94,7 +110,9 @@ describe Audits::Progress, type: :service do
     end
 
     describe '#notification' do
-      it { expect(service.notification).to eq('You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>90</strong> points for completing all audit tasks') }
+      it {
+        expect(service.notification).to eq('You have completed <strong>3/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>90</strong> points for completing all audit tasks')
+      }
     end
   end
 end

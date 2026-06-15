@@ -35,22 +35,32 @@ RSpec.describe I18n do
 
   it "ensures the 'date.month_names' array follows the conventional format (empty 0th element)" do
     # see https://github.com/rails/rails/blob/main/activesupport/lib/active_support/locale/en.yml
-    expect(I18n.t('date.month_names', locale: 'en')).to eq(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'])
-    expect(I18n.t('date.month_names', locale: 'cy')).to eq(['', 'Ionawr', 'Chwefror', 'Mawrth', 'Ebrill', 'Mai', 'Mehefin', 'Gorffennaf', 'Awst', 'Medi', 'Hydref', 'Tachwedd', 'Rhagfyr'])
+    expect(I18n.t('date.month_names',
+                  locale: 'en')).to eq(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                                        'October', 'November', 'December'])
+    expect(I18n.t('date.month_names',
+                  locale: 'cy')).to eq(['', 'Ionawr', 'Chwefror', 'Mawrth', 'Ebrill', 'Mai', 'Mehefin', 'Gorffennaf', 'Awst', 'Medi',
+                                        'Hydref', 'Tachwedd', 'Rhagfyr'])
   end
 
   it "ensures the 'date.abbr_month_names' array follows the conventional format (empty 0th element)" do
     # see https://github.com/rails/rails/blob/main/activesupport/lib/active_support/locale/en.yml
-    expect(I18n.t('date.abbr_month_names', locale: 'en')).to eq(['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
-    expect(I18n.t('date.abbr_month_names', locale: 'cy')).to eq(['', 'Ion', 'Chwe', 'Maw', 'Ebr', 'Mai', 'Meh', 'Gorff', 'Awst', 'Medi', 'Hyd', 'Tach', 'Rhag'])
+    expect(I18n.t('date.abbr_month_names',
+                  locale: 'en')).to eq(['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
+                                        'Nov', 'Dec'])
+    expect(I18n.t('date.abbr_month_names',
+                  locale: 'cy')).to eq(['', 'Ion', 'Chwe', 'Maw', 'Ebr', 'Mai', 'Meh', 'Gorff', 'Awst', 'Medi', 'Hyd',
+                                        'Tach', 'Rhag'])
   end
 
   it 'ensures the analytics yaml translation files have been synced with the main application with rake i18n:copy_analytics_yaml' do
     analytics_gem_path = `bundle info energy-sparks_analytics --path`.chomp
     analytics_yaml = File.join(analytics_gem_path, 'config', 'locales')
-    yaml = Dir['**/*.yml', base: analytics_yaml].reject {|f| f.match(/^x-/)}.sort
+    yaml = Dir['**/*.yml', base: analytics_yaml].reject { |f| f.match(/^x-/) }.sort
     yaml.each do |yml|
-      expect(YAML.load_file(File.join(analytics_gem_path, 'config', 'locales', yml))).to eq(YAML.load_file(Rails.root.join('config', 'locales', 'analytics', yml)))
+      expect(YAML.load_file(File.join(analytics_gem_path, 'config', 'locales',
+                                      yml))).to eq(YAML.load_file(Rails.root.join('config', 'locales', 'analytics',
+                                                                                  yml)))
     end
   end
 end

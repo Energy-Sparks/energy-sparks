@@ -1,18 +1,19 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :service do
   let(:school) { create(:school) }
-  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true) }
 
   let(:advice_page) { create(:advice_page, key: :baseload, fuel_type: :electricity) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school) }
 
   describe '.can_benchmark?' do
-    let(:result) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.can_benchmark?(advice_page: advice_page)}
+    let(:result) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.can_benchmark?(advice_page: advice_page) }
 
     context 'for existing benchmarks' do
-      [:baseload, :electricity_long_term, :gas_long_term, :electricity_out_of_hours, :gas_out_of_hours, :electricity_intraday, :thermostatic_control, :heating_control].each do |key|
+      %i[baseload electricity_long_term gas_long_term electricity_out_of_hours gas_out_of_hours
+         electricity_intraday thermostatic_control heating_control].each do |key|
         let(:advice_page) { create(:advice_page, key: key) }
         it "returns true for #{key}" do
           expect(result).to eq true
@@ -65,7 +66,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
     end
 
     context 'when school doesnt have fuel type' do
-      let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false, has_gas: true, has_storage_heaters: true)}
+      let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false, has_gas: true, has_storage_heaters: true) }
 
       before do
         allow(service).to receive(:benchmark_school).and_return(:exemplar_school)
@@ -97,7 +98,9 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
     end
 
     context 'with existing benchmark' do
-      let!(:benchmark) { create(:advice_page_school_benchmark, school: school, advice_page: advice_page, benchmarked_as: :other_school)}
+      let!(:benchmark) do
+        create(:advice_page_school_benchmark, school: school, advice_page: advice_page, benchmarked_as: :other_school)
+      end
 
       before do
         school.reload
@@ -123,7 +126,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
       end
 
       context 'and school no longer has fuel type' do
-        let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false, has_gas: true, has_storage_heaters: true)}
+        let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false, has_gas: true, has_storage_heaters: true) }
 
         it 'removes the benchmark' do
           expect(result).to eq nil

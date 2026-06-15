@@ -26,7 +26,7 @@ RSpec.describe TempusDominusDateInput do
           object,
           template,
           {}
-      )
+        )
       end
 
       it 'includes the nested index in the wrapper_id' do

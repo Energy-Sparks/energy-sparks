@@ -26,7 +26,7 @@ describe 'Lagging Meters Report', :include_application_helper do
   end
 
   it_behaves_like 'an admin meter import report' do
-    let(:meter) { gas_meter}
-    let(:end_date) { latest_reading_date}
+    let(:meter) { gas_meter }
+    let(:end_date) { latest_reading_date }
   end
 end

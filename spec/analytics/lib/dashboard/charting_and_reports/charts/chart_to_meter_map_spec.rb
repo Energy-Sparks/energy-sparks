@@ -10,7 +10,9 @@ describe ChartToMeterMap do
 
     let(:solar_pv_meter) { build(:meter, meter_collection: meter_collection, type: :solar_pv) }
 
-    let(:electricity_meter) { build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection, type: :electricity) }
+    let(:electricity_meter) do
+      build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection, type: :electricity)
+    end
 
     let(:electricity_meter_with_solar) do
       solar_attributes = {}
@@ -53,7 +55,9 @@ describe ChartToMeterMap do
 
     context 'with logical meter names' do
       it 'returns expected meters' do
-        expect(map.meter(meter_collection, :all)).to contain_exactly(meter_collection.aggregated_electricity_meters, meter_collection.aggregated_heat_meters)
+        expect(map.meter(meter_collection,
+                         :all)).to contain_exactly(meter_collection.aggregated_electricity_meters,
+                                                   meter_collection.aggregated_heat_meters)
         # Check returns expected meter
         expect(map.meter(meter_collection, :allheat)).to eq(meter_collection.aggregated_heat_meters)
         expect(map.meter(meter_collection, :allelectricity)).to eq(meter_collection.aggregated_electricity_meters)
@@ -89,7 +93,8 @@ describe ChartToMeterMap do
         end
 
         it 'returns the new electricity meter without storage heater usage for the electricity meter with storage heaters mpan' do
-          synthetic_mpan = Dashboard::Meter.synthetic_mpan_mprn(electricity_meter_with_storage_heaters.mpan_mprn, :storage_heater_disaggregated_electricity)
+          synthetic_mpan = Dashboard::Meter.synthetic_mpan_mprn(electricity_meter_with_storage_heaters.mpan_mprn,
+                                                                :storage_heater_disaggregated_electricity)
           expect_not_nil(synthetic_mpan)
           electricity_without_storage = map.meter(meter_collection, synthetic_mpan)
           expect(electricity_without_storage.sub_meters[:mains_consume]).to eq(electricity_meter_with_storage_heaters)
@@ -116,15 +121,20 @@ describe ChartToMeterMap do
 
       context 'when there are sub meters' do
         it 'returns the correct solar sub meters' do
-          expect(map.meter(meter_collection, electricity_meter_with_solar.mpan_mprn, :mains_consume)).to eq(electricity_meter_with_solar)
+          expect(map.meter(meter_collection, electricity_meter_with_solar.mpan_mprn,
+                           :mains_consume)).to eq(electricity_meter_with_solar)
           expect(map.meter(meter_collection, electricity_meter_with_solar.mpan_mprn, :generation)).to eq(solar_pv_meter)
-          expect(map.meter(meter_collection, electricity_meter_with_solar.mpan_mprn, :export).fuel_type).to eq(:exported_solar_pv)
-          expect(map.meter(meter_collection, electricity_meter_with_solar.mpan_mprn, :self_consume).fuel_type).to eq(:solar_pv)
+          expect(map.meter(meter_collection, electricity_meter_with_solar.mpan_mprn,
+                           :export).fuel_type).to eq(:exported_solar_pv)
+          expect(map.meter(meter_collection, electricity_meter_with_solar.mpan_mprn,
+                           :self_consume).fuel_type).to eq(:solar_pv)
         end
 
         it 'returns the correct storage heater submeters' do
-          synthetic_mpan = Dashboard::Meter.synthetic_mpan_mprn(electricity_meter_with_storage_heaters.mpan_mprn, :storage_heater_disaggregated_electricity)
-          expect(map.meter(meter_collection, synthetic_mpan, :mains_consume)).to eq(electricity_meter_with_storage_heaters)
+          synthetic_mpan = Dashboard::Meter.synthetic_mpan_mprn(electricity_meter_with_storage_heaters.mpan_mprn,
+                                                                :storage_heater_disaggregated_electricity)
+          expect(map.meter(meter_collection, synthetic_mpan,
+                           :mains_consume)).to eq(electricity_meter_with_storage_heaters)
           expect(map.meter(meter_collection, synthetic_mpan, :storage_heaters).fuel_type).to eq(:storage_heater)
         end
       end

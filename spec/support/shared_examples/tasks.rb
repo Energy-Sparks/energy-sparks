@@ -1,35 +1,35 @@
 RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: '1st'|
-  it { expect(page).to have_content 'Congratulations!' }
+  it { expect(page).to have_text 'Congratulations!' }
 
   it 'displays points score', if: points > 0 do
     if defined? future_academic_year
-      expect(page).to have_content "You've just scored #{points} points for the #{future_academic_year} academic year"
+      expect(page).to have_text "You've just scored #{points} points for the #{future_academic_year} academic year"
     else
-      expect(page).to have_content "You've just scored #{points} points"
+      expect(page).to have_text "You've just scored #{points} points"
     end
   end
 
   it 'has no points action text', if: task_type == :action && points == 0 do
-    expect(page).to have_content "We've recorded your action"
+    expect(page).to have_text "We've recorded your action"
   end
 
   it 'has no points activity text', if: task_type == :activity && points == 0 do
-    expect(page).to have_content "We've recorded your activity"
+    expect(page).to have_text "We've recorded your activity"
   end
 
   it 'has scoreboard summary component' do # not checking functionality here as this is done in the component
     within 'div.scoreboards-podium-component' do
       if !defined?(future_academic_year) && points > 0
-        expect(page).to have_content("You are in #{ordinal} place")
+        expect(page).to have_text("You are in #{ordinal} place")
       else
-        expect(page).to have_content("Your school hasn't scored any points yet this school year")
+        expect(page).to have_text("Your school hasn't scored any points yet this school year")
       end
     end
-    expect(page).to have_content('Recent activity')
+    expect(page).to have_text('Recent activity')
   end
 
-  it { expect(page).to have_content('What do you want to do next?') }
-  it { expect(page).to have_content('Share what you’ve done with others in the school community') }
+  it { expect(page).to have_text('What do you want to do next?') }
+  it { expect(page).to have_text('Share what you’ve done with others in the school community') }
   it { expect(page).to have_link("View your #{task_type}") }
 
   it_behaves_like 'a rich audit prompt'
@@ -38,7 +38,8 @@ RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: 
   it_behaves_like 'a join programme prompt', programme: 'Other programme!', task_count: 1 do
     let(:setup_data) do
       activity_type = create(:programme_type, :with_todos, title: 'Other programme!').activity_type_tasks.first
-      school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+      school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category,
+                                happened_on: Time.zone.now)
     end
   end
 
@@ -51,7 +52,8 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
     let(:intervention_types) { [] }
     let(:bonus_score) { 30 }
     let(:programme_type) do
-      create(:programme_type, title: 'Super programme!', activity_type_tasks: activity_types, intervention_type_tasks: intervention_types, bonus_score: bonus_score)
+      create(:programme_type, title: 'Super programme!', activity_type_tasks: activity_types,
+                              intervention_type_tasks: intervention_types, bonus_score: bonus_score)
     end
     let(:programme) { create(:programme, school: school, programme_type: programme_type) }
 
@@ -61,7 +63,7 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
 
         context 'when recently ended' do
           it 'has programme completed message' do
-            expect(page).to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+            expect(page).to have_text "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
           end
 
           it { expect(page).to have_link('View') }
@@ -71,11 +73,11 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
           let(:bonus_score) { 0 }
 
           it 'shows the programme complete message' do
-            expect(page).to have_content("Well done, you've just completed the Super programme! programme!")
+            expect(page).to have_text("Well done, you've just completed the Super programme! programme!")
           end
 
           it 'does not show bonus points message' do
-            expect(page).not_to have_content 'and have earned 30 bonus points!'
+            expect(page).to have_no_text 'and have earned 30 bonus points!'
           end
 
           it { expect(page).to have_link('View') }
@@ -88,7 +90,7 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
           end
 
           it 'does not show programme completed message' do
-            expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+            expect(page).to have_no_text "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
           end
         end
       end
@@ -97,7 +99,7 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
         let(:activity_types) { [create(:activity_type), activity_type] }
 
         it 'does not show programme completed message' do
-          expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+          expect(page).to have_no_text "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
         end
       end
     end
@@ -108,7 +110,7 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
 
         context 'when recently ended' do
           it 'has programme completed message' do
-            expect(page).to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+            expect(page).to have_text "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
           end
 
           it { expect(page).to have_link('View') }
@@ -118,11 +120,11 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
           let(:bonus_score) { 0 }
 
           it 'shows the programme complete message' do
-            expect(page).to have_content("Well done, you've just completed the Super programme! programme!")
+            expect(page).to have_text("Well done, you've just completed the Super programme! programme!")
           end
 
           it 'does not show bonus points message' do
-            expect(page).not_to have_content 'and have earned 30 bonus points!'
+            expect(page).to have_no_text 'and have earned 30 bonus points!'
           end
 
           it { expect(page).to have_link('View') }
@@ -135,7 +137,7 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
           end
 
           it 'does not show programme completed message' do
-            expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+            expect(page).to have_no_text "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
           end
         end
       end
@@ -144,7 +146,7 @@ RSpec.shared_examples 'a task completed page with programme complete message' do
         let(:intervention_types) { [create(:intervention_type), intervention_type] }
 
         it 'does not show programme completed message' do
-          expect(page).not_to have_content "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
+          expect(page).to have_no_text "Well done, you've just completed the Super programme! programme and have earned 30 bonus points!"
         end
       end
     end

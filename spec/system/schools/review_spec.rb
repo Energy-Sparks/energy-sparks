@@ -11,7 +11,7 @@ describe 'School setup review', :include_application_helper, type: :system do
         expect(page).to have_css("##{id}")
         expect(page).to have_css("div.#{status}")
         within("##{id}") do
-          expect(page).to have_content(msg)
+          expect(page).to have_text(msg)
           expect(page).to have_link(href: link)
         end
       end
@@ -43,15 +43,15 @@ describe 'School setup review', :include_application_helper, type: :system do
     let(:admin) { create(:admin) }
 
     context 'when no errors' do
-      let!(:school_admin) { create(:school_admin, :subscribed_to_alerts, school:)}
+      let!(:school_admin) { create(:school_admin, :subscribed_to_alerts, school:) }
 
       before do
         sign_in(admin)
         visit school_review_path(school)
       end
 
-      it { expect(page).not_to have_content('No active users') }
-      it { expect(page).not_to have_content('No users are subscribed to alerts') }
+      it { expect(page).to have_no_text('No active users') }
+      it { expect(page).to have_no_text('No users are subscribed to alerts') }
 
       context 'with a cluster user' do
         let!(:school_admin) do
@@ -60,8 +60,8 @@ describe 'School setup review', :include_application_helper, type: :system do
           user
         end
 
-        it { expect(page).not_to have_content('No active users') }
-        it { expect(page).not_to have_content('No users are subscribed to alerts') }
+        it { expect(page).to have_no_text('No active users') }
+        it { expect(page).to have_no_text('No users are subscribed to alerts') }
       end
     end
 
@@ -146,7 +146,7 @@ describe 'School setup review', :include_application_helper, type: :system do
       end
 
       context 'with large pupil numbers' do
-        let!(:school) { create(:school, school_group: school_group, number_of_pupils: 10000) }
+        let!(:school) { create(:school, school_group: school_group, number_of_pupils: 10_000) }
         let!(:school_admin) { create(:school_admin, school: school) }
 
         it_behaves_like 'a warning is displayed' do
@@ -158,7 +158,7 @@ describe 'School setup review', :include_application_helper, type: :system do
       end
 
       context 'with large floor area' do
-        let!(:school) { create(:school, school_group: school_group, floor_area: 100000, number_of_pupils: 10) }
+        let!(:school) { create(:school, school_group: school_group, floor_area: 100_000, number_of_pupils: 10) }
         let!(:school_admin) { create(:school_admin, school: school) }
 
         it_behaves_like 'a warning is displayed' do
@@ -170,7 +170,7 @@ describe 'School setup review', :include_application_helper, type: :system do
       end
 
       context 'with default school times' do
-        let!(:school) { create(:school, school_group: school_group, floor_area: 100000, number_of_pupils: 10) }
+        let!(:school) { create(:school, school_group: school_group, floor_area: 100_000, number_of_pupils: 10) }
 
         before do
           SchoolTime.days.each do |day, day_number|

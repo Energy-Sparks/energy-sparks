@@ -1,13 +1,18 @@
 RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
   context 'when permitted', if: permitted do
     let(:message) { 'Hello message' }
-    let!(:messageable_school) { messageable.is_a?(SchoolGroup) ? create(:school, school_group: messageable) : messageable }
+    let!(:messageable_school) do
+      messageable.is_a?(SchoolGroup) ? create(:school, school_group: messageable) : messageable
+    end
 
     context 'when no message is set' do
-      it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
-      it { expect(page).to have_selector('#dashboard-message a', text: 'Set message') }
-      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Edit') }
-      it { expect(page).not_to have_selector('#dashboard-message a', text: 'Delete') }
+      it {
+        expect(page).to have_text "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}"
+      }
+
+      it { expect(page).to have_css('#dashboard-message a', text: 'Set message') }
+      it { expect(page).to have_no_css('#dashboard-message a', text: 'Edit') }
+      it { expect(page).to have_no_css('#dashboard-message a', text: 'Delete') }
 
       context "when clicking on 'Set message'" do
         before do
@@ -16,18 +21,19 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
           end
         end
 
-        it { expect(page).to have_content("Dashboard Message for #{messageable.name}") }
+        it { expect(page).to have_text("Dashboard Message for #{messageable.name}") }
         it { expect(page).to have_field('Message', with: '') }
         it { expect(page).to have_button('Save') }
         it { expect(page).to have_link('Back') }
-        it { expect(page).not_to have_link('Delete') }
+        it { expect(page).to have_no_link('Delete') }
 
         context 'when clicking link back' do
           before { click_link 'Back' }
 
-          it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
+          it {
+            expect(page).to have_text "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}"
+          }
         end
-
 
         context 'when saving a new message' do
           before do
@@ -35,20 +41,28 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
             click_on 'Save'
           end
 
-          it { expect(page).to have_content message }
+          it { expect(page).to have_text message }
 
           context 'when visiting a school dashboard' do
             before { visit school_path(messageable_school, switch: true) }
 
-            it { expect(page).to have_content(message) }
+            it { expect(page).to have_text(message) }
           end
 
           context 'when visiting a non-messageable school dashboard' do
-            let!(:non_messageable_school) { messageable.is_a?(SchoolGroup) ? create(:school, :with_school_group) : create(:school, school_group: messageable.school_group) }
+            let!(:non_messageable_school) do
+              if messageable.is_a?(SchoolGroup)
+                create(:school,
+                       :with_school_group)
+              else
+                create(:school,
+                       school_group: messageable.school_group)
+              end
+            end
 
             before { visit school_path(non_messageable_school, switch: true) }
 
-            it { expect(page).not_to have_content(message) }
+            it { expect(page).to have_no_text(message) }
           end
         end
 
@@ -58,7 +72,7 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
             click_on 'Save'
           end
 
-          it { expect(page).to have_content("Message *\ncan't be blank") }
+          it { expect(page).to have_text("Message *\ncan't be blank") }
         end
       end
     end
@@ -66,10 +80,13 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
     context 'when a message is already set' do
       let(:setup_data) { messageable.create_dashboard_message(message: message) }
 
-      it { expect(page).not_to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
-      it { expect(page).to have_content message }
-      it { expect(page).to have_selector('#dashboard-message a', text: 'Edit') }
-      it { expect(page).to have_selector('#dashboard-message a', text: 'Delete') }
+      it {
+        expect(page).to have_no_text "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}"
+      }
+
+      it { expect(page).to have_text message }
+      it { expect(page).to have_css('#dashboard-message a', text: 'Edit') }
+      it { expect(page).to have_css('#dashboard-message a', text: 'Delete') }
 
       context "when clicking on 'Edit'" do
         before do
@@ -86,7 +103,7 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
             click_on 'Save'
           end
 
-          it { expect(page).to have_content 'Changed message' }
+          it { expect(page).to have_text 'Changed message' }
         end
 
         it { expect(page).to have_link('Delete') }
@@ -96,12 +113,14 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
             click_on 'Delete'
           end
 
-          it { expect(page).to have_content("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}") }
+          it {
+            expect(page).to have_text("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}")
+          }
 
           context 'when visiting a school dashboard' do
             before { visit school_path(messageable_school, switch: true) }
 
-            it { expect(page).not_to have_content(message) }
+            it { expect(page).to have_no_text(message) }
           end
         end
       end
@@ -113,12 +132,14 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
           end
         end
 
-        it { expect(page).to have_content("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}") }
+        it {
+          expect(page).to have_text("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}")
+        }
 
         context 'when visiting a school dashboard' do
           before { visit school_path(messageable_school, switch: true) }
 
-          it { expect(page).not_to have_content(message) }
+          it { expect(page).to have_no_text(message) }
         end
       end
     end
@@ -126,9 +147,9 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
 
   context 'when not permitted', unless: permitted do
     it 'panel is not shown' do
-      expect(page).not_to have_selector('#dashboard-message a', text: 'Set message')
-      expect(page).not_to have_selector('#dashboard-message a', text: 'Edit')
-      expect(page).not_to have_selector('#dashboard-message a', text: 'Delete')
+      expect(page).to have_no_css('#dashboard-message a', text: 'Set message')
+      expect(page).to have_no_css('#dashboard-message a', text: 'Edit')
+      expect(page).to have_no_css('#dashboard-message a', text: 'Delete')
     end
   end
 end
@@ -139,10 +160,10 @@ RSpec.shared_examples 'a dashboard message' do
   context 'when there is a message' do
     let(:setup_data) { messageable.create_dashboard_message(message: message) }
 
-    it { expect(page).to have_content(message) }
+    it { expect(page).to have_text(message) }
   end
 
   context 'when there is not a message' do
-    it { expect(page).not_to have_content(message) }
+    it { expect(page).to have_no_text(message) }
   end
 end

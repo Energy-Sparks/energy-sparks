@@ -12,7 +12,9 @@ RSpec.describe ConsentRequestMailer do
   end
 
   before do
-    ConsentRequestMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.request_consent.deliver_now }
+    ConsentRequestMailer.with_user_locales(users: [user], school: school) do |mailer|
+      mailer.request_consent.deliver_now
+    end
   end
 
   describe '#request_consent' do
@@ -30,7 +32,9 @@ RSpec.describe ConsentRequestMailer do
 
       it 'sends an email with cy strings' do
         expect(email.subject).to eql I18n.t('consent_request_mailer.request_consent.subject', locale: :cy)
-        expect(ActionController::Base.helpers.sanitize(email.html_part.decoded)).to include(I18n.t('consent_request_mailer.request_consent.description', school_name: 'Test School', locale: :cy))
+        expect(ActionController::Base.helpers.sanitize(email.html_part.decoded)).to include(I18n.t(
+                                                                                              'consent_request_mailer.request_consent.description', school_name: 'Test School', locale: :cy
+                                                                                            ))
       end
     end
   end

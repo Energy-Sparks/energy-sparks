@@ -32,7 +32,7 @@ describe Dashboard::Meter do
 
       it 'creates a heat meter' do
         %i[gas storage_heater aggregated_heat].each do |type|
-          meter = described_class.new(**valid_params.merge({ type: type }))
+          meter = described_class.new(**valid_params,  type: type)
           expect(meter.heat_meter?).to be true
           expect(meter.electricity_meter?).to be false
         end
@@ -40,7 +40,7 @@ describe Dashboard::Meter do
 
       it 'creates an electricity meter' do
         %i[electricity solar_pv aggregated_electricity].each do |type|
-          meter = described_class.new(**valid_params.merge({ type: type }))
+          meter = described_class.new(**valid_params, type: type)
           expect(meter.heat_meter?).to be false
           expect(meter.electricity_meter?).to be true
         end
@@ -48,7 +48,7 @@ describe Dashboard::Meter do
     end
 
     describe '#inspect' do
-      let(:meter) { described_class.new(**valid_params.merge({ type: type })) }
+      let(:meter) { described_class.new(**valid_params, type: type) }
 
       it 'works as expected' do
         expect(meter.inspect).to include(identifier.to_s)

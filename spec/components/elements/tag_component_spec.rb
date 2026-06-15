@@ -29,19 +29,19 @@ RSpec.describe Elements::TagComponent, :include_application_helper, type: :compo
     let(:tag) { :p }
 
     it { expect(html).to have_css('p') }
-    it { expect(html).to have_content('Content') }
+    it { expect(html).to have_text('Content') }
   end
 
   context 'with quote tag' do
     let(:tag) { :q }
 
     it { expect(html).to have_css('q') }
-    it { expect(html).to have_content('Content') }
+    it { expect(html).to have_text('Content') }
   end
 
   context 'with a tag' do
     let(:tag) { :a }
-    let(:params) { base_params.merge(href: 'a_link')}
+    let(:params) { base_params.merge(href: 'a_link') }
 
     it { expect(html).to have_link('Content', href: 'a_link') }
   end

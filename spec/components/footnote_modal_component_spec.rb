@@ -30,7 +30,7 @@ RSpec.describe FootnoteModalComponent, type: :component do
       end
     end
 
-    it { expect(html).not_to have_text(body_content) }
+    it { expect(html).to have_no_text(body_content) }
   end
 
   context 'with body_content' do
@@ -53,14 +53,14 @@ RSpec.describe FootnoteModalComponent, type: :component do
   describe 'FootnoteModalComponent::Link', type: :component do
     shared_examples 'a footnote modal link' do |modal_id:, title:, remote:, href:, content:|
       it 'links to modal' do
-        expect(html).to have_selector(
+        expect(html).to have_css(
           'a' \
           "[title='#{title}']" \
           "[data-toggle='modal']" \
           "[data-target='##{modal_id}']" \
           "[data-remote='#{remote}']" \
           "[href='#{href}']" \
-          )
+        )
         expect(html).to have_link(content)
       end
     end
@@ -76,7 +76,8 @@ RSpec.describe FootnoteModalComponent, type: :component do
     context 'with all params' do
       let(:params) { link_params }
 
-      it_behaves_like 'a footnote modal link', title: 'Another title', remote: true, href: 'http://href', modal_id: 'mymodal', content: 'Link text'
+      it_behaves_like 'a footnote modal link', title: 'Another title', remote: true, href: 'http://href',
+                                               modal_id: 'mymodal', content: 'Link text'
     end
 
     context 'with default params' do

@@ -27,7 +27,7 @@ describe 'Mailchimp Sign-up' do
       end
 
       it 'redisplays the page' do
-        expect(page).to have_content("Name can't be blank")
+        expect(page).to have_text("Name can't be blank")
         expect(page).to have_field(:email_address, with: email)
       end
     end
@@ -43,7 +43,7 @@ describe 'Mailchimp Sign-up' do
           expect(subscribed_contact.contact_source).to eq 'Organic'
         end
         click_on 'Subscribe'
-        expect(page).to have_content('Subscription confirmed')
+        expect(page).to have_text('Subscription confirmed')
       end
     end
 
@@ -52,12 +52,10 @@ describe 'Mailchimp Sign-up' do
         fill_in :name, with: name
         fill_in :school, with: school
         all('input[type=checkbox]').each do |checkbox|
-          if checkbox.checked?
-            checkbox.click
-          end
+          checkbox.click if checkbox.checked?
         end
         click_on 'Subscribe'
-        expect(page).to have_content(I18n.t('mailchimp_signups.index.select_interests'))
+        expect(page).to have_text(I18n.t('mailchimp_signups.index.select_interests'))
       end
     end
 
@@ -65,7 +63,7 @@ describe 'Mailchimp Sign-up' do
       it 'shows disabled email and name fields' do
         expect(page).to have_field(:email_address, disabled: true, with: email)
         expect(page).to have_field(:name, disabled: true, with: name)
-        expect(page).not_to have_field(:school)
+        expect(page).to have_no_field(:school)
       end
 
       it 'subscribes the user' do
@@ -76,7 +74,7 @@ describe 'Mailchimp Sign-up' do
           expect(subscribed_contact.contact_source).to eq 'User'
         end
         click_on 'Subscribe'
-        expect(page).to have_content('Subscription confirmed')
+        expect(page).to have_text('Subscription confirmed')
         user.reload
         expect(user.mailchimp_status).to eq('subscribed')
         expect(user.mailchimp_updated_at).not_to be_nil
@@ -104,7 +102,7 @@ describe 'Mailchimp Sign-up' do
         it 'shows disabled email and editable name fields' do
           expect(page).to have_field(:email_address, disabled: true, with: email)
           expect(page).to have_field(:name, disabled: false)
-          expect(page).not_to have_field(:school)
+          expect(page).to have_no_field(:school)
         end
       end
 
@@ -135,7 +133,7 @@ describe 'Mailchimp Sign-up' do
           end
           fill_in :name, with: name
           click_on 'Subscribe'
-          expect(page).to have_content('Subscription confirmed')
+          expect(page).to have_text('Subscription confirmed')
           user.reload
           expect(user.mailchimp_status).to eq('subscribed')
           expect(user.mailchimp_updated_at).not_to be_nil
@@ -173,7 +171,7 @@ describe 'Mailchimp Sign-up' do
         visit new_mailchimp_signup_path
       end
 
-      it { expect(page).to have_content(I18n.t('users.show.update_email_preferences')) }
+      it { expect(page).to have_text(I18n.t('users.show.update_email_preferences')) }
     end
 
     context 'with a logged in user' do
@@ -192,7 +190,7 @@ describe 'Mailchimp Sign-up' do
         it 'shows disabled email and editable name fields' do
           expect(page).to have_field(:email_address, disabled: true, with: email)
           expect(page).to have_field(:name, disabled: false)
-          expect(page).not_to have_field(:school)
+          expect(page).to have_no_field(:school)
         end
       end
 
@@ -222,7 +220,7 @@ describe 'Mailchimp Sign-up' do
             fill_in :name, with: name
           end
           click_on 'Subscribe'
-          expect(page).to have_content('Subscription confirmed')
+          expect(page).to have_text('Subscription confirmed')
         end
       end
 

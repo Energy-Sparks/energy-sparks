@@ -9,12 +9,11 @@ end
 RSpec.shared_examples_for 'a cms page header' do
   it 'displays title and description' do
     within('.layout-cards-page-header-component') do
-      expect(page).to have_content(model.title)
-      expect(page).to have_content(model.description)
+      expect(page).to have_text(model.title)
+      expect(page).to have_text(model.description)
     end
   end
 end
-
 
 RSpec.shared_examples_for 'a publishable model' do
   it 'allows model to be published and unpublished', :js do
@@ -22,7 +21,7 @@ RSpec.shared_examples_for 'a publishable model' do
       click_link('Publish')
     end
 
-    expect(page).to have_content('Content published')
+    expect(page).to have_text('Content published')
     model.reload
     expect(model.published).to be(true)
     expect(model.updated_by).to eq(user)
@@ -30,7 +29,7 @@ RSpec.shared_examples_for 'a publishable model' do
     accept_confirm do
       click_link('Hide')
     end
-    expect(page).to have_content('Content hidden')
+    expect(page).to have_text('Content hidden')
     model.reload
     expect(model.published).to be(false)
   end

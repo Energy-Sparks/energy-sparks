@@ -1,6 +1,7 @@
 RSpec.shared_examples 'a school group advice page' do |index: true|
   it 'displays the right breadcrumb', if: index do
-    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq([I18n.t('common.schools'), school_group.name, breadcrumb])
+    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq([I18n.t('common.schools'), school_group.name,
+                                                                         breadcrumb])
   end
 
   it 'displays the right breadcrumb', unless: index do
@@ -18,7 +19,7 @@ RSpec.shared_examples 'a school group advice page' do |index: true|
   end
 
   it 'has the correct title' do
-    expect(page).to have_content(title)
+    expect(page).to have_text(title)
   end
 end
 
@@ -26,7 +27,9 @@ RSpec.shared_examples 'it exports a group CSV correctly' do
   it 'the file has the expected name' do
     header = page.response_headers['Content-Disposition']
     expect(header).to match(/^attachment/)
-    "#{I18n.t('common.application').parameterize}-#{school_group.name.parameterize}-#{action_name.parameterize}-#{Time.current.iso8601.tr(':', '-')}.csv"
+    "#{I18n.t('common.application').parameterize}-#{school_group.name.parameterize}-#{action_name.parameterize}-#{Time.current.iso8601.tr(
+      ':', '-'
+    )}.csv"
   end
 
   it 'the file has the expected content' do

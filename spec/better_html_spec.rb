@@ -10,12 +10,10 @@ RSpec.describe 'BetterHtml', :aggregate_failures do
     Dir[erb_glob].each do |filename|
       data = File.read(filename)
       expect do
-        begin
-          BetterHtml::BetterErb::ErubiImplementation.new(data, filename:).validate!
-        rescue
-          p filename
-          raise
-        end
+        BetterHtml::BetterErb::ErubiImplementation.new(data, filename:).validate!
+      rescue StandardError
+        p filename
+        raise
       end.not_to raise_exception
     end
   end

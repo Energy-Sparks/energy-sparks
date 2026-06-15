@@ -57,7 +57,11 @@ RSpec.describe AdminMailer, :include_application_helper do
 
     #### tests start here ####
 
-    before { freeze_time }
+    before do
+      freeze_time
+      create(:issue, issueable: active_meter.school, meters: [active_meter])
+      described_class.with(to: to, meter_report: meter_report).school_group_meters_report.deliver
+    end
 
     let(:school_group) { create(:school_group) }
     let(:to) { 'test@test.com' }
@@ -71,11 +75,6 @@ RSpec.describe AdminMailer, :include_application_helper do
 
     let(:all_meters) { false }
     let(:meter_report) { SchoolGroups::MeterReport.new(school_group, all_meters: all_meters) }
-
-    before do
-      create(:issue, issueable: active_meter.school, meters: [active_meter])
-      described_class.with(to: to, meter_report: meter_report).school_group_meters_report.deliver
-    end
 
     context 'All meters' do
       let(:all_meters) { true }

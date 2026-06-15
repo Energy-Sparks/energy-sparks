@@ -6,7 +6,7 @@ RSpec.describe Issue, type: :model do
   let(:data_source) { create(:data_source) }
 
   describe 'with valid attributes' do
-    subject { create :issue }
+    subject { create(:issue) }
 
     it { is_expected.to be_valid }
   end
@@ -148,11 +148,13 @@ RSpec.describe Issue, type: :model do
 
   describe '.for_school_group' do
     context 'when there are issues for school group and schools in group' do
+      subject(:issues) { Issue.for_school_group(school_group) }
+
       let!(:school_issue) { create(:issue, issueable: school) }
       let!(:school_group_issue) { create(:issue, issueable: school_group) }
-      let!(:different_school_in_school_group_issue) { create(:issue, issueable: create(:school, school_group: school_group)) }
-
-      subject(:issues) { Issue.for_school_group(school_group) }
+      let!(:different_school_in_school_group_issue) do
+        create(:issue, issueable: create(:school, school_group: school_group))
+      end
 
       it { expect(issues.count).to eq(3) }
       it { expect(issues).to include(school_issue) }
@@ -176,21 +178,21 @@ RSpec.describe Issue, type: :model do
   end
 
   describe '.active' do
+    subject(:issues) { Issue.active }
+
     let!(:active_school_issue) { create(:issue, issueable: create(:school, active: true)) }
     let!(:school_group_issue) { create(:issue, issueable: create(:school_group)) }
     let!(:inactive_school_issue) { create(:issue, issueable: create(:school, active: false)) }
-
-    subject(:issues) { Issue.active }
 
     it { expect(issues).to contain_exactly(active_school_issue, school_group_issue) }
     it { expect(issues).not_to include(inactive_school_issue) }
   end
 
   describe '#data_source_names' do
+    subject(:data_source_names) { issue.data_source_names }
+
     let(:issue) { create(:issue, meters: meters) }
     let(:meters) { [] }
-
-    subject(:data_source_names) { issue.data_source_names }
 
     context 'with no meters' do
       it { expect(data_source_names).to be_nil }
@@ -212,7 +214,9 @@ RSpec.describe Issue, type: :model do
 
     context 'with meters from multiple sources' do
       let(:another_data_source) { create(:data_source) }
-      let(:meters) { [create(:gas_meter, data_source: data_source), create(:gas_meter, data_source: another_data_source)]}
+      let(:meters) do
+        [create(:gas_meter, data_source: data_source), create(:gas_meter, data_source: another_data_source)]
+      end
 
       it 'joins data source names with a pipe' do
         expect(data_source_names).to eq("#{data_source.name}|#{another_data_source.name}")

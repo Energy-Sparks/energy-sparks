@@ -13,7 +13,7 @@ FactoryBot.define do
       end
 
       after(:build) do |onboarding, evaluator|
-        onboarding.events = evaluator.event_names.map {|event_name| onboarding.events.build(event: event_name) }
+        onboarding.events = evaluator.event_names.map { |event_name| onboarding.events.build(event: event_name) }
       end
     end
 

@@ -7,9 +7,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     it 'displays a basic profile summary' do
       expect(page).to have_css('#profile-summary')
       within('#profile-summary') do
-        expect(page).to have_content(user.name)
-        expect(page).to have_content(user.email)
-        expect(page).to have_content(I18n.t("languages.#{user.preferred_locale}"))
+        expect(page).to have_text(user.name)
+        expect(page).to have_text(user.email)
+        expect(page).to have_text(I18n.t("languages.#{user.preferred_locale}"))
         expect(page).to have_link(I18n.t('users.show.update_account'), href: edit_user_path(user))
         expect(page).to have_link(I18n.t('users.show.change_password'))
       end
@@ -17,7 +17,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
 
     it 'displays staff role', if: school_user || cluster_admin do
       within('#profile-summary') do
-        expect(page).to have_content(user.staff_role.try(:translated_title))
+        expect(page).to have_text(user.staff_role.try(:translated_title))
       end
     end
 
@@ -36,32 +36,35 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     it 'displays summary of my schools', if: school_user do
       expect(page).to have_css('#my-schools-summary')
       within('#my-schools-summary') do
-        expect(page.body).to include(I18n.t('users.show.school_summary.school_user_html', role: I18n.t("role.#{user.role}"), url: school_path(user.school), link_text: user.school.name))
+        expect(page.body).to include(I18n.t('users.show.school_summary.school_user_html',
+                                            role: I18n.t("role.#{user.role}"), url: school_path(user.school), link_text: user.school.name))
       end
     end
 
     it 'displays summary of my schools', if: cluster_admin do
       expect(page).to have_css('#my-schools-summary')
       within('#my-schools-summary') do
-        expect(page.body).to include(I18n.t('users.show.school_summary.cluster_admin_html', role: I18n.t("role.#{user.role}"), count: user.cluster_schools.count))
+        expect(page.body).to include(I18n.t('users.show.school_summary.cluster_admin_html',
+                                            role: I18n.t("role.#{user.role}"), count: user.cluster_schools.count))
       end
     end
 
     it 'displays summary of my schools', if: group_admin do
       expect(page).to have_css('#my-schools-summary')
       within('#my-schools-summary') do
-        expect(page.body).to include(I18n.t('users.show.school_summary.group_admin_html', role: I18n.t("role.#{user.role}"), count: user.school_group.schools.count, url: school_group_path(user.school_group), link_text: user.school_group.name))
+        expect(page.body).to include(I18n.t('users.show.school_summary.group_admin_html',
+                                            role: I18n.t("role.#{user.role}"), count: user.school_group.schools.count, url: school_group_path(user.school_group), link_text: user.school_group.name))
       end
     end
 
     it 'does not display admin options', if: school_user || cluster_admin || group_admin do
-      expect(page).not_to have_css('#admin-options')
+      expect(page).to have_no_css('#admin-options')
     end
 
     it 'displays a profile footer' do
       expect(page).to have_css('#profile-footer')
       within('#profile-footer') do
-        expect(page).to have_content(I18n.t('users.show.joined', date: nice_date_times(user.confirmed_at)))
+        expect(page).to have_text(I18n.t('users.show.joined', date: nice_date_times(user.confirmed_at)))
       end
     end
   end
@@ -87,12 +90,12 @@ RSpec.describe 'User account page and updates', :include_application_helper do
         fill_in('Email', with: 'updated@example.org')
         select('Welsh', from: 'Preferred language')
         click_on('Update')
-        expect(page).to have_content('Account updated')
+        expect(page).to have_text('Account updated')
         expect(page).to have_css('#profile-summary')
         within('#profile-summary') do
-          expect(page).to have_content('New name')
-          expect(page).to have_content('updated@example.org')
-          expect(page).to have_content('Welsh')
+          expect(page).to have_text('New name')
+          expect(page).to have_text('updated@example.org')
+          expect(page).to have_text('Welsh')
         end
       end
     end
@@ -100,7 +103,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
 
   shared_examples 'a working password form' do
     it { expect(page).to have_link(I18n.t('common.labels.cancel', href: users_path(user))) }
-    it { expect(page).to have_content('12 characters minimum') }
+    it { expect(page).to have_text('12 characters minimum') }
 
     context 'when updating' do
       it 'saves password' do
@@ -108,7 +111,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
         fill_in('New password', with: 'thisismyupdatedpassword')
         fill_in('Confirm new password', with: 'thisismyupdatedpassword')
         click_on('Update')
-        expect(page).to have_content('Password updated')
+        expect(page).to have_text('Password updated')
       end
 
       it 'rejects if password is wrong' do
@@ -116,8 +119,8 @@ RSpec.describe 'User account page and updates', :include_application_helper do
         fill_in('New password', with: 'thisismyupdatedpassword')
         fill_in('Confirm new password', with: 'thisismyupdatedpassword')
         click_on('Update')
-        expect(page).not_to have_content('Password updated')
-        expect(page).to have_content('Change password')
+        expect(page).to have_no_text('Password updated')
+        expect(page).to have_text('Change password')
       end
     end
   end
@@ -348,7 +351,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
 
       context 'when viewing another profile' do
-        let(:school_admin) { create(:school_admin, locked_at: 1.day.ago, confirmed_at: nil, mailchimp_status: :subscribed) }
+        let(:school_admin) do
+          create(:school_admin, locked_at: 1.day.ago, confirmed_at: nil, mailchimp_status: :subscribed)
+        end
 
         before do
           visit user_path(school_admin)

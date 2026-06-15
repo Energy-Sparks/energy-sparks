@@ -12,20 +12,21 @@ describe AdvicePageHelper do
 
     it 'returns a path to the compare page for a specific benchmark_type and for a school with a school group' do
       allow_any_instance_of(School).to receive(:school_group) { OpenStruct.new(id: 999) }
-      expect(compare_for_school_group_path(:baseload_per_pupil, school)).to eq('/compare/baseload_per_pupil?school_group_ids%5B%5D=999')
+      expect(compare_for_school_group_path(:baseload_per_pupil,
+                                           school)).to eq('/compare/baseload_per_pupil?school_group_ids%5B%5D=999')
     end
   end
 
   describe '.format_unit' do
     it 'formats a value accourding to its energy unit and the unit symbol as an html character reference' do
-      expect(helper.format_unit(1234567, :co2)).to eq('1,234,567')
+      expect(helper.format_unit(1_234_567, :co2)).to eq('1,234,567')
       expect(helper.format_unit(-4.736951571734001e-15, :co2)).to eq('0')
-      expect(helper.format_unit(1234567, :kwh)).to eq('1,234,567')
+      expect(helper.format_unit(1_234_567, :kwh)).to eq('1,234,567')
       expect(helper.format_unit(-4.736951571734001e-15, :kwh)).to eq('0')
-      expect(helper.format_unit(1234567, :£)).to eq('&pound;1,234,567')
+      expect(helper.format_unit(1_234_567, :£)).to eq('&pound;1,234,567')
       expect(helper.format_unit(0, :£)).to eq('0p')
       expect(helper.format_unit(-4.736951571734001e-15, :£)).to eq('0p')
-      expect(helper.format_unit(1234567, :percent)).to eq('120,000,000&percnt;')
+      expect(helper.format_unit(1_234_567, :percent)).to eq('120,000,000&percnt;')
       expect(helper.format_unit(-4.736951571734001e-15, :percent)).to eq('0&percnt;')
       expect(helper.format_unit(0, :percent)).to eq('0&percnt;')
       expect(helper.format_unit(Float::NAN, :£)).to eq('Uncalculable')
@@ -48,15 +49,18 @@ describe AdvicePageHelper do
 
   describe '.advice_page_path' do
     it 'returns path to insights by default' do
-      expect(helper.advice_page_path(school, advice_page)).to end_with("/schools/#{school.slug}/advice/baseload/insights")
+      expect(helper.advice_page_path(school,
+                                     advice_page)).to end_with("/schools/#{school.slug}/advice/baseload/insights")
     end
 
     it 'returns path to insights tab' do
-      expect(helper.advice_page_path(school, advice_page, :insights)).to end_with("/schools/#{school.slug}/advice/baseload/insights")
+      expect(helper.advice_page_path(school, advice_page,
+                                     :insights)).to end_with("/schools/#{school.slug}/advice/baseload/insights")
     end
 
     it 'returns path to analysis tab' do
-      expect(helper.advice_page_path(school, advice_page, :analysis)).to end_with("/schools/#{school.slug}/advice/baseload/analysis")
+      expect(helper.advice_page_path(school, advice_page,
+                                     :analysis)).to end_with("/schools/#{school.slug}/advice/baseload/analysis")
     end
 
     it 'errors if advice page is not legit' do
@@ -102,8 +106,12 @@ describe AdvicePageHelper do
   describe 'with dashboard alerts' do
     let(:alert_type_advice)   { create(:alert_type, group: 'advice', class_name: 'AdviceAlert') }
     let(:alert_type_change)   { create(:alert_type, group: 'change', class_name: 'ChangeAlert') }
-    let(:alert_advice) { create(:alert, :with_run, alert_type: alert_type_advice, run_on: Time.zone.today, school: school, rating: 9.0) }
-    let(:alert_change) { create(:alert, :with_run, alert_type: alert_type_change, run_on: Time.zone.today, school: school, rating: 9.0) }
+    let(:alert_advice) do
+      create(:alert, :with_run, alert_type: alert_type_advice, run_on: Time.zone.today, school: school, rating: 9.0)
+    end
+    let(:alert_change) do
+      create(:alert, :with_run, alert_type: alert_type_change, run_on: Time.zone.today, school: school, rating: 9.0)
+    end
     let(:dashboard_alert_advice)  { OpenStruct.new(alert: alert_advice) }
     let(:dashboard_alert_change)  { OpenStruct.new(alert: alert_change) }
     let(:dashboard_alerts) { [dashboard_alert_advice, dashboard_alert_change] }

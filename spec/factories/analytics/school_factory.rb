@@ -3,7 +3,6 @@
 FactoryBot.define do
   factory :analytics_school, class: 'Dashboard::School' do
     transient do
-      sequence(:id)    { |n| n }
       sequence(:name)  { |n| "test #{n} school" }
       address          { '1 Station Road' }
       floor_area       { 5000 }

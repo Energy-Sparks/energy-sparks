@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :category, class: 'Cms::Category' do
-    sequence(:title) {|n| "Category #{n}"}
-    sequence(:description) {|n| "Category #{n} description"}
+    sequence(:title) { |n| "Category #{n}" }
+    sequence(:description) { |n| "Category #{n} description" }
     published { false }
     icon { 'lightbulb' }
 

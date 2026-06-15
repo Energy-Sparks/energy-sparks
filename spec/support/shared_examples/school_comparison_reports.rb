@@ -6,11 +6,11 @@ RSpec.shared_examples 'a school comparison report' do |school_types: nil, school
   end
 
   it 'has the expected page title' do
-    expect(page).to have_content(expected_report.title)
+    expect(page).to have_text(expected_report.title)
   end
 
   it 'has the expected report introduction' do
-    expect(page).to have_content(expected_report.introduction.to_plain_text)
+    expect(page).to have_text(expected_report.introduction.to_plain_text)
   end
 
   context 'with the filters section' do
@@ -18,34 +18,34 @@ RSpec.shared_examples 'a school comparison report' do |school_types: nil, school
 
     it 'displays school types', if: school_types do
       school_types.each do |school_type|
-        expect(page).to have_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).to have_text(I18n.t("common.school_types.#{school_type}"))
       end
       all_school_types.excluding(school_types).each do |school_type|
-        expect(page).to have_no_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).to have_no_text(I18n.t("common.school_types.#{school_type}"))
       end
     end
 
     it 'displays school types', if: school_types_excluding do
       all_school_types.excluding(school_types_excluding).each do |school_type|
-        expect(page).to have_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).to have_text(I18n.t("common.school_types.#{school_type}"))
       end
       school_types_excluding.each do |school_type|
-        expect(page).to have_no_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).to have_no_text(I18n.t("common.school_types.#{school_type}"))
       end
     end
 
     it 'displays country', if: country do
-      expect(page).to have_content country
+      expect(page).to have_text country
     end
 
     it 'displays groups', if: school_groups do
       school_groups.each do |group|
-        expect(page).to have_content(group)
+        expect(page).to have_text(group)
       end
     end
 
     it 'displays funder', if: funder do
-      expect(page).to have_content funder
+      expect(page).to have_text funder
     end
 
     it { expect(page).to have_link('Change options') }
@@ -57,7 +57,7 @@ RSpec.shared_examples 'a school comparison report' do |school_types: nil, school
     it 'works with no data' do
       # TODO: seems like this might be brittle but want to ensure the test hasn't created any alerts
       expect(Alert.count).to eq(0)
-      expect(page).to have_content(expected_report.title)
+      expect(page).to have_text(expected_report.title)
     end
   end
 end
@@ -126,7 +126,7 @@ RSpec.shared_examples 'a school comparison report with multiple tables' do |tabl
     index = 0
     while index < table_titles.size
       expect(page).to have_css("#report-table-#{index + 1}")
-      expect(page).to have_content(table_titles[index])
+      expect(page).to have_text(table_titles[index])
       index += 1
     end
   end

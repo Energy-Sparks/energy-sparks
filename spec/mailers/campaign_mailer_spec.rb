@@ -137,13 +137,13 @@ RSpec.describe CampaignMailer do
     end
 
     it 'includes the tool section' do
-      expect(body).to have_content(I18n.t('campaigns.school_info.tool.title'))
+      expect(body).to have_text(I18n.t('campaigns.school_info.tool.title'))
       expect(body).to have_link(href: introductory_video_campaigns_url)
       expect(body).to have_link(href: energy_efficiency_report_campaigns_url)
     end
 
     it 'includes the closer look section' do
-      expect(body).to have_content(I18n.t('campaigns.school_info.closer_look.title'))
+      expect(body).to have_text(I18n.t('campaigns.school_info.closer_look.title'))
       expect(body).to have_link(href: short_demo_video_campaigns_url)
       expect(body).to have_link(href: long_demo_video_campaigns_url)
       expect(body).to have_link(href: product_url)
@@ -151,7 +151,7 @@ RSpec.describe CampaignMailer do
     end
 
     it 'includes the next steps section' do
-      expect(body).to have_content(I18n.t('campaigns.school_info.next_steps.title'))
+      expect(body).to have_text(I18n.t('campaigns.school_info.next_steps.title'))
       expect(body).to have_link(href: short_demo_video_campaigns_url)
       expect(body).to have_link(href: introductory_video_campaigns_url)
       expect(body).to have_link(href: impact_report_campaigns_url)
@@ -174,23 +174,23 @@ RSpec.describe CampaignMailer do
     end
 
     it 'includes the tool section' do
-      expect(body).to have_content(I18n.t('campaigns.school_info.tool.title'))
+      expect(body).to have_text(I18n.t('campaigns.school_info.tool.title'))
       expect(body).to have_link(href: introductory_video_campaigns_url)
       expect(body).to have_link(href: energy_efficiency_report_campaigns_url)
     end
 
     it 'includes the closer look section' do
-      expect(body).to have_content(I18n.t('campaigns.school_info.closer_look.title'))
+      expect(body).to have_text(I18n.t('campaigns.school_info.closer_look.title'))
       expect(body).to have_link(href: example_mat_dashboard_campaigns_url)
-      expect(body).not_to have_link(href: example_la_dashboard_campaigns_url)
+      expect(body).to have_no_link(href: example_la_dashboard_campaigns_url)
       expect(body).to have_link(href: schools_url(scope: :school_groups))
       expect(body).to have_link(href: product_url)
     end
 
     it 'includes the next steps section' do
-      expect(body).to have_content(I18n.t('campaigns.school_info.next_steps.title'))
+      expect(body).to have_text(I18n.t('campaigns.school_info.next_steps.title'))
       expect(body).to have_link(href: enrol_our_multi_academy_trust_url)
-      expect(body).not_to have_link(href: enrol_our_local_authority_url)
+      expect(body).to have_no_link(href: enrol_our_local_authority_url)
       expect(body).to have_link(href: watch_demo_campaigns_url)
       expect(body).to have_link(href: new_mailchimp_signup_url)
     end
@@ -200,12 +200,12 @@ RSpec.describe CampaignMailer do
 
       it 'includes the closer look section' do
         expect(body).to have_link(href: example_la_dashboard_campaigns_url)
-        expect(body).not_to have_link(href: example_mat_dashboard_campaigns_url)
+        expect(body).to have_no_link(href: example_mat_dashboard_campaigns_url)
       end
 
       it 'includes the next steps section' do
         expect(body).to have_link(href: enrol_our_local_authority_url)
-        expect(body).not_to have_link(href: enrol_our_multi_academy_trust_url)
+        expect(body).to have_no_link(href: enrol_our_multi_academy_trust_url)
       end
     end
   end

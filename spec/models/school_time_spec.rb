@@ -20,9 +20,15 @@ describe 'SchoolTime' do
   end
 
   describe '#to_analytics' do
-    let!(:morning_time) { create(:school_time, school: school, day: :tuesday, usage_type: :community_use, opening_time: 700, closing_time: 830)}
+    let!(:morning_time) do
+      create(:school_time, school: school, day: :tuesday, usage_type: :community_use, opening_time: 700,
+                           closing_time: 830)
+    end
 
-    let!(:evening_time) { create(:school_time, school: school, day: :monday, usage_type: :community_use, opening_time: 1800, closing_time: 2030)}
+    let!(:evening_time) do
+      create(:school_time, school: school, day: :monday, usage_type: :community_use, opening_time: 1800,
+                           closing_time: 2030)
+    end
 
     it 'serialises mornings correctly' do
       result = morning_time.to_analytics
@@ -63,7 +69,7 @@ describe 'SchoolTime' do
   end
 
   it 'requires that a school day is a named day' do
-    [:weekdays, :weekends, :everyday].each do |range|
+    %i[weekdays weekends everyday].each do |range|
       expect(school.school_times.create(day: range)).not_to be_valid
     end
   end
@@ -71,7 +77,7 @@ describe 'SchoolTime' do
   it 'requires that a school day is term time only' do
     school.school_times.destroy_all
     expect(school.school_times.create(usage_type: :school_day, day: :monday, calendar_period: :term_times)).to be_valid
-    [:only_holidays, :all_year].each do |period|
+    %i[only_holidays all_year].each do |period|
       school.school_times.destroy_all
       expect(school.school_times.create(usage_type: :school_day, day: :monday, calendar_period: period)).not_to be_valid
     end
@@ -87,8 +93,10 @@ describe 'SchoolTime' do
         # simulate what happens with form submission
         params = {
           'school_times_attributes' => {
-            '123' => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :term_times },
-            '456' => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :all_year }
+            '123' => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use,
+                       calendar_period: :term_times },
+            '456' => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use,
+                       calendar_period: :all_year }
           }
         }
         school.attributes = params
@@ -106,7 +114,7 @@ describe 'SchoolTime' do
 
       let!(:time) do
         school.school_times.create(day: day, usage_type: usage_type,
-        calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)
+                                   calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)
       end
 
       context 'with other community use periods' do
@@ -116,41 +124,50 @@ describe 'SchoolTime' do
 
         it 'is valid when there are no overlaps' do
           # 13-14, no overlap. OK
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400)).to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300,
+                                            closing_time: 1400)).to be_valid
         end
 
         it 'does not allow longer periods' do
           # 7-2, longer period
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700,
+                                            closing_time: 1400)).not_to be_valid
         end
 
         it 'does not allow shorter periods' do
           # 9-11, longer period
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1100)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900,
+                                            closing_time: 1100)).not_to be_valid
         end
 
         it 'does not allow identical periods' do
           # 8-12, identical
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 800,
+                                            closing_time: 1200)).not_to be_valid
         end
 
         it 'rejects overlaps on first part of period' do
           # 7-10, overlapping first part of range
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700,
+                                            closing_time: 1000)).not_to be_valid
         end
 
         it 'rejects overlaps on the end of the period' do
           # 9-1, overlapping second part
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900,
+                                            closing_time: 1300)).not_to be_valid
         end
 
         it 'allows same times on different days' do
-          expect(school.school_times.create(day: :tuesday, usage_type: :community_use, opening_time: 700, closing_time: 1000)).to be_valid
+          expect(school.school_times.create(day: :tuesday, usage_type: :community_use, opening_time: 700,
+                                            closing_time: 1000)).to be_valid
         end
 
         it 'allows same times on different calendar period' do
-          expect(school.school_times.create(day: day, calendar_period: :only_holidays, usage_type: :community_use, opening_time: 700, closing_time: 1000)).to be_valid
-          expect(school.school_times.create(day: day, calendar_period: :all_year, usage_type: :community_use, opening_time: 700, closing_time: 1000)).not_to be_valid
+          expect(school.school_times.create(day: day, calendar_period: :only_holidays, usage_type: :community_use,
+                                            opening_time: 700, closing_time: 1000)).to be_valid
+          expect(school.school_times.create(day: day, calendar_period: :all_year, usage_type: :community_use,
+                                            opening_time: 700, closing_time: 1000)).not_to be_valid
         end
       end
 
@@ -159,32 +176,38 @@ describe 'SchoolTime' do
 
         it 'is valid when there are no overlaps' do
           # 13-14, no overlap. OK
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400)).to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300,
+                                            closing_time: 1400)).to be_valid
         end
 
         it 'does not allow longer periods' do
           # 7-2, longer period
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700,
+                                            closing_time: 1400)).not_to be_valid
         end
 
         it 'does not allow shorter periods' do
           # 9-11, longer period
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1100)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900,
+                                            closing_time: 1100)).not_to be_valid
         end
 
         it 'does not allow identical periods' do
           # 8-12, identical
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 800,
+                                            closing_time: 1200)).not_to be_valid
         end
 
         it 'rejects overlaps on first part of period' do
           # 7-10, overlapping first part of range
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 700,
+                                            closing_time: 1000)).not_to be_valid
         end
 
         it 'rejects overlaps on the end of the period' do
           # 9-1, overlapping second part
-          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300)).not_to be_valid
+          expect(school.school_times.create(day: day, usage_type: :community_use, opening_time: 900,
+                                            closing_time: 1300)).not_to be_valid
         end
       end
 
@@ -193,21 +216,25 @@ describe 'SchoolTime' do
 
         it 'allows saturday to overlap with weekday' do
           # week day and weekends dont overlap
-          expect(school.school_times.create(day: :saturday, usage_type: :community_use, opening_time: 1300, closing_time: 1400)).to be_valid
+          expect(school.school_times.create(day: :saturday, usage_type: :community_use, opening_time: 1300,
+                                            closing_time: 1400)).to be_valid
         end
 
         it 'allows weekdays and weekends to overlap' do
-          expect(school.school_times.create(day: :weekends, usage_type: :community_use, opening_time: 1300, closing_time: 1400)).to be_valid
+          expect(school.school_times.create(day: :weekends, usage_type: :community_use, opening_time: 1300,
+                                            closing_time: 1400)).to be_valid
         end
 
         it 'does not allow monday to overlap with weekdays' do
           # 830-1230, mondays, overlaps with the week day range
-          expect(school.school_times.create(day: :monday, usage_type: :community_use, opening_time: 830, closing_time: 1230)).not_to be_valid
+          expect(school.school_times.create(day: :monday, usage_type: :community_use, opening_time: 830,
+                                            closing_time: 1230)).not_to be_valid
         end
 
         it 'does not allow everyday to overlap with weekdays' do
           # 830-1230, everyday, overlaps with the week day range
-          expect(school.school_times.create(day: :everyday, usage_type: :community_use, opening_time: 830, closing_time: 1230)).not_to be_valid
+          expect(school.school_times.create(day: :everyday, usage_type: :community_use, opening_time: 830,
+                                            closing_time: 1230)).not_to be_valid
         end
       end
     end

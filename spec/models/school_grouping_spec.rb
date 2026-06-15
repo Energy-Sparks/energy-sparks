@@ -21,7 +21,7 @@ describe SchoolGrouping do
       expect(grouping).to be_valid
     end
 
-    ['area', 'project', 'diocese'].each do |role|
+    %w[area project diocese].each do |role|
       context "with #{role} role" do
         context 'when creating' do
           let!(:grouping) { described_class.new(school:, school_group:, role: role) }
@@ -55,7 +55,7 @@ describe SchoolGrouping do
       expect(grouping).to be_valid
     end
 
-    ['area', 'project', 'organisation'].each do |role|
+    %w[area project organisation].each do |role|
       context "with #{role} role" do
         context 'when creating' do
           let!(:grouping) { described_class.new(school:, school_group:, role: role) }
@@ -89,7 +89,7 @@ describe SchoolGrouping do
       expect(grouping).to be_valid
     end
 
-    ['organisation', 'project'].each do |role|
+    %w[organisation project].each do |role|
       context "with #{role} role" do
         context 'when creating' do
           let(:grouping) { described_class.create(school:, school_group:, role: role) }
@@ -182,7 +182,8 @@ describe SchoolGrouping do
     end
 
     it 'is valid when using a different group' do
-      valid = build(:school_grouping, school:, school_group: create(:school_group, group_type: :project), role: 'project')
+      valid = build(:school_grouping, school:, school_group: create(:school_group, group_type: :project),
+                                      role: 'project')
       expect(valid).to be_valid
     end
 
@@ -286,7 +287,9 @@ describe SchoolGrouping do
 
     context 'when there is an existing grouping' do
       let!(:school_group) { create(:school_group, group_type: :local_authority_area, dfe_code: '383') }
-      let!(:school) { create(:school, :with_local_authority_area, establishment: create(:establishment, la_code: '383')) }
+      let!(:school) do
+        create(:school, :with_local_authority_area, establishment: create(:establishment, la_code: '383'))
+      end
 
       before do
         described_class.assign_area(school)

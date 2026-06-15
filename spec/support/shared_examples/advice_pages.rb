@@ -10,14 +10,14 @@ RSpec.shared_examples 'an advice page' do
 
   it 'shows the page nav' do
     within '.advice-page-nav' do
-      expect(page).to have_content(I18n.t('advice_pages.nav.overview'))
-      expect(page).to have_content(I18n.t("advice_pages.nav.pages.#{key}"))
+      expect(page).to have_text(I18n.t('advice_pages.nav.overview'))
+      expect(page).to have_text(I18n.t("advice_pages.nav.pages.#{key}"))
     end
   end
 end
 
 RSpec.shared_examples 'it responds to HEAD requests' do
-  [:insights, :analysis, :learn_more].each do |action|
+  %i[insights analysis learn_more].each do |action|
     it "return :ok with HEAD request to #{action}" do
       process :head, polymorphic_path([action, school, :advice, advice_page.key.to_sym])
       expect(response).to have_http_status(:ok)
@@ -29,7 +29,7 @@ RSpec.shared_examples 'an advice page tab' do |tab:|
   it_behaves_like 'an advice page'
 
   it 'shows the page title' do
-    expect(page).to have_content(expected_page_title)
+    expect(page).to have_text(expected_page_title)
   end
 
   it 'shows page breadcrumb' do
@@ -45,7 +45,7 @@ RSpec.shared_examples 'an advice page tab' do |tab:|
 
   it "all tabs except #{tab} are inactive" do
     ['Insights', 'Analysis', 'Learn More'].excluding(tab).each do |option|
-      expect(page).not_to have_link(option, class: 'active')
+      expect(page).to have_no_link(option, class: 'active')
     end
   end
 
@@ -62,14 +62,14 @@ RSpec.shared_examples 'an advice page tab' do |tab:|
     end
 
     it 'still shows the analysis' do
-      expect(page).to have_content(expected_page_title)
+      expect(page).to have_text(expected_page_title)
     end
   end
 
   context 'Learn More', if: tab == 'Learn More' do
     it 'shows learn more content' do
       within '.advice-page-tabs' do
-        expect(page).to have_content(advice_page.learn_more.body.to_html)
+        expect(page).to have_text(advice_page.learn_more.body.to_html)
       end
     end
   end
@@ -77,7 +77,7 @@ RSpec.shared_examples 'an advice page tab' do |tab:|
   context 'Insights', if: tab == 'Insights' do
     it 'shows recommendations' do
       within '.advice-page-tabs' do
-        expect(page).to have_content('What should you do next?')
+        expect(page).to have_text('What should you do next?')
       end
     end
   end
@@ -85,20 +85,20 @@ end
 
 RSpec.shared_examples 'an advice page NOT showing electricity data warning' do
   it 'does NOT show data warning' do
-    expect(page).not_to have_content('We have not received data for your electricity usage for over thirty days')
+    expect(page).to have_no_text('We have not received data for your electricity usage for over thirty days')
   end
 end
 
 RSpec.shared_examples 'an advice page showing electricity data warning' do
   it 'does show data warning' do
-    expect(page).to have_content('We have not received data for your electricity usage for over thirty days')
+    expect(page).to have_text('We have not received data for your electricity usage for over thirty days')
   end
 end
 
 RSpec.shared_examples 'an advice page with an alert notice' do |link: false|
   it 'shows the notice' do
     within('.alerts-component') do
-      expect(page).to have_content(expected_notice)
+      expect(page).to have_text(expected_notice)
     end
   end
 

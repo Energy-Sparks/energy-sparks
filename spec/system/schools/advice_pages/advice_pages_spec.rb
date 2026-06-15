@@ -13,7 +13,9 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
   let(:learn_more) { 'here is some more explanation' }
   let(:expected_page_title) { 'Baseload' }
 
-  let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: :electricity, learn_more: learn_more) }
+  let!(:advice_page) do
+    create(:advice_page, key: key, restricted: false, fuel_type: :electricity, learn_more: learn_more)
+  end
 
   context 'when error occurs' do
     before do
@@ -27,8 +29,8 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
 
       it 'shows the error page' do
         visit learn_more_school_advice_baseload_path(school)
-        expect(page).to have_content('Sorry, something has gone wrong')
-        expect(page).to have_content('We encountered an error attempting to generate your analysis')
+        expect(page).to have_text('Sorry, something has gone wrong')
+        expect(page).to have_text('We encountered an error attempting to generate your analysis')
       end
     end
 
@@ -56,7 +58,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
 
     it 'shows the error page' do
       visit insights_school_advice_baseload_path(school)
-      expect(page).to have_content('Unable to run requested analysis')
+      expect(page).to have_text('Unable to run requested analysis')
     end
   end
 
@@ -73,8 +75,8 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
       within '#page-nav' do
         click_on 'Baseload'
       end
-      expect(page).to have_content(I18n.t('advice_pages.not_enough_data.title'))
-      expect(page).to have_content('Assuming we continue to regularly receive data')
+      expect(page).to have_text(I18n.t('advice_pages.not_enough_data.title'))
+      expect(page).to have_text('Assuming we continue to regularly receive data')
     end
   end
 
@@ -84,7 +86,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content(I18n.t('advice_pages.index.title'))
+      expect(page).to have_text(I18n.t('advice_pages.index.title'))
     end
 
     context 'when page is restricted' do
@@ -96,8 +98,8 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
         within '#page-nav' do
           click_on expected_page_title
         end
-        expect(page).to have_content(I18n.t('advice_pages.index.title'))
-        expect(page).to have_content('Only an admin or staff user for this school can access this content')
+        expect(page).to have_text(I18n.t('advice_pages.index.title'))
+        expect(page).to have_text('Only an admin or staff user for this school can access this content')
       end
     end
   end
@@ -111,7 +113,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content(I18n.t('advice_pages.index.title'))
+      expect(page).to have_text(I18n.t('advice_pages.index.title'))
       within '#page-nav' do
         expect(page).to have_link(expected_page_title)
       end
@@ -123,12 +125,13 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
       end
 
       it 'shows the advice page' do
-        expect(page).to have_content(expected_page_title)
+        expect(page).to have_text(expected_page_title)
       end
 
       it 'shows the nav bar' do
         within('#page-nav') do
-          expect(page).to have_link(I18n.t("advice_pages.nav.pages.#{key}"), href: advice_page_path(school, advice_page))
+          expect(page).to have_link(I18n.t("advice_pages.nav.pages.#{key}"),
+                                    href: advice_page_path(school, advice_page))
         end
       end
 
@@ -151,14 +154,14 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
 
       it 'shows learn more content' do
         within '.advice-page-tabs' do
-          expect(page).to have_content(learn_more)
+          expect(page).to have_text(learn_more)
         end
       end
 
       it 'links from admin page' do
         visit admin_path
         click_on 'Advice Pages'
-        expect(page).to have_content('Manage advice pages')
+        expect(page).to have_text('Manage advice pages')
       end
 
       context 'when page is restricted' do
@@ -168,7 +171,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
 
         it 'shows the restricted advice page' do
           refresh
-          expect(page).to have_content(expected_page_title)
+          expect(page).to have_text(expected_page_title)
         end
       end
     end
@@ -184,7 +187,6 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
     let(:user) {}
     let(:login_text) { 'Log in with your email address and password' }
 
-
     context 'logged out user' do
       it 'shows login page' do
         expect(page).to have_link(login_text)
@@ -195,7 +197,7 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
       let(:user) { create(:staff, school: school) }
 
       it 'does not show login page' do
-        expect(page).not_to have_link(login_text)
+        expect(page).to have_no_link(login_text)
       end
     end
   end

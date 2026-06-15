@@ -5,6 +5,12 @@ RSpec.shared_context 'a school with meters' do
 end
 
 RSpec.shared_context 'with flat price electricity and gas tariffs' do
-  let!(:gas_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31), tariff_holder: tariff_holder, meter_type: :gas)}
-  let!(:electricity_tariff)   { create(:energy_tariff, :with_flat_price, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31), tariff_holder: tariff_holder, meter_type: :electricity)}
+  let!(:gas_tariff)         do
+    create(:energy_tariff, :with_flat_price, start_date: Date.new(2022, 1, 1), end_date: Date.new(2022, 12, 31),
+                                             tariff_holder: tariff_holder, meter_type: :gas)
+  end
+  let!(:electricity_tariff) do
+    create(:energy_tariff, :with_flat_price, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31),
+                                             tariff_holder: tariff_holder, meter_type: :electricity)
+  end
 end

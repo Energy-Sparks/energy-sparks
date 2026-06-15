@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'meter attribute management', :meters, type: :system do
   let!(:school_group)       { create(:school_group, name: 'BANES') }
-  let!(:school_name)        { 'Oldfield Park Infants'}
+  let!(:school_name)        { 'Oldfield Park Infants' }
   let!(:school)             { create_active_school(name: school_name, school_group: school_group) }
-  let!(:admin)              { create(:admin)}
-  let!(:gas_meter)          { create :gas_meter, name: 'Gas meter', school: school }
+  let!(:admin)              { create(:admin) }
+  let!(:gas_meter)          { create(:gas_meter, name: 'Gas meter', school: school) }
 
   context 'as admin' do
     before do
@@ -21,8 +21,8 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
         create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
         click_on 'Meter attributes'
-        expect(page).to have_content('Meter attributes for Oldfield Park Infants')
-        expect(page).to have_content('There was an error')
+        expect(page).to have_text('Meter attributes for Oldfield Park Infants')
+        expect(page).to have_text('There was an error')
       end
 
       it 'deletes broken meter attribute' do
@@ -32,7 +32,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
         click_on 'Delete'
         expect(gas_meter.reload.meter_attributes.active.count).to eq(0)
         expect(gas_meter.reload.meter_attributes.deleted.count).to eq(1)
-        expect(page).to have_content('There was an error')
+        expect(page).to have_text('There was an error')
       end
 
       it 'deletes broken school attribute' do
@@ -43,7 +43,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
         click_on 'Delete'
         expect(school.reload.meter_attributes.active.count).to eq(0)
         expect(school.reload.meter_attributes.deleted.count).to eq(1)
-        expect(page).to have_content('There was an error')
+        expect(page).to have_text('There was an error')
       end
 
       it 'deletes broken global meter attribute' do
@@ -53,13 +53,13 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
         click_on 'Delete'
         expect(GlobalMeterAttribute.active.count).to eq(0)
         expect(GlobalMeterAttribute.deleted.count).to eq(1)
-        expect(page).to have_content('There was an error')
+        expect(page).to have_text('There was an error')
       end
     end
 
     it 'is able to display a form for all meter attributes' do
       visit admin_school_single_meter_attribute_path(school, gas_meter)
-      options = find('#type').all('option').collect(&:text)
+      options = find_by_id('type').all('option').collect(&:text)
 
       options.each do |option|
         select option, from: 'type'
@@ -187,12 +187,12 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
 
       attribute = gas_meter.meter_attributes.first
       expect(attribute.to_analytics).to eq({
-        start_date: Date.new(2023, 1, 1),
-        end_date: Date.new(2023, 2, 1),
-        power_kw: 150.0,
-        charge_start_time: TimeOfDay.new(3, 33),
-        charge_end_time: TimeOfDay.new(4, 44)
-      })
+                                             start_date: Date.new(2023, 1, 1),
+                                             end_date: Date.new(2023, 2, 1),
+                                             power_kw: 150.0,
+                                             charge_start_time: TimeOfDay.new(3, 33),
+                                             charge_end_time: TimeOfDay.new(4, 44)
+                                           })
     end
 
     it 'allows creating and editing of an attribute with nested TimeOfYear values' do
@@ -218,11 +218,11 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
 
       attribute = gas_meter.meter_attributes.first
       expect(attribute.to_analytics).to eq({
-        no_heating_in_summer_set_missing_to_zero: {
-          start_toy: TimeOfYear.new(6, 6),
-          end_toy: TimeOfYear.new(8, 8)
-        }
-      })
+                                             no_heating_in_summer_set_missing_to_zero: {
+                                               start_toy: TimeOfYear.new(6, 6),
+                                               end_toy: TimeOfYear.new(8, 8)
+                                             }
+                                           })
     end
 
     describe 'managing school meter attributes' do

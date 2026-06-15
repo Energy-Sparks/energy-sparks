@@ -26,28 +26,28 @@ module Lists
         end
 
         it 'converts integers' do
-          expect(described_class.find(100000).number_of_pupils).to eq(249)
+          expect(described_class.find(100_000).number_of_pupils).to eq(249)
         end
 
         it 'converts datetimes' do
-          expect(described_class.find(100000).last_changed_date).to eq(DateTime.parse('07-07-2025'))
+          expect(described_class.find(100_000).last_changed_date).to eq(DateTime.parse('07-07-2025'))
         end
 
         it 'imports non-ascii characters' do
-          expect(described_class.find(100371).establishment_name).to eq('Ecole Française de Londres Jacques Prévert')
+          expect(described_class.find(100_371).establishment_name).to eq('Ecole Française de Londres Jacques Prévert')
         end
       end
 
       context 'with existing records' do
         before do
-          build(:establishment, id: 100000).save
+          build(:establishment, id: 100_000).save
           File.open('./spec/fixtures/import_establishments/establishments_sample.csv') do |file|
             described_class.import(file.read, 1000)
           end
         end
 
         it 'updates columns' do
-          expect(described_class.find(100000).number_of_pupils).to eq(249)
+          expect(described_class.find(100_000).number_of_pupils).to eq(249)
         end
       end
     end
@@ -89,32 +89,34 @@ module Lists
 
     describe '.sync_local_authority_groups' do
       context 'when creating a group' do
-        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Leeds')}
+        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Leeds') }
         let(:school_group) { SchoolGroup.find_by_dfe_code('383') }
 
         before do
           described_class.sync_local_authority_groups
         end
 
-        it { expect(school_group.group_type).to eq('local_authority_area')}
+        it { expect(school_group.group_type).to eq('local_authority_area') }
         it { expect(school_group.name).to eq('Leeds Local Authority') }
       end
 
       context 'when normalising names' do
-        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Bristol, City of')}
+        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Bristol, City of') }
         let(:school_group) { SchoolGroup.find_by_dfe_code('383') }
 
         before do
           described_class.sync_local_authority_groups
         end
 
-        it { expect(school_group.group_type).to eq('local_authority_area')}
+        it { expect(school_group.group_type).to eq('local_authority_area') }
         it { expect(school_group.name).to eq('City of Bristol Local Authority') }
       end
 
       context 'when group_exists' do
-        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Bristol, City of')}
-        let!(:school_group) { create(:school_group, group_type: :local_authority_area, dfe_code: '383', name: 'Old name') }
+        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Bristol, City of') }
+        let!(:school_group) do
+          create(:school_group, group_type: :local_authority_area, dfe_code: '383', name: 'Old name')
+        end
 
         before do
           described_class.sync_local_authority_groups

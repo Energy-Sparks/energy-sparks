@@ -30,26 +30,26 @@ RSpec.describe Dashboards::GroupSavingsPromptComponent, :include_url_helpers, ty
       let(:expected_id) { 'custom-id' }
     end
 
-    it { expect(html).to have_content('Spending too much money on heating') }
-    it { expect(html).to have_content('gas') }
-    it { expect(html).to have_content('2 schools') }
-    it { expect(html).to have_content('4,400 kWh') }
+    it { expect(html).to have_text('Spending too much money on heating') }
+    it { expect(html).to have_text('gas') }
+    it { expect(html).to have_text('2 schools') }
+    it { expect(html).to have_text('4,400 kWh') }
 
     it {
       expect(html).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_potential_savings'),
-                                   href: priorities_school_group_advice_path(school_group))
+                                href: priorities_school_group_advice_path(school_group))
     }
 
     context 'when displaying co2' do
       let(:metric) { :co2 }
 
-      it { expect(html).to have_content('2,200 kg CO2') }
+      it { expect(html).to have_text('2,200 kg CO2') }
     end
 
     context 'when displaying gbp' do
       let(:metric) { :gbp }
 
-      it { expect(html).to have_content('£2,000') }
+      it { expect(html).to have_text('£2,000') }
     end
 
     context 'when no data enabled schools' do

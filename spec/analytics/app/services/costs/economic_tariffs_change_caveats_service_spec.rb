@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 describe Costs::EconomicTariffsChangeCaveatsService do
+  subject(:service) do
+    described_class.new(meter_collection: meter_collection, fuel_type: :electricity)
+  end
+
   include_context 'with an aggregated meter with tariffs and school times' do
     let(:amr_start_date)  { start_date }
     let(:amr_end_date)    { end_date }
-  end
-
-  subject(:service) do
-    described_class.new(meter_collection: meter_collection, fuel_type: :electricity)
   end
 
   let(:start_date)  { Date.new(2023, 1, 2) }
@@ -20,7 +20,7 @@ describe Costs::EconomicTariffsChangeCaveatsService do
     end
 
     context 'when tariffs havent changed' do
-      it { expect(caveats).to be(nil) }
+      it { expect(caveats).to be_nil }
     end
 
     context 'when tariffs have changed' do

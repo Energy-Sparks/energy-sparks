@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 describe EnergyTariffsHelper do
-  let(:energy_tariff) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: 'School', school: create(:school), tariff_type: 'differential')}
+  let(:energy_tariff) do
+    EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31',
+                        tariff_holder_type: 'School', school: create(:school), tariff_type: 'differential')
+  end
 
   describe '.energy_tariff_prices_text' do
     it 'gives text if default prices exist' do
@@ -36,7 +39,8 @@ describe EnergyTariffsHelper do
 
   describe '.energy_tariff_charge_type_units_for' do
     it 'finds expected charge types with capitalized version' do
-      expect(energy_tariff_charge_type_units_for(:other)).to eq([['kWh', :kwh], ['day', :day], ['month', :month], ['quarter', :quarter]])
+      expect(energy_tariff_charge_type_units_for(:other)).to eq([['kWh', :kwh], ['day', :day], ['month', :month],
+                                                                 ['quarter', :quarter]])
     end
 
     it 'handles missing charge types' do
@@ -91,7 +95,7 @@ describe EnergyTariffsHelper do
       expect(convert_value_to_long_currency(1.5)).to eq('£1.50')
       expect(convert_value_to_long_currency(1.511111)).to eq('£1.511111')
       expect(convert_value_to_long_currency(1.50000000000000)).to eq('£1.50')
-      expect(convert_value_to_long_currency(100000005.50000000000000)).to eq('£100000005.50')
+      expect(convert_value_to_long_currency(100_000_005.50000000000000)).to eq('£100000005.50')
       expect(convert_value_to_long_currency(0.3, currency: '$')).to eq('$0.30')
     end
   end

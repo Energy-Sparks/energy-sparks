@@ -3,7 +3,8 @@ class AlertMailerPreview < ActionMailer::Preview
     if @params[:email].present?
       AlertMailer.with(**preview_existing_email).alert_email
     else
-      AlertMailer.with(email_address: 'test@blah.com', school: AlertSubscriptionEvent.last.alert.school, events: [AlertSubscriptionEvent.last], target_prompt: nil, locale: locale).alert_email
+      AlertMailer.with(email_address: 'test@blah.com', school: AlertSubscriptionEvent.last.alert.school,
+                       events: [AlertSubscriptionEvent.last], target_prompt: nil, locale: locale).alert_email
     end
   end
 
@@ -12,13 +13,14 @@ class AlertMailerPreview < ActionMailer::Preview
   end
 
   def alert_email_with_target
-    AlertMailer.with(email_address: 'test@blah.com', school: School.find(@params[:school]), events: [], target_prompt: nil, locale:).alert_email
+    AlertMailer.with(email_address: 'test@blah.com', school: School.find(@params[:school]), events: [],
+                     target_prompt: nil, locale:).alert_email
   end
 
   private
 
   def locale
-    @params['locale'].present? ? @params['locale'] : 'en'
+    @params['locale'].presence || 'en'
   end
 
   def include_target_prompt_in_email?(school)

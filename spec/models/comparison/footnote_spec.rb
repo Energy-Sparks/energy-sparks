@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Comparison::Footnote, type: :model do
   describe 'validations' do
     context 'with valid attributes' do
-      subject(:footnote) { create :footnote }
+      subject(:footnote) { create(:footnote) }
 
       it { expect(footnote).to be_valid }
       it { expect(footnote).to validate_presence_of(:label) }
@@ -14,10 +14,12 @@ RSpec.describe Comparison::Footnote, type: :model do
   end
 
   describe '#t' do
-    let!(:foonote) { create :footnote, label: 't', key: 'key', description_en: 'Please %{replace}', description_cy: 'os gwelwch yn dda %{replace}'}
-
     subject(:t) { Comparison::Footnote.t('key', params) }
 
+    let!(:foonote) do
+      create(:footnote, label: 't', key: 'key', description_en: 'Please %{replace}',
+                        description_cy: 'os gwelwch yn dda %{replace}')
+    end
     let(:params) { { replace: 'work' } }
 
     context 'when correct amount of params are passed' do

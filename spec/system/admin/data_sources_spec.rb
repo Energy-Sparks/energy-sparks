@@ -14,7 +14,8 @@ end
 
 shared_examples_for 'a data source form' do
   it 'shows prefilled form' do
-    expect(page).to have_select('Organisation type', selected: data_source.organisation_type.try(:humanize).presence || [])
+    expect(page).to have_select('Organisation type',
+                                selected: data_source.organisation_type.try(:humanize).presence || [])
     expect(page).to have_select('Owned by', selected: data_source.owned_by.try(:name).presence || [])
     expect(page).to have_field('Load tariffs for SMETS meters')
     expect(page).to have_field('Turn on email alerts for lagging meters?')
@@ -31,9 +32,9 @@ shared_examples_for 'a data source form' do
   end
 end
 
-RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_application_helper: true do
-  let(:setup_data)             { }
-  let!(:user)                  { }
+RSpec.describe 'Data Sources admin', :include_application_helper, :school_groups, type: :system do
+  let(:setup_data)             {}
+  let!(:user)                  {}
 
   let!(:text_attributes) do
     {
@@ -95,12 +96,27 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
         let(:school) { create(:school) }
         let(:inactive_school) { create(:school, active: false) }
 
-        let(:active_meters) { 4.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
-        let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source, school: school) } }
-        let(:active_stale_meter) { create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, active: true, data_source: existing_data_source, school: school) }
-        let(:active_meter_for_archived_school) { create(:gas_meter, active: true, data_source: existing_data_source, school: inactive_school) }
+        let(:active_meters) do
+          4.times do
+            create(:gas_meter, active: true, data_source: existing_data_source, school: school)
+          end
+        end
+        let(:inactive_meters) do
+          2.times do
+            create(:gas_meter, active: false, data_source: existing_data_source, school: school)
+          end
+        end
+        let(:active_stale_meter) do
+          create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, active: true, data_source: existing_data_source,
+                                                          school: school)
+        end
+        let(:active_meter_for_archived_school) do
+          create(:gas_meter, active: true, data_source: existing_data_source, school: inactive_school)
+        end
 
-        let(:setup_data) { [existing_data_source, active_meters, inactive_meters, active_stale_meter, active_meter_for_archived_school] }
+        let(:setup_data) do
+          [existing_data_source, active_meters, inactive_meters, active_stale_meter, active_meter_for_archived_school]
+        end
 
         it { expect(page).to have_text(existing_data_source.organisation_type.humanize) }
         it { expect(page).to have_text(user.name) }
@@ -155,7 +171,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
               click_on 'Edit'
             end
 
-            it { expect(page).to have_text("Edit #{existing_data_source.name}")}
+            it { expect(page).to have_text("Edit #{existing_data_source.name}") }
 
             it 'has a delete button' do
               expect(page).to have_link('Delete')
@@ -168,13 +184,12 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             context 'and saving new data' do
               let(:new_data_source) do
                 build(:data_source,
-                  organisation_type: :council,
-                  alert_percentage_threshold: 3,
-                  import_warning_days: 9,
-                  load_tariffs: false,
-                  alerts_on: false,
-                  owned_by: user
-                  )
+                      organisation_type: :council,
+                      alert_percentage_threshold: 3,
+                      import_warning_days: 9,
+                      load_tariffs: false,
+                      alerts_on: false,
+                      owned_by: user)
               end
 
               before do
@@ -206,14 +221,17 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
               click_on 'Delete'
             end
 
-            it { expect(page).not_to have_text(existing_data_source.name) }
+            it { expect(page).to have_no_text(existing_data_source.name) }
             it { expect(page).to have_text('Data source was successfully deleted') }
           end
 
           describe 'Issues tab' do
             context 'when there are issues for the data source' do
               let(:admin) { create(:admin) }
-              let(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: existing_data_source, fuel_type: :gas, pinned: true) }
+              let(:issue) do
+                create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: existing_data_source, fuel_type: :gas,
+                               pinned: true)
+              end
               let(:setup_data) { issue }
 
               it 'displays a count of issues' do
@@ -233,7 +251,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'when there are no issues' do
-              it { expect(page).to have_text("No issues for #{existing_data_source.name}")}
+              it { expect(page).to have_text("No issues for #{existing_data_source.name}") }
             end
 
             context 'with buttons' do
@@ -247,7 +265,10 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
               let(:admin) { create(:admin) }
               let(:school) { create(:school) }
               let(:meter) { create(:gas_meter, active: true, data_source: existing_data_source, school: school) }
-              let(:meter_issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
+              let(:meter_issue) do
+                create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas,
+                               pinned: true)
+              end
               let(:issue_meter) { create(:issue_meter, issue: meter_issue, meter: meter) }
               let(:setup_data) { [school, meter_issue, meter, issue_meter] }
 
@@ -268,7 +289,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'when there are no issues' do
-              it { expect(page).to have_text("No meter issues for #{existing_data_source.name}")}
+              it { expect(page).to have_text("No meter issues for #{existing_data_source.name}") }
             end
 
             context 'with buttons' do
@@ -307,7 +328,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           click_on 'New data source'
         end
 
-        it { expect(page).not_to have_link('Delete') }
+        it { expect(page).to have_no_link('Delete') }
 
         it { expect(page).to have_text('New data source') }
 

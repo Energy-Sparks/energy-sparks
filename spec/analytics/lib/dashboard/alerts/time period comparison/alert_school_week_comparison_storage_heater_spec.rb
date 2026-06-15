@@ -6,7 +6,8 @@ describe AlertSchoolWeekComparisonStorageHeater do
   subject(:alert) { described_class.new(meter_collection) }
 
   let(:meter_collection) do
-    temperatures = build(:temperatures, :with_summer_and_winter, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
+    temperatures = build(:temperatures, :with_summer_and_winter, start_date: Date.new(2023, 1, 1),
+                                                                 end_date: Date.new(2023, 12, 31))
 
     meter_collection = build(:meter_collection,
                              holidays: build(:holidays, :with_calendar_year, year: 2023),

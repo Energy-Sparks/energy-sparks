@@ -107,7 +107,7 @@ RSpec.shared_examples 'a completable' do
     let!(:task) { create(:intervention_type) }
 
     context 'when assignable has todo' do
-      let!(:todo) { create(:todo, assignable:, task:)}
+      let!(:todo) { create(:todo, assignable:, task:) }
 
       before do
         completable.task_complete!(task:, recording: create(:observation, :intervention, intervention_type: task))
@@ -296,12 +296,12 @@ RSpec.shared_examples 'a todo list when there is a completable' do
       page.all('div#ActivityType div.todo').each_with_index do |block, i|
         todo = assignable.activity_type_todos[i]
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).not_to have_css('i.fa-circle-check.text-success')
-        expect(block).to have_content(todo.task.name)
+        expect(block).to have_no_css('i.fa-circle-check.text-success')
+        expect(block).to have_text(todo.task.name)
         expect(block).to have_link('Complete activity', href: activity_type_path(todo.task))
-        expect(block).to have_content(todo.notes)
-        expect(block).to have_content("#{todo.task.score} points")
-        expect(block).not_to have_content('Completed on')
+        expect(block).to have_text(todo.notes)
+        expect(block).to have_text("#{todo.task.score} points")
+        expect(block).to have_no_text('Completed on')
       end
     end
 
@@ -309,18 +309,19 @@ RSpec.shared_examples 'a todo list when there is a completable' do
       page.all('div#InterventionType div.todo').each_with_index do |block, i|
         todo = assignable.intervention_type_todos[i]
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).not_to have_css('i.fa-circle-check.text-success')
-        expect(block).to have_content(todo.task.name)
+        expect(block).to have_no_css('i.fa-circle-check.text-success')
+        expect(block).to have_text(todo.task.name)
         expect(block).to have_link('Complete action', href: intervention_type_path(todo.task))
-        expect(block).to have_content(todo.notes)
-        expect(block).to have_content("#{todo.task.score} points")
-        expect(block).not_to have_content('Completed on')
+        expect(block).to have_text(todo.notes)
+        expect(block).to have_text("#{todo.task.score} points")
+        expect(block).to have_no_text('Completed on')
       end
     end
   end
 
   context 'when an activity has been completed' do
     let(:activity_type) { assignable.activity_type_tasks.first }
+    let(:block) { page.all('div#ActivityType div.todo').first }
     let(:activity) { build(:activity, school:, activity_type:, happened_on: Date.yesterday) }
 
     before do
@@ -328,28 +329,30 @@ RSpec.shared_examples 'a todo list when there is a completable' do
       refresh
     end
 
-    let(:block) { page.all('div#ActivityType div.todo').first }
-
     it 'indicates the activity has been completed' do
       expect(block).to have_css('i.fa-circle-check.text-success')
-      expect(block).to have_link("Completed on #{nice_dates(activity.happened_on)}", href: school_activity_path(activity.school, activity))
+      expect(block).to have_link("Completed on #{nice_dates(activity.happened_on)}",
+                                 href: school_activity_path(activity.school, activity))
     end
 
     it "doesn't indicate other tasks are complete" do
       page.all('div#ActivityType div.todo')[1..2].each_with_index do |block, i|
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).to have_link('Complete activity', href: activity_type_path(assignable.activity_type_todos[i + 1].task))
+        expect(block).to have_link('Complete activity',
+                                   href: activity_type_path(assignable.activity_type_todos[i + 1].task))
       end
 
       page.all('div#InterventionType div.todo').each_with_index do |block, i|
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).to have_link('Complete action', href: intervention_type_path(assignable.intervention_type_todos[i].task))
+        expect(block).to have_link('Complete action',
+                                   href: intervention_type_path(assignable.intervention_type_todos[i].task))
       end
     end
   end
 
   context 'when an intervention has been completed' do
     let(:intervention_type) { assignable.intervention_type_tasks.first }
+    let(:block) { page.all('div#InterventionType div.todo').first }
     let(:observation) { build(:observation, :intervention, school:, intervention_type:, at: Date.yesterday) }
 
     before do
@@ -357,22 +360,23 @@ RSpec.shared_examples 'a todo list when there is a completable' do
       refresh
     end
 
-    let(:block) { page.all('div#InterventionType div.todo').first }
-
     it 'indicates the action has been completed' do
       expect(block).to have_css('i.fa-circle-check.text-success')
-      expect(block).to have_link("Completed on #{nice_dates(observation.at)}", href: school_intervention_path(observation.school, observation))
+      expect(block).to have_link("Completed on #{nice_dates(observation.at)}",
+                                 href: school_intervention_path(observation.school, observation))
     end
 
     it "doesn't indicate other tasks are complete" do
       page.all('div#InterventionType div.todo')[1..2].each_with_index do |block, i|
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).to have_link('Complete action', href: intervention_type_path(assignable.intervention_type_todos[i + 1].task))
+        expect(block).to have_link('Complete action',
+                                   href: intervention_type_path(assignable.intervention_type_todos[i + 1].task))
       end
 
       page.all('div#ActivityType div.todo').each_with_index do |block, i|
         expect(block).to have_css('i.fa-circle.text-muted')
-        expect(block).to have_link('Complete activity', href: activity_type_path(assignable.activity_type_todos[i].task))
+        expect(block).to have_link('Complete activity',
+                                   href: activity_type_path(assignable.activity_type_todos[i].task))
       end
     end
   end

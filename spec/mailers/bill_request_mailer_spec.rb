@@ -15,7 +15,10 @@ RSpec.describe BillRequestMailer do
   end
 
   before do
-    BillRequestMailer.with_user_locales(users: [user], school: school, electricity_meters: [electricity_meter], gas_meters: [gas_meter]) { |mailer| mailer.request_bill.deliver_now }
+    BillRequestMailer.with_user_locales(users: [user], school: school, electricity_meters: [electricity_meter],
+                                        gas_meters: [gas_meter]) do |mailer|
+      mailer.request_bill.deliver_now
+    end
     @email = ActionMailer::Base.deliveries.last
   end
 

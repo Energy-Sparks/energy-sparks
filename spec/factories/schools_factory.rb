@@ -11,7 +11,7 @@ FactoryBot.define do
     address         { '1 Station Road' }
     postcode        { 'AB1 2CD' }
     country         { :england }
-    floor_area      { BigDecimal('1234.567')}
+    floor_area      { BigDecimal('1234.567') }
     website         { "http://#{name.camelize}.test" }
     calendar        { create(:school_calendar) }
     weather_station
@@ -21,7 +21,7 @@ FactoryBot.define do
     end
 
     factory :school_with_same_name do
-      name { 'test school'}
+      name { 'test school' }
     end
 
     trait :with_consent do
@@ -37,7 +37,8 @@ FactoryBot.define do
       end
 
       after(:create) do |school, evaluator|
-        group = evaluator.school_group || create(:school_group, default_issues_admin_user: evaluator.default_issues_admin_user)
+        group = evaluator.school_group || create(:school_group,
+                                                 default_issues_admin_user: evaluator.default_issues_admin_user)
         school.update(school_group: group)
       end
     end
@@ -122,7 +123,8 @@ FactoryBot.define do
 
     trait :with_feed_areas do
       after(:create) do |school, _evaluator|
-        school.update(dark_sky_area: create(:dark_sky_area), solar_pv_tuos_area: create(:solar_pv_tuos_area), weather_station: create(:weather_station))
+        school.update(dark_sky_area: create(:dark_sky_area), solar_pv_tuos_area: create(:solar_pv_tuos_area),
+                      weather_station: create(:weather_station))
       end
     end
 

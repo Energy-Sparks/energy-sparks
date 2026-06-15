@@ -15,7 +15,7 @@ describe AlertElectricityUsageDuringCurrentHoliday do
         context 'with community use' do
           let(:community_use_times) do
             [{ day: :weekdays, usage_type: :community_use, calendar_period:,
-              opening_time: TimeOfDay.new(15, 0), closing_time: TimeOfDay.new(20, 0) }]
+               opening_time: TimeOfDay.new(15, 0), closing_time: TimeOfDay.new(20, 0) }]
           end
 
           context 'when all year' do

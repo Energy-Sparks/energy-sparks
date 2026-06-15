@@ -7,7 +7,7 @@ RSpec.describe Report::GasAnomaly do
 
   let(:meter) do
     school = create(:school, :with_school_group, :with_calendar,
-               weather_station: create(:weather_station))
+                    weather_station: create(:weather_station))
     create(:gas_meter, school: school)
   end
 

@@ -1,14 +1,12 @@
-# rubocop:disable RSpec/MultipleMemoizedHelpers
-
 RSpec.shared_examples 'a recordable' do
+  subject(:recordable) { create(factory, score: 50, maximum_frequency: 3) }
+
   before do
     SiteSettings.current.update(photo_bonus_points: 5)
   end
 
-  subject(:recordable) { create(factory, score: 50, maximum_frequency: 3) }
-
   let(:calendar) { create(:calendar, :with_previous_and_next_academic_years) }
-  let(:current_academic_year_date) { calendar.current_academic_year.start_date + 1.day}
+  let(:current_academic_year_date) { calendar.current_academic_year.start_date + 1.day }
   let(:previous_academic_year_date) { calendar.current_academic_year.previous_year.start_date + 1.day }
   let(:future_academic_year_date) { calendar.current_academic_year.next_year.start_date + 1.day }
 
@@ -16,11 +14,11 @@ RSpec.shared_examples 'a recordable' do
 
   def create_recordings(count, date, description: description_without_image)
     create_list(recorded_factory, count, trait, {
-      school:,
-      description:,
-      recording_date_field => date,
-      recordable.class.model_name.param_key => recordable
-    })
+                  school:,
+                  description:,
+                  recording_date_field => date,
+                  recordable.class.model_name.param_key => recordable
+                })
   end
 
   shared_examples 'an observation with points' do |points: 50, bonus_points: 0|
@@ -47,10 +45,10 @@ RSpec.shared_examples 'a recordable' do
   context 'when creating a new recording' do
     let(:recording) do
       build(recorded_factory, trait,
-        school:,
-        description: description_without_image,
-        recording_date_field => recording_date,
-        recordable.class.model_name.param_key => recordable)
+            school:,
+            description: description_without_image,
+            recording_date_field => recording_date,
+            recordable.class.model_name.param_key => recordable)
     end
 
     context 'when recording date is in current academic year' do
@@ -248,4 +246,3 @@ RSpec.shared_examples 'a recordable' do
     end
   end
 end
-# rubocop:enable RSpec/MultipleMemoizedHelpers

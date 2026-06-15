@@ -6,8 +6,9 @@ describe MetersHelper do
 
     it 'has option for all meters and individual meter' do
       expect(helper.options_for_meter_selection([meter])).to eq([
-                                                                  [I18n.t('charts.usage.select_meter.all_meters'), 'all'],
-                                                                  [meter.display_name, meter.mpan_mprn],
+                                                                  [I18n.t('charts.usage.select_meter.all_meters'),
+                                                                   'all'],
+                                                                  [meter.display_name, meter.mpan_mprn]
                                                                 ])
     end
 
@@ -18,7 +19,8 @@ describe MetersHelper do
 
       it 'adds extra option for mains only' do
         expect(helper.options_for_meter_selection([meter])).to eq([
-                                                                    [I18n.t('charts.usage.select_meter.all_meters'), 'all'],
+                                                                    [I18n.t('charts.usage.select_meter.all_meters'),
+                                                                     'all'],
                                                                     [meter.display_name,
                                                                      meter.mpan_mprn],
                                                                     ["#{meter.display_name} #{I18n.t('charts.usage.select_meter.sub_meters.mains_consume')}",

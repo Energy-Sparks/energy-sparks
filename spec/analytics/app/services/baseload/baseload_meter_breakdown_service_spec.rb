@@ -18,7 +18,7 @@ describe Baseload::BaseloadCalculationService, type: :service do
   describe '#calculate_breakdown' do
     it 'runs the calculation' do
       meter_breakdown = service.calculate_breakdown
-      expect(meter_breakdown.meters).to match_array([meter1, meter2])
+      expect(meter_breakdown.meters).to contain_exactly(meter1, meter2)
       expect(meter_breakdown.baseload_kw(meter1)).not_to be_nil
       expect(meter_breakdown.percentage_baseload(meter1)).not_to be_nil
       expect(meter_breakdown.baseload_cost_£(meter1)).not_to be_nil
@@ -31,7 +31,7 @@ describe Baseload::BaseloadCalculationService, type: :service do
       perc2 = meter_breakdown.percentage_baseload(meter2)
       expect(perc1 + perc2).to eq(1.0)
 
-      expect(meter_breakdown.meters_by_baseload).to match_array([meter2, meter1])
+      expect(meter_breakdown.meters_by_baseload).to contain_exactly(meter2, meter1)
     end
   end
 
@@ -39,7 +39,7 @@ describe Baseload::BaseloadCalculationService, type: :service do
     context 'when theres is a years worth' do
       it 'returns true' do
         expect(service.enough_data?).to be true
-        expect(service.data_available_from).to be nil
+        expect(service.data_available_from).to be_nil
       end
     end
 
@@ -53,7 +53,7 @@ describe Baseload::BaseloadCalculationService, type: :service do
 
       it 'returns false' do
         expect(service.enough_data?).to be false
-        expect(service.data_available_from).not_to be nil
+        expect(service.data_available_from).not_to be_nil
       end
     end
   end
