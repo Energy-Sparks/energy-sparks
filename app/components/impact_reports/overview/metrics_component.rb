@@ -14,6 +14,7 @@ module ImpactReports
       end
 
       def enrollment_metrics
+        # return the first metric that has a value above zero
         %i[enrolling_schools enrolled_schools].find { |metric| overview(metric)&.nonzero? }
       end
     end
