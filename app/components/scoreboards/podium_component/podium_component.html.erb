@@ -8,6 +8,7 @@
               position_ordinal: podium.school_position.ordinal,
               scoreboard: podium.scoreboard.name,
               scoreboard_path: path_to_scoreboard,
+              highest_school_path: school_path(podium.high_to_low.first.school),
               national_position_ordinal: national_podium.school_position.ordinal,
               national_scoreboard_path: scoreboard_path(national_podium.scoreboard)) %>.
       <% else %>
