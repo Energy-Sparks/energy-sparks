@@ -11,9 +11,13 @@ en:
           annual_saving:
             co2:
               subtext:
-                one: Reduced emissions by reducing %{fuel_type} use in %{count} school in the last 12 months
-                other: Reduced emissions by reducing %{fuel_type} use in %{count} schools in the last 12 months
-              title: Reduced %{fuel_type} emissions
+                electricity:
+                  one: Reduced carbon emissions from electricity use in %{count} school in the last 12 months
+                  other: Reduced carbon emissions from electricity use in %{count} schools in the last 12 months
+                gas:
+                  one: Reduced carbon emissions by reducing gas use in %{count} school in the last 12 months
+                  other: Reduced carbon emissions by reducing gas use in %{count} schools in the last 12 months
+              title: Reduced carbon emissions from %{fuel_type}
             gbp:
               subtext:
                 one: Cost saving by reducing %{fuel_type} use in %{count} school in the last 12 months using current tariffs
@@ -21,10 +25,10 @@ en:
               title: Total %{fuel_type} savings
           baseload:
             subtext: Schools achieving a well managed or exemplar rating for managing electricity baseload
-            title: Baseload management
+            title: Good baseload management
           heating_control:
             subtext: Schools achieving a well managed or exemplar rating for heating control
-            title: Improved heating control
+            title: Good heating control
           holiday_previous:
             gbp:
               subtext:
@@ -36,7 +40,7 @@ en:
               subtext:
                 one: Cost saving by reducing %{fuel_type} use in %{count} school between the last holiday and same holiday in previous year using current tariffs
                 other: Cost saving by reducing %{fuel_type} use in %{count} schools between the last holiday and same holiday in previous year using current tariffs
-              title: Yearly holiday %{fuel_type} savings
+              title: Holiday %{fuel_type} savings compared to last year
           long_term:
             subtext: Schools achieving a well managed or exemplar rating for their %{fuel_type} use
             title: Reducing %{fuel_type} use
@@ -45,7 +49,7 @@ en:
             title: Reducing out of hours %{fuel_type} use
           targets:
             subtext: Schools with measurable progress against reducing their %{fuel_type} use
-            title: Energy saving targets
+            title: "%{fuel_type} saving targets"
         title: Energy Efficiency
       engagement:
         cards:
@@ -59,7 +63,7 @@ en:
             subtext: Points scored in the last 12 months in our energy saving competitions
             title: Points
           targets:
-            subtext: Number of active Energy Saving Targets set by schools in the group
+            subtext: Number of active energy saving targets set by schools in the group
             title: Current targets
         description: How are schools in this group engaging with the Energy Sparks education programme?
         featured:
@@ -84,7 +88,7 @@ en:
         title: "%{school_group} Impact Report"
       notes:
         comparisons_basis: Reductions in energy use are based on comparing use with the previous 12 month period (%{comparison_start} - %{comparison_end}).
-        cost_savings: Cost savings are based on the historical energy tariff data provided to us by the group and/or individual schools. Where not available we use a default charge.
+        cost_savings: Cost savings achieved are based on the current energy tariff data provided to us by the group and/or individual schools. Where not available we use a default charge.
         coverage: Energy Sparks may not have full coverage for all meters in schools, but school data is only made available for analysis where we have significant coverage. This means our figures may underestimate actual or potential savings.
         data_updated: The data on this page was last updated on %{date}.
         other_analysis: Other analysis, e.g. progress against energy targets is based on the latest available data at the point of analysis.
@@ -116,11 +120,11 @@ en:
               one: Of which %{count} has logged into the tool in the last 3 months
               other: Of which %{count} have logged into the tool in the last 3 months
               zero: Number of group and school users
-            title: Users
+            title: Adult users
         description: How many schools and users are enrolled in Energy Sparks from this group?
         title: Overview
       potential_savings:
-        description: What additional savings have we identified that can help these schools continue to reduce their energy bills and carbon emissions?
+        description: Further energy and carbon saving opportunities identified for these schools
         keys:
           baseload:
             one: By reducing %{fuel_type} baseload in %{count} school
