@@ -21,6 +21,7 @@
 #  floor_area                              :decimal(, )
 #  full_school                             :boolean          default(TRUE)
 #  funding_status                          :integer          default("state_school"), not null
+#  has_battery                             :boolean          default(FALSE), not null
 #  has_swimming_pool                       :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump            :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump_notes      :text
