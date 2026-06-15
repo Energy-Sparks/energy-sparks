@@ -65,7 +65,7 @@ module ImpactReport
     ].freeze
     private_constant :ENERGY_EFFICIENCY_GENERATORS
 
-    ENERGY_EFFICIENCY_METRICS = ENERGY_EFFICIENCY_GENERATORS.flat_map { |type| type::METRICS }
+    ENERGY_EFFICIENCY_METRICS = ENERGY_EFFICIENCY_GENERATORS.flat_map { |type| type::METRICS }.freeze
 
     ENGAGEMENT_METRICS = GENERATOR::Engagement::METRICS
 
