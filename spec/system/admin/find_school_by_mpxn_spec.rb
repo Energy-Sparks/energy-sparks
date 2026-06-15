@@ -17,32 +17,32 @@ RSpec.describe 'find school by mpnx' do
     end
 
     it 'displays the search page' do
-      expect(page).to have_content('Find schools by meter')
+      expect(page).to have_text('Find schools by meter')
     end
 
     it 'does not display empty results message' do
-      expect(page).to have_no_content('No meters were found using this mpxn')
+      expect(page).to have_no_text('No meters were found using this mpxn')
     end
 
     it 'finds a single meter' do
       fill_in 'query', with: gmeter.mpan_mprn
       click_on 'Search'
 
-      expect(page).to have_content gmeter.mpan_mprn
-      expect(page).to have_content gmeter.school.name
+      expect(page).to have_text gmeter.mpan_mprn
+      expect(page).to have_text gmeter.school.name
     end
 
     it 'finds based on wildcard' do
       fill_in 'query', with: '12345'
       click_on 'Search'
-      expect(page).to have_content gmeter.mpan_mprn
-      expect(page).to have_content emeter.mpan_mprn
+      expect(page).to have_text gmeter.mpan_mprn
+      expect(page).to have_text emeter.mpan_mprn
     end
 
     it 'reports empty results' do
       fill_in 'query', with: '9999'
       click_on 'Search'
-      expect(page).to have_content('No meters were found using this mpxn')
+      expect(page).to have_text('No meters were found using this mpxn')
     end
   end
 end

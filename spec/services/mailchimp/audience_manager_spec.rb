@@ -7,9 +7,9 @@ describe Mailchimp::AudienceManager do
 
   let(:lists_api) { instance_double(MailchimpMarketing::ListsApi) }
 
-  let!(:lists_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/lists.yml')) }
-  let!(:interests_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/interests.yml')) }
-  let!(:categories_data) { YAML.safe_load(File.read('spec/fixtures/mailchimp/categories.yml')) }
+  let!(:lists_data) { YAML.safe_load_file('spec/fixtures/mailchimp/lists.yml') }
+  let!(:interests_data) { YAML.safe_load_file('spec/fixtures/mailchimp/interests.yml') }
+  let!(:categories_data) { YAML.safe_load_file('spec/fixtures/mailchimp/categories.yml') }
 
   describe '#list' do
     context 'when no lists' do
@@ -51,7 +51,8 @@ describe Mailchimp::AudienceManager do
     subject(:interests) { service.interests('54eadf64cc') }
 
     before do
-      allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_interest_categories: categories_data, list_interest_category_interests: interests_data)
+      allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_interest_categories: categories_data,
+                                           list_interest_category_interests: interests_data)
     end
 
     it 'returns interests' do
@@ -127,7 +128,7 @@ describe Mailchimp::AudienceManager do
 
   describe '#get_list_member' do
     before do
-      contact = YAML.safe_load(File.read('spec/fixtures/mailchimp/contact.yml'))
+      contact = YAML.safe_load_file('spec/fixtures/mailchimp/contact.yml')
       allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_member: contact)
     end
 
@@ -141,7 +142,7 @@ describe Mailchimp::AudienceManager do
 
   describe '#process_list_members' do
     before do
-      members = YAML.safe_load(File.read('spec/fixtures/mailchimp/members.yml'))
+      members = YAML.safe_load_file('spec/fixtures/mailchimp/members.yml')
       allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_members_info: members)
     end
 

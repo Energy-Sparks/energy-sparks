@@ -2,7 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_helper, :include_url_helpers, type: :component do
+RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_helper, :include_url_helpers,
+               type: :component do
   let!(:school_group) { create(:school_group) }
   let!(:school) { create(:school, :with_fuel_configuration, school_group: school_group) }
 
@@ -11,7 +12,7 @@ RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_hel
                     school_group: school_group,
                     schools: school_group.schools,
                     fuel_types: school.configuration.fuel_configuration.fuel_types
-    ))
+                  ))
   end
 
   RSpec.shared_examples 'a group energy summary component' do
@@ -37,7 +38,7 @@ RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_hel
     end
 
     it 'has tabs and content for all fuel types' do
-      [:electricity, :gas, :storage_heaters].each do |fuel_type|
+      %i[electricity gas storage_heaters].each do |fuel_type|
         expect(page).to have_css("##{fuel_type}-tab")
         expect(page).to have_css("##{fuel_type}-overview")
       end
@@ -51,7 +52,7 @@ RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_hel
                       schools: school_group.schools,
                       fuel_types: school.configuration.fuel_configuration.fuel_types,
                       metric: :usage
-      ))
+                    ))
     end
 
     it_behaves_like 'a group energy summary component' do
@@ -62,9 +63,9 @@ RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_hel
   context 'with limited fuel types' do
     let(:school) do
       create(:school, :with_fuel_configuration,
-                           has_gas: false,
-                           has_storage_heaters: false,
-                           school_group: school_group)
+             has_gas: false,
+             has_storage_heaters: false,
+             school_group: school_group)
     end
 
     it_behaves_like 'a group energy summary component' do
@@ -77,9 +78,9 @@ RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_hel
     end
 
     it 'does not have tabs and content for the other fuel types' do
-      [:gas, :storage_heaters].each do |fuel_type|
-        expect(page).not_to have_css("##{fuel_type}-tab")
-        expect(page).not_to have_css("##{fuel_type}-overview")
+      %i[gas storage_heaters].each do |fuel_type|
+        expect(page).to have_no_css("##{fuel_type}-tab")
+        expect(page).to have_no_css("##{fuel_type}-overview")
       end
     end
   end
@@ -87,7 +88,7 @@ RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_hel
   context 'with no schools' do
     let(:school) { create(:school, :with_school_group) }
 
-    it { expect(page).not_to have_css('div.dashboards-group-energy-summary-component') }
+    it { expect(page).to have_no_css('div.dashboards-group-energy-summary-component') }
   end
 
   describe 'Footers' do
@@ -98,18 +99,19 @@ RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_hel
                       school_group: school_group,
                       schools: school_group.schools,
                       fuel_types: school.configuration.fuel_configuration.fuel_types,
-                      show_status_note: status_note)) do |c|
+                      show_status_note: status_note
+                    )) do |c|
         c.with_footer { 'Footer' }
         c.with_modal_link { 'Link tag' }
       end
     end
 
     it 'renders the footer' do
-      expect(page).to have_content('Footer')
+      expect(page).to have_text('Footer')
     end
 
     it 'renders the modal link' do
-      expect(page).to have_content('Link tag')
+      expect(page).to have_text('Link tag')
     end
 
     context 'with status note' do
@@ -121,7 +123,7 @@ RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_hel
     context 'without status note' do
       let(:status_note) { false }
 
-      it { expect(page).not_to have_link('See a full list of schools and their status') }
+      it { expect(page).to have_no_link('See a full list of schools and their status') }
     end
   end
 end

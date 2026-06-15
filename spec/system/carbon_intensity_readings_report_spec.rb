@@ -2,8 +2,10 @@ require 'rails_helper'
 
 module DataFeeds
   RSpec.describe 'Carbon intensity readings report', type: :system do
-    let!(:carbon_intensity_reading) { CarbonIntensityReading.create(reading_date: Date.parse('01/06/2019'), carbon_intensity_x48: Array.new(48, rand))}
-    let!(:admin) { create(:admin)}
+    let!(:carbon_intensity_reading) do
+      CarbonIntensityReading.create(reading_date: Date.parse('01/06/2019'), carbon_intensity_x48: Array.new(48, rand))
+    end
+    let!(:admin) { create(:admin) }
 
     before do
       sign_in(admin)
@@ -22,16 +24,16 @@ module DataFeeds
 
         # Then check the content
         CarbonIntensityReading.all.find_each do |_record|
-          expect(page.source).to have_content DataFeeds::CarbonIntensityReadingsController::CSV_HEADER
-          expect(page).to have_content reading_to_s(carbon_intensity_reading)
+          expect(page.source).to have_text DataFeeds::CarbonIntensityReadingsController::CSV_HEADER
+          expect(page).to have_text reading_to_s(carbon_intensity_reading)
         end
       end
 
-      it 'has a report which can be viewed', js: true do
+      it 'has a report which can be viewed', :js do
         click_on('Manage')
         click_on('Reports')
         click_on('Carbon intensity data')
-        expect(page).to have_content 'January'
+        expect(page).to have_text 'January'
       end
 
       def reading_to_s(carbon_intensity_reading)

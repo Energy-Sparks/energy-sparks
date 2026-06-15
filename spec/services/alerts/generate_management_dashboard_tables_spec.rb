@@ -22,15 +22,15 @@ describe Alerts::GenerateManagementDashboardTables do
 
   context 'when there are management tables configured that match the alert type' do
     let(:rating) { 5.0 }
-    let!(:alert) { create(:alert, :with_run, school: school, rating: rating)}
+    let!(:alert) { create(:alert, :with_run, school: school, rating: rating) }
     let!(:alert_type_rating) do
-      create :alert_type_rating,
-        alert_type: alert.alert_type,
-        rating_from: 1,
-        rating_to: 6,
-        management_dashboard_table_active: management_tables_active
+      create(:alert_type_rating,
+             alert_type: alert.alert_type,
+             rating_from: 1,
+             rating_to: 6,
+             management_dashboard_table_active: management_tables_active)
     end
-    let!(:content_version) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
+    let!(:content_version) { create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating) }
 
     let(:management_tables_active) { true }
 
@@ -46,7 +46,9 @@ describe Alerts::GenerateManagementDashboardTables do
 
       it 'does not create any tables if there is an alert type exception' do
         SchoolAlertTypeExclusion.create(school: school, alert_type: alert.alert_type)
-        expect { service.perform(school.latest_alerts_without_exclusions)}.to change { content_generation_run.management_dashboard_tables.count }.by(0)
+        expect { service.perform(school.latest_alerts_without_exclusions) }.not_to(change do
+          content_generation_run.management_dashboard_tables.count
+        end)
       end
 
       context 'where the management tables are not active' do

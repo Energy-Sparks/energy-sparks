@@ -13,13 +13,14 @@ describe 'meter loading report' do
   end
 
   it 'displays the results' do
-    expect(page).to have_content('Meter Loading Report')
+    expect(page).to have_text('Meter Loading Report')
 
     fill_in('mpxn', with: reading.mpan_mprn)
     click_on 'Search'
 
-    expect(page).to have_content(reading.reading_date)
+    expect(page).to have_text(reading.reading_date)
     expect(page).to have_link(reading.amr_data_feed_import_log.file_name, href: 'https://example.org')
-    expect(page).to have_link(reading.amr_data_feed_config.identifier, href: admin_amr_data_feed_config_path(reading.amr_data_feed_config))
+    expect(page).to have_link(reading.amr_data_feed_config.identifier,
+                              href: admin_amr_data_feed_config_path(reading.amr_data_feed_config))
   end
 end

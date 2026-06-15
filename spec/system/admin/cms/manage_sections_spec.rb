@@ -40,7 +40,7 @@ describe 'manage sections' do
 
       it 'creates the model' do
         click_on 'Save'
-        expect(page).to have_content('Section Title')
+        expect(page).to have_text('Section Title')
         expect(Cms::Section.count).to eq(1)
         model = Cms::Section.last
         expect(model.created_by).to eq(user)
@@ -77,7 +77,7 @@ describe 'manage sections' do
 
         it 'updates the model' do
           click_on 'Save'
-          expect(page).to have_content('Section Title')
+          expect(page).to have_text('Section Title')
           model = Cms::Section.last
           expect(model.updated_by).to eq(user)
           expect(page).to have_link('Edit', href: edit_admin_cms_section_path(model))

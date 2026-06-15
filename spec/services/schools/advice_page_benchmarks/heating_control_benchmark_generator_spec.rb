@@ -4,7 +4,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::HeatingControlBenchmarkGenerator, 
   let(:advice_page) { create(:advice_page, key: :heating_control, fuel_type: :gas) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service) { Schools::AdvicePageBenchmarks::HeatingControlBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::HeatingControlBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school) }
 
   describe '#benchmark_school' do
     let(:enough_data) { true }

@@ -35,7 +35,7 @@ describe Charts::ComparisonChartData do
 
     it 'translated the y_axis_label' do
       expect(chart_hash[:y_axis_label]).to eq(I18n.t(y_axis_label,
-                                              scope: 'chart_configuration.y_axis_label_name'))
+                                                     scope: 'chart_configuration.y_axis_label_name'))
     end
   end
 

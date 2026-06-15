@@ -11,7 +11,7 @@ describe 'manual data load', type: :system do
 
   it 'links to report' do
     click_on('Recent manual imports')
-    expect(page).to have_content('Recent manual data loads')
+    expect(page).to have_text('Recent manual data loads')
   end
 
   context 'view the manual data load report' do
@@ -25,8 +25,8 @@ describe 'manual data load', type: :system do
     end
 
     it 'lists the data loads' do
-      expect(page).to have_content(newest_run.amr_uploaded_reading.file_name)
-      expect(page).not_to have_content(oldest_run.amr_uploaded_reading.file_name)
+      expect(page).to have_text(newest_run.amr_uploaded_reading.file_name)
+      expect(page).to have_no_text(oldest_run.amr_uploaded_reading.file_name)
     end
 
     it 'has paging' do
@@ -34,15 +34,15 @@ describe 'manual data load', type: :system do
         expect(page).to have_link('Next')
         click_on('Next')
       end
-      expect(page).not_to have_content(newest_run.amr_uploaded_reading.file_name)
-      expect(page).to have_content(oldest_run.amr_uploaded_reading.file_name)
+      expect(page).to have_no_text(newest_run.amr_uploaded_reading.file_name)
+      expect(page).to have_text(oldest_run.amr_uploaded_reading.file_name)
     end
 
     it 'displays the status' do
       first(:link, text: 'View', exact_text: true).click
-      expect(page).to have_content(newest_run.amr_uploaded_reading.amr_data_feed_config.description)
-      expect(page).to have_content(newest_run.amr_uploaded_reading.file_name)
-      expect(page).to have_content('done')
+      expect(page).to have_text(newest_run.amr_uploaded_reading.amr_data_feed_config.description)
+      expect(page).to have_text(newest_run.amr_uploaded_reading.file_name)
+      expect(page).to have_text('done')
     end
   end
 end

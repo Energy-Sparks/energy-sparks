@@ -37,16 +37,18 @@ RSpec.describe DashboardMessage, type: :model do
 
     context 'when there is no message' do
       it 'does nothing' do
-        expect { described_class.delete_or_remove_message!(messageable, message) }.not_to change(described_class, :count)
+        expect do
+          described_class.delete_or_remove_message!(messageable, message)
+        end.not_to change(described_class, :count)
       end
     end
 
     context 'when there is an existing message' do
-      let(:existing_message) { 'Existing message' }
-
       subject!(:dashboard_message) do
         described_class.create(messageable: messageable, message: existing_message)
       end
+
+      let(:existing_message) { 'Existing message' }
 
       before do
         described_class.delete_or_remove_message!(messageable, message)

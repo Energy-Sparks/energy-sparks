@@ -5,7 +5,7 @@ RSpec.describe 'intervention type groups', type: :system do
   let!(:intervention_type_2) { create(:intervention_type) }
   let!(:programme_types) { create_list(:programme_type, 4, :with_todos) }
 
-  let(:user) { }
+  let(:user) {}
 
   before do
     sign_in(user) if user.present?
@@ -16,9 +16,9 @@ RSpec.describe 'intervention type groups', type: :system do
     before { refresh }
 
     it 'shows programmes' do
-      expect(page).to have_content('Our Programmes')
+      expect(page).to have_text('Our Programmes')
       programme_types.each do |programme_type|
-        expect(page).to have_content(programme_type.title)
+        expect(page).to have_text(programme_type.title)
         expect(page).to have_link(href: programme_type_path(programme_type))
       end
     end
@@ -30,15 +30,15 @@ RSpec.describe 'intervention type groups', type: :system do
 
   context 'when user is logged in' do
     context 'without a school' do
-      let(:school) { }
-      let(:user) { create :admin, school: school }
+      let(:school) {}
+      let(:user) { create(:admin, school: school) }
 
       it_behaves_like 'a recommended prompt', displayed: false
     end
 
     context 'with a school' do
-      let(:school) { create :school }
-      let(:user) { create :pupil, school: school }
+      let(:school) { create(:school) }
+      let(:user) { create(:pupil, school: school) }
 
       it_behaves_like 'a recommended prompt'
     end
@@ -54,7 +54,7 @@ RSpec.describe 'intervention type groups', type: :system do
       let(:user) { create(:staff, school: create(:school)) }
 
       it 'redirects to new recommemndations page for school' do
-        expect(page).to have_content('Recommended activities and actions')
+        expect(page).to have_text('Recommended activities and actions')
       end
     end
 
@@ -62,7 +62,7 @@ RSpec.describe 'intervention type groups', type: :system do
       let(:user) { create(:admin, school: nil) }
 
       it 'redirects to the intervention type groups index' do
-        expect(page).to have_content('Explore energy saving actions')
+        expect(page).to have_text('Explore energy saving actions')
       end
     end
   end

@@ -1,25 +1,25 @@
 require 'rails_helper'
 
 describe Schools::GenerateMeterDates, type: :service do
-  let(:electricity_start_date)  { Date.new(2020, 0o1, 0o1)}
-  let(:electricity_end_date)    { Date.new(2020, 12, 31)}
+  let(:electricity_start_date)  { Date.new(2020, 0o1, 0o1) }
+  let(:electricity_end_date)    { Date.new(2020, 12, 31) }
   let(:electricity_amr_data)    { double('electricity-amr-data') }
 
-  let(:gas_start_date)          { Date.new(2019, 0o1, 0o1)}
+  let(:gas_start_date)          { Date.new(2019, 0o1, 0o1) }
   let(:gas_end_date)            { Date.new(2019, 12, 0o1) }
   let(:gas_amr_data)            { double('gas-amr-data') }
 
-  let(:heaters_start_date)      { Date.new(2020, 0o2, 0o1)}
-  let(:heaters_end_date)        { Date.new(2020, 12, 0o1)}
+  let(:heaters_start_date)      { Date.new(2020, 0o2, 0o1) }
+  let(:heaters_end_date)        { Date.new(2020, 12, 0o1) }
   let(:heaters_amr_data)        { double('heaters-amr-data') }
 
-  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter')}
-  let(:gas_aggregate_meter)     { double('gas-aggregated-meter')}
-  let(:heaters_aggregate_meter) { double('heaters-aggregated-meter')}
+  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter') }
+  let(:gas_aggregate_meter)     { double('gas-aggregated-meter') }
+  let(:heaters_aggregate_meter) { double('heaters-aggregated-meter') }
 
   let(:meter_collection)        { double('meter-collection') }
 
-  let(:service) { Schools::GenerateMeterDates.new(meter_collection)}
+  let(:service) { Schools::GenerateMeterDates.new(meter_collection) }
 
   before do
     allow(electricity_amr_data).to receive(:start_date).and_return(electricity_start_date)

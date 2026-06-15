@@ -64,31 +64,31 @@ describe EnergyTariffHolder do
         let!(:energy_tariff_gas_both) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: 'gas', applies_to: 'both', name: 'Gas Tariff both') }
 
         it 'defaults and returns both when no meter system is specified' do
-          expect(tariff_holder.energy_tariff_meter_attributes.map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_both.name, energy_tariff_gas_both.name])
-          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas]).map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_both.name, energy_tariff_gas_both.name])
-          expect(tariff_holder.energy_tariff_meter_attributes(['electricity']).map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_both.name])
-          expect(tariff_holder.energy_tariff_meter_attributes(['gas']).map { |m| m.input_data['name'] }).to match_array([energy_tariff_gas_both.name])
+          expect(tariff_holder.energy_tariff_meter_attributes.map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_both.name, energy_tariff_gas_both.name)
+          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas]).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_both.name, energy_tariff_gas_both.name)
+          expect(tariff_holder.energy_tariff_meter_attributes(['electricity']).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_both.name)
+          expect(tariff_holder.energy_tariff_meter_attributes(['gas']).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_gas_both.name)
         end
 
         it 'returns both when filtering for both' do
-          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :both).map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_both.name, energy_tariff_gas_both.name])
-          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :both).map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_both.name])
-          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :both).map { |m| m.input_data['name'] }).to match_array([energy_tariff_gas_both.name])
+          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :both).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_both.name, energy_tariff_gas_both.name)
+          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :both).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_both.name)
+          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :both).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_gas_both.name)
         end
 
         it 'returns both and half_hourly tariffs when filtering for half_hourly' do
-          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :half_hourly).map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_half_hourly.name, energy_tariff_electricity_both.name, energy_tariff_gas_both.name])
-          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :half_hourly).map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_half_hourly.name, energy_tariff_electricity_both.name])
+          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :half_hourly).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_half_hourly.name, energy_tariff_electricity_both.name, energy_tariff_gas_both.name)
+          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :half_hourly).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_half_hourly.name, energy_tariff_electricity_both.name)
         end
 
         it 'returns both and non_half_hourly tariffs when filtering for non_half_hourly' do
-          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :non_half_hourly).map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_non_half_hourly.name, energy_tariff_electricity_both.name, energy_tariff_gas_both.name])
-          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :non_half_hourly).map { |m| m.input_data['name'] }).to match_array([energy_tariff_electricity_non_half_hourly.name, energy_tariff_electricity_both.name])
+          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :non_half_hourly).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_non_half_hourly.name, energy_tariff_electricity_both.name, energy_tariff_gas_both.name)
+          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :non_half_hourly).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_electricity_non_half_hourly.name, energy_tariff_electricity_both.name)
         end
 
         it 'ignores meter system when requesting gas tariffs' do
-          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :half_hourly).map { |m| m.input_data['name'] }).to match_array([energy_tariff_gas_both.name])
-          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :non_half_hourly).map { |m| m.input_data['name'] }).to match_array([energy_tariff_gas_both.name])
+          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :half_hourly).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_gas_both.name)
+          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :non_half_hourly).map { |m| m.input_data['name'] }).to contain_exactly(energy_tariff_gas_both.name)
         end
       end
 

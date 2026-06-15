@@ -34,12 +34,12 @@ describe DataFeeds::N3rgy::ConsentApiClient do
     context 'when API returns success' do
       let(:response) do
         {
-          "resource": 'consents/add-trusted-consent',
-          "responseTimestamp": '2020-11-10T17:07:01.580Z',
-          "mpxn": '1234567891000',
-          "status": {
-            "code": 'OK',
-            "message": 'Request to register the consent was successful.'
+          resource: 'consents/add-trusted-consent',
+          responseTimestamp: '2020-11-10T17:07:01.580Z',
+          mpxn: '1234567891000',
+          status: {
+            code: 'OK',
+            message: 'Request to register the consent was successful.'
           }
         }
       end
@@ -56,10 +56,10 @@ describe DataFeeds::N3rgy::ConsentApiClient do
     context 'when API returns an error' do
       let(:response) do
         {
-          "errors": [
+          errors: [
             {
-              "code": 400,
-              "message": 'Unsuccessful trusted consent to property'
+              code: 400,
+              message: 'Unsuccessful trusted consent to property'
             }
           ]
         }
@@ -82,7 +82,7 @@ describe DataFeeds::N3rgy::ConsentApiClient do
     context 'when API returns an authorization error' do
       let(:response) do
         {
-          "message": 'User is not authorized to access this resource with an explicit deny.'
+          message: 'User is not authorized to access this resource with an explicit deny.'
         }
       end
 
@@ -105,11 +105,11 @@ describe DataFeeds::N3rgy::ConsentApiClient do
     context 'when success' do
       let(:response) do
         {
-          "resource": 'consents/withdraw-consent/1234567891000',
-          "responseTimestamp": '2020-11-10T17:07:01.580Z',
-          "status": {
-            "code": 'OK',
-            "message": 'Request to withdraw the consent was successful.'
+          resource: 'consents/withdraw-consent/1234567891000',
+          responseTimestamp: '2020-11-10T17:07:01.580Z',
+          status: {
+            code: 'OK',
+            message: 'Request to withdraw the consent was successful.'
           }
         }
       end
@@ -126,10 +126,10 @@ describe DataFeeds::N3rgy::ConsentApiClient do
     context 'when failed' do
       let(:response) do
         {
-          "errors": [
+          errors: [
             {
-              "code": 400,
-              "message": 'message'
+              code: 400,
+              message: 'message'
             }
           ]
         }
@@ -152,7 +152,7 @@ describe DataFeeds::N3rgy::ConsentApiClient do
     context 'when authorisation error' do
       let(:response) do
         {
-          "message": 'User is not authorized to access this resource with an explicit deny.'
+          message: 'User is not authorized to access this resource with an explicit deny.'
         }
       end
 

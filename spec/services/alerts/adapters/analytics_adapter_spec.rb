@@ -11,8 +11,7 @@ module Alerts
         true
       end
 
-      def analyse(_analysis_date, _max_as_of_date = nil)
-      end
+      def analyse(_analysis_date, _max_as_of_date = nil); end
 
       def rating
         5.0
@@ -67,9 +66,9 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAnalyticsAlertClass',
-          source: :analytics
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAnalyticsAlertClass',
+                          source: :analytics)
       end
 
       def self.benchmark_template_variables
@@ -83,9 +82,9 @@ module Alerts
 
     class DummyAnalyticsAlertFailedClass < DummyAnalyticsAlertClass
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAnalyticsAlertFailedClass',
-          source: :analytics
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAnalyticsAlertFailedClass',
+                          source: :analytics)
       end
     end
 
@@ -95,9 +94,9 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAnalyticsAlertNotEnoughDataClass',
-          source: :analytics
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAnalyticsAlertNotEnoughDataClass',
+                          source: :analytics)
       end
     end
 
@@ -107,17 +106,17 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAnalyticsAlertNotRelevantClass',
-          source: :analytics
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAnalyticsAlertNotRelevantClass',
+                          source: :analytics)
       end
     end
 
     class DummyAdviceAlertClass < DummyAnalyticsAlertClass
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAdviceAlertClass',
-          source: :analysis
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAdviceAlertClass',
+                          source: :analysis)
       end
     end
 
@@ -127,9 +126,9 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAnalyticsAlertNotValidClass',
-          source: :analytics
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAnalyticsAlertNotValidClass',
+                          source: :analytics)
       end
     end
 
@@ -137,9 +136,9 @@ module Alerts
       STRUCTURED_CONTENT = [{ title: 'Bit A', content: [{ type: :html, content: '<h1>Bit A</h1>' }] }].freeze
 
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAdviceWithStructuredClass',
-          source: :analytics
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAdviceWithStructuredClass',
+                          source: :analytics)
       end
 
       def has_structured_content?
@@ -161,28 +160,28 @@ module Alerts
       end
 
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAlertWithTranslatedData',
-          source: :analytics
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAlertWithTranslatedData',
+                          source: :analytics)
       end
     end
 
     class DummyAlertWithVariables < DummyAnalyticsAlertClass
       def variables_for_reporting
         {
-          'a_integer': 10,
-          'a_float': 15.2,
-          'a_boolean': true,
-          'positive_infinity': Float::INFINITY,
-          'negative_infinity': -Float::INFINITY,
-          'nan': Float::NAN
+          a_integer: 10,
+          a_float: 15.2,
+          a_boolean: true,
+          positive_infinity: Float::INFINITY,
+          negative_infinity: -Float::INFINITY,
+          nan: Float::NAN
         }
       end
 
       def self.alert_type
-        FactoryBot.create :alert_type,
-          class_name: 'Alerts::DummyAlertWithVariables',
-          source: :analytics
+        FactoryBot.create(:alert_type,
+                          class_name: 'Alerts::DummyAlertWithVariables',
+                          source: :analytics)
       end
     end
 
@@ -254,7 +253,6 @@ module Alerts
       end
     end
 
-
     context 'when generating multi-lingual template data' do
       it 'returns Welsh and English' do
         normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAlertWithTranslatedData.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
@@ -277,12 +275,12 @@ module Alerts
       it 'converts the values for storing in Postgres' do
         expect(report.variables).to eq(
           {
-            'a_integer': 10,
-            'a_float': 15.2,
-            'a_boolean': 'true',
-            'positive_infinity': 'Infinity',
-            'negative_infinity': '-Infinity',
-            'nan': 'NaN'
+            a_integer: 10,
+            a_float: 15.2,
+            a_boolean: 'true',
+            positive_infinity: 'Infinity',
+            negative_infinity: '-Infinity',
+            nan: 'NaN'
           }
         )
       end
@@ -293,9 +291,9 @@ module Alerts
         undef_method :reporting_period
 
         def self.alert_type
-          FactoryBot.create :alert_type,
-            class_name: 'Alerts::DummyAlertWithMissingMethod',
-            source: :analytics
+          FactoryBot.create(:alert_type,
+                            class_name: 'Alerts::DummyAlertWithMissingMethod',
+                            source: :analytics)
         end
       end
 

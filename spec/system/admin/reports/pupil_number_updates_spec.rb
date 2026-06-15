@@ -23,7 +23,7 @@ describe 'Pupil Number Updates', :aggregate_failures do
 
     it 'goes to the correct page' do
       click_on 'Pupil Number Updates'
-      expect(page).to have_content('Pupil Number Updates')
+      expect(page).to have_text('Pupil Number Updates')
     end
   end
 
