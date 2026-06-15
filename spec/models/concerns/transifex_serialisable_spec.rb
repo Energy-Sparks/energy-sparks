@@ -83,7 +83,7 @@ describe TransifexSerialisable do
       clazz = ActivityCategory # use this as an example of implementing class
       attr = ActivityCategory.mobility_attributes.first
       serialisable = clazz.new(attr => 'something')
-      expect(serialisable).to have_text
+      expect(serialisable).to have_content # rubocop:disable Capybara/RSpec/HaveContent
     end
   end
 end

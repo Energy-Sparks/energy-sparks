@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SchoolGroups::CategoriseSchools, type: :service do
-  subject!(:results) { SchoolGroups::CategoriseSchools.new(schools: school_group.schools).categorise_schools }
+  subject(:results) { SchoolGroups::CategoriseSchools.new(schools: school_group.schools).categorise_schools }
 
   let(:school_group) { create(:school_group, name: 'A Group') }
   let(:expected_results) do
@@ -121,6 +121,7 @@ RSpec.describe SchoolGroups::CategoriseSchools, type: :service do
     (25..26).each { |i| create(:school, id: i, name: "School #{i}", school_group: school_group, active: true, visible: false) }
     (27..30).each { |i| create(:school, id: i, name: "School #{i}", school_group: school_group_2, active: true, visible: true) }
     create_advice_page_school_benchmarks
+    results
   end
 
   it 'returns a hash of sorted/categorised school group visible schools keyed by fuel type, advice page key and benchmarked as' do
