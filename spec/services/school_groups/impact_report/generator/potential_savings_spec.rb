@@ -18,8 +18,11 @@ RSpec.describe SchoolGroups::ImpactReport::Generator::PotentialSavings do
 
   describe '#metrics' do
     def metric(metric_type, fuel_type = :electricity, **)
-      { enough_data: false, metric_category: :potential_savings, metric_type:, fuel_type:, number_of_schools: 0,
-        value: 0 }.merge(**)
+      {
+        enough_data: false, metric_category: :potential_savings,
+        metric_type:, fuel_type:, number_of_schools: 0, unit: :gbp,
+        value: 0
+      }.merge(**)
     end
 
     it 'has the right metrics' do
