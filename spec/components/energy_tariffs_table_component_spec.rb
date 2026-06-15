@@ -48,7 +48,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     context 'with differential tariff' do
-      let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)]}
+      let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)] }
 
       it 'returns expected label' do
         expect(component.flat_rate_label(energy_tariffs.first)).to eq I18n.t('schools.user_tariffs.tariff_partial.differential_tariff')
@@ -64,7 +64,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     context 'with open ended tariff' do
-      let(:energy_tariffs) { [create(:energy_tariff, start_date: nil)]}
+      let(:energy_tariffs) { [create(:energy_tariff, start_date: nil)] }
 
       it 'returns no start date' do
         expect(start_date).to eq I18n.t('schools.user_tariffs.summary_table.no_start_date')
@@ -80,7 +80,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     context 'with open ended tariff' do
-      let(:energy_tariffs) { [create(:energy_tariff, end_date: nil)]}
+      let(:energy_tariffs) { [create(:energy_tariff, end_date: nil)] }
 
       it 'returns no start date' do
         expect(end_date).to eq I18n.t('schools.user_tariffs.summary_table.no_end_date')
@@ -96,7 +96,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     it 'does not treat tariff as not usable' do
-      expect(page).not_to have_css('tr.table-danger')
+      expect(page).to have_no_css('tr.table-danger')
     end
 
     it 'includes the tariff details' do
@@ -116,7 +116,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     context 'with differential tariff' do
-      let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)]}
+      let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)] }
 
       it 'returns expected label' do
         expect(row).to have_text(I18n.t('schools.user_tariffs.tariff_partial.differential_tariff'))
@@ -144,7 +144,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       expect(page).to have_link(energy_tariffs.first.name)
       expect(page).to have_link('Edit')
       expect(page).to have_link('Disable')
-      expect(page).not_to have_link('Delete')
+      expect(page).to have_no_link('Delete')
     end
 
     context 'with disabled site settings tariff' do
@@ -178,7 +178,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
         expect(page).to have_link(energy_tariffs.first.name)
         expect(page).to have_link('Edit charges')
         expect(page).to have_link('Disable')
-        expect(page).not_to have_link('Delete')
+        expect(page).to have_no_link('Delete')
       end
 
       context 'that is disabled' do
@@ -200,10 +200,10 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       let(:current_user) { create(:school_admin) }
 
       it 'does not include the actions' do
-        expect(page).not_to have_link(energy_tariffs.first.name)
-        expect(page).not_to have_link('Edit')
-        expect(page).not_to have_link('Disable')
-        expect(page).not_to have_link('Delete')
+        expect(page).to have_no_link(energy_tariffs.first.name)
+        expect(page).to have_no_link('Edit')
+        expect(page).to have_no_link('Disable')
+        expect(page).to have_no_link('Delete')
       end
     end
   end

@@ -74,10 +74,9 @@ describe TemplateInterpolation do
     end
 
     it 'interpolates from string keyed hashes' do
-      view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, with: { 'usage': 'low' })
+      view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, with: { usage: 'low' })
       expect(view_object.template_1).to eq('Your energy usage is quite low')
     end
-
 
     it 'leaves missing variables blank' do
       view_object = TemplateInterpolation.new(object.new).interpolate(:template_1, with: {})

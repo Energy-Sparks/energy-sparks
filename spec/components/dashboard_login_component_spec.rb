@@ -43,8 +43,8 @@ RSpec.describe DashboardLoginComponent, :include_url_helpers, type: :component d
     it { expect(component.render?).to be false }
   end
 
-  it { expect(html).to have_content(I18n.t('role.staff')) }
-  it { expect(html).to have_content(I18n.t('role.pupil')) }
+  it { expect(html).to have_text(I18n.t('role.staff')) }
+  it { expect(html).to have_text(I18n.t('role.pupil')) }
 
   it 'links to staff login form' do
     expect(html).to have_link(I18n.t('devise.sessions.new.log_in_with_your_email_address_and_password'),

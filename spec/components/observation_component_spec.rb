@@ -5,12 +5,17 @@ require 'rails_helper'
 shared_examples 'when show_actions is false' do
   let(:show_actions) { false }
 
-  it { expect(html).not_to have_link('Edit') }
-  it { expect(html).not_to have_link('Delete') }
+  it { expect(html).to have_no_link('Edit') }
+  it { expect(html).to have_no_link('Delete') }
 end
 
-RSpec.describe ObservationComponent, type: :component, include_url_helpers: true do
-  let(:observation) { }
+RSpec.describe ObservationComponent, :include_url_helpers, type: :component do
+  let(:observation) {}
+  let(:html) do
+    with_controller_class ApplicationController do
+      render_inline(ObservationComponent.new(**params))
+    end
+  end
 
   let(:show_actions) { true }
   let(:style) { :full }
@@ -22,12 +27,6 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
   before do
     # This allows us to set what the current user is during rendering
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
-  end
-
-  let(:html) do
-    with_controller_class ApplicationController do
-      render_inline(ObservationComponent.new(**params))
-    end
   end
 
   context 'with activity observation' do
@@ -49,7 +48,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
-      it { expect(html).to have_content("scored #{observation.activity.activity_type.score} points after they recorded \"#{observation.activity.display_name}\"") }
+      it { expect(html).to have_text("scored #{observation.activity.activity_type.score} points after they recorded \"#{observation.activity.display_name}\"") }
       it { expect(html).to have_link(observation.activity.display_name, href: school_activity_path(observation.school, observation.activity)) }
     end
 
@@ -80,7 +79,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
-      it { expect(html).to have_content("#{observation.school.name} ") }
+      it { expect(html).to have_text("#{observation.school.name} ") }
       it { expect(html).to have_link('received an energy audit', href: school_audit_path(observation.school, observation.observable)) }
     end
 
@@ -96,13 +95,13 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
     let(:observation) { create(:observation, :audit_activities_completed) }
 
     it { expect(html).to have_css('i.fa-clipboard-check') }
-    it { expect(html).to have_content('Completed all energy audit activities') }
+    it { expect(html).to have_text('Completed all energy audit activities') }
 
     context 'when show_actions is true' do
       let(:show_actions) { true }
 
-      it { expect(html).not_to have_link('Edit') }
-      it { expect(html).not_to have_link('Delete') }
+      it { expect(html).to have_no_link('Edit') }
+      it { expect(html).to have_no_link('Delete') }
     end
 
     it_behaves_like 'when show_actions is false'
@@ -111,14 +110,14 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
-      it { expect(html).to have_content("#{observation.school.name} completed all energy audit activities") }
+      it { expect(html).to have_text("#{observation.school.name} completed all energy audit activities") }
     end
 
     context 'when style is description' do
       let(:style) { :description }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
-      it { expect(html).to have_content('Completed all energy audit activities') }
+      it { expect(html).to have_text('Completed all energy audit activities') }
     end
   end
 
@@ -141,7 +140,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css("i.fa-#{observation.intervention_type.intervention_type_group.icon}") }
-      it { expect(html).to have_content("scored #{observation.intervention_type.score} points after they recorded \"#{observation.intervention_type.name}\"") }
+      it { expect(html).to have_text("scored #{observation.intervention_type.score} points after they recorded \"#{observation.intervention_type.name}\"") }
       it { expect(html).to have_link(observation.school.name, href: school_path(observation.school)) }
       it { expect(html).to have_link(observation.intervention_type.name, href: school_intervention_path(observation.school, observation)) }
     end
@@ -163,8 +162,8 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
     context 'when show_actions is true' do
       let(:show_actions) { true }
 
-      it { expect(html).not_to have_link('Edit') }
-      it { expect(html).not_to have_link('Delete') }
+      it { expect(html).to have_no_link('Edit') }
+      it { expect(html).to have_no_link('Delete') }
     end
 
     it_behaves_like 'when show_actions is false'
@@ -173,7 +172,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
-      it { expect(html).to have_content("#{observation.school.name} completed a programme") }
+      it { expect(html).to have_text("#{observation.school.name} completed a programme") }
     end
 
     context 'when style is description' do
@@ -188,7 +187,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
     let(:observation) { create(:observation, :school_target) }
 
     it { expect(html).to have_css('i.fa-tachometer-alt') }
-    it { expect(html).to have_content('Started working towards their energy saving target') }
+    it { expect(html).to have_text('Started working towards their energy saving target') }
     it { expect(html).to have_link('energy saving target', href: school_school_target_path(observation.school, observation.observable)) }
 
     context 'when show_actions is true' do
@@ -204,7 +203,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-tachometer-alt') }
-      it { expect(html).to have_content("#{observation.school.name} started working towards their energy saving target") }
+      it { expect(html).to have_text("#{observation.school.name} started working towards their energy saving target") }
       it { expect(html).to have_link('energy saving target', href: school_school_target_path(observation.school, observation.observable)) }
     end
 
@@ -212,7 +211,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :description }
 
       it { expect(html).to have_css('i.fa-tachometer-alt') }
-      it { expect(html).to have_content('Started working towards their energy saving target') }
+      it { expect(html).to have_text('Started working towards their energy saving target') }
       it { expect(html).to have_link('energy saving target', href: school_school_target_path(observation.school, observation.observable)) }
     end
   end
@@ -226,7 +225,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
     context 'when show_actions is true' do
       let(:show_actions) { true }
 
-      it { expect(html).not_to have_link('Edit') }
+      it { expect(html).to have_no_link('Edit') }
       it { expect(html).to have_link('Delete', href: school_temperature_observation_path(observation.school, observation)) }
     end
 
@@ -236,7 +235,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-temperature-high') }
-      it { expect(html).to have_content("#{observation.school.name} scored 5 points by recording indoor temperatures") }
+      it { expect(html).to have_text("#{observation.school.name} scored 5 points by recording indoor temperatures") }
     end
 
     context 'when style is description' do
@@ -251,7 +250,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
     let(:observation) { create(:observation, :transport_survey) }
 
     it { expect(html).to have_css('i.fa-car') }
-    it { expect(html).to have_content('Started a transport survey') }
+    it { expect(html).to have_text('Started a transport survey') }
     it { expect(html).to have_link('transport survey', href: school_transport_survey_path(observation.school, observation.observable)) }
 
     context 'when show_actions is true' do
@@ -267,14 +266,14 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-car') }
-      it { expect(html).to have_content("#{observation.school.name} started a transport survey") }
+      it { expect(html).to have_text("#{observation.school.name} started a transport survey") }
     end
 
     context 'when style is description' do
       let(:style) { :description }
 
       it { expect(html).to have_css('i.fa-car') }
-      it { expect(html).to have_content('Started a transport survey') }
+      it { expect(html).to have_text('Started a transport survey') }
       it { expect(html).to have_link('transport survey', href: school_transport_survey_path(observation.school, observation.observable)) }
     end
   end

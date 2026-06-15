@@ -45,16 +45,16 @@ shared_examples 'a costs advice page' do
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'has the intro' do
-        expect(page).to have_content("Your #{fuel_type} bill is broken down into a variety of different charges")
+        expect(page).to have_text("Your #{fuel_type} bill is broken down into a variety of different charges")
       end
 
       it 'displays a brief summary of total cost' do
-        expect(page).to have_content("We estimate your total #{fuel_type} cost over the last 12 months to be £1,000")
+        expect(page).to have_text("We estimate your total #{fuel_type} cost over the last 12 months to be £1,000")
       end
 
       context 'with incomplete tariffs' do
         it 'displays warning about incomplete tariffs' do
-          expect(page).to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
+          expect(page).to have_text("Energy Sparks currently doesn't have a complete record of your real tariffs")
         end
       end
 
@@ -62,8 +62,8 @@ shared_examples 'a costs advice page' do
         let(:complete_tariff_coverage) { true }
 
         it 'does not display warning about incomplete tariffs' do
-          expect(page).to have_no_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
-          expect(page).to have_content('The information below provides a good estimate of your annual costs')
+          expect(page).to have_no_text("Energy Sparks currently doesn't have a complete record of your real tariffs")
+          expect(page).to have_text('The information below provides a good estimate of your annual costs')
         end
       end
     end
@@ -76,13 +76,13 @@ shared_examples 'a costs advice page' do
       context 'with single meter' do
         it 'displays a brief summary of total cost' do
           expect(page).to \
-            have_no_content(I18n.t('advice_pages.gas_costs.analysis.cost_breakdown_by_meter.title'))
-          expect(page).to have_content("We estimate your total #{fuel_type} cost over the last 12 months to be £1,000")
+            have_no_text(I18n.t('advice_pages.gas_costs.analysis.cost_breakdown_by_meter.title'))
+          expect(page).to have_text("We estimate your total #{fuel_type} cost over the last 12 months to be £1,000")
         end
 
         context 'with incomplete tariffs' do
           it 'displays warning about incomplete tariffs' do
-            expect(page).to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
+            expect(page).to have_text("Energy Sparks currently doesn't have a complete record of your real tariffs")
           end
         end
 
@@ -90,8 +90,8 @@ shared_examples 'a costs advice page' do
           let(:complete_tariff_coverage) { true }
 
           it 'does not display warning about incomplete tariffs' do
-            expect(page).to have_no_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
-            expect(page).to have_content('The information below provides a good estimate of your annual costs')
+            expect(page).to have_no_text("Energy Sparks currently doesn't have a complete record of your real tariffs")
+            expect(page).to have_text('The information below provides a good estimate of your annual costs')
           end
         end
 
@@ -112,12 +112,12 @@ shared_examples 'a costs advice page' do
 
         it 'does not display a brief summary of total cost' do
           expect(page).to \
-            have_no_content("We estimate your total #{fuel_type} cost over the last 12 months to be £1,000")
+            have_no_text("We estimate your total #{fuel_type} cost over the last 12 months to be £1,000")
         end
 
         it 'displays table' do
-          expect(page).to have_content('Total cost for the last 12 months')
-          expect(page).to have_content('Whole school')
+          expect(page).to have_text('Total cost for the last 12 months')
+          expect(page).to have_text('Whole school')
         end
       end
     end
@@ -147,7 +147,7 @@ shared_examples 'a costs advice page with a cost breakdown chart' do
 
   context 'with the cost breakdown chart', :js do
     def expect_chart(meter, name)
-      expect(page).to have_content("#{fuel_type.capitalize} cost components for the last year for #{name}")
+      expect(page).to have_text("#{fuel_type.capitalize} cost components for the last year for #{name}")
       expect(page).to have_css("#chart_electricity_cost_1_year_accounting_breakdown_#{meter.mpan_mprn}")
     end
 

@@ -8,8 +8,8 @@ RSpec.describe BreadcrumbsComponent, type: :component do
 
   shared_examples_for 'a selected last item' do
     it { expect(last).to have_text(text) }
-    it { expect(last).not_to have_link(text) }
-    it { expect(last).to have_selector('.active') }
+    it { expect(last).to have_no_link(text) }
+    it { expect(last).to have_css('.active') }
     it { expect(last).to have_css("li[aria-current='page']") }
   end
 
@@ -58,7 +58,7 @@ RSpec.describe BreadcrumbsComponent, type: :component do
       render_inline(BreadcrumbsComponent.new) do |c|
         c.with_items([
                        { name: 'Advice', href: 'school_advice_url' },
-                       { name: 'Baseload', href: 'school_advice_baseload_url' },
+                       { name: 'Baseload', href: 'school_advice_baseload_url' }
                      ])
       end.css('li')
     end
@@ -81,7 +81,7 @@ RSpec.describe BreadcrumbsComponent, type: :component do
         c.with_school(school)
         c.with_items([
                        { name: 'Advice', href: 'school_advice_url' },
-                       { name: 'Baseload', href: 'school_advice_baseload_url' },
+                       { name: 'Baseload', href: 'school_advice_baseload_url' }
                      ])
       end.css('li')
     end
@@ -115,7 +115,7 @@ RSpec.describe BreadcrumbsComponent, type: :component do
       render_inline(BreadcrumbsComponent.new) do |c|
         c.with_items([
                        { name: 'Electricty', href: href, visible: visible },
-                       { name: 'First item', href: 'a_link' },
+                       { name: 'First item', href: 'a_link' }
                      ])
       end.css('li')
     end
@@ -129,14 +129,14 @@ RSpec.describe BreadcrumbsComponent, type: :component do
         let(:href) { nil }
 
         it { expect(first).to have_text('Electricty') }
-        it { expect(first).not_to have_link('Electricty') }
+        it { expect(first).to have_no_link('Electricty') }
       end
     end
 
     context 'when item is not visible' do
       let(:visible) { false }
 
-      it { expect(first).not_to have_link('Electricty') }
+      it { expect(first).to have_no_link('Electricty') }
     end
   end
 end

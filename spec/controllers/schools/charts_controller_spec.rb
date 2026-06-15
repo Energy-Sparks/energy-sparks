@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Schools::ChartsController, type: :controller do
   context 'GET #show' do
-    before { @school = FactoryBot.create :school, visible: false }
+    before { @school = FactoryBot.create(:school, visible: false) }
 
     describe 'format json' do
       it 'returns a json error message with 400 bad request if a chart type param is missing' do

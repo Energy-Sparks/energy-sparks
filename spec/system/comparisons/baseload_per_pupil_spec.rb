@@ -12,6 +12,17 @@ describe 'baseload_per_pupil' do
       one_year_saving_versus_exemplar_gbp: 200.0
     }
   end
+  let!(:alerts) do
+    alert_run = create(:alert_generation_run, school: school)
+
+    baseload_alert = create(:alert_type, class_name: 'AlertElectricityBaseloadVersusBenchmark')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: baseload_alert,
+                   variables: baseload_variables)
+
+    additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
+    create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert,
+                   variables: additional_data_variables)
+  end
 
   let(:additional_data_variables) do
     {
@@ -24,18 +35,6 @@ describe 'baseload_per_pupil' do
 
   include_context 'with comparison report footnotes' do
     let(:footnotes) { [tariff_changed_last_year] }
-  end
-
-  let!(:alerts) do
-    alert_run = create(:alert_generation_run, school: school)
-
-    baseload_alert = create(:alert_type, class_name: 'AlertElectricityBaseloadVersusBenchmark')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: baseload_alert,
-                   variables: baseload_variables)
-
-    additional_data_alert = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert,
-                   variables: additional_data_variables)
   end
 
   before do

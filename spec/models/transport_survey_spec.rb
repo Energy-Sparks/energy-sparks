@@ -2,13 +2,13 @@ require 'rails_helper'
 
 describe 'TransportSurvey', type: :model do
   context 'with valid attributes' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     it { is_expected.to be_valid }
   end
 
   describe '#responses=' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     describe 'adding a response' do
       let(:attributes) { attributes_for(:transport_survey_response, surveyed_at: surveyed_at, run_identifier: run_identifier) }
@@ -60,7 +60,7 @@ describe 'TransportSurvey', type: :model do
   end
 
   describe '#total_responses' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     context 'with no responses' do
       it { expect(transport_survey.total_responses).to be 0 }
@@ -68,7 +68,7 @@ describe 'TransportSurvey', type: :model do
 
     context 'with one response' do
       before do
-        create :transport_survey_response, transport_survey: transport_survey, passengers: 2
+        create(:transport_survey_response, transport_survey: transport_survey, passengers: 2)
       end
 
       it { expect(transport_survey.total_responses).to be 1 }
@@ -76,8 +76,8 @@ describe 'TransportSurvey', type: :model do
 
     context 'with more than one response' do
       before do
-        create :transport_survey_response, transport_survey: transport_survey, passengers: 2
-        create :transport_survey_response, transport_survey: transport_survey, passengers: 3
+        create(:transport_survey_response, transport_survey: transport_survey, passengers: 2)
+        create(:transport_survey_response, transport_survey: transport_survey, passengers: 3)
       end
 
       it { expect(transport_survey.total_responses).to be 2 }
@@ -85,7 +85,7 @@ describe 'TransportSurvey', type: :model do
   end
 
   describe '#total_carbon' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     context 'with no responses' do
       it { expect(transport_survey.total_carbon).to be 0 }
@@ -110,7 +110,7 @@ describe 'TransportSurvey', type: :model do
   end
 
   describe 'Category based methods' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     let(:categories) { TransportSurvey::TransportType.categories.keys << nil }
 
@@ -211,7 +211,7 @@ describe 'TransportSurvey', type: :model do
   end
 
   describe 'time based methods' do
-    subject(:transport_survey) { create :transport_survey }
+    subject(:transport_survey) { create(:transport_survey) }
 
     def create_responses(times, cat)
       times.each do |time|
@@ -288,13 +288,13 @@ describe 'TransportSurvey', type: :model do
 
   describe '#today?' do
     context 'when survey has a run_on date of today' do
-      subject(:transport_survey) { create :transport_survey, run_on: Time.zone.today }
+      subject(:transport_survey) { create(:transport_survey, run_on: Time.zone.today) }
 
       it { expect(transport_survey.today?).to be true }
     end
 
     context 'when survey has a run_on date other than today' do
-      subject(:transport_survey) { create :transport_survey, run_on: 3.days.ago }
+      subject(:transport_survey) { create(:transport_survey, run_on: 3.days.ago) }
 
       it { expect(transport_survey.today?).to be false }
     end
@@ -302,7 +302,7 @@ describe 'TransportSurvey', type: :model do
 
   describe '#add_observation' do
     context 'when there are no responses' do
-      subject(:transport_survey) { create :transport_survey, run_on: Time.zone.today, responses: [] }
+      subject(:transport_survey) { create(:transport_survey, run_on: Time.zone.today, responses: []) }
 
       it 'does not add an observation' do
         expect(transport_survey.observations).to be_empty
@@ -310,7 +310,7 @@ describe 'TransportSurvey', type: :model do
     end
 
     context 'when there are responses' do
-      subject(:transport_survey) { create :transport_survey, run_on: Time.zone.today }
+      subject(:transport_survey) { create(:transport_survey, run_on: Time.zone.today) }
 
       let(:attributes) { attributes_for(:transport_survey_response, surveyed_at: Time.zone.now, run_identifier: '2345') }
 

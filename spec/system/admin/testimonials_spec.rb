@@ -12,7 +12,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -22,7 +22,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
   end
@@ -38,7 +38,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You are not authorized to view that page.')
+        expect(page).to have_text('You are not authorized to view that page.')
       end
     end
   end
@@ -52,12 +52,12 @@ describe 'admin testimonials', :include_application_helper, type: :system do
       end
 
       it 'lists the testimonial' do
-        expect(page).to have_content(testimonial.title)
-        expect(page).to have_content(testimonial.quote)
-        expect(page).to have_content(testimonial.name)
-        expect(page).to have_content(testimonial.role)
-        expect(page).to have_content(testimonial.organisation)
-        expect(page).to have_content(testimonial.category)
+        expect(page).to have_text(testimonial.title)
+        expect(page).to have_text(testimonial.quote)
+        expect(page).to have_text(testimonial.name)
+        expect(page).to have_text(testimonial.role)
+        expect(page).to have_text(testimonial.organisation)
+        expect(page).to have_text(testimonial.category)
         expect(page).to have_link('Read case study', href: case_study_download_path(testimonial.case_study))
       end
 
@@ -81,10 +81,10 @@ describe 'admin testimonials', :include_application_helper, type: :system do
             click_on 'Save'
           end
 
-          it { expect(page).to have_content("Title *\ncan't be blank") }
-          it { expect(page).to have_content("Quote *\ncan't be blank") }
-          it { expect(page).to have_content("Name *\ncan't be blank") }
-          it { expect(page).to have_content("Organisation *\ncan't be blank") }
+          it { expect(page).to have_text("Title *\ncan't be blank") }
+          it { expect(page).to have_text("Quote *\ncan't be blank") }
+          it { expect(page).to have_text("Name *\ncan't be blank") }
+          it { expect(page).to have_text("Organisation *\ncan't be blank") }
         end
 
         context 'with valid attributes' do
@@ -100,13 +100,13 @@ describe 'admin testimonials', :include_application_helper, type: :system do
             click_on 'Save'
           end
 
-          it { expect(page).to have_content('Testimonial was successfully updated') }
-          it { expect(page).to have_content('Updated testimonial title') }
-          it { expect(page).to have_content('Updated testimonial quote') }
-          it { expect(page).to have_content('Updated name') }
-          it { expect(page).to have_content('Updated role') }
-          it { expect(page).to have_content('Updated organisation') }
-          it { expect(page).to have_content('default') }
+          it { expect(page).to have_text('Testimonial was successfully updated') }
+          it { expect(page).to have_text('Updated testimonial title') }
+          it { expect(page).to have_text('Updated testimonial quote') }
+          it { expect(page).to have_text('Updated name') }
+          it { expect(page).to have_text('Updated role') }
+          it { expect(page).to have_text('Updated organisation') }
+          it { expect(page).to have_text('default') }
 
           it 'resizes images to 1400px width max' do
             testimonial.reload.image.analyze
@@ -129,11 +129,14 @@ describe 'admin testimonials', :include_application_helper, type: :system do
             click_on 'Save'
           end
 
-          it { expect(page).to have_content("Title *\ncan't be blank") }
-          it { expect(page).to have_content("Quote *\ncan't be blank") }
-          it { expect(page).to have_content("Name *\ncan't be blank") }
-          it { expect(page).to have_content("Organisation *\ncan't be blank") }
-          it { expect(page).to have_content("Image *\nhas an invalid content type (authorized content types are PNG, JPG)") }
+          it { expect(page).to have_text("Title *\ncan't be blank") }
+          it { expect(page).to have_text("Quote *\ncan't be blank") }
+          it { expect(page).to have_text("Name *\ncan't be blank") }
+          it { expect(page).to have_text("Organisation *\ncan't be blank") }
+
+          it {
+            expect(page).to have_text("Image *\nhas an invalid content type (authorized content types are PNG, JPG)")
+          }
         end
 
         context 'with valid attributes' do
@@ -149,13 +152,13 @@ describe 'admin testimonials', :include_application_helper, type: :system do
             click_on 'Save'
           end
 
-          it { expect(page).to have_content('Testimonial was successfully created') }
-          it { expect(page).to have_content('New testimonial title') }
-          it { expect(page).to have_content('New testimonial quote') }
-          it { expect(page).to have_content('New name') }
-          it { expect(page).to have_content('New role') }
-          it { expect(page).to have_content('New organisation') }
-          it { expect(page).to have_content('default') }
+          it { expect(page).to have_text('Testimonial was successfully created') }
+          it { expect(page).to have_text('New testimonial title') }
+          it { expect(page).to have_text('New testimonial quote') }
+          it { expect(page).to have_text('New name') }
+          it { expect(page).to have_text('New role') }
+          it { expect(page).to have_text('New organisation') }
+          it { expect(page).to have_text('default') }
 
           it 'resizes images to 1400px width max' do
             testimonial = Testimonial.last
@@ -177,7 +180,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
         end
 
         it 'no longer lists the testimonial' do
-          expect(page).not_to have_content(testimonial.title)
+          expect(page).to have_no_text(testimonial.title)
         end
       end
     end

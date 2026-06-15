@@ -69,11 +69,11 @@ RSpec.describe 'solar pv advice page', :aggregate_failures do
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
-        expect(page).to have_content('Benefits of installing solar panels')
-        expect(page).to have_no_content('Solar PV generation')
+        expect(page).to have_text('Benefits of installing solar panels')
+        expect(page).to have_no_text('Solar PV generation')
 
-        expect(page).to have_content('What is solar PV?')
-        expect(page).to have_content('Potential benefits for your school')
+        expect(page).to have_text('What is solar PV?')
+        expect(page).to have_text('Potential benefits for your school')
       end
     end
 
@@ -86,16 +86,16 @@ RSpec.describe 'solar pv advice page', :aggregate_failures do
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
-        expect(page).to have_no_content('Benefits of installing solar panels')
-        expect(page).to have_content('Solar PV generation')
+        expect(page).to have_no_text('Benefits of installing solar panels')
+        expect(page).to have_text('Solar PV generation')
 
-        expect(page).to have_content('What is solar PV?')
-        expect(page).to have_content('Your solar energy production')
-        expect(page).to have_content('Total consumption')
-        expect(page).to have_content('61,000')
-        expect(page).to have_content('How do you compare?')
+        expect(page).to have_text('What is solar PV?')
+        expect(page).to have_text('Your solar energy production')
+        expect(page).to have_text('Total consumption')
+        expect(page).to have_text('61,000')
+        expect(page).to have_text('How do you compare?')
         expect(page).to \
-          have_content("based on usage between #{start_date.to_fs(:es_short)} and #{end_date.to_fs(:es_short)}")
+          have_text("based on usage between #{start_date.to_fs(:es_short)} and #{end_date.to_fs(:es_short)}")
       end
     end
 
@@ -110,10 +110,10 @@ RSpec.describe 'solar pv advice page', :aggregate_failures do
       it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
-        expect(page).to have_content('Analysis')
-        expect(page).to have_content('Installing solar PV at your school will reduce the electricity you consume')
-        expect(page).to have_content('Capacity (kWp)')
-        expect(page).to have_content('890')
+        expect(page).to have_text('Analysis')
+        expect(page).to have_text('Installing solar PV at your school will reduce the electricity you consume')
+        expect(page).to have_text('Capacity (kWp)')
+        expect(page).to have_text('890')
       end
     end
 
@@ -127,16 +127,16 @@ RSpec.describe 'solar pv advice page', :aggregate_failures do
       it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
-        expect(page).to have_content('Analysis')
-        expect(page).to have_content('Long term trends')
-        expect(page).to have_content('Recent electricity consumption and solar production')
-        expect(page).to have_content('Benefits of having installed solar panels')
+        expect(page).to have_text('Analysis')
+        expect(page).to have_text('Long term trends')
+        expect(page).to have_text('Recent electricity consumption and solar production')
+        expect(page).to have_text('Benefits of having installed solar panels')
         within('#investment-returns') do
-          expect(page).to have_content('Before April 2019')
-          expect(page).to have_content('14,000 kWh')
-          expect(page).to have_content('After April 2019')
-          expect(page).to have_content("#{BenchmarkMetrics.pricing.solar_export_price * 100}p per kWh")
-          expect(page).to have_content('£65')
+          expect(page).to have_text('Before April 2019')
+          expect(page).to have_text('14,000 kWh')
+          expect(page).to have_text('After April 2019')
+          expect(page).to have_text("#{BenchmarkMetrics.pricing.solar_export_price * 100}p per kWh")
+          expect(page).to have_text('£65')
         end
         expect(page).to have_css('#chart_wrapper_solar_pv_group_by_month')
         expect(page).to have_css('#chart_wrapper_solar_pv_last_7_days_by_submeter')

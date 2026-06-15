@@ -14,7 +14,7 @@ shared_examples 'the meter breakdown is not accessible' do
 
   it 'does not include a navbar link' do
     visit school_advice_path(school)
-    expect(page).not_to have_content(I18n.t("advice_pages.#{key}.page_title"))
+    expect(page).to have_no_text(I18n.t("advice_pages.#{key}.page_title"))
   end
 
   it 'redirects from the page' do
@@ -27,7 +27,7 @@ shared_examples 'the meter breakdown is not yet available' do
   before { visit path }
 
   it 'shows not enough data message' do
-    expect(page).to have_content(I18n.t('advice_pages.not_enough_data.title'))
+    expect(page).to have_text(I18n.t('advice_pages.not_enough_data.title'))
   end
 end
 
@@ -38,7 +38,7 @@ shared_examples 'the monthly chart is not available' do
   end
 
   it 'does not include the chart' do
-    expect(page).not_to have_css("#chart_wrapper_group_by_month_#{fuel_type}_meter_breakdown")
+    expect(page).to have_no_css("#chart_wrapper_group_by_month_#{fuel_type}_meter_breakdown")
   end
 end
 
@@ -52,12 +52,12 @@ shared_examples 'a meter breakdown page' do
     it_behaves_like 'a meter breakdown advice page tab', tab: 'Insights'
 
     it 'includes a meter breakdown table' do
-      expect(page).to have_content('The table below covers usage between')
+      expect(page).to have_text('The table below covers usage between')
       expect(page).to have_css('table#meter-breakdown-summary')
       within 'table#meter-breakdown-summary' do
         meters.each do |meter|
-          expect(page).to have_content(meter.mpan_mprn)
-          expect(page).to have_content(meter.name)
+          expect(page).to have_text(meter.mpan_mprn)
+          expect(page).to have_text(meter.name)
         end
       end
     end
@@ -68,9 +68,9 @@ shared_examples 'a meter breakdown page' do
       it_behaves_like 'a meter breakdown advice page tab', tab: 'Analysis'
 
       it 'includes the one year meter breakdown chart' do
-        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.title"))
-        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.subtitle"))
-        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.header"))
+        expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.title"))
+        expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.subtitle"))
+        expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.charts.group_by_week_#{fuel_type}_meter_breakdown_one_year.header"))
         expect(page).to have_css("#chart_wrapper_group_by_week_#{fuel_type}_meter_breakdown_one_year")
       end
 
@@ -78,20 +78,20 @@ shared_examples 'a meter breakdown page' do
         expect(page).to have_css('table#meter-breakdown')
         within 'table#meter-breakdown' do
           meters.each do |meter|
-            expect(page).to have_content(meter.mpan_mprn)
-            expect(page).to have_content(meter.name)
+            expect(page).to have_text(meter.mpan_mprn)
+            expect(page).to have_text(meter.name)
           end
         end
       end
 
       it 'includes the monthly meter breakdown chart' do
-        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_month_#{fuel_type}_meter_breakdown.title"))
-        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_month_#{fuel_type}_meter_breakdown.subtitle"))
+        expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_month_#{fuel_type}_meter_breakdown.title"))
+        expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_month_#{fuel_type}_meter_breakdown.subtitle"))
         expect(page).to have_css("#chart_wrapper_group_by_month_#{fuel_type}_meter_breakdown")
       end
 
       it 'does not include the long term trends' do
-        expect(page).not_to have_css("#chart_wrapper_group_by_year_#{fuel_type}_meter_breakdown")
+        expect(page).to have_no_css("#chart_wrapper_group_by_year_#{fuel_type}_meter_breakdown")
       end
 
       it 'links to additional analysis' do
@@ -116,8 +116,8 @@ shared_examples 'a meter breakdown page with a long term trend section' do
 
     context 'when on the Analysis tab' do
       it 'includes the long term trend chart' do
-        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_year_#{fuel_type}_meter_breakdown.title"))
-        expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_year_#{fuel_type}_meter_breakdown.subtitle"))
+        expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_year_#{fuel_type}_meter_breakdown.title"))
+        expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_meter_breakdown.charts.group_by_year_#{fuel_type}_meter_breakdown.subtitle"))
         expect(page).to have_css("#chart_wrapper_group_by_year_#{fuel_type}_meter_breakdown")
       end
     end
@@ -130,7 +130,7 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
     create(:advice_page, key: key, fuel_type: fuel_type)
   end
 
-  let(:key) { "#{fuel_type}_meter_breakdown".to_sym }
+  let(:key) { :"#{fuel_type}_meter_breakdown" }
 
   context 'with electricity' do
     let(:fuel_type) { :electricity }

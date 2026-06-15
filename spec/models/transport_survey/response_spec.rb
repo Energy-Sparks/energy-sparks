@@ -6,21 +6,21 @@ describe TransportSurvey::Response do
 
     it { is_expected.to be_valid }
 
-    [:transport_survey_id, :transport_type_id, :passengers, :run_identifier, :surveyed_at, :journey_minutes, :weather].each do |attribute|
+    %i[transport_survey_id transport_type_id passengers run_identifier surveyed_at journey_minutes weather].each do |attribute|
       it { is_expected.to validate_presence_of(attribute) }
     end
     it { is_expected.to validate_inclusion_of(:journey_minutes).in_array(TransportSurvey::Response.journey_minutes_options) }
-    it { is_expected.to validate_inclusion_of(:passengers).in_array(TransportSurvey::Response.passengers_options)}
+    it { is_expected.to validate_inclusion_of(:passengers).in_array(TransportSurvey::Response.passengers_options) }
   end
 
   describe 'enums' do
-    it { is_expected.to define_enum_for(:weather).with_values([:sun, :cloud, :rain, :snow]) }
+    it { is_expected.to define_enum_for(:weather).with_values(%i[sun cloud rain snow]) }
   end
 
   describe '#weather_image' do
     TransportSurvey::Response.weather_images.each do |key, value|
       context "when key is: #{key}" do
-        subject(:response) { create :transport_survey_response, weather: key }
+        subject(:response) { create(:transport_survey_response, weather: key) }
 
         it { expect(response.weather_image).to eq(value) }
       end
@@ -28,12 +28,12 @@ describe TransportSurvey::Response do
   end
 
   describe '#carbon' do
-    let(:transport_type) { create :transport_type, can_share: can_share, park_and_stride: park_and_stride }
+    let(:transport_type) { create(:transport_type, can_share: can_share, park_and_stride: park_and_stride) }
     let(:carbon_calc) { ((transport_type.speed_km_per_hour * response.journey_minutes) / 60) * transport_type.kg_co2e_per_km }
 
     context 'when transport type is not park and stride' do
       let(:park_and_stride) { false }
-      let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: 15 }
+      let(:response) { create(:transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: 15) }
 
       context 'when carbon can be shared across group' do
         let(:can_share) { true }
@@ -58,13 +58,13 @@ describe TransportSurvey::Response do
       let(:carbon_calc_ps) { ((transport_type.speed_km_per_hour * (response.journey_minutes - TransportSurvey::Response.park_and_stride_mins)) / 60) * transport_type.kg_co2e_per_km }
 
       context "when journeys are #{TransportSurvey::Response.park_and_stride_mins} minutes and under" do
-        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurvey::Response.park_and_stride_mins }
+        let(:response) { create(:transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurvey::Response.park_and_stride_mins) }
 
         it { expect(response.carbon).to eq(0) }
       end
 
       context "when journeys are over #{TransportSurvey::Response.park_and_stride_mins} mins" do
-        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurvey::Response.park_and_stride_mins + 5 }
+        let(:response) { create(:transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurvey::Response.park_and_stride_mins + 5) }
 
         it "calculates the carbon with #{TransportSurvey::Response.park_and_stride_mins} less minutes" do
           expect(response.carbon).to eq(carbon_calc_ps)
@@ -74,9 +74,9 @@ describe TransportSurvey::Response do
   end
 
   describe '.to_csv' do
-    let(:transport_survey) { create(:transport_survey) }
     subject(:csv) { transport_survey.responses.to_csv }
 
+    let(:transport_survey) { create(:transport_survey) }
     let(:header) { 'Id,Run identifier,Weather,Journey minutes,Transport type name,Passengers,Carbon kg co2,Surveyed at' }
 
     context 'with responses' do

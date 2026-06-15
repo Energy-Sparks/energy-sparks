@@ -6,9 +6,9 @@ describe 'School group digital signage' do
 
   before do
     school.configuration.update(aggregate_meter_dates: {
-      electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
-      gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
-    })
+                                  electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
+                                  gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today }
+                                })
   end
 
   context 'when visiting the page' do
@@ -17,7 +17,7 @@ describe 'School group digital signage' do
         visit school_group_digital_signage_index_path(school_group)
       end
 
-      it { expect(page).to have_content('You need to sign in or sign up before continuing') }
+      it { expect(page).to have_text('You need to sign in or sign up before continuing') }
     end
 
     context 'when signed in' do
@@ -28,12 +28,12 @@ describe 'School group digital signage' do
 
       it 'displays title' do
         expect(page).to have_title(I18n.t('pupils.digital_signage.index.title'))
-        expect(page).to have_content(I18n.t('pupils.digital_signage.index.title'))
+        expect(page).to have_text(I18n.t('pupils.digital_signage.index.title'))
       end
 
       it 'displays group specific text' do
-        expect(page).to have_content(I18n.t('pupils.digital_signage.index.school_group.data_sharing.title'))
-        expect(page).to have_content(I18n.t('pupils.digital_signage.index.school_group.downloads.title'))
+        expect(page).to have_text(I18n.t('pupils.digital_signage.index.school_group.data_sharing.title'))
+        expect(page).to have_text(I18n.t('pupils.digital_signage.index.school_group.downloads.title'))
       end
 
       it 'displays download_links' do
@@ -58,7 +58,7 @@ describe 'School group digital signage' do
           expect(csv).to eq([
                               %w[School Fuel Link],
                               [school.name, 'Electricity', pupils_school_digital_signage_equivalences_url(school, :electricity, domain: 'example.com')],
-                              [school.name, 'Gas', pupils_school_digital_signage_equivalences_url(school, :gas, domain: 'example.com')],
+                              [school.name, 'Gas', pupils_school_digital_signage_equivalences_url(school, :gas, domain: 'example.com')]
                             ])
         end
       end
@@ -75,7 +75,7 @@ describe 'School group digital signage' do
         let(:expected_csv) do
           rows = []
           rows << ['School', 'Fuel', 'Chart Type', 'Description', 'Link']
-          [:electricity, :gas].each do |fuel_type|
+          %i[electricity gas].each do |fuel_type|
             Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
               rows << [
                 school.name,

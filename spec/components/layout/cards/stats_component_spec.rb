@@ -31,8 +31,8 @@ RSpec.describe Layout::Cards::StatsComponent, :include_application_helper, type:
     end
 
     it { expect(html).to have_css('i.fa-bolt') }
-    it { expect(html).to have_content('Header') }
-    it { expect(html).to have_content('90%') }
-    it { expect(html).to have_content('Subtext') }
+    it { expect(html).to have_text('Header') }
+    it { expect(html).to have_text('90%') }
+    it { expect(html).to have_text('Subtext') }
   end
 end

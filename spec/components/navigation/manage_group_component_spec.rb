@@ -66,7 +66,7 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
 
     context 'with settings section' do
       it 'has the title section' do
-        expect(html).to have_content(I18n.t('common.settings'))
+        expect(html).to have_text(I18n.t('common.settings'))
       end
 
       it_behaves_like 'a correctly populated settings section'
@@ -74,7 +74,7 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
 
     context 'with schools section' do
       it 'has the title section' do
-        expect(html).to have_content(I18n.t('common.schools'))
+        expect(html).to have_text(I18n.t('common.schools'))
       end
 
       it_behaves_like 'a correctly populated schools section'
@@ -82,7 +82,7 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
 
     context 'with admin section' do
       it 'has the admin section' do
-        expect(html).to have_content(I18n.t('common.admin'))
+        expect(html).to have_text(I18n.t('common.admin'))
       end
 
       it_behaves_like 'a correctly populated admin section'

@@ -7,7 +7,7 @@ RSpec.describe AdviceRemindersComponent, :include_application_helper, :include_u
     described_class.new(**params)
   end
 
-  let(:id) { 'custom-id'}
+  let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:user) { create(:admin) }
   let(:school) { create(:school) }
@@ -31,18 +31,18 @@ RSpec.describe AdviceRemindersComponent, :include_application_helper, :include_u
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_content(I18n.t('advice_pages.insights.recommendations.actions_title')) }
+    it { expect(html).to have_text(I18n.t('advice_pages.insights.recommendations.actions_title')) }
 
     it {
       expect(html).to have_link(I18n.t('common.labels.choose_activity'),
-                                   href: school_recommendations_path(school, scope: :adult))
+                                href: school_recommendations_path(school, scope: :adult))
     }
 
-    it { expect(html).to have_content(I18n.t('schools.show.set_targets')) }
+    it { expect(html).to have_text(I18n.t('schools.show.set_targets')) }
 
     it {
       expect(html).to have_link(I18n.t('schools.show.set_target'),
-                                   href: school_school_targets_path(school))
+                                href: school_school_targets_path(school))
     }
 
     context 'with target needing review' do
@@ -53,11 +53,11 @@ RSpec.describe AdviceRemindersComponent, :include_application_helper, :include_u
         allow(Targets::SchoolTargetService).to receive(:new).and_return(service)
       end
 
-      it { expect(html).to have_content(I18n.t('schools.show.revisit_targets')) }
+      it { expect(html).to have_text(I18n.t('schools.show.revisit_targets')) }
 
       it {
         expect(html).to have_link(I18n.t('schools.show.review_target'),
-                                     href: school_school_targets_path(school))
+                                  href: school_school_targets_path(school))
       }
     end
 
@@ -66,27 +66,27 @@ RSpec.describe AdviceRemindersComponent, :include_application_helper, :include_u
         create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
       end
 
-      it { expect(html).to have_content('Your school set a target to reduce its energy usage') }
+      it { expect(html).to have_text('Your school set a target to reduce its energy usage') }
 
       it {
         expect(html).to have_link(I18n.t('schools.show.review_progress'),
-                                     href: school_school_targets_path(school))
+                                  href: school_school_targets_path(school))
       }
     end
 
-    it { expect(html).to have_no_content(I18n.t('schools.school_targets.achieving_your_targets.view_recent_alerts')) }
+    it { expect(html).to have_no_text(I18n.t('schools.school_targets.achieving_your_targets.view_recent_alerts')) }
     it { expect(html).to have_no_link(I18n.t('common.labels.view_alerts'), href: alerts_school_advice_path(school)) }
 
-    it { expect(html).to have_no_content(I18n.t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities')) }
+    it { expect(html).to have_no_text(I18n.t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities')) }
     it { expect(html).to have_no_link(I18n.t('common.labels.view_opportunities'), href: priorities_school_advice_path(school)) }
 
     context 'with alerts and priorities' do
       include_context 'with dashboard alerts'
 
-      it { expect(html).to have_content(I18n.t('schools.school_targets.achieving_your_targets.view_recent_alerts')) }
+      it { expect(html).to have_text(I18n.t('schools.school_targets.achieving_your_targets.view_recent_alerts')) }
       it { expect(html).to have_link(I18n.t('common.labels.view_alerts'), href: alerts_school_advice_path(school)) }
 
-      it { expect(html).to have_content(I18n.t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities')) }
+      it { expect(html).to have_text(I18n.t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities')) }
       it { expect(html).to have_link(I18n.t('common.labels.view_opportunities'), href: priorities_school_advice_path(school)) }
     end
   end

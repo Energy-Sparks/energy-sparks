@@ -5,8 +5,8 @@ require 'rails_helper'
 describe 'Gas anomaly report' do
   let(:meter) do
     school = create(:school, :with_calendar,
-               school_group: create(:school_group, default_issues_admin_user: create(:admin)),
-               weather_station: create(:weather_station))
+                    school_group: create(:school_group, default_issues_admin_user: create(:admin)),
+                    weather_station: create(:weather_station))
     data_source = create(:data_source)
     create(:gas_meter, data_source:, school:)
   end
