@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_11_074722) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2045,6 +2045,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_11_074722) do
     t.boolean "full_school", default: true
     t.bigint "funder_id"
     t.integer "funding_status", default: 0, null: false
+    t.boolean "has_battery", default: false, null: false
     t.boolean "has_swimming_pool", default: false, null: false
     t.boolean "heating_air_source_heat_pump", default: false, null: false
     t.text "heating_air_source_heat_pump_notes"
