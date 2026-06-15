@@ -66,7 +66,7 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
   end
 
   it 'has all metric types' do
-    expect(ImpactReport::Metric::METRIC_TYPES.map(&:to_s) - ImpactReport::Run.first.metrics.pluck(:metric_type)).to \
-      eq(['total_savings'])
+    actual = ImpactReport::Metric::METRIC_TYPES.map(&:to_s) - ImpactReport::Run.first.metrics.pluck(:metric_type)
+    expect(actual).to eq([])
   end
 end
