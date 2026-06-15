@@ -681,9 +681,6 @@ en:
             percentage: What percentage of the school floor area is using the water source heat pump for heating?
         school_was_successfully_updated: School was successfully updated
         solar_panels: Solar panels
-        solar_panels_label: Our school has solar PV panels
         storage_heaters: Storage heaters
-        storage_heaters_label: Our school has night storage heaters
         swimming_pool: Swimming pool
-        swimming_pool_label: Our school has its own swimming pool
         title: Your School Estate
