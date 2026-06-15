@@ -19,9 +19,8 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
   end
 
   context 'when there are activities' do
-    let!(:school) { create(:school, :with_points, score_points: 50, school_group: school_group) }
-
     before do
+      create(:school, :with_points, score_points: 50, school_group: school_group)
       render_inline(described_class.new(**params))
     end
 
@@ -30,7 +29,7 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
     it 'shows podium correctly' do
       podium = page.find('.scoreboards-podium-component')
       expect(podium).to have_text('Your highest scoring school holds 1st place nationally')
-      expect(podium).to have_link('highest scoring school', href: school_path(school))
+      expect(podium).to have_link('highest scoring school', href: scores_school_group_advice_path(school_group))
     end
 
     it 'links to scoreboard' do
