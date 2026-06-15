@@ -12,7 +12,7 @@ en:
             A coordinated programme can help engage schools across the group.
           </p>
         podium:
-          full_position_html: Your highest scoring school is in <strong>%{position_ordinal} place</strong> among <a href='%{scoreboard_path}'>%{scoreboard} schools</a> and holds <strong>%{national_position_ordinal} place</strong> <a href='%{national_scoreboard_path}'>nationally</a>
+          full_position_html: Your <a href='%{scoreboard_path}'>highest scoring school</a> holds <strong>%{national_position_ordinal} place</strong> <a href='%{national_scoreboard_path}'>nationally</a>
           no_points_this_year: Your schools have not yet scored any points this academic year
           scoreboard_position_html: Your highest scoring school is in <strong>%{position_ordinal} place</strong> among <a href='%{scoreboard_path}'>%{scoreboard} schools</a>
         timeline:
