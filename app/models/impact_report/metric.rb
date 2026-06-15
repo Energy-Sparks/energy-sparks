@@ -65,10 +65,7 @@ module ImpactReport
     ].freeze
     private_constant :ENERGY_EFFICIENCY_GENERATORS
 
-    ENERGY_EFFICIENCY_METRICS = (
-      %i[total_savings] + # not sure we need this now. Remove from DB too?
-      ENERGY_EFFICIENCY_GENERATORS.flat_map { |type| type::METRICS }
-    ).freeze
+    ENERGY_EFFICIENCY_METRICS = ENERGY_EFFICIENCY_GENERATORS.flat_map { |type| type::METRICS }
 
     ENGAGEMENT_METRICS = GENERATOR::Engagement::METRICS
 
