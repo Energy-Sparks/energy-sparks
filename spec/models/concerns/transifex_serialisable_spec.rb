@@ -76,7 +76,7 @@ describe TransifexSerialisable do
 
     it 'model shows no content present if no attributes set' do
       # use this as an example of implementing class
-      expect(ActivityCategory.new).not_to have_text
+      expect(ActivityCategory.new).not_to have_content # rubocop:disable Capybara/RSpec/HaveContent
     end
 
     it 'model shows content present if some attribute set' do
