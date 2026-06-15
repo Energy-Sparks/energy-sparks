@@ -29,7 +29,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_11_074722) do
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
-  create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings", "footnotes"]
+  create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings"]
   create_enum "impact_report_metric_types", ["actions", "active_users", "activities", "annual_saving", "baseload", "data_visible_schools", "enrolled_schools", "enrolling_schools", "heating_control", "heating_down", "heating_early", "heating_off", "holiday_previous", "holiday_previous_year", "insulate_pipes", "long_term", "out_of_hours", "peak", "points", "pupils", "solar_panels", "targets", "thermostatic_control", "use", "users", "visible_schools"]
   create_enum "impact_report_metric_units", ["kwh", "co2", "gbp"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
