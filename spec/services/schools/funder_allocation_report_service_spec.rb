@@ -66,6 +66,20 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       contract = create(:commercial_contract, contract_holder: school_group)
       create(:commercial_licence, contract:, school:)
       create(:staff, school:)
+
+      # for future funding summary
+      calendar = create(:national_calendar, title: 'England and Wales')
+      academic_year = create(:academic_year, calendar:)
+      create(:commercial_licence, contract:, school:)
+      next_academic_year = create(:academic_year,
+                                  calendar:,
+                                  start_date: academic_year.end_date + 1.day,
+                                  end_date: academic_year.end_date + 12.months)
+      create(:commercial_licence,
+             contract:, school:,
+             start_date: next_academic_year.start_date,
+             end_date: next_academic_year.end_date)
+
       school
     end
 
@@ -122,6 +136,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         school_1.school_onboarding.onboarding_completed_on.iso8601,
         school_1.school_onboarding.first_made_data_enabled.iso8601,
         'MAT funding',
+        'MAT funding',
         funder.name,
         school_1.funding_status.humanize,
         'AB1 2CD',
@@ -169,6 +184,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         'true',
         'true',
         school_2.data_sharing.humanize,
+        nil,
         nil,
         nil,
         nil,
