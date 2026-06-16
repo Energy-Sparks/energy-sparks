@@ -41,4 +41,16 @@ RSpec.describe Commercial::ExceptionReportPromptComponent, :include_url_helpers,
     it { expect(page).to have_text('There are currently 2 overlapping licences for the same school') }
     it { expect(page).to have_link('Overlapping Licences', href: overlapping_admin_commercial_licences_path) }
   end
+
+  context 'when there are pending invoices' do
+    before do
+      contract = create(:commercial_contract, contract_holder: create(:funder, invoiced: true))
+      create(:commercial_licence, contract:, status: :pending_invoice)
+      render_inline described_class.new
+    end
+
+    it {
+      expect(page).to have_text('There are currently 1 contracts with pending invoices')
+    }
+  end
 end

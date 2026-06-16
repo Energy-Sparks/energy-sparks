@@ -66,7 +66,7 @@ RSpec.describe Elements::IconComponent, type: :component do
 
         it 'overrides the colour' do
           expect(html).to have_css('i.text-danger')
-          expect(html).not_to have_css('i.text-electric')
+          expect(html).to have_no_css('i.text-electric')
           expect(html).to have_css('i.fa-bolt')
         end
       end

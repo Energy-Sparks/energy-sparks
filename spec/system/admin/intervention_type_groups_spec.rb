@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Intervention Type Groups', type: :system do
   let!(:admin)                    { create(:admin) }
-  let!(:intervention_type_group)  { create(:intervention_type_group)}
+  let!(:intervention_type_group)  { create(:intervention_type_group) }
 
   context 'when logged in as admin' do
     before do
@@ -13,8 +13,8 @@ RSpec.describe 'Intervention Type Groups', type: :system do
 
     it 'I can view and edit the categories' do
       click_on 'Intervention Categories'
-      expect(page).to have_content(intervention_type_group.name)
-      expect(page).to have_content(intervention_type_group.description)
+      expect(page).to have_text(intervention_type_group.name)
+      expect(page).to have_text(intervention_type_group.description)
 
       new_description = 'Some useful text'
       new_name = 'Upgrade equipment'
@@ -24,16 +24,16 @@ RSpec.describe 'Intervention Type Groups', type: :system do
       fill_in :intervention_type_group_name_en, with: ''
       click_on 'Update Intervention type group'
 
-      expect(page).to have_content("can't be blank")
+      expect(page).to have_text("can't be blank")
       fill_in :intervention_type_group_name_en, with: new_name
       uncheck 'Active'
 
       click_on 'Update Intervention type group'
 
-      expect(page).to have_content('Intervention Categories')
-      expect(page).to have_content(new_name)
-      expect(page).to have_content(new_description)
-      expect(page).to have_content('No')
+      expect(page).to have_text('Intervention Categories')
+      expect(page).to have_text(new_name)
+      expect(page).to have_text(new_description)
+      expect(page).to have_text('No')
     end
 
     it 'I can create a new intervention type group' do
@@ -45,20 +45,20 @@ RSpec.describe 'Intervention Type Groups', type: :system do
 
       fill_in :intervention_type_group_name_en, with: ''
       fill_in :intervention_type_group_description_en, with: new_description
-      expect { click_on 'Create Intervention type group' }.to change(InterventionTypeGroup, :count).by(0)
-      expect(page).to have_content("can't be blank")
+      expect { click_on 'Create Intervention type group' }.not_to change(InterventionTypeGroup, :count)
+      expect(page).to have_text("can't be blank")
       fill_in :intervention_type_group_name_en, with: new_name
       expect { click_on 'Create Intervention type group' }.to change(InterventionTypeGroup, :count).by(1)
 
-      expect(page).to have_content(new_name)
-      expect(page).to have_content(new_description)
+      expect(page).to have_text(new_name)
+      expect(page).to have_text(new_description)
     end
   end
 
   describe 'when not logged in' do
     it 'does not authorise viewing' do
       visit admin_intervention_type_groups_path
-      expect(page).to have_content('You need to sign in or sign up before continuing.')
+      expect(page).to have_text('You need to sign in or sign up before continuing.')
     end
   end
 end

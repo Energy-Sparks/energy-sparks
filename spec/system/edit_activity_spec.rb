@@ -1,15 +1,20 @@
 require 'rails_helper'
 
 describe 'editing an activity' do
-  let(:school_name) { 'Active school'}
+  let(:school_name) { 'Active school' }
   let(:activity_type_name) { 'Exciting activity' }
   let(:activity_description) { 'What we did' }
   let(:new_activity_description) { 'What we did - or did we?' }
   let(:custom_title) { 'Custom title' }
-  let!(:school) { create_active_school(name: school_name)}
-  let!(:admin)  { create(:staff, school: school)}
-  let!(:activity_type) { create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}") }
-  let!(:activity) { create(:activity, school: school, activity_type: activity_type, title: activity_type_name, description: activity_description, happened_on: Date.yesterday)}
+  let!(:school) { create_active_school(name: school_name) }
+  let!(:admin)  { create(:staff, school: school) }
+  let!(:activity_type) do
+    create(:activity_type, name: activity_type_name, description: "It's An #{activity_type_name}")
+  end
+  let!(:activity) do
+    create(:activity, school: school, activity_type: activity_type, title: activity_type_name,
+                      description: activity_description, happened_on: Date.yesterday)
+  end
 
   before do
     sign_in(admin)

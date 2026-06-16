@@ -36,6 +36,10 @@ module Admin
         @contracts = ::Commercial::Contract.over_licensed
       end
 
+      def pending_invoicing
+        @contracts = ::Commercial::Contract.pending_invoicing
+      end
+
       def contract_holder_options
         records = case params[:contract_holder_type]
                   when 'School'      then School.active.order(:name)
@@ -82,9 +86,9 @@ module Admin
         if @contract.update_licences?
           renew_licences(@contract)
           redirect_to(admin_commercial_contract_path(@contract),
-                      notice: 'Contract and provisional licences have been created') # rubocop:disable Rails/I18nLocaleTexts
+                      notice: 'Contract and provisional licences have been created')
         else
-          redirect_to(admin_commercial_contract_path(@contract), notice: 'Contract has been created') # rubocop:disable Rails/I18nLocaleTexts
+          redirect_to(admin_commercial_contract_path(@contract), notice: 'Contract has been created')
         end
       end
 
@@ -93,10 +97,10 @@ module Admin
           if @contract.cascade_updates_to_licences?
             ::Commercial::ContractManager.new(@contract, current_user).cascade_updates_to_licences
             redirect_to(admin_commercial_contract_path(@contract),
-                        notice: 'Contract and licences have been updated') # rubocop:disable Rails/I18nLocaleTexts
+                        notice: 'Contract and licences have been updated')
           else
             redirect_to(admin_commercial_contract_path(@contract),
-                        notice: 'Contract has been updated') # rubocop:disable Rails/I18nLocaleTexts
+                        notice: 'Contract has been updated')
           end
         else
           render :edit
@@ -105,7 +109,7 @@ module Admin
 
       def destroy
         if @contract.destroy
-          redirect_to(admin_commercial_contracts_path, alert: 'Contract has been deleted') # rubocop:disable Rails/I18nLocaleTexts
+          redirect_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
         else
           redirect_to(admin_commercial_contracts_path, alert: @contract.errors.full_messages.to_sentence)
         end

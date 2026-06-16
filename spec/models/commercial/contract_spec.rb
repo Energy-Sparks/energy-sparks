@@ -48,6 +48,18 @@ describe Commercial::Contract do
         end
       end
 
+      context 'with an invoice' do
+        before do
+          create(:commercial_invoice, contract:)
+        end
+
+        it 'does not allow the contract to be destroyed' do
+          expect(contract.destroy).to be(false)
+          expect(contract.errors[:base]).to include('Cannot delete a contract with an invoiced licence')
+          expect(contract).to be_persisted
+        end
+      end
+
       context 'with confirmed licences' do
         before do
           create(:commercial_licence, contract:, status: :confirmed)
@@ -390,6 +402,37 @@ describe Commercial::Contract do
       it_behaves_like 'a correctly generated summary' do
         let!(:contract_holder) { create(:school) } # rubocop:disable RSpec/LetSetup
       end
+    end
+  end
+
+  describe '.with_invoiced_contract_holders' do
+    let!(:school_contract) { create(:commercial_contract, contract_holder: create(:school)) }
+    let!(:group_contract) { create(:commercial_contract, contract_holder: create(:school_group)) }
+    let!(:funder_contract) { create(:commercial_contract, contract_holder: create(:funder, invoiced: true)) }
+
+    before do
+      create(:commercial_contract, contract_holder: create(:funder, invoiced: false))
+    end
+
+    it 'returns only school, group and invoiced funder contracts' do
+      expect(described_class.with_invoiced_contract_holders).to contain_exactly(school_contract, group_contract,
+                                                                                funder_contract)
+    end
+  end
+
+  describe '.pending_invoicing' do
+    let!(:funder_contract) { create(:commercial_contract, contract_holder: create(:funder, invoiced: true)) }
+
+    before do
+      create(:commercial_licence, status: :confirmed)
+      create(:commercial_licence, contract: funder_contract, status: :pending_invoice)
+
+      not_invoiced = create(:commercial_contract, contract_holder: create(:funder, invoiced: false))
+      create(:commercial_licence, contract: not_invoiced, status: :pending_invoice)
+    end
+
+    it 'returns only contracts with pending invoices' do
+      expect(described_class.pending_invoicing).to contain_exactly(funder_contract)
     end
   end
 end

@@ -11,11 +11,11 @@ module SchoolGroups
                                         through_association: :impact_report_runs, include: :metrics
 
       def index
-        @runs = @runs.order(run_date: :desc)
+        @runs = @runs.latest_first
       end
 
       def latest
-        @run = @runs.latest
+        @run = @runs.latest_first.first
         render :show
       end
     end

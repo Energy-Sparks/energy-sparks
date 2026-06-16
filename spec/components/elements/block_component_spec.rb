@@ -23,14 +23,14 @@ RSpec.describe Elements::BlockComponent, :include_application_helper, type: :com
     end
 
     it { expect(html).to have_css('div') }
-    it { expect(html).to have_content('Content') }
+    it { expect(html).to have_text('Content') }
   end
 
   context 'with no content' do
     let(:params) { base_params }
     let(:content) {}
 
-    it { expect(html).not_to have_css('div') }
-    it { expect(html).not_to have_content('Content') }
+    it { expect(html).to have_no_css('div') }
+    it { expect(html).to have_no_text('Content') }
   end
 end

@@ -107,7 +107,10 @@ module Amr
     end
 
     def to_kwh(value, timestamp)
-      LocalDistributionZone.kwh_per_m3(@meter&.school&.local_distribution_zone, timestamp) * value unless value.nil?
+      return if value.nil?
+      return value if Aggregation::ValidateAmrData::BadValues.bad_dcc_value?(value, @meter.meter_type.to_sym)
+
+      LocalDistributionZone.kwh_per_m3(@meter&.school&.local_distribution_zone, timestamp) * value
     end
 
     def api_client

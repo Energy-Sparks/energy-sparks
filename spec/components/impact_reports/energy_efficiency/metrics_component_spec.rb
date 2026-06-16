@@ -54,12 +54,12 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       }
     end
 
-    context 'with holiday_previous_year_gbp metric' do
+    context 'with holiday_previous_year metric' do
       let!(:metric_type) { :holiday_previous_year }
       let!(:metric) do
         create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity, unit: :gbp)
       end
-      let(:card) { card_with_title('Yearly holiday electricity savings') }
+      let(:card) { card_with_title('Holiday electricity savings compared to last year') }
 
       before do
         render_inline(described_class.new(**params))
@@ -73,7 +73,7 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       }
     end
 
-    context 'with holiday_previous_gbp metric' do
+    context 'with holiday_previous metric' do
       let!(:metric_type) { :holiday_previous }
       let!(:metric) do
         create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity, unit: :gbp)
@@ -92,12 +92,12 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       }
     end
 
-    context 'with annual_saving_co2 metric' do
+    context 'with annual_saving co2 metric' do
       let!(:metric_type) { :annual_saving }
       let!(:metric) do
         create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :gas, unit: :co2)
       end
-      let(:card) { card_with_title('Reduced gas emissions') }
+      let(:card) { card_with_title('Reduced carbon emissions from gas') }
 
       before do
         render_inline(described_class.new(**params))
@@ -106,8 +106,8 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       it { expect(card).to have_css('.figure', exact_text: "#{metric.value} kg CO2") }
 
       it {
-        expect(card).to have_text(impact_t("energy_efficiency.metric_types.#{metric_type}.co2.subtext",
-                                           fuel_type: 'gas', count: metric.number_of_schools))
+        expect(card).to have_text(impact_t("energy_efficiency.metric_types.#{metric_type}.co2.subtext.gas",
+                                           count: metric.number_of_schools))
       }
     end
 
@@ -116,7 +116,7 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
       let!(:metric) do
         create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :gas)
       end
-      let(:card) { card_with_title('Energy saving targets') }
+      let(:card) { card_with_title('Gas saving targets') }
 
       before do
         render_inline(described_class.new(**params))

@@ -7,12 +7,12 @@ describe 'School group comparison' do
       let(:title) { I18n.t('school_groups.advice.comparison_reports.title', name: school_group.name) }
     end
 
-    it { expect(page).to have_content(I18n.t('school_groups.advice.comparison_reports.lists.long_term')) }
-    it { expect(page).to have_content(I18n.t('school_groups.advice.comparison_reports.lists.out_of_hours')) }
-    it { expect(page).to have_content(I18n.t('school_groups.advice.comparison_reports.lists.baseload')) }
-    it { expect(page).to have_content(I18n.t('school_groups.advice.comparison_reports.lists.heating')) }
-    it { expect(page).to have_content(I18n.t('school_groups.advice.comparison_reports.lists.total')) }
-    it { expect(page).to have_content(I18n.t('school_groups.advice.comparison_reports.lists.solar')) }
+    it { expect(page).to have_text(I18n.t('school_groups.advice.comparison_reports.lists.long_term')) }
+    it { expect(page).to have_text(I18n.t('school_groups.advice.comparison_reports.lists.out_of_hours')) }
+    it { expect(page).to have_text(I18n.t('school_groups.advice.comparison_reports.lists.baseload')) }
+    it { expect(page).to have_text(I18n.t('school_groups.advice.comparison_reports.lists.heating')) }
+    it { expect(page).to have_text(I18n.t('school_groups.advice.comparison_reports.lists.total')) }
+    it { expect(page).to have_text(I18n.t('school_groups.advice.comparison_reports.lists.solar')) }
 
     context 'when clicking through to a comparison' do
       let!(:alerts) do
@@ -45,7 +45,7 @@ describe 'School group comparison' do
         end
 
         it 'has the correct title' do
-          expect(page).to have_content(report.title)
+          expect(page).to have_text(report.title)
         end
 
         it 'displays the right breadcrumb' do

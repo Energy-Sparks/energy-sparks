@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Cms::PageSummaryComponent, :include_application_helper, :include_url_helpers, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:current_user) { create(:school_admin)}
+  let(:current_user) { create(:school_admin) }
   let(:cms_page) { create(:page, :with_sections, sections_published: true, published: true) }
 
   let(:base_params) do
@@ -30,13 +30,13 @@ RSpec.describe Cms::PageSummaryComponent, :include_application_helper, :include_
     end
 
     it { expect(html).to have_link(cms_page.title, href: category_page_path(cms_page.category, cms_page)) }
-    it { expect(html).to have_content(cms_page.description) }
+    it { expect(html).to have_text(cms_page.description) }
 
     it {
       expect(html).to have_link(cms_page.sections.first.title,
-                                   href: category_page_path(cms_page.category,
-                                                            cms_page,
-                                                            anchor: cms_page.sections.first.slug))
+                                href: category_page_path(cms_page.category,
+                                                         cms_page,
+                                                         anchor: cms_page.sections.first.slug))
     }
   end
 end

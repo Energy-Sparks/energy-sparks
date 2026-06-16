@@ -6,17 +6,17 @@ RSpec.describe 'User email management', :include_application_helper do
   shared_examples 'an email preference page' do
     it do
       within('#email-preferences') do
-        expect(page).to have_content(I18n.t('users.show.update_email_preferences'))
+        expect(page).to have_text(I18n.t('users.show.update_email_preferences'))
       end
     end
 
     context 'with existing preferences' do
       it 'displays them correctly' do
         expect(page).to have_checked_field('Getting the most out of Energy Sparks')
-        expect(page).not_to have_checked_field('Engaging pupils in energy saving and climate')
-        expect(page).not_to have_checked_field('Energy saving leadership')
-        expect(page).not_to have_checked_field('Training opportunities')
-        expect(page).not_to have_checked_field('Tailored advice and support')
+        expect(page).to have_no_checked_field('Engaging pupils in energy saving and climate')
+        expect(page).to have_no_checked_field('Energy saving leadership')
+        expect(page).to have_no_checked_field('Training opportunities')
+        expect(page).to have_no_checked_field('Tailored advice and support')
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe 'User email management', :include_application_helper do
         within('#mailchimp-form') do
           click_on('Update')
         end
-        expect(page).to have_content(I18n.t('users.emails.update.updated'))
+        expect(page).to have_text(I18n.t('users.emails.update.updated'))
       end
     end
   end

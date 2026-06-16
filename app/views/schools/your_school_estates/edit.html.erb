@@ -9,13 +9,14 @@
 
     <%= simple_form_for(@school, url: school_your_school_estate_url(@school)) do |f| %>
       <h3><%= t('schools.your_school_estates.edit.solar_panels') %></h3>
-      <%= f.input :indicated_has_solar_panels, label: t('schools.your_school_estates.edit.solar_panels_label') %>
+      <%= f.input :indicated_has_solar_panels %>
+      <%= f.input :has_battery %>
 
       <h3><%= t('schools.your_school_estates.edit.storage_heaters') %></h3>
-      <%= f.input :indicated_has_storage_heaters, label: t('schools.your_school_estates.edit.storage_heaters_label') %>
+      <%= f.input :indicated_has_storage_heaters %>
 
       <h3><%= t('schools.your_school_estates.edit.swimming_pool') %></h3>
-      <%= f.input :has_swimming_pool, label: t('schools.your_school_estates.edit.swimming_pool_label') %>
+      <%= f.input :has_swimming_pool %>
 
       <h3><%= t('schools.your_school_estates.edit.heating_sources.header') %></h3>
       <p><%= t('schools.your_school_estates.edit.heating_sources.description_1') %>.</p>

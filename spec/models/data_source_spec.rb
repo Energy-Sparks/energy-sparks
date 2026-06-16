@@ -10,7 +10,7 @@ RSpec.describe DataSource, type: :model do
   end
 
   describe 'enums' do
-    it { is_expected.to define_enum_for(:organisation_type).with_values([:energy_supplier, :procurement_organisation, :meter_operator, :council, :solar_monitoring_provider]) }
+    it { is_expected.to define_enum_for(:organisation_type).with_values(%i[energy_supplier procurement_organisation meter_operator council solar_monitoring_provider]) }
   end
 
   describe '.percentage_of_lagging_meters' do
@@ -51,7 +51,7 @@ RSpec.describe DataSource, type: :model do
         create_list(:gas_meter_with_validated_reading_dates, 2, end_date: non_lagging_date, active: true, data_source:)
       end
 
-      it {expect(percentage_of_lagging_meters).to eq 0}
+      it { expect(percentage_of_lagging_meters).to eq 0 }
     end
   end
 
@@ -86,9 +86,9 @@ RSpec.describe DataSource, type: :model do
   end
 
   describe '.to_csv' do
-    let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
 
+    let(:data_source) { create(:data_source) }
     let(:header) { 'School group,Admin,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
 
     before { freeze_time }

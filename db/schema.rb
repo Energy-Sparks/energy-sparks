@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -29,8 +29,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
-  create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings", "footnotes"]
-  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings", "baseload_gbp", "baseload_co2", "baseload_kwh", "out_of_hours_gbp", "out_of_hours_co2", "out_of_hours_kwh", "peak_gbp", "peak_co2", "peak_kwh", "use_gbp", "use_co2", "use_kwh", "heating_down_gbp", "heating_down_co2", "heating_down_kwh", "heating_early_gbp", "heating_early_co2", "heating_early_kwh", "heating_off_gbp", "heating_off_co2", "heating_off_kwh", "insulate_pipes_gbp", "insulate_pipes_co2", "insulate_pipes_kwh", "thermostatic_control_gbp", "thermostatic_control_co2", "thermostatic_control_kwh", "solar_panels_gbp", "solar_panels_co2", "solar_panels_kwh", "annual_saving_gbp", "annual_saving_co2", "annual_saving_kwh", "out_of_hours_exemplar", "out_of_hours_well_managed", "long_term_exemplar", "long_term_well_managed", "baseload_exemplar", "baseload_well_managed", "heating_control_exemplar", "heating_control_well_managed", "holiday_previous_gbp", "holiday_previous_kwh", "holiday_previous_year_gbp", "holiday_previous_year_kwh", "out_of_hours", "long_term", "baseload", "heating_control", "peak", "use", "heating_down", "heating_early", "heating_off", "insulate_pipes", "thermostatic_control", "solar_panels", "holiday_previous", "holiday_previous_year", "annual_saving"]
+  create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings"]
+  create_enum "impact_report_metric_types", ["actions", "active_users", "activities", "annual_saving", "baseload", "data_visible_schools", "enrolled_schools", "enrolling_schools", "heating_control", "heating_down", "heating_early", "heating_off", "holiday_previous", "holiday_previous_year", "insulate_pipes", "long_term", "out_of_hours", "peak", "points", "pupils", "solar_panels", "targets", "thermostatic_control", "use", "users", "visible_schools"]
   create_enum "impact_report_metric_units", ["kwh", "co2", "gbp"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
@@ -737,6 +737,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
     t.index ["updated_by_id"], name: "index_commercial_contracts_on_updated_by_id"
   end
 
+  create_table "commercial_invoices", force: :cascade do |t|
+    t.bigint "contract_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id", null: false
+    t.string "purchase_order_number"
+    t.datetime "updated_at", null: false
+    t.index ["contract_id"], name: "index_commercial_invoices_on_contract_id"
+    t.index ["created_by_id"], name: "index_commercial_invoices_on_created_by_id"
+  end
+
   create_table "commercial_licences", force: :cascade do |t|
     t.text "comments"
     t.bigint "contract_id", null: false
@@ -754,6 +764,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
     t.index ["created_by_id"], name: "index_commercial_licences_on_created_by_id"
     t.index ["school_id"], name: "index_commercial_licences_on_school_id"
     t.index ["updated_by_id"], name: "index_commercial_licences_on_updated_by_id"
+  end
+
+  create_table "commercial_line_items", force: :cascade do |t|
+    t.decimal "base_price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.bigint "invoice_id", null: false
+    t.bigint "licence_id", null: false
+    t.decimal "metering_fee", precision: 10, scale: 2, null: false
+    t.integer "number_of_meters", default: 0, null: false
+    t.boolean "private_account", default: false, null: false
+    t.decimal "private_account_fee", precision: 10, scale: 2, null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoice_id"], name: "index_commercial_line_items_on_invoice_id"
+    t.index ["licence_id"], name: "index_commercial_line_items_on_licence_id"
   end
 
   create_table "commercial_products", force: :cascade do |t|
@@ -2021,6 +2045,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
     t.boolean "full_school", default: true
     t.bigint "funder_id"
     t.integer "funding_status", default: 0, null: false
+    t.boolean "has_battery", default: false, null: false
     t.boolean "has_swimming_pool", default: false, null: false
     t.boolean "heating_air_source_heat_pump", default: false, null: false
     t.text "heating_air_source_heat_pump_notes"
@@ -2508,9 +2533,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_162552) do
   add_foreign_key "commercial_contracts", "commercial_products", column: "product_id"
   add_foreign_key "commercial_contracts", "users", column: "created_by_id"
   add_foreign_key "commercial_contracts", "users", column: "updated_by_id"
+  add_foreign_key "commercial_invoices", "commercial_contracts", column: "contract_id"
+  add_foreign_key "commercial_invoices", "users", column: "created_by_id"
   add_foreign_key "commercial_licences", "commercial_contracts", column: "contract_id"
   add_foreign_key "commercial_licences", "users", column: "created_by_id"
   add_foreign_key "commercial_licences", "users", column: "updated_by_id"
+  add_foreign_key "commercial_line_items", "commercial_invoices", column: "invoice_id"
+  add_foreign_key "commercial_line_items", "commercial_licences", column: "licence_id"
   add_foreign_key "commercial_products", "users", column: "created_by_id"
   add_foreign_key "commercial_products", "users", column: "updated_by_id"
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"

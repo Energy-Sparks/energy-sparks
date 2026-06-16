@@ -32,6 +32,7 @@ module SchoolGroups
             number_of_schools = actions[alert]&.schools&.count
             metric.merge(value: actions[alert]&.average_one_year_saving_gbp || 0,
                          number_of_schools: number_of_schools || 0,
+                         unit: :gbp,
                          enough_data: number_of_schools.present?)
           end
         end

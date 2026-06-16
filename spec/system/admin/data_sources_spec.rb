@@ -31,9 +31,9 @@ shared_examples_for 'a data source form' do
   end
 end
 
-RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_application_helper: true do
-  let(:setup_data)             { }
-  let!(:user)                  { }
+RSpec.describe 'Data Sources admin', :include_application_helper, :school_groups, type: :system do
+  let(:setup_data)             {}
+  let!(:user)                  {}
 
   let!(:text_attributes) do
     {
@@ -155,7 +155,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
               click_on 'Edit'
             end
 
-            it { expect(page).to have_text("Edit #{existing_data_source.name}")}
+            it { expect(page).to have_text("Edit #{existing_data_source.name}") }
 
             it 'has a delete button' do
               expect(page).to have_link('Delete')
@@ -168,13 +168,12 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             context 'and saving new data' do
               let(:new_data_source) do
                 build(:data_source,
-                  organisation_type: :council,
-                  alert_percentage_threshold: 3,
-                  import_warning_days: 9,
-                  load_tariffs: false,
-                  alerts_on: false,
-                  owned_by: user
-                  )
+                      organisation_type: :council,
+                      alert_percentage_threshold: 3,
+                      import_warning_days: 9,
+                      load_tariffs: false,
+                      alerts_on: false,
+                      owned_by: user)
               end
 
               before do
@@ -206,7 +205,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
               click_on 'Delete'
             end
 
-            it { expect(page).not_to have_text(existing_data_source.name) }
+            it { expect(page).to have_no_text(existing_data_source.name) }
             it { expect(page).to have_text('Data source was successfully deleted') }
           end
 
@@ -233,7 +232,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'when there are no issues' do
-              it { expect(page).to have_text("No issues for #{existing_data_source.name}")}
+              it { expect(page).to have_text("No issues for #{existing_data_source.name}") }
             end
 
             context 'with buttons' do
@@ -268,7 +267,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'when there are no issues' do
-              it { expect(page).to have_text("No meter issues for #{existing_data_source.name}")}
+              it { expect(page).to have_text("No meter issues for #{existing_data_source.name}") }
             end
 
             context 'with buttons' do
@@ -307,7 +306,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           click_on 'New data source'
         end
 
-        it { expect(page).not_to have_link('Delete') }
+        it { expect(page).to have_no_link('Delete') }
 
         it { expect(page).to have_text('New data source') }
 

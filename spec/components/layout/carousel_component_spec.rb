@@ -35,7 +35,7 @@ RSpec.describe Layout::CarouselComponent, type: :component do
       let(:expected_theme) { theme }
     end
 
-    it { expect(html).to have_content('Television') }
+    it { expect(html).to have_text('Television') }
 
     it { expect(html).to have_no_button(class: 'carousel-control-prev') }
     it { expect(html).to have_no_button(class: 'carousel-control-next') }
@@ -118,8 +118,8 @@ RSpec.describe Layout::CarouselComponent, type: :component do
     end
 
     it { expect(html).to have_xpath('.//img[contains(@src, "/assets/laptop-")]', visible: :all) }
-    it { expect(html).to have_content('Laptop description') }
-    it { expect(html).to have_content('Tree') }
+    it { expect(html).to have_text('Laptop description') }
+    it { expect(html).to have_text('Tree') }
 
     it { expect(html).to have_css('.bottom button.carousel-control-prev') }
     it { expect(html).to have_css('.bottom button.carousel-control-next') }

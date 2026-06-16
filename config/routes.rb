@@ -666,11 +666,13 @@ Rails.application.routes.draw do
           get :future
           get :over_licensed
           get :overlapping
+          get :pending_invoicing
           get :provisional
           get :recent
         end
       end
       resources :contract_holders, only: [:index]
+      resources :invoices, only: [:index, :show]
       resources :licences do
         collection do
           get :current

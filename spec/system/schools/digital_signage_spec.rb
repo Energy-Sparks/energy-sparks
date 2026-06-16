@@ -5,9 +5,9 @@ describe 'Digital signage pages' do
 
   before do
     school.configuration.update(aggregate_meter_dates: {
-      electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
-      gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
-    })
+                                  electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
+                                  gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today }
+                                })
   end
 
   shared_examples 'it has some basic branding' do
@@ -22,7 +22,7 @@ describe 'Digital signage pages' do
         visit school_digital_signage_path(school)
       end
 
-      it { expect(page).to have_content('You need to sign in or sign up before continuing') }
+      it { expect(page).to have_text('You need to sign in or sign up before continuing') }
     end
 
     context 'when signed in' do
@@ -33,16 +33,16 @@ describe 'Digital signage pages' do
 
       it 'displays title' do
         expect(page).to have_title(I18n.t('pupils.digital_signage.index.title'))
-        expect(page).to have_content(I18n.t('pupils.digital_signage.index.title'))
+        expect(page).to have_text(I18n.t('pupils.digital_signage.index.title'))
       end
 
       fuel_types = %i[electricity gas]
 
       fuel_types.each do |fuel_type|
-        it { expect(page).to have_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type))}
+        it { expect(page).to have_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type)) }
 
         Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
-          it { expect(page).to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type))}
+          it { expect(page).to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type)) }
         end
       end
 
@@ -51,19 +51,19 @@ describe 'Digital signage pages' do
 
         it 'displays title' do
           expect(page).to have_title(I18n.t('pupils.digital_signage.index.title'))
-          expect(page).to have_content(I18n.t('pupils.digital_signage.index.title'))
+          expect(page).to have_text(I18n.t('pupils.digital_signage.index.title'))
         end
 
         fuel_types.each do |fuel_type|
-          it { expect(page).not_to have_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type))}
+          it { expect(page).to have_no_link(href: pupils_school_digital_signage_equivalences_path(school, fuel_type)) }
 
           Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
-            it { expect(page).not_to have_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type))}
+            it { expect(page).to have_no_link(href: pupils_school_digital_signage_charts_path(school, fuel_type, chart_type)) }
           end
         end
 
         it 'displays a custom message' do
-          expect(page).to have_content('Our digital signage feature is currently only available to schools that are publicly sharing their analysis')
+          expect(page).to have_text('Our digital signage feature is currently only available to schools that are publicly sharing their analysis')
         end
       end
     end
@@ -76,13 +76,13 @@ describe 'Digital signage pages' do
       end
 
       it 'shows the title and intro' do
-        expect(page).to have_content(I18n.t("pupils.digital_signage.charts.#{chart_type}.title",
-                                            fuel_type: I18n.t("common.#{fuel_type}").downcase))
-        expect(page).to have_content(I18n.t("pupils.digital_signage.charts.#{chart_type}.intro"))
+        expect(page).to have_text(I18n.t("pupils.digital_signage.charts.#{chart_type}.title",
+                                         fuel_type: I18n.t("common.#{fuel_type}").downcase))
+        expect(page).to have_text(I18n.t("pupils.digital_signage.charts.#{chart_type}.intro"))
       end
 
       it 'shows the date ranges' do
-        expect(page).to have_content('Showing energy used')
+        expect(page).to have_text('Showing energy used')
       end
 
       it_behaves_like 'it has some basic branding'
@@ -146,7 +146,7 @@ describe 'Digital signage pages' do
         end
 
         it 'shows an error message' do
-          expect(page).to have_content(I18n.t('chart_data_values.standard_error_message'))
+          expect(page).to have_text(I18n.t('chart_data_values.standard_error_message'))
         end
       end
     end
@@ -161,7 +161,7 @@ describe 'Digital signage pages' do
         end
 
         it 'shows an error message' do
-          expect(page).to have_content(I18n.t('chart_data_values.standard_error_message'))
+          expect(page).to have_text(I18n.t('chart_data_values.standard_error_message'))
         end
       end
     end
@@ -176,7 +176,7 @@ describe 'Digital signage pages' do
         end
 
         it 'shows an error message' do
-          expect(page).to have_content(I18n.t('chart_data_values.standard_error_message'))
+          expect(page).to have_text(I18n.t('chart_data_values.standard_error_message'))
         end
       end
     end
@@ -189,9 +189,9 @@ describe 'Digital signage pages' do
 
         before do
           school.configuration.update(aggregate_meter_dates: {
-            electricity: { start_date: Time.zone.today - 90.days, end_date: Time.zone.today - 31.days },
-            gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
-          })
+                                        electricity: { start_date: Time.zone.today - 90.days, end_date: Time.zone.today - 31.days },
+                                        gas: { start_date: Time.zone.yesterday, end_date: Time.zone.today }
+                                      })
           visit pupils_school_digital_signage_charts_path(school, fuel_type, chart_type)
         end
 
@@ -217,9 +217,9 @@ describe 'Digital signage pages' do
 
         before do
           school.configuration.update(aggregate_meter_dates: {
-            electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
-            gas: { start_date: Time.zone.today - 90.days, end_date: Time.zone.today - 31.days },
-          })
+                                        electricity: { start_date: Time.zone.yesterday, end_date: Time.zone.today },
+                                        gas: { start_date: Time.zone.today - 90.days, end_date: Time.zone.today - 31.days }
+                                      })
           visit pupils_school_digital_signage_charts_path(school, fuel_type, chart_type)
         end
 
@@ -244,8 +244,8 @@ describe 'Digital signage pages' do
 
   context 'when viewing equivalences' do
     context 'when school is data enabled' do
-      let(:equivalence_type)          { create(:equivalence_type, time_period: :last_week, meter_type: :electricity)}
-      let(:equivalence_type_content)  { create(:equivalence_type_content_version, equivalence_type: equivalence_type, equivalence_en: 'Your school spent {{gbp}} on electricity last year!', equivalence_cy: 'Gwariodd eich ysgol {{gbp}} ar drydan y llynedd!')}
+      let(:equivalence_type)          { create(:equivalence_type, time_period: :last_week, meter_type: :electricity) }
+      let(:equivalence_type_content)  { create(:equivalence_type_content_version, equivalence_type: equivalence_type, equivalence_en: 'Your school spent {{gbp}} on electricity last year!', equivalence_cy: 'Gwariodd eich ysgol {{gbp}} ar drydan y llynedd!') }
       let!(:equivalence)              { create(:equivalence, school: school, content_version: equivalence_type_content, data: { 'gbp' => { 'formatted_equivalence' => '£2.00' } }, data_cy: { 'gbp' => { 'formatted_equivalence' => '£9.00' } }, to_date: Time.zone.today) }
 
       before do
@@ -253,12 +253,12 @@ describe 'Digital signage pages' do
       end
 
       it 'shows equivalences' do
-        expect(page).to have_content('Your school spent £2.00 on electricity last year!')
+        expect(page).to have_text('Your school spent £2.00 on electricity last year!')
       end
 
       it 'shows Welsh equivalences' do
         visit pupils_school_digital_signage_equivalences_path(school, :electricity, locale: 'cy')
-        expect(page).to have_content('Gwariodd eich ysgol £9.00 ar drydan y llynedd')
+        expect(page).to have_text('Gwariodd eich ysgol £9.00 ar drydan y llynedd')
       end
 
       it_behaves_like 'it has some basic branding'
@@ -270,7 +270,7 @@ describe 'Digital signage pages' do
       end
 
       it 'displays a default equivalence' do
-        expect(page).to have_content('the average school')
+        expect(page).to have_text('the average school')
       end
 
       it_behaves_like 'it has some basic branding'
@@ -284,7 +284,7 @@ describe 'Digital signage pages' do
       end
 
       it 'displays a default equivalence' do
-        expect(page).to have_content('the average school')
+        expect(page).to have_text('the average school')
       end
 
       it_behaves_like 'it has some basic branding'
@@ -298,7 +298,7 @@ describe 'Digital signage pages' do
       end
 
       it 'displays a default equivalence' do
-        expect(page).to have_content('the average school')
+        expect(page).to have_text('the average school')
       end
     end
   end

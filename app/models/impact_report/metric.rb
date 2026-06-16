@@ -48,13 +48,14 @@ module ImpactReport
       energy_efficiency
       engagement
       potential_savings
-      footnote
     ].freeze
     enum :metric_category, enum_map(METRIC_CATEGORIES).freeze
 
     GENERATOR = SchoolGroups::ImpactReport::Generator
     private_constant :GENERATOR
+
     OVERVIEW_METRICS = GENERATOR::Overview::METRICS
+
     ENERGY_EFFICIENCY_GENERATORS = [
       GENERATOR::AnnualSaving,
       GENERATOR::Benchmark,
@@ -63,20 +64,20 @@ module ImpactReport
       GENERATOR::OutOfHours
     ].freeze
     private_constant :ENERGY_EFFICIENCY_GENERATORS
-    ENERGY_EFFICIENCY_METRICS = (
-      %i[total_savings] + # not sure we need this now. Remove from DB too?
-      ENERGY_EFFICIENCY_GENERATORS.flat_map { |type| type::METRICS }
-    ).freeze
+
+    ENERGY_EFFICIENCY_METRICS = ENERGY_EFFICIENCY_GENERATORS.flat_map { |type| type::METRICS }.freeze
+
     ENGAGEMENT_METRICS = GENERATOR::Engagement::METRICS
+
     POTENTIAL_SAVINGS_METRICS = GENERATOR::PotentialSavings::METRICS
-    FOOTNOTE_METRICS = %i[].freeze
+
     METRIC_TYPES = (
       OVERVIEW_METRICS +
       ENGAGEMENT_METRICS +
       ENERGY_EFFICIENCY_METRICS +
-      POTENTIAL_SAVINGS_METRICS +
-      FOOTNOTE_METRICS
+      POTENTIAL_SAVINGS_METRICS
     ).uniq.freeze # uniq because targets is found in engagement and potential_savings
+
     enum :metric_type, enum_map(METRIC_TYPES).freeze, suffix: :metric
 
     def self.categories

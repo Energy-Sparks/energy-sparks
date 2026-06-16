@@ -1,23 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe Schools::Advice::RecentChangesService, type: :service do
+  subject(:service) do
+    Schools::Advice::RecentChangesService.new(school: school, aggregate_school_service: aggregate_school_service,
+                                              fuel_type: :gas)
+  end
+
   let(:school)                      { create(:school) }
 
-  let(:gas_aggregate_meter)         { double('gas-aggregated-meter', aggregate_meter?: true)}
-  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter', aggregate_meter?: true)}
+  let(:gas_aggregate_meter)         { double('gas-aggregated-meter', aggregate_meter?: true) }
+  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter', aggregate_meter?: true) }
 
   let(:aggregate_school_service) do
     instance_double(AggregateSchoolService, meter_collection: meter_collection)
   end
 
   let(:meter_collection) do
-    double(:meter_collection, aggregated_heat_meters: gas_aggregate_meter, aggregated_electricity_meters: electricity_aggregate_meter)
+    double(:meter_collection, aggregated_heat_meters: gas_aggregate_meter,
+                              aggregated_electricity_meters: electricity_aggregate_meter)
   end
   let(:amr_data) { double('amr-data') }
-
-  subject(:service) do
-    Schools::Advice::RecentChangesService.new(school: school, aggregate_school_service: aggregate_school_service, fuel_type: :gas)
-  end
 
   before do
     allow(meter_collection).to receive(:aggregate_meter) { gas_aggregate_meter }

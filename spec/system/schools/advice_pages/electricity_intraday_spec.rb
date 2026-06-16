@@ -29,20 +29,20 @@ RSpec.describe 'electricity intraday advice page', :aggregate_failures do
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows all expected content' do
-        expect(page).to have_content('Your current peak electricity use')
-        expect(page).to have_no_content('Data on peak kw usage available from')
-        expect(page).to have_content('How did we calculate these figures?')
-        expect(page).to have_content('How do you compare?')
-        expect(page).to have_content('How does your peak electricity use compare to other primary schools on Energy Sparks with a similar number of pupils')
-        expect(page).to have_content('For more detail, compare with other schools in your group')
-        expect(find('.advice-table')).to have_content('Average peak kW 10,000,000')
+        expect(page).to have_text('Your current peak electricity use')
+        expect(page).to have_no_text('Data on peak kw usage available from')
+        expect(page).to have_text('How did we calculate these figures?')
+        expect(page).to have_text('How do you compare?')
+        expect(page).to have_text('How does your peak electricity use compare to other primary schools on Energy Sparks with a similar number of pupils')
+        expect(page).to have_text('For more detail, compare with other schools in your group')
+        expect(find('.advice-table')).to have_text('Average peak kW 10,000,000')
       end
 
       context 'when not enough data' do
         let(:start_date) { end_date - 12.days }
 
         it 'says when available' do
-          expect(page).to have_content("available after #{(end_date + 1).to_fs(:es_short)}")
+          expect(page).to have_text("available after #{(end_date + 1).to_fs(:es_short)}")
         end
       end
 
@@ -50,7 +50,7 @@ RSpec.describe 'electricity intraday advice page', :aggregate_failures do
         let(:start_date) { end_date - 1.year - 13.days }
 
         it 'shows percentage change' do
-          expect(find('.advice-table')).to have_content('Average peak kW % change 10,000,000 0&percnt;')
+          expect(find('.advice-table')).to have_text('Average peak kW % change 10,000,000 0&percnt;')
         end
       end
     end
@@ -63,7 +63,7 @@ RSpec.describe 'electricity intraday advice page', :aggregate_failures do
       it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows titles' do
-        expect(page).to have_content(I18n.t('advice_pages.electricity_intraday.analysis.comparison.title'))
+        expect(page).to have_text(I18n.t('advice_pages.electricity_intraday.analysis.comparison.title'))
       end
 
       it 'shows all of the expected charts' do

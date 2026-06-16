@@ -18,13 +18,13 @@ RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :
     it 'has the correct links' do
       section = page.find_by_id('settings')
       expect(section).to have_link(I18n.t('manage_school_menu.edit_school_times'),
-                                    href: edit_school_times_path(school))
+                                   href: edit_school_times_path(school))
       expect(section).to have_link(I18n.t('manage_school_menu.your_school_estate'),
-                                    href: edit_school_your_school_estate_path(school))
+                                   href: edit_school_your_school_estate_path(school))
       expect(section).to have_link(I18n.t('manage_school_menu.school_calendar'), href: calendar_path(school.calendar))
       expect(section).to have_no_link(I18n.t('manage_school_menu.manage_users'), href: school_users_path(school))
       expect(section).to have_no_link(I18n.t('manage_school_menu.manage_alert_contacts'),
-                                       href: school_contacts_path(school))
+                                      href: school_contacts_path(school))
     end
   end
 
@@ -46,7 +46,8 @@ RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :
     it 'has the correct links' do
       section = page.find_by_id('users')
       expect(section).to have_link(I18n.t('manage_school_menu.manage_users'), href: school_users_path(school))
-      expect(section).to have_link(I18n.t('manage_school_menu.manage_alert_contacts'), href: school_contacts_path(school))
+      expect(section).to have_link(I18n.t('manage_school_menu.manage_alert_contacts'),
+                                   href: school_contacts_path(school))
     end
   end
 
@@ -60,15 +61,17 @@ RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :
     end
 
     it 'does not have admin links', unless: admin do
-      expect(html).not_to have_link(I18n.t('schools.meters.index.manage_solar_api_feeds'),
-                    href: school_solar_feeds_configuration_index_path(school))
-      expect(html).not_to have_link(I18n.t('schools.meters.index.meter_reviews'), href: admin_school_meter_reviews_path(school))
+      expect(html).to have_no_link(I18n.t('schools.meters.index.manage_solar_api_feeds'),
+                                   href: school_solar_feeds_configuration_index_path(school))
+      expect(html).to have_no_link(I18n.t('schools.meters.index.meter_reviews'),
+                                   href: admin_school_meter_reviews_path(school))
     end
 
     it 'has admin links', if: admin do
       expect(html).to have_link(I18n.t('schools.meters.index.manage_solar_api_feeds'),
-                    href: school_solar_feeds_configuration_index_path(school))
-      expect(html).to have_link(I18n.t('schools.meters.index.meter_reviews'), href: admin_school_meter_reviews_path(school))
+                                href: school_solar_feeds_configuration_index_path(school))
+      expect(html).to have_link(I18n.t('schools.meters.index.meter_reviews'),
+                                href: admin_school_meter_reviews_path(school))
     end
   end
 
@@ -77,10 +80,10 @@ RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :
 
     context 'with school admin' do
       it 'has the expected sections' do
-        expect(html).to have_content(I18n.t('common.settings'))
-        expect(html).to have_content(I18n.t('components.manage_school_navigation.users'))
-        expect(html).to have_content(I18n.t('components.manage_school_navigation.metering'))
-        expect(html).not_to have_content(I18n.t('common.admin'))
+        expect(html).to have_text(I18n.t('common.settings'))
+        expect(html).to have_text(I18n.t('components.manage_school_navigation.users'))
+        expect(html).to have_text(I18n.t('components.manage_school_navigation.metering'))
+        expect(html).to have_no_text(I18n.t('common.admin'))
       end
 
       it_behaves_like 'a correctly populated settings section'
@@ -93,10 +96,10 @@ RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :
       let(:current_user) { create(:admin) }
 
       it 'has the expected sections' do
-        expect(html).to have_content(I18n.t('common.settings'))
-        expect(html).to have_content(I18n.t('components.manage_school_navigation.users'))
-        expect(html).to have_content(I18n.t('components.manage_school_navigation.metering'))
-        expect(html).to have_content(I18n.t('common.admin'))
+        expect(html).to have_text(I18n.t('common.settings'))
+        expect(html).to have_text(I18n.t('components.manage_school_navigation.users'))
+        expect(html).to have_text(I18n.t('components.manage_school_navigation.metering'))
+        expect(html).to have_text(I18n.t('common.admin'))
       end
 
       it_behaves_like 'a correctly populated settings section'
@@ -135,7 +138,7 @@ RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :
 
           it 'links to the analysis' do
             expect(page.find_by_id('admin')).to have_link(I18n.t('manage_school_menu.expert_analysis'),
-                            href: admin_school_analysis_path(school))
+                                                          href: admin_school_analysis_path(school))
           end
         end
 

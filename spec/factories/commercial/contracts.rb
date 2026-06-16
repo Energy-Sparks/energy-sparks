@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :commercial_contract, class: 'Commercial::Contract' do
     sequence(:name) { |n| "Contract #{n}" }
@@ -9,10 +11,10 @@ FactoryBot.define do
     start_date { Time.zone.today }
     end_date { Time.zone.today + 364 }
 
-    association :contract_holder, factory: :funder
-    association :product, factory: :commercial_product
-    association :created_by, factory: :user
-    association :updated_by, factory: :user
+    contract_holder factory: %i[funder]
+    product factory: %i[commercial_product]
+    created_by factory: %i[user]
+    updated_by factory: %i[user]
 
     trait :custom do
       licence_period { :custom }

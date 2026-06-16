@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'unvalidated readings', type: :system do
   let!(:admin)       { create(:admin) }
   let!(:config)      { create(:amr_data_feed_config, description: 'Description', date_format: '%d-%m-%Y') }
-  let!(:reading)     { create(:amr_data_feed_reading, reading_date: '23-06-2023', amr_data_feed_config: config)}
+  let!(:reading)     { create(:amr_data_feed_reading, reading_date: '23-06-2023', amr_data_feed_config: config) }
 
   before do
     sign_in(admin)
@@ -19,11 +19,11 @@ describe 'unvalidated readings', type: :system do
     end
 
     it 'displays report' do
-      expect(page).to have_content reading.mpan_mprn
-      expect(page).to have_content config.identifier
-      expect(page).to have_content config.description
-      expect(page).to have_content '2023-06-23'
-      expect(page).to have_content '2023-06-23'
+      expect(page).to have_text reading.mpan_mprn
+      expect(page).to have_text config.identifier
+      expect(page).to have_text config.description
+      expect(page).to have_text '2023-06-23'
+      expect(page).to have_text '2023-06-23'
     end
   end
 
