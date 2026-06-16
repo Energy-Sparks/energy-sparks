@@ -6,7 +6,8 @@ class MeterAttributes
     key :targeting_and_tracking_profiles_maximum_retries
 
     name 'Targets > Targets profile substitution limit (temperature compensation)'
-    description 'Used to override targeting and tracking system maximum automatic nil profiles substituted in the event more are required - should only be added after review by an ebergy analyst'
+    description 'Used to override targeting and tracking system maximum automatic nil profiles substituted in the ' \
+                'event more are required - should only be added after review by an ebergy analyst'
 
     structure MeterAttributeTypes::Hash.define(
       structure: {

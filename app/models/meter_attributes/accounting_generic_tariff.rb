@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MeterAttributes
-  class AccountingGenericTariff < MeterAttributeTypes::AttributeBase
+  class AccountingGenericTariff < MeterAttributeTypes::AttributeBase # rubocop:todo Metrics/ClassLength
     analytics_internal true
     id :accounting_tariff_generic
     aggregate_over :accounting_tariff_generic
@@ -42,13 +42,17 @@ class MeterAttributes
         agreed_availability_charge: MeterAttributeTypes::Hash.define(
           structure: {
             per: MeterAttributeTypes::Symbol.define(allowed_values: [:kva]),
-            rate: MeterAttributeTypes::Float.define(hint: 'enter £ value per KVA, and units KVA in the separate Agreed Supply Capacity field')
+            rate: MeterAttributeTypes::Float.define(
+              hint: 'enter £ value per KVA, and units KVA in the separate Agreed Supply Capacity field'
+            )
           }
         ),
         excess_availability_charge: MeterAttributeTypes::Hash.define(
           structure: {
             per: MeterAttributeTypes::Symbol.define(allowed_values: [:kva]),
-            rate: MeterAttributeTypes::Float.define(hint: 'enter £ value per KVA, and units KVA in the separate Agreed Supply Capacity field')
+            rate: MeterAttributeTypes::Float.define(
+              hint: 'enter £ value per KVA, and units KVA in the separate Agreed Supply Capacity field'
+            )
           }
         ),
         settlement_agency_fee: MeterAttributeTypes::Hash.define(
@@ -175,11 +179,9 @@ class MeterAttributes
                                                      flat differential differential_tiered
                                                    ]),
           sub_type: MeterAttributeTypes::Symbol.define(required: false, allowed_values: [:weekday_weekend]),
-          vat: MeterAttributeTypes::Symbol.define(required: true,
-                                                  allowed_values: %i[
-                                                    0% 5% 20%
-                                                  ]),
-          # default:    MeterAttributeTypes::Boolean.define(hint: 'Enable for group/site-wide tariffs where tariff is used as a fallback'),
+          vat: MeterAttributeTypes::Symbol.define(required: true, allowed_values: %i[0% 5% 20%]),
+          # default:    MeterAttributeTypes::Boolean.define(
+          #               hint: 'Enable for group/site-wide tariffs where tariff is used as a fallback'),
           rates: MeterAttributeTypes::Hash.define(
             required: false,
             structure: {
@@ -202,7 +204,9 @@ class MeterAttributes
               duos_amber: MeterAttributeTypes::Float.define,
               duos_green: MeterAttributeTypes::Float.define,
 
-              tnuos: MeterAttributeTypes::Boolean.define(hint: 'tick if transmission network use of system appears on bill'),
+              tnuos: MeterAttributeTypes::Boolean.define(
+                hint: 'tick if transmission network use of system appears on bill'
+              ),
 
               weekday: MeterAttributeTypes::Boolean.define,
               weekend: MeterAttributeTypes::Boolean.define

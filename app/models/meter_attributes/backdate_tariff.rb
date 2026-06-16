@@ -8,8 +8,9 @@ class MeterAttributes
 
     structure MeterAttributeTypes::Hash.define(
       structure: {
-        days: MeterAttributeTypes::Integer.define(required: true,
-                                                  hint: 'by default backdates up to 30 days, if you set to 0 then wont backdate')
+        days: MeterAttributeTypes::Integer.define(
+          required: true, hint: 'by default backdates up to 30 days, if you set to 0 then wont backdate'
+        )
       }
     )
   end

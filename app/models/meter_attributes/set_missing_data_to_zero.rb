@@ -10,8 +10,10 @@ class MeterAttributes
       structure: {
         start_date: MeterAttributeTypes::Date.define(required: false),
         end_date: MeterAttributeTypes::Date.define(required: false),
-        zero_up_until_yesterday: MeterAttributeTypes::Boolean.define(required: false,
-                                                                     hint: 'if set true will set zero values up until yesterday, else up until the last meter reading')
+        zero_up_until_yesterday: MeterAttributeTypes::Boolean.define(
+          required: false,
+          hint: 'if set true will set zero values up until yesterday, else up until the last meter reading'
+        )
       }
     )
   end

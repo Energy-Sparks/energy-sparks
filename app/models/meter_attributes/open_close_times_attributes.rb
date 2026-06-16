@@ -21,8 +21,9 @@ class MeterAttributes
 
     structure MeterAttributeTypes::Hash.define(
       structure: {
-        type: MeterAttributeTypes::Symbol.define(required: true,
-                                                 allowed_values: OpenCloseTime.user_configurable_community_use_types.keys),
+        type: MeterAttributeTypes::Symbol.define(
+          required: true, allowed_values: OpenCloseTime.user_configurable_community_use_types.keys
+        ),
         holiday_calendar: MeterAttributeTypes::Symbol.define(required: true,
                                                              allowed_values: OpenCloseTime.calendar_types),
         start_date: MeterAttributeTypes::Date.define,
