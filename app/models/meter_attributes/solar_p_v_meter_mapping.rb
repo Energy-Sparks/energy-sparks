@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class SolarPVMeterMapping < MeterAttributeTypes::AttributeBase
     id                  :solar_pv_mpan_meter_mapping
     aggregate_over      :solar_pv_mpan_meter_mapping

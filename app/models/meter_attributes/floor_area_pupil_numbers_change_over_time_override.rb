@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class FloorAreaPupilNumbersChangeOverTimeOverride < MeterAttributeTypes::AttributeBase
     id :floor_area_pupil_numbers
     aggregate_over :floor_area_pupil_numbers

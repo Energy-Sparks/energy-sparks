@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class OpenCloseTimesAttributes < MeterAttributeTypes::AttributeBase
     analytics_internal true
     id :open_close_times

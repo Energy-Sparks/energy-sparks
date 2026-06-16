@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class TargetingAndTracking < MeterAttributeTypes::AttributeBase
     analytics_internal true
     id :targeting_and_tracking

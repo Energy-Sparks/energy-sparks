@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class ExtendMeterReadingsForSubstitution < MeterAttributeTypes::AttributeBase
     id :meter_corrections_extend_meter_readings_for_substitution
     key :extend_meter_readings_for_substitution

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class NoHeatingInSummerSetMissingToZero < MeterAttributeTypes::AttributeBase
     id :meter_corrections_no_heating_in_summer_set_missing_to_zero
     key :no_heating_in_summer_set_missing_to_zero

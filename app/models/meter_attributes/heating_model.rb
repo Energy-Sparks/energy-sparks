@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class HeatingModel < MeterAttributeTypes::AttributeBase
     id :heating_model
     key :heating_model

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class HeatingNonHeatingDaySeparationModelOverride < MeterAttributeTypes::AttributeBase
     id  :heating_non_heating_day_separation_model_override
     key :heating_non_heating_day_separation_model_override

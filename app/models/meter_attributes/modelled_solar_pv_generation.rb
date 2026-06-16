@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class ModelledSolarPvGeneration < MeterAttributeTypes::AttributeBase
     id :modelled_solar_pv_generation
     aggregate_over :solar_pv

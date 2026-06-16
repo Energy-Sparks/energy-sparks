@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class AccountingGenericTariff < MeterAttributeTypes::AttributeBase # rubocop:todo Metrics/ClassLength
     analytics_internal true
     id :accounting_tariff_generic

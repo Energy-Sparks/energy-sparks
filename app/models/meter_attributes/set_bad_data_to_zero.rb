@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class SetBadDataToZero < MeterAttributeTypes::AttributeBase
     id :meter_corrections_set_bad_data_to_zero
     key :set_bad_data_to_zero

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class LowCarbonHub < MeterAttributeTypes::AttributeBase
     id :low_carbon_hub_meter_id
     key :low_carbon_hub_meter_id

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class HeatingNonHeatingDayFixedkWh < MeterAttributeTypes::AttributeBase
     id  :heating_non_heating_day_fixed_kwh_separation
     key :heating_non_heating_day_fixed_kwh_separation

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class AggregationSwitch < MeterAttributeTypes::AttributeBase
     id :aggregation_switch
     aggregate_over :aggregation

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class RescaleAmrData < MeterAttributeTypes::AttributeBase
     id :meter_corrections_rescale_amr_data
     key :rescale_amr_data

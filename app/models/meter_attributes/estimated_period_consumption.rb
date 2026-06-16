@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class EstimatedPeriodConsumption < MeterAttributeTypes::AttributeBase
     analytics_internal true
     id :estimated_period_consumption

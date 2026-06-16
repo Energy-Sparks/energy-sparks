@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class BackdateTariff < MeterAttributeTypes::AttributeBase
     id :backdate_tariff
     key :backdate_tariff

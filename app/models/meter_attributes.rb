@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   def self.all(filter: false)
     constants.sort
              .map { |constant_name| const_get(constant_name) }

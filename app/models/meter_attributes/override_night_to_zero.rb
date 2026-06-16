@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class OverrideNightToZero < MeterAttributeTypes::AttributeBase
     id :meter_corrections_override_night_to_zero
     key :override_night_to_zero

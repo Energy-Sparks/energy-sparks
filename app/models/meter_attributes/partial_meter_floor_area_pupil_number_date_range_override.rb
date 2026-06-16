@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class PartialMeterFloorAreaPupilNumberDateRangeOverride < MeterAttributeTypes::AttributeBase
     id :partial_meter_coverage_date_range
     key :partial_meter_coverage_date_range

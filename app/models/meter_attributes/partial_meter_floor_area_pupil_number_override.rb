@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class PartialMeterFloorAreaPupilNumberOverride < MeterAttributeTypes::AttributeBase
     id :partial_meter_coverage
     key :partial_meter_coverage

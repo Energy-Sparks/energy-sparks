@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class SolarPVOverrides < SolarPV
     id :solar_pv_override
     aggregate_over :solar_pv_override

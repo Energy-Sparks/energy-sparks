@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class SetMissingDataToZero < MeterAttributeTypes::AttributeBase
     id :meter_corrections_set_missing_data_to_zero
     key :set_missing_data_to_zero

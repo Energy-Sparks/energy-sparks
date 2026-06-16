@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class StorageHeaterPartialMeterFloorAreaPupilNumberOverride < MeterAttributeTypes::AttributeBase
     id :storage_heater_partial_meter_coverage
     key :storage_heater_partial_meter_coverage

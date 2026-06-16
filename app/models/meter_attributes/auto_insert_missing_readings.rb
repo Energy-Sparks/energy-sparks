@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class AutoInsertMissingReadings < MeterAttributeTypes::AttributeBase
     id :meter_corrections_auto_insert_missing_readings
     key :auto_insert_missing_readings

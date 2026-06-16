@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class StorageHeaters < MeterAttributeTypes::AttributeBase
     id :storage_heaters
     aggregate_over :storage_heaters

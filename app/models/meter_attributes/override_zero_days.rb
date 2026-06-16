@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class OverrideZeroDays < MeterAttributeTypes::AttributeBase
     id  :override_zero_days_electricity_readings
     key :override_zero_days_electricity_readings

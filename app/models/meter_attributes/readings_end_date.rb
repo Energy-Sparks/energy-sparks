@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class ReadingsEndDate < MeterAttributeTypes::AttributeBase
     id :meter_corrections_readings_end_date
     key :readings_end_date

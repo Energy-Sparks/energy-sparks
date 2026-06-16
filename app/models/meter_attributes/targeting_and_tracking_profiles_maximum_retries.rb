@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class TargetingAndTrackingProfilesMaximumRetries < MeterAttributeTypes::AttributeBase
     id :targeting_and_tracking_profiles_maximum_retries
     key :targeting_and_tracking_profiles_maximum_retries

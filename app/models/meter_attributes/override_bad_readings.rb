@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MeterAttributes
+module MeterAttributes
   class OverrideBadReadings < MeterAttributeTypes::AttributeBase
     id :meter_corrections_override_bad_readings
     key :override_bad_readings
