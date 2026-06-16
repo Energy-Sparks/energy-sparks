@@ -38,7 +38,7 @@ describe 'calendar view' do
         let(:date) { Date.new(Date.current.year, 1, 15) }
 
         def click_day
-          first('.calendar .day', text: date.day).click
+          first('.calendar .day', text: date.day, wait: 10).click # flaking so added extra wait
         end
 
         def wait_for_modal
