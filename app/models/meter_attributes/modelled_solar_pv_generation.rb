@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+class MeterAttributes
+  class ModelledSolarPvGeneration < MeterAttributeTypes::AttributeBase
+    id :modelled_solar_pv_generation
+    aggregate_over :solar_pv
+    name 'Solar > Modelled Solar PV Generation'
+
+    structure MeterAttributeTypes::Hash.define(
+      structure: {
+        start_date: MeterAttributeTypes::Date.define,
+        end_date: MeterAttributeTypes::Date.define,
+        kwp: MeterAttributeTypes::Float.define
+      }
+    )
+  end
+end
