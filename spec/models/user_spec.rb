@@ -16,23 +16,23 @@ describe User do
     subject(:user) { build(:user) }
 
     describe 'created by and updated by' do
-      [:activities, :case_studies, :cms_categories,
-       :cms_pages, :cms_sections, :energy_tariffs,
-       :issues, :newsletters, :observations].each do |name|
+      %i[activities case_studies cms_categories
+         cms_pages cms_sections energy_tariffs
+         issues newsletters observations].each do |name|
         it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
         it { expect(user).to have_many("#{name}_updated").dependent(:nullify) }
       end
     end
 
     describe 'created by and deleted by' do
-      [:meter_attributes, :school_group_meter_attributes, :school_meter_attributes,
-       :global_meter_attributes].each do |name|
+      %i[meter_attributes school_group_meter_attributes school_meter_attributes
+         global_meter_attributes].each do |name|
         it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
         it { expect(user).to have_many("#{name}_deleted").dependent(:nullify) }
       end
     end
 
-    [:school_onboardings, :school_alert_type_exclusions, :users].each do |name|
+    %i[school_onboardings school_alert_type_exclusions users].each do |name|
       it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
     end
   end
@@ -58,7 +58,7 @@ describe User do
   end
 
   describe 'when role is changed' do
-    [:group_admin, :group_manager].each do |role|
+    %i[group_admin group_manager].each do |role|
       describe "when #{role} becomes school admin" do
         let!(:user) { create(role) }
 
@@ -95,7 +95,7 @@ describe User do
   describe '#default_school_group' do
     subject(:default_school_group) { user.default_school_group }
 
-    [:group_admin, :group_manager].each do |role|
+    %i[group_admin group_manager].each do |role|
       context "when user is a #{role} with a school group (required)" do
         let(:user) { create(role) }
 
@@ -130,7 +130,7 @@ describe User do
   describe '#default_school_group_name' do
     subject(:default_school_group_name) { user.default_school_group_name }
 
-    [:group_admin, :group_manager].each do |role|
+    %i[group_admin group_manager].each do |role|
       context "when user is a #{role} with a school group (required)" do
         let(:user) { create(role) }
 
@@ -357,7 +357,7 @@ describe User do
   describe '#admin_user_export_csv' do
     let!(:school_group) { create(:school_group) }
     let!(:school)       { create(:school, school_group:) }
-    let!(:user)         { create(:staff, school:, confirmed_at: nil) }
+    let!(:user)         { create(:staff, school:, confirmed_at: nil, email: 'a@a.com') }
 
     let(:csv)           { described_class.admin_user_export_csv }
     let(:parsed)        { CSV.parse(csv) }
@@ -369,6 +369,8 @@ describe User do
                                  'School type',
                                  'School active',
                                  'School data enabled',
+                                 'Current Contract Holder',
+                                 'Future Contract Holder',
                                  'Funder',
                                  'Region',
                                  'Name',
@@ -387,6 +389,8 @@ describe User do
                                  'Yes',
                                  '',
                                  '',
+                                 '',
+                                 '',
                                  user.name,
                                  user.email,
                                  user.role.humanize,
@@ -396,13 +400,15 @@ describe User do
       end
     end
 
-    [:group_admin, :group_manager].each do |role|
+    %i[group_admin group_manager].each do |role|
       context "when exporting #{role}" do
         let!(:user) { create(role) }
         let(:school_group) { user.default_school_group }
 
         it 'includes the expected data' do
           expect(parsed[1]).to eq([school_group.name,
+                                   '',
+                                   '',
                                    '',
                                    '',
                                    '',
@@ -438,8 +444,51 @@ describe User do
                                  school.school_type.humanize,
                                  'Yes',
                                  'Yes',
+                                 '',
+                                 '',
                                  funder.name,
                                  'East Of England',
+                                 user.name,
+                                 user.email,
+                                 user.role.humanize,
+                                 user.staff_role.title,
+                                 'No',
+                                 'No'])
+      end
+    end
+
+    context 'when the school has a current and future licence' do
+      let!(:current_licence) do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder: create(:funder)))
+      end
+
+      let!(:future_licence) do
+        calendar = create(:national_calendar, title: 'England and Wales')
+        academic_year = create(:academic_year, calendar:)
+        next_academic_year = create(:academic_year,
+                                    calendar:,
+                                    start_date: academic_year.end_date + 1.day,
+                                    end_date: academic_year.end_date + 12.months)
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder: school),
+               status: :confirmed,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it 'includes the current and future contract holders' do
+        expect(parsed[1]).to eq([school_group.name,
+                                 school.name,
+                                 school.school_type.humanize,
+                                 'Yes',
+                                 'Yes',
+                                 current_licence.contract_holder.name,
+                                 'School self funding',
+                                 '',
+                                 '',
                                  user.name,
                                  user.email,
                                  user.role.humanize,
@@ -562,7 +611,7 @@ describe User do
           end
         end
 
-        [:group_admin, :group_manager].each do |role|
+        %i[group_admin group_manager].each do |role|
           context "with #{role}" do
             let!(:user) { create(role, mailchimp_status: :subscribed) }
 
@@ -722,7 +771,7 @@ describe User do
       end
     end
 
-    [:group_admin, :group_manager].each do |role|
+    %i[group_admin group_manager].each do |role|
       context "with #{role}" do
         let!(:user) { create(role) }
 

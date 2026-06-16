@@ -20,21 +20,21 @@ describe 'Resources', type: :system do
       click_on 'Manage resource types'
       click_on 'New Resource type'
       click_on 'Create Resource file type'
-      expect(page).to have_content('blank')
+      expect(page).to have_text('blank')
       fill_in 'Title', with: title
       fill_in 'Position', with: 1
       click_on 'Create Resource file type'
-      expect(page).to have_content title
+      expect(page).to have_text title
       expect(ResourceFileType.where(title: title).count).to eq(1)
 
       click_on 'Edit'
       fill_in 'Title', with: new_title
       click_on 'Update Resource file type'
 
-      expect(page).to have_content new_title
+      expect(page).to have_text new_title
 
       click_on 'Delete'
-      expect(page).to have_content('Resource type was successfully destroyed.')
+      expect(page).to have_text('Resource type was successfully destroyed.')
       expect(ResourceFileType.count).to eq(0)
     end
 
@@ -47,21 +47,21 @@ describe 'Resources', type: :system do
       click_on 'New Resource'
       fill_in_trix with: 'Helps students understand energy saving'
       click_on 'Create Resource'
-      expect(page).to have_content('blank')
+      expect(page).to have_text('blank')
       fill_in 'Title', with: title
       attach_file('File', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
       select 'Document', from: 'Type'
       click_on 'Create Resource'
-      expect(page).to have_content title
+      expect(page).to have_text title
 
       click_on 'Edit'
       fill_in 'Title', with: new_title
       click_on 'Update Resource'
 
-      expect(page).to have_content new_title
+      expect(page).to have_text new_title
 
       click_on 'Delete'
-      expect(page).to have_content('Resource was successfully destroyed.')
+      expect(page).to have_text('Resource was successfully destroyed.')
       expect(ResourceFile.count).to eq(0)
     end
   end

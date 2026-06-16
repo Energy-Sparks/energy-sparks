@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe SchoolTarget, type: :model do
   let(:school)          { create(:school) }
-  let(:start_date)      { Time.zone.today.beginning_of_month}
-  let(:target_date)     { Time.zone.today.beginning_of_month.next_year}
+  let(:start_date)      { Time.zone.today.beginning_of_month }
+  let(:target_date)     { Time.zone.today.beginning_of_month.next_year }
 
   context 'when saving' do
     before do
@@ -66,7 +66,8 @@ RSpec.describe SchoolTarget, type: :model do
       target = SchoolTarget.new({ school: school, start_date: start_date, target_date: target_date, gas: 10 })
       expect(target.valid?).to be true
 
-      target = SchoolTarget.new({ school: school, start_date: start_date, target_date: target_date, storage_heaters: 10 })
+      target = SchoolTarget.new({ school: school, start_date: start_date, target_date: target_date,
+                                  storage_heaters: 10 })
       expect(target.valid?).to be true
     end
   end
@@ -76,10 +77,12 @@ RSpec.describe SchoolTarget, type: :model do
       target = SchoolTarget.new({ school: school, electricity: 10, start_date: start_date, target_date: target_date })
       expect(target.current?).to be true
 
-      target = SchoolTarget.new({ school: school, electricity: 10, start_date: start_date, target_date: Time.zone.today.last_year })
+      target = SchoolTarget.new({ school: school, electricity: 10, start_date: start_date,
+                                  target_date: Time.zone.today.last_year })
       expect(target.current?).to be false
 
-      target = SchoolTarget.new({ school: school, electricity: 10, start_date: Date.tomorrow, target_date: target_date })
+      target = SchoolTarget.new({ school: school, electricity: 10, start_date: Date.tomorrow,
+                                  target_date: target_date })
       expect(target.current?).to be false
     end
   end

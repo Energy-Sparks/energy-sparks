@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 describe 'onboarding', :schools do
-  include_context 'with a stubbed audience manager'
-
   subject!(:onboarding) do
     create(
       :school_onboarding, :with_events,
@@ -14,6 +12,8 @@ describe 'onboarding', :schools do
       urn: 100_000
     )
   end
+
+  include_context 'with a stubbed audience manager'
 
   # This calendar is there to allow for the calendar area selection
   let(:template_calendar) { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
@@ -39,7 +39,7 @@ describe 'onboarding', :schools do
     click_on 'Start'
 
     # Account
-    expect(page).to have_content('Step 1: Create your school administrator account')
+    expect(page).to have_text('Step 1: Create your school administrator account')
     fill_in 'Your name', with: 'A Teacher'
     select 'Headteacher', from: 'Role'
     password = 'testtesttest1'
@@ -53,7 +53,7 @@ describe 'onboarding', :schools do
   def complete_school_details(postcode: nil, urn: nil, save: true)
     postcode ||= 'AB1 2CD'
     urn ||= '4444244'
-    expect(page).to have_content('Step 2: Tell us about your school')
+    expect(page).to have_text('Step 2: Tell us about your school')
     expect(page).to have_field('Number of pupils', with: '321')
     fill_in 'Unique Reference Number', with: urn
     fill_in 'Address', with: '1 Station Road'
@@ -80,7 +80,7 @@ describe 'onboarding', :schools do
       expect(onboarding.school.data_enabled).to be_falsey
 
       # Consent
-      expect(page).to have_content('Step 3: Grant consent')
+      expect(page).to have_text('Step 3: Grant consent')
       fill_in 'Name', with: 'Boss user'
       fill_in 'Job title', with: 'Boss'
       fill_in 'School name', with: 'Boss school'
@@ -91,36 +91,36 @@ describe 'onboarding', :schools do
 
       # Completion
       click_on 'Complete setup', match: :first
-      expect(page).to have_content('Your school is now active!')
+      expect(page).to have_text('Your school is now active!')
     end
 
     it 'starts at the welcome page' do
-      expect(page).to have_content('Set up your school on Energy Sparks')
+      expect(page).to have_text('Set up your school on Energy Sparks')
     end
 
     context 'when adding school details' do
       it 'shows an error message for an invalid postcode' do
         # NOTE: stubbed valid postcodes (e.g. AB1 2CD) are defined in config/initializers/geocoder.rb
         complete_onboarding(postcode: 'AB 2CD')
-        expect(page).to have_content('Step 2: Tell us about your school')
-        expect(page).to have_content('is invalid and not found')
+        expect(page).to have_text('Step 2: Tell us about your school')
+        expect(page).to have_text('is invalid and not found')
         fill_in 'Postcode', with: 'AB2 2CD'
         click_on 'Save school details'
-        expect(page).to have_content('Step 2: Tell us about your school')
-        expect(page).to have_content('not found')
+        expect(page).to have_text('Step 2: Tell us about your school')
+        expect(page).to have_text('not found')
         fill_in 'Postcode', with: 'AB1 2CD'
         click_on 'Save school details'
-        expect(page).to have_content('Step 3: Grant consent')
+        expect(page).to have_text('Step 3: Grant consent')
       end
 
       it 'shows an error message for an invalid URN' do
         complete_onboarding(urn: '9876543210')
-        expect(page).to have_content('Step 2: Tell us about your school')
-        expect(page).to have_content("Unique Reference Number *\n" \
-                                     'the URN or SEED you have supplied appears to be invalid')
+        expect(page).to have_text('Step 2: Tell us about your school')
+        expect(page).to have_text("Unique Reference Number *\n" \
+                                  'the URN or SEED you have supplied appears to be invalid')
         fill_in 'Unique Reference Number', with: '987654321'
         click_on 'Save school details'
-        expect(page).to have_content('Step 3: Grant consent')
+        expect(page).to have_text('Step 3: Grant consent')
       end
 
       context 'when already registered and signed-in' do
@@ -132,7 +132,7 @@ describe 'onboarding', :schools do
           visit new_onboarding_school_details_path(onboarding)
         end
 
-        it { expect(page).to have_content('Step 2: Tell us about your school') }
+        it { expect(page).to have_text('Step 2: Tell us about your school') }
 
         it 'has prefilled fields from the Establishment' do
           expect(page).to have_field('Number of pupils', with: '321')
@@ -176,11 +176,11 @@ describe 'onboarding', :schools do
     context 'when filling in the registration page' do
       before { click_on 'Start' }
 
-      it { expect(page).to have_content('Step 1: Create your school administrator account') }
+      it { expect(page).to have_text('Step 1: Create your school administrator account') }
       it { expect(page).to have_field('Email', with: onboarding.contact_email) }
 
       it 'shows newsletter options' do
-        expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+        expect(page).to have_text(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
         expect(page).to have_checked_field('Getting the most out of Energy Sparks')
       end
 
@@ -201,7 +201,7 @@ describe 'onboarding', :schools do
           expect(onboarding).not_to have_event(:privacy_policy_agreed)
         end
 
-        it { expect(page).to have_content('Step 1: Create your school administrator account') }
+        it { expect(page).to have_text('Step 1: Create your school administrator account') }
       end
 
       context 'when filling in the form with valid parameters' do
@@ -242,11 +242,11 @@ describe 'onboarding', :schools do
           expect(onboarding).to have_event(:onboarding_user_created)
           expect(onboarding).to have_event(:privacy_policy_agreed)
           expect(onboarding.created_user).to have_attributes({
-            name: 'A Teacher',
-            role: 'school_onboarding',
-            preferred_locale: 'cy',
-            terms_accepted: true
-          })
+                                                               name: 'A Teacher',
+                                                               role: 'school_onboarding',
+                                                               preferred_locale: 'cy',
+                                                               terms_accepted: true
+                                                             })
         end
       end
     end
@@ -271,8 +271,8 @@ describe 'onboarding', :schools do
         let(:existing_user)   { create(:school_admin, school: other_school) }
 
         it 'allows them to sign in' do
-          expect(page).to have_content('Step 1: Confirm your administrator account')
-          expect(page).to have_content('Do you want to use this user as your administrator account')
+          expect(page).to have_text('Step 1: Confirm your administrator account')
+          expect(page).to have_text('Do you want to use this user as your administrator account')
         end
 
         it 'allows them to complete onboarding' do
@@ -291,7 +291,7 @@ describe 'onboarding', :schools do
 
           # Completion
           click_on 'Complete setup', match: :first
-          expect(page).to have_content('Your school is now active')
+          expect(page).to have_text('Your school is now active')
         end
       end
 
@@ -299,9 +299,9 @@ describe 'onboarding', :schools do
         let(:existing_user) { create(:group_admin, school_group: school_group) }
 
         it 'allows them to sign in' do
-          expect(page).to have_content('Step 1: Confirm your administrator account')
-          expect(page).to have_content("Do you want to complete onboarding for #{onboarding.school_name} using this " \
-                                       'school group admin account?')
+          expect(page).to have_text('Step 1: Confirm your administrator account')
+          expect(page).to have_text("Do you want to complete onboarding for #{onboarding.school_name} using this " \
+                                    'school group admin account?')
         end
 
         it 'allows them to complete onboarding' do
@@ -325,15 +325,15 @@ describe 'onboarding', :schools do
           select 'Headteacher', from: 'Role'
           click_on 'Create account'
 
-          expect(page).to have_content('extra+user@example.org')
-          expect(page).to have_content('Headteacher')
+          expect(page).to have_text('extra+user@example.org')
+          expect(page).to have_text('Headteacher')
           expect(User.find_by(email: 'extra+user@example.org').created_by).to eq(existing_user)
 
           click_on 'Continue'
 
           # Completion
           click_on 'Complete setup', match: :first
-          expect(page).to have_content('Your school is now active')
+          expect(page).to have_text('Your school is now active')
         end
       end
     end
@@ -350,7 +350,7 @@ describe 'onboarding', :schools do
       end
 
       context 'when not logged in' do
-        it { expect(page).to have_content('You must sign in to resume the onboarding process') }
+        it { expect(page).to have_text('You must sign in to resume the onboarding process') }
 
         context 'with a successful login' do
           before do
@@ -361,7 +361,7 @@ describe 'onboarding', :schools do
             end
           end
 
-          it { expect(page).to have_content('You have a few more steps to complete before we can setup your school.') }
+          it { expect(page).to have_text('You have a few more steps to complete before we can setup your school.') }
           it { expect(page).to have_link('Continue') }
         end
       end
@@ -379,13 +379,13 @@ describe 'onboarding', :schools do
         visit onboarding_path(onboarding)
       end
 
-      it { expect(page).to have_content('You have a few more steps to complete before we can setup your school.') }
+      it { expect(page).to have_text('You have a few more steps to complete before we can setup your school.') }
 
       context 'when resuming it prompts for consent' do
-        before { click_on 'Continue'}
+        before { click_on 'Continue' }
 
-        it { expect(page).to have_content(consent_statement.content.to_plain_text) }
-        it { expect(page).to have_content('I give permission and confirm full agreement with') }
+        it { expect(page).to have_text(consent_statement.content.to_plain_text) }
+        it { expect(page).to have_text('I give permission and confirm full agreement with') }
 
         context 'with consent given' do
           let(:consent_grant) { onboarding.reload.school.consent_grants.last }
@@ -438,7 +438,7 @@ describe 'onboarding', :schools do
         fill_in 'Name', with: 'The energy savers'
         fill_in 'Pupil password', with: ''
         click_on 'Create pupil account'
-        expect(page).to have_content("can't be blank")
+        expect(page).to have_text("can't be blank")
       end
     end
 
@@ -455,10 +455,10 @@ describe 'onboarding', :schools do
       end
 
       it 'the process can be completed' do
-        expect(page).to have_content('Final step: review your answers')
+        expect(page).to have_text('Final step: review your answers')
         click_on 'Complete setup', match: :first
         expect(onboarding).to have_event(:onboarding_complete)
-        expect(page).to have_content('Your school is now active')
+        expect(page).to have_text('Your school is now active')
       end
 
       it 'the school is not yet visible' do
@@ -568,7 +568,7 @@ describe 'onboarding', :schools do
     context 'when managing meters' do
       before { visit new_onboarding_completion_path(onboarding) }
 
-      it { expect(page).to have_content('Configure energy meters') }
+      it { expect(page).to have_text('Configure energy meters') }
 
       context 'when adding a meter' do
         before do
@@ -580,11 +580,11 @@ describe 'onboarding', :schools do
         end
 
         it 'adds the meter' do
-          expect(school.reload.meters.first.mpan_mprn).to eq(123543)
+          expect(school.reload.meters.first.mpan_mprn).to eq(123_543)
         end
 
         it 'shows the meter on the page' do
-          expect(page).to have_content('123543')
+          expect(page).to have_text('123543')
         end
       end
     end
@@ -593,8 +593,8 @@ describe 'onboarding', :schools do
       before { visit new_onboarding_completion_path(onboarding) }
 
       it 'shows the default times' do
-        expect(page).to have_content('Set your school opening times')
-        expect(page).to have_content('Monday 08:50 - 15:20')
+        expect(page).to have_text('Set your school opening times')
+        expect(page).to have_text('Monday 08:50 - 15:20')
       end
 
       context 'when editing the opening times' do
@@ -609,7 +609,7 @@ describe 'onboarding', :schools do
         end
 
         it 'summarises the times on the page' do
-          expect(page).to have_content('Monday 09:00 - 15:20')
+          expect(page).to have_text('Monday 09:00 - 15:20')
         end
       end
     end
@@ -623,7 +623,7 @@ describe 'onboarding', :schools do
         visit new_onboarding_completion_path(onboarding)
       end
 
-      it { expect(page).to have_content('Configure inset days') }
+      it { expect(page).to have_text('Configure inset days') }
 
       context 'when adding an inset day' do
         before do
@@ -635,7 +635,7 @@ describe 'onboarding', :schools do
 
         it 'inset days can be added' do
           expect { click_on 'Add inset day' }.to change(CalendarEvent, :count).by(1)
-          expect(page).to have_content('2019-01-09')
+          expect(page).to have_text('2019-01-09')
         end
       end
     end
@@ -645,20 +645,20 @@ describe 'onboarding', :schools do
         visit new_onboarding_completion_path(onboarding)
       end
 
-      it { expect(page).to have_content('Final step: review your answers') }
-      it { expect(page).to have_content(user.email) }
-      it { expect(page).to have_content(user.name) }
-      it { expect(page).to have_content(user.staff_role.title) }
+      it { expect(page).to have_text('Final step: review your answers') }
+      it { expect(page).to have_text(user.email) }
+      it { expect(page).to have_text(user.name) }
+      it { expect(page).to have_text(user.staff_role.title) }
 
       context 'when the form is viewed' do
         before { click_on 'Edit your account' }
 
         it 'shows newsletter options' do
-          expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+          expect(page).to have_text(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
           # These settings correspond to the data in mailchimp/contact.yml, returned by
           # stubbed audience_manager
           expect(page).to have_checked_field('Getting the most out of Energy Sparks')
-          expect(page).not_to have_checked_field('Engaging pupils in energy saving and climate')
+          expect(page).to have_no_checked_field('Engaging pupils in energy saving and climate')
         end
 
         context 'when the account is updated' do
@@ -670,9 +670,9 @@ describe 'onboarding', :schools do
 
           it 'saves the user changes' do
             expect(user.reload).to have_attributes({
-              name: 'Better name',
-              preferred_locale: 'cy'
-            })
+                                                     name: 'Better name',
+                                                     preferred_locale: 'cy'
+                                                   })
           end
 
           it 'saves the newsletter options' do
@@ -722,7 +722,7 @@ describe 'onboarding', :schools do
         visit new_onboarding_completion_path(onboarding)
       end
 
-      it { expect(page).to have_content('You have not added any additional school accounts') }
+      it { expect(page).to have_text('You have not added any additional school accounts') }
 
       context 'when adding an account' do
         before do
@@ -738,11 +738,11 @@ describe 'onboarding', :schools do
           click_on 'Create account'
         end
 
-        it { expect(page).to have_content('Manage your school accounts') }
+        it { expect(page).to have_text('Manage your school accounts') }
 
         it 'lists the account on the form' do
-          expect(page).to have_content('extra+user@example.org')
-          expect(page).to have_content('Headteacher')
+          expect(page).to have_text('extra+user@example.org')
+          expect(page).to have_text('Headteacher')
         end
 
         it 'has created the accounts' do
@@ -760,13 +760,13 @@ describe 'onboarding', :schools do
             click_on 'Update account'
           end
 
-          it { expect(page).to have_content('Manage your school accounts') }
+          it { expect(page).to have_text('Manage your school accounts') }
 
           it 'shows the updates on the form' do
-            expect(page).to have_content('Manage your school accounts')
-            expect(page).to have_content('user name')
-            expect(page).to have_content('user+updated@example.org')
-            expect(page).to have_content('Governor')
+            expect(page).to have_text('Manage your school accounts')
+            expect(page).to have_text('user name')
+            expect(page).to have_text('user+updated@example.org')
+            expect(page).to have_text('Governor')
           end
 
           context 'when returning to final page' do
@@ -775,8 +775,8 @@ describe 'onboarding', :schools do
             end
 
             it 'summarises the account details' do
-              expect(page).to have_content('Final step: review your answers')
-              expect(page).to have_content('user+updated@example.org')
+              expect(page).to have_text('Final step: review your answers')
+              expect(page).to have_text('user+updated@example.org')
             end
           end
         end

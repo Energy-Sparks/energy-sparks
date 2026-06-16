@@ -9,10 +9,10 @@ describe 'Prob Data Report', type: :system do
 
   let!(:meter) do
     create(:gas_meter_with_validated_reading_dates,
-      school: school,
-      start_date: Time.zone.today - 5,
-      end_date: Time.zone.today,
-      status: 'PROB')
+           school: school,
+           start_date: Time.zone.today - 5,
+           end_date: Time.zone.today,
+           status: 'PROB')
   end
 
   before do

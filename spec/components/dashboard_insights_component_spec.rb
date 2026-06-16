@@ -29,7 +29,7 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
 
   it 'displays the reminders column' do
     expect(html).to have_css('#adult-reminders')
-    expect(html).to have_content(I18n.t('components.dashboard_insights.reminders.title'))
+    expect(html).to have_text(I18n.t('components.dashboard_insights.reminders.title'))
   end
 
   it 'does not display the alerts' do
@@ -41,20 +41,20 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
 
     it 'displays the alerts column' do
       expect(html).to have_css('#adult-alerts')
-      expect(html).to have_content(I18n.t('advice_pages.index.alerts.title'))
+      expect(html).to have_text(I18n.t('advice_pages.index.alerts.title'))
     end
 
     it 'displays the alert text' do
-      expect(html).to have_content('You can save £5,000 on heating in 1 year')
-      expect(html).to have_content('Your baseload is high and is costing £5,000')
+      expect(html).to have_text('You can save £5,000 on heating in 1 year')
+      expect(html).to have_text('Your baseload is high and is costing £5,000')
     end
 
     context 'with pupil audience' do
       let(:audience) { :pupil }
 
       it 'displays only the pupil alerts' do
-        expect(html).to have_content('You can save £5,000 on heating in 1 year')
-        expect(html).to have_no_content('Your baseload is high and is costing £5,000')
+        expect(html).to have_text('You can save £5,000 on heating in 1 year')
+        expect(html).to have_no_text('Your baseload is high and is costing £5,000')
       end
     end
 
@@ -66,7 +66,7 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
       end
 
       it 'displays the alert text' do
-        expect(html).to have_content('Gallwch arbed £7,000 mewn 1 flwyddyn')
+        expect(html).to have_text('Gallwch arbed £7,000 mewn 1 flwyddyn')
       end
     end
 

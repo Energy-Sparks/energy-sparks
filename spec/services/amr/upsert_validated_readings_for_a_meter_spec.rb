@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
-  let(:dashboard_meter) { build(:dashboard_gas_meter) }
-
   subject(:service) { Amr::UpsertValidatedReadingsForAMeter.new(dashboard_meter) }
+
+  let(:dashboard_meter) { build(:dashboard_gas_meter) }
 
   describe '#perform' do
     before do
@@ -22,7 +22,7 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
       context 'and analytics returns invalid data' do
         let(:dashboard_meter) do
           build(:dashboard_gas_meter_with_validated_reading,
-          reading_count: 1, actual_meter: active_record_meter, kwh_data_x48: Array.new(48, Float::NAN))
+                reading_count: 1, actual_meter: active_record_meter, kwh_data_x48: Array.new(48, Float::NAN))
         end
 
         it 'does not insert that data' do
@@ -40,11 +40,11 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
 
         let(:dashboard_meter)   do
           build(:dashboard_gas_meter_with_validated_reading,
-          start_date: start_date,
-          end_date: end_date,
-          actual_meter: active_record_meter,
-          kwh_data_x48: kwh_data_x48,
-          upload_datetime: upload_datetime)
+                start_date: start_date,
+                end_date: end_date,
+                actual_meter: active_record_meter,
+                kwh_data_x48: kwh_data_x48,
+                upload_datetime: upload_datetime)
         end
 
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
@@ -78,14 +78,13 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
 
       let!(:active_record_meter) do
         create(:gas_meter_with_validated_reading_dates,
-          start_date: start_date,
-          end_date: end_date,
-          kwh_data_x48: kwh_data_x48,
-          one_day_kwh: one_day_kwh,
-          status: status,
-          substitute_date: nil,
-          upload_datetime: upload_datetime
-        )
+               start_date: start_date,
+               end_date: end_date,
+               kwh_data_x48: kwh_data_x48,
+               one_day_kwh: one_day_kwh,
+               status: status,
+               substitute_date: nil,
+               upload_datetime: upload_datetime)
       end
 
       let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
@@ -94,13 +93,12 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         # Created OneDayAMRReading will all be identical to those in database
         let(:dashboard_meter) do
           build(:dashboard_gas_meter_with_validated_reading,
-            start_date: start_date,
-            end_date: end_date,
-            actual_meter: active_record_meter,
-            kwh_data_x48: kwh_data_x48,
-            status: status,
-            upload_datetime: upload_datetime
-          )
+                start_date: start_date,
+                end_date: end_date,
+                actual_meter: active_record_meter,
+                kwh_data_x48: kwh_data_x48,
+                status: status,
+                upload_datetime: upload_datetime)
         end
 
         it 'does not update the database' do
@@ -119,13 +117,12 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         # Extra day of data from the analytics
         let(:dashboard_meter)   do
           build(:dashboard_gas_meter_with_validated_reading,
-            start_date: start_date - 1,
-            end_date: end_date,
-            actual_meter: active_record_meter,
-            kwh_data_x48: kwh_data_x48,
-            status: status,
-            upload_datetime: upload_datetime
-          )
+                start_date: start_date - 1,
+                end_date: end_date,
+                actual_meter: active_record_meter,
+                kwh_data_x48: kwh_data_x48,
+                status: status,
+                upload_datetime: upload_datetime)
         end
 
         it 'inserts the new records' do
@@ -144,14 +141,13 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
 
         let(:dashboard_meter) do
           build(:dashboard_gas_meter_with_validated_reading,
-            start_date: start_date,
-            end_date: end_date,
-            actual_meter: active_record_meter,
-            status: new_status,
-            kwh_data_x48: new_data,
-            substitute_date: new_substitute_date,
-            upload_datetime: new_datetime
-          )
+                start_date: start_date,
+                end_date: end_date,
+                actual_meter: active_record_meter,
+                status: new_status,
+                kwh_data_x48: new_data,
+                substitute_date: new_substitute_date,
+                upload_datetime: new_datetime)
         end
 
         it 'updates the existing records' do
@@ -165,20 +161,19 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
       end
 
       context 'and the supplier has sent new original data' do
-        # Note: we're simulating supplier having sent new original data by
+        # NOTE: we're simulating supplier having sent new original data by
         # building readings for same dates, same status but different kwh values
         let(:new_datetime)     { (DateTime.now - 10).utc }
         let(:new_data)         { Array.new(48, 2.5) }
 
         let(:dashboard_meter) do
           build(:dashboard_gas_meter_with_validated_reading,
-            start_date: start_date,
-            end_date: end_date,
-            actual_meter: active_record_meter,
-            status: status,
-            kwh_data_x48: new_data,
-            upload_datetime: new_datetime
-          )
+                start_date: start_date,
+                end_date: end_date,
+                actual_meter: active_record_meter,
+                status: status,
+                kwh_data_x48: new_data,
+                upload_datetime: new_datetime)
         end
 
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
@@ -196,13 +191,12 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         let(:new_status) { 'GSS1' }
         let(:dashboard_meter) do
           build(:dashboard_gas_meter_with_validated_reading,
-            start_date: start_date,
-            end_date: end_date,
-            actual_meter: active_record_meter,
-            status: new_status,
-            kwh_data_x48: kwh_data_x48,
-            upload_datetime: upload_datetime
-          )
+                start_date: start_date,
+                end_date: end_date,
+                actual_meter: active_record_meter,
+                status: new_status,
+                kwh_data_x48: kwh_data_x48,
+                upload_datetime: upload_datetime)
         end
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
 

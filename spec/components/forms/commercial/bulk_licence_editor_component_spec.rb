@@ -113,7 +113,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
                                      with: 'INV-001')
         end
 
-        context 'with an invoiced licence' do # rubocop:disable RSpec/NestedGroups
+        context 'with an invoiced licence' do
           let!(:licence) do
             create(:commercial_licence,
                    contract:,
@@ -138,7 +138,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
                                          with: 'Some comments')
         end
 
-        context 'with an invoiced licence' do # rubocop:disable RSpec/NestedGroups
+        context 'with an invoiced licence' do
           let!(:licence) do
             create(:commercial_licence,
                    contract:,

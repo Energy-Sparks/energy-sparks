@@ -6,7 +6,7 @@ describe 'Engaged Groups Report' do
   before do
     admin = create(:admin)
     create(:school, :with_points,
-                    school_group: create(:school_group, name: 'Group 1', default_issues_admin_user: admin))
+           school_group: create(:school_group, name: 'Group 1', default_issues_admin_user: admin))
     create(:school, active: false,
                     school_group: create(:school_group, name: 'Group 2', default_issues_admin_user: admin))
     sign_in(admin)

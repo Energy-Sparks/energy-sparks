@@ -3,8 +3,8 @@ require 'rails_helper'
 describe Amr::N3rgyTariffManager do
   subject(:service) do
     described_class.new(meter: meter,
-      current_n3rgy_tariff: n3rgy_tariff,
-      import_log: import_log)
+                        current_n3rgy_tariff: n3rgy_tariff,
+                        import_log: import_log)
   end
 
   let(:meter) { create(:electricity_meter) }
@@ -47,7 +47,7 @@ describe Amr::N3rgyTariffManager do
         expect(energy_tariff.source.to_sym).to eq :dcc
         expect(energy_tariff.enabled).to be true
         expect(energy_tariff.tariff_holder).to eq meter.school
-        expect(energy_tariff.meters).to match_array([meter])
+        expect(energy_tariff.meters).to contain_exactly(meter)
         expect(energy_tariff.tariff_type.to_sym).to eq :flat_rate
         expect(energy_tariff.name).not_to be_nil
       end
@@ -70,7 +70,7 @@ describe Amr::N3rgyTariffManager do
           standing_charge: 1.25,
           differential: [
             { start_time: '00:00', end_time: '07:00', value: 0.05, units: 'kwh' },
-            { start_time: '07:00', end_time: '00:00', value: 0.10, units: 'kwh' },
+            { start_time: '07:00', end_time: '00:00', value: 0.10, units: 'kwh' }
           ]
         }
       end
@@ -102,10 +102,12 @@ describe Amr::N3rgyTariffManager do
 
   context 'when there is a stored tariff' do
     let!(:energy_tariff) do
-      create(:energy_tariff, :with_flat_price, source: :dcc, school: meter.school, meters: [meter], value: 0.1, end_date: nil)
+      create(:energy_tariff, :with_flat_price, source: :dcc, school: meter.school, meters: [meter], value: 0.1,
+                                               end_date: nil)
     end
     let!(:existing_charge) do
-      create(:energy_tariff_charge, energy_tariff: energy_tariff, charge_type: :standing_charge, units: :day, value: 1.25)
+      create(:energy_tariff_charge, energy_tariff: energy_tariff, charge_type: :standing_charge, units: :day,
+                                    value: 1.25)
     end
 
     context 'with no valid tariffs from n3rgy' do
@@ -133,7 +135,8 @@ describe Amr::N3rgyTariffManager do
 
     context 'when the stored tariff has expired' do
       let!(:energy_tariff) do
-        create(:energy_tariff, :with_flat_price, source: :dcc, school: meter.school, meters: [meter], value: 0.1, end_date: Time.zone.today - 2.days)
+        create(:energy_tariff, :with_flat_price, source: :dcc, school: meter.school, meters: [meter], value: 0.1,
+                                                 end_date: Time.zone.today - 2.days)
       end
       let(:n3rgy_tariff) do
         {
@@ -168,7 +171,7 @@ describe Amr::N3rgyTariffManager do
           standing_charge: 1.25,
           differential: [
             { start_time: '00:00', end_time: '07:00', value: 0.05, units: 'kwh' },
-            { start_time: '07:00', end_time: '00:00', value: 0.10, units: 'kwh' },
+            { start_time: '07:00', end_time: '00:00', value: 0.10, units: 'kwh' }
           ]
         }
       end
@@ -182,13 +185,16 @@ describe Amr::N3rgyTariffManager do
 
     context 'when the differential prices have changed' do
       let!(:existing_energy_tariff) do
-        create(:energy_tariff, tariff_type: :differential, source: :dcc, school: meter.school, meters: [meter], end_date: nil)
+        create(:energy_tariff, tariff_type: :differential, source: :dcc, school: meter.school, meters: [meter],
+                               end_date: nil)
       end
       let!(:existing_period_1) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.44, units: :kwh, start_time: '00:00', end_time: '07:00')
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.44, units: :kwh,
+                                     start_time: '00:00', end_time: '07:00')
       end
       let!(:existing_period_2) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.88, units: :kwh, start_time: '07:00', end_time: '00:00')
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.88, units: :kwh,
+                                     start_time: '07:00', end_time: '00:00')
       end
 
       let(:n3rgy_tariff) do
@@ -196,7 +202,7 @@ describe Amr::N3rgyTariffManager do
           standing_charge: 1.25,
           differential: [
             { start_time: '00:00', end_time: '07:00', value: 0.05, units: 'kwh' },
-            { start_time: '07:00', end_time: '00:00', value: 0.10, units: 'kwh' },
+            { start_time: '07:00', end_time: '00:00', value: 0.10, units: 'kwh' }
           ]
         }
       end
@@ -210,13 +216,16 @@ describe Amr::N3rgyTariffManager do
 
     context 'when the differential period time ranges have changed' do
       let!(:existing_energy_tariff) do
-        create(:energy_tariff, tariff_type: :differential, source: :dcc, school: meter.school, meters: [meter], end_date: nil)
+        create(:energy_tariff, tariff_type: :differential, source: :dcc, school: meter.school, meters: [meter],
+                               end_date: nil)
       end
       let!(:existing_period_1) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.44, units: :kwh, start_time: '00:00', end_time: '07:00')
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.44, units: :kwh,
+                                     start_time: '00:00', end_time: '07:00')
       end
       let!(:existing_period_2) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.88, units: :kwh, start_time: '07:00', end_time: '00:00')
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.88, units: :kwh,
+                                     start_time: '07:00', end_time: '00:00')
       end
 
       let(:n3rgy_tariff) do
@@ -224,7 +233,7 @@ describe Amr::N3rgyTariffManager do
           standing_charge: 1.25,
           differential: [
             { start_time: '00:00', end_time: '06:30', value: 0.44, units: 'kwh' },
-            { start_time: '06:30', end_time: '00:00', value: 0.88, units: 'kwh' },
+            { start_time: '06:30', end_time: '00:00', value: 0.88, units: 'kwh' }
           ]
         }
       end
@@ -238,13 +247,16 @@ describe Amr::N3rgyTariffManager do
 
     context 'when the number of differential periods has changed' do
       let!(:existing_energy_tariff) do
-        create(:energy_tariff, tariff_type: :differential, source: :dcc, school: meter.school, meters: [meter], end_date: nil)
+        create(:energy_tariff, tariff_type: :differential, source: :dcc, school: meter.school, meters: [meter],
+                               end_date: nil)
       end
       let!(:existing_period_1) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.44, units: :kwh, start_time: '00:00', end_time: '07:00')
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.44, units: :kwh,
+                                     start_time: '00:00', end_time: '07:00')
       end
       let!(:existing_period_2) do
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.88, units: :kwh, start_time: '07:00', end_time: '00:00')
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: 0.88, units: :kwh,
+                                     start_time: '07:00', end_time: '00:00')
       end
 
       let(:n3rgy_tariff) do
@@ -253,7 +265,7 @@ describe Amr::N3rgyTariffManager do
           differential: [
             { start_time: '00:00', end_time: '04:30', value: 0.44, units: 'kwh' },
             { start_time: '04:30', end_time: '07:00', value: 0.88, units: 'kwh' },
-            { start_time: '07:00', end_time: '00:00', value: 0.55, units: 'kwh' },
+            { start_time: '07:00', end_time: '00:00', value: 0.55, units: 'kwh' }
           ]
         }
       end

@@ -347,6 +347,8 @@ class User < ApplicationRecord
         'School type',
         'School active',
         'School data enabled',
+        'Current Contract Holder',
+        'Future Contract Holder',
         'Funder',
         'Region',
         'Name',
@@ -368,6 +370,16 @@ class User < ApplicationRecord
           end,
           if user.school
             user.school&.data_enabled? ? 'Yes' : 'No'
+          else
+            ''
+          end,
+          if user.school && !user.has_other_schools?
+            user.school.summarised_current_contract_holder_name || ''
+          else
+            ''
+          end,
+          if user.school && !user.has_other_schools?
+            user.school.summarised_future_contract_holder_name || ''
           else
             ''
           end,

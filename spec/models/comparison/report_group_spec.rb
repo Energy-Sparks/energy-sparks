@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Comparison::ReportGroup, type: :model do
   describe 'validations' do
     context 'with standard validations' do
-      subject(:report_group) { create :report_group }
+      subject(:report_group) { create(:report_group) }
 
       it { expect(report_group).to be_valid }
       it { expect(report_group).to validate_presence_of(:title) }
@@ -12,7 +12,7 @@ RSpec.describe Comparison::ReportGroup, type: :model do
     end
 
     context 'with relationships' do
-      subject(:report_group) { create :report_group }
+      subject(:report_group) { create(:report_group) }
 
       it { expect(report_group).to have_many(:reports).dependent(:restrict_with_error) }
     end

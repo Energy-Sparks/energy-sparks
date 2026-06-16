@@ -25,7 +25,7 @@ RSpec.describe 'hot water advice page', type: :system do
                 annual_£: 2096.795073749998,
                 capex: 0.0,
                 efficiency: 0.3910029812945617
-                            ),
+              ),
               gas_better_control: OpenStruct.new(
                 saving_kwh: 19_798.904124999986,
                 saving_kwh_percent: 0.2832738073386079,
@@ -39,7 +39,7 @@ RSpec.describe 'hot water advice page', type: :system do
                 annual_co2: 10_519.79565,
                 capex: 0.0,
                 efficiency: 0.5455402429799101
-                                  ),
+              ),
               point_of_use_electric: OpenStruct.new(
                 saving_kwh: 36_304.981624999986,
                 saving_kwh_percent: 0.5194353336600116,
@@ -53,8 +53,8 @@ RSpec.describe 'hot water advice page', type: :system do
                 annual_co2: 5038.228125,
                 capex: 19_600.0,
                 efficiency: 0.813632396806169
-                                     )
-                                ),
+              )
+            ),
             efficiency_breakdowns: OpenStruct.new(
               daily: OpenStruct.new(
                 kwh: OpenStruct.new(
@@ -63,15 +63,15 @@ RSpec.describe 'hot water advice page', type: :system do
                   holiday: 144.49537500000002,
                   weekend: 4.2845,
                   total: 438.06140833333325
-                  ),
+                ),
                 £: OpenStruct.new(
                   school_day_open: 7.706809999999995,
                   school_day_closed: 0.9716359999999965,
                   holiday: 4.334861249999998,
                   weekend: 0.12853499999999993,
                   total: 13.141842249999987
-                  )
-                ),
+                )
+              ),
               annual: OpenStruct.new(
                 kwh: OpenStruct.new(
                   school_day_open: 50_094.265,
@@ -79,16 +79,16 @@ RSpec.describe 'hot water advice page', type: :system do
                   holiday: 13_149.079125000002,
                   weekend: 334.19100000000003,
                   total: 69_893.16912499999
-                  ),
+                ),
                 £: OpenStruct.new(
                   school_day_open: 1502.827949999999,
                   school_day_closed: 189.46901999999932,
                   holiday: 394.47237374999975,
                   weekend: 10.025729999999994,
                   total: 2096.7950737499978
-                  )
                 )
-                                   )
+              )
+            )
           )
         }
       )
@@ -108,8 +108,8 @@ RSpec.describe 'hot water advice page', type: :system do
       end
 
       it 'shows not relevant page' do
-        expect(page).to have_content(I18n.t('advice_pages.hot_water.not_relevant.swimming_pool.title'))
-        expect(page).to have_content('pool')
+        expect(page).to have_text(I18n.t('advice_pages.hot_water.not_relevant.swimming_pool.title'))
+        expect(page).to have_text('pool')
       end
     end
 
@@ -123,7 +123,7 @@ RSpec.describe 'hot water advice page', type: :system do
       end
 
       it 'shows not relevant page' do
-        expect(page).to have_content(I18n.t('advice_pages.hot_water.not_relevant.other_reasons.title'))
+        expect(page).to have_text(I18n.t('advice_pages.hot_water.not_relevant.other_reasons.title'))
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe 'hot water advice page', type: :system do
       end
 
       it 'shows not enough data page' do
-        expect(page).to have_content('Not enough data to run analysis')
+        expect(page).to have_text('Not enough data to run analysis')
       end
     end
 
@@ -145,17 +145,17 @@ RSpec.describe 'hot water advice page', type: :system do
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
-        expect(page).to have_content('Your hot water use')
-        expect(page).to have_content('How do you compare?')
-        expect(page).to have_content('70,000') # 69_893  annual efficiency kwh total
-        expect(page).to have_content('£2,100') # 2096    annual efficiency £ total
+        expect(page).to have_text('Your hot water use')
+        expect(page).to have_text('How do you compare?')
+        expect(page).to have_text('70,000') # 69_893  annual efficiency kwh total
+        expect(page).to have_text('£2,100') # 2096    annual efficiency £ total
       end
 
       context 'for a investment_choices.gas_better_control.saving_£_percent under 2 percent' do
         let(:saving_£_percent) { 0.001 }
 
         it 'shows below table content' do
-          expect(page).to have_content('Your holiday and weekend hot water use is already very low, well done.')
+          expect(page).to have_text('Your holiday and weekend hot water use is already very low, well done.')
         end
       end
 
@@ -163,7 +163,7 @@ RSpec.describe 'hot water advice page', type: :system do
         let(:saving_£_percent) { 0.09 }
 
         it 'shows below table content' do
-          expect(page).to have_content('Your holiday and weekend hot water use is already very low. You could reduce your annual gas consumption for hot water by 9&percnt; by switching it off completely outside of school hours.')
+          expect(page).to have_text('Your holiday and weekend hot water use is already very low. You could reduce your annual gas consumption for hot water by 9&percnt; by switching it off completely outside of school hours.')
         end
       end
 
@@ -171,8 +171,8 @@ RSpec.describe 'hot water advice page', type: :system do
         let(:saving_£_percent) { 0.10 }
 
         it 'shows below table content' do
-          expect(page).to have_content('The table below shows that 10&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
-          expect(page).to have_content('Or you could investigate replacing your current hot water system with point of use electric heaters.')
+          expect(page).to have_text('The table below shows that 10&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
+          expect(page).to have_text('Or you could investigate replacing your current hot water system with point of use electric heaters.')
         end
       end
 
@@ -180,8 +180,8 @@ RSpec.describe 'hot water advice page', type: :system do
         let(:saving_£_percent) { 0.99 }
 
         it 'shows below table content' do
-          expect(page).to have_content('The table below shows that 99&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
-          expect(page).to have_content('Or you could investigate replacing your current hot water system with point of use electric heaters.')
+          expect(page).to have_text('The table below shows that 99&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
+          expect(page).to have_text('Or you could investigate replacing your current hot water system with point of use electric heaters.')
         end
       end
     end
@@ -192,9 +192,9 @@ RSpec.describe 'hot water advice page', type: :system do
       it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
-        expect(page).to have_content('Hot water efficiency improvement options')
-        expect(page).to have_content('How does Energy Sparks calculate the efficiency and potential savings of a school’s hot water system?')
-        expect(page).to have_content('£20,000') # 19,600  point_of_use_electric capex
+        expect(page).to have_text('Hot water efficiency improvement options')
+        expect(page).to have_text('How does Energy Sparks calculate the efficiency and potential savings of a school’s hot water system?')
+        expect(page).to have_text('£20,000') # 19,600  point_of_use_electric capex
 
         expect(page).to have_css('#chart_wrapper_hotwater')
       end

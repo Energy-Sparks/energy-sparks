@@ -2,14 +2,24 @@ require 'rails_helper'
 
 describe CalendarResetService do
   let(:parent_calendar) { create(:calendar, :with_academic_years) }
-  let!(:parent_calendar_event) { create(:calendar_event_holiday, calendar: parent_calendar, description: 'parent event') }
-  let!(:parent_calendar_bank_holiday_event) { create(:bank_holiday, calendar: parent_calendar, description: 'parent bank holiday') }
-  let!(:parent_calendar_inset_day_event) { create(:inset_day, calendar: parent_calendar, description: 'parent inset day event') }
+  let!(:parent_calendar_event) do
+    create(:calendar_event_holiday, calendar: parent_calendar, description: 'parent event')
+  end
+  let!(:parent_calendar_bank_holiday_event) do
+    create(:bank_holiday, calendar: parent_calendar, description: 'parent bank holiday')
+  end
+  let!(:parent_calendar_inset_day_event) do
+    create(:inset_day, calendar: parent_calendar, description: 'parent inset day event')
+  end
 
   let(:child_calendar) { create(:calendar, :with_academic_years, based_on: parent_calendar) }
   let!(:child_calendar_event) { create(:calendar_event_holiday, calendar: child_calendar, description: 'child event') }
-  let!(:child_calendar_bank_holiday_event) { create(:bank_holiday, calendar: child_calendar, description: 'child bank holiday') }
-  let!(:child_calendar_inset_day_event) { create(:inset_day, calendar: child_calendar, description: 'child inset day event') }
+  let!(:child_calendar_bank_holiday_event) do
+    create(:bank_holiday, calendar: child_calendar, description: 'child bank holiday')
+  end
+  let!(:child_calendar_inset_day_event) do
+    create(:inset_day, calendar: child_calendar, description: 'child inset day event')
+  end
 
   it 'deletes existing term and holiday events but not inset days' do
     CalendarResetService.new(child_calendar).reset

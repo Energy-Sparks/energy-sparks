@@ -6,7 +6,7 @@ RSpec.describe ProgrammeType, type: :model do
     let!(:programme_type_2) { create(:programme_type, active: false, title: 'two') }
 
     it 'contains active programme types' do
-      expect(ProgrammeType.tx_resources).to match_array([programme_type_1])
+      expect(ProgrammeType.tx_resources).to contain_exactly(programme_type_1)
     end
   end
 
@@ -41,10 +41,10 @@ RSpec.describe ProgrammeType, type: :model do
   end
 
   describe '#activity_type_ids_for_school' do
+    subject(:activity_type_ids_for_school) { programme_type.activity_type_ids_for_school(school) }
+
     let!(:programme_type) { create(:programme_type_with_activity_types) }
     let!(:school) { create(:school) }
-
-    subject(:activity_type_ids_for_school) { programme_type.activity_type_ids_for_school(school) }
 
     context 'when no activities have been completed' do
       it 'is empty' do
@@ -54,7 +54,8 @@ RSpec.describe ProgrammeType, type: :model do
 
     context 'when one activity has been completed' do
       before do
-        create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.now)
+        create(:activity, school: school, activity_type: programme_type.activity_types.first,
+                          happened_on: Time.zone.now)
       end
 
       it 'contains that activity type' do
@@ -75,7 +76,8 @@ RSpec.describe ProgrammeType, type: :model do
 
       context 'when an activity has been completed twice' do
         before do
-          create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.now)
+          create(:activity, school: school, activity_type: programme_type.activity_types.first,
+                            happened_on: Time.zone.now)
         end
 
         it 'contains all completed activity types for programme type' do
@@ -86,10 +88,12 @@ RSpec.describe ProgrammeType, type: :model do
   end
 
   describe '#all_activity_types_completed_for_school?' do
+    subject(:all_activity_types_completed_for_school) do
+      programme_type.all_activity_types_completed_for_school?(school)
+    end
+
     let!(:programme_type) { create(:programme_type_with_activity_types) }
     let!(:school) { create(:school) }
-
-    subject(:all_activity_types_completed_for_school) { programme_type.all_activity_types_completed_for_school?(school) }
 
     context 'when no activities have been completed' do
       it { expect(all_activity_types_completed_for_school).to be false }
@@ -97,7 +101,8 @@ RSpec.describe ProgrammeType, type: :model do
 
     context 'when one activity has been completed' do
       before do
-        create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.now)
+        create(:activity, school: school, activity_type: programme_type.activity_types.first,
+                          happened_on: Time.zone.now)
       end
 
       it { expect(all_activity_types_completed_for_school).to be false }
@@ -114,7 +119,8 @@ RSpec.describe ProgrammeType, type: :model do
 
       context 'when an activity has been completed twice' do
         before do
-          create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Time.zone.now)
+          create(:activity, school: school, activity_type: programme_type.activity_types.first,
+                            happened_on: Time.zone.now)
         end
 
         it { expect(all_activity_types_completed_for_school).to be true }

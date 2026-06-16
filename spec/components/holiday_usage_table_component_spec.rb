@@ -1,8 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe HolidayUsageTableComponent, type: :component do
+  subject(:component) { described_class.new(**params) }
+
   let(:final_holiday_end) { Date.new(2023, 10, 22) }
-  let(:data_end_date)     { final_holiday_end }
+  let(:html) do
+    render_inline(component)
+  end
+  let(:data_end_date) { final_holiday_end }
 
   let(:analysis_dates) do
     OpenStruct.new(
@@ -14,7 +19,7 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
   let(:holiday_1) { build(:school_date_period, type: :spring_half_term, start_date: Date.new(2023, 2, 18), end_date: Date.new(2023, 2, 21)) }
   let(:holiday_2) { build(:school_date_period, type: :easter, start_date: Date.new(2023, 4, 29), end_date: Date.new(2023, 5, 1)) }
   let(:holiday_3) { build(:school_date_period, type: :summer, start_date: Date.new(2023, 6, 30), end_date: Date.new(2023, 8, 13)) }
-  let(:holiday_4) { build(:school_date_period, type: :autumn_half_term, start_date: Date.new(2023, 10, 7), end_date: final_holiday_end)}
+  let(:holiday_4) { build(:school_date_period, type: :autumn_half_term, start_date: Date.new(2023, 10, 7), end_date: final_holiday_end) }
 
   let(:holiday_usage) do
     previous_holiday_1 = build(:school_date_period, start_date: Date.new(2022, 2, 19), end_date: Date.new(2022, 2, 22))
@@ -58,12 +63,6 @@ RSpec.describe HolidayUsageTableComponent, type: :component do
       analysis_dates: analysis_dates,
       filter_empty_holidays: filter_empty_holidays
     }
-  end
-
-  subject(:component) { described_class.new(**params) }
-
-  let(:html) do
-    render_inline(component)
   end
 
   describe '.render?' do

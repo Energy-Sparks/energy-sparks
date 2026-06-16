@@ -31,9 +31,9 @@ RSpec.describe 'meter_reviews' do
     it 'lists only meters pending reviews' do
       click_on 'Meter Reviews'
       expect(page).to have_title 'Meter Reviews'
-      expect(page).to have_content school.name
-      expect(page).to have_no_content reviewed_school.name
-      expect(page).to have_no_content other_school
+      expect(page).to have_text school.name
+      expect(page).to have_no_text reviewed_school.name
+      expect(page).to have_no_text other_school
     end
 
     it 'has link to school consent documents' do
@@ -164,7 +164,7 @@ RSpec.describe 'meter_reviews' do
         click_on 'Perform review'
         check dcc_meter.mpan_mprn.to_s
         click_on 'Complete review'
-        expect(page).to have_content('Review was successfully recorded')
+        expect(page).to have_text('Review was successfully recorded')
         expect(MeterReview.count).to be 1
         expect(MeterReview.first.user).to eql(admin)
         expect(MeterReview.first.meters).to match([dcc_meter])
@@ -224,7 +224,7 @@ RSpec.describe 'meter_reviews' do
 
     it 'allows the review to be disabled' do
       click_on 'Disable'
-      expect(page).to have_content('Review disabled')
+      expect(page).to have_text('Review disabled')
       expect(meter_review.reload.disabled).to be true
     end
 
@@ -233,7 +233,7 @@ RSpec.describe 'meter_reviews' do
 
       it 'allows the review to be enabled' do
         click_on 'Enable'
-        expect(page).to have_content('Review enabled')
+        expect(page).to have_text('Review enabled')
         expect(meter_review.reload.disabled).to be false
       end
     end

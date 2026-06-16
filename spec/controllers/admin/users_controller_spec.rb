@@ -22,7 +22,7 @@ RSpec.describe Admin::UsersController, type: :controller do
 
     describe 'GET #index' do
       it 'assigns all users as @users' do
-        user = create :staff
+        user = create(:staff)
         get :index, params: {}
         expect(assigns(:users)).to include user
       end
@@ -35,15 +35,15 @@ RSpec.describe Admin::UsersController, type: :controller do
 
     describe 'GET #new' do
       it 'assigns schools as @schools' do
-        school = FactoryBot.create :school
+        school = FactoryBot.create(:school)
         get :new, params: {}
         expect(assigns(:schools)).to include school
       end
     end
 
     describe 'GET #edit' do
-      it 'assigns  schools as @schools' do
-        user = create :staff
+      it 'assigns schools as @schools' do
+        user = create(:staff)
         get :edit, params: { id: user.to_param }
         expect(assigns(:schools)).to include user.school
       end
@@ -89,20 +89,20 @@ RSpec.describe Admin::UsersController, type: :controller do
         end
 
         it 'updates the requested user' do
-          user = create :staff
+          user = create(:staff)
           put :update, params: { id: user.to_param, user: new_attributes }
           user.reload
           expect(user.email).to eq new_attributes[:email]
         end
 
         it 'assigns the requested user as @user' do
-          user = create :staff
+          user = create(:staff)
           put :update, params: { id: user.to_param, user: new_attributes }
           expect(assigns(:user)).to eq(user)
         end
 
         it 'redirects to the users' do
-          user = create :staff
+          user = create(:staff)
           put :update, params: { id: user.to_param, user: new_attributes }
           expect(response).to redirect_to(admin_users_path)
         end
@@ -110,13 +110,13 @@ RSpec.describe Admin::UsersController, type: :controller do
 
       context 'with invalid params' do
         it 'assigns the user as @user' do
-          user = create :staff
+          user = create(:staff)
           put :update, params: { id: user.to_param, user: invalid_attributes }
           expect(assigns(:user)).to eq(user)
         end
 
         it "re-renders the 'edit' template" do
-          user = create :staff
+          user = create(:staff)
           put :update, params: { id: user.to_param, user: invalid_attributes }
           expect(response).to render_template('edit')
         end
@@ -125,14 +125,14 @@ RSpec.describe Admin::UsersController, type: :controller do
 
     describe 'DELETE #destroy' do
       it 'destroys the requested user' do
-        user = create :staff
+        user = create(:staff)
         expect do
           delete :destroy, params: { id: user.to_param }
         end.to change(User, :count).by(-1)
       end
 
       it 'redirects to the users list' do
-        user = create :staff
+        user = create(:staff)
         delete :destroy, params: { id: user.to_param }
         expect(response).to redirect_to(admin_users_path)
       end

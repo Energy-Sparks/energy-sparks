@@ -19,10 +19,10 @@ describe 'Chart preview', type: :system do
     click_on 'Run chart'
 
     within('.chart-wrapper') do
-      expect(page).to have_content('My title')
-      expect(page).to have_content('My subtitle')
+      expect(page).to have_text('My title')
+      expect(page).to have_text('My subtitle')
       expect(page).to have_css('#chart_management_dashboard_group_by_week_electricity')
     end
-    expect(page).to have_content('My footer')
+    expect(page).to have_text('My footer')
   end
 end

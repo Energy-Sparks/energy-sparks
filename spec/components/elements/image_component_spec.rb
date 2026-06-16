@@ -20,7 +20,7 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
     end
 
     it { expect(html).to have_css('img.fit') }
-    it { expect(html).to have_selector('img') }
+    it { expect(html).to have_css('img') }
     it { expect(html).to have_xpath('.//img[contains(@src, "/assets/laptop-")]', visible: :all) }
   end
 
@@ -40,7 +40,7 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
     context 'when fit is false' do
       let(:params) { base_params.merge({ fit: false }) }
 
-      it { expect(html).not_to have_css('img.fit') }
+      it { expect(html).to have_no_css('img.fit') }
     end
   end
 
