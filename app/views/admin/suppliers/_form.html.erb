@@ -8,9 +8,7 @@
       <%= f.input :owned_by_id, collection: User.admin.operations.order(:name), label_method: :display_name %>
       <%= f.submit 'Save', class: 'btn btn-primary' %>
       <% if supplier.persisted? %>
-        <%= link_to 'Delete', admin_supplier_path(supplier), method: :delete,
-                                                             data: { confirm: 'Are you sure?' },
-                                                             class: 'btn btn-danger' %>
+        <%= render(Forms::DeleteButtonComponent.new(admin_supplier_path(supplier), resource: supplier)) %>
       <% end %>
     <% end %>
   </div>

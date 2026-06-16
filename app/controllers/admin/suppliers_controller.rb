@@ -12,11 +12,9 @@ module Admin
 
     def show; end
 
-    # rubocop:disable Rails/I18nLocaleTexts
-
     def create
       if @supplier.save
-        redirect_to admin_suppliers_path, notice: 'Suplier was successfully created.'
+        redirect_to admin_suppliers_path, notice: 'Supplier was successfully created.'
       else
         render :new
       end
@@ -34,8 +32,6 @@ module Admin
       @supplier.destroy
       redirect_to admin_suppliers_path, notice: 'Supplier was successfully deleted.'
     end
-
-    # rubocop:enable Rails/I18nLocaleTexts
 
     private
 
