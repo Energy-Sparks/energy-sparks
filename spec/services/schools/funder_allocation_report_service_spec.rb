@@ -77,6 +77,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
                                   end_date: academic_year.end_date + 12.months)
       create(:commercial_licence,
              contract:, school:,
+             status: :confirmed,
              start_date: next_academic_year.start_date,
              end_date: next_academic_year.end_date)
 
