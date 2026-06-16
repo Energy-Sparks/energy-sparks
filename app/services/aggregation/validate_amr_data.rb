@@ -132,26 +132,13 @@ module Aggregation
     end
 
     # Finds the meter corrections attributes, then copies them to the
-    # meter_correction_rules for the meter. If there are no
-    # rules and this is a gas meter, then it will automatically add a rule to set
-    # any missing weekend data to zero
+    # meter_correction_rules for the meter.
     #
     # Note: as these rules are only used by this class, the list of rules could
     # just be a member variable, rather than adding a method/data to Meter
     def process_meter_attributes
       meter_attributes_corrections = @meter.attributes(:meter_corrections)
-      if meter_attributes_corrections.nil?
-        auto_insert_for_gas_if_no_other_rules
-      else
-        @meter.insert_correction_rules_first(meter_attributes_corrections)
-      end
-    end
-
-    def auto_insert_for_gas_if_no_other_rules
-      return unless @meter.meter_type.to_sym == :gas
-
-      logger.info "Adding auto insert missing readings as we're a gas meter & no other corrections"
-      @meter.insert_correction_rules_first([{ auto_insert_missing_readings: { type: :weekends } }])
+      @meter.insert_correction_rules_first(meter_attributes_corrections) unless meter_attributes_corrections.nil?
     end
 
     # Applies all the meter corrections configured in the meter attributes.
