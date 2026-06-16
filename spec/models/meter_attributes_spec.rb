@@ -39,7 +39,7 @@ describe MeterAttributes do
     end
 
     it 'leaves nils as nil' do
-      expect(described_class.new(allowed_values: [:weekends]).parse(nil)).to eq(nil)
+      expect(described_class.new(allowed_values: [:weekends]).parse(nil)).to be_nil
     end
 
     it 'leaves symbols as symbols' do
@@ -65,7 +65,7 @@ describe MeterAttributes do
     end
 
     it 'leaves nils as nil' do
-      expect(described_class.new.parse(nil)).to eq(nil)
+      expect(described_class.new.parse(nil)).to be_nil
     end
 
     it 'leaves integers as integers' do
@@ -81,7 +81,7 @@ describe MeterAttributes do
     end
 
     it 'leaves nils as nil' do
-      expect(described_class.new.parse(nil)).to eq(nil)
+      expect(described_class.new.parse(nil)).to be_nil
     end
 
     it 'leaves floats as floats' do
@@ -95,11 +95,13 @@ describe MeterAttributes do
 
   describe MeterAttributeTypes::Hash do
     it 'parses sub-values' do
-      expect(described_class.new(structure: { day_of_week: MeterAttributeTypes::Integer.define }).parse({ day_of_week: '0' })).to eq({ day_of_week: 0 })
+      expect(described_class.new(structure: { day_of_week: MeterAttributeTypes::Integer.define })
+                            .parse({ day_of_week: '0' })).to eq({ day_of_week: 0 })
     end
 
     it 'returns nil if all the values are empty and the field is not required' do
-      expect(described_class.new(structure: { day_of_week: MeterAttributeTypes::Integer.define }).parse({ day_of_week: nil })).to eq(nil)
+      expect(described_class.new(structure: { day_of_week: MeterAttributeTypes::Integer.define })
+                            .parse({ day_of_week: nil })).to be_nil
     end
 
     it 'returns an empty hash id all the values are empty and the field is required' do
@@ -109,11 +111,12 @@ describe MeterAttributes do
 
     it 'strips out nil values' do
       expect(described_class.new(structure: { day_of_week: MeterAttributeTypes::Integer.define,
-                                              month_of_year: MeterAttributeTypes::Integer.define }).parse({ day_of_week: 1 })).to eq({ day_of_week: 1 })
+                                              month_of_year: MeterAttributeTypes::Integer.define })
+                            .parse({ day_of_week: 1 })).to eq({ day_of_week: 1 })
     end
 
     it 'leaves nils as nils' do
-      expect(described_class.new.parse(nil)).to eq(nil)
+      expect(described_class.new.parse(nil)).to be_nil
     end
   end
 
@@ -127,8 +130,8 @@ describe MeterAttributes do
     end
 
     it 'returns nil with missing values' do
-      expect(described_class.new.parse({ day_of_month: '12' })).to eq(nil)
-      expect(described_class.new.parse({ month: '12' })).to eq(nil)
+      expect(described_class.new.parse({ day_of_month: '12' })).to be_nil
+      expect(described_class.new.parse({ month: '12' })).to be_nil
     end
   end
 
@@ -142,8 +145,8 @@ describe MeterAttributes do
     end
 
     it 'returns nil with missing values' do
-      expect(described_class.new.parse({ minutes: '12' })).to eq(nil)
-      expect(described_class.new.parse({ hours: '12' })).to eq(nil)
+      expect(described_class.new.parse({ minutes: '12' })).to be_nil
+      expect(described_class.new.parse({ hours: '12' })).to be_nil
     end
   end
 
@@ -157,17 +160,17 @@ describe MeterAttributes do
 
   describe MeterAttributeTypes::Boolean do
     it 'handles truthy values' do
-      expect(described_class.new.parse('true')).to eq(true)
-      expect(described_class.new.parse(true)).to eq(true)
-      expect(described_class.new.parse(1)).to eq(true)
-      expect(described_class.new.parse('1')).to eq(true)
+      expect(described_class.new.parse('true')).to be(true)
+      expect(described_class.new.parse(true)).to be(true)
+      expect(described_class.new.parse(1)).to be(true)
+      expect(described_class.new.parse('1')).to be(true)
     end
 
     it 'handles falsey' do
-      expect(described_class.new.parse('false')).to eq(nil)
-      expect(described_class.new.parse(false)).to eq(nil)
-      expect(described_class.new.parse(0)).to eq(nil)
-      expect(described_class.new.parse('0')).to eq(nil)
+      expect(described_class.new.parse('false')).to be_nil
+      expect(described_class.new.parse(false)).to be_nil
+      expect(described_class.new.parse(0)).to be_nil
+      expect(described_class.new.parse('0')).to be_nil
     end
   end
 
@@ -185,9 +188,7 @@ describe MeterAttributes do
         { auto_insert_missing_readings: { type: :weekends } }
       )
     end
-  end
 
-  describe MeterAttributes::AutoInsertMissingReadings do
     it 'accepts a hash of time of year and keys it using the class defined key' do
       attribute = MeterAttributes::NoHeatingInSummerSetMissingToZero.parse({ start_toy: { month: 3, day_of_month: 23 },
                                                                              end_toy: { month: 12, day_of_month: 1 } })
@@ -265,26 +266,18 @@ describe MeterAttributes do
 
   describe MeterAttributes::HeatingModel do
     it 'accepts nested attributes and them it using the class defined key' do
-      attribute = described_class.parse(
-        max_summer_daily_heating_kwh: '200',
-        fitting: {
-          fit_model_start_date: '12/3/2017',
-          fit_model_end_date: '13/4/2018',
-          expiry_date_of_override: '12/5/2019',
-          use_dates_for_model_validation: 'true'
-        }
-      )
-      expect(attribute.to_analytics).to eq({
-                                             heating_model: {
-                                               max_summer_daily_heating_kwh: 200,
-                                               fitting: {
-                                                 fit_model_start_date: Date.new(2017, 3, 12),
-                                                 fit_model_end_date: Date.new(2018, 4, 13),
-                                                 expiry_date_of_override: Date.new(2019, 5, 12),
-                                                 use_dates_for_model_validation: true
-                                               }
-                                             }
-                                           })
+      attribute = described_class.parse(max_summer_daily_heating_kwh: '200',
+                                        fitting: { fit_model_start_date: '12/3/2017',
+                                                   fit_model_end_date: '13/4/2018',
+                                                   expiry_date_of_override: '12/5/2019',
+                                                   use_dates_for_model_validation: 'true' })
+      expect(attribute.to_analytics).to eq({ heating_model: { max_summer_daily_heating_kwh: 200,
+                                                              fitting: {
+                                                                fit_model_start_date: Date.new(2017, 3, 12),
+                                                                fit_model_end_date: Date.new(2018, 4, 13),
+                                                                expiry_date_of_override: Date.new(2019, 5, 12),
+                                                                use_dates_for_model_validation: true
+                                                              } } })
     end
   end
 
@@ -308,86 +301,53 @@ describe MeterAttributes do
 
   describe MeterAttributes::SolarPV do
     it 'accepts a hash and parses the values and keys it using the class definition' do
-      attribute = described_class.parse({
-                                          start_date: '1/1/2017',
+      attribute = described_class.parse({ start_date: '1/1/2017',
                                           end_date: '2/2/2017',
                                           kwp: '30.0',
                                           orientation: '1',
                                           tilt: '180',
                                           shading: 30,
-                                          fit_£_per_kwh: '20.0'
-                                        })
-      expect(attribute.to_analytics).to eq(
-        {
-          start_date: Date.new(2017, 1, 1),
-          end_date: Date.new(2017, 2, 2),
-          kwp: 30.0,
-          orientation: 1,
-          tilt: 180,
-          shading: 30,
-          fit_£_per_kwh: 20.0
-        }
-      )
+                                          fit_£_per_kwh: '20.0' })
+      expect(attribute.to_analytics).to eq({ start_date: Date.new(2017, 1, 1),
+                                             end_date: Date.new(2017, 2, 2),
+                                             kwp: 30.0,
+                                             orientation: 1,
+                                             tilt: 180,
+                                             shading: 30,
+                                             fit_£_per_kwh: 20.0 })
     end
   end
 
   describe MeterAttributes::SolarPVOverrides do
     it 'accepts a hash and parses the values and keys it using the class definition' do
-      attribute = described_class.parse({
-                                          start_date: '1/1/2017',
-                                          end_date: '2/2/2017',
-                                          kwp: '30.0',
-                                          orientation: '1',
-                                          tilt: '180',
-                                          shading: 30,
-                                          fit_£_per_kwh: '20.0',
-                                          override_generation: 'true',
-                                          override_export: 'true',
-                                          override_self_consume: 'true'
-                                        })
-      expect(attribute.to_analytics).to eq(
-        {
-          start_date: Date.new(2017, 1, 1),
-          end_date: Date.new(2017, 2, 2),
-          kwp: 30.0,
-          orientation: 1,
-          tilt: 180,
-          shading: 30,
-          fit_£_per_kwh: 20.0,
-          override_generation: true,
-          override_export: true,
-          override_self_consume: true
-        }
-      )
+      expected = { start_date: Date.new(2017, 1, 1),
+                   end_date: Date.new(2017, 2, 2),
+                   kwp: 30.0,
+                   orientation: 1,
+                   tilt: 180,
+                   shading: 30,
+                   fit_£_per_kwh: 20.0,
+                   override_generation: true,
+                   override_export: true,
+                   override_self_consume: true }
+      input = expected.transform_values(&:to_s).merge(start_date: '1/1/2017', end_date: '2/2/2017')
+      expect(described_class.parse(input).to_analytics).to eq(expected)
     end
   end
 
   describe MeterAttributes::SolarPVMeterMapping do
     it 'accepts a hash and parses the values and keys it using the class definition' do
-      attribute = described_class.parse({
-                                          start_date: '1/1/2017',
-                                          end_date: '2/2/2017',
-                                          export_mpan: '123456',
-                                          production_mpan: '10123457',
-                                          production_mpan2: '20123457',
-                                          production_mpan3: '30123457',
-                                          production_mpan4: '40123457',
-                                          production_mpan5: '50123457',
-                                          self_consume_mpan: '123458'
-                                        })
-      expect(attribute.to_analytics).to eq(
-        {
-          start_date: Date.new(2017, 1, 1),
-          end_date: Date.new(2017, 2, 2),
-          export_mpan: '123456',
-          production_mpan: '10123457',
-          production_mpan2: '20123457',
-          production_mpan3: '30123457',
-          production_mpan4: '40123457',
-          production_mpan5: '50123457',
-          self_consume_mpan: '123458'
-        }
-      )
+      input = { start_date: '1/1/2017',
+                end_date: '2/2/2017',
+                export_mpan: '123456',
+                production_mpan: '10123457',
+                production_mpan2: '20123457',
+                production_mpan3: '30123457',
+                production_mpan4: '40123457',
+                production_mpan5: '50123457',
+                self_consume_mpan: '123458' }
+      expect(described_class.parse(input).to_analytics).to \
+        eq(input.merge(start_date: Date.new(2017, 1, 1), end_date: Date.new(2017, 2, 2)))
     end
   end
 
@@ -402,22 +362,16 @@ describe MeterAttributes do
 
   describe MeterAttributes::StorageHeaters do
     it 'accepts a hash and parses the values and keys it using the class definition' do
-      attribute = described_class.parse({
-                                          start_date: '1/1/2017',
+      attribute = described_class.parse({ start_date: '1/1/2017',
                                           end_date: '2/2/2017',
                                           power_kw: '30.0',
                                           charge_start_time: { hour: 23, minutes: 12 },
-                                          charge_end_time: { hour: 23, minutes: 15 }
-                                        })
-      expect(attribute.to_analytics).to eq(
-        {
-          start_date: Date.new(2017, 1, 1),
-          end_date: Date.new(2017, 2, 2),
-          power_kw: 30.0,
-          charge_start_time: TimeOfDay.new(23, 12),
-          charge_end_time: TimeOfDay.new(23, 15)
-        }
-      )
+                                          charge_end_time: { hour: 23, minutes: 15 } })
+      expect(attribute.to_analytics).to eq({ start_date: Date.new(2017, 1, 1),
+                                             end_date: Date.new(2017, 2, 2),
+                                             power_kw: 30.0,
+                                             charge_start_time: TimeOfDay.new(23, 12),
+                                             charge_end_time: TimeOfDay.new(23, 15) })
     end
   end
 end
