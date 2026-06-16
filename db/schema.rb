@@ -1618,6 +1618,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.bigint "school_id", null: false
     t.bigint "solar_edge_installation_id"
     t.bigint "solis_cloud_installation_id"
+    t.integer "supplier_id"
     t.datetime "updated_at", precision: nil, null: false
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
@@ -1628,6 +1629,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
     t.index ["solis_cloud_installation_id"], name: "index_meters_on_solis_cloud_installation_id"
+    t.index ["supplier_id"], name: "index_meters_on_supplier_id"
   end
 
   create_table "mobility_string_translations", force: :cascade do |t|
@@ -2247,6 +2249,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.bigint "school_id", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_subscription_generation_runs_on_school_id"
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.integer "owned_by_id"
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_suppliers_on_name", unique: true
   end
 
   create_table "tariff_import_logs", force: :cascade do |t|
