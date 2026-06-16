@@ -464,9 +464,6 @@ describe User do
                contract: create(:commercial_contract, contract_holder: create(:funder)))
       end
 
-      let!(:next_academic_year) do
-      end
-
       let!(:future_licence) do
         calendar = create(:national_calendar, title: 'England and Wales')
         academic_year = create(:academic_year, calendar:)
