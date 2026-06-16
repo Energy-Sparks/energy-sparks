@@ -3,7 +3,7 @@ module Charts
     # @param fuel_type select { choices: [all, electricity, gas, solar_pv] }
     # @param slug select :group_options
     def example(slug: nil, fuel_type: :all)
-      fuel_types = fuel_type == :all ? [:electricity, :gas, :solar_pv] : [fuel_type]
+      fuel_types = fuel_type == :all ? %i[electricity gas solar_pv] : [fuel_type]
       schools = slug ? SchoolGroup.find(slug).schools.data_enabled.by_name : School.data_enabled.by_name
 
       safe_charts = {

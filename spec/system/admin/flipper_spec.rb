@@ -8,7 +8,7 @@ RSpec.describe 'flipper', type: :system do
     it 'is visible by an admin' do
       sign_in(admin)
       visit admin_flipper_path
-      expect(page).to have_content('Flipper')
+      expect(page).to have_text('Flipper')
     end
 
     it 'is not visible by a non-admin' do

@@ -3,7 +3,7 @@ require 'rails_helper'
 module Cads
   describe RealtimePowerConsumptionService do
     let!(:school)              { create(:school) }
-    let!(:meter)               { create(:electricity_meter, school: school)}
+    let!(:meter)               { create(:electricity_meter, school: school) }
     let!(:cad)                 { create(:cad, school: school, meter: meter) }
     let(:meter_collection)    { double(:meter_collection).as_null_object }
 

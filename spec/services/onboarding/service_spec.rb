@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Onboarding::Service, type: :service do
+  subject { Onboarding::Service.new }
+
   let(:admin)         { create(:admin) }
   let(:school)        { create(:school, visible: false) }
 
@@ -17,8 +19,6 @@ describe Onboarding::Service, type: :service do
 
   let(:school_user_1) { create(:user, school: school) }
   let(:school_user_2) { create(:user, school: school) }
-
-  subject { Onboarding::Service.new }
 
   describe '#should_complete_onboarding?' do
     it 'true if onboarding not complete yet' do

@@ -28,10 +28,10 @@ RSpec.describe SchoolGroups::Alerts do
                alert_type: content_version.alert_type_rating.alert_type,
                rating: 6.0,
                variables: {
-                     one_year_saving_kwh: index == 0 ? nil : 1.0,
-                     average_one_year_saving_gbp: 2.0,
-                     one_year_saving_co2: 3.0,
-                     time_of_year_relevance: 5.0
+                 one_year_saving_kwh: index == 0 ? nil : 1.0,
+                 average_one_year_saving_gbp: 2.0,
+                 one_year_saving_co2: 3.0,
+                 time_of_year_relevance: 5.0
                })
       end
     end
@@ -50,10 +50,10 @@ RSpec.describe SchoolGroups::Alerts do
                alert_type: content_version.alert_type_rating.alert_type,
                rating: 6.0,
                variables: {
-                     one_year_saving_kwh: 1.0,
-                     average_one_year_saving_gbp: 2.0,
-                     one_year_saving_co2: 3.0,
-                     time_of_year_relevance: 5.0
+                 one_year_saving_kwh: 1.0,
+                 average_one_year_saving_gbp: 2.0,
+                 one_year_saving_co2: 3.0,
+                 time_of_year_relevance: 5.0
                })
       end
     end
@@ -68,22 +68,22 @@ RSpec.describe SchoolGroups::Alerts do
       before do
         school = create(:school, school_group: school_group)
         version = create(:alert_type_rating_content_version,
-               colour: :positive,
-               alert_type_rating: create(:alert_type_rating,
-                                         group_dashboard_alert_active: true,
-                                         alert_type: alert_type,
-                                         rating_from: 0.0,
-                                         rating_to: 4.0))
+                         colour: :positive,
+                         alert_type_rating: create(:alert_type_rating,
+                                                   group_dashboard_alert_active: true,
+                                                   alert_type: alert_type,
+                                                   rating_from: 0.0,
+                                                   rating_to: 4.0))
         create(:alert,
                school: school,
                alert_generation_run: create(:alert_generation_run, school: school),
                alert_type: version.alert_type_rating.alert_type,
                rating: 2.0,
                variables: {
-                     one_year_saving_kwh: 1.0,
-                     average_one_year_saving_gbp: 2.0,
-                     one_year_saving_co2: 3.0,
-                     time_of_year_relevance: 5.0
+                 one_year_saving_kwh: 1.0,
+                 average_one_year_saving_gbp: 2.0,
+                 one_year_saving_co2: 3.0,
+                 time_of_year_relevance: 5.0
                })
       end
 

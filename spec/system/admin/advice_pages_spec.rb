@@ -17,12 +17,12 @@ describe 'advice page management', type: :system do
     end
 
     it 'allows the user to list and edit the advice pages' do
-      expect(page).to have_content('Manage advice pages')
-      expect(page).to have_content('baseload-summary')
+      expect(page).to have_text('Manage advice pages')
+      expect(page).to have_text('baseload-summary')
 
       click_on 'Edit'
 
-      expect(page).to have_content('Editing Advice Page: baseload-summary')
+      expect(page).to have_text('Editing Advice Page: baseload-summary')
 
       fill_in_trix '#advice_page_learn_more_en', with: 'english text here'
       fill_in_trix '#advice_page_learn_more_cy', with: 'welsh text here'
@@ -30,7 +30,7 @@ describe 'advice page management', type: :system do
 
       click_on 'Save'
 
-      expect(page).to have_content('Advice Page updated')
+      expect(page).to have_text('Advice Page updated')
 
       advice_page.reload
       expect(advice_page.restricted).to be_truthy
@@ -41,9 +41,11 @@ describe 'advice page management', type: :system do
   end
 
   describe 'managing associated activities' do
-    let!(:activity_category) { create(:activity_category)}
-    let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
-    let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
+    let!(:activity_category) { create(:activity_category) }
+    let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
+    let!(:activity_type_2) do
+      create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)
+    end
 
     before do
       visit admin_path
@@ -64,15 +66,19 @@ describe 'advice page management', type: :system do
       expect(page.find_field('Turn off the lights').value).to be_blank
       expect(page.find_field('Turn down the heating').value).to eq('1')
 
-      expect(advice_page.activity_types).to match_array([activity_type_2])
+      expect(advice_page.activity_types).to contain_exactly(activity_type_2)
       expect(advice_page.advice_page_activity_types.first.position).to eq(1)
     end
   end
 
   describe 'managing associated actions' do
     let!(:intervention_type_group) { create(:intervention_type_group) }
-    let!(:intervention_type_1) { create(:intervention_type, name: 'Install cladding', intervention_type_group: intervention_type_group)}
-    let!(:intervention_type_2) { create(:intervention_type, name: 'Check the boiler', intervention_type_group: intervention_type_group)}
+    let!(:intervention_type_1) do
+      create(:intervention_type, name: 'Install cladding', intervention_type_group: intervention_type_group)
+    end
+    let!(:intervention_type_2) do
+      create(:intervention_type, name: 'Check the boiler', intervention_type_group: intervention_type_group)
+    end
 
     before do
       visit admin_path
@@ -93,7 +99,7 @@ describe 'advice page management', type: :system do
       expect(page.find_field('Install cladding').value).to be_blank
       expect(page.find_field('Check the boiler').value).to eq('1')
 
-      expect(advice_page.intervention_types).to match_array([intervention_type_2])
+      expect(advice_page.intervention_types).to contain_exactly(intervention_type_2)
       expect(advice_page.advice_page_intervention_types.first.position).to eq(1)
     end
   end

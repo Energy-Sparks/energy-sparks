@@ -3,18 +3,18 @@ require 'rails_helper'
 describe AggregateSchoolService, type: :service do
   let(:school) { create(:school) }
 
-  let(:electricity_end_date)    { Date.new(2020, 12, 31)}
+  let(:electricity_end_date)    { Date.new(2020, 12, 31) }
   let(:electricity_amr_data)    { double('electricity-amr-data') }
 
   let(:gas_end_date)            { Date.new(2019, 12, 0o1) }
   let(:gas_amr_data)            { double('gas-amr-data') }
 
-  let(:heaters_end_date)        { Date.new(2020, 12, 0o1)}
+  let(:heaters_end_date)        { Date.new(2020, 12, 0o1) }
   let(:heaters_amr_data)        { double('heaters-amr-data') }
 
-  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter')}
-  let(:gas_aggregate_meter)     { double('gas-aggregated-meter')}
-  let(:heaters_aggregate_meter) { double('heaters-aggregated-meter')}
+  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter') }
+  let(:gas_aggregate_meter)     { double('gas-aggregated-meter') }
+  let(:heaters_aggregate_meter) { double('heaters-aggregated-meter') }
 
   let(:meter_collection)        { double('meter-collection') }
 
@@ -33,9 +33,9 @@ describe AggregateSchoolService, type: :service do
   end
 
   describe '.in_cache?' do
-    include_context 'with cache'
-
     subject(:service) { described_class.new(school) }
+
+    include_context 'with cache'
 
     it 'identifies whether meter collection is in cache' do
       expect(service.in_cache?).to be(false)

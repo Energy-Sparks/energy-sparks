@@ -2,8 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_application_helper, :include_url_helpers, type: :component do
+RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_application_helper, :include_url_helpers,
+               type: :component do
   let!(:school_group) { create(:school_group) }
+  let(:school_group_cluster) { create(:school_group_cluster, school_group: school_group) }
+  let!(:school) do
+    create(:school,
+           :with_basic_configuration_single_meter_and_tariffs,
+           school_group: school_group,
+           school_group_cluster: school_group_cluster)
+  end
 
   around do |example|
     travel_to Date.new(2025, 9, 26)
@@ -12,18 +20,10 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
     end
   end
 
-  let(:school_group_cluster) { create(:school_group_cluster, school_group: school_group) }
-
-  let!(:school) do
-    create(:school,
-           :with_basic_configuration_single_meter_and_tariffs,
-           school_group: school_group,
-           school_group_cluster: school_group_cluster)
-  end
-
   before do
     alert_type = create(:alert_type, fuel_type: nil, class_name: 'ManagementSummaryTable')
-    rating = create(:alert_type_rating, alert_type: alert_type, management_dashboard_table_active: true, rating_from: 0, rating_to: 10)
+    rating = create(:alert_type_rating, alert_type: alert_type, management_dashboard_table_active: true,
+                                        rating_from: 0, rating_to: 10)
     create(:alert_type_rating_content_version, alert_type_rating: rating)
     meter_collection = AggregateSchoolService.new(school).aggregate_school
     Schools::GenerateConfiguration.new(school, meter_collection).generate
@@ -33,7 +33,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   end
 
   shared_examples 'it does not render' do
-    it { expect(page).not_to have_css('div.dashboards-group-energy-summary-table-component') }
+    it { expect(page).to have_no_css('div.dashboards-group-energy-summary-table-component') }
   end
 
   shared_examples 'it renders a table with usage figures' do
@@ -69,7 +69,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
                       schools: school_group.schools,
                       fuel_type: :electricity,
                       metric: :usage
-      ))
+                    ))
     end
 
     it { expect(page).to have_css('div.dashboards-group-energy-summary-table-component') }
@@ -85,7 +85,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
                       fuel_type: :electricity,
                       metric: :usage,
                       show_clusters: true
-      ))
+                    ))
     end
 
     it_behaves_like 'it contains the expected data table', aligned: false do
@@ -123,7 +123,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
                       fuel_type: :electricity,
                       metric: :usage,
                       periods: [:year]
-      ))
+                    ))
     end
 
     it_behaves_like 'it contains the expected data table', aligned: false do
@@ -154,7 +154,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
                       schools: school_group.schools,
                       fuel_type: :electricity,
                       metric: :change
-      ))
+                    ))
     end
 
     it_behaves_like 'it contains the expected data table', aligned: false do
@@ -190,7 +190,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
                       schools: school_group.schools,
                       fuel_type: :electricity,
                       metric: :usage
-      ))
+                    ))
     end
 
     it_behaves_like 'it renders a table with usage figures'
@@ -199,7 +199,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   context 'when there is a school with a currently failing regeneration' do
     # school has previously generated, but is now failing so it has a fuel configuration
     # but no current management dashboard table data
-    let!(:failing_school) { create(:school, :with_fuel_configuration, school_group: school_group)}
+    let!(:failing_school) { create(:school, :with_fuel_configuration, school_group: school_group) }
 
     before do
       render_inline(described_class.new(
@@ -207,7 +207,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
                       schools: school_group.schools,
                       fuel_type: :electricity,
                       metric: :usage
-      ))
+                    ))
     end
 
     it_behaves_like 'it contains the expected data table', aligned: false do
@@ -245,7 +245,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
                       schools: school_group.schools,
                       fuel_type: :electricity,
                       metric: :usage
-      ))
+                    ))
     end
 
     it_behaves_like 'it does not render'
@@ -264,7 +264,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
                       schools: school_group.schools,
                       fuel_type: :electricity,
                       metric: :usage
-      ))
+                    ))
     end
 
     it_behaves_like 'it does not render'

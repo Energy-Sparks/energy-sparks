@@ -20,7 +20,7 @@ describe Scoreboard, :scoreboards, type: :model do
     end
 
     context 'private scoreboard' do
-      subject!(:scoreboard) { create :scoreboard, public: false }
+      subject!(:scoreboard) { create(:scoreboard, public: false) }
 
       context 'guests' do
         it { expect(ability).not_to be_able_to(:read, scoreboard) }
@@ -34,14 +34,14 @@ describe Scoreboard, :scoreboards, type: :model do
 
       context 'school_admin' do
         let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
-        let!(:user)         { create(:school_admin, school: school)}
+        let!(:user)         { create(:school_admin, school: school) }
 
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
 
       context 'staff' do
         let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
-        let!(:user)         { create(:staff, school: school)}
+        let!(:user)         { create(:staff, school: school) }
 
         it { expect(ability).to be_able_to(:read, scoreboard) }
       end
@@ -66,9 +66,9 @@ describe Scoreboard, :scoreboards, type: :model do
   end
 
   context 'as a Scorable' do
-    subject!(:scoreboard) { create :scoreboard, academic_year_calendar: template_calendar }
+    subject!(:scoreboard) { create(:scoreboard, academic_year_calendar: template_calendar) }
 
-    let!(:template_calendar) { create :template_calendar, :with_previous_and_next_academic_years }
+    let!(:template_calendar) { create(:template_calendar, :with_previous_and_next_academic_years) }
     let(:school_group) { nil }
 
     it_behaves_like 'a scorable'
@@ -80,7 +80,7 @@ describe Scoreboard, :scoreboards, type: :model do
     it_behaves_like 'a MailchimpUpdateable' do
       let(:mailchimp_field_changes) do
         {
-          name_en: 'Renamed scoreboard',
+          name_en: 'Renamed scoreboard'
         }
       end
     end

@@ -2,11 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'gas recent changes advice page', type: :system do
   let(:key) { 'gas_recent_changes' }
+  let(:alert_notice) { 'Weekend gas consumption is poor' }
   let(:expected_page_title) { 'Gas recent changes analysis' }
 
   include_context 'gas advice page'
-
-  let(:alert_notice) { 'Weekend gas consumption is poor' }
 
   include_context 'displayable alert content' do
     let(:alert_type) { create(:alert_type, class_name: AlertWeekendGasConsumptionShortTerm) }
@@ -31,9 +30,9 @@ RSpec.describe 'gas recent changes advice page', type: :system do
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
-        expect(page).to have_content('What do we mean by recent changes?')
-        expect(page).to have_content('Your recent gas use')
-        expect(page).to have_content(12)
+        expect(page).to have_text('What do we mean by recent changes?')
+        expect(page).to have_text('Your recent gas use')
+        expect(page).to have_text(12)
       end
 
       it_behaves_like 'an advice page with an alert notice' do
@@ -53,8 +52,8 @@ RSpec.describe 'gas recent changes advice page', type: :system do
       end
 
       it 'shows titles' do
-        expect(page).to have_content('Comparison of gas use over 2 recent weeks')
-        expect(page).to have_content('Comparison of gas use over 2 recent days')
+        expect(page).to have_text('Comparison of gas use over 2 recent weeks')
+        expect(page).to have_text('Comparison of gas use over 2 recent days')
         expect(page).to have_css('#chart_wrapper_calendar_picker_gas_week_example_comparison_chart')
         expect(page).to have_css('#chart_wrapper_calendar_picker_gas_day_example_comparison_chart')
         expect(page).to have_css('#chart_wrapper_last_2_weeks_gas_degreedays')
@@ -64,13 +63,13 @@ RSpec.describe 'gas recent changes advice page', type: :system do
       it 'shows start and end dates' do
         expected_start_date = start_date.to_fs(:es_full)
         expected_end_date = end_date.to_fs(:es_full)
-        expect(page).to have_content("Gas data is available from #{expected_start_date} to #{expected_end_date}")
+        expect(page).to have_text("Gas data is available from #{expected_start_date} to #{expected_end_date}")
       end
 
       it 'does not shows meter filtering chart options for both charts' do
         all('#chart-filter').each do |filters|
           within filters do
-            expect(page).not_to have_select('Which meter?')
+            expect(page).to have_no_select('Which meter?')
           end
         end
       end

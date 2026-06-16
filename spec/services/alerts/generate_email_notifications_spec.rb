@@ -79,7 +79,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
     it 'include unsubscription section' do
       expect(email_body).to include('Why am I receiving these emails?')
       expect(matcher).to have_link('updating your profile')
-      expect(matcher).to have_no_content(school_admin.email)
+      expect(matcher).to have_no_text(school_admin.email)
     end
 
     it 'includes links to dashboard and analysis pages' do

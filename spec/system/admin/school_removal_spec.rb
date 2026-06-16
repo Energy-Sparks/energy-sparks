@@ -14,8 +14,8 @@ RSpec.describe 'school removal', :schools, type: :system do
 
   context 'if school still visible' do
     it 'shows message' do
-      expect(page).to have_content('My High School')
-      expect(page).to have_content('This school is still visible so cannot be deleted or archived.')
+      expect(page).to have_text('My High School')
+      expect(page).to have_text('This school is still visible so cannot be deleted or archived.')
     end
   end
 
@@ -31,7 +31,7 @@ RSpec.describe 'school removal', :schools, type: :system do
       end
 
       it 'removes the users' do
-        expect(page).to have_content('Users have been disabled')
+        expect(page).to have_text('Users have been disabled')
       end
     end
 
@@ -45,7 +45,7 @@ RSpec.describe 'school removal', :schools, type: :system do
         end
 
         it 'removes the meters' do
-          expect(page).to have_content('Meters have been deactivated')
+          expect(page).to have_text('Meters have been deactivated')
         end
       end
 
@@ -56,7 +56,7 @@ RSpec.describe 'school removal', :schools, type: :system do
         end
 
         it 'removes the meters' do
-          expect(page).to have_content('Meters have been archived')
+          expect(page).to have_text('Meters have been archived')
         end
       end
     end
@@ -64,33 +64,35 @@ RSpec.describe 'school removal', :schools, type: :system do
     context 'when the school is ready for removal' do
       it 'can be deleted' do
         click_button 'Delete school'
-        expect(page).to have_content('School has been removed')
-        expect(page).to have_content('This school was deleted')
+        expect(page).to have_text('School has been removed')
+        expect(page).to have_text('This school was deleted')
       end
 
       it 'can be archived' do
         click_button 'Archive school'
-        expect(page).to have_content('School has been archived')
-        expect(page).to have_content('This school has been archived')
-        expect(page).to have_content('Reenable school')
+        expect(page).to have_text('School has been archived')
+        expect(page).to have_text('This school has been archived')
+        expect(page).to have_text('Reenable school')
       end
     end
 
     context 'when a school has been removed' do
-      let(:school)  { create(:school, name: 'My High School', visible: false, active: false, removal_date: Time.zone.today) }
+      let(:school)  do
+        create(:school, name: 'My High School', visible: false, active: false, removal_date: Time.zone.today)
+      end
       let!(:electricity_meter)  { create(:electricity_meter, school: school) }
 
       it 'is shown in the admin report' do
         visit admin_reports_path
         click_on 'Schools removed'
-        expect(page).to have_content('My High School')
-        expect(page).to have_content(Time.zone.today.to_fs(:es_full))
+        expect(page).to have_text('My High School')
+        expect(page).to have_text(Time.zone.today.to_fs(:es_full))
         expect(page).to have_link(electricity_meter.mpan_mprn.to_s)
       end
 
       it 'does not show status buttons' do
         visit school_path(school)
-        expect(page).not_to have_css('#school-status-buttons')
+        expect(page).to have_no_css('#school-status-buttons')
       end
     end
   end

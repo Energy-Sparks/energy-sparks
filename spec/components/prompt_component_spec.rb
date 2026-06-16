@@ -5,11 +5,13 @@ require 'rails_helper'
 RSpec.describe PromptComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:params) { { id: id, status: :neutral, icon: icon, classes: classes, fuel_type: :gas, always_render: always_render } }
+  let(:params) do
+    { id: id, status: :neutral, icon: icon, classes: classes, fuel_type: :gas, always_render: always_render }
+  end
   let(:content) { '<p>Content</p>' }
   let(:title) { 'Title' }
   let(:icon) { 'calendar' }
-  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning')}
+  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning') }
   let(:link) { ActionController::Base.helpers.link_to 'Link text', 'href' }
   let(:always_render) { false }
 
@@ -82,7 +84,7 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
     end
 
     context 'with recognised statuses' do
-      [:none, :positive, :negative, :neutral].each do |status|
+      %i[none positive negative neutral].each do |status|
         let(:params) { { id: id, status: status, icon: icon, classes: classes } }
         it "recognises #{status}" do
           expect { html }.not_to raise_error
@@ -118,7 +120,7 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
     end
 
     it { expect(html).to have_text(content) }
-    it { expect(html).not_to have_link('Link text', href: 'href') }
+    it { expect(html).to have_no_link('Link text', href: 'href') }
   end
 
   context 'with no content' do

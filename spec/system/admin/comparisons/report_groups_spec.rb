@@ -10,14 +10,14 @@ shared_examples 'a report group page with valid attributes' do |action:|
     click_on 'Save'
   end
 
-  it { expect(page).to have_content("Report group was successfully #{action}") }
+  it { expect(page).to have_text("Report group was successfully #{action}") }
 
   it do
     expect(page).to have_selector(:table_row, {
-                                                'Title' => 'New title',
-                                                'Description' => 'New description',
-                                                'Position' => 2
-})
+                                    'Title' => 'New title',
+                                    'Description' => 'New description',
+                                    'Position' => 2
+                                  })
   end
 end
 
@@ -28,15 +28,15 @@ shared_examples 'a report group page with invalid attributes' do
     click_on 'Save'
   end
 
-  it { expect(page).to have_content("Title en\ncan't be blank") }
-  it { expect(page).to have_no_content("Description en\ncan't be blank") }
-  it { expect(page).to have_content("Position *\nis not a number and can't be blank") }
+  it { expect(page).to have_text("Title en\ncan't be blank") }
+  it { expect(page).to have_no_text("Description en\ncan't be blank") }
+  it { expect(page).to have_text("Position *\nis not a number and can't be blank") }
 end
 
 describe 'admin comparisons report groups', :include_application_helper do
   let!(:admin)  { create(:admin) }
   let!(:report_group) { create(:report_group, title: 'Electricity') }
-  let!(:report) { }
+  let!(:report) {}
 
   describe 'when not logged in' do
     context 'when viewing the index' do
@@ -45,7 +45,7 @@ describe 'admin comparisons report groups', :include_application_helper do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -55,7 +55,7 @@ describe 'admin comparisons report groups', :include_application_helper do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
   end
@@ -106,7 +106,7 @@ describe 'admin comparisons report groups', :include_application_helper do
       end
 
       context 'when the report group is empty' do
-        it { expect(page).not_to have_link('Delete', class: 'disabled') }
+        it { expect(page).to have_no_link('Delete', class: 'disabled') }
         it { expect(page).to have_link('Delete') }
 
         context 'when clicking on the delete button' do
@@ -119,9 +119,9 @@ describe 'admin comparisons report groups', :include_application_helper do
           it 'no longer lists report' do
             within('table') do
               expect(page).to have_no_selector(:table_row,
-                                                { 'Title' => report_group.title,
-                                                  'Description' => report_group.description,
-                                                  'Position' => report_group.position })
+                                               { 'Title' => report_group.title,
+                                                 'Description' => report_group.description,
+                                                 'Position' => report_group.position })
             end
           end
         end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe NoticeComponent, type: :component, include_application_helper: true do
+RSpec.describe NoticeComponent, :include_application_helper, type: :component do
   let(:all_params) { { status: :neutral, classes: 'extra-classes' } }
   let(:params) { all_params }
   let(:content) { '<p>Content</p>' }
@@ -34,7 +34,7 @@ RSpec.describe NoticeComponent, type: :component, include_application_helper: tr
     end
 
     context 'with recognised statuses' do
-      [:positive, :negative, :neutral].each do |status|
+      %i[positive negative neutral].each do |status|
         let(:params) { all_params.update(status: status) }
         it "recognises #{status}" do
           expect { html }.not_to raise_error
@@ -44,7 +44,7 @@ RSpec.describe NoticeComponent, type: :component, include_application_helper: tr
 
     context 'with :style' do
       context 'when :style is :normal' do
-        let(:params) { all_params.merge({ style: :normal })}
+        let(:params) { all_params.merge({ style: :normal }) }
 
         it 'adds normal classes' do
           expect(html).to have_css('div.notice-component.p-4')
@@ -52,7 +52,7 @@ RSpec.describe NoticeComponent, type: :component, include_application_helper: tr
       end
 
       context 'when :style is :compact' do
-        let(:params) { all_params.merge({ style: :compact })}
+        let(:params) { all_params.merge({ style: :compact }) }
 
         it 'adds compact classes' do
           expect(html).to have_css('div.notice-component.p-3')
@@ -77,7 +77,7 @@ RSpec.describe NoticeComponent, type: :component, include_application_helper: tr
     end
 
     it { expect(html).to have_text(content) }
-    it { expect(html).not_to have_link('Link text', href: 'href') }
+    it { expect(html).to have_no_link('Link text', href: 'href') }
   end
 
   context 'with no content' do

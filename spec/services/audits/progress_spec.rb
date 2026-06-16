@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe Audits::Progress, type: :service do
+  subject(:service) { Audits::Progress.new(audit) }
+
   let!(:site_settings) { SiteSettings.create!(audit_activities_bonus_points: 50) }
   let!(:school) { create(:school) }
 
   # Audit has 3 activities of score 25 each & 3 interventions of score 30 each
   let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school, created_at: 3.days.ago) }
-
-  subject(:service) { Audits::Progress.new(audit) }
 
   context 'when the audit was created less than a year ago' do
     let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school, created_at: 3.days.ago) }

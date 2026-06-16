@@ -2,7 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper, :include_url_helpers, type: :component do
+RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper, :include_url_helpers,
+               type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:theme) { :dark }
@@ -37,19 +38,19 @@ RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper,
     end
 
     it { expect(html).to have_css('h4') }
-    it { expect(html).not_to have_css('.main') }
-    it { expect(html).to have_content('Header') }
-    it { expect(html).to have_content('Quote') }
-    it { expect(html).to have_content('Source Name') }
-    it { expect(html).to have_content('Role') }
-    it { expect(html).to have_content('Organisation') }
+    it { expect(html).to have_no_css('.main') }
+    it { expect(html).to have_text('Header') }
+    it { expect(html).to have_text('Quote') }
+    it { expect(html).to have_text('Source Name') }
+    it { expect(html).to have_text('Role') }
+    it { expect(html).to have_text('Organisation') }
     it { expect(html).to have_link('Read case study', href: case_study_download_path(case_study)) }
     it { expect(html).to have_link('More case studies', href: '/case-studies') }
 
     context 'when the current controller is case_studies' do
       let(:controller_class) { CaseStudiesController }
 
-      it { expect(html).not_to have_link('More case studies', href: '/case-studies') }
+      it { expect(html).to have_no_link('More case studies', href: '/case-studies') }
     end
   end
 
@@ -61,11 +62,11 @@ RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper,
     end
 
     it { expect(html).to have_css('h4') }
-    it { expect(html).to have_content(testimonial.title) }
-    it { expect(html).to have_content(testimonial.quote) }
-    it { expect(html).to have_content(testimonial.name) }
-    it { expect(html).to have_content(testimonial.role) }
-    it { expect(html).to have_content(testimonial.organisation) }
+    it { expect(html).to have_text(testimonial.title) }
+    it { expect(html).to have_text(testimonial.quote) }
+    it { expect(html).to have_text(testimonial.name) }
+    it { expect(html).to have_text(testimonial.role) }
+    it { expect(html).to have_text(testimonial.organisation) }
     it { expect(html).to have_link('Read case study', href: case_study_download_path(testimonial.case_study)) }
     it { expect(html).to have_link('More case studies', href: '/case-studies') }
   end
