@@ -8,11 +8,10 @@ module ImpactReports
 
     delegate(*ImpactReport::Metric.metric_categories.keys, to: :run, allow_nil: true)
 
-    def initialize(run: nil, **)
+    def initialize(run:, **)
       super(**)
       @run = run
-      raise_unless_run
-      @school_group = run&.school_group
+      @school_group = run.school_group
     end
 
     def displayable? # rubocop:disable ViewComponent/PreferPrivateMethods
@@ -41,10 +40,6 @@ module ImpactReports
 
       # Prefer 4 columns, otherwise 3, but avoid layouts that leave exactly one item stranded on the last row
       [4, 3].reject { |cols| (count % cols) == 1 }.first || 4
-    end
-
-    def raise_unless_run
-      raise ArgumentError, 'run parameter is required' if run.nil?
     end
   end
 end
