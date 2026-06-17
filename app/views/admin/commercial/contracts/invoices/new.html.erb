@@ -9,7 +9,7 @@
 
 <p>
   Completing the next step will allocate a unique invoice number and store the current pricing information for
-  all of the below schools.
+  all of the below schools. Once created an invoice cannot be deleted or updated.
 </p>
 
 <p>
@@ -17,8 +17,69 @@
   <%= link_to 'click here to start again', raise_invoice_admin_commercial_contract_invoices_path(@contract) %>
 </p>
 
-<%= simple_form_for [:admin, @invoice] do |f| %>
-  <%= f.input :purchase_order_number %>
+<%= simple_form_for @invoice, url: admin_commercial_contract_invoices_path(@contract) do |f| %>
+  <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+    <h3>Invoice</h3>
+    <%= f.input :contract_id, as: :hidden %>
+    <%= f.input :purchase_order_number %>
+  </div>
+
+  <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+    <h3>Line Items</h3>
+
+    <table class="table table-sm table-sorted">
+      <thead>
+        <tr>
+          <th>School</th>
+          <th>Number of Meters</th>
+          <th>Private Account?</th>
+          <th>Base Price</th>
+          <th>Metering Fee</th>
+          <th>Private Account Fee</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+          <%= f.simple_fields_for :line_items do |item_form| %>
+            <tr>
+              <td>
+                <%= item_form.input :licence_id, as: :hidden %>
+                <%= item_form.object.licence.school.name %>
+              </td>
+              <td class="col-1">
+                <%= item_form.input_field :number_of_meters,
+                                          readonly: true,
+                                          class: 'form-control-plaintext' %>
+              </td>
+              <td class="col-1">
+                <%= item_form.input_field :private_account,
+                                          as: :string,
+                                          readonly: true,
+                                          class: 'form-control-plaintext' %>
+              </td>
+              <td class="col-1">
+                <%= item_form.input_field :base_price,
+                                          readonly: true,
+                                          class: 'form-control-plaintext' %>
+              </td>
+              <td class="col-1">
+                <%= item_form.input_field :metering_fee,
+                                          readonly: true,
+                                          class: 'form-control-plaintext' %>
+              </td>
+              <td class="col-1">
+                <%= item_form.input_field :private_account_fee,
+                                          readonly: true,
+                                          class: 'form-control-plaintext' %>
+              </td>
+              <td class="col-1">
+                <%= item_form.object.value.total %>
+              </td>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+  </div>
 
   <%= f.submit 'Create invoice', class: 'btn btn-primary' %>
 <% end %>
