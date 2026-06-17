@@ -357,7 +357,7 @@ describe User do
   describe '#admin_user_export_csv' do
     let!(:school_group) { create(:school_group) }
     let!(:school)       { create(:school, school_group:) }
-    let!(:user)         { create(:staff, school:, confirmed_at: nil) }
+    let!(:user)         { create(:staff, school:, confirmed_at: nil, email: 'a@a.com') }
 
     let(:csv)           { described_class.admin_user_export_csv }
     let(:parsed)        { CSV.parse(csv) }
@@ -369,6 +369,8 @@ describe User do
                                  'School type',
                                  'School active',
                                  'School data enabled',
+                                 'Current Contract Holder',
+                                 'Future Contract Holder',
                                  'Funder',
                                  'Region',
                                  'Name',
@@ -387,6 +389,8 @@ describe User do
                                  'Yes',
                                  '',
                                  '',
+                                 '',
+                                 '',
                                  user.name,
                                  user.email,
                                  user.role.humanize,
@@ -403,6 +407,8 @@ describe User do
 
         it 'includes the expected data' do
           expect(parsed[1]).to eq([school_group.name,
+                                   '',
+                                   '',
                                    '',
                                    '',
                                    '',
@@ -438,8 +444,51 @@ describe User do
                                  school.school_type.humanize,
                                  'Yes',
                                  'Yes',
+                                 '',
+                                 '',
                                  funder.name,
                                  'East Of England',
+                                 user.name,
+                                 user.email,
+                                 user.role.humanize,
+                                 user.staff_role.title,
+                                 'No',
+                                 'No'])
+      end
+    end
+
+    context 'when the school has a current and future licence' do
+      let!(:current_licence) do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder: create(:funder)))
+      end
+
+      let!(:future_licence) do
+        calendar = create(:national_calendar, title: 'England and Wales')
+        academic_year = create(:academic_year, calendar:)
+        next_academic_year = create(:academic_year,
+                                    calendar:,
+                                    start_date: academic_year.end_date + 1.day,
+                                    end_date: academic_year.end_date + 12.months)
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder: school),
+               status: :confirmed,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it 'includes the current and future contract holders' do
+        expect(parsed[1]).to eq([school_group.name,
+                                 school.name,
+                                 school.school_type.humanize,
+                                 'Yes',
+                                 'Yes',
+                                 current_licence.contract_holder.name,
+                                 'School self funding',
+                                 '',
+                                 '',
                                  user.name,
                                  user.email,
                                  user.role.humanize,
