@@ -73,7 +73,7 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
 
       context 'when group run has less than 2 visible schools' do
         let!(:impact_report) do
-          create(:impact_report_run, :with_metrics, school_group:, overview: { visible_schools: { value: 1 } })
+          create(:impact_report_run, school_group:, visible_schools: 1)
         end
 
         it_behaves_like 'an access controlled impact page', message: 'Not enough data'
