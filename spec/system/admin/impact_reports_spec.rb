@@ -68,6 +68,7 @@ RSpec.describe 'Admin impact report configuration' do
 
     context 'when viewing the index' do
       before do
+        create(:case_study, organisation: school_group)
         visit admin_impact_reports_path
       end
 
@@ -91,15 +92,21 @@ RSpec.describe 'Admin impact report configuration' do
         end
       end
 
-      it 'shows energy efficiency section as visible by default' do
+      it 'shows case studies as on' do
         within('tr', text: school_group.name) do
           expect(page).to have_css('td:nth-child(5) i.fa-check-circle')
         end
       end
 
+      it 'shows energy efficiency section as visible by default' do
+        within('tr', text: school_group.name) do
+          expect(page).to have_css('td:nth-child(6) i.fa-check-circle')
+        end
+      end
+
       it 'shows engagement section as visible by default' do
         within('tr', text: school_group.name) do
-          expect(page).to have_css('td:nth-child(7) i.fa-check-circle')
+          expect(page).to have_css('td:nth-child(8) i.fa-check-circle')
         end
       end
 
@@ -120,7 +127,7 @@ RSpec.describe 'Admin impact report configuration' do
         before do
           uncheck 'impact_report_configuration_show_energy_efficiency'
           uncheck 'impact_report_configuration_show_engagement'
-          click_on 'Save'
+          click_on 'Save', match: :first
         end
 
         it 'updates the configuration' do
@@ -153,7 +160,7 @@ RSpec.describe 'Admin impact report configuration' do
           fill_in :impact_report_configuration_energy_efficiency_note, with: 'Note about energy efficiency'
           attach_file 'impact_report_configuration_energy_efficiency_image',
                       Rails.root.join('spec/fixtures/images/boiler.jpg')
-          click_on 'Save'
+          click_on 'Save', match: :first
         end
 
         context 'when visiting the report' do
@@ -174,7 +181,7 @@ RSpec.describe 'Admin impact report configuration' do
           select school.name, from: 'impact_report_configuration_engagement_school_id'
           fill_in :impact_report_configuration_engagement_note, with: 'Note about engaged school'
           attach_file 'impact_report_configuration_engagement_image', Rails.root.join('spec/fixtures/images/laptop.jpg')
-          click_on 'Save'
+          click_on 'Save', match: :first
         end
 
         context 'when visiting the report' do
@@ -194,7 +201,7 @@ RSpec.describe 'Admin impact report configuration' do
       context 'when report is made not visible' do
         before do
           uncheck 'Report visible'
-          click_on 'Save'
+          click_on 'Save', match: :first
         end
 
         context 'when visiting the report as an admin' do

@@ -20,6 +20,7 @@
   <thead>
     <tr class="bg-light border-top boder-bottom">
       <th colspan="4">&nbsp;</th>
+      <th colspan="1" class="text-center bg-light border-start">Overview</th>
       <th colspan="2" class="text-center bg-light border-start border-end">Energy efficiency</th>
       <th colspan="2" class="text-center bg-light border-end">Engagement</th>
       <th></th>
@@ -29,11 +30,12 @@
       <th>Enough data</td>
       <th>Report for group</th>
       <th>Admin</th>
-      <th class='border-start'>Visible</th>
+      <th class='text-center border-start'>Case studies</th>
+      <th class='text-center border-start'>Visible</th>
       <th>Feature?</th>
-      <th class='border-start'>Visible</th>
-      <th class='border-end'>Override podium?</th>
-      <th class="no-sort">Actions</th>
+      <th class='text-center border-start'>Visible</th>
+      <th class='text-center border-end'>Override podium</th>
+      <th class="no-sort"></th>
     </tr>
   </thead>
   <tbody>
@@ -67,6 +69,18 @@
               <%= school_group&.default_issues_admin_user&.display_name %>
             </span>
           <% end %>
+        </td>
+        <td class="text-center border-start">
+          <% case_studies_count = CaseStudy.for_school_group(school_group).published.count %>
+          <% title = if case_studies_count.positive?
+                       "#{pluralize(case_studies_count,
+                                    'case study')} available for school group"
+                     else
+                       'No case studies'
+                     end %>
+          <span data-bs-toggle="tooltip" title="<%= title %>">
+            <%= link_to checkmark(case_studies_count.positive?, off_class: 'text-muted'), admin_case_studies_path %>
+          </span>
         </td>
         <td class="text-center border-start">
           <%= checkmark(!config || config.show_energy_efficiency, off_class: 'text-muted') %>
