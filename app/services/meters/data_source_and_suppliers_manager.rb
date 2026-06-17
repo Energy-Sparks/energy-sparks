@@ -14,13 +14,12 @@ module Meters
             warn "Can't find data source with name #{row['Updated Data Source']}"
             next
           end
-          # supplier = Supplier.where(name: row['Supplier']).first
-          # if supplier.blank?
-          #   warn "Can't find supplier with name #{row['Supplier']}"
-          #   next
-          # end
-          meter.update!(data_source:)
-          # meter.update!(data_source:, supplier:)
+          supplier = Supplier.where(name: row['Supplier']).first
+          if supplier.blank?
+            warn "Can't find supplier with name #{row['Supplier']}"
+            next
+          end
+          meter.update!(data_source:, supplier:)
         else
           warn "Can't find meter with mpan_mprn #{row['Meter']}"
         end
