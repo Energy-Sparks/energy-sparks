@@ -47,8 +47,7 @@
   <% component.with_tab(name: :issues,
                         label: label_count('Issues', @data_source.issues.issue.status_open.count)) do %>
     <% if @data_source.issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @data_source.issues.by_priority_order,
-                                             issueable_type: 'Data source' %>
+      <%= render 'admin/issues/issues_list', issues: @data_source.issues.by_priority_order %>
     <% else %>
       <div class="bg-light p-2">No issues for <%= @data_source.name %>.</div>
     <% end %>
@@ -59,8 +58,7 @@
                         label: label_count('Meter issues', @data_source.active_meter_issues.issue.status_open.count)) do %>
     <% if @data_source.active_meter_issues.issue.any? %>
       <%= render 'admin/issues/issues_list', issues: @data_source.active_meter_issues.issue
-                                                                 .status_open.by_priority_order,
-                                             issueable_type: 'Data source' %>
+                                                                 .status_open.by_priority_order %>
     <% else %>
       <div class="bg-light p-2">No meter issues for <%= @data_source.name %>.</div>
     <% end %>

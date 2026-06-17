@@ -239,7 +239,7 @@ en:
         active_meters: Active meters
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
-        admin_meter_status: Meter status
+        admin_meter_status: Status
         completed_meter_reviews: Completed DCC meter reviews
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Source
@@ -252,7 +252,7 @@ en:
         manual_reads: Manual reads?
         meter: Meter
         meter_reviews: Meter Reviews
-        meter_system: Meter system
+        meter_system: Meter type
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name
         no_active_meters: No active meters

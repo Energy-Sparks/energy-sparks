@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :supplier do
-    name { 'supplier' }
+    sequence(:name, 'Supplier AAAAA1')
   end
 end

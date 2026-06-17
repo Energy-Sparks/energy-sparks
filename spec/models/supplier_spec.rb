@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Supplier do
   describe 'deletable' do
-    let!(:supplier) { create(:supplier, name: 'supplier') }
+    let!(:supplier) { create(:supplier) }
 
     it 'allows deletion when there are no meters' do
       expect { supplier.destroy }.to change(described_class, :count).by(-1)

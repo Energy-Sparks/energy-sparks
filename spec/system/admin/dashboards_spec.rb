@@ -138,7 +138,7 @@ RSpec.describe 'Admin dashboard' do
         end
 
         describe 'my suppliers' do
-          let!(:user_supplier) { create(:supplier, name: 'user supplier', owned_by: user) }
+          let!(:user_supplier) { create(:supplier, owned_by: user) }
           let!(:non_user_supplier) { create(:data_source, name: 'non user supplier') }
 
           before do
