@@ -1618,7 +1618,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.bigint "school_id", null: false
     t.bigint "solar_edge_installation_id"
     t.bigint "solis_cloud_installation_id"
-    t.integer "supplier_id"
+    t.bigint "supplier_id"
     t.datetime "updated_at", precision: nil, null: false
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"

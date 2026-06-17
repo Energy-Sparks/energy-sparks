@@ -26,7 +26,7 @@
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  solis_cloud_installation_id    :bigint(8)
-#  supplier_id                    :integer
+#  supplier_id                    :bigint(8)
 #
 # Indexes
 #
