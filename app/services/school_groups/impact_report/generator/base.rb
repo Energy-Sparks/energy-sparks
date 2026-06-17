@@ -28,13 +28,13 @@ module SchoolGroups
           end
         end
 
+        def visible_schools = @visible_schools ||= @school_group.assigned_schools.visible
+
         private
 
         def enough_data?(*) = true
 
         def number_of_schools(*) = visible_schools.count
-
-        def visible_schools = @visible_schools ||= @school_group.assigned_schools.visible
 
         def data_visible_schools = @data_visible_schools ||= @school_group.assigned_schools.data_visible
 

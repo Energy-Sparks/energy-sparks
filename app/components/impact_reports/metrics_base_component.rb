@@ -8,11 +8,11 @@ module ImpactReports
 
     delegate(*ImpactReport::Metric.metric_categories.keys, to: :run, allow_nil: true)
 
-    def initialize(run: nil, school_group: nil, **)
+    def initialize(run: nil, **)
       super(**)
       @run = run
       raise_unless_run
-      @school_group = school_group || run&.school_group
+      @school_group = run&.school_group
     end
 
     def displayable? # rubocop:disable ViewComponent/PreferPrivateMethods

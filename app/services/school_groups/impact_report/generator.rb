@@ -11,10 +11,12 @@ module SchoolGroups
 
       def initialize(school_group)
         @school_group = school_group
+        @visible_schools = Base.new(@school_group).visible_schools.count
       end
 
       def create_metrics!
-        run = ::ImpactReport::Run.create!(school_group: @school_group, run_date: Date.current)
+        run = ::ImpactReport::Run.create!(school_group: @school_group, visible_schools: @visible_schools,
+                                          run_date: Date.current)
         metrics.each do |attributes|
           run.metrics.create!(**attributes)
         rescue StandardError => e

@@ -85,15 +85,21 @@ RSpec.describe 'Admin impact report configuration' do
         end
       end
 
+      it 'shows report enough data as on' do
+        within('tr', text: school_group.name) do
+          expect(page).to have_css('td:nth-child(2) i.fa-check-circle')
+        end
+      end
+
       it 'shows energy efficiency section as visible by default' do
         within('tr', text: school_group.name) do
-          expect(page).to have_css('td:nth-child(4) i.fa-check-circle')
+          expect(page).to have_css('td:nth-child(5) i.fa-check-circle')
         end
       end
 
       it 'shows engagement section as visible by default' do
         within('tr', text: school_group.name) do
-          expect(page).to have_css('td:nth-child(6) i.fa-check-circle')
+          expect(page).to have_css('td:nth-child(7) i.fa-check-circle')
         end
       end
 
@@ -215,7 +221,7 @@ RSpec.describe 'Admin impact report configuration' do
 
         context 'when there are not enough visible schools' do
           before do
-            run.metrics.overview.find_by(metric_type: 'visible_schools').update!(value: 1)
+            run.update!(visible_schools: 1)
             visit school_group_impact_index_path(school_group.reload)
           end
 
