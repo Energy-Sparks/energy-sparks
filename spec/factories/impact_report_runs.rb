@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :impact_report_run, class: 'ImpactReport::Run' do
     school_group
-    visible_schools { 3 }
+    visible_schools { 2 }
     run_date { Time.zone.today }
 
     transient do
