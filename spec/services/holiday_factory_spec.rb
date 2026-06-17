@@ -5,7 +5,7 @@ describe HolidayFactory do
 
   before { create(:calendar_event_type, :holiday) }
 
-  let(:calendar) { create :calendar }
+  let(:calendar) { create(:calendar) }
 
   describe '#create' do
     it 'creates holidays between two events' do
@@ -45,7 +45,7 @@ describe HolidayFactory do
 
   describe '#process_event_update' do
     describe 'when calendar has a parent' do
-      let(:parent_calendar) { create :calendar, calendars: [calendar] }
+      let(:parent_calendar) { create(:calendar, calendars: [calendar]) }
 
       describe 'when the event has changed' do
         it 'resets the based_on of the event and any updated neighbours' do

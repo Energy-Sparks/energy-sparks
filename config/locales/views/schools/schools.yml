@@ -231,6 +231,7 @@ en:
         name: Name
         procurement_route: Procurement route
         serial_number: Serial number
+        supplier: Supplier
         title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
         type: Type
         update_meter: Update Meter
@@ -238,7 +239,7 @@ en:
         active_meters: Active meters
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
-        admin_meter_status: Meter status
+        admin_meter_status: Status
         completed_meter_reviews: Completed DCC meter reviews
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Source
@@ -251,7 +252,7 @@ en:
         manual_reads: Manual reads?
         meter: Meter
         meter_reviews: Meter Reviews
-        meter_system: Meter system
+        meter_system: Meter type
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name
         no_active_meters: No active meters
@@ -261,6 +262,7 @@ en:
         report: Report
         review_meters: Pending DCC meter reviews
         school_downloads: School downloads
+        supplier: Supplier
         title: Manage meters
         validate_meter_readings: Validate meter readings
         validated: Validated
@@ -681,9 +683,6 @@ en:
             percentage: What percentage of the school floor area is using the water source heat pump for heating?
         school_was_successfully_updated: School was successfully updated
         solar_panels: Solar panels
-        solar_panels_label: Our school has solar PV panels
         storage_heaters: Storage heaters
-        storage_heaters_label: Our school has night storage heaters
         swimming_pool: Swimming pool
-        swimming_pool_label: Our school has its own swimming pool
         title: Your School Estate

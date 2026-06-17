@@ -15,21 +15,21 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       click_on 'Activity Categories'
       new_description = 'Now then'
       new_name = 'Alias the jester'
-      expect(page).to have_content(activity_category.name)
-      expect(page).to have_content(activity_category.description)
+      expect(page).to have_text(activity_category.name)
+      expect(page).to have_text(activity_category.description)
       click_on 'Edit'
       fill_in :activity_category_description_en, with: new_description
       fill_in :activity_category_name_en, with: ''
       click_on 'Update Activity category'
-      expect(page).to have_content("can't be blank")
+      expect(page).to have_text("can't be blank")
       fill_in :activity_category_name_en, with: new_name
       attach_file(:activity_category_image_en, Rails.root + 'spec/fixtures/images/placeholder.png')
 
       click_on 'Update Activity category'
 
-      expect(page).to have_content('Activity Categories')
-      expect(page).to have_content(new_name)
-      expect(page).to have_content(new_description)
+      expect(page).to have_text('Activity Categories')
+      expect(page).to have_text(new_name)
+      expect(page).to have_text(new_description)
       expect(ActivityCategory.last.image_en.filename).to eq('placeholder.png')
     end
 
@@ -42,14 +42,14 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       check 'Featured'
       check 'Pupil'
       check 'Live data'
-      expect { click_on 'Create Activity category' }.to change(ActivityCategory, :count).by(0)
-      expect(page).to have_content("can't be blank")
+      expect { click_on 'Create Activity category' }.not_to change(ActivityCategory, :count)
+      expect(page).to have_text("can't be blank")
       fill_in :activity_category_name_en, with: new_name
       attach_file(:activity_category_image_en, Rails.root + 'spec/fixtures/images/placeholder.png')
       expect { click_on 'Create Activity category' }.to change(ActivityCategory, :count).by(1)
-      expect(page).to have_content('Activity Categories')
-      expect(page).to have_content(activity_category.name)
-      expect(page).to have_content(new_description)
+      expect(page).to have_text('Activity Categories')
+      expect(page).to have_text(activity_category.name)
+      expect(page).to have_text(new_description)
 
       new_activity_category = ActivityCategory.last
       expect(new_activity_category.featured).to be_truthy
@@ -63,8 +63,8 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       click_on 'Activity Categories'
       click_on 'New activity category'
       fill_in :activity_category_name_en, with: 'Wibble'
-      expect { click_on 'Create Activity category' }.to change(ActivityCategory, :count).by(0)
-      expect(page).to have_content('has already been taken')
+      expect { click_on 'Create Activity category' }.not_to change(ActivityCategory, :count)
+      expect(page).to have_text('has already been taken')
       fill_in :activity_category_name_en, with: 'Wibble2'
       expect { click_on 'Create Activity category' }.to change(ActivityCategory, :count).by(1)
     end
@@ -73,7 +73,7 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
   describe 'when not logged in' do
     it 'does not authorise viewing' do
       visit admin_activity_categories_path
-      expect(page).to have_content('You need to sign in or sign up before continuing.')
+      expect(page).to have_text('You need to sign in or sign up before continuing.')
     end
   end
 end

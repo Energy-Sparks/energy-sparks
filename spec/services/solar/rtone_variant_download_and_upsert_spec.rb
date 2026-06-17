@@ -3,15 +3,15 @@ require 'rails_helper'
 module Solar
   describe RtoneVariantDownloadAndUpsert do
     let(:meter)         { create(:electricity_meter) }
-    let(:installation)  { create(:rtone_variant_installation, meter: meter)}
+    let(:installation)  { create(:rtone_variant_installation, meter: meter) }
 
     let(:end_date) { Time.zone.today }
     let(:start_date)    { Time.zone.today - 1 }
 
     let(:readings)      do
       {
-        mpan_mprn:        meter.mpan_mprn,
-        readings:         { start_date: OneDayAMRReading.new(meter.mpan_mprn, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
+        mpan_mprn: meter.mpan_mprn,
+        readings: { start_date: OneDayAMRReading.new(meter.mpan_mprn, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
         missing_readings: []
       }
     end
@@ -21,7 +21,7 @@ module Solar
     let(:requested_start_date) { nil }
     let(:requested_end_date) { nil }
 
-    let(:upserter) { Solar::RtoneVariantDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
+    let(:upserter) { Solar::RtoneVariantDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date) }
 
     before do
       expect(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(installation.username, installation.password).and_return(api)
@@ -56,7 +56,7 @@ module Solar
     context 'when there are existing readings' do
       let!(:reading) do
         create(:amr_data_feed_reading, reading_date: reading_date,
-        meter: meter)
+                                       meter: meter)
       end
 
       before do

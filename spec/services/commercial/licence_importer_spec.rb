@@ -14,12 +14,12 @@ describe Commercial::LicenceImporter do
     describe 'when contract doesnt exist' do
       subject(:licence) do
         service.import({
-          contract_name: 'Unknown',
-          school_group: school.school_group.name,
-          licence_holder: school.name,
-          start_date:,
-          end_date:
-        })
+                         contract_name: 'Unknown',
+                         school_group: school.school_group.name,
+                         licence_holder: school.name,
+                         start_date:,
+                         end_date:
+                       })
       end
 
       it 'doesnt create a licence' do
@@ -30,12 +30,12 @@ describe Commercial::LicenceImporter do
     describe 'when school cannot be found' do
       subject(:licence) do
         service.import({
-          contract_name: contract.name,
-          school_group: 'Unknown',
-          licence_holder: 'Unknown',
-          start_date:,
-          end_date:
-        })
+                         contract_name: contract.name,
+                         school_group: 'Unknown',
+                         licence_holder: 'Unknown',
+                         start_date:,
+                         end_date:
+                       })
       end
 
       it 'doesnt create a licence' do
@@ -46,57 +46,57 @@ describe Commercial::LicenceImporter do
     describe 'when a contract exists' do
       subject(:licence) do
         service.import({
-          contract_name: contract.name,
-          school_group: school.school_group.name,
-          licence_holder: school.name,
-          start_date: start_date.iso8601,
-          end_date: end_date.iso8601,
-          school_specific_price: 650.0,
-          status: 'invoiced',
-          comments: 'Important notes'
-        })
+                         contract_name: contract.name,
+                         school_group: school.school_group.name,
+                         licence_holder: school.name,
+                         start_date: start_date.iso8601,
+                         end_date: end_date.iso8601,
+                         school_specific_price: 650.0,
+                         status: 'invoiced',
+                         comments: 'Important notes'
+                       })
       end
 
       it 'creates the expected licence' do
         expect(licence).to have_attributes({
-          contract:,
-          school:,
-          start_date:,
-          end_date:,
-          school_specific_price: 650.0,
-          status: 'invoiced',
-          comments: 'Important notes',
-          created_by: import_user,
-          updated_by: import_user
-        })
+                                             contract:,
+                                             school:,
+                                             start_date:,
+                                             end_date:,
+                                             school_specific_price: 650.0,
+                                             status: 'invoiced',
+                                             comments: 'Important notes',
+                                             created_by: import_user,
+                                             updated_by: import_user
+                                           })
       end
 
       context 'with no start or end dates' do
         subject(:licence) do
           service.import({
-            contract_name: contract.name,
-            school_group: school.school_group.name,
-            licence_holder: school.name,
-            start_date: nil,
-            end_date: nil,
-            school_specific_price: 650.0,
-            status: 'invoiced',
-            comments: 'Important notes'
-          })
+                           contract_name: contract.name,
+                           school_group: school.school_group.name,
+                           licence_holder: school.name,
+                           start_date: nil,
+                           end_date: nil,
+                           school_specific_price: 650.0,
+                           status: 'invoiced',
+                           comments: 'Important notes'
+                         })
         end
 
         it 'creates the expected licence' do
           expect(licence).to have_attributes({
-            contract:,
-            school:,
-            start_date: contract.start_date,
-            end_date: contract.end_date,
-            school_specific_price: 650.0,
-            status: 'invoiced',
-            comments: 'Important notes',
-            created_by: import_user,
-            updated_by: import_user
-          })
+                                               contract:,
+                                               school:,
+                                               start_date: contract.start_date,
+                                               end_date: contract.end_date,
+                                               school_specific_price: 650.0,
+                                               status: 'invoiced',
+                                               comments: 'Important notes',
+                                               created_by: import_user,
+                                               updated_by: import_user
+                                             })
         end
       end
 
@@ -105,16 +105,16 @@ describe Commercial::LicenceImporter do
 
         it 'creates the expected licence' do
           expect(licence).to have_attributes({
-            contract:,
-            school:,
-            start_date:,
-            end_date:,
-            school_specific_price: 650.0,
-            status: 'invoiced',
-            comments: 'Important notes',
-            created_by: import_user,
-            updated_by: import_user
-          })
+                                               contract:,
+                                               school:,
+                                               start_date:,
+                                               end_date:,
+                                               school_specific_price: 650.0,
+                                               status: 'invoiced',
+                                               comments: 'Important notes',
+                                               created_by: import_user,
+                                               updated_by: import_user
+                                             })
         end
       end
 
@@ -123,16 +123,16 @@ describe Commercial::LicenceImporter do
 
         it 'updates the licence' do
           expect(licence).to have_attributes({
-            contract:,
-            school:,
-            start_date:,
-            end_date:,
-            school_specific_price: 650.0,
-            status: 'invoiced',
-            comments: 'Important notes',
-            created_by: existing_licence.created_by,
-            updated_by: import_user
-          })
+                                               contract:,
+                                               school:,
+                                               start_date:,
+                                               end_date:,
+                                               school_specific_price: 650.0,
+                                               status: 'invoiced',
+                                               comments: 'Important notes',
+                                               created_by: existing_licence.created_by,
+                                               updated_by: import_user
+                                             })
         end
       end
     end

@@ -120,6 +120,8 @@ class User < ApplicationRecord
   scope :confirmed, -> { where.not(confirmed_at: nil) }
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 
+  scope :operations, -> { where(operations: true) }
+
   scope :mailchimp_roles, lambda {
     where.not(role: %i[pupil student school_onboarding]).where.not(confirmed_at: nil)
   }
@@ -347,6 +349,8 @@ class User < ApplicationRecord
         'School type',
         'School active',
         'School data enabled',
+        'Current Contract Holder',
+        'Future Contract Holder',
         'Funder',
         'Region',
         'Name',
@@ -368,6 +372,16 @@ class User < ApplicationRecord
           end,
           if user.school
             user.school&.data_enabled? ? 'Yes' : 'No'
+          else
+            ''
+          end,
+          if user.school && !user.has_other_schools?
+            user.school.summarised_current_contract_holder_name || ''
+          else
+            ''
+          end,
+          if user.school && !user.has_other_schools?
+            user.school.summarised_future_contract_holder_name || ''
           else
             ''
           end,

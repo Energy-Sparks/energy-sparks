@@ -79,7 +79,7 @@ describe Amr::DataFeedTranslator do
         ['01/06/2023', '02/06/2023'].flat_map do |date|
           half_hours.map.with_index do |time, i|
             # ['Read date', 'Time', 'Site Name', ' Actual (KWH)']
-            [date, time, '10070831', "0.#{format('%03d', (i + 1))}"]
+            [date, time, '10070831', "0.#{format('%03d', i + 1)}"]
           end
         end
       end

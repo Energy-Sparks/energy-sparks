@@ -5,11 +5,11 @@ require 'rails_helper'
 RSpec.describe Elements::BadgeComponent, :include_application_helper, type: :component do
   let(:text) { 'text' }
   let(:args) { [text] }
-  let(:content) { }
+  let(:content) {}
 
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:colour) { }
+  let(:colour) {}
 
   let(:kwargs) { { colour: colour, id: id, classes: classes } }
 
@@ -26,15 +26,15 @@ RSpec.describe Elements::BadgeComponent, :include_application_helper, type: :com
     end
 
     it { expect(html).to have_css('span.badge.text-dark') }
-    it { expect(html).not_to have_css('span.badge.badge-primary') }
-    it { expect(html).to have_content('text') }
+    it { expect(html).to have_no_css('span.badge.badge-primary') }
+    it { expect(html).to have_text('text') }
   end
 
   context 'with content' do
     let(:content) { 'content' }
 
-    it { expect(html).to have_content('text') }
-    it { expect(html).to have_content('content') }
+    it { expect(html).to have_text('text') }
+    it { expect(html).to have_text('content') }
   end
 
   context 'with colour' do

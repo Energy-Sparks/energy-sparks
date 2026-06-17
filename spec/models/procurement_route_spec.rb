@@ -9,11 +9,11 @@ RSpec.describe ProcurementRoute, type: :model do
   end
 
   describe '.to_csv' do
-    let(:procurement_route) { create(:procurement_route) }
-    let(:data_source) { create(:data_source) }
     subject(:csv) { procurement_route.to_csv }
 
+    let(:procurement_route) { create(:procurement_route) }
     let(:header) { 'School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues' }
+    let(:data_source) { create(:data_source) }
 
     before { freeze_time }
 

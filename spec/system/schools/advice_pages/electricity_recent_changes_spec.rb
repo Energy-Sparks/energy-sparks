@@ -24,9 +24,9 @@ RSpec.describe 'electricity recent changes advice page', type: :system do
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
-        expect(page).to have_content('What do we mean by recent changes?')
-        expect(page).to have_content('Your recent electricity use')
-        expect(page).to have_content(12)
+        expect(page).to have_text('What do we mean by recent changes?')
+        expect(page).to have_text('Your recent electricity use')
+        expect(page).to have_text(12)
       end
     end
 
@@ -38,20 +38,20 @@ RSpec.describe 'electricity recent changes advice page', type: :system do
       it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows titles' do
-        expect(page).to have_content('Comparison of electricity use over 2 recent weeks')
-        expect(page).to have_content('Comparison of electricity use over 2 recent days')
+        expect(page).to have_text('Comparison of electricity use over 2 recent weeks')
+        expect(page).to have_text('Comparison of electricity use over 2 recent days')
       end
 
       it 'shows start and end dates' do
         expected_start_date = start_date.to_fs(:es_full)
         expected_end_date = end_date.to_fs(:es_full)
-        expect(page).to have_content("Electricity data is available from #{expected_start_date} to #{expected_end_date}")
+        expect(page).to have_text("Electricity data is available from #{expected_start_date} to #{expected_end_date}")
       end
 
       it 'does not shows meter filtering chart options for both charts' do
         all('#chart-filter').each do |filters|
           within filters do
-            expect(page).not_to have_select('Which meter?')
+            expect(page).to have_no_select('Which meter?')
           end
         end
       end
@@ -73,8 +73,8 @@ RSpec.describe 'electricity recent changes advice page', type: :system do
       end
 
       it 'shows expected content' do
-        expect(page).to have_content('Comparison of electricity use over 2 recent weeks')
-        expect(page).to have_content('Comparison of electricity use over 2 recent days')
+        expect(page).to have_text('Comparison of electricity use over 2 recent weeks')
+        expect(page).to have_text('Comparison of electricity use over 2 recent days')
         expect(page).to have_css('#chart_wrapper_calendar_picker_electricity_week_example_comparison_chart')
         expect(page).to have_css('#chart_wrapper_calendar_picker_electricity_day_example_comparison_chart')
         expect(page).to have_css('#chart_wrapper_intraday_line_school_last7days')

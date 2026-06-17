@@ -69,13 +69,13 @@ RSpec.describe 'Bootstrap switcher', type: :system do
       before { visit root_path }
 
       it 'does not show the switcher' do
-        expect(page).not_to have_text('Bootstrap')
+        expect(page).to have_no_text('Bootstrap')
       end
 
       context 'when bs5 param is set to true' do
         before { visit root_path(bs5: 'true') }
 
-        it { expect(page).not_to have_css('.bs5') }
+        it { expect(page).to have_no_css('.bs5') }
         it { expect(page).to have_css('.bs4') }
       end
     end
@@ -87,7 +87,7 @@ RSpec.describe 'Bootstrap switcher', type: :system do
       end
 
       it { expect(page).to have_css('.bs5') }
-      it { expect(page).not_to have_css('.bs4') }
+      it { expect(page).to have_no_css('.bs4') }
     end
   end
 end

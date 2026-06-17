@@ -1451,8 +1451,8 @@ describe School do
     end
   end
 
-  describe '#summarised_contract_holder_name' do
-    subject(:name) { school.summarised_contract_holder_name }
+  describe '#summarised_current_contract_holder_name' do
+    subject(:name) { school.summarised_current_contract_holder_name }
 
     let!(:school) { create(:school) }
 
@@ -1494,6 +1494,109 @@ describe School do
 
       before do
         create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+      end
+
+      it { expect(name).to eq('School self funding') }
+    end
+  end
+
+  describe '#summarised_future_contract_holder_name' do
+    subject(:name) { school.summarised_future_contract_holder_name }
+
+    let(:next_academic_year) do
+      calendar = create(:national_calendar, title: 'England and Wales')
+      academic_year = create(:academic_year, calendar:)
+      create(:academic_year,
+             calendar:,
+             start_date: academic_year.end_date + 1.day,
+             end_date: academic_year.end_date + 12.months)
+    end
+
+    let!(:school) { create(:school) }
+
+    context 'with no licence' do
+      it { expect(name).to be_nil }
+    end
+
+    context 'with no future licence' do
+      before do
+        create(:commercial_licence, school:)
+      end
+
+      it { expect(name).to be_nil }
+    end
+
+    context 'with confirmed funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :confirmed,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to eq(contract_holder.name) }
+    end
+
+    context 'with invoiced funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :invoiced,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to eq(contract_holder.name) }
+    end
+
+    context 'with unconfirmed funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :provisional,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to be_nil }
+    end
+
+    context 'with MAT licence' do
+      let(:school) { create(:school, :with_trust) }
+      let(:contract_holder) { school.organisation_group }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :confirmed,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to eq('MAT funding') }
+    end
+
+    context 'with self-funded licence' do
+      let(:contract_holder) { school }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :confirmed,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
       end
 
       it { expect(name).to eq('School self funding') }

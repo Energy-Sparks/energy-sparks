@@ -18,7 +18,7 @@ RSpec.describe 'Solar pv areas', type: :system do
     end
 
     it 'can create a new area' do
-      expect(page).to have_content('There are no Solar PV Areas')
+      expect(page).to have_text('There are no Solar PV Areas')
 
       click_on 'New Solar PV Area'
 
@@ -30,13 +30,13 @@ RSpec.describe 'Solar pv areas', type: :system do
 
       expect { click_on 'Create' }.to change(SolarPvTuosArea, :count).by(1)
 
-      expect(page).to have_content('New Solar PV Area created')
-      expect(page).to have_content('Solar PV Areas')
-      expect(page).to have_content title
-      expect(page).to have_content latitude
-      expect(page).to have_content longitude
-      expect(page).to have_content gsp_name
-      expect(page).to have_content gsp_id
+      expect(page).to have_text('New Solar PV Area created')
+      expect(page).to have_text('Solar PV Areas')
+      expect(page).to have_text title
+      expect(page).to have_text latitude
+      expect(page).to have_text longitude
+      expect(page).to have_text gsp_name
+      expect(page).to have_text gsp_id
     end
 
     it 'checks for valid fields' do
@@ -45,21 +45,21 @@ RSpec.describe 'Solar pv areas', type: :system do
       fill_in 'Title', with: title
       fill_in 'Latitude', with: latitude
 
-      expect { click_on 'Create' }.to change(SolarPvTuosArea, :count).by(0)
+      expect { click_on 'Create' }.not_to change(SolarPvTuosArea, :count)
 
-      expect(page).to have_content("can't be blank")
+      expect(page).to have_text("can't be blank")
 
       fill_in 'Longitude', with: longitude
       fill_in 'Gsp name', with: gsp_name
       fill_in 'Gsp id', with: gsp_id
       expect { click_on 'Create' }.to change(SolarPvTuosArea, :count).by(1)
 
-      expect(page).to have_content('Solar PV Areas')
-      expect(page).to have_content title
-      expect(page).to have_content latitude
-      expect(page).to have_content longitude
-      expect(page).to have_content gsp_name
-      expect(page).to have_content gsp_id
+      expect(page).to have_text('Solar PV Areas')
+      expect(page).to have_text title
+      expect(page).to have_text latitude
+      expect(page).to have_text longitude
+      expect(page).to have_text gsp_name
+      expect(page).to have_text gsp_id
     end
 
     context 'with an existing area' do
@@ -72,13 +72,13 @@ RSpec.describe 'Solar pv areas', type: :system do
       end
 
       it 'shows the area' do
-        expect(page).to have_content('Solar PV Areas')
-        expect(page).to have_content title
-        expect(page).to have_content latitude
-        expect(page).to have_content longitude
-        expect(page).to have_content 'ABC'
-        expect(page).to have_content('Report')
-        expect(page).to have_content('CSV')
+        expect(page).to have_text('Solar PV Areas')
+        expect(page).to have_text title
+        expect(page).to have_text latitude
+        expect(page).to have_text longitude
+        expect(page).to have_text 'ABC'
+        expect(page).to have_text('Report')
+        expect(page).to have_text('CSV')
       end
 
       it 'can be edited' do
@@ -92,14 +92,14 @@ RSpec.describe 'Solar pv areas', type: :system do
         fill_in 'Gsp name', with: gsp_name
         click_on 'Update'
 
-        expect(page).to have_content('Solar PV Area was updated')
+        expect(page).to have_text('Solar PV Area was updated')
 
-        expect(page).to have_content('Solar PV Areas')
-        expect(page).to have_content title
-        expect(page).to have_content new_latitude
-        expect(page).to have_content new_longitude
-        expect(page).to have_content gsp_name
-        expect(page).to have_content gsp_id
+        expect(page).to have_text('Solar PV Areas')
+        expect(page).to have_text title
+        expect(page).to have_text new_latitude
+        expect(page).to have_text new_longitude
+        expect(page).to have_text gsp_name
+        expect(page).to have_text gsp_id
       end
 
       it 'checks for valid fields on update' do
@@ -113,21 +113,21 @@ RSpec.describe 'Solar pv areas', type: :system do
 
         click_on 'Update'
 
-        expect(page).to have_content("can't be blank")
+        expect(page).to have_text("can't be blank")
 
         fill_in 'Latitude', with: new_latitude
         fill_in 'Gsp id', with: gsp_id
         fill_in 'Gsp name', with: gsp_name
 
         click_on 'Update'
-        expect(page).to have_content('Solar PV Area was updated')
+        expect(page).to have_text('Solar PV Area was updated')
 
-        expect(page).to have_content('Solar PV Areas')
-        expect(page).to have_content title
-        expect(page).to have_content new_latitude
-        expect(page).to have_content new_longitude
-        expect(page).to have_content gsp_name
-        expect(page).to have_content gsp_id
+        expect(page).to have_text('Solar PV Areas')
+        expect(page).to have_text title
+        expect(page).to have_text new_latitude
+        expect(page).to have_text new_longitude
+        expect(page).to have_text gsp_name
+        expect(page).to have_text gsp_id
       end
     end
   end

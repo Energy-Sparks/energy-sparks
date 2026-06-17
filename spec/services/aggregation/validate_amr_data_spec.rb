@@ -200,7 +200,7 @@ describe Aggregation::ValidateAmrData, type: :service do
           allow(model_cache).to receive(:create_and_fit_model).and_return(heating_model)
           allow(heating_model).to receive_messages(
             heat_on_missing_data?: true,
-            regression_model_parameters: regression_model_parameters,
+            regression_model_parameters: regression_model_parameters
           )
           allow(heating_model).to receive(:predicted_kwh).and_return(missing_day_prediction, substitute_day_prediction)
 

@@ -18,7 +18,7 @@ RSpec.describe BlogService, type: :service do
       categories: ['Category'],
       author: 'Author',
       author_link: 'https://example.com/author'
-  }
+    }
   end
 
   let(:response_success) do

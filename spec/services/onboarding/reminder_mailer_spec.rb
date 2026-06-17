@@ -1,10 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Onboarding::ReminderMailer, type: :service do
-  let(:email_sent_less_than_a_week_ago)       { create(:school_onboarding_event, event: :email_sent, created_at: 6.days.ago) }
-  let(:email_sent_over_a_week_ago)            { create(:school_onboarding_event, event: :email_sent, created_at: 8.days.ago) }
-  let(:reminder_sent_less_than_a_week_ago)    { create(:school_onboarding_event, event: :reminder_sent, created_at: 6.days.ago) }
-  let(:reminder_sent_over_a_week_ago)         { create(:school_onboarding_event, event: :reminder_sent, created_at: 8.days.ago) }
+  let(:email_sent_less_than_a_week_ago) do
+    create(:school_onboarding_event, event: :email_sent, created_at: 6.days.ago)
+  end
+  let(:email_sent_over_a_week_ago) do
+    create(:school_onboarding_event, event: :email_sent, created_at: 8.days.ago)
+  end
+  let(:reminder_sent_less_than_a_week_ago) do
+    create(:school_onboarding_event, event: :reminder_sent, created_at: 6.days.ago)
+  end
+  let(:reminder_sent_over_a_week_ago) do
+    create(:school_onboarding_event, event: :reminder_sent, created_at: 8.days.ago)
+  end
 
   let(:deliveries) { ActionMailer::Base.deliveries }
 
@@ -31,7 +39,9 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
     end
 
     context 'reminder_sent over a week ago' do
-      let(:onboardings) { [create(:school_onboarding, events: [email_sent_over_a_week_ago, reminder_sent_over_a_week_ago])] }
+      let(:onboardings) do
+        [create(:school_onboarding, events: [email_sent_over_a_week_ago, reminder_sent_over_a_week_ago])]
+      end
 
       before { onboarding.reload }
 
@@ -45,7 +55,9 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
     end
 
     context 'reminder_sent less than a week ago' do
-      let(:onboardings) { [create(:school_onboarding, events: [email_sent_over_a_week_ago, reminder_sent_less_than_a_week_ago])] }
+      let(:onboardings) do
+        [create(:school_onboarding, events: [email_sent_over_a_week_ago, reminder_sent_less_than_a_week_ago])]
+      end
 
       before { onboarding.reload }
 
@@ -59,7 +71,11 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
     end
 
     context 'email_sent over a week ago & reminder_sent less than a week ago' do
-      let(:onboardings) { [create(:school_onboarding, events: [email_sent_over_a_week_ago, reminder_sent_over_a_week_ago, reminder_sent_less_than_a_week_ago])] }
+      let(:onboardings) do
+        [create(:school_onboarding,
+                events: [email_sent_over_a_week_ago, reminder_sent_over_a_week_ago,
+                         reminder_sent_less_than_a_week_ago])]
+      end
 
       before { onboarding.reload }
 
@@ -82,13 +98,13 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
       end
 
       it 'events remain the same' do
-        expect(onboarding.events.pluck(:event)).to match_array ['email_sent']
+        expect(onboarding.events.pluck(:event)).to contain_exactly('email_sent')
       end
     end
   end
 
   describe '.deliver' do
-    let!(:onboardings) {[]}
+    let!(:onboardings) { [] }
 
     before { Onboarding::ReminderMailer.deliver(school_onboardings: onboardings) }
 
@@ -106,8 +122,8 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
       end
 
       it 'creates another reminder_sent event for both onboardings' do
-        expect(onboardings[0].reload.events.pluck(:event)).to match_array ['reminder_sent']
-        expect(onboardings[1].reload.events.pluck(:event)).to match_array ['reminder_sent']
+        expect(onboardings[0].reload.events.pluck(:event)).to contain_exactly('reminder_sent')
+        expect(onboardings[1].reload.events.pluck(:event)).to contain_exactly('reminder_sent')
       end
     end
 
@@ -128,8 +144,8 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
       end
 
       it 'creates another reminder_sent event for both onboardings' do
-        expect(onboardings[0].reload.events.pluck(:event)).to match_array ['reminder_sent']
-        expect(onboardings[1].reload.events.pluck(:event)).to match_array ['reminder_sent']
+        expect(onboardings[0].reload.events.pluck(:event)).to contain_exactly('reminder_sent')
+        expect(onboardings[1].reload.events.pluck(:event)).to contain_exactly('reminder_sent')
       end
     end
 
@@ -145,9 +161,9 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
       end
 
       it 'creates a reminder_sent event for all onboardings' do
-        expect(onboardings[0].reload.events.pluck(:event)).to match_array ['reminder_sent']
-        expect(onboardings[1].reload.events.pluck(:event)).to match_array ['reminder_sent']
-        expect(onboardings[2].reload.events.pluck(:event)).to match_array ['reminder_sent']
+        expect(onboardings[0].reload.events.pluck(:event)).to contain_exactly('reminder_sent')
+        expect(onboardings[1].reload.events.pluck(:event)).to contain_exactly('reminder_sent')
+        expect(onboardings[2].reload.events.pluck(:event)).to contain_exactly('reminder_sent')
       end
     end
   end

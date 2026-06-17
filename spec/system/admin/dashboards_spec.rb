@@ -15,14 +15,14 @@ RSpec.describe 'Admin dashboard' do
     end
 
     context 'when not logged in' do
-      it { expect(page).to have_content('You need to sign in or sign up before continuing.') }
+      it { expect(page).to have_text('You need to sign in or sign up before continuing.') }
     end
 
     context 'when signed in as a non-admin user' do
       let(:user) { create(:staff) }
 
       it 'does not allow access' do
-        expect(page).to have_content('You are not authorized to view that page.')
+        expect(page).to have_text('You are not authorized to view that page.')
       end
     end
   end
@@ -43,11 +43,11 @@ RSpec.describe 'Admin dashboard' do
       end
 
       it 'does not display non-operations admins' do
-        expect(page).to have_no_content(other_admin.name)
+        expect(page).to have_no_text(other_admin.name)
       end
 
       it 'does not display non-admin users' do
-        expect(page).to have_no_content(staff_user.name)
+        expect(page).to have_no_text(staff_user.name)
       end
     end
 
@@ -85,11 +85,11 @@ RSpec.describe 'Admin dashboard' do
           end
 
           it 'displays school groups belonging to the user' do
-            expect(page).to have_content(user_school_group.name)
+            expect(page).to have_text(user_school_group.name)
           end
 
           it 'does not display school groups which do not belong to the user' do
-            expect(page).to have_no_content(non_user_school_group.name)
+            expect(page).to have_no_text(non_user_school_group.name)
           end
         end
 
@@ -107,11 +107,11 @@ RSpec.describe 'Admin dashboard' do
           end
 
           it 'displays project groups belonging to the user' do
-            expect(page).to have_content(user_project_group.name)
+            expect(page).to have_text(user_project_group.name)
           end
 
           it 'does not display project groups which do not belong to the user' do
-            expect(page).to have_no_content(non_user_project_group.name)
+            expect(page).to have_no_text(non_user_project_group.name)
           end
         end
 
@@ -129,11 +129,33 @@ RSpec.describe 'Admin dashboard' do
           end
 
           it 'displays data sources belonging to the user' do
-            expect(page).to have_content(user_data_source.name)
+            expect(page).to have_text(user_data_source.name)
           end
 
           it 'does not display data sources which do not belong to the user' do
-            expect(page).to have_no_content(non_user_data_source.name)
+            expect(page).to have_no_text(non_user_data_source.name)
+          end
+        end
+
+        describe 'my suppliers' do
+          let!(:user_supplier) { create(:supplier, owned_by: user) }
+          let!(:non_user_supplier) { create(:data_source, name: 'non user supplier') }
+
+          before do
+            click_on 'My Suppliers'
+          end
+
+          it 'links to the suppliers page' do
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/suppliers")
+            expect(page).to have_link('View all suppliers', href: admin_suppliers_path)
+          end
+
+          it 'displays suppliers belonging to the user' do
+            expect(page).to have_text(user_supplier.name)
+          end
+
+          it 'does not display data sources which do not belong to the user' do
+            expect(page).to have_no_text(non_user_supplier.name)
           end
         end
 
@@ -151,11 +173,11 @@ RSpec.describe 'Admin dashboard' do
           end
 
           it 'displays data feeds belonging to the user' do
-            expect(page).to have_content(user_data_feed.description)
+            expect(page).to have_text(user_data_feed.description)
           end
 
           it 'does not display data feeds which do not belong to the user' do
-            expect(page).to have_no_content(non_user_data_feed.description)
+            expect(page).to have_no_text(non_user_data_feed.description)
           end
         end
 
@@ -169,7 +191,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the issues page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/issues")
-            expect(page).to have_no_content('Assigned to')
+            expect(page).to have_no_text('Assigned to')
             expect(page).to have_link('View all issues', href: admin_issues_path)
           end
 
@@ -180,11 +202,11 @@ RSpec.describe 'Admin dashboard' do
           end
 
           it 'displays issues belonging to the user' do
-            expect(page).to have_content(user_issue.name)
+            expect(page).to have_text(user_issue.name)
           end
 
           it 'does not display issues which do not belong to the user' do
-            expect(page).to have_no_content(non_user_issue.name)
+            expect(page).to have_no_text(non_user_issue.name)
           end
         end
 
@@ -210,11 +232,11 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays onboarding schools in user school groups' do
-              expect(page).to have_content(user_onboarding.school_name)
+              expect(page).to have_text(user_onboarding.school_name)
             end
 
             it 'does not display onboarding schools not in user school groups' do
-              expect(page).to have_no_content(non_user_onboarding.school_name)
+              expect(page).to have_no_text(non_user_onboarding.school_name)
             end
           end
 
@@ -236,11 +258,11 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays schools awaiting activation in user school groups' do
-              expect(page).to have_content(user_awaiting_school.name)
+              expect(page).to have_text(user_awaiting_school.name)
             end
 
             it 'does not display schools awaiting activation which are not in user school groups' do
-              expect(page).to have_no_content(non_user_awaiting_school.name)
+              expect(page).to have_no_text(non_user_awaiting_school.name)
             end
           end
 
@@ -281,15 +303,15 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays onboardings for user school groups' do
-              expect(page).to have_content(user_completed_onboarding.school_name)
+              expect(page).to have_text(user_completed_onboarding.school_name)
             end
 
             it 'does not display onboarding for other school groups' do
-              expect(page).to have_no_content(non_user_completed_onboarding.school_name)
+              expect(page).to have_no_text(non_user_completed_onboarding.school_name)
             end
 
             it 'does not display onboardings older than 60 days' do
-              expect(page).to have_no_content(old_user_completed_onboarding.school_name)
+              expect(page).to have_no_text(old_user_completed_onboarding.school_name)
             end
           end
 
@@ -311,7 +333,7 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays engaged schools' do
-              expect(page).to have_content(engaged_school.school_group.name)
+              expect(page).to have_text(engaged_school.school_group.name)
             end
           end
 
@@ -335,11 +357,11 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays activities from schools in user school groups' do
-              expect(page).to have_content(user_activity.title)
+              expect(page).to have_text(user_activity.title)
             end
 
             it 'does not display activities for other schools' do
-              expect(page).to have_no_content(non_user_activity.title)
+              expect(page).to have_no_text(non_user_activity.title)
             end
           end
 
@@ -361,11 +383,11 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays actions for user school groups' do
-              expect(page).to have_content(user_intervention.intervention_type.name)
+              expect(page).to have_text(user_intervention.intervention_type.name)
             end
 
             it 'does not display actions for other non-user school groups' do
-              expect(page).to have_no_content(non_user_intervention.intervention_type.name)
+              expect(page).to have_no_text(non_user_intervention.intervention_type.name)
             end
           end
 
@@ -387,11 +409,11 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays missing alert contacts for user school groups' do
-              expect(page).to have_content(user_school.name)
+              expect(page).to have_text(user_school.name)
             end
 
             it 'does not display missing alert contacts for non-user school groups' do
-              expect(page).to have_no_content(non_user_school.name)
+              expect(page).to have_no_text(non_user_school.name)
             end
           end
 

@@ -35,7 +35,7 @@ RSpec.describe Layout::CardComponent, :include_application_helper, type: :compon
       end
     end
 
-    it { expect(html).to have_selector('img.card-img-top') }
+    it { expect(html).to have_css('img.card-img-top') }
     it { expect(html).to have_xpath('.//img[contains(@src, "/assets/laptop-")]', visible: :all) }
   end
 
@@ -46,8 +46,8 @@ RSpec.describe Layout::CardComponent, :include_application_helper, type: :compon
       end
     end
 
-    it { expect(html).to have_content('body') }
-    it { expect(html).to have_selector('.card-body') }
+    it { expect(html).to have_text('body') }
+    it { expect(html).to have_css('.card-body') }
   end
 
   context 'with list_group' do
@@ -57,7 +57,7 @@ RSpec.describe Layout::CardComponent, :include_application_helper, type: :compon
       end
     end
 
-    it { expect(html).to have_selector('.list-group.list-group-flush') }
+    it { expect(html).to have_css('.list-group.list-group-flush') }
   end
 
   context 'with feature card' do
@@ -69,7 +69,7 @@ RSpec.describe Layout::CardComponent, :include_application_helper, type: :compon
       end
     end
 
-    it { expect(html).to have_content('description') }
+    it { expect(html).to have_text('description') }
   end
 
   context 'with footer' do
@@ -79,7 +79,7 @@ RSpec.describe Layout::CardComponent, :include_application_helper, type: :compon
       end
     end
 
-    it { expect(html).to have_content('footer') }
-    it { expect(html).to have_selector('.card-footer') }
+    it { expect(html).to have_text('footer') }
+    it { expect(html).to have_css('.card-footer') }
   end
 end

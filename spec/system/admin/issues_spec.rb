@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'issues', :include_application_helper, :issues do
   let!(:school_group_issues_admin) { create(:admin, name: 'Group Issues Admin') }
-  let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin)}
+  let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin) }
   let!(:school) { create(:school, school_group: school_group) }
   let!(:gas_meter) { create(:gas_meter, name: nil, school: school) }
   let!(:electricity_meter) { create(:electricity_meter, school: school) }
@@ -20,7 +20,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
       end
 
       context 'when user is not logged in' do
-        let!(:user) { }
+        let!(:user) {}
 
         it { expect(page).to have_text('You need to sign in or sign up before continuing.') }
       end
@@ -43,7 +43,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                 click_link text: /New #{issue_type.capitalize}/
               end
 
-              it { expect(page).to have_text("New #{issue_type.capitalize} for #{issueable.name}")}
+              it { expect(page).to have_text("New #{issue_type.capitalize} for #{issueable.name}") }
 
               it 'has default values' do
                 expect(find_field('Title').text).to be_blank
@@ -186,7 +186,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   expect(page).to have_text "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_text "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
                   expect(page).to have_text 'Next review • No date set'
-                  expect(page).not_to have_css("i[class*='fa-thumbtack']")
+                  expect(page).to have_no_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).to have_text gas_meter.mpan_mprn
                     expect(page).to have_no_text electricity_meter.mpan_mprn
@@ -206,7 +206,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
 
               context 'displaying school context menu' do
                 it { expect(page).to have_link('Manage School') if issueable.is_a?(School) }
-                it { expect(page).not_to have_link('Manage School') unless issueable.is_a?(School) }
+                it { expect(page).to have_no_link('Manage School') unless issueable.is_a?(School) }
               end
 
               context 'when deleting an issue' do
@@ -354,13 +354,13 @@ RSpec.describe 'issues', :include_application_helper, :issues do
       it { expect(page).to have_checked_field('Closed') }
 
       context 'showing defaults' do
-        let(:open_issue) { create :issue, status: :open }
-        let(:closed_issue) { create :issue, status: :closed }
-        let(:issue_issue) { create :issue }
-        let(:note_issue) { create :issue, issue_type: :note, pinned: true}
-        let(:inactive_school_issue) { create :issue, issueable: create(:school, active: false) }
+        let(:open_issue) { create(:issue, status: :open) }
+        let(:closed_issue) { create(:issue, status: :closed) }
+        let(:issue_issue) { create(:issue) }
+        let(:note_issue) { create(:issue, issue_type: :note, pinned: true) }
+        let(:inactive_school_issue) { create(:issue, issueable: create(:school, active: false)) }
 
-        let(:setup_data) { [open_issue, closed_issue, issue_issue, note_issue, inactive_school_issue]}
+        let(:setup_data) { [open_issue, closed_issue, issue_issue, note_issue, inactive_school_issue] }
 
         it_behaves_like 'a displayed list issue' do
           let(:issue) { open_issue }
@@ -448,8 +448,8 @@ RSpec.describe 'issues', :include_application_helper, :issues do
       end
 
       context 'when selecting a user' do
-        let!(:user_issue) { create(:issue, owned_by: user)}
-        let!(:other_user_issue) { create(:issue, owned_by: create(:admin, name: 'Not you'))}
+        let!(:user_issue) { create(:issue, owned_by: user) }
+        let!(:other_user_issue) { create(:issue, owned_by: create(:admin, name: 'Not you')) }
         let(:setup_data) { [user_issue, other_user_issue] }
 
         before do
@@ -549,7 +549,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
         end
       end
 
-      context 'when filtering by issue tag' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      context 'when filtering by issue tag' do
         let(:issue_with_first_tag)  { create(:issue, issue_tags: [create(:issue_tag, label: 'tag1')]) }
         let(:issue_with_second_tag) { create(:issue, issue_tags: [create(:issue_tag, label: 'tag2')]) }
         let!(:issues) { [issue_with_first_tag, issue_with_second_tag] }
@@ -559,9 +559,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
         end
 
         buttons.each do |button|
-          # rubocop:disable RSpec/NestedGroups
-
-          context "when clicking #{button}" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+          context "when clicking #{button}" do
             before { click_on button }
 
             it_behaves_like 'a displayed list issue', type: button do
@@ -569,8 +567,6 @@ RSpec.describe 'issues', :include_application_helper, :issues do
               let(:all_issues) { issues }
             end
           end
-
-          # rubocop:enable RSpec/NestedGroups
         end
       end
 
