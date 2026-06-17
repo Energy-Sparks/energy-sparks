@@ -4,6 +4,8 @@ module Admin
   module Commercial
     module Contracts
       class InvoicesController < AdminController
+        include ApplicationHelper
+
         load_and_authorize_resource :contract, class: 'Commercial::Contract'
         def raise_invoice
           @licences = @contract.licences.pending_invoice.by_start_date
@@ -14,7 +16,7 @@ module Admin
           @prices = ::Commercial::ContractPriceCalculator.new(@contract).per_school
           @invoice = @contract.invoices.new(purchase_order_number: @contract.purchase_order_number)
           @contract.licences.where(id: licence_params).find_each do |licence|
-            build_line_item(@invoice, licence, @prices[licence.school.id])
+            build_line_item(@invoice, licence, @prices[licence.school.id][:price])
           end
         end
 
@@ -36,12 +38,16 @@ module Admin
 
         private
 
+        def format_price_without_symbol(price)
+          format_price(price).delete('£')
+        end
+
         def build_line_item(invoice, licence, price)
           invoice.line_items.build(
             licence: licence,
-            base_price: price.base_price,
-            metering_fee: price.metering_fee,
-            private_account_fee: price.private_account_fee,
+            base_price: format_price_without_symbol(price.base_price),
+            metering_fee: format_price_without_symbol(price.metering_fee),
+            private_account_fee: format_price_without_symbol(price.private_account_fee),
             private_account: licence.school.data_sharing != 'public',
             number_of_meters: licence.school.meters.main_meter.active.count
           )
@@ -51,18 +57,16 @@ module Admin
           params.require(:licences)
         end
 
+        # rubocop:disable Rails/StrongParametersExpect
         def invoice_attributes
-          params.expect(
-            commercial_invoice: [:contract_id,
-                                 :purchase_order_number,
-                                 {
-                                   line_items_attributes: %i[
-                                     base_price licence_id metering_fee
-                                     number_of_meters private_account private_account_fee
-                                   ]
-                                 }]
+          params.require(:commercial_invoice).permit(
+            :contract_id,
+            :purchase_order_number,
+            line_items_attributes: %i[base_price licence_id metering_fee number_of_meters private_account
+                                      private_account_fee]
           )
         end
+        # rubocop:enable Rails/StrongParametersExpect
       end
     end
   end

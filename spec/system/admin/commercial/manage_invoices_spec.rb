@@ -151,6 +151,62 @@ describe 'manage invoices', :include_application_helper do
           ]
         end
       end
+
+      context 'when then proceeding' do
+        before do
+          check "licence_#{licence.id}"
+          click_on 'Proceed'
+        end
+
+        it { expect(page).to have_text('Create Invoice') }
+
+        it 'populates the line item fields' do
+          prefix = 'commercial_invoice[line_items_attributes][0]'
+          expect(find("input[name=\"#{prefix}[number_of_meters]\"]").value).to eq('0')
+          expect(find("input[name=\"#{prefix}[private_account]\"]").value).to eq('false')
+          expect(find("input[name=\"#{prefix}[base_price]\"]").value).to eq('545.00')
+          expect(find("input[name=\"#{prefix}[metering_fee]\"]").value).to eq('0.00')
+          expect(find("input[name=\"#{prefix}[private_account_fee]\"]").value).to eq('0.00')
+        end
+
+        it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+          let(:table_id) { '#line-items' }
+          let(:expected_header) do
+            [
+              ['School', 'Number of Meters', 'Private Account?',
+               'Base Price', 'Metering Fee', 'Private Account Fee', 'Total']
+            ]
+          end
+          let(:expected_rows) do
+            [
+              [
+                licence.school.name,
+                '',
+                '',
+                '',
+                '',
+                '',
+                '545.0'
+              ]
+            ]
+          end
+        end
+
+        context 'when invoice is created' do # rubocop:disable RSpec/NestedGroups
+          subject(:invoice) { licence.contract.invoices.first }
+
+          before do
+            fill_in 'Purchase order number', with: 'PO-98765'
+            click_on 'Create invoice'
+          end
+
+          it 'creates the invoice and updates the licences' do
+            expect(page).to have_text(invoice.invoice_number)
+            expect(page).to have_text('PO-98765')
+            expect(licence.reload.status).to eq('invoiced')
+          end
+        end
+      end
     end
   end
 end
