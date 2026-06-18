@@ -5,7 +5,7 @@
   <div class="form-group">
     <%= form.label :mpan_mprn, t('schools.meters.form.meter_point_number') %>
     <% if disabled_for_pseudo_meter?(meter) && current_user.admin? %>
-      <span class='badge badge-warning'>
+      <span class='badge text-bg-warning'>
         <%= t('schools.meters.form.editing_disabled_for_pseudo_meters') %>
       </span>
     <% end %>
@@ -22,7 +22,7 @@
   <div class="form-group">
     <%= form.label :meter_type, t('schools.meters.form.type') %>
     <% if disabled_for_pseudo_meter?(meter) && current_user.admin? %>
-      <span class='badge badge-warning'>
+      <span class='badge text-bg-warning'>
         <%= t('schools.meters.form.editing_disabled_for_pseudo_meters') %>
       </span>
     <% end %>
@@ -50,6 +50,12 @@
       <%= form.select(:data_source_id, DataSource.all.order(:name).collect do |d|
                                          [d.name, d.id]
                                        end, { include_blank: true }, class: 'form-control') %>
+    </div>
+    <div class="form-group">
+      <%= form.label :supplier_id, t('schools.meters.form.supplier') %>
+      <%= form.select(:supplier_id, Supplier.all.by_name.collect do |d|
+                                      [d.name, d.id]
+                                    end, { include_blank: true }, class: 'form-control') %>
     </div>
     <div class="form-group">
       <%= form.label :procurement_route_id, t('schools.meters.form.procurement_route') %>

@@ -7,6 +7,7 @@ module Admin
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
     load_and_authorize_resource :data_source
+    load_and_authorize_resource :supplier
     load_and_authorize_resource :school_onboarding, find_by: :uuid
     before_action :issueable
 
@@ -128,7 +129,7 @@ module Admin
 
     def issueable
       # For school context menu if school available
-      @issueable ||= @school || @school_group || @data_source || @school_onboarding
+      @issueable ||= @school || @school_group || @data_source || @supplier || @school_onboarding
     end
 
     def redirect_index(notice:)

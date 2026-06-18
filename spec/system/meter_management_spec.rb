@@ -42,7 +42,7 @@ RSpec.shared_examples_for 'the show meter page' do |admin:|
     expect(page).to have_selector(:link_or_button, 'Edit', exact: true)
     if admin
       expect(page).to have_text('Admin details')
-      expect(page).to have_text('Meter system NHH AMR Data source Data Co Contract Meter status Manual reads? false ' \
+      expect(page).to have_text('Meter type NHH AMR Data source Data Co Contract Status Manual reads? false ' \
                                 'Gas unit Cubic Meters')
     else
       expect(page).to have_no_text('Admin details')
