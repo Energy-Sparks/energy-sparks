@@ -47,4 +47,15 @@ $(document).ready(function() {
       }
     })
   });
+
+  // Redraw DataTables when Bootstrap tabs are shown.
+  // Fixes pagination issues when tables are initialised in hidden tabs.
+  // Should work for Bootstrap 4 and 5
+  $('[data-toggle="tab"], [data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+    const target = $(e.target).attr('href');
+    if (!target) return;
+    $(target).find('table.dataTable').each(function() {
+      $(this).DataTable().draw(false);
+    });
+  });
 });
