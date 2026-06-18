@@ -80,6 +80,8 @@ module Commercial
            .by_start_date
     end
 
+    scope :not_provisional, -> { where.not(status: :provisional) }
+
     # Calculate duration ignoring leap years
     def self.licence_period_days(period_start, period_end)
       real_days = (period_end - period_start).to_i + 1

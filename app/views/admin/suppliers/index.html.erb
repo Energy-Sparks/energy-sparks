@@ -1,0 +1,40 @@
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "#{@dashboard_user.display_name}'s Suppliers" %>
+  <% end %>
+
+  <%= render Elements::ButtonComponent.new('View all suppliers',
+                                           admin_suppliers_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+<% else %>
+  <%= render 'header', title: 'Manage Suppliers' do %>
+    <%= header_nav_link 'Admin Home', admin_url %>
+  <% end %>
+<% end %>
+
+<%= link_to 'New supplier', new_admin_supplier_path, class: 'btn btn-primary mb-2' %>
+
+<table class="table table-paged" style="width: 100%">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Owned by</th>
+      <th>Active meters</th>
+      <th class="no-sort text-end">Actions</th>
+    </tr>
+  </thead>
+    <tbody>
+    <% @suppliers.each do |supplier| %>
+      <tr>
+        <td class="nowrap"><%= link_to supplier.name, admin_supplier_path(supplier) %></td>
+        <td><%= supplier.owned_by&.name %></td>
+        <td><%= supplier.meters.active_for_active_schools.count %></td>
+        <td class='nowrap text-end'>
+          <%= link_to 'Edit', edit_admin_supplier_path(supplier), class: 'btn btn-secondary btn-sm' %>
+          <%= render(Forms::DeleteButtonComponent.new(admin_supplier_path(supplier), resource: supplier)) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

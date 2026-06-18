@@ -1541,6 +1541,21 @@ describe School do
       it { expect(name).to eq(contract_holder.name) }
     end
 
+    context 'with invoiced funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :invoiced,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to eq(contract_holder.name) }
+    end
+
     context 'with unconfirmed funder licence' do
       let(:contract_holder) { create(:funder) }
 
