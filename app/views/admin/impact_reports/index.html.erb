@@ -18,7 +18,7 @@
 
 <table class="table table-paged">
   <thead>
-    <tr class="bg-light border-top boder-bottom">
+    <tr class="bg-light border-top border-bottom">
       <th colspan="4">&nbsp;</th>
       <th class="text-center bg-light border-start">Overview</th>
       <th colspan="2" class="text-center bg-light border-start border-end">Energy efficiency</th>
@@ -27,7 +27,7 @@
     </tr>
     <tr>
       <th>Visible</th>
-      <th>Enough data</td>
+      <th>Enough data</th>
       <th>Report for group</th>
       <th>Admin</th>
       <th class='text-center border-start'>Case studies</th>
@@ -45,7 +45,7 @@
       <tr class="<%= 'text-muted bg-light' unless config&.visible && run&.enough_data? %>">
         <td class="text-center">
           <span data-bs-toggle="tooltip" title="<%= config&.visible ? 'Visible' : 'Not visible' %>">
-            <%= checkmark(config&.visible, off_class: 'text-muted') %></td>
+            <%= checkmark(config&.visible, off_class: 'text-muted') %>
           </span>
         </td>
         <td class="text-center">
@@ -57,7 +57,6 @@
             <% else %>
               <%= checkmark(run&.enough_data?, off_class: 'text-muted') %>
             <% end %>
-            </td>
           </span>
         </td>
         <td>
@@ -102,8 +101,10 @@
             <div class="badge text-bg-light">Expired</div>
           <% end %>
         </td>
-        <td class='text-center'><%= link_to 'Edit', edit_school_group_impact_configuration_path(school_group),
-                                            class: 'btn btn-secondary btn-sm' %>
+        <td class='text-center'>
+          <%= link_to 'Edit', edit_school_group_impact_configuration_path(school_group),
+                      class: 'btn btn-secondary btn-sm' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
