@@ -6,14 +6,16 @@
 module Aggregation
   class SolarPvPanels
     include Logging
+
     attr_reader :meter_attributes_config, :real_production_data
 
-    def self.create(meter, attribute_name)
+    def self.create(meter, attribute_name, override_default)
       return unless meter.meter_attributes.key?(attribute_name)
 
-      new(meter.meter_attributes[attribute_name], meter.meter_collection.solar_pv,
-          override_default: attribute_name == :solar_pv)
+      new(meter.meter_attributes[attribute_name], meter.meter_collection.solar_pv, override_default:)
     end
+
+    private_class_method :new
 
     # @param [Hash] meter_attributes_config the :solar_pv meter attributes to process
     # @param [SolarPV] synthetic_sheffield_solar_pv_yields the Sheffield Solar data for this school
@@ -63,6 +65,12 @@ module Aggregation
       print_detailed_results(pv_meter_map, 'After solar pv calculation')
     end
 
+    def create_generation_meter(mains_consume)
+      create_generation_data(SolarMeterMap.new(mains_consume), false)
+    end
+
+    private
+
     # Calculate solar PV generation for a given day
     #
     # @param [Date] date the day to calculate
@@ -78,8 +86,6 @@ module Aggregation
       OneDayAMRReading.new(mpan, date, 'SOLR', nil, DateTime.now, scaled_pv_kwh_x48)
     end
 
-    private
-
     # Creates a solar generation meter, if required, then populates the meter
     # with synthetic data
     #
@@ -89,7 +95,9 @@ module Aggregation
     # @param [SolarMeterMap] pv_meter_map the solar meters
     # @param [boolean] create_zero_if_no_config THIS IS ALWAYS FALSE
     def create_generation_data(pv_meter_map, create_zero_if_no_config)
-      pv_meter_map[:generation] = create_generation_meter_from_map(pv_meter_map) if pv_meter_map[:generation].nil?
+      if pv_meter_map[:generation].nil?
+        pv_meter_map.set_meter(:generation, create_generation_meter_from_map(pv_meter_map))
+      end
 
       create_generation_amr_data(
         pv_meter_map[:mains_consume].amr_data,
@@ -97,10 +105,12 @@ module Aggregation
         pv_meter_map[:mains_consume].mpan_mprn,
         create_zero_if_no_config
       )
+
+      pv_meter_map[:generation]
     end
 
     def create_export_meter_if_missing(pv_meter_map)
-      pv_meter_map[:export] = create_export_meter_from_map(pv_meter_map) if pv_meter_map[:export].nil?
+      pv_meter_map.set_meter(:export, create_export_meter_from_map(pv_meter_map)) if pv_meter_map[:export].nil?
     end
 
     # Calculate or override the solar export data for the export meter in the SolarMeterMap
@@ -117,8 +127,7 @@ module Aggregation
     def create_self_consumption_meter_if_missing(pv_meter_map)
       return unless pv_meter_map[:self_consume].nil?
 
-      pv_meter_map[:self_consume] =
-        create_self_consumption_meter_from_map(pv_meter_map)
+      pv_meter_map.set_meter(:self_consume, create_self_consumption_meter_from_map(pv_meter_map))
     end
 
     # Calculate or override the solar self consumption data for the self consumption meter in the SolarMeterMap
@@ -322,11 +331,7 @@ module Aggregation
 
     # Create a solar generation meter, based on the mains_consume meter in the map
     def create_generation_meter_from_map(pv_meter_map)
-      date_range, meter_to_clone, meter_collection = meter_creation_data(pv_meter_map)
-      create_generation_meter(date_range, meter_to_clone, meter_collection)
-    end
-
-    def create_generation_meter(_date_range, meter_to_clone, meter_collection)
+      _date_range, meter_to_clone, meter_collection = meter_creation_data(pv_meter_map)
       create_meter(
         meter_to_clone,
         :solar_pv,

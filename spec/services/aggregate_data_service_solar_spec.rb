@@ -5,7 +5,6 @@ require 'rails_helper'
 describe AggregateDataServiceSolar do
   subject(:processed_meters) { described_class.new(meter_collection).process_solar_pv_electricity_meters }
 
-  let(:sub_meters) { processed_meters.first.sub_meters }
   let(:meter_collection) { build(:meter_collection, random_generator: Random.new(51)) }
   let(:solar_pv_mpan_meter_mapping) { nil }
   let(:meter_attributes) do
@@ -17,6 +16,8 @@ describe AggregateDataServiceSolar do
   let(:solar_production_meter) { nil }
   let(:solar_export_meter) { nil }
   let(:meters) { [electricity_meter, solar_production_meter, solar_export_meter].compact }
+
+  def sub_meters = processed_meters.first.sub_meters
 
   before do
     travel_to Date.new(2025, 5, 31)
@@ -54,7 +55,7 @@ describe AggregateDataServiceSolar do
   end
 
   context 'when school has metered solar' do
-    let(:solar_production_meter) { build(:meter, meter_collection: meter_collection, type: :solar_pv) }
+    let(:solar_production_meter) { build(:meter, meter_collection:, type: :solar_pv, kwh_data_x48: [1] * 48) }
     let(:solar_pv_mpan_meter_mapping) do
       {
         start_date: Date.new(2023, 1, 1),
@@ -85,10 +86,10 @@ describe AggregateDataServiceSolar do
 
     context 'with production and export meters' do
       let(:solar_production_meter) do
-        build(:meter, meter_collection: meter_collection, type: :solar_pv, kwh_data_x48: Array.new(48, 4))
+        build(:meter, meter_collection:, type: :solar_pv, kwh_data_x48: Array.new(48, 4))
       end
       let(:solar_export_meter) do
-        build(:meter, meter_collection: meter_collection, type: :exported_solar_pv, kwh_data_x48: Array.new(48, 1))
+        build(:meter, meter_collection:, type: :exported_solar_pv, kwh_data_x48: Array.new(48, 1))
       end
 
       it 'returns a single new electricity meter' do
@@ -109,7 +110,7 @@ describe AggregateDataServiceSolar do
 
       context 'with faulty zero production' do
         let(:solar_production_meter) do
-          build(:meter, meter_collection: meter_collection, type: :solar_pv,
+          build(:meter, meter_collection:, type: :solar_pv,
                         amr_data: build(:amr_data, :with_days, day_count: 30, kwh_data_x48: Array.new(48, 0.0)))
         end
 
@@ -121,7 +122,7 @@ describe AggregateDataServiceSolar do
 
       context 'with export override' do
         let(:meter_attributes) do
-          super().merge({ solar_pv_override: [{ start_date: Date.new(2023, 1, 1), kwp: 10.0, override_export: true }] })
+          super().merge({ solar_pv_override: [{ start_date: Date.new(2023), kwp: 10.0, override_export: true }] })
         end
 
         it 'overrides the export' do
@@ -151,7 +152,7 @@ describe AggregateDataServiceSolar do
     end
 
     context 'with multiple production meters and no export meter' do
-      let(:solar_production_meters) { build_list(:meter, 5, meter_collection: meter_collection, type: :solar_pv) }
+      let(:solar_production_meters) { build_list(:meter, 5, meter_collection:, type: :solar_pv) }
       let(:solar_pv_mpan_meter_mapping) do
         {
           start_date: Date.new(2023, 1, 1),
@@ -190,6 +191,25 @@ describe AggregateDataServiceSolar do
         # uses mpan_mprn of first generation meter
         expect(sub_meters[:generation].mpan_mprn).to \
           eq(Dashboard::Meter.synthetic_aggregate_generation_meter(solar_production_meters.first.mpan_mprn))
+      end
+    end
+
+    context 'and modelled solar' do
+      let(:electricity_meter) do
+        amr_data = build(:amr_data, :with_date_range, start_date: meter_collection.solar_pv.start_date,
+                                                      end_date: meter_collection.solar_pv.end_date,
+                                                      kwh_data_x48: [1] * 48)
+        build(:meter, meter_collection:, type: :electricity, meter_attributes:, amr_data:)
+      end
+      let(:meter_attributes) do
+        super().merge(modelled_solar_pv_generation: [{ start_date: Date.new(2023), kwp: 1 },
+                                                     { start_date: 3.days.ago.to_date, kwp: 10 }])
+      end
+
+      it 'generation meter has modelled added' do
+        values = sub_meters[:generation].amr_data.values
+        expect(values.first.one_day_kwh).to be_within(1).of(58)
+        expect(values.last.one_day_kwh).to be_within(1).of(156)
       end
     end
   end

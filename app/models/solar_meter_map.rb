@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../../lib/dashboard/utilities/restricted_key_hash'
 # helper class for main solar aggregation service
 # keeps track of the meter (between 7-9) meters being manipulated
-class SolarMeterMap < RestrictedKeyHash
+class SolarMeterMap
   MPAN_KEY_MAPPINGS = {
     export_mpan: :export,
     production_mpan: :generation,
@@ -75,21 +74,46 @@ class SolarMeterMap < RestrictedKeyHash
     }
   end
 
+  def initialize(mains_electricity_meter)
+    @hash = {}
+    @hash[:mains_consume] = mains_electricity_meter
+    @generation_meters = []
+  end
+
+  delegate(:[], to: :@hash)
+  delegate(:each, to: :@hash)
+  delegate(:each_value, to: :@hash)
+
   def all_required_key_values_non_nil?
-    each do |k, v|
+    @hash.each do |k, v|
       return false if v.nil? && !self.class.optional_keys.include?(k)
     end
     true
   end
 
-  def number_of_generation_meters
-    count { |k, v| self.class.generation_meters.include?(k) && !v.nil? }
-  end
 
-  # TODO rename / replace with more meaningful
+  # TODO: rename / replace with more meaningful
   def set_nil_value(list_of_keys)
     list_of_keys.each do |k|
-      self[k] = nil
+      @hash[k] = nil
     end
+  end
+
+  def generation_meters
+    @hash.select do |type, meter|
+      self.class.generation_meters.include?(type) && !meter.nil?
+    end.values + @generation_meters
+  end
+
+  def add_generation_meter(meter)
+    @generation_meters << meter
+  end
+
+  def mains_consume
+    @hash[:mains_consume]
+  end
+
+  def set_meter(key, meter)
+    @hash[self.class.meter_type(key) || key] = meter
   end
 end

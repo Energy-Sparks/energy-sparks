@@ -1,6 +1,7 @@
+# inherit_from: <%= ENV.key?('CI') ? '.rubocop_todo.yml' : '/dev/null' %>
+
 inherit_from:
-  - .rubocop_todo.yml
-  - /dev/null
+  - <%= '.rubocop_todo.yml' if ENV.key?('CI') %>
 
 inherit_mode:
   merge:

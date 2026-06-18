@@ -27,6 +27,7 @@ class AggregateDataServiceSolar
       if mains_electricity_meter.solar_pv_panels?
         # create a SolarMeterMap, removing any real solar meters from the meter collection for this meter
         pv_meter_map = setup_meter_map(mains_electricity_meter)
+        # debugger
         process_solar_pv_electricity_meter(pv_meter_map)
       else
         reference_as_sub_meter_for_subsequent_aggregation(mains_electricity_meter)
@@ -74,7 +75,7 @@ class AggregateDataServiceSolar
     logger.debug { "Aggregation service: processing mains meter #{pv_meter_map[:mains_consume]} with solar pv" }
     print_meter_map(pv_meter_map)
 
-    aggregate_multiple_generation_meters(pv_meter_map) if pv_meter_map.number_of_generation_meters > 1
+    aggregate_multiple_generation_meters(pv_meter_map) if pv_meter_map.generation_meters.many?
 
     # If we have real metered solar generation data, but no export meters, then
     # create export and self-consumption meters
@@ -97,7 +98,10 @@ class AggregateDataServiceSolar
 
     create_mains_plus_self_consume_meter(pv_meter_map)
 
-    raise EnergySparksUnexpectedStateException, 'Not all solar pv meters assigned' unless pv_meter_map.all_required_key_values_non_nil?
+    unless pv_meter_map.all_required_key_values_non_nil?
+      raise EnergySparksUnexpectedStateException,
+            'Not all solar pv meters assigned'
+    end
 
     # Override the names of meters assigned during the aggregation process
     assign_meter_names(pv_meter_map)
@@ -161,14 +165,18 @@ class AggregateDataServiceSolar
   def print_final_setup(meter)
     logger.debug { "Final meter setup for #{meter} total #{meter.amr_data.total.round(0)}" }
     meter.sub_meters.each do |meter_type, sub_meter|
-      logger.debug { "    sub_meter: #{meter_type} => #{sub_meter} name #{sub_meter.name} total #{sub_meter.amr_data.total.round(0)}" }
+      logger.debug do
+        "    sub_meter: #{meter_type} => #{sub_meter} name #{sub_meter.name} total #{sub_meter.amr_data.total.round(0)}"
+      end
     end
   end
 
   # Results in the meter having a reference to itself as a mains consumption meter
   # in its Dashboard::Submeters hash
   def reference_as_sub_meter_for_subsequent_aggregation(mains_electricity_meter)
-    logger.debug { "Referencing mains consumption meter #{mains_electricity_meter.mpan_mprn} without pv as sub meter for subsequent aggregation" }
+    logger.debug do
+      "Referencing mains consumption meter #{mains_electricity_meter.mpan_mprn} without pv as sub meter for subsequent aggregation"
+    end
     mains_electricity_meter.sub_meters[:mains_consume] = mains_electricity_meter
   end
 
@@ -209,7 +217,8 @@ class AggregateDataServiceSolar
       original: pv_meter_map[:mains_consume],
       amr_data: amr_data,
       meter_type: :exported_solar_pv,
-      identifier: Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, :exported_solar_pv),
+      identifier: Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn,
+                                                                               :exported_solar_pv),
       name: SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME,
       pseudo_meter_key: :solar_pv_exported_sub_meter
     )
@@ -234,14 +243,17 @@ class AggregateDataServiceSolar
       ignore_rules: true,
       zero_negative: true
     )
-    pv_meter_map[:self_consume] = @meter_collection.create_modified_copy_of_meter(
-      original: pv_meter_map[:mains_consume],
-      amr_data: onsite_consumpton_amr_data,
-      meter_type: :solar_pv,
-      identifier: Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, :solar_pv),
-      name: SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME,
-      pseudo_meter_key: :solar_pv_consumed_sub_meter
-    )
+    pv_meter_map.set_meter(:self_consume,
+                           @meter_collection.create_modified_copy_of_meter(
+                             original: pv_meter_map[:mains_consume],
+                             amr_data: onsite_consumpton_amr_data,
+                             meter_type: :solar_pv,
+                             identifier: Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(
+                               @meter_collection.urn, :solar_pv
+                             ),
+                             name: SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME,
+                             pseudo_meter_key: :solar_pv_consumed_sub_meter
+                           ))
   end
 
   # Adds a `mains_plus_self_consume` meter to the map, which consists of the
@@ -255,19 +267,19 @@ class AggregateDataServiceSolar
       ignore_rules: true
     )
 
-    pv_meter_map[:mains_plus_self_consume] = @meter_collection.create_modified_copy_of_meter(
-      original: pv_meter_map[:mains_consume],
-      amr_data: consumpton_amr_data,
-      meter_type: :electricity,
-      identifier: pv_meter_map[:mains_consume].mpan_mprn,
-      name: pv_meter_map[:mains_consume].name
-    )
+    pv_meter_map.set_meter(:mains_plus_self_consume, @meter_collection.create_modified_copy_of_meter(
+                                                       original: pv_meter_map[:mains_consume],
+                                                       amr_data: consumpton_amr_data,
+                                                       meter_type: :electricity,
+                                                       identifier: pv_meter_map[:mains_consume].mpan_mprn,
+                                                       name: pv_meter_map[:mains_consume].name
+                                                     ))
   end
 
   def aggregate_multiple_generation_meters(pv_meter_map)
     logger.debug { 'Aggregating multiple solar pv generation meters' }
 
-    generation_meters = pv_meter_map.select { |type, meter| SolarMeterMap.generation_meters.include?(type) && !meter.nil? }.values
+    generation_meters = pv_meter_map.generation_meters
 
     logger.debug { "Aggregating these generation meters #{generation_meters.map(&:to_s).join(' + ')}" }
 
@@ -289,14 +301,16 @@ class AggregateDataServiceSolar
       name: pv_meter_map[:generation].name
     )
 
-    logger.debug { "Created aggregate generation meter #{generation_meter} #{generation_meter.amr_data.total.round(0)}" }
+    logger.debug do
+      "Created aggregate generation meter #{generation_meter} #{generation_meter.amr_data.total.round(0)}"
+    end
 
     # hide constituent generation meters
     pv_meter_map.set_nil_value(SolarMeterMap.generation_meters)
     generation_mpans = generation_meters.map { |m1| m1.mpan_mprn.to_s }
     @meter_collection.electricity_meters.delete_if { |m| generation_mpans.include?(m.mpan_mprn.to_s) }
-    pv_meter_map[:generation] = generation_meter
-    pv_meter_map[:generation_meter_list] = generation_meters
+    pv_meter_map.set_meter(:generation, generation_meter)
+    pv_meter_map.set_meter(:generation_meter_list, generation_meters)
   end
 
   def calculate_carbon_emissions_and_costs(pv_meter_map)
@@ -306,7 +320,9 @@ class AggregateDataServiceSolar
   end
 
   def normalise_date_ranges_of_sub_meters(pv_meter_map)
-    meters = %i[mains_consume self_consume export generation mains_plus_self_consume].map { |meter_type| pv_meter_map[meter_type] }
+    meters = %i[mains_consume self_consume export generation mains_plus_self_consume].map do |meter_type|
+      pv_meter_map[meter_type]
+    end
     start_date = meters.map { |m| m.amr_data.start_date }.max
     end_date   = meters.map { |m| m.amr_data.end_date }.min
     logger.debug { "Reducing sub meter date ranges to between #{start_date} and #{end_date}" }
@@ -332,9 +348,11 @@ class AggregateDataServiceSolar
       if meter_type == :mains_plus_self_consume
         school_meter_name = @electricity_meter_names[meter.mpan_mprn]
         meter.name = if school_meter_name.present?
-                       I18n.t('aggregation_service_solar_pv.mains_plus_self_consume_name', meter_name: school_meter_name) + " (#{meter.mpan_mprn})"
+                       I18n.t('aggregation_service_solar_pv.mains_plus_self_consume_name',
+                              meter_name: school_meter_name) + " (#{meter.mpan_mprn})"
                      else
-                       I18n.t('aggregation_service_solar_pv.mains_plus_self_consume_name', meter_name: meter.mpan_mprn.to_s)
+                       I18n.t('aggregation_service_solar_pv.mains_plus_self_consume_name',
+                              meter_name: meter.mpan_mprn.to_s)
                      end
       else
         meter.name = SolarMeterMap.meter_type_to_name_map[meter_type]
@@ -359,17 +377,26 @@ class AggregateDataServiceSolar
     pv_meter_map.each do |meter_type, meter|
       next if not_a_meter?(meter) || meter_type == :mains_consume
 
-      logger.debug { "Mains meter start date #{mains_electricity_meter.amr_data.start_date} pv meter  #{meter.mpan_mprn} #{meter.fuel_type} start date #{meter.amr_data.start_date}" }
-      raise EnergySparksUnexpectedStateException, "Meter should have been backfilled to #{mains_electricity_meter.amr_data.start_date} but set to #{meter.amr_data.start_date}" if mains_electricity_meter.amr_data.start_date < meter.amr_data.start_date
+      logger.debug do
+        "Mains meter start date #{mains_electricity_meter.amr_data.start_date} pv meter  #{meter.mpan_mprn} #{meter.fuel_type} start date #{meter.amr_data.start_date}"
+      end
+      if mains_electricity_meter.amr_data.start_date < meter.amr_data.start_date
+        raise EnergySparksUnexpectedStateException,
+              "Meter should have been backfilled to #{mains_electricity_meter.amr_data.start_date} but set to #{meter.amr_data.start_date}"
+      end
 
       if meter.amr_data.start_date < mains_electricity_meter.amr_data.start_date
-        logger.debug { "Truncating meter #{meter.mpan_mprn} to start date of electricity meter #{mains_electricity_meter.amr_data.start_date}" }
+        logger.debug do
+          "Truncating meter #{meter.mpan_mprn} to start date of electricity meter #{mains_electricity_meter.amr_data.start_date}"
+        end
         meter.amr_data.set_start_date(mains_electricity_meter.amr_data.start_date)
       end
-      if meter.amr_data.end_date > mains_electricity_meter.amr_data.end_date
-        logger.debug { "Truncating meter #{meter.mpan_mprn} to end date of electricity meter #{mains_electricity_meter.amr_data.end_date}" }
-        meter.amr_data.set_end_date(mains_electricity_meter.amr_data.end_date)
+      next unless meter.amr_data.end_date > mains_electricity_meter.amr_data.end_date
+
+      logger.debug do
+        "Truncating meter #{meter.mpan_mprn} to end date of electricity meter #{mains_electricity_meter.amr_data.end_date}"
       end
+      meter.amr_data.set_end_date(mains_electricity_meter.amr_data.end_date)
     end
   end
 
@@ -427,7 +454,9 @@ class AggregateDataServiceSolar
   def backfill_meter_with_zeros_deprecated(meter, mains_meter_start_date, _mpan_mapping_start_date)
     return if mains_meter_start_date >= meter.amr_data.start_date
 
-    logger.debug { "Backfilling pv meter #{meter.mpan_mprn} with zeros between #{mains_meter_start_date} and #{meter.amr_data.start_date}" }
+    logger.debug do
+      "Backfilling pv meter #{meter.mpan_mprn} with zeros between #{mains_meter_start_date} and #{meter.amr_data.start_date}"
+    end
     (mains_meter_start_date..meter.amr_data.start_date).each do |date|
       meter.amr_data.add(date, OneDayAMRReading.zero_reading(meter.id, date, 'BKPV'))
     end
@@ -459,9 +488,9 @@ class AggregateDataServiceSolar
   # @param Dashboard::Meter mains_electricity_meter an electricity meter
   # @returns SolarMeterMap
   def setup_meter_map(mains_electricity_meter)
-    pv_meter_map = SolarMeterMap.instance
-    pv_meter_map[:mains_consume] = mains_electricity_meter
+    pv_meter_map = SolarMeterMap.new(mains_electricity_meter)
     map_real_meters(pv_meter_map)
+    create_modelled_meters(pv_meter_map)
     pv_meter_map
   end
 
@@ -486,8 +515,8 @@ class AggregateDataServiceSolar
       SolarMeterMap.meter_mappings(map).each do |meter_attribute_key, mpan|
         meter = @meter_collection.electricity_meters.find { |meter1| meter1.mpan_mprn.to_s == mpan }
         @meter_collection.electricity_meters.delete_if { |m| m.mpan_mprn.to_s == mpan.to_s }
-        pv_meter_map[SolarMeterMap.meter_type(meter_attribute_key)] = meter
         truncate_meter_dates(meter, map)
+        pv_meter_map.set_meter(meter_attribute_key, meter)
       end
     end
   end
@@ -497,6 +526,13 @@ class AggregateDataServiceSolar
   def truncate_meter_dates(meter, map)
     truncate_start_date(meter, map[:start_date])
     truncate_end_date(meter, map[:end_date])
+  end
+
+  def create_modelled_meters(pv_meter_map)
+    panels = Aggregation::SolarPvPanels.create(pv_meter_map.mains_consume, :modelled_solar_pv_generation, true)
+    return if panels.nil?
+
+    pv_meter_map.add_generation_meter(panels.create_generation_meter(pv_meter_map.mains_consume))
   end
 
   # Carries out solar aggregation where we have:
@@ -536,7 +572,9 @@ class AggregateDataServiceSolar
     # additional synthetic data, e.g. if the panels installed at a later date
     #
     # potentially override or extend with Sheffield Synthetic
-    create_solar_pv_sub_meters_using_sheffield_pv_estimates(pv_meter_map) if pv_meter_map[:mains_consume].sheffield_simulated_solar_pv_panels?
+    if pv_meter_map[:mains_consume].sheffield_simulated_solar_pv_panels?
+      create_solar_pv_sub_meters_using_sheffield_pv_estimates(pv_meter_map)
+    end
 
     # ...and with solar override attributes as well
     fix_missing_or_bad_meter_data(pv_meter_map)
@@ -547,9 +585,13 @@ class AggregateDataServiceSolar
     return if start_date.nil?
 
     if start_date < meter.amr_data.start_date
-      logger.debug { "Error: solar_pv_mpan_meter_mapping meter attribute start_date #{start_date} < meter start_date #{meter.amr_data.start_date}" }
+      logger.debug do
+        "Error: solar_pv_mpan_meter_mapping meter attribute start_date #{start_date} < meter start_date #{meter.amr_data.start_date}"
+      end
     elsif start_date > meter.amr_data.end_date
-      logger.debug { "Error: solar_pv_mpan_meter_mapping meter attribute start_date #{start_date} > meter end_date #{meter.amr_data.end_date}" }
+      logger.debug do
+        "Error: solar_pv_mpan_meter_mapping meter attribute start_date #{start_date} > meter end_date #{meter.amr_data.end_date}"
+      end
     else
       logger.debug { "Warning: overriding amr start date to #{start_date} for meter #{meter.mpan_mprn}" }
       meter.amr_data.set_start_date(start_date)
@@ -561,9 +603,13 @@ class AggregateDataServiceSolar
     return if end_date.nil?
 
     if end_date > meter.amr_data.end_date
-      logger.debug { "Error: solar_pv_mpan_meter_mapping meter attribute end_date #{end_date} > meter end_date #{meter.amr_data.end_date}" }
+      logger.debug do
+        "Error: solar_pv_mpan_meter_mapping meter attribute end_date #{end_date} > meter end_date #{meter.amr_data.end_date}"
+      end
     elsif end_date < meter.amr_data.start_date
-      logger.debug { "Error: solar_pv_mpan_meter_mapping meter attribute end_date #{end_date} < meter start_date #{meter.amr_data.start_date}" }
+      logger.debug do
+        "Error: solar_pv_mpan_meter_mapping meter attribute end_date #{end_date} < meter start_date #{meter.amr_data.start_date}"
+      end
     else
       logger.debug { "Warning: overriding amr end date to #{end_date} for meter #{meter.mpan_mprn}" }
       meter.amr_data.set_end_date(end_date)

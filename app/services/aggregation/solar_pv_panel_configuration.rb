@@ -43,7 +43,12 @@ module Aggregation
     end
 
     def degredation(from_date, to_date)
+      # debugger
+      begin
       years = (to_date - from_date) / 365.0
+      rescue
+        debugger
+      end
       # allow 0.5% degredation per year
       (1.0 - 0.005)**years
     end
