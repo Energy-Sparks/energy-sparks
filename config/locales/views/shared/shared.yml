@@ -125,7 +125,9 @@ en:
     enrol: Enrol
     my_account: My account
     my_schools: My schools
-    points: "%{count} points"
+    points:
+      one: "%{count} point"
+      other: "%{count} points"
     sign_in: Sign In
     sign_out: Sign Out
   our_schools_menu:
