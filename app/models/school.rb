@@ -985,7 +985,7 @@ class School < ApplicationRecord
     year = Calendar.default_national&.current_academic_year&.next_year
     return nil unless year
 
-    future_licences = licences.confirmed.for_period(year.start_date..year.end_date)
+    future_licences = licences.not_provisional.for_period(year.start_date..year.end_date)
     summarise_contract_holder(future_licences.first&.contract_holder)
   end
 
