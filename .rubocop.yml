@@ -1,5 +1,3 @@
-# inherit_from: <%= ENV.key?('CI') ? '.rubocop_todo.yml' : '/dev/null' %>
-
 inherit_from:
   - <%= '.rubocop_todo.yml' if ENV.key?('CI') %>
 

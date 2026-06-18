@@ -86,17 +86,16 @@ class SolarMeterMap
 
   def all_required_key_values_non_nil?
     @hash.each do |k, v|
-      return false if v.nil? && !self.class.optional_keys.include?(k)
+      return false if v.nil? && self.class.optional_keys.exclude?(k)
     end
     true
   end
 
-
-  # TODO: rename / replace with more meaningful
-  def set_nil_value(list_of_keys)
-    list_of_keys.each do |k|
+  def nil_generation_meters
+    self.class.generation_meters.each do |k|
       @hash[k] = nil
     end
+    @generation_meters = []
   end
 
   def generation_meters

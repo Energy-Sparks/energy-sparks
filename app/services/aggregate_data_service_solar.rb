@@ -27,7 +27,6 @@ class AggregateDataServiceSolar
       if mains_electricity_meter.solar_pv_panels?
         # create a SolarMeterMap, removing any real solar meters from the meter collection for this meter
         pv_meter_map = setup_meter_map(mains_electricity_meter)
-        # debugger
         process_solar_pv_electricity_meter(pv_meter_map)
       else
         reference_as_sub_meter_for_subsequent_aggregation(mains_electricity_meter)
@@ -306,7 +305,7 @@ class AggregateDataServiceSolar
     end
 
     # hide constituent generation meters
-    pv_meter_map.set_nil_value(SolarMeterMap.generation_meters)
+    pv_meter_map.nil_generation_meters
     generation_mpans = generation_meters.map { |m1| m1.mpan_mprn.to_s }
     @meter_collection.electricity_meters.delete_if { |m| generation_mpans.include?(m.mpan_mprn.to_s) }
     pv_meter_map.set_meter(:generation, generation_meter)
