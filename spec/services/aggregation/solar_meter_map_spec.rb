@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SolarMeterMap do
+describe Aggregation::SolarMeterMap do
   subject(:solar_meter_map) { described_class.new(meter) }
 
   let(:meter) { build(:meter) }
@@ -45,14 +45,12 @@ describe SolarMeterMap do
   end
 
   describe '.meter_attribute_key' do
-    it 'returns the expected values' do
-      expect(described_class.meter_attribute_key(:export)).to eq(:export_mpan)
-      expect(described_class.meter_attribute_key(:generation)).to eq(:production_mpan)
-      expect(described_class.meter_attribute_key(:generation2)).to eq(:production_mpan2)
-      expect(described_class.meter_attribute_key(:generation3)).to eq(:production_mpan3)
-      expect(described_class.meter_attribute_key(:generation4)).to eq(:production_mpan4)
-      expect(described_class.meter_attribute_key(:generation5)).to eq(:production_mpan5)
-    end
+    it { expect(described_class.meter_attribute_key(:export)).to eq(:export_mpan) }
+    it { expect(described_class.meter_attribute_key(:generation)).to eq(:production_mpan) }
+    it { expect(described_class.meter_attribute_key(:generation2)).to eq(:production_mpan2) }
+    it { expect(described_class.meter_attribute_key(:generation3)).to eq(:production_mpan3) }
+    it { expect(described_class.meter_attribute_key(:generation4)).to eq(:production_mpan4) }
+    it { expect(described_class.meter_attribute_key(:generation5)).to eq(:production_mpan5) }
   end
 
   describe '#number_of_generation_meters' do
