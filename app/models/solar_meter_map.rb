@@ -55,9 +55,9 @@ class SolarMeterMap
     @generation_meters = []
   end
 
-  def each = @hash.to_a + @generation_meters.map { |meter| [:generation, meter] }
+  def each(&) = all_meters_with_type.each(&)
 
-  def each_value = each.map(&:second)
+  def each_value(&) = all_meters_with_type.map(&:second).each(&)
 
   def all_required_key_values_non_nil?
     %i[export self_consume mains_consume mains_plus_self_consume].all? { |key| !@hash[key].nil? } &&
@@ -108,4 +108,6 @@ class SolarMeterMap
   def meter_type(meter_attribute_key)
     MPAN_KEY_MAPPINGS[meter_attribute_key]
   end
+
+  def all_meters_with_type = @hash.to_a + @generation_meters.map { |meter| [:generation, meter] }
 end

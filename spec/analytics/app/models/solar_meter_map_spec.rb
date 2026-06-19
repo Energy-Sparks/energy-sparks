@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 describe SolarMeterMap do
+  subject(:solar_meter_map) { described_class.new(meter) }
+
+  let(:meter) { build(:meter) }
   let(:solar_pv_mpan_meter_mapping) do
     {
       start_date: Date.new(2017, 1, 1),
@@ -32,15 +35,13 @@ describe SolarMeterMap do
     end
   end
 
-  describe '.meter_type' do
-    it 'returns the expected values' do
-      expect(described_class.meter_type(:export_mpan)).to eq(:export)
-      expect(described_class.meter_type(:production_mpan)).to eq(:generation)
-      expect(described_class.meter_type(:production_mpan2)).to eq(:generation2)
-      expect(described_class.meter_type(:production_mpan3)).to eq(:generation3)
-      expect(described_class.meter_type(:production_mpan4)).to eq(:generation4)
-      expect(described_class.meter_type(:production_mpan5)).to eq(:generation5)
-    end
+  describe '#meter_type' do
+    it { expect(solar_meter_map.send(:meter_type, :export_mpan)).to eq(:export) }
+    it { expect(solar_meter_map.send(:meter_type, :production_mpan)).to eq(:generation) }
+    it { expect(solar_meter_map.send(:meter_type, :production_mpan2)).to eq(:generation2) }
+    it { expect(solar_meter_map.send(:meter_type, :production_mpan3)).to eq(:generation3) }
+    it { expect(solar_meter_map.send(:meter_type, :production_mpan4)).to eq(:generation4) }
+    it { expect(solar_meter_map.send(:meter_type, :production_mpan5)).to eq(:generation5) }
   end
 
   describe '.meter_attribute_key' do
@@ -55,19 +56,23 @@ describe SolarMeterMap do
   end
 
   describe '#number_of_generation_meters' do
-    subject(:solar_meter_map) do
-      SolarMeterMap.instance
-    end
-
     it 'returns number of generation meters' do
-      expect(solar_meter_map.number_of_generation_meters).to eq(0)
-      solar_meter_map[:generation] = build(:meter)
-      expect(solar_meter_map.number_of_generation_meters).to eq(1)
-      solar_meter_map[:generation2] = build(:meter)
-      solar_meter_map[:generation3] = build(:meter)
-      solar_meter_map[:generation4] = build(:meter)
-      solar_meter_map[:generation5] = build(:meter)
-      expect(solar_meter_map.number_of_generation_meters).to eq(5)
+      expect(solar_meter_map.generation_meters.count).to eq(0)
+      solar_meter_map.set_meter(:generation, build(:meter))
+      expect(solar_meter_map.generation_meters.count).to eq(1)
+      solar_meter_map.set_meter(:generation2, build(:meter))
+      solar_meter_map.set_meter(:generation3, build(:meter))
+      solar_meter_map.set_meter(:generation4, build(:meter))
+      solar_meter_map.set_meter(:generation5, build(:meter))
+      expect(solar_meter_map.generation_meters.count).to eq(5)
     end
+  end
+
+  describe '#each' do
+    it { expect(solar_meter_map.each.to_a).to eq([[:mains_consume, meter]]) }
+  end
+
+  describe '#each_value' do
+    it { expect(solar_meter_map.each_value.to_a).to eq([meter]) }
   end
 end
