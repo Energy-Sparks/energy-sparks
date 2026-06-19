@@ -15,6 +15,15 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: admin_subject(title))
   end
 
+  def school_supplier_report
+    to, supplier_id = params.values_at(:to, :supplier_id)
+    @supplier = Supplier.find(supplier_id)
+    title = "#{t('common.application')}-#{@supplier.name}-meters-#{Time.zone.now.iso8601}".parameterize
+    attachments["#{title}.csv"] = { mime_type: 'text/csv', content: @supplier.to_csv }
+
+    mail(to: to, subject: admin_subject(title))
+  end
+
   def school_procurement_route_report
     to, procurement_route_id = params.values_at(:to, :procurement_route_id)
     @procurement_route = ProcurementRoute.find(procurement_route_id)
