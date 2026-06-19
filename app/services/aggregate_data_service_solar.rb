@@ -71,17 +71,17 @@ class AggregateDataServiceSolar
   # @param SolarMeterMap [pv_meter_map] the map.
   # @param Dashboard:Meter representing the mains plus self consumption meter
   def process_solar_pv_electricity_meter(pv_meter_map)
-    logger.debug { "Aggregation service: processing mains meter #{pv_meter_map[:mains_consume]} with solar pv" }
+    logger.debug { "Aggregation service: processing mains meter #{pv_meter_map.mains_consume} with solar pv" }
     print_meter_map(pv_meter_map)
 
     aggregate_multiple_generation_meters(pv_meter_map) if pv_meter_map.generation_meters.many?
 
     # If we have real metered solar generation data, but no export meters, then
     # create export and self-consumption meters
-    if !pv_meter_map[:generation].nil? && pv_meter_map[:export].nil?
+    if !pv_meter_map.generation.nil? && pv_meter_map.export.nil?
       create_export_self_consumption_where_real_generation_data_but_no_export(pv_meter_map)
     # If we don't have any metering of solar, then create synthetic solar data
-    elsif pv_meter_map[:mains_consume].sheffield_simulated_solar_pv_panels?
+    elsif pv_meter_map.mains_consume.sheffield_simulated_solar_pv_panels?
       create_solar_pv_sub_meters_using_sheffield_pv_estimates(pv_meter_map)
     # Otherwise we have both metering for both the solar generation and export
     else
@@ -134,9 +134,9 @@ class AggregateDataServiceSolar
   # This is a data correction step that happens outside of the normal aggregation validation
   # process.
   def fix_missing_or_bad_meter_data(pv_meter_map)
-    return unless !pv_meter_map[:mains_consume].nil? && !pv_meter_map[:mains_consume].solar_pv_overrides.nil?
+    return unless !pv_meter_map.mains_consume.nil? && !pv_meter_map.mains_consume.solar_pv_overrides.nil?
 
-    pv_meter_map[:mains_consume].solar_pv_overrides.process(pv_meter_map, @meter_collection)
+    pv_meter_map.mains_consume.solar_pv_overrides.process(pv_meter_map, @meter_collection)
   end
 
   def not_a_meter?(meter)
@@ -186,7 +186,7 @@ class AggregateDataServiceSolar
 
   # Ensure that the value of the AMRdata for this meter is all negative
   def negate_sign_of_export_meter_data(pv_meter_map)
-    pv_meter_map[:export].amr_data = invert_export_amr_data_if_positive(pv_meter_map[:export].amr_data)
+    pv_meter_map.export.amr_data = invert_export_amr_data_if_positive(pv_meter_map.export.amr_data)
   end
 
   # Creates an export meter and self consumption meters, if needed
@@ -194,13 +194,13 @@ class AggregateDataServiceSolar
   #
   # @returns Dashboard::Meter the self consumption meter
   def create_export_and_calculate_self_consumption_meters(pv_meter_map)
-    if pv_meter_map[:export].nil?
+    if pv_meter_map.export.nil?
       # TODO: if we've got here, then the new export meter isn't added to the map?
       create_export_meter(pv_meter_map)
     else
       negate_sign_of_export_meter_data(pv_meter_map)
     end
-    create_and_calculate_self_consumption_meter(pv_meter_map) if pv_meter_map[:self_consume].nil?
+    create_and_calculate_self_consumption_meter(pv_meter_map) if pv_meter_map.self_consume.nil?
   end
 
   # Create an export meter, copying some configuration from the main consumption meter in the map
@@ -209,11 +209,11 @@ class AggregateDataServiceSolar
   # TODO there's duplicate/overlapping code between the aggregation_mixin and solar_pv_panels that
   # achieve the same thing
   def create_export_meter(pv_meter_map)
-    date_range = pv_meter_map[:mains_consume].amr_data.date_range
+    date_range = pv_meter_map.mains_consume.amr_data.date_range
     logger.debug { "Creating empty export meter between #{date_range.first} and #{date_range.last}" }
     amr_data = AMRData.create_empty_dataset(:exported_solar_pv, date_range.first, date_range.last, 'SOLE')
     @meter_collection.create_modified_copy_of_meter(
-      original: pv_meter_map[:mains_consume],
+      original: pv_meter_map.mains_consume,
       amr_data: amr_data,
       meter_type: :exported_solar_pv,
       identifier: Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn,
@@ -237,14 +237,14 @@ class AggregateDataServiceSolar
     # meter readings and calculate self consumption =
     # self_consumption = solar pv production - export
     onsite_consumpton_amr_data = aggregate_amr_data(
-      [pv_meter_map[:generation], pv_meter_map[:export]],
+      [pv_meter_map.generation, pv_meter_map.export],
       :electricity,
       ignore_rules: true,
       zero_negative: true
     )
     pv_meter_map.set_meter(:self_consume,
                            @meter_collection.create_modified_copy_of_meter(
-                             original: pv_meter_map[:mains_consume],
+                             original: pv_meter_map.mains_consume,
                              amr_data: onsite_consumpton_amr_data,
                              meter_type: :solar_pv,
                              identifier: Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(
@@ -261,17 +261,17 @@ class AggregateDataServiceSolar
   # The new meter has the same mpan as the mains consumption meter.
   def create_mains_plus_self_consume_meter(pv_meter_map)
     consumpton_amr_data = aggregate_amr_data(
-      [pv_meter_map[:self_consume], pv_meter_map[:mains_consume]],
+      [pv_meter_map.self_consume, pv_meter_map.mains_consume],
       :electricity,
       ignore_rules: true
     )
 
     pv_meter_map.set_meter(:mains_plus_self_consume, @meter_collection.create_modified_copy_of_meter(
-                                                       original: pv_meter_map[:mains_consume],
+                                                       original: pv_meter_map.mains_consume,
                                                        amr_data: consumpton_amr_data,
                                                        meter_type: :electricity,
-                                                       identifier: pv_meter_map[:mains_consume].mpan_mprn,
-                                                       name: pv_meter_map[:mains_consume].name
+                                                       identifier: pv_meter_map.mains_consume.mpan_mprn,
+                                                       name: pv_meter_map.mains_consume.name
                                                      ))
   end
 
@@ -282,7 +282,7 @@ class AggregateDataServiceSolar
 
     logger.debug { "Aggregating these generation meters #{generation_meters.map(&:to_s).join(' + ')}" }
 
-    mpan = Dashboard::Meter.synthetic_aggregate_generation_meter(pv_meter_map[:generation].mpan_mprn)
+    mpan = Dashboard::Meter.synthetic_aggregate_generation_meter(pv_meter_map.generation.mpan_mprn)
 
     generation_amr_data = aggregate_amr_data_between_dates(
       generation_meters,
@@ -293,11 +293,11 @@ class AggregateDataServiceSolar
     )
 
     generation_meter = @meter_collection.create_modified_copy_of_meter(
-      original: pv_meter_map[:generation],
+      original: pv_meter_map.generation,
       amr_data: generation_amr_data,
       meter_type: :solar_pv,
       identifier: mpan,
-      name: pv_meter_map[:generation].name
+      name: pv_meter_map.generation.name
     )
 
     logger.debug do
@@ -309,7 +309,6 @@ class AggregateDataServiceSolar
     generation_mpans = generation_meters.map { |m1| m1.mpan_mprn.to_s }
     @meter_collection.electricity_meters.delete_if { |m| generation_mpans.include?(m.mpan_mprn.to_s) }
     pv_meter_map.set_meter(:generation, generation_meter)
-    pv_meter_map.set_meter(:generation_meter_list, generation_meters)
   end
 
   def calculate_carbon_emissions_and_costs(pv_meter_map)
@@ -320,7 +319,7 @@ class AggregateDataServiceSolar
 
   def normalise_date_ranges_of_sub_meters(pv_meter_map)
     meters = %i[mains_consume self_consume export generation mains_plus_self_consume].map do |meter_type|
-      pv_meter_map[meter_type]
+      pv_meter_map.public_send(meter_type)
     end
     start_date = meters.map { |m| m.amr_data.start_date }.max
     end_date   = meters.map { |m| m.amr_data.end_date }.min
@@ -333,9 +332,9 @@ class AggregateDataServiceSolar
 
   def assign_meters_and_sub_meters(pv_meter_map)
     %i[mains_consume self_consume export generation].each do |meter_type|
-      pv_meter_map[:mains_plus_self_consume].sub_meters[meter_type] = pv_meter_map[meter_type]
+      pv_meter_map.mains_plus_self_consume.sub_meters[meter_type] = pv_meter_map.public_send(meter_type)
     end
-    pv_meter_map[:mains_plus_self_consume]
+    pv_meter_map.mains_plus_self_consume
   end
 
   # Override the names of meters in the map
@@ -363,8 +362,8 @@ class AggregateDataServiceSolar
     pv_meter_map.each do |meter_type, meter|
       next if not_a_meter?(meter) || meter_type == :mains_consume
 
-      mpan_mapping_start_date = earliest_mpan_mapping_attribute(pv_meter_map[:mains_consume], meter_type)
-      mains_meter_start_date  = pv_meter_backfill_start_date(pv_meter_map[:mains_consume])
+      mpan_mapping_start_date = earliest_mpan_mapping_attribute(pv_meter_map.mains_consume, meter_type)
+      mains_meter_start_date  = pv_meter_backfill_start_date(pv_meter_map.mains_consume)
       backfill_meter_with_zeros(meter, mains_meter_start_date, mpan_mapping_start_date - 1)
     end
   end
@@ -372,7 +371,7 @@ class AggregateDataServiceSolar
   # Truncates every meter in the map to the date ranges of the mains
   # consumption meter
   def truncate_to_mains_meter_dates(pv_meter_map)
-    mains_electricity_meter = pv_meter_map[:mains_consume]
+    mains_electricity_meter = pv_meter_map.mains_consume
     pv_meter_map.each do |meter_type, meter|
       next if not_a_meter?(meter) || meter_type == :mains_consume
 
@@ -408,7 +407,7 @@ class AggregateDataServiceSolar
   def create_solar_pv_sub_meters_using_sheffield_pv_estimates(pv_map)
     logger.debug { 'Creating solar PV data from Sheffield PV feed' }
 
-    pv_map[:mains_consume].solar_pv_setup.process(pv_map, @meter_collection)
+    pv_map.mains_consume.solar_pv_setup.process(pv_map, @meter_collection)
 
     negate_sign_of_export_meter_data(pv_map) # defensive, probably not needed
   end
@@ -507,7 +506,7 @@ class AggregateDataServiceSolar
   # The meters will later receive special processing
   # @param SolarMeterMap [pv_meter_map] the instance to populate
   def map_real_meters(pv_meter_map)
-    mappings = pv_meter_map[:mains_consume].attributes(:solar_pv_mpan_meter_mapping)
+    mappings = pv_meter_map.mains_consume.attributes(:solar_pv_mpan_meter_mapping)
     return if mappings.nil?
 
     mappings.each do |map|
@@ -544,14 +543,14 @@ class AggregateDataServiceSolar
   #
   # @param SolarMeterMap [pv_meter_map] the pv meter configuration
   def create_export_self_consumption_where_real_generation_data_but_no_export(pv_meter_map)
-    am = pv_meter_map[:generation].amr_data
+    am = pv_meter_map.generation.amr_data
 
     # DEBUGGING, Ignore/remove
     if @apply_scaling_factor_for_debug
       scale_factor = 1.0
       logger.debug { '*' * 50 }
       logger.debug { "Scaling data by a factor of #{scale_factor} " }
-      pv_meter_map[:generation].amr_data.scale_kwh(scale_factor, date1: am.start_date, date2: am.end_date)
+      pv_meter_map.generation.amr_data.scale_kwh(scale_factor, date1: am.start_date, date2: am.end_date)
       logger.debug { '*' * 50 }
     end
 
@@ -571,7 +570,7 @@ class AggregateDataServiceSolar
     # additional synthetic data, e.g. if the panels installed at a later date
     #
     # potentially override or extend with Sheffield Synthetic
-    if pv_meter_map[:mains_consume].sheffield_simulated_solar_pv_panels?
+    if pv_meter_map.mains_consume.sheffield_simulated_solar_pv_panels?
       create_solar_pv_sub_meters_using_sheffield_pv_estimates(pv_meter_map)
     end
 

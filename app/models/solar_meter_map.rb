@@ -3,49 +3,26 @@
 # helper class for main solar aggregation service
 # keeps track of the meter (between 7-9) meters being manipulated
 class SolarMeterMap
-  MPAN_KEY_MAPPINGS = {
-    export_mpan: :export,
-    production_mpan: :generation,
-    production_mpan2: :generation2,
-    production_mpan3: :generation3,
-    production_mpan4: :generation4,
-    production_mpan5: :generation5
-  }.freeze
+  MPAN_KEY_MAPPINGS = { export_mpan: :export,
+                        production_mpan: :generation,
+                        production_mpan2: :generation2,
+                        production_mpan3: :generation3,
+                        production_mpan4: :generation4,
+                        production_mpan5: :generation5 }.freeze
+  private_constant :MPAN_KEY_MAPPINGS
 
-  def self.unique_keys
-    %i[
-      export
-      generation
-      generation2
-      generation3
-      generation4
-      generation5
-      self_consume
-      mains_consume
-      mains_plus_self_consume
-      generation_meter_list
-    ]
-  end
+  GENERATION_KEYS = %i[generation
+                       generation2
+                       generation3
+                       generation4
+                       generation5].freeze
+  private_constant :GENERATION_KEYS
 
-  def self.generation_meters
-    %i[
-      generation
-      generation2
-      generation3
-      generation4
-      generation5
-    ]
-  end
-
-  def self.optional_keys
-    %i[
-      generation2
-      generation3
-      generation4
-      generation5
-      generation_meter_list
-    ]
-  end
+  ALLOWED_KEYS = GENERATION_KEYS + %i[export
+                                      self_consume
+                                      mains_consume
+                                      mains_plus_self_consume].freeze
+  private_constant :ALLOWED_KEYS
 
   # Extract just the meter mappings from a solar_pv_mpan_meter_mapping
   # meter attribute configuration
@@ -54,9 +31,6 @@ class SolarMeterMap
   end
 
   # Turn meter attribute key into solar meter type
-  def self.meter_type(meter_attribute_key)
-    MPAN_KEY_MAPPINGS[meter_attribute_key]
-  end
 
   # Look up meter attribute key for a given solar meter type
   def self.meter_attribute_key(meter_type)
@@ -74,34 +48,24 @@ class SolarMeterMap
     }
   end
 
-  def initialize(mains_electricity_meter)
-    @hash = {}
-    @hash[:mains_consume] = mains_electricity_meter
+  attr_reader :generation_meters
+
+  def initialize(mains_consume)
+    @hash = { mains_consume: }
     @generation_meters = []
   end
 
-  delegate(:[], to: :@hash)
-  delegate(:each, to: :@hash)
-  delegate(:each_value, to: :@hash)
+  def each = @hash.to_a + @generation_meters.map { |meter| [:generation, meter] }
+
+  def each_value = each.map(&:second)
 
   def all_required_key_values_non_nil?
-    @hash.each do |k, v|
-      return false if v.nil? && self.class.optional_keys.exclude?(k)
-    end
-    true
+    %i[export self_consume mains_consume mains_plus_self_consume].all? { |key| !@hash[key].nil? } &&
+      !@generation_meters.empty?
   end
 
   def nil_generation_meters
-    self.class.generation_meters.each do |k|
-      @hash[k] = nil
-    end
     @generation_meters = []
-  end
-
-  def generation_meters
-    @hash.select do |type, meter|
-      self.class.generation_meters.include?(type) && !meter.nil?
-    end.values + @generation_meters
   end
 
   def add_generation_meter(meter)
@@ -112,7 +76,36 @@ class SolarMeterMap
     @hash[:mains_consume]
   end
 
+  def generation
+    @generation_meters.first
+  end
+
+  def export
+    @hash[:export]
+  end
+
+  def self_consume
+    @hash[:self_consume]
+  end
+
+  def mains_plus_self_consume
+    @hash[:mains_plus_self_consume]
+  end
+
   def set_meter(key, meter)
-    @hash[self.class.meter_type(key) || key] = meter
+    key = meter_type(key) || key
+    raise ArgumentError, "invalid key #{key}" unless ALLOWED_KEYS.include?(key)
+
+    if GENERATION_KEYS.include?(key)
+      add_generation_meter(meter)
+    else
+      @hash[key] = meter
+    end
+  end
+
+  private
+
+  def meter_type(meter_attribute_key)
+    MPAN_KEY_MAPPINGS[meter_attribute_key]
   end
 end

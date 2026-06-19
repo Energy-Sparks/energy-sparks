@@ -15,8 +15,6 @@ module Aggregation
       new(meter.meter_attributes[attribute_name], meter.meter_collection.solar_pv, override_default:)
     end
 
-    private_class_method :new
-
     # @param [Hash] meter_attributes_config the :solar_pv meter attributes to process
     # @param [SolarPV] synthetic_sheffield_solar_pv_yields the Sheffield Solar data for this school
     def initialize(meter_attributes_config, synthetic_sheffield_solar_pv_yields, override_default: true)
@@ -95,37 +93,37 @@ module Aggregation
     # @param [SolarMeterMap] pv_meter_map the solar meters
     # @param [boolean] create_zero_if_no_config THIS IS ALWAYS FALSE
     def create_generation_data(pv_meter_map, create_zero_if_no_config)
-      if pv_meter_map[:generation].nil?
+      if pv_meter_map.generation.nil?
         pv_meter_map.set_meter(:generation, create_generation_meter_from_map(pv_meter_map))
       end
 
       create_generation_amr_data(
-        pv_meter_map[:mains_consume].amr_data,
-        pv_meter_map[:generation].amr_data,
-        pv_meter_map[:mains_consume].mpan_mprn,
+        pv_meter_map.mains_consume.amr_data,
+        pv_meter_map.generation.amr_data,
+        pv_meter_map.mains_consume.mpan_mprn,
         create_zero_if_no_config
       )
 
-      pv_meter_map[:generation]
+      pv_meter_map.generation
     end
 
     def create_export_meter_if_missing(pv_meter_map)
-      pv_meter_map.set_meter(:export, create_export_meter_from_map(pv_meter_map)) if pv_meter_map[:export].nil?
+      pv_meter_map.set_meter(:export, create_export_meter_from_map(pv_meter_map)) if pv_meter_map.export.nil?
     end
 
     # Calculate or override the solar export data for the export meter in the SolarMeterMap
     def create_or_override_export_data(pv_meter_map, meter_collection)
       override_export_data_detail(
-        pv_meter_map[:mains_consume].amr_data,
-        pv_meter_map[:generation].amr_data,
-        pv_meter_map[:export].amr_data,
+        pv_meter_map.mains_consume.amr_data,
+        pv_meter_map.generation.amr_data,
+        pv_meter_map.export.amr_data,
         meter_collection,
-        pv_meter_map[:mains_consume].mpan_mprn
+        pv_meter_map.mains_consume.mpan_mprn
       )
     end
 
     def create_self_consumption_meter_if_missing(pv_meter_map)
-      return unless pv_meter_map[:self_consume].nil?
+      return unless pv_meter_map.self_consume.nil?
 
       pv_meter_map.set_meter(:self_consume, create_self_consumption_meter_from_map(pv_meter_map))
     end
@@ -133,12 +131,12 @@ module Aggregation
     # Calculate or override the solar self consumption data for the self consumption meter in the SolarMeterMap
     def create_self_consumption_data(pv_meter_map, meter_collection)
       calculate_self_consumption_data(
-        pv_meter_map[:mains_consume].amr_data,
-        pv_meter_map[:generation].amr_data,
-        pv_meter_map[:export].amr_data,
-        pv_meter_map[:self_consume].amr_data,
+        pv_meter_map.mains_consume.amr_data,
+        pv_meter_map.generation.amr_data,
+        pv_meter_map.export.amr_data,
+        pv_meter_map.self_consume.amr_data,
         meter_collection,
-        pv_meter_map[:mains_consume].mpan_mprn
+        pv_meter_map.mains_consume.mpan_mprn
       )
     end
 
@@ -411,9 +409,9 @@ module Aggregation
 
     def meter_creation_data(pv_meter_map)
       [
-        pv_meter_map[:mains_consume].amr_data.date_range,
-        pv_meter_map[:mains_consume],
-        pv_meter_map[:mains_consume].meter_collection
+        pv_meter_map.mains_consume.amr_data.date_range,
+        pv_meter_map.mains_consume,
+        pv_meter_map.mains_consume.meter_collection
       ]
     end
 
