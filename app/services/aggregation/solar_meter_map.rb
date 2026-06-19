@@ -10,7 +10,6 @@ module Aggregation
                           production_mpan3: :generation3,
                           production_mpan4: :generation4,
                           production_mpan5: :generation5 }.freeze
-    private_constant :MPAN_KEY_MAPPINGS
 
     GENERATION_KEYS = %i[generation
                          generation2

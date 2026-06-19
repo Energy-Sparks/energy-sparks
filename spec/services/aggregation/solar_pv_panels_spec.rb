@@ -19,7 +19,7 @@ describe Aggregation::SolarPvPanels, type: :service do
     meter = build(:meter,
                   meter_collection:,
                   amr_data: build(:amr_data, :with_days, day_count: 31, end_date: Date.new(2023, 1, 31), kwh_data_x48:))
-    SolarMeterMap.new(meter)
+    Aggregation::SolarMeterMap.new(meter)
   end
   let(:meter_collection) { build(:meter_collection, holidays: instance_double(Holidays, holiday?: false)) }
 
