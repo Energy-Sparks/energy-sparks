@@ -634,6 +634,7 @@ Rails.application.routes.draw do
       get 'disable', to: 'users#disable'
       get 'enable', to: 'users#enable'
       get 'mailchimp_redirect', to: 'users#mailchimp_redirect'
+      post 'deliver', on: :collection
 
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Administering users' do
   include ActiveJob::TestHelper
+  include EmailHelpers
 
   let!(:admin) { create(:admin) }
 
@@ -63,6 +64,23 @@ describe 'Administering users' do
           it { expect(page.first('div#search_results')).to have_no_text('No users found') }
         end
       end
+    end
+  end
+
+  describe 'when exporting users' do
+    subject(:email) { last_email }
+
+    before do
+      visit admin_users_path
+      click_on 'Email list of school users as CSV'
+    end
+
+    it 'sends the email' do
+      expect(page).to have_text("User export report has been sent to #{admin.email}")
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.length).to eq(1)
+      expect(email.subject).to match('User export')
+      expect(email.attachments.first.filename).to eq('users.csv')
     end
   end
 
