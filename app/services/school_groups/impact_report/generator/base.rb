@@ -15,8 +15,9 @@ module SchoolGroups
 
         private_class_method def self.metric_category = self::METRIC_CATEGORY
 
-        def initialize(school_group)
+        def initialize(school_group, visible_schools = nil)
           @school_group = school_group
+          @visible_schools = visible_schools || @school_group.assigned_schools.visible
         end
 
         def metrics
@@ -28,7 +29,7 @@ module SchoolGroups
           end
         end
 
-        def visible_schools = @visible_schools ||= @school_group.assigned_schools.visible
+        attr_reader :visible_schools
 
         private
 
