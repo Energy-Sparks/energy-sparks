@@ -69,6 +69,12 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: admin_subject(title))
   end
 
+  def user_export_report
+    to, csv = params.values_at(:to, :csv)
+    attachments['users.csv'] = { mime_type: 'text/csv', content: csv }
+    mail(to:, subject: "User export #{Time.zone.now.to_fs(:es_compact)}")
+  end
+
   def engaged_schools_report(to, csv, previous_year, school_group_id)
     school_group = SchoolGroup.find(school_group_id) if school_group_id.present?
     now = Time.zone.now.iso8601

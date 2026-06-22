@@ -1,0 +1,5 @@
+<%= form_tag @path, method: :post do %>
+  <%= button_tag(type: 'submit', class: 'btn btn-sm') do %>
+    <%= fa_icon('envelope') %> <%= @label %>
+  <% end %>
+<% end %>
