@@ -68,11 +68,7 @@ module Admin
                      ->(meter) { meter.mpan_mprn },
                      ->(meter, csv) { link_to(csv, school_meter_path(meter.school, meter)) }),
           Column.new(:meter_name,
-                     ->(meter) { meter&.name }),
-          Column.new(:supplier,
-                     ->(meter) { meter.supplier&.name }),
-          Column.new(:data_source,
-                     ->(meter) { meter.data_source&.name })
+                     ->(meter) { meter&.name })
         ]
       end
 
