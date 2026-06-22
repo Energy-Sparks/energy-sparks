@@ -512,6 +512,8 @@ class AggregateDataServiceSolar
     mappings.each do |map|
       Aggregation::SolarMeterMap.meter_mappings(map).each do |meter_attribute_key, mpan|
         meter = @meter_collection.electricity_meters.find { |meter1| meter1.mpan_mprn.to_s == mpan }
+        next if meter.nil?
+
         @meter_collection.electricity_meters.delete_if { |m| m.mpan_mprn.to_s == mpan.to_s }
         truncate_meter_dates(meter, map)
         pv_meter_map.set_meter(meter_attribute_key, meter)

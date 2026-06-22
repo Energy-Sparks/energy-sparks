@@ -97,7 +97,7 @@ module Aggregation
       raise ArgumentError, "invalid key #{key}" unless ALLOWED_KEYS.include?(key)
 
       if GENERATION_KEYS.include?(key)
-        add_generation_meter(meter)
+        add_generation_meter(meter) unless meter.nil?
       else
         @hash[key] = meter
       end
