@@ -1,0 +1,5 @@
+<%= form_tag @path, method: :post, style: 'display: inline-block !important;' do %>
+  <%= button_tag(type: 'submit', class: @button_class) do %>
+    <%= fa_icon('envelope') %> <%= @label %>
+  <% end %>
+<% end %>
