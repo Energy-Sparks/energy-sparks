@@ -66,6 +66,23 @@ describe 'Administering users' do
     end
   end
 
+  describe 'when exporting users' do
+    subject(:email) { ActionMailer::Base.deliveries.last }
+
+    before do
+      visit admin_users_path
+      click_on 'Email list of school users as CSV'
+    end
+
+    it 'sends the email' do
+      expect(page).to have_text("User export report has been sent to #{admin.email}")
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.length).to eq(1)
+      expect(email.subject).to match('User export')
+      expect(email.attachments.first.filename).to eq('users.csv')
+    end
+  end
+
   describe 'managing users' do
     context 'when creating a new user' do
       let!(:school_group) { create(:school_group) }
