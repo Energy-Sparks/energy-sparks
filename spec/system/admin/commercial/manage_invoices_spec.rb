@@ -117,7 +117,7 @@ describe 'manage invoices', :include_application_helper do
     it { expect(page).to have_css('div.commercial-pending-invoicing-component') }
     it { expect(page).to have_text(contract.name) }
 
-    context 'when choosing to raise an invoice' do
+    context 'when choosing to raise an invoice', :js do
       before { click_on 'Raise invoice' }
 
       it { expect(page).to have_text('Raise New Invoice') }
@@ -208,6 +208,7 @@ describe 'manage invoices', :include_application_helper do
           end
 
           it 'creates the invoice and updates the licences' do
+            expect(page).to have_text('Record summary')
             expect(page).to have_text(invoice.invoice_number)
             expect(page).to have_text('PO-98765')
             expect(licence.reload.status).to eq('invoiced')
