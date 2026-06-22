@@ -8,8 +8,6 @@ module Aggregation
   #
   # called where metered generation meter but no export or self consumption
   class SolarPvPanelsMeteredProduction < SolarPvPanels
-    public_class_method :new
-
     def initialize
       super(nil, nil)
       @real_production_data = true
