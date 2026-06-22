@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Administering users' do
   include ActiveJob::TestHelper
+  include EmailHelpers
 
   let!(:admin) { create(:admin) }
 
@@ -67,7 +68,7 @@ describe 'Administering users' do
   end
 
   describe 'when exporting users' do
-    subject(:email) { ActionMailer::Base.deliveries.last }
+    subject(:email) { last_email }
 
     before do
       visit admin_users_path

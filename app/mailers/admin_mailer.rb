@@ -72,7 +72,7 @@ class AdminMailer < ApplicationMailer
   def user_export_report
     to, csv = params.values_at(:to, :csv)
     attachments['users.csv'] = { mime_type: 'text/csv', content: csv }
-    mail(to:, subject: "User export #{Time.zone.now.to_fs(:es_compact)}")
+    mail(to:, subject: admin_subject("User export #{Time.zone.now.to_fs(:es_compact)}"))
   end
 
   def engaged_schools_report(to, csv, previous_year, school_group_id)
