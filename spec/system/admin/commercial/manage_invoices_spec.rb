@@ -61,6 +61,8 @@ describe 'manage invoices', :include_application_helper do
       }
     end
 
+    it { expect(page).to have_css('#metadata') }
+
     context 'when viewing financial summary' do
       it 'shows the prices' do
         within('#financial-summary') do
@@ -169,7 +171,7 @@ describe 'manage invoices', :include_application_helper do
           expect(find("input[name=\"#{prefix}[private_account_fee]\"]").value).to eq('0.00')
         end
 
-        it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+        it_behaves_like 'it contains the expected data table', sortable: true, aligned: false, tfoot: true do
           let(:table_id) { '#line-items' }
           let(:expected_header) do
             [
@@ -188,6 +190,11 @@ describe 'manage invoices', :include_application_helper do
                 '',
                 '545.0'
               ]
+            ]
+          end
+          let(:expected_footer_rows) do
+            [
+              ['', '', '', '545.0', '0.0', '0.0', '545.0']
             ]
           end
         end

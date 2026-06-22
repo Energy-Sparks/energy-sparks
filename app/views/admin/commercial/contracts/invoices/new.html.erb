@@ -78,6 +78,17 @@
             </tr>
           <% end %>
       </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><%= f.object.line_items.map(&:value).map(&:base_price).sum %></td>
+          <td><%= f.object.line_items.map(&:value).map(&:metering_fee).sum %></td>
+          <td><%= f.object.line_items.map(&:value).map(&:private_account_fee).sum %></td>
+          <td><%= f.object.line_items.map(&:value).map(&:total).sum %></td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 

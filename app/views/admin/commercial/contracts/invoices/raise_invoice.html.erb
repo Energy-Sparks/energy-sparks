@@ -45,7 +45,9 @@ invoice for these schools.
         <th colspan="1"></th>
       </tr>
       <tr>
-        <th class="no-sort"></th>
+        <th class="no-sort">
+          <%= check_box_tag 'check-all', false, false, { class: 'check-all-form' } %>
+        </th>
         <th>Id</th>
         <th>School Group</th>
         <th>School</th>
@@ -63,6 +65,7 @@ invoice for these schools.
               <%= check_box_tag 'licences[]',
                                 licence.id,
                                 false,
+                                class: 'allow-submit',
                                 id: "licence_#{licence.id}" %>
           </td>
           <td class="col-1">
@@ -96,5 +99,5 @@ invoice for these schools.
       <% end %>
     </tbody>
   </table>
-  <%= f.submit 'Proceed', class: 'btn btn-primary' %>
+  <%= f.submit 'Proceed', disabled: true, class: 'btn btn-primary' %>
 <% end %>
