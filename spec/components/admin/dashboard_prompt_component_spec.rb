@@ -27,6 +27,18 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       end
     end
 
+    context 'when there are overdue issues for archived schools' do
+      before do
+        create_list(:issue, 2, status: 'closed', school: create(:school, active: false), owned_by: user,
+                               review_date: Date.current - 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue issues prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
     context 'when there are overdue issues' do
       before do
         create_list(:issue, 2, owned_by: user, review_date: Date.current - 2)
