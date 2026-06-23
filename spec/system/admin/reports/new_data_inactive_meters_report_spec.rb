@@ -15,6 +15,7 @@ describe 'New data for inactive meters', :include_application_helper do
                    end_date: latest_reading_date,
                    admin_meter_status: admin_meter_status,
                    data_source: create(:data_source, import_warning_days: 5),
+                   supplier: create(:supplier),
                    log: create(:amr_data_feed_import_log,
                                amr_data_feed_config: create(:amr_data_feed_config),
                                import_time: Time.zone.today))

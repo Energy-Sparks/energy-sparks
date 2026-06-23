@@ -32,6 +32,10 @@ module ComparisonsHelper
 
   delegate :percent_change, to: :'EnergySparks::Calculator'
 
+  def format_csv_percent_change(previous, current)
+    format_unit(percent_change(previous, current)&.*(100.0), Float, true, :benchmark)
+  end
+
   delegate :sum_data, to: :'EnergySparks::Calculator'
 
   delegate :sum_if_complete, to: :'EnergySparks::Calculator'
