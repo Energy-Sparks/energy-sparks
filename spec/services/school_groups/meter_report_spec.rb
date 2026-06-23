@@ -9,7 +9,7 @@ RSpec.describe SchoolGroups::MeterReport do
   let!(:school)       { create(:school, school_group: school_group) }
   let!(:active_meter) { create(:gas_meter, active: true, school: school) }
   let!(:inactive_meter) { create(:gas_meter, active: false, school: school) }
-  let(:header) { 'School,Supply,Number,Meter,Half-Hourly,Data source,Admin meter status,Procurement route,Active,First validated reading,Last validated reading,Large gaps (last 2 years),Modified readings (last 2 years),Zero reading days' }
+  let(:header) { 'School,Supply,Number,Meter,Half-Hourly,Supplier,Data source,Admin meter status,Procurement route,Active,First validated reading,Last validated reading,Large gaps (last 2 years),Modified readings (last 2 years),Zero reading days' }
 
   before { travel_to(frozen_time) }
 

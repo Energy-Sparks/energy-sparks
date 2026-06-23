@@ -9,6 +9,10 @@ module Admin
                    lambda { |meter|
                      render_to_string(Elements::IconComponent.new(fuel_type: meter.meter_type), layout: false)
                    }),
+        Column.new(:supplier,
+                   ->(meter) { meter.supplier&.name }),
+        Column.new(:data_source,
+                   ->(meter) { meter.data_source&.name }),
         Column.new(:count,
                    ->(meter) { meter.count })
       ]

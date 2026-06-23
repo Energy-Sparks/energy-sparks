@@ -22,3 +22,30 @@ $(document).ready(function() {
     $(this).next('.disabled-label').toggle();
   });
 });
+
+function updateSubmitState(form) {
+  const anyChecked = form.querySelector('input[type="checkbox"]:checked') !== null;
+
+  form.querySelectorAll('input[type="submit"]').forEach(btn => {
+    btn.disabled = !anyChecked;
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target.matches('.check-all-form')) {
+    const form = e.target.closest('form');
+    if (form) {
+      form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = e.target.checked;
+      });
+      updateSubmitState(form);
+    }
+    return;
+  }
+
+  if (e.target.matches('input.allow-submit')) {
+    const form = e.target.closest('form');
+    if (form) updateSubmitState(form);
+  }
+});
+

@@ -31,8 +31,10 @@ module Commercial
     belongs_to :created_by, class_name: 'User'
 
     has_many :line_items, class_name: 'Commercial::LineItem', dependent: :destroy
+    has_many :licences, through: :line_items
 
     delegate :contract_holder, to: :contract
+    accepts_nested_attributes_for :line_items
 
     def date
       created_at.to_date
