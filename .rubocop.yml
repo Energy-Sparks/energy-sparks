@@ -1,6 +1,5 @@
 inherit_from:
-  - .rubocop_todo.yml
-  - /dev/null
+  - <%= '.rubocop_todo.yml' if ENV.key?('CI') %>
 
 inherit_mode:
   merge:
@@ -66,6 +65,7 @@ ViewComponent/MissingPreview:
   PreviewPaths:
     - spec/components/previews
     - spec/components/previews/commercial
+    - spec/components/previews/forms
 
 Rails/I18nLocaleTexts:
   Exclude:
