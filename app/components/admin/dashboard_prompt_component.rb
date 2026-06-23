@@ -111,14 +111,12 @@ module Admin
 
     def overdue_group_reviews_count
       @overdue_group_reviews_count ||= user.owned_issues.for_issue_tag(group_review_tag)
-                                           .active
                                            .where(status: 'open')
                                            .where.not(review_date: Date.current..).count
     end
 
     def monthly_group_reviews_count
       @monthly_group_reviews_count ||= user.owned_issues.for_issue_tag(group_review_tag)
-                                           .active
                                            .where(status: 'open')
                                            .where(review_date: Date.current...(Date.current + 30)).count
     end
