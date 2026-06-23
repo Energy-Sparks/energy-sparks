@@ -28,7 +28,7 @@ RSpec.describe Commercial::PendingInvoicingComponent, type: :component do
           '1',
           '4',
           '0',
-          ''
+          'Raise invoice'
         ]
       ]
     end
