@@ -9,6 +9,8 @@ module Admin
         super + [
           Column.new(:meter_type,
                      ->(meter) { meter.meter_type.to_s }),
+          Column.new(:supplier,
+                     ->(meter) { meter.supplier&.name }),
           Column.new(:data_source,
                      ->(meter) { meter.data_source&.name }),
           Column.new(:last_validated_date,

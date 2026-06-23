@@ -360,7 +360,7 @@ class User < ApplicationRecord
         'Confirmed',
         'Locked'
       ]
-      where.not(role: %i[pupil admin]).order(:email).each do |user|
+      where.not(role: %i[pupil admin]).includes(:school, school: :school_group).order(:email).each do |user|
         csv << [
           user.default_school_group_name || '',
           user.school&.name || '',

@@ -2,6 +2,18 @@
   <%= header_nav_link 'All suppliers', admin_suppliers_url %>
 <% end %>
 
+<div class="bg-light border rounded py-2 mb-2">
+  <div class="col-12 clearfix">
+    <%= render 'admin/issues/issueable', issueable: @supplier %>
+    <span class='float-end pe-2'>
+      <%= render 'email_report_button', supplier: @supplier, class: 'btn btn-secondary btn-sm' %>
+      <%= link_to 'Edit', edit_admin_supplier_path(@supplier), class: 'btn btn-secondary btn-sm' %>
+      <%= link_to 'Delete', admin_supplier_path(@supplier), method: :delete, data: { confirm: 'Are you sure?' },
+                                                            class: 'btn btn-sm btn-danger' %>
+    </span>
+  </div>
+</div>
+
 <%= render TabsComponent.new(classes: 'preserve-tab-link') do |component| %>
   <% component.with_tab(name: :issues,
                         label: label_count('Issues', @supplier.issues.issue.status_open.count)) do %>
