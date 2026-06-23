@@ -4,8 +4,6 @@ module Admin
   module Commercial
     module Contracts
       class InvoicesController < AdminController
-        include ApplicationHelper
-
         load_and_authorize_resource :contract, class: 'Commercial::Contract'
         def raise_invoice
           @licences = @contract.licences.includes(school: :school_group).pending_invoice.by_start_date
@@ -38,16 +36,16 @@ module Admin
 
         private
 
-        def format_price_without_symbol(price)
-          format_price(price).delete('£')
+        def rounded_price(price)
+          format('%.2f', price.round(2))
         end
 
         def build_line_item(invoice, licence, price)
           invoice.line_items.build(
             licence: licence,
-            base_price: format_price_without_symbol(price.base_price),
-            metering_fee: format_price_without_symbol(price.metering_fee),
-            private_account_fee: format_price_without_symbol(price.private_account_fee),
+            base_price: rounded_price(price.base_price),
+            metering_fee: rounded_price(price.metering_fee),
+            private_account_fee: rounded_price(price.private_account_fee),
             private_account: licence.school.data_sharing != 'public',
             number_of_meters: licence.school.meters.main_meter.active.count
           )
