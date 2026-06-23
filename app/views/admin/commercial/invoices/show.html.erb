@@ -88,3 +88,9 @@
     <%= render Commercial::LineItemsComponent.new(invoice: @invoice) %>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Admin::RecordComponent.new(@invoice, id: 'metadata', current_user:) %>
+  </div>
+</div>

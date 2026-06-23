@@ -99,13 +99,14 @@ module Admin
 
     def overdue_issues_count
       @overdue_issues_count ||= user.owned_issues.exclude_issue_tag(group_review_tag)
+                                    .active
                                     .where(status: 'open')
                                     .where.not(review_date: Date.current..).count
     end
 
     def weekly_issues_count
       @weekly_issues_count ||= user.owned_issues.exclude_issue_tag(group_review_tag)
-                                   .where(status: 'open', review_date: Date.current...(Date.current + 7)).count
+                                   .active.where(status: 'open', review_date: Date.current...(Date.current + 7)).count
     end
 
     def overdue_group_reviews_count
