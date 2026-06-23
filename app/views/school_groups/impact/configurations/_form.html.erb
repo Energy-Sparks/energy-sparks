@@ -14,6 +14,10 @@
                     wrapper: :custom_boolean_switch,
                     label: 'Report visible',
                     hint: 'Reports that are not visible can still be viewed by admin users' %>
+
+        <div class='py-3'>
+          <%= f.button :submit, 'Save' %> <span class='form-text'>This applies all changes across the entire form.</span>
+        </div>
       <% end %>
       <%= grid.with_cell do |row| %>
         <h3>Energy efficiency section</h3>
@@ -22,8 +26,12 @@
                     label: 'Display section', hint: 'Show or hide the whole energy efficiency section' %>
 
         <h4>Metrics</h4>
-        <%= render TogglerDropdownComponent.new(title: 'Latest visible metrics', classes: 'mb-2', bg: 'white') do %>
-          <%= render ImpactReports::EnergyEfficiency::MetricsComponent.new(run: @run, classes: 'mt-4') %>
+        <% if @run %>
+          <%= render TogglerDropdownComponent.new(title: 'Latest visible metrics', classes: 'mb-2', bg: 'white') do %>
+            <%= render ImpactReports::EnergyEfficiency::MetricsComponent.new(run: @run, classes: 'mt-4') %>
+          <% end %>
+        <% else %>
+            <div class="bg-white p-2 mb-2">No run data available</div>
         <% end %>
 
         <h4>Featured school</h4>
@@ -82,8 +90,12 @@
                                       hint: 'Show or hide the whole engagement section' %>
 
         <h4>Metrics</h4>
-        <%= render TogglerDropdownComponent.new(title: 'Latest visible metrics', classes: 'mb-2', bg: 'white') do %>
-          <%= render ImpactReports::Engagement::MetricsComponent.new(run: @run, classes: 'mt-4') %>
+        <% if @run %>
+          <%= render TogglerDropdownComponent.new(title: 'Latest visible metrics', classes: 'mb-2', bg: 'white') do %>
+            <%= render ImpactReports::Engagement::MetricsComponent.new(run: @run, classes: 'mt-4') %>
+          <% end %>
+        <% else %>
+          <div class="bg-white p-2 mb-2">No run data available</div>
         <% end %>
 
         <h4>Featured school</h4>

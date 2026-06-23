@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::OutOfHours do
-  subject(:generator) { described_class.new(school.school_group) }
+  subject(:generator) { described_class.new(school.school_group, visible_schools) }
 
   let(:school) { create(:school, :with_school_group) }
+  let(:visible_schools) { school.school_group.assigned_schools.visible }
 
   describe '#metrics' do
     before do

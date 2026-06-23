@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Benchmark do
-  subject(:generator) { described_class.new(school_group) }
+  subject(:generator) { described_class.new(school_group, visible_schools) }
 
   let(:school_group) { create(:school_group) }
+  let(:visible_schools) { school_group.assigned_schools.visible }
   let!(:advice_pages) do
     %i[electricity_long_term gas_long_term electricity_out_of_hours gas_out_of_hours heating_control baseload]
       .map do |key|

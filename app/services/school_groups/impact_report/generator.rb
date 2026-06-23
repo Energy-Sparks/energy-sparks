@@ -11,10 +11,12 @@ module SchoolGroups
 
       def initialize(school_group)
         @school_group = school_group
+        @visible_schools = @school_group.assigned_schools.visible
       end
 
       def create_metrics!
-        run = ::ImpactReport::Run.create!(school_group: @school_group, run_date: Date.current)
+        run = ::ImpactReport::Run.create!(school_group: @school_group, visible_schools: @visible_schools.count,
+                                          run_date: Date.current)
         metrics.each do |attributes|
           run.metrics.create!(**attributes)
         rescue StandardError => e
@@ -25,7 +27,7 @@ module SchoolGroups
       private
 
       def metrics
-        GENERATORS.lazy.flat_map { |metric_category| metric_category.new(@school_group).metrics }
+        GENERATORS.lazy.flat_map { |metric_category| metric_category.new(@school_group, @visible_schools).metrics }
       end
     end
   end

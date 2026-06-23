@@ -6,6 +6,7 @@
 #
 #  id              :bigint(8)        not null, primary key
 #  run_date        :date             not null
+#  visible_schools :integer          default(0), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  school_group_id :bigint(8)        not null
@@ -20,7 +21,7 @@
 #
 
 module ImpactReport
-  class Run < ApplicationRecord # rubocop:disable Metrics/ClassLength
+  class Run < ApplicationRecord
     self.table_name = 'impact_report_runs'
 
     belongs_to :school_group
@@ -55,9 +56,7 @@ module ImpactReport
     end
 
     def enough_data?
-      overview(:visible_schools).then do |metric|
-        metric.present? && metric.available? && metric&.value.to_i >= 2
-      end
+      visible_schools >= 2
     end
 
     def overview(metric_type)
