@@ -98,7 +98,7 @@ namespace :after_party do
     # Create a data source model for above data sources
 
     data_sources.each do |d|
-      DataSource.find_or_create_by(name: d)
+      DataSource.find_or_create_by!(name: d)
     end
 
     # Update task as completed.  If you remove the line below, the task will
