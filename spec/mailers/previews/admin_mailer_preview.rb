@@ -7,6 +7,11 @@ class AdminMailerPreview < ActionMailer::Preview
     AdminMailer.with(to: 'operations@energysparks.uk', data_source_id:).school_data_source_report
   end
 
+  def school_supplier_report
+    supplier_id = Supplier.first.id
+    AdminMailer.with(to: 'operations@energysparks.uk', supplier_id:).school_supplier_report
+  end
+
   def issues_report
     IssuesReportMailer.with(user: User.admin.first).issues_report
   end
