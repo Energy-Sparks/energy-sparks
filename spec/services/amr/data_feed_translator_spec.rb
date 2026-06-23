@@ -51,6 +51,11 @@ describe Amr::DataFeedTranslator do
       expect(results.first[:mpan_mprn]).to eq('2333300681718')
     end
 
+    it 'removes trailing whitespace from the reading date' do
+      reading[2] = "#{reading[2]} "
+      expect(results.first[:reading_date]).to eq('31/12/2019')
+    end
+
     context 'when the config has a positional index' do
       it 'adds period to hash' do
         config.positional_index = true

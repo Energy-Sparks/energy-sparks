@@ -68,6 +68,7 @@ class AmrDataFeedReading < ApplicationRecord
     WHEN date_format='%d/%m/%Y' THEN to_date(reading_date, 'DD/MM/YYYY')
     WHEN date_format='%d/%m/%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d/%m/%y' THEN to_date(reading_date, 'DD/MM/YY')
+    WHEN date_format='%Y-%m-%d ' AND reading_date~'\\d{4}-\\d{2}-\\d{2}\s*$' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%Y-%m-%d' AND reading_date~'\\d{2}/\\d{2}/\\d{4}' THEN to_date(reading_date, 'DD/MM/YYYY')
     WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD ')
@@ -144,8 +145,8 @@ class AmrDataFeedReading < ApplicationRecord
     amr_data_feed_config_ids = amr_data_feed_config_ids.reject { |id| id.blank? || id.zero? }
     amr_data_feed_config_ids = AmrDataFeedConfig.all.pluck(:id) if amr_data_feed_config_ids.empty?
 
-    list_of_mpans = mpans.map {|m| "'#{m}'"}.join(',')
-    list_of_amr_data_feed_config_ids = amr_data_feed_config_ids.map {|m| "'#{m}'"}.join(',')
+    list_of_mpans = mpans.map { |m| "'#{m}'" }.join(',')
+    list_of_amr_data_feed_config_ids = amr_data_feed_config_ids.map { |m| "'#{m}'" }.join(',')
 
     <<~QUERY
       SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
@@ -175,7 +176,8 @@ class AmrDataFeedReading < ApplicationRecord
         rows_for_mpan.each { |row_for_mpan| rows << row_for_mpan }
       else
         # Add an empty row for for any MPAN/MPRN not found
-        rows << { 'mpan_mprn' => mpan, 'meter_id' => '-', 'identifier' => '-', 'description' => '-', 'earliest_reading' => '-', 'latest_reading' => '-' }
+        rows << { 'mpan_mprn' => mpan, 'meter_id' => '-', 'identifier' => '-', 'description' => '-',
+                  'earliest_reading' => '-', 'latest_reading' => '-' }
       end
     end
   end
