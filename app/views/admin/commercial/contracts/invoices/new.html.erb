@@ -48,6 +48,7 @@
               </td>
               <td class="col-1">
                 <%= item_form.input_field :number_of_meters,
+                                          as: :string,
                                           readonly: true,
                                           class: 'form-control-plaintext' %>
               </td>
@@ -59,16 +60,19 @@
               </td>
               <td class="col-1">
                 <%= item_form.input_field :base_price,
+                                          as: :string,
                                           readonly: true,
                                           class: 'form-control-plaintext' %>
               </td>
               <td class="col-1">
                 <%= item_form.input_field :metering_fee,
+                                          as: :string,
                                           readonly: true,
                                           class: 'form-control-plaintext' %>
               </td>
               <td class="col-1">
                 <%= item_form.input_field :private_account_fee,
+                                          as: :string,
                                           readonly: true,
                                           class: 'form-control-plaintext' %>
               </td>
