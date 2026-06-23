@@ -8,7 +8,8 @@ module Admin
     load_and_authorize_resource :school_group, include: :impact_report_configuration, id_param: :id, except: [:index]
 
     def index
-      @school_groups = SchoolGroup.organisation_groups.includes(:impact_report_configuration).order(:name)
+      @school_groups = SchoolGroup.organisation_groups.with_active_schools
+                                  .includes(:impact_report_configuration).order(:name)
       @school_groups = @school_groups.where(default_issues_admin_user: params[:user]) if params[:user].present?
     end
   end
