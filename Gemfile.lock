@@ -739,7 +739,7 @@ GEM
       rubocop (>= 1.72.2)
     ruby-limiter (2.3.0)
     ruby-ole (1.2.13.1)
-    ruby-prof (2.0.4)
+    ruby-prof (2.0.5)
       base64
       ostruct
     ruby-progressbar (1.13.0)
