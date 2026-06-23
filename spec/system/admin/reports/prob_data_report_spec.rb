@@ -9,10 +9,12 @@ describe 'Prob Data Report', type: :system do
 
   let!(:meter) do
     create(:gas_meter_with_validated_reading_dates,
-      school: school,
-      start_date: Time.zone.today - 5,
-      end_date: Time.zone.today,
-      status: 'PROB')
+           school: school,
+           start_date: Time.zone.today - 5,
+           end_date: Time.zone.today,
+           data_source: create(:data_source),
+           supplier: create(:supplier),
+           status: 'PROB')
   end
 
   before do
@@ -31,8 +33,8 @@ describe 'Prob Data Report', type: :system do
   it 'displays the table' do
     rows = all('tr').map { |tr| tr.all('th, td').map(&:text) }
     expect(rows).to eq([
-                         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter Type', 'Count'],
-                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, '', '6']
+                         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter Type', 'Supplier', 'Data Source', 'Count'],
+                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, '', meter.supplier&.name, meter.data_source&.name, '6']
                        ])
   end
 
@@ -40,7 +42,7 @@ describe 'Prob Data Report', type: :system do
     click_on 'CSV'
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
-      eq("School Group,Admin,School,Meter,Meter Name,Meter Type,Count\n" \
-         "#{meter.school_group.name},#{meter.school_group&.default_issues_admin_user&.name},#{meter.school.name},#{meter.mpan_mprn},#{meter.name},#{meter.meter_type},6\n")
+      eq("School Group,Admin,School,Meter,Meter Name,Meter Type,Supplier,Data Source,Count\n" \
+         "#{meter.school_group.name},#{meter.school_group&.default_issues_admin_user&.name},#{meter.school.name},#{meter.mpan_mprn},#{meter.name},#{meter.meter_type},#{meter.supplier.name},#{meter.data_source.name},6\n")
   end
 end

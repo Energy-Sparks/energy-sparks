@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Administering users' do
   include ActiveJob::TestHelper
+  include EmailHelpers
 
   let!(:admin) { create(:admin) }
 
@@ -38,31 +39,48 @@ describe 'Administering users' do
         context 'when there is an exact match' do
           let(:search) { 'testing@example.com' }
 
-          it { expect(page.first('div#found-users')).to have_content('testing@example.com') }
-          it { expect(page.first('div#search_results')).to have_no_content('No users found') }
+          it { expect(page.first('div#found-users')).to have_text('testing@example.com') }
+          it { expect(page.first('div#search_results')).to have_no_text('No users found') }
         end
 
         context 'when there is no match' do
           let(:search) { 'test@example.com' }
 
           it { expect(page).to have_no_css('div#found-users') }
-          it { expect(page.first('div#search_results')).to have_content('No users found') }
+          it { expect(page.first('div#search_results')).to have_text('No users found') }
         end
 
         context 'when there is a case-insensitive match' do
           let(:search) { 'TESTING@example.com' }
 
-          it { expect(page.first('div#found-users')).to have_content('testing@example.com') }
-          it { expect(page.first('div#search_results')).to have_no_content('No users found') }
+          it { expect(page.first('div#found-users')).to have_text('testing@example.com') }
+          it { expect(page.first('div#search_results')).to have_no_text('No users found') }
         end
 
         context 'when there is a match based on domain' do
           let(:search) { 'Example.com' }
 
-          it { expect(page.first('div#found-users')).to have_content('testing@example.com') }
-          it { expect(page.first('div#search_results')).to have_no_content('No users found') }
+          it { expect(page.first('div#found-users')).to have_text('testing@example.com') }
+          it { expect(page.first('div#search_results')).to have_no_text('No users found') }
         end
       end
+    end
+  end
+
+  describe 'when exporting users' do
+    subject(:email) { last_email }
+
+    before do
+      visit admin_users_path
+      click_on 'Email list of school users as CSV'
+    end
+
+    it 'sends the email' do
+      expect(page).to have_text("User export report has been sent to #{admin.email}")
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.length).to eq(1)
+      expect(email.subject).to match('User export')
+      expect(email.attachments.first.filename).to eq('users.csv')
     end
   end
 
@@ -211,7 +229,7 @@ describe 'Administering users' do
       end
 
       it 'says the user is deleted' do
-        expect(page).to have_content('User was successfully destroyed')
+        expect(page).to have_text('User was successfully destroyed')
       end
 
       it 'deletes the user' do
@@ -223,7 +241,7 @@ describe 'Administering users' do
         let!(:user)             { create(:user, consent_grants: [consent_grant]) }
 
         it 'says the user is deleted' do
-          expect(page).to have_content('User was successfully destroyed')
+          expect(page).to have_text('User was successfully destroyed')
         end
 
         it 'deletes the user' do
@@ -240,7 +258,7 @@ describe 'Administering users' do
         let!(:activity) { create(:activity, created_by: create(:user)) }
 
         it 'says the user is deleted' do
-          expect(page).to have_content('User was successfully destroyed')
+          expect(page).to have_text('User was successfully destroyed')
         end
 
         it 'deletes the user' do

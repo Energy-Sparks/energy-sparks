@@ -12,7 +12,7 @@ describe Schools::GenerateDashboardChartConfiguration, type: :service do
     allow(ChartData).to receive(:new).and_return(chart_data)
     allow(chart_data).to receive(:has_chart_data?).and_return(true)
     charts = service.generate
-    expect(charts).to match_array([:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas, :management_dashboard_group_by_week_storage_heater, :management_dashboard_group_by_month_solar_pv])
+    expect(charts).to match_array(%i[management_dashboard_group_by_week_electricity management_dashboard_group_by_week_gas management_dashboard_group_by_week_storage_heater management_dashboard_group_by_month_solar_pv])
   end
 
   context 'school has limited fuel types' do
@@ -22,7 +22,7 @@ describe Schools::GenerateDashboardChartConfiguration, type: :service do
       allow(ChartData).to receive(:new).and_return(chart_data)
       allow(chart_data).to receive(:has_chart_data?).and_return(true)
       charts = service.generate
-      expect(charts).to match_array([:management_dashboard_group_by_week_gas, :management_dashboard_group_by_month_solar_pv])
+      expect(charts).to match_array(%i[management_dashboard_group_by_week_gas management_dashboard_group_by_month_solar_pv])
     end
   end
 
@@ -30,6 +30,6 @@ describe Schools::GenerateDashboardChartConfiguration, type: :service do
     allow(ChartData).to receive(:new).and_return(chart_data)
     allow(chart_data).to receive(:has_chart_data?).and_return(false)
     charts = service.generate
-    expect(charts).to match_array([])
+    expect(charts).to be_empty
   end
 end

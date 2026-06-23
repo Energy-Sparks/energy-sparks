@@ -7,7 +7,7 @@ RSpec.describe 'good_job' do
     it 'is visible by an admin' do
       sign_in(create(:admin))
       visit admin_good_job_path
-      expect(page).to have_content('GoodJob')
+      expect(page).to have_text('GoodJob')
     end
 
     it 'is not visible by a non-admin' do

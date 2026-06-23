@@ -26,6 +26,7 @@
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  solis_cloud_installation_id    :bigint(8)
+#  supplier_id                    :bigint(8)
 #
 # Indexes
 #
@@ -38,6 +39,7 @@
 #  index_meters_on_school_id                       (school_id)
 #  index_meters_on_solar_edge_installation_id      (solar_edge_installation_id)
 #  index_meters_on_solis_cloud_installation_id     (solis_cloud_installation_id)
+#  index_meters_on_supplier_id                     (supplier_id)
 #
 # Foreign Keys
 #
@@ -55,6 +57,7 @@ class Meter < ApplicationRecord
   belongs_to :solis_cloud_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
+  belongs_to :supplier, optional: true
   belongs_to :procurement_route, optional: true
   belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 

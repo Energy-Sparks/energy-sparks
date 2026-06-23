@@ -27,8 +27,9 @@ RSpec.describe 'thermostatic control advice page', type: :system do
             average_outside_temperature_low: 4.0,
             predicted_kwh_for_high_average_outside_temperature: 1899.3005706138597,
             predicted_kwh_for_low_average_outside_temperature: 4507.818063448583
-        )
-      })
+          )
+        }
+      )
 
       visit school_advice_thermostatic_control_path(school)
     end
@@ -41,9 +42,9 @@ RSpec.describe 'thermostatic control advice page', type: :system do
       it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
-        expect(page).to have_content('What is thermostatic control?')
-        expect(page).to have_content('How do you compare?')
-        expect(page).to have_content('Your thermostatic control is 0.67, which is about average')
+        expect(page).to have_text('What is thermostatic control?')
+        expect(page).to have_text('How do you compare?')
+        expect(page).to have_text('Your thermostatic control is 0.67, which is about average')
       end
     end
 
@@ -53,18 +54,19 @@ RSpec.describe 'thermostatic control advice page', type: :system do
       it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
-        expect(page).to have_content('Analysis')
-        expect(page).to have_content('Thermostatic control in your school')
-        expect(page).to have_content('How to calculate a theoretical daily gas consumption using the model')
-        expect(page).to have_content('Your thermostatic control is 0.67, which is about average')
-        expect(page).to have_content('Using days with large diurnal range to understand thermostatic control')
-        expect(page).to have_content("Your school's R² value is 0.67 which is about average")
+        expect(page).to have_text('Analysis')
+        expect(page).to have_text('Thermostatic control in your school')
+        expect(page).to have_text('How to calculate a theoretical daily gas consumption using the model')
+        expect(page).to have_text('Your thermostatic control is 0.67, which is about average')
+        expect(page).to have_text('Using days with large diurnal range to understand thermostatic control')
+        expect(page).to have_text("Your school's R² value is 0.67 which is about average")
         expect(page).to have_css('#chart_wrapper_thermostatic_up_to_1_year')
         expect(page).to have_css('#chart_wrapper_thermostatic_control_large_diurnal_range')
 
-        ['#chart_wrapper_thermostatic_up_to_1_year', '#chart_wrapper_thermostatic_control_large_diurnal_range'].each do |chart_type|
+        ['#chart_wrapper_thermostatic_up_to_1_year',
+         '#chart_wrapper_thermostatic_control_large_diurnal_range'].each do |chart_type|
           within chart_type do
-            expect(page).not_to have_css('.axis-choice', visible: :hidden)
+            expect(page).to have_no_css('.axis-choice', visible: :hidden)
           end
         end
       end

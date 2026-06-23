@@ -36,10 +36,10 @@ RSpec.describe ImpactReports::Overview::MetricsComponent, :include_application_h
       end
     end
 
-    describe 'users card' do
+    describe 'Adult users card' do
       let(:card) { cards[1] }
 
-      it { expect(card).to have_text('Users') }
+      it { expect(card).to have_text('Adult users') }
       it { expect(card).to have_css('.figure', exact_text: run.overview(:users).value) }
 
       it do

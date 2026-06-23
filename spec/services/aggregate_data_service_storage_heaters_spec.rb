@@ -133,7 +133,8 @@ describe AggregateDataServiceStorageHeaters do
 
         context 'when there are two storage heaters on different meters' do
           let!(:second_meter) do
-            meter = build(:meter, :with_storage_heater, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
+            meter = build(:meter, :with_storage_heater, start_date: Date.new(2023, 1, 1),
+                                                        end_date: Date.new(2023, 12, 31))
             meter_collection.add_electricity_meter(meter)
             meter
           end
@@ -193,7 +194,8 @@ describe AggregateDataServiceStorageHeaters do
 
         context 'when there are two storage heaters on different meters' do
           let!(:second_meter) do
-            meter = build(:meter, :with_storage_heater, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
+            meter = build(:meter, :with_storage_heater, start_date: Date.new(2023, 1, 1),
+                                                        end_date: Date.new(2023, 12, 31))
             meter_collection.add_electricity_meter(meter)
             meter
           end

@@ -21,6 +21,7 @@
 #  floor_area                              :decimal(, )
 #  full_school                             :boolean          default(TRUE)
 #  funding_status                          :integer          default("state_school"), not null
+#  has_battery                             :boolean          default(FALSE), not null
 #  has_swimming_pool                       :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump            :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump_notes      :text
@@ -976,7 +977,21 @@ class School < ApplicationRecord
     licences.current.first&.contract_holder
   end
 
-  def summarised_contract_holder_name
+  def summarised_current_contract_holder_name
+    summarise_contract_holder(contract_holder)
+  end
+
+  def summarised_future_contract_holder_name
+    year = Calendar.default_national&.current_academic_year&.next_year
+    return nil unless year
+
+    future_licences = licences.not_provisional.for_period(year.start_date..year.end_date)
+    summarise_contract_holder(future_licences.first&.contract_holder)
+  end
+
+  private
+
+  def summarise_contract_holder(contract_holder)
     return nil unless contract_holder.present?
 
     case contract_holder
@@ -988,8 +1003,6 @@ class School < ApplicationRecord
       contract_holder.name
     end
   end
-
-  private
 
   def valid_uk_postcode
     return unless latitude.blank? || longitude.blank? || country.blank?

@@ -9,7 +9,7 @@ module Admin
     class BaseImportReportsController < BaseMeterReportsController
       private
 
-      def columns
+      def columns # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
         super + [
           Column.new(:meter_type,
                      ->(meter) { meter.meter_type.to_s },
@@ -18,6 +18,9 @@ module Admin
                      }),
           Column.new(:meter_system,
                      ->(meter) { meter.t_meter_system }),
+          Column.new(:supplier,
+                     ->(meter) { meter.supplier&.name },
+                     ->(meter, csv) { csv && link_to(csv, admin_supplier_path(meter.supplier)) }),
           Column.new(:data_source,
                      ->(meter) { meter.data_source&.name },
                      ->(meter, csv) { csv && link_to(csv, admin_data_source_path(meter.data_source)) }),

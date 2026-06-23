@@ -7,7 +7,7 @@ module Solar
     private
 
     def meter_model_attributes(_details)
-      { pseudo: true, solar_edge_installation: @installation }
+      { pseudo: true, solar_edge_installation: @installation, data_source: DataSource.find_by(name: 'SolarEdge') }
     end
 
     def synthetic_mpan(meter_type, _details)

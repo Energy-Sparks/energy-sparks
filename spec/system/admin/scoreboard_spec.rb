@@ -13,7 +13,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       visit admin_scoreboards_path
       click_on 'New Scoreboard'
       click_on 'Create Scoreboard'
-      expect(page).to have_content("can't be blank")
+      expect(page).to have_text("can't be blank")
 
       fill_in 'Name *', with: 'BANES and Frome'
       fill_in 'Description', with: 'A collection of schools'
@@ -46,7 +46,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
         click_on 'Delete'
       end.to change(Scoreboard, :count).from(1).to(0)
 
-      expect(page).to have_content('There are no Scoreboards')
+      expect(page).to have_text('There are no Scoreboards')
     end
   end
 end

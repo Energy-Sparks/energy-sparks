@@ -2,8 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpers: true do
+RSpec.describe MeterSelectionChartComponent, :include_url_helpers, type: :component do
   let(:school) { create(:school) }
+  let(:meter_selection) { Charts::MeterSelection.new(school, aggregate_school_service, :electricity, include_whole_school: false) }
+  let(:params) do
+    {
+      chart_type: :baseload,
+      meter_selection: meter_selection,
+      chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
+    }
+  end
 
   let(:aggregate_school_service) do
     instance_double(AggregateSchoolService, aggregate_school: meter_collection)
@@ -23,21 +31,11 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
     end
   end
 
-  let(:meter_selection) { Charts::MeterSelection.new(school, aggregate_school_service, :electricity, include_whole_school: false) }
-
-  let(:params) do
-    {
-      chart_type: :baseload,
-      meter_selection: meter_selection,
-      chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
-    }
-  end
-
   context 'when rendering' do
     let(:html) { render_inline(described_class.new(**params)) }
 
     it 'creates expected chart, defaulting to first meter' do
-      expect(html).to have_selector('div', id: "chart_baseload_#{meters.first.mpan_mprn}") { |d| JSON.parse(d['data-chart-config'])['type'] == 'baseload' }
+      expect(html).to have_css('div', id: "chart_baseload_#{meters.first.mpan_mprn}") { |d| JSON.parse(d['data-chart-config'])['type'] == 'baseload' }
     end
 
     it 'adds sets up the meter selection form' do
@@ -52,11 +50,11 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
       let(:meters) { [build(:meter, type: :electricity)] }
 
       it 'still adds the expected chart, defaulting to first meter' do
-        expect(html).to have_selector('div', id: "chart_baseload_#{meters.first.mpan_mprn}") { |d| JSON.parse(d['data-chart-config'])['type'] == 'baseload' }
+        expect(html).to have_css('div', id: "chart_baseload_#{meters.first.mpan_mprn}") { |d| JSON.parse(d['data-chart-config'])['type'] == 'baseload' }
       end
 
       it 'does not add the form' do
-        expect(html).not_to have_selector('form#chart-filter')
+        expect(html).to have_no_css('form#chart-filter')
       end
     end
 
@@ -70,21 +68,21 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
       end
 
       it 'adds title' do
-        expect(html).to have_content(I18n.t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title'))
+        expect(html).to have_text(I18n.t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title'))
       end
 
-      it { expect(html).to have_selector('strong', text: "I'm a header") }
-      it { expect(html).to have_selector('small', text: "I'm a footer") }
+      it { expect(html).to have_css('strong', text: "I'm a header") }
+      it { expect(html).to have_css('small', text: "I'm a footer") }
 
       context 'when theres a single meter' do
         let(:meters) { [build(:meter, type: :electricity)] }
 
         it 'adds the title' do
-          expect(html).to have_content(I18n.t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title'))
+          expect(html).to have_text(I18n.t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title'))
         end
 
-        it { expect(html).to have_selector('strong', text: "I'm a header") }
-        it { expect(html).to have_selector('small', text: "I'm a footer") }
+        it { expect(html).to have_css('strong', text: "I'm a header") }
+        it { expect(html).to have_css('small', text: "I'm a footer") }
       end
     end
   end

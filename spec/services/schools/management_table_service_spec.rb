@@ -12,12 +12,14 @@ describe Schools::ManagementTableService do
     end
 
     context 'and there is analytics data' do
-      let!(:content_generation_run) { create(:content_generation_run, school: school)}
+      let!(:content_generation_run) { create(:content_generation_run, school: school) }
 
       let(:variables) { { 'summary_data' => { gas: { start_date: '2020-01-01', end_date: '2020-02-01' } } } }
 
       let!(:alert) { create(:alert, variables: variables) }
-      let!(:management_dashboard_table) { create(:management_dashboard_table, content_generation_run: content_generation_run, alert: alert) }
+      let!(:management_dashboard_table) do
+        create(:management_dashboard_table, content_generation_run: content_generation_run, alert: alert)
+      end
 
       it 'returns the alert content' do
         expect(service.management_data.start_date(:gas)).to eq('1 Jan 2020')

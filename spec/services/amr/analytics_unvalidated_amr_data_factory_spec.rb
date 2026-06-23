@@ -36,10 +36,10 @@ module Amr
       context 'with an invalid date' do
         before do
           create(:amr_data_feed_reading,
-            meter: e_meter,
-            readings: Array.new(48, rand),
-            reading_date: Date.tomorrow.strftime('%d/%m/%Y'),
-            mpan_mprn: e_meter.mpan_mprn)
+                 meter: e_meter,
+                 readings: Array.new(48, rand),
+                 reading_date: Date.tomorrow.strftime('%d/%m/%Y'),
+                 mpan_mprn: e_meter.mpan_mprn)
         end
 
         it 'falls back to Date.parse' do
@@ -52,10 +52,10 @@ module Amr
       context 'with an unparseable date' do
         before do
           create(:amr_data_feed_reading,
-            meter: e_meter,
-            readings: Array.new(48, rand),
-            reading_date: 'baddate',
-            mpan_mprn: e_meter.mpan_mprn)
+                 meter: e_meter,
+                 readings: Array.new(48, rand),
+                 reading_date: 'baddate',
+                 mpan_mprn: e_meter.mpan_mprn)
         end
 
         it 'skips the row' do
@@ -67,10 +67,10 @@ module Amr
       context 'with blank readings' do
         before do
           create(:amr_data_feed_reading,
-            meter: e_meter,
-            readings: Array.new(48, nil),
-            reading_date: Date.tomorrow.strftime('%b %e %Y'),
-            mpan_mprn: e_meter.mpan_mprn)
+                 meter: e_meter,
+                 readings: Array.new(48, nil),
+                 reading_date: Date.tomorrow.strftime('%b %e %Y'),
+                 mpan_mprn: e_meter.mpan_mprn)
         end
 
         it 'skips blank readings' do
@@ -84,15 +84,15 @@ module Amr
 
         before do
           create(:amr_data_feed_reading,
-            meter: e_meter,
-            amr_data_feed_config: amr_data_feed_config,
-            readings: [1.23] + Array.new(47, nil),
-            reading_date: Date.tomorrow.strftime('%b %e %Y'),
-            mpan_mprn: e_meter.mpan_mprn)
+                 meter: e_meter,
+                 amr_data_feed_config: amr_data_feed_config,
+                 readings: [1.23] + Array.new(47, nil),
+                 reading_date: Date.tomorrow.strftime('%b %e %Y'),
+                 mpan_mprn: e_meter.mpan_mprn)
         end
 
         context 'with no readings limit' do
-          # TODO this SHOULD preserve nils without converting to 0.0, once the analytics can handle it
+          # TODO: this SHOULD preserve nils without converting to 0.0, once the analytics can handle it
           it 'converts nil to 0.0' do
             expect(amr_data[:electricity_meters].last[:readings].last.kwh_data_x48[0]).to be 1.23
             expect(amr_data[:electricity_meters].last[:readings].last.kwh_data_x48[1]).to be 0.0

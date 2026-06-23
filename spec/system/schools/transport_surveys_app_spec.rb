@@ -19,10 +19,10 @@ describe 'TransportSurveys - App', type: :system do
         end
 
         context 'when javascript is not enabled' do
-          it { expect(page).to have_content('Javascript must be enabled to use this functionality') }
+          it { expect(page).to have_text('Javascript must be enabled to use this functionality') }
         end
 
-        context 'when javascript is enabled', js: true do
+        context 'when javascript is enabled', :js do
           it { expect(page).to have_button('Launch survey app') }
 
           context 'when launching the app' do
@@ -32,7 +32,7 @@ describe 'TransportSurveys - App', type: :system do
 
             let(:weather) { TransportSurvey::Response.weather_images[:rain] }
 
-            it { expect(page).to have_content('Please select today\'s weather') }
+            it { expect(page).to have_text('Please select today\'s weather') }
             it { expect(page).to have_link(weather) }
             it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
@@ -43,9 +43,9 @@ describe 'TransportSurveys - App', type: :system do
 
               let(:time) { TransportSurvey::Response.journey_minutes_options.last }
 
-              it { expect(page).to have_content('Time: How many minutes did your journey take in total?') }
+              it { expect(page).to have_text('Time: How many minutes did your journey take in total?') }
               it { expect(page).to have_link(time.to_s) }
-              it { expect(page).not_to have_button('Back') }
+              it { expect(page).to have_no_button('Back') }
               it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
               context 'when selecting a time' do
@@ -53,7 +53,7 @@ describe 'TransportSurveys - App', type: :system do
                   click_link time.to_s
                 end
 
-                it { expect(page).to have_content('Transport: What mode of transport did you use to get to school?') }
+                it { expect(page).to have_text('Transport: What mode of transport did you use to get to school?') }
                 it { expect(page).to have_link(transport_type_shareable.image) }
                 it { expect(page).to have_link(transport_type_not_shareable.image) }
                 it { expect(page).to have_button('Back') }
@@ -65,7 +65,7 @@ describe 'TransportSurveys - App', type: :system do
                   end
 
                   it { expect(page).to have_button('Finish & save results 0', disabled: true) }
-                  it { expect(page).to have_content('Time: How many minutes did your journey take in total?') }
+                  it { expect(page).to have_text('Time: How many minutes did your journey take in total?') }
                 end
 
                 context 'when selecting a transport type where carbon cannot be shared' do
@@ -75,9 +75,9 @@ describe 'TransportSurveys - App', type: :system do
                     click_link transport_type.image
                   end
 
-                  it { expect(page).to have_content('Confirm your selection') }
-                  it { expect(page).to have_content(time) }
-                  it { expect(page).to have_content(transport_type.image) }
+                  it { expect(page).to have_text('Confirm your selection') }
+                  it { expect(page).to have_text(time) }
+                  it { expect(page).to have_text(transport_type.image) }
                   it { expect(page).to have_button('Back') }
                   it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
@@ -87,7 +87,7 @@ describe 'TransportSurveys - App', type: :system do
                     end
 
                     it { expect(page).to have_button('Finish & save results 0', disabled: true) }
-                    it { expect(page).to have_content('Transport: What mode of transport did you use to get to school?') }
+                    it { expect(page).to have_text('Transport: What mode of transport did you use to get to school?') }
                   end
 
                   context 'when confirming selection' do
@@ -98,27 +98,26 @@ describe 'TransportSurveys - App', type: :system do
                     let(:carbon) { (((transport_type.speed_km_per_hour * time) / 60) * transport_type.kg_co2e_per_km).round(3) }
 
                     it 'displays carbon summary' do
-                      expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}")
-                      expect(page).to have_content("You used #{carbon}kg of carbon!")
-                      expect(find('#display-carbon-equivalent')).not_to be_blank # the content of this is random, so this is as far as it can be tested without getting too complex
+                      expect(page).to have_text("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}")
+                      expect(page).to have_text("You used #{carbon}kg of carbon!")
+                      expect(find_by_id('display-carbon-equivalent')).not_to be_blank # the content of this is random, so this is as far as it can be tested without getting too complex
                     end
 
                     it { expect(page).to have_button('Finish & save results 1', disabled: false) }
-                    it { expect(page).not_to have_button('Back') }
+                    it { expect(page).to have_no_button('Back') }
                   end
                 end
 
                 context 'when selecting a transport type where carbon can be shared' do
                   let(:transport_type) { transport_type_shareable }
+                  let(:passengers_link) { TransportSurvey::Response.passenger_symbol * passengers }
+                  let(:passengers) { TransportSurvey::Response.passengers_options.last.to_i }
 
                   before do
                     click_link transport_type.image
                   end
 
-                  let(:passengers_link) { TransportSurvey::Response.passenger_symbol * passengers }
-                  let(:passengers) { TransportSurvey::Response.passengers_options.last.to_i }
-
-                  it { expect(page).to have_content("Sharing: How many pupils at this school shared your #{transport_type.image} #{transport_type.name} journey?") }
+                  it { expect(page).to have_text("Sharing: How many pupils at this school shared your #{transport_type.image} #{transport_type.name} journey?") }
                   it { expect(page).to have_button('Finish & save results 0', disabled: true) }
                   it { expect(page).to have_button('Back') }
 
@@ -127,21 +126,20 @@ describe 'TransportSurveys - App', type: :system do
                       click_button('Back')
                     end
 
-                    it { expect(page).to have_content('Transport: What mode of transport did you use to get to school?') }
+                    it { expect(page).to have_text('Transport: What mode of transport did you use to get to school?') }
                   end
-
 
                   context 'when selecting passengers' do
                     before do
                       click_link(passengers_link)
                     end
 
-                    it { expect(page).to have_content('Confirm your selection') }
+                    it { expect(page).to have_text('Confirm your selection') }
 
                     it 'displays survey selection summary' do # bunched these up for test speed
-                      expect(page).to have_content(time)
-                      expect(page).to have_content(transport_type.image)
-                      expect(page).to have_content(passengers)
+                      expect(page).to have_text(time)
+                      expect(page).to have_text(transport_type.image)
+                      expect(page).to have_text(passengers)
                     end
 
                     it { expect(page).to have_button('Confirm') }
@@ -154,7 +152,7 @@ describe 'TransportSurveys - App', type: :system do
                       end
 
                       it { expect(page).to have_button('Finish & save results 0', disabled: true) }
-                      it { expect(page).to have_content('Sharing: How many pupils') }
+                      it { expect(page).to have_text('Sharing: How many pupils') }
                     end
 
                     context 'when confirming selection' do
@@ -165,20 +163,20 @@ describe 'TransportSurveys - App', type: :system do
                       let(:carbon) { ((((transport_type.speed_km_per_hour * time) / 60) * transport_type.kg_co2e_per_km) / passengers).round(3) }
 
                       it 'displays carbon summary' do
-                        expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}")
-                        expect(page).to have_content("You used #{carbon}kg of carbon!")
-                        expect(find('#display-carbon-equivalent')).not_to be_blank # the content of this is random, so this is as far as it can be tested without getting too complex
+                        expect(page).to have_text("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}")
+                        expect(page).to have_text("You used #{carbon}kg of carbon!")
+                        expect(find_by_id('display-carbon-equivalent')).not_to be_blank # the content of this is random, so this is as far as it can be tested without getting too complex
                       end
 
                       it { expect(page).to have_button('Finish & save results 1', disabled: false) }
-                      it { expect(page).not_to have_button('Back') }
+                      it { expect(page).to have_no_button('Back') }
 
                       context 'with next survey run' do
                         before do
                           click_button('Next pupil')
                         end
 
-                        it { expect(page).to have_content('Time: How many minutes did your journey take in total?') }
+                        it { expect(page).to have_text('Time: How many minutes did your journey take in total?') }
                         it { expect(page).to have_button('Finish & save results 1', disabled: false) }
                       end
 
@@ -188,7 +186,7 @@ describe 'TransportSurveys - App', type: :system do
                         end
 
                         it { expect(page).to have_css('#transport_surveys_pie') }
-                        it { expect(page).to have_content('1 pupil or staff member') }
+                        it { expect(page).to have_text('1 pupil or staff member') }
 
                         it do
                           expect(page).to have_no_link('Manage responses')

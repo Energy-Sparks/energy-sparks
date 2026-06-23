@@ -5,7 +5,7 @@ module Solar
     let!(:school)               { create(:school) }
     let(:rbee_meter_id)         { '216057958' }
 
-    let(:low_carbon_hub_installation) { create(:low_carbon_hub_installation, rbee_meter_id: rbee_meter_id, school: school)}
+    let(:low_carbon_hub_installation) { create(:low_carbon_hub_installation, rbee_meter_id: rbee_meter_id, school: school) }
     let(:import_log) { create(:amr_data_feed_import_log) }
 
     let(:solar_pv_readings)           { { 'Sun, 29 Nov 2020' => Array.new(48, 1.0), 'Mon, 30 Nov 2020' => Array.new(48, 2.0) } }
@@ -20,28 +20,28 @@ module Solar
         solar_pv: {
           mpan_mprn: expected_solar_pv_mpan,
           readings: {
-            start_date => OneDayAMRReading.new(70000000123085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(70000000123085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(70_000_000_123_085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(70_000_000_123_085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
         },
         electricity: {
           mpan_mprn: expected_electricity_mpan,
           readings: {
-            start_date => OneDayAMRReading.new(90000000123085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(90000000123085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(90_000_000_123_085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(90_000_000_123_085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
         },
         exported_solar_pv: {
           mpan_mprn: expected_exported_solar_pv_mpan,
           readings: {
-            start_date => OneDayAMRReading.new(60000000123085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(60000000123085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(60_000_000_123_085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(60_000_000_123_085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
-        },
+        }
       }
     end
 
-    let(:mpan) { 1112223334445 }
+    let(:mpan) { 1_112_223_334_445 }
     let(:expected_solar_pv_mpan) { "7#{mpan}".to_i }
     let(:expected_electricity_mpan) { "9#{mpan}".to_i }
     let(:expected_exported_solar_pv_mpan) { "6#{mpan}".to_i }
@@ -81,7 +81,7 @@ module Solar
     end
 
     context 'when pseudo meter exists' do
-      let!(:existing_pseudo_meter) { create(:electricity_meter, low_carbon_hub_installation: low_carbon_hub_installation, name: 'Existing meter', mpan_mprn: expected_electricity_mpan, school: low_carbon_hub_installation.school, pseudo: true)}
+      let!(:existing_pseudo_meter) { create(:electricity_meter, low_carbon_hub_installation: low_carbon_hub_installation, name: 'Existing meter', mpan_mprn: expected_electricity_mpan, school: low_carbon_hub_installation.school, pseudo: true) }
 
       context 'with all fields' do
         it 'creates new inactive pseudo meters where required' do
@@ -112,7 +112,7 @@ module Solar
       end
 
       context 'with no installation or pseudo flag' do
-        let!(:existing_pseudo_meter) { create(:electricity_meter, low_carbon_hub_installation: nil, name: 'Existing meter', mpan_mprn: expected_electricity_mpan, school: low_carbon_hub_installation.school, pseudo: false)}
+        let!(:existing_pseudo_meter) { create(:electricity_meter, low_carbon_hub_installation: nil, name: 'Existing meter', mpan_mprn: expected_electricity_mpan, school: low_carbon_hub_installation.school, pseudo: false) }
 
         it 'creates new inactive pseudo meters where required' do
           expect do

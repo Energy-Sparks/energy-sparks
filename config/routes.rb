@@ -594,6 +594,7 @@ Rails.application.routes.draw do
       resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
       resources :data_sources, module: :dashboard
+      resources :suppliers, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
       resources :issues, module: :dashboard
       resources :school_onboardings, path: 'school_setup', module: :dashboard do
@@ -633,6 +634,7 @@ Rails.application.routes.draw do
       get 'disable', to: 'users#disable'
       get 'enable', to: 'users#enable'
       get 'mailchimp_redirect', to: 'users#mailchimp_redirect'
+      post 'deliver', on: :collection
 
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
@@ -832,6 +834,12 @@ Rails.application.routes.draw do
     resources :data_sources do
       post :deliver
       scope module: :data_sources do
+        concerns :issueable
+      end
+    end
+    resources :suppliers do
+      post :deliver
+      scope module: :suppliers do
         concerns :issueable
       end
     end

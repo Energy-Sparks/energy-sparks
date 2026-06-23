@@ -6,9 +6,9 @@ RSpec.describe DatePickerFormComponent, type: :component do
   let(:value) { '01/12/2022' }
   let(:params) do
     {
-    form: OpenStruct.new(object_name: 'job'),
-    field_name: :start_date,
-    value: value,
+      form: OpenStruct.new(object_name: 'job'),
+      field_name: :start_date,
+      value: value
     }
   end
 
@@ -36,11 +36,11 @@ RSpec.describe DatePickerFormComponent, type: :component do
     context 'and a default supplied' do
       let(:params)    do
         {
-        form: OpenStruct.new(object_name: 'job'),
-        field_name: :start_date,
-        value: value,
-        default_if_nil: '',
-        hint: ''
+          form: OpenStruct.new(object_name: 'job'),
+          field_name: :start_date,
+          value: value,
+          default_if_nil: '',
+          hint: ''
         }
       end
 

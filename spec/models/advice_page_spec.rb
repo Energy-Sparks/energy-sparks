@@ -24,7 +24,7 @@ describe AdvicePage do
 
   context 'serialising for transifex' do
     context 'when mapping fields' do
-      let!(:advice_page) { create(:advice_page, key: 'baseload-summary', learn_more: 'text here')}
+      let!(:advice_page) { create(:advice_page, key: 'baseload-summary', learn_more: 'text here') }
 
       it 'produces the expected key names' do
         expect(advice_page.tx_attribute_key('learn_more')).to eq 'learn_more_html'
@@ -40,14 +40,14 @@ describe AdvicePage do
 
       it 'maps all translated fields' do
         data = advice_page.tx_serialise
-        expect(data['en']).not_to be nil
+        expect(data['en']).not_to be_nil
         key = "advice_page_#{advice_page.id}"
-        expect(data['en'][key]).not_to be nil
-        expect(data['en'][key].keys).to match_array(['learn_more_html'])
+        expect(data['en'][key]).not_to be_nil
+        expect(data['en'][key].keys).to contain_exactly('learn_more_html')
       end
 
       it 'created categories' do
-        expect(advice_page.tx_categories).to match_array(['advice_page'])
+        expect(advice_page.tx_categories).to contain_exactly('advice_page')
       end
 
       it 'overrides default name' do

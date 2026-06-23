@@ -10,8 +10,8 @@ describe 'onboarding report', :include_application_helper do
       :school_onboarding,
       :with_school,
       :with_events,
-      event_names: [:email_sent, :onboarding_complete],
-      contact_email: 'test@test.com',
+      event_names: %i[email_sent onboarding_complete],
+      contact_email: 'test@test.com'
     )
   end
 
@@ -26,7 +26,8 @@ describe 'onboarding report', :include_application_helper do
       let(:table_id) { '#recently_onboarded_table' }
       let(:expected_header) do
         [
-          ['Country', 'School group', 'School name', 'Contact email', 'Onboarding started', 'Onboarding completed', 'Data enabled?', 'Data enabled on', 'Days until enabled']
+          ['Country', 'School group', 'School name', 'Contact email', 'Onboarding started', 'Onboarding completed',
+           'Data enabled?', 'Data enabled on', 'Days until enabled']
         ]
       end
       let(:expected_rows) do

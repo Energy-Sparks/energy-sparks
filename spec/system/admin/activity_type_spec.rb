@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'activity type', type: :system do
-  let!(:admin) { create(:admin)}
-  let!(:activity_category) { create(:activity_category)}
+  let!(:admin) { create(:admin) }
+  let!(:activity_category) { create(:activity_category) }
   let!(:ks1) { KeyStage.create(name: 'KS1') }
   let!(:ks2) { KeyStage.create(name: 'KS2') }
   let!(:ks3) { KeyStage.create(name: 'KS3') }
@@ -22,7 +22,7 @@ describe 'activity type', type: :system do
   describe 'when not logged in' do
     it 'does not authorise viewing' do
       visit admin_activity_types_path
-      expect(page).to have_content('You need to sign in or sign up before continuing.')
+      expect(page).to have_text('You need to sign in or sign up before continuing.')
     end
   end
 
@@ -38,7 +38,7 @@ describe 'activity type', type: :system do
 
     context 'when adding a new activity' do
       before do
-        school = create :school # for preview
+        school = create(:school) # for preview
         allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
         allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
 
@@ -83,11 +83,11 @@ describe 'activity type', type: :system do
         activity_type = ActivityType.first
 
         expect(activity_type.summary).to eq(summary)
-        expect(activity_type.key_stages).to match_array([ks1])
-        expect(activity_type.subjects).to   match_array([science])
-        expect(activity_type.activity_timings).to match_array([half_hour])
-        expect(activity_type.topics).to     match_array([energy])
-        expect(activity_type.impacts).to    match_array([reducing_electricity])
+        expect(activity_type.key_stages).to contain_exactly(ks1)
+        expect(activity_type.subjects).to   contain_exactly(science)
+        expect(activity_type.activity_timings).to contain_exactly(half_hour)
+        expect(activity_type.topics).to     contain_exactly(energy)
+        expect(activity_type.impacts).to    contain_exactly(reducing_electricity)
         expect(activity_type.maximum_frequency).to eq(5)
         expect(activity_type.image_en.filename).to eq('placeholder.png')
 
@@ -96,9 +96,9 @@ describe 'activity type', type: :system do
 
         click_on activity_name
         expect(page).to have_css("img[src*='placeholder.png']")
-        expect(page).to have_content(download_links)
-        expect(page).to have_content(description)
-        expect(page).to have_content(school_specific_description)
+        expect(page).to have_text(download_links)
+        expect(page).to have_text(description)
+        expect(page).to have_text(school_specific_description)
       end
 
       it 'can does not crash if you forget the score' do
@@ -115,7 +115,7 @@ describe 'activity type', type: :system do
         expect(ActivityType.count).to be 0
       end
 
-      context 'when adding a chart', js: true do
+      context 'when adding a chart', :js do
         it_behaves_like 'a form with a customised trix component', charts: true
         it_behaves_like 'a trix component with a working chart button' do
           let(:chart_id) { 'last_7_days_intraday_gas' }
@@ -127,8 +127,8 @@ describe 'activity type', type: :system do
             fill_in_trix '#activity_type_school_specific_description_en', with: embed
             click_on 'Preview'
             within '#school-specific-description-preview-en' do
-              expect(page).to have_content('Your chart')
-              expect(page).to have_selector('#chart_wrapper_last_7_days_intraday_gas')
+              expect(page).to have_text('Your chart')
+              expect(page).to have_css('#chart_wrapper_last_7_days_intraday_gas')
             end
           end
         end
@@ -192,10 +192,10 @@ describe 'activity type', type: :system do
 
       visit admin_activity_type_path(activity_type)
 
-      expect(page).to have_content('some english description')
-      expect(page).to have_content('some welsh description')
-      expect(page).to have_content('some english school specific description')
-      expect(page).to have_content('some welsh school specific description')
+      expect(page).to have_text('some english description')
+      expect(page).to have_text('some welsh description')
+      expect(page).to have_text('some english school specific description')
+      expect(page).to have_text('some welsh school specific description')
     end
   end
 end

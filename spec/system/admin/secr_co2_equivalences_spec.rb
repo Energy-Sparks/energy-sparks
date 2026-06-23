@@ -26,15 +26,15 @@ RSpec.describe 'SECR CO₂ equivalences' do
     fill_in 'Natural gas kg CO₂e', with: '0.54', match: :first
     fill_in 'Natural gas kg CO₂e of CO₂', with: '0.55'
     expect { click_on 'Create' }.to change(SecrCo2Equivalence, :count).by(1)
-    expect(page).to have_content('New SECR CO₂ equivalence created')
-    expect(page).to have_content '2025 0.51 0.52 0.53 0.54 0.55'
+    expect(page).to have_text('New SECR CO₂ equivalence created')
+    expect(page).to have_text '2025 0.51 0.52 0.53 0.54 0.55'
     expect(SecrCo2Equivalence.last.year).to eq(2025)
   end
 
   it 'checks for required fields' do
     click_on 'New SECR CO₂ equivalence'
     click_on 'Create'
-    expect(page).to have_content("can't be blank", count: 6)
+    expect(page).to have_text("can't be blank", count: 6)
   end
 
   context 'with existing' do
@@ -50,7 +50,7 @@ RSpec.describe 'SECR CO₂ equivalences' do
     before { refresh }
 
     it 'displays the index' do
-      expect(page).to have_content('SECR CO₂ equivalence')
+      expect(page).to have_text('SECR CO₂ equivalence')
       expect(all('tr').map { |tr| tr.all('th, td').map(&:text) }).to eq(
         [['Year', 'Electricity kg CO₂e', 'Electricity kg CO₂e of CO₂',
           'Transmission & distribution kg CO₂e', 'Natural gas kg CO₂e',
@@ -63,7 +63,7 @@ RSpec.describe 'SECR CO₂ equivalences' do
       click_on 'Edit'
       fill_in 'Year', with: '2024'
       click_on 'Update'
-      expect(page).to have_content('SECR CO₂ equivalence was updated')
+      expect(page).to have_text('SECR CO₂ equivalence was updated')
       equivalence.reload
       expect(equivalence.year).to eq(2024)
     end
@@ -72,7 +72,7 @@ RSpec.describe 'SECR CO₂ equivalences' do
       click_on 'Edit'
       fill_in 'Year', with: ''
       click_on 'Update'
-      expect(page).to have_content("can't be blank", count: 1)
+      expect(page).to have_text("can't be blank", count: 1)
     end
   end
 end

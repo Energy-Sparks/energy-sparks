@@ -2,13 +2,13 @@ require 'rails_helper'
 
 describe 'Todo' do
   context 'with valid attributes' do
-    subject(:todo) { create :todo }
+    subject(:todo) { create(:todo) }
 
     it { is_expected.to be_valid }
   end
 
   describe 'relationships' do
-    subject(:todo) { create :todo }
+    subject(:todo) { create(:todo) }
 
     it { expect(todo).to belong_to(:assignable) }
     it { expect(todo).to belong_to(:task) }
@@ -20,7 +20,7 @@ describe 'Todo' do
     context 'when safely destroying' do
       context 'when there is a completed todo' do
         let!(:todo) { create(:todo, assignable:, task:) }
-        let!(:completed_todo) { create :completed_todo, todo:, completable:, recording: }
+        let!(:completed_todo) { create(:completed_todo, todo:, completable:, recording:) }
 
         context 'when removing assignable (programme_type or audit)' do
           before do
@@ -33,14 +33,14 @@ describe 'Todo' do
 
             context 'when task is an activity_type' do
               let(:task) { create(:activity_type) }
-              let(:recording) { create(:activity_without_creator, activity_type: task)}
+              let(:recording) { create(:activity_without_creator, activity_type: task) }
 
               it_behaves_like 'a destroyed assignable'
             end
 
             context 'when task is an intervention_type' do
               let(:task) { create(:intervention_type) }
-              let(:recording) { create(:observation, :intervention, intervention_type: task)}
+              let(:recording) { create(:observation, :intervention, intervention_type: task) }
 
               it_behaves_like 'a destroyed assignable'
             end
@@ -52,14 +52,14 @@ describe 'Todo' do
 
             context 'when task is an activity_type' do
               let(:task) { create(:activity_type) }
-              let(:recording) { create(:activity_without_creator, activity_type: task)}
+              let(:recording) { create(:activity_without_creator, activity_type: task) }
 
               it_behaves_like 'a destroyed assignable'
             end
 
             context 'when task is an intervention_type' do
               let(:task) { create(:intervention_type) }
-              let(:recording) { create(:observation, :intervention, intervention_type: task)}
+              let(:recording) { create(:observation, :intervention, intervention_type: task) }
 
               it_behaves_like 'a destroyed assignable'
             end
@@ -68,7 +68,7 @@ describe 'Todo' do
 
         context 'when removing completable (programme or audit)' do
           let(:task) { create(:activity_type) }
-          let(:recording) { create(:activity_without_creator, activity_type: task)}
+          let(:recording) { create(:activity_without_creator, activity_type: task) }
 
           before do
             completed_todo.completable.destroy
@@ -108,14 +108,14 @@ describe 'Todo' do
 
           context 'when task is an activity_type' do
             let(:task) { create(:activity_type) }
-            let(:recording) { create(:activity_without_creator, activity_type: task)}
+            let(:recording) { create(:activity_without_creator, activity_type: task) }
 
             it_behaves_like 'a destroyed todo'
           end
 
           context 'when task is an intervention_type' do
             let(:task) { create(:intervention_type) }
-            let(:recording) { create(:observation, :intervention, intervention_type: task)}
+            let(:recording) { create(:observation, :intervention, intervention_type: task) }
 
             it_behaves_like 'a destroyed todo'
           end
@@ -131,14 +131,14 @@ describe 'Todo' do
 
           context 'when task is an activity_type' do
             let(:task) { create(:activity_type) }
-            let(:recording) { create(:activity_without_creator, activity_type: task)}
+            let(:recording) { create(:activity_without_creator, activity_type: task) }
 
             it_behaves_like 'a destroyed completed todo'
           end
 
           context 'when task is an intervention_type' do
             let(:task) { create(:intervention_type) }
-            let(:recording) { create(:observation, :intervention, intervention_type: task)}
+            let(:recording) { create(:observation, :intervention, intervention_type: task) }
 
             it_behaves_like 'a destroyed completed todo'
           end
@@ -154,14 +154,14 @@ describe 'Todo' do
 
           context 'when task is an activity_type' do
             let(:task) { create(:activity_type) }
-            let(:recording) { create(:activity_without_creator, activity_type: task)}
+            let(:recording) { create(:activity_without_creator, activity_type: task) }
 
             it_behaves_like 'a destroyed recording'
           end
 
           context 'when task is an intervention_type' do
             let(:task) { create(:intervention_type) }
-            let(:recording) { create(:observation, :intervention, intervention_type: task)}
+            let(:recording) { create(:observation, :intervention, intervention_type: task) }
 
             it_behaves_like 'a destroyed recording'
           end
@@ -173,7 +173,7 @@ describe 'Todo' do
 
           context 'when task is an activity_type' do
             let(:task) { create(:activity_type) }
-            let(:recording) { create(:activity_without_creator, activity_type: task)}
+            let(:recording) { create(:activity_without_creator, activity_type: task) }
 
             it 'foreign key constraint on activities prevents deletion' do
               expect { task.destroy }.to raise_error(ActiveRecord::InvalidForeignKey)
@@ -182,7 +182,7 @@ describe 'Todo' do
 
           context 'when task is an intervention_type' do
             let(:task) { create(:intervention_type) }
-            let(:recording) { create(:observation, :intervention, intervention_type: task)}
+            let(:recording) { create(:observation, :intervention, intervention_type: task) }
 
             it 'foreign key constraint on observations prevents deletion' do
               expect { task.destroy }.to raise_error(ActiveRecord::InvalidForeignKey)
@@ -292,13 +292,13 @@ describe 'Todo' do
   end
 
   describe '#latest_recording_for' do
-    let(:school) { create(:school) }
-
     subject(:recording) { todo.latest_recording_for(completable: completable) }
+
+    let(:school) { create(:school) }
 
     context 'when completable is a programme' do
       let(:assignable) { create(:programme_type) }
-      let!(:completable) { create(:programme, school:, programme_type: assignable)}
+      let!(:completable) { create(:programme, school:, programme_type: assignable) }
 
       it_behaves_like 'a completable getting latest recording for todo'
     end

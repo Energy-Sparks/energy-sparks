@@ -25,28 +25,28 @@ describe AmrDataFeedConfig, :include_application_helper do
     end
 
     it 'displays only enabled non-api configurations' do
-      expect(page).to have_content(config.description)
-      expect(page).to have_no_content(disabled_config.description)
-      expect(page).to have_no_content(api_config.description)
+      expect(page).to have_text(config.description)
+      expect(page).to have_no_text(disabled_config.description)
+      expect(page).to have_no_text(api_config.description)
     end
 
     it 'allows navigation to view the configuration' do
       within '#configuration-overview' do
         click_on config.description
       end
-      expect(page).to have_content(config.description)
-      expect(page).to have_content(config.owned_by.name)
+      expect(page).to have_text(config.description)
+      expect(page).to have_text(config.owned_by.name)
     end
 
     it 'includes a limited view in the overview table' do
       expect(page).to have_css('#configuration-overview')
       within '#configuration-overview' do
-        expect(page).to have_content(config.description)
-        expect(page).to have_content(config.identifier)
-        expect(page).to have_content(config.notes.to_plain_text)
-        expect(page).to have_content(config.owned_by.name)
-        expect(page).to have_content(nice_date_times(reading.updated_at))
-        expect(page).to have_content('Out of Date')
+        expect(page).to have_text(config.description)
+        expect(page).to have_text(config.identifier)
+        expect(page).to have_text(config.notes.to_plain_text)
+        expect(page).to have_text(config.owned_by.name)
+        expect(page).to have_text(nice_date_times(reading.updated_at))
+        expect(page).to have_text('Out of Date')
         expect(page).to have_link('Upload')
         expect(page).to have_link('Edit')
       end
@@ -55,10 +55,10 @@ describe AmrDataFeedConfig, :include_application_helper do
     it 'includes more detail in the detail table' do
       expect(page).to have_css('#configuration-detail')
       within '#configuration-detail' do
-        expect(page).to have_content(config.number_of_header_rows)
-        expect(page).to have_content(config.mpan_mprn_field)
-        expect(page).to have_content(config.reading_date_field)
-        expect(page).to have_content(config.date_format)
+        expect(page).to have_text(config.number_of_header_rows)
+        expect(page).to have_text(config.mpan_mprn_field)
+        expect(page).to have_text(config.reading_date_field)
+        expect(page).to have_text(config.date_format)
       end
     end
   end
