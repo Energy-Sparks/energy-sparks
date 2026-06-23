@@ -5,5 +5,6 @@ FactoryBot.define do
     amr_data_feed_config
     api_id { 'id' }
     api_secret { 'secret' }
+    active { true }
   end
 end
