@@ -23,6 +23,7 @@
       <% SchoolGroup::RESTRICTED_GROUP_TYPES.sort.each do |group_type| %>
         <li><%= link_to "Manage #{group_type.to_s.humanize} Groups", admin_school_groups_path(group_type:) %></li>
       <% end %>
+      <li><%= link_to 'Manage Impact Reports', admin_impact_reports_path %></li>
     </ul>
 
     <h2>Schools and and scoreboards</h2>
