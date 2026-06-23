@@ -43,12 +43,12 @@
       <% config = school_group.impact_report_configuration %>
       <% run = school_group.latest_impact_report_run %>
       <tr class="<%= 'text-muted bg-light' unless config&.visible && run&.enough_data? %>">
-        <td class="text-center">
+        <td class="text-center" data-sort="<%= config&.visible %>">
           <span data-bs-toggle="tooltip" title="<%= config&.visible ? 'Visible' : 'Not visible' %>">
             <%= checkmark(config&.visible, off_class: 'text-muted') %>
           </span>
         </td>
-        <td class="text-center">
+        <td class="text-center" data-sort="<%= run&.enough_data? %>">
           <% title = run&.enough_data? ? "#{run&.visible_schools} visible schools in latest run" : 'Not enough data' %>
           <span data-bs-toggle="tooltip" title="<%= title %>">
             <% if run %>
@@ -77,24 +77,24 @@
                      else
                        'No case studies'
                      end %>
-          <span data-bs-toggle="tooltip" title="<%= title %>">
+          <span data-bs-toggle="tooltip" title="<%= title %>" data-sort="<%= case_studies_count.positive? %>">
             <%= link_to checkmark(case_studies_count.positive?, off_class: 'text-muted'), admin_case_studies_path %>
           </span>
         </td>
-        <td class="text-center border-start">
+        <td class="text-center border-start" data-sort="<%= !config || config.show_energy_efficiency %>">
           <%= checkmark(!config || config.show_energy_efficiency, off_class: 'text-muted') %>
         </td>
-        <td class="text-center border-end">
+        <td class="text-center border-end" data-sort="<%= config&.feature_visible_for?(:energy_efficiency) %>">
           <%= checkmark(config&.feature_visible_for?(:energy_efficiency), off_class: 'text-muted') %>
           <% if config&.feature_expired_for?(:energy_efficiency) %>
             <br>
             <div class="badge text-bg-light">Expired</div>
           <% end %>
         </td>
-        <td class="text-center">
+        <td class="text-center" data-sort="<%= !config || config.show_engagement %>">
           <%= checkmark(!config || config.show_engagement, off_class: 'text-muted') %>
         </td>
-        <td class="text-center border-end">
+        <td class="text-center border-end" data-sort="<%= config&.feature_visible_for?(:engagement) %>">
           <%= checkmark(config&.feature_visible_for?(:engagement), off_class: 'text-muted') %>
           <% if config&.feature_expired_for?(:engagement) %>
             <br>
