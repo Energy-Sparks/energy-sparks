@@ -8,7 +8,7 @@ module Admin
 
         load_and_authorize_resource :contract, class: 'Commercial::Contract'
         def raise_invoice
-          @licences = @contract.licences.pending_invoice.by_start_date
+          @licences = @contract.licences.includes(school: :school_group).pending_invoice.by_start_date
           @prices = ::Commercial::ContractPriceCalculator.new(@contract).per_school
         end
 
