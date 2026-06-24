@@ -129,6 +129,9 @@ class School < ApplicationRecord
   include AlphabeticalScopes
   include Commercial::ContractHolder
   include Commercial::LicenceHolder
+  include PgSearch::Model
+
+  pg_search_scope :search_by_name, against: :name
 
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
@@ -766,6 +769,22 @@ class School < ApplicationRecord
 
   def community_use_times_to_analytics
     school_times.community_use.map(&:to_analytics)
+  end
+
+  def status_display
+    return 'Deleted' if deleted?
+
+    return 'Archived' if archived?
+
+    status_display = 'Active'
+    if data_visible?
+      status_display += ', Data Visible'
+    else
+      status_display += ', Visible' if visible
+      status_display += ', Data Enabled' if data_enabled
+      status_display += ', Awaiting Activation'
+    end
+    status_display
   end
 
   def self.status_counts

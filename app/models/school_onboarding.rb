@@ -61,6 +61,9 @@
 class SchoolOnboarding < ApplicationRecord
   include Enums::DataSharing
   include RestrictsSchoolGroupTypes
+  include PgSearch::Model
+
+  pg_search_scope :search_by_school_name, against: :school_name
 
   validates :school_name, presence: true
   validates :contact_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }

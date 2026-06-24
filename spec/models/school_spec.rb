@@ -1602,4 +1602,20 @@ describe School do
       it { expect(name).to eq('School self funding') }
     end
   end
+
+  describe 'status display' do
+    let(:data_visible_school) { create(:school, active: true, visible: true, data_enabled: true) }
+    let(:data_enabled_school) { create(:school, active: true, visible: false, data_enabled: true) }
+    let(:visible_school) { create(:school, active: true, visible: true, data_enabled: false) }
+    let(:active_school) { create(:school, active: true, visible: false, data_enabled: false) }
+    let(:archived_school) { create(:school, active: false) }
+    let(:deleted_school) { create(:school, active: false, removal_date: 2.days.ago) }
+
+    it { expect(data_visible_school.status_display).to eq('Active, Data Visible') }
+    it { expect(data_enabled_school.status_display).to eq('Active, Data Enabled, Awaiting Activation') }
+    it { expect(visible_school.status_display).to eq('Active, Visible, Awaiting Activation') }
+    it { expect(active_school.status_display).to eq('Active, Awaiting Activation') }
+    it { expect(archived_school.status_display).to eq('Archived') }
+    it { expect(deleted_school.status_display).to eq('Deleted') }
+  end
 end
