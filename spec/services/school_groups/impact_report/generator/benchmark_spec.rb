@@ -65,5 +65,13 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
         )
       end
     end
+
+    context 'with no schools in group' do
+      let(:school_group) { create(:school_group) }
+
+      it 'returns metrics without error' do
+        expect(generator.metrics).to all be_a(Hash)
+      end
+    end
   end
 end
