@@ -124,7 +124,14 @@
           <%= f.input :start_date, as: :tempus_dominus_date if contract.editable_attribute?(:start_date) %>
           <%= f.input :end_date, as: :tempus_dominus_date if contract.editable_attribute?(:end_date) %>
 
-          <%= f.input :invoice_terms, as: :hidden %>
+          <% if contract.editable_attribute?(:invoice_terms) && !contract.custom? %>
+            <%= f.input :invoice_terms,
+                        collection: collection_from_enum(Commercial::Contract.invoice_terms),
+                        include_blank: false %>
+          <% else %>
+            <%= f.input :invoice_terms, as: :hidden %>
+          <% end %>
+
           <%= f.input :licence_period, as: :hidden %>
           <%= if contract.custom? && contract.editable_attribute?(:licence_years)
                 f.input :licence_years, hint: 'Length of custom licence in years. E.g. 1.0, 2.0, 3.0, 1.2, 1.5, etc'

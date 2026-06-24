@@ -245,6 +245,7 @@ module Commercial
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
       fields += %i[status] if provisional?
       fields += [:licence_years] if custom? && !invoiced?
+      fields += [:invoice_terms] if contract? && !invoiced?
       fields += %i[agreed_school_price product_id start_date end_date] unless invoiced?
       fields
     end

@@ -29,9 +29,16 @@ shared_examples 'it shows the common contract fields' do
 end
 
 shared_examples 'it shows the fields for a non-custom contract' do
-  it { expect(page).to have_no_field('Invoice terms') }
   it { expect(page).to have_no_field('Licence period') }
   it { expect(page).to have_no_field('Licence years') }
+end
+
+shared_examples 'it does not allow choosing invoice terms' do
+  it { expect(page).to have_no_field('Invoice terms') }
+end
+
+shared_examples 'it allows choosing invoice terms' do
+  it { expect(page).to have_field('Invoice terms') }
 end
 
 shared_examples 'it applies validation when creating a contract' do
@@ -81,6 +88,7 @@ describe 'manage contracts', :include_application_helper do
       it { expect(page).to have_text('Create new standard contract') }
 
       it_behaves_like 'it shows the common contract fields'
+      it_behaves_like 'it allows choosing invoice terms'
       it_behaves_like 'it shows the fields for a non-custom contract'
       it_behaves_like 'it applies validation when creating a contract'
 
@@ -139,6 +147,7 @@ describe 'manage contracts', :include_application_helper do
       it { expect(page).to have_text('Create new pro-rata contract') }
 
       it_behaves_like 'it shows the common contract fields'
+      it_behaves_like 'it allows choosing invoice terms'
       it_behaves_like 'it shows the fields for a non-custom contract'
 
       it_behaves_like 'it applies validation when creating a contract'
@@ -191,10 +200,10 @@ describe 'manage contracts', :include_application_helper do
       it { expect(page).to have_text('Create new custom contract') }
 
       it_behaves_like 'it shows the common contract fields'
-      it { expect(page).to have_no_field('Invoice terms') }
       it { expect(page).to have_no_field('Licence period') }
       it { expect(page).to have_field('Licence years') }
 
+      it_behaves_like 'it does not allow choosing invoice terms'
       it_behaves_like 'it applies validation when creating a contract'
 
       context 'with valid data', :js do
@@ -264,6 +273,7 @@ describe 'manage contracts', :include_application_helper do
       it { expect(page).to have_no_field('Contract holder') }
 
       it_behaves_like 'it shows the fields for a non-custom contract'
+      it_behaves_like 'it allows choosing invoice terms'
 
       context 'with valid data', :js do
         before do
@@ -312,6 +322,7 @@ describe 'manage contracts', :include_application_helper do
       }
 
       it_behaves_like 'it shows the fields for a non-custom contract'
+      it_behaves_like 'it allows choosing invoice terms'
       it_behaves_like 'it applies validation when creating a contract'
 
       context 'with valid data', :js do
@@ -363,6 +374,8 @@ describe 'manage contracts', :include_application_helper do
 
       it { expect(page).to have_no_field('Contract holder') }
 
+      it_behaves_like 'it does not allow choosing invoice terms'
+
       context 'with valid data', :js do
         before do
           fill_in 'Name', with: 'Custom contract'
@@ -404,7 +417,7 @@ describe 'manage contracts', :include_application_helper do
   end
 
   context 'when updating an existing contract' do
-    let!(:contract) { create(:commercial_contract, contract_holder: funder) }
+    let!(:contract) { create(:commercial_contract, licence_period: :contract, contract_holder: funder) }
     let!(:funder) { create(:funder) }
 
     before do
@@ -425,9 +438,10 @@ describe 'manage contracts', :include_application_helper do
 
       it { expect(page).to have_no_field('Contract holder') }
 
-      it { expect(page).to have_no_select('Invoice terms') }
       it { expect(page).to have_no_select('Licence period') }
       it { expect(page).to have_no_field('Licence years') }
+
+      it_behaves_like 'it allows choosing invoice terms'
 
       context 'with valid data', :js do
         before do
@@ -462,6 +476,17 @@ describe 'manage contracts', :include_application_helper do
           expect(contract.reload.licences).to be_empty
         end
       end
+    end
+
+    context 'when the licence period is custom' do
+      let!(:contract) { create(:commercial_contract, :custom, contract_holder: funder) }
+
+      before { click_on 'Edit' }
+
+      it { expect(page).to have_text(contract.name) }
+      it { expect(page).to have_no_field('Contract holder') }
+
+      it_behaves_like 'it does not allow choosing invoice terms'
     end
 
     context 'when there are licences' do
@@ -519,7 +544,9 @@ describe 'manage contracts', :include_application_helper do
 
       it { expect(page).to have_no_field('Contract holder') }
       it { expect(page).to have_no_field('Product') }
-      it { expect(page).to have_no_select('Invoice terms') }
+
+      it_behaves_like 'it does not allow choosing invoice terms'
+
       it { expect(page).to have_no_select('Licence period') }
       it { expect(page).to have_no_field('Licence years') }
     end
@@ -579,7 +606,8 @@ describe 'manage contracts', :include_application_helper do
 
       it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
       it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
-      it { expect(page).to have_field('contract_invoice_terms', with: 'pro_rata', type: :hidden, visible: :all) }
+
+      it { expect(page).to have_select('Invoice terms', selected: 'Pro rata') } # this is default for renewed
       it { expect(page).to have_field('contract_licence_period', with: 'contract', type: :hidden, visible: :all) }
 
       it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }
