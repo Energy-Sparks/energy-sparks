@@ -65,5 +65,15 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
         )
       end
     end
+
+    context 'with no visible schools' do
+      it 'returns metrics with zero counts' do
+        expect(generator.metrics).to match_array(
+          advice_pages.reject { |page| page.key == 'electricity_long_term' }
+                      .map { |page| advice_page_metric(page) } +
+          [metric(:long_term, number_of_schools: 0, value: 0, enough_data: false)]
+        )
+      end
+    end
   end
 end
