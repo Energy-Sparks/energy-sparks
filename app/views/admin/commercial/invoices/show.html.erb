@@ -2,6 +2,7 @@
   <% header_nav.with_header title: @invoice.invoice_number %>
   <% header_nav.with_button 'Contract', admin_commercial_contract_path(@invoice.contract) %>
   <% header_nav.with_button 'All Invoices', admin_commercial_invoices_path %>
+  <% header_nav.with_button 'Pending Invoices', pending_invoicing_admin_commercial_contracts_path %>
 <% end %>
 
 <div class="row">

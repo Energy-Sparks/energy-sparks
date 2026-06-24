@@ -148,12 +148,32 @@ describe Commercial::LicenceManager do
                status: :confirmed)
       end
 
-      it 'updates the licence status only' do
-        expect(updated_licence).to have_attributes(
-          status: 'pending_invoice',
-          start_date: licence.start_date,
-          end_date: licence.end_date
-        )
+      context 'when invoice terms are full' do
+        it 'updates the licence status only' do
+          expect(updated_licence).to have_attributes(
+            status: 'pending_invoice',
+            start_date: licence.start_date,
+            end_date: licence.end_date
+          )
+        end
+      end
+
+      context 'when invoice terms are pro_rata' do
+        let!(:licence) do
+          create(:commercial_licence,
+                 school:,
+                 start_date: Time.zone.yesterday,
+                 contract: create(:commercial_contract, licence_period: :contract, invoice_terms: :pro_rata),
+                 status: :confirmed)
+        end
+
+        it 'updates the licence start date' do
+          expect(updated_licence).to have_attributes(
+            status: 'pending_invoice',
+            start_date: Time.zone.today,
+            end_date: licence.end_date
+          )
+        end
       end
 
       context 'when the status had already changed' do

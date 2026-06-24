@@ -42,8 +42,9 @@ module Commercial
     def school_made_data_enabled
       licence = @school.licences.current.first
       return unless licence
+      return licence if licence.invoiced? # no changes once invoiced
 
-      if licence.contract.licence_period.to_sym == :custom
+      if update_dates?(licence)
         licence_dates = self.class.licence_dates(licence.contract)
         licence.start_date = licence_dates[:start_date]
         licence.end_date = licence_dates[:end_date]
@@ -79,6 +80,10 @@ module Commercial
         comments:,
         status: contract.confirmed? ? :confirmed : :provisional
       )
+    end
+
+    def update_dates?(licence)
+      licence.contract.custom? || licence.contract.pro_rata?
     end
   end
 end
