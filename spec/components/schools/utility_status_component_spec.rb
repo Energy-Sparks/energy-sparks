@@ -9,22 +9,6 @@ RSpec.describe Schools::UtilityStatusComponent, type: :component do
     render_inline component
   end
 
-  context 'with no configuration' do
-    let(:school) do
-      school = create(:school, process_data: true)
-      school.configuration.destroy
-      school.reload
-    end
-
-    it { expect(component.render?).to be(false) }
-  end
-
-  context 'when not processing data' do
-    let(:school) { create(:school, process_data: false) }
-
-    it { expect(component.render?).to be(false) }
-  end
-
   context 'when not data enabled' do
     let(:school) { create(:school, :with_meter_dates, data_enabled: false) }
 
@@ -33,12 +17,32 @@ RSpec.describe Schools::UtilityStatusComponent, type: :component do
     it { expect(page).to have_text('Not data visible') }
   end
 
+  shared_examples 'with a no data message' do
+    it { expect(page).to have_css('span.text-bg-danger') }
+    it { expect(page).to have_text('No data') }
+  end
+
   context 'when data enabled' do
+    context 'with no configuration' do
+      let(:school) do
+        school = create(:school, process_data: true)
+        school.configuration.destroy
+        school.reload
+      end
+
+      it_behaves_like 'with a no data message'
+    end
+
+    context 'when not processing data' do
+      let(:school) { create(:school, process_data: false) }
+
+      it_behaves_like 'with a no data message'
+    end
+
     context 'with no meter dates' do
       let(:school) { create(:school) }
 
-      it { expect(page).to have_css('span.text-bg-danger') }
-      it { expect(page).to have_text('No data') }
+      it_behaves_like 'with a no data message'
     end
 
     context 'with single fuel type' do
