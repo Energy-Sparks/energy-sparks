@@ -1,0 +1,6 @@
+<%= simple_form_for [school, installation] do |form| %>
+  <%= render 'shared/errors', subject: installation, subject_name: 'api feed' %>
+  <%= render 'form_fields', school:, installation:, form: %>
+  <%= form.input :active %>
+  <div class="actions"><%= form.submit 'Submit', class: 'btn btn-primary' %></div>
+<% end %>

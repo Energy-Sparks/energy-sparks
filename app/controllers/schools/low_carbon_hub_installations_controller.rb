@@ -12,7 +12,7 @@ module Schools
         rbee_meter_id: resource_params[:rbee_meter_id],
         username: resource_params[:username],
         password: resource_params[:password],
-        amr_data_feed_config: AmrDataFeedConfig.find(resource_params[:amr_data_feed_config_id])
+        amr_data_feed_config: AmrDataFeedConfig.low_carbon_hub_api.first
       ).perform
 
       if @installation.persisted?
@@ -38,9 +38,7 @@ module Schools
     private
 
     def resource_params
-      params.require(:low_carbon_hub_installation).permit(
-        :rbee_meter_id, :amr_data_feed_config_id, :username, :password
-      )
+      params.expect(low_carbon_hub_installation: %i[rbee_meter_id username password active])
     end
 
     def formatted_localised_utc_time(time_string)
