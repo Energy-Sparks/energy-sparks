@@ -37,6 +37,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
         fill_in(:solar_edge_installation_mpan, with: mpan)
         fill_in(:solar_edge_installation_site_id, with: site_id)
         fill_in(:solar_edge_installation_api_key, with: api_key)
+        check('Active')
 
         expect { click_on 'Submit' }.to change(SolarEdgeInstallation, :count).by(1)
         expect(page).to have_text('SolarEdge API feed was successfully created')
@@ -45,9 +46,8 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
         expect(page).to have_text(site_id)
         expect(page).to have_text(api_key)
 
-        expect(SolarEdgeInstallation.first.mpan).to eql mpan
-        expect(SolarEdgeInstallation.first.site_id).to eql site_id
-        expect(SolarEdgeInstallation.first.api_key).to eql api_key
+        expect(SolarEdgeInstallation.first).to \
+          have_attributes(mpan:, site_id:, api_key:, amr_data_feed_config:, active: true)
       end
     end
 

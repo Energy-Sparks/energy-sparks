@@ -7,13 +7,8 @@ module Schools
     JOB_CLASS = Solar::LowCarbonHubLoaderJob
 
     def create
-      @installation = Solar::LowCarbonHubInstallationFactory.new(
-        school: @school,
-        rbee_meter_id: resource_params[:rbee_meter_id],
-        username: resource_params[:username],
-        password: resource_params[:password],
-        amr_data_feed_config: AmrDataFeedConfig.low_carbon_hub_api.first
-      ).perform
+      @installation = Solar::LowCarbonHubInstallationFactory.new(@installation,
+                                                                 AmrDataFeedConfig.low_carbon_hub_api.first).perform
 
       if @installation.persisted?
         redirect_to school_solar_feeds_configuration_index_path(@school),

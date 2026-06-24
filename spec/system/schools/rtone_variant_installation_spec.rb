@@ -19,7 +19,7 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
       visit school_meters_path(school)
     end
 
-    it 'I can add, edit and delete an rtone variant installation' do
+    it 'can add, edit and delete an rtone variant installation' do
       click_on 'Solar Feeds'
 
       expect(page).to have_text('This school has no Rtone Variant API feeds')
@@ -28,12 +28,14 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
       fill_in(:rtone_variant_installation_rtone_meter_id, with: rtone_meter_id)
       fill_in(:rtone_variant_installation_username, with: username)
       fill_in(:rtone_variant_installation_password, with: password)
+      check('Active')
 
       expect { click_on 'Submit' }.to change(RtoneVariantInstallation, :count).by(1)
 
       expect(page).to have_no_text('This school has no Rtone Variant API feeds')
       expect(page).to have_text(rtone_meter_id)
-      expect(school.rtone_variant_installations.first).to have_attributes(meter:, username:, password:)
+      expect(school.rtone_variant_installations.first).to \
+        have_attributes(meter:, username:, password:, amr_data_feed_config:, active: true)
 
       click_on 'Edit'
       expect(page).to have_text('Update Rtone Variant')
@@ -44,9 +46,8 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
 
       click_on 'Submit'
 
-      expect(school.rtone_variant_installations.first.rtone_component_type).to eql 'in1'
-      expect(school.rtone_variant_installations.first.password).to eql 'changed-pass'
-      expect(school.rtone_variant_installations.first.username).to eql 'changed-user'
+      expect(school.rtone_variant_installations.first).to \
+        have_attributes(rtone_component_type: 'in1', username: 'changed-user', password: 'changed-pass')
 
       expect(page).to have_text('Delete')
       expect { click_on 'Delete' }.to change(RtoneVariantInstallation, :count).by(-1)

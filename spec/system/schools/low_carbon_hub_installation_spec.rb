@@ -19,26 +19,33 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
         click_on 'Solar Feeds'
       end
 
-      it 'I can add and delete a low carbon hub installation' do
+      def submit
+        allow(DataFeeds::LowCarbonHubMeterReadings)
+          .to receive(:new).with(username, password).and_return(low_carbon_hub_api)
+        expect { click_on 'Submit' }
+          .to change(Meter, :count).by(3)
+          .and change(LowCarbonHubInstallation, :count).by(1)
+          .and change(AmrDataFeedReading, :count).by(6)
+      end
+
+      def fill_form
         expect(page).to have_text('This school has no Rtone API feeds')
         click_on 'New Rtone API feed'
-
-        allow(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(username,
-                                                                          password).and_return(low_carbon_hub_api)
-
         fill_in(:low_carbon_hub_installation_rbee_meter_id, with: rbee_meter_id)
         fill_in(:low_carbon_hub_installation_username, with: username)
         fill_in(:low_carbon_hub_installation_password, with: password)
+        check('Active')
+      end
 
-        expect { click_on 'Submit' }.to change(Meter, :count).by(3)
-                                    .and change(LowCarbonHubInstallation, :count).by(1)
-                                    .and change(AmrDataFeedReading, :count).by(6)
-
+      it 'can add and delete a low carbon hub installation' do
+        fill_form
+        check('Active')
+        submit
         expect(page).to have_no_text('This school has no Rtone API feeds')
         expect(page).to have_text(rbee_meter_id)
         expect(school.low_carbon_hub_installations.count).to be 1
-        expect(school.low_carbon_hub_installations.first.username).to eql username
-        expect(school.low_carbon_hub_installations.first.password).to eql password
+        expect(school.low_carbon_hub_installations.first).to \
+          have_attributes(username:, password:, amr_data_feed_config:, active: true)
         expect(school.meters.count).to be 3
 
         click_on rbee_meter_id
@@ -51,21 +58,9 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
         expect(page).to have_text('This school has no Rtone API feeds')
       end
 
-      it 'I can edit an installation' do
-        expect(page).to have_text('This school has no Rtone API feeds')
-        click_on 'New Rtone API feed'
-
-        allow(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(username,
-                                                                          password).and_return(low_carbon_hub_api)
-
-        fill_in(:low_carbon_hub_installation_rbee_meter_id, with: rbee_meter_id)
-        fill_in(:low_carbon_hub_installation_username, with: username)
-        fill_in(:low_carbon_hub_installation_password, with: password)
-
-        expect { click_on 'Submit' }.to change(Meter, :count).by(3)
-                                    .and change(LowCarbonHubInstallation, :count).by(1)
-                                    .and change(AmrDataFeedReading, :count).by(6)
-
+      it 'can edit an installation' do
+        fill_form
+        submit
         expect(page).to have_text(rbee_meter_id)
         click_on 'Edit'
         expect(page).to have_text('Update Rtone')

@@ -23,13 +23,8 @@ module Schools
     def edit; end
 
     def create
-      @installation = Solar::SolarEdgeInstallationFactory.new(
-        school: @school,
-        mpan: solar_edge_installation_params[:mpan],
-        site_id: solar_edge_installation_params[:site_id],
-        api_key: solar_edge_installation_params[:api_key],
-        amr_data_feed_config: AmrDataFeedConfig.solar_edge_api.first
-      ).perform
+      @installation = Solar::SolarEdgeInstallationFactory.new(@installation,
+                                                              AmrDataFeedConfig.solar_edge_api.first).perform
 
       if @installation.persisted?
         redirect_to school_solar_feeds_configuration_index_path(@school),
