@@ -199,32 +199,62 @@ describe Commercial::Contract do
   end
 
   describe '#as_renewal' do
-    subject(:renewed) { described_class.as_renewal(original) }
+    context 'when renewing as a custom contract' do
+      subject(:renewed) { described_class.as_renewal(original, chosen_type: :custom) }
 
-    let(:original) do
-      create(:commercial_contract,
-             :custom,
-             agreed_school_price: 450.0,
-             licence_years: 2.0,
-             number_of_schools: 15)
+      let(:original) do
+        create(:commercial_contract,
+               :custom,
+               agreed_school_price: 450.0,
+               licence_years: 2.0,
+               number_of_schools: 15)
+      end
+
+      it 'correctly populates the new contract' do
+        expect(renewed).to have_attributes(
+          agreed_school_price: original.agreed_school_price,
+          comments: "Renewed from #{original.name}",
+          contract_holder: original.contract_holder,
+          invoice_terms: original.invoice_terms,
+          licence_period: original.licence_period,
+          licence_years: original.licence_years,
+          number_of_schools: original.number_of_schools,
+          product: original.product,
+          start_date: original.end_date + 1.day,
+          end_date: original.end_date.next_year
+        )
+      end
+
+      context 'when switching type' do
+        let(:original) do
+          create(:commercial_contract,
+                 licence_period: :contract,
+                 invoice_terms: :pro_rata,
+                 agreed_school_price: 450.0,
+                 licence_years: 2.0,
+                 number_of_schools: 15)
+        end
+
+        it 'correctly switches the contract options' do
+          expect(renewed).to have_attributes(
+            agreed_school_price: original.agreed_school_price,
+            comments: "Renewed from #{original.name}",
+            contract_holder: original.contract_holder,
+            invoice_terms: 'full',
+            licence_period: 'custom',
+            licence_years: original.licence_years,
+            number_of_schools: original.number_of_schools,
+            product: original.product,
+            start_date: original.end_date + 1.day,
+            end_date: original.end_date.next_year
+          )
+        end
+      end
     end
 
-    it 'correctly populates the defaults' do
-      expect(renewed).to have_attributes(
-        agreed_school_price: original.agreed_school_price,
-        comments: "Renewed from #{original.name}",
-        contract_holder: original.contract_holder,
-        invoice_terms: original.invoice_terms,
-        licence_period: original.licence_period,
-        licence_years: original.licence_years,
-        number_of_schools: original.number_of_schools,
-        product: original.product,
-        start_date: original.end_date + 1.day,
-        end_date: original.end_date.next_year
-      )
-    end
+    context 'when renewing as a standard contract' do
+      subject(:renewed) { described_class.as_renewal(original, chosen_type: :pro_rata) }
 
-    context 'when the original licence terms were pro_rata' do
       let(:original) do
         create(:commercial_contract,
                licence_period: :contract,
@@ -233,7 +263,7 @@ describe Commercial::Contract do
                number_of_schools: 15)
       end
 
-      it 'correctly populates the defaults' do
+      it 'correctly populates the new contract' do
         expect(renewed).to have_attributes(
           agreed_school_price: original.agreed_school_price,
           comments: "Renewed from #{original.name}",
@@ -246,29 +276,54 @@ describe Commercial::Contract do
           end_date: original.end_date.next_year
         )
       end
-    end
 
-    context 'when the original licence terms were full' do
-      let(:original) do
-        create(:commercial_contract,
-               licence_period: :contract,
-               invoice_terms: :full,
-               agreed_school_price: 450.0,
-               number_of_schools: 15)
+      context 'when the original licence terms were full' do
+        let(:original) do
+          create(:commercial_contract,
+                 licence_period: :contract,
+                 invoice_terms: :full,
+                 agreed_school_price: 450.0,
+                 number_of_schools: 15)
+        end
+
+        it 'switches to a pro-rata contract' do
+          expect(renewed).to have_attributes(
+            agreed_school_price: original.agreed_school_price,
+            comments: "Renewed from #{original.name}",
+            contract_holder: original.contract_holder,
+            invoice_terms: 'pro_rata',
+            licence_period: original.licence_period,
+            number_of_schools: original.number_of_schools,
+            product: original.product,
+            start_date: original.end_date + 1.day,
+            end_date: original.end_date.next_year
+          )
+        end
       end
 
-      it 'switches to a pro-rata contract' do
-        expect(renewed).to have_attributes(
-          agreed_school_price: original.agreed_school_price,
-          comments: "Renewed from #{original.name}",
-          contract_holder: original.contract_holder,
-          invoice_terms: 'pro_rata',
-          licence_period: original.licence_period,
-          number_of_schools: original.number_of_schools,
-          product: original.product,
-          start_date: original.end_date + 1.day,
-          end_date: original.end_date.next_year
-        )
+      context 'when switching type' do
+        let(:original) do
+          create(:commercial_contract,
+                 :custom,
+                 agreed_school_price: 450.0,
+                 licence_years: 2.0,
+                 number_of_schools: 15)
+        end
+
+        it 'correctly switches the contract options' do
+          expect(renewed).to have_attributes(
+            agreed_school_price: original.agreed_school_price,
+            comments: "Renewed from #{original.name}",
+            contract_holder: original.contract_holder,
+            invoice_terms: 'pro_rata',
+            licence_period: 'contract',
+            licence_years: original.licence_years,
+            number_of_schools: original.number_of_schools,
+            product: original.product,
+            start_date: original.end_date + 1.day,
+            end_date: original.end_date.next_year
+          )
+        end
       end
     end
   end

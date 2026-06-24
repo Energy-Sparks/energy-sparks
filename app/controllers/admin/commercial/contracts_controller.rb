@@ -62,10 +62,19 @@ module Admin
         }
       end
 
+      def renew
+        @original = ::Commercial::Contract.find(params.expect(:original_contract_id))
+        @chosen_params = {
+          contract_holder_id: params[:contract_holder_id],
+          contract_holder_type: params[:contract_holder_type],
+          original_contract_id: params[:original_contract_id]
+        }
+      end
+
       def new
         if renewal_request?
           @original = ::Commercial::Contract.find(params.expect(:original_contract_id))
-          @contract = ::Commercial::Contract.as_renewal(@original)
+          @contract = ::Commercial::Contract.as_renewal(@original, chosen_type: params.expect(:chosen_type)&.to_sym)
         else
           redirect_to choose_admin_commercial_contracts_path and return if chosen_params[:chosen_type].blank?
 

@@ -26,6 +26,12 @@
           The form has been populated using the existing contractual details, including contract terms, length and
           agreed pricing.
         </p>
+        <% if @contract.licence_period != @original.licence_period %>
+          <p>
+            <strong>Note</strong> based on the chosen option the licence period has been changed to
+            <%= @contract.licence_period.to_s.humanize %>
+          </p>
+        <% end %>
       <% end %>
     <% elsif contract.persisted? && contract.invoiced? %>
       <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>

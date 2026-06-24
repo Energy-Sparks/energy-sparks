@@ -601,63 +601,99 @@ describe 'manage contracts', :include_application_helper do
       click_on 'All contracts'
     end
 
-    context 'when visiting the pre-populated form', :js do
+    context 'when choosing to renew' do
       before { click_on 'Renew' }
 
-      it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
-      it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
+      it { expect(page).to have_text('Choose Renewed Contract Type') }
 
-      it { expect(page).to have_select('Invoice terms', selected: 'Pro rata') } # this is default for renewed
-      it { expect(page).to have_field('contract_licence_period', with: 'contract', type: :hidden, visible: :all) }
-
-      it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }
-      it { expect(page).to have_select('Status', selected: 'Provisional') }
-
-      context 'when submitting with defaults' do
-        subject(:renewed_contract) { contract.contract_holder.contracts.by_start_date.last }
-
-        before do
-          fill_in('Name', with: 'Renewed contract')
-          click_on 'Save'
-        end
-
-        it 'creates the contract' do
-          expect(page).to have_text('Contract and provisional licences have been created')
-          expect(renewed_contract).to have_attributes(
-            name: 'Renewed contract',
-            comments: "Renewed from #{contract.name}",
-            product: contract.product,
-            contract_holder: contract.contract_holder,
-            licence_period: contract.licence_period,
-            number_of_schools: contract.number_of_schools,
-            start_date: contract.end_date + 1.day,
-            end_date: contract.end_date.next_year,
-            agreed_school_price: contract.agreed_school_price,
-            created_by: user
-          )
-        end
-
-        it 'creates the licences' do
-          expect(page).to have_text('Contract and provisional licences have been created')
-          expect(renewed_contract.licences.count).to eq(1)
-          expect(renewed_contract.licences.first.school).to eq(original_licence.school)
-          expect(renewed_contract.licences.first.school_specific_price).to eq(original_licence.school_specific_price)
+      it 'indicates the original type' do
+        within('div#standard') do
+          expect(page).to have_text('Keep the same type as the original contract')
         end
       end
 
-      context 'when choosing not to add licences' do
-        subject(:renewed_contract) { contract.contract_holder.contracts.by_start_date.last }
-
+      context 'when renewing as a standard contract', :js do
         before do
-          fill_in('Name', with: 'Renewed contract')
-          uncheck('contract_update_licences')
-          click_on 'Save'
+          within('div#standard') do
+            click_on 'Renew contract'
+          end
         end
 
-        it 'does not create the licences' do
-          expect(page).to have_text('Contract has been created')
-          expect(renewed_contract.licences.count).to eq(0)
+        it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
+        it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
+
+        it { expect(page).to have_select('Invoice terms', selected: 'Pro rata') } # this is default for renewed
+        it { expect(page).to have_field('contract_licence_period', with: 'contract', type: :hidden, visible: :all) }
+
+        it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }
+        it { expect(page).to have_select('Status', selected: 'Provisional') }
+
+        context 'when submitting with defaults' do # rubocop:disable RSpec/NestedGroups
+          subject(:renewed_contract) { contract.contract_holder.contracts.by_start_date.last }
+
+          before do
+            fill_in('Name', with: 'Renewed contract')
+            click_on 'Save'
+          end
+
+          it 'creates the contract' do
+            expect(page).to have_text('Contract and provisional licences have been created')
+            expect(renewed_contract).to have_attributes(
+              name: 'Renewed contract',
+              comments: "Renewed from #{contract.name}",
+              product: contract.product,
+              contract_holder: contract.contract_holder,
+              licence_period: contract.licence_period,
+              number_of_schools: contract.number_of_schools,
+              start_date: contract.end_date + 1.day,
+              end_date: contract.end_date.next_year,
+              agreed_school_price: contract.agreed_school_price,
+              created_by: user
+            )
+          end
+
+          it 'creates the licences' do
+            expect(page).to have_text('Contract and provisional licences have been created')
+            expect(renewed_contract.licences.count).to eq(1)
+            expect(renewed_contract.licences.first.school).to eq(original_licence.school)
+            expect(renewed_contract.licences.first.school_specific_price).to eq(original_licence.school_specific_price)
+          end
         end
+
+        context 'when choosing not to add licences' do # rubocop:disable RSpec/NestedGroups
+          subject(:renewed_contract) { contract.contract_holder.contracts.by_start_date.last }
+
+          before do
+            fill_in('Name', with: 'Renewed contract')
+            uncheck('contract_update_licences')
+            click_on 'Save'
+          end
+
+          it 'does not create the licences' do
+            expect(page).to have_text('Contract has been created')
+            expect(renewed_contract.licences.count).to eq(0)
+          end
+        end
+      end
+
+      context 'when renewing as a custom contract', :js do
+        before do
+          within('div#custom') do
+            click_on 'Renew contract'
+          end
+        end
+
+        it { expect(page).to have_text('based on the chosen option the licence period has been changed') }
+
+        it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
+        it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
+
+        it { expect(page).to have_field('contract_invoice_terms', with: 'full', type: :hidden, visible: :all) }
+
+        it { expect(page).to have_field('contract_licence_period', with: 'custom', type: :hidden, visible: :all) }
+
+        it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }
+        it { expect(page).to have_select('Status', selected: 'Provisional') }
       end
     end
   end
