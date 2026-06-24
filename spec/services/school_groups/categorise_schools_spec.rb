@@ -135,4 +135,12 @@ RSpec.describe SchoolGroups::CategoriseSchools, type: :service do
       (17..30).each { |i| AdvicePageSchoolBenchmark.create(advice_page: advice_pages[advice_page_key], school_id: i, benchmarked_as: :benchmark_school) }
     end
   end
+
+  describe 'with empty schools' do
+    subject(:results) { SchoolGroups::CategoriseSchools.new(schools: School.none).categorise_schools }
+
+    it 'returns empty hash without error' do
+      expect(results).to eq({})
+    end
+  end
 end
