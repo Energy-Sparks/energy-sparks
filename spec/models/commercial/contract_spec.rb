@@ -134,6 +134,7 @@ describe Commercial::Contract do
 
       it 'has the expected fields' do
         expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
+                                                                :invoice_terms,
                                                                 :name, :number_of_schools,
                                                                 :product_id, :purchase_order_number,
                                                                 :start_date, :status, :updated_by_id)
@@ -144,6 +145,7 @@ describe Commercial::Contract do
 
         it 'has the expected fields' do
           expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
+                                                                  :invoice_terms,
                                                                   :name, :number_of_schools,
                                                                   :product_id, :purchase_order_number,
                                                                   :start_date, :updated_by_id)
