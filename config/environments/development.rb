@@ -112,4 +112,5 @@ Rails.application.configure do
   ]
   # Alternative would be to set the tld_length to 0 to allow cy.localhost to work
   # config.action_dispatch.tld_length = 0
+  config.cache_store = :solid_cache_store # just to try
 end
