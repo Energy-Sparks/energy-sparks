@@ -9,7 +9,10 @@ module Admin
 
     def index
       @school_groups = SchoolGroup.organisation_groups.with_active_schools
-                                  .includes(:impact_report_configuration).order(:name)
+                                  .includes(:impact_report_configuration,
+                                            :latest_impact_report_run,
+                                            :default_issues_admin_user)
+                                  .order(:name)
       @school_groups = @school_groups.where(default_issues_admin_user: params[:user]) if params[:user].present?
     end
   end

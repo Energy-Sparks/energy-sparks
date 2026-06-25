@@ -7,7 +7,7 @@ RSpec.describe ImpactReports::PromptComponent, :include_application_helper,
   include ActionView::Helpers::SanitizeHelper
 
   let!(:school_group) { create(:school_group) }
-  let!(:run) { create(:impact_report_run, categories: %i[overview], school_group:) } # rubocop:disable RSpec/LetSetup
+  let!(:run) { create(:impact_report_run, visible_schools: 3, school_group:) } # rubocop:disable RSpec/LetSetup
   let!(:config) { create(:impact_report_configuration, school_group:, visible: true) } # rubocop:disable RSpec/LetSetup
 
   context with_feature: :impact_reporting do
@@ -23,7 +23,7 @@ RSpec.describe ImpactReports::PromptComponent, :include_application_helper,
       group_type = I18n.t(school_group.group_type, scope: 'school_groups.clusters.group_type')
       expect(page).to have_text(strip_tags(
                                   I18n.t('school_groups.impact.feature.description_html',
-                                         count: 2, group_type: group_type)
+                                         count: 3, group_type: group_type)
                                 ))
     end
 
@@ -41,7 +41,7 @@ RSpec.describe ImpactReports::PromptComponent, :include_application_helper,
 
     context 'when not enough schools' do
       let(:run) do
-        create(:impact_report_run, categories: %i[overview], school_group:, overview: { visible_schools: { value: 1 } })
+        create(:impact_report_run, visible_schools: 1)
       end
 
       it 'does not render' do

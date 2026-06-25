@@ -44,36 +44,15 @@ describe ImpactReport::Run do
   end
 
   describe '#enough_data?' do
-    let(:run) { create(:impact_report_run) }
-
-    context 'when visible_schools is >= 2 and enough_data? is true' do
-      before do
-        create(:impact_report_metric, run:, metric_category: 'overview',
-                                      metric_type: 'visible_schools', value: 2, enough_data: true)
-      end
+    context 'when visible_schools is >= 2 true' do
+      let(:run) { create(:impact_report_run, visible_schools: 2) }
 
       it { expect(run.enough_data?).to be(true) }
     end
 
-    context 'when enough_data? is false' do
-      before do
-        create(:impact_report_metric, run:, metric_category: 'overview',
-                                      metric_type: 'visible_schools', value: 2, enough_data: false)
-      end
-
-      it { expect(run.enough_data?).to be(false) }
-    end
-
     context 'when visible schools < 2' do
-      before do
-        create(:impact_report_metric, run:, metric_category: 'overview',
-                                      metric_type: 'visible_schools', value: 1, enough_data: true)
-      end
+      let(:run) { create(:impact_report_run, visible_schools: 1) }
 
-      it { expect(run.enough_data?).to be(false) }
-    end
-
-    context 'when metric not present' do
       it { expect(run.enough_data?).to be(false) }
     end
   end

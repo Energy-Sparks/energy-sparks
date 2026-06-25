@@ -1286,6 +1286,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
     t.date "run_date", null: false
     t.bigint "school_group_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "visible_schools", default: 0, null: false
     t.index ["school_group_id"], name: "index_impact_report_runs_on_school_group_id"
   end
 
