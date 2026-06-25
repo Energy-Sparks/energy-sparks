@@ -28,14 +28,14 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
       fill_in(:rtone_variant_installation_rtone_meter_id, with: rtone_meter_id)
       fill_in(:rtone_variant_installation_username, with: username)
       fill_in(:rtone_variant_installation_password, with: password)
-      check('Active')
+      uncheck('Active')
 
       expect { click_on 'Submit' }.to change(RtoneVariantInstallation, :count).by(1)
 
       expect(page).to have_no_text('This school has no Rtone Variant API feeds')
       expect(page).to have_text(rtone_meter_id)
       expect(school.rtone_variant_installations.first).to \
-        have_attributes(meter:, username:, password:, amr_data_feed_config:, active: true)
+        have_attributes(meter:, username:, password:, amr_data_feed_config:, active: false)
 
       click_on 'Edit'
       expect(page).to have_text('Update Rtone Variant')

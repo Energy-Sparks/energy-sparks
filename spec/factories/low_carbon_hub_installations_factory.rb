@@ -3,9 +3,9 @@ FactoryBot.define do
     school
     sequence(:rbee_meter_id) { |n| n }
     amr_data_feed_config
+
     sequence(:username) { |n| "username_#{n}" }
     sequence(:password) { |n| "password_#{n}" }
-    active { true }
 
     trait :with_electricity_meter do
       after(:create) do |low_carbon_hub_installation, _evaluator|

@@ -34,18 +34,17 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
         fill_in(:low_carbon_hub_installation_rbee_meter_id, with: rbee_meter_id)
         fill_in(:low_carbon_hub_installation_username, with: username)
         fill_in(:low_carbon_hub_installation_password, with: password)
-        check('Active')
       end
 
       it 'can add and delete a low carbon hub installation' do
         fill_form
-        check('Active')
+        uncheck('Active')
         submit
         expect(page).to have_no_text('This school has no Rtone API feeds')
         expect(page).to have_text(rbee_meter_id)
         expect(school.low_carbon_hub_installations.count).to be 1
         expect(school.low_carbon_hub_installations.first).to \
-          have_attributes(username:, password:, amr_data_feed_config:, active: true)
+          have_attributes(username:, password:, amr_data_feed_config:, active: false)
         expect(school.meters.count).to be 3
 
         click_on rbee_meter_id

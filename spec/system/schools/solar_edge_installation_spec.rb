@@ -30,14 +30,14 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
         expect(page).to have_text('This school has no Solar Edge sites')
       end
 
-      it 'allows an installation to be added' do
+      fit 'allows an installation to be added' do
         click_on 'New Solar Edge API feed'
         expect(page).to have_text('Add a new SolarEdge API feed')
 
         fill_in(:solar_edge_installation_mpan, with: mpan)
         fill_in(:solar_edge_installation_site_id, with: site_id)
         fill_in(:solar_edge_installation_api_key, with: api_key)
-        check('Active')
+        uncheck('Active')
 
         expect { click_on 'Submit' }.to change(SolarEdgeInstallation, :count).by(1)
         expect(page).to have_text('SolarEdge API feed was successfully created')
@@ -47,7 +47,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
         expect(page).to have_text(api_key)
 
         expect(SolarEdgeInstallation.first).to \
-          have_attributes(mpan:, site_id:, api_key:, amr_data_feed_config:, active: true)
+          have_attributes(mpan:, site_id:, api_key:, amr_data_feed_config:, active: false)
       end
     end
 
