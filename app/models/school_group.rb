@@ -83,7 +83,7 @@ class SchoolGroup < ApplicationRecord
 
   has_one :impact_report_configuration, class_name: 'ImpactReport::Configuration', dependent: :destroy
   has_many :impact_report_runs, class_name: 'ImpactReport::Run', dependent: :destroy
-  has_one :latest_impact_report_run, -> { latest_first.includes(:metrics) }, class_name: 'ImpactReport::Run'
+  has_one :latest_impact_report_run, -> { latest_first }, class_name: 'ImpactReport::Run'
 
   has_many :observations, through: :assigned_schools
   has_many :case_studies, as: :organisation, dependent: :nullify

@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Base do
-  subject(:generator) { described_class.new(school_group) }
+  subject(:generator) { described_class.new(school_group, visible_schools) }
 
   let(:school_group) { create(:school_group) }
+  let(:visible_schools) { school_group.assigned_schools.visible }
   let!(:visible_school) { create(:school, data_enabled: false, school_group:) }
   let!(:data_visible_school) { create(:school, school_group:) }
 

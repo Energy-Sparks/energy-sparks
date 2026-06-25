@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_15_141345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1286,6 +1286,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.date "run_date", null: false
     t.bigint "school_group_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "visible_schools", default: 0, null: false
     t.index ["school_group_id"], name: "index_impact_report_runs_on_school_group_id"
   end
 
