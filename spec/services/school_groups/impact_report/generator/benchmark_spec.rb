@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe SchoolGroups::ImpactReport::Generator::Benchmark do
-  subject(:generator) { described_class.new(school_group) }
+  subject(:generator) { described_class.new(school_group, visible_schools) }
 
   let(:school_group) { create(:school_group) }
+  let(:visible_schools) { school_group.assigned_schools.visible }
   let!(:advice_pages) do
     %i[electricity_long_term gas_long_term electricity_out_of_hours gas_out_of_hours heating_control baseload]
       .map do |key|
@@ -62,6 +63,16 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
           advice_pages.reject { |page| page.key == 'electricity_long_term' }
                       .map { |page| advice_page_metric(page) } +
           [metric(:long_term, number_of_schools: 1, value: 0, enough_data: true)]
+        )
+      end
+    end
+
+    context 'with no visible schools' do
+      it 'returns metrics with zero counts' do
+        expect(generator.metrics).to match_array(
+          advice_pages.reject { |page| page.key == 'electricity_long_term' }
+                      .map { |page| advice_page_metric(page) } +
+          [metric(:long_term, number_of_schools: 0, value: 0, enough_data: false)]
         )
       end
     end

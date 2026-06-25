@@ -4,6 +4,7 @@
       <tr>
         <th>School</th>
         <th>Supply</th>
+        <th>Supplier</th>
         <th>Number</th>
         <th>Half-Hourly</th>
         <th>Readings calendar</th>
@@ -24,6 +25,7 @@
         <tr>
           <td><%= link_to(meter.school.name, school_url(meter.school)) %></td>
           <td><%= local_assigns[:email] ? fuel_type_image(meter.meter_type) : fa_icon(fuel_type_icon(meter.meter_type)) %></td>
+          <td><%= link_to(meter.supplier, admin_supplier_url(meter.supplier)) if meter.supplier %></td>
           <td>
             <%= link_to(meter.mpan_mprn, school_meter_url(meter.school, meter)) %>
           </td>

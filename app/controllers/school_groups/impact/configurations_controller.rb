@@ -6,7 +6,10 @@ module SchoolGroups
       layout 'group_settings'
 
       before_action :enable_bootstrap5
-      load_and_authorize_resource :school_group, include: :impact_report_configuration
+      load_and_authorize_resource :school_group, include: %i[
+        impact_report_configuration
+        latest_impact_report_run
+      ]
       before_action :fetch_config_and_run, only: %i[edit update]
 
       def show

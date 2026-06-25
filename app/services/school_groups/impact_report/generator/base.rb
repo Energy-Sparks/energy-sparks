@@ -15,8 +15,9 @@ module SchoolGroups
 
         private_class_method def self.metric_category = self::METRIC_CATEGORY
 
-        def initialize(school_group)
+        def initialize(school_group, visible_schools)
           @school_group = school_group
+          @visible_schools = visible_schools
         end
 
         def metrics
@@ -30,19 +31,17 @@ module SchoolGroups
 
         private
 
+        attr_reader :visible_schools, :school_group
+
         def enough_data?(*) = true
 
         def number_of_schools(*) = visible_schools.count
-
-        def visible_schools = @visible_schools ||= @school_group.assigned_schools.visible
 
         def data_visible_schools = @data_visible_schools ||= @school_group.assigned_schools.data_visible
 
         def generated_at = @generated_at ||= Time.zone.now
 
         def twelve_months_ago = @twelve_months_ago ||= generated_at - 12.months
-
-        attr_reader :school_group
       end
     end
   end
