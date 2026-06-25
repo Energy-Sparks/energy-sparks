@@ -19,7 +19,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
         click_on 'Solar Feeds'
       end
 
-      def submit
+      def submit # rubocop:disable Metrics/AbcSize -- sensible already?
         allow(DataFeeds::LowCarbonHubMeterReadings)
           .to receive(:new).with(username, password).and_return(low_carbon_hub_api)
         expect { click_on 'Submit' }

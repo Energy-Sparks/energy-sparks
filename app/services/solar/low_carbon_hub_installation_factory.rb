@@ -17,12 +17,7 @@ module Solar
       # save credentials to avoid api error meaning they're not saved
       installation.update(username:, password:, active: @installation.active)
       installation.update(information:)
-
-      # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
-      LowCarbonHubDownloadAndUpsert.new(installation:,
-                                        start_date: first_reading_date,
-                                        end_date: first_reading_date + 1.day).perform
-
+      download_initial_readings(installation)
       installation
     end
 
@@ -64,6 +59,13 @@ module Solar
 
     def password
       @installation.password || ENV.fetch('ENERGYSPARKSRBEEPASSWORD', nil)
+    end
+
+    def download_initial_readings(installation)
+      # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
+      LowCarbonHubDownloadAndUpsert.new(installation:,
+                                        start_date: first_reading_date,
+                                        end_date: first_reading_date + 1.day).perform
     end
   end
 end

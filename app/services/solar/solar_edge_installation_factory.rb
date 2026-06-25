@@ -39,14 +39,7 @@ module Solar
         installation.active = @installation.active
       end
       self.class.update_installation_information(installation, solar_edge_api)
-
-      # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
-      if first_reading_date
-        SolarEdgeDownloadAndUpsert.new(installation: installation,
-                                       start_date: first_reading_date,
-                                       end_date: first_reading_date + 1.day).perform
-      end
-
+      download_initial_readings(installation)
       installation
     end
 
@@ -58,6 +51,15 @@ module Solar
 
     def first_reading_date
       @first_reading_date ||= solar_edge_api.site_start_end_dates(@site_id).first
+    end
+
+    def download_initial_readings(installation)
+      # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
+      return unless first_reading_date
+
+      SolarEdgeDownloadAndUpsert.new(installation:,
+                                     start_date: first_reading_date,
+                                     end_date: first_reading_date + 1.day).perform
     end
   end
 end
