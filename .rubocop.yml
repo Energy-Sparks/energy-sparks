@@ -65,6 +65,8 @@ ViewComponent/MissingPreview:
   PreviewPaths:
     - spec/components/previews
     - spec/components/previews/commercial
+    - spec/components/previews/schools
+    - spec/components/previews/forms
 
 Rails/I18nLocaleTexts:
   Exclude:

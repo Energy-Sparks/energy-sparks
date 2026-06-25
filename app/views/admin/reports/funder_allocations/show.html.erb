@@ -65,11 +65,7 @@
   So this report will include more schools than are shown in the above table.
 </p>
 
-<%= form_tag deliver_admin_reports_funder_allocations_path, method: :post do %>
-  <%= button_tag(type: 'submit', class: 'btn btn-sm') do %>
-    <%= fa_icon('envelope') %> Email funder report
-  <% end %>
-<% end %>
+<%= render Forms::EmailReportButtonComponent.new(deliver_admin_reports_funder_allocations_path, 'Email funder report') %>
 
 <p>
   Summary of column headings:

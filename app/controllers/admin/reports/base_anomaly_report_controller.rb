@@ -28,6 +28,8 @@ module Admin
                      ->(row) { row.meter&.name }),
           Column.new(:meter_system,
                      ->(row) { row.meter&.t_meter_system }),
+          Column.new(:supplier,
+                     ->(row) { row.meter.supplier&.name }),
           Column.new(:data_source,
                      ->(row) { row.meter.data_source&.name }),
           Column.new(:reading_date,

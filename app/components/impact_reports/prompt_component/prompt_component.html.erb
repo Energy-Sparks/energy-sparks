@@ -7,7 +7,7 @@
       <div>
         <%= impact_t(
               'feature.description_html',
-              count: @run.overview(:visible_schools).value,
+              count: @run.visible_schools,
               group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type')
             ) %>
       </div>

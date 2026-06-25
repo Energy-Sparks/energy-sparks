@@ -91,6 +91,12 @@ module Admin
       end
     end
 
+    def deliver
+      Admin::UserExportReportJob.perform_later(to: current_user.email)
+      redirect_back fallback_location: admin_users_path,
+                    notice: "User export report has been sent to #{current_user.email}"
+    end
+
     private
 
     def find_users

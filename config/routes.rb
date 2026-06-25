@@ -634,6 +634,7 @@ Rails.application.routes.draw do
       get 'disable', to: 'users#disable'
       get 'enable', to: 'users#enable'
       get 'mailchimp_redirect', to: 'users#mailchimp_redirect'
+      post 'deliver', on: :collection
 
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
@@ -652,6 +653,10 @@ Rails.application.routes.draw do
 
         get :contract_holder_options, on: :collection
         get :choose, on: :collection
+        get :renew, on: :collection
+        resources :invoices, controller: 'contracts/invoices', only: %i[new create] do
+          get :raise_invoice, on: :collection
+        end
         resources :licences, controller: 'contracts/licences' do
           collection do
             get :edit
@@ -834,6 +839,7 @@ Rails.application.routes.draw do
       end
     end
     resources :suppliers do
+      post :deliver
       scope module: :suppliers do
         concerns :issueable
       end
