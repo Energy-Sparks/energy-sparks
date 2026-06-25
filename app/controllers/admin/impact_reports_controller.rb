@@ -8,7 +8,7 @@ module Admin
     load_and_authorize_resource :school_group, include: :impact_report_configuration, id_param: :id, except: [:index]
 
     def index
-      @school_groups = SchoolGroup.organisation_groups
+      @school_groups = SchoolGroup.organisation_groups.with_active_schools
                                   .includes(:impact_report_configuration,
                                             :latest_impact_report_run,
                                             :default_issues_admin_user)
