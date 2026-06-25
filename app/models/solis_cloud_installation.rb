@@ -5,7 +5,7 @@
 # Table name: solis_cloud_installations
 #
 #  id                      :bigint(8)        not null, primary key
-#  active                  :boolean          default(FALSE), not null
+#  active                  :boolean          default(TRUE), not null
 #  api_secret              :text
 #  inverter_detail_list    :jsonb
 #  created_at              :datetime         not null

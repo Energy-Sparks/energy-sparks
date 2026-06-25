@@ -5,7 +5,7 @@
 # Table name: low_carbon_hub_installations
 #
 #  id                      :bigint(8)        not null, primary key
-#  active                  :boolean          default(FALSE), not null
+#  active                  :boolean          default(TRUE), not null
 #  information             :json
 #  password                :string
 #  username                :string
