@@ -20,7 +20,7 @@
                   class: 'btn btn-secondary btn-sm' %>
 
       <%= unless @contract.future?
-            link_to 'Renew', new_admin_commercial_contract_path(original_contract_id: @contract.id),
+            link_to 'Renew', renew_admin_commercial_contracts_path(original_contract_id: @contract.id),
                     class: 'btn btn-secondary btn-sm'
           end %>
       <%= if @contract.licences.pending_invoice.any?

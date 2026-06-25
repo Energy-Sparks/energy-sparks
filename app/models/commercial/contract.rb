@@ -200,22 +200,31 @@ module Commercial
 
     def self.temporal_group_keys = %i[contract_holder_id contract_holder_type]
 
-    def self.as_renewal(original)
+    def self.as_renewal(original, chosen_type: nil)
+      renewed_attributes = {
+        comments: "Renewed from #{original.name}",
+        end_date: original.end_date.next_year,
+        start_date: original.end_date + 1.day,
+        update_licences: true,
+        licence_period: :contract,
+        invoice_terms: :pro_rata
+      }
+
+      if chosen_type == :custom
+        renewed_attributes[:licence_period] = :custom
+        renewed_attributes[:invoice_terms] = :full
+      end
+
       new(
         original.slice(
           :agreed_school_price,
           :contract_holder_type,
           :contract_holder_id,
-          :licence_period,
           :licence_years,
           :number_of_schools,
           :product
         ).merge(
-          invoice_terms: original.custom? ? :full : :pro_rata,
-          comments: "Renewed from #{original.name}",
-          end_date: original.end_date.next_year,
-          start_date: original.end_date + 1.day,
-          update_licences: true
+          renewed_attributes
         )
       )
     end
@@ -245,6 +254,7 @@ module Commercial
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
       fields += %i[status] if provisional?
       fields += [:licence_years] if custom? && !invoiced?
+      fields += [:invoice_terms] if contract? && !invoiced?
       fields += %i[agreed_school_price product_id start_date end_date] unless invoiced?
       fields
     end
