@@ -653,6 +653,7 @@ Rails.application.routes.draw do
 
         get :contract_holder_options, on: :collection
         get :choose, on: :collection
+        get :renew, on: :collection
         resources :invoices, controller: 'contracts/invoices', only: %i[new create] do
           get :raise_invoice, on: :collection
         end
