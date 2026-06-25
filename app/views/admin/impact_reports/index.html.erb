@@ -1,7 +1,14 @@
-<% content_for :page_title, 'Impact Reports' %>
-<h1>Impact Reports</h1>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+        <%= "#{@dashboard_user.display_name}'s Impact Reports" %>
+    <% end %>
+    <%= link_to 'All Impact Reports', admin_impact_reports_path, class: 'btn' %>
+<% else %>
+  <% content_for :page_title, 'Impact Reports' %>
+  <h1>Impact Reports</h1>
 
-<p>Reports will only be available for groups where visible is set to true, and where there is enough data available (2 or more visible schools) in the latest run. Currently unavailable reports are displayed with a grey background.</p>
+  <p>Reports will only be available for groups where visible is set to true, and where there is enough data available (2 or more visible schools) in the latest run. Currently unavailable reports are displayed with a grey background.</p>
+<% end %>
 
 <div class="bg-light p-2 my-2 border rounded-2">
   <%= form_tag admin_impact_reports_path, method: :get do %>
