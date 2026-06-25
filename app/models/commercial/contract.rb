@@ -200,20 +200,19 @@ module Commercial
 
     def self.temporal_group_keys = %i[contract_holder_id contract_holder_type]
 
-    def self.as_renewal(original, chosen_type: :contract)
+    def self.as_renewal(original, chosen_type: nil)
       renewed_attributes = {
         comments: "Renewed from #{original.name}",
         end_date: original.end_date.next_year,
         start_date: original.end_date + 1.day,
-        update_licences: true
+        update_licences: true,
+        licence_period: :contract,
+        invoice_terms: :pro_rata
       }
 
       if chosen_type == :custom
         renewed_attributes[:licence_period] = :custom
         renewed_attributes[:invoice_terms] = :full
-      else
-        renewed_attributes[:licence_period] = :contract
-        renewed_attributes[:invoice_terms] = :pro_rata
       end
 
       new(
