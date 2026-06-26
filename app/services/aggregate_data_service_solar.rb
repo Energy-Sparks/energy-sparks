@@ -74,6 +74,7 @@ class AggregateDataServiceSolar
     logger.debug { "Aggregation service: processing mains meter #{pv_meter_map.mains_consume} with solar pv" }
     print_meter_map(pv_meter_map)
 
+    # debugger
     aggregate_multiple_generation_meters(pv_meter_map) if pv_meter_map.generation_meters.many?
 
     # If we have real metered solar generation data, but no export meters, then
@@ -98,8 +99,7 @@ class AggregateDataServiceSolar
     create_mains_plus_self_consume_meter(pv_meter_map)
 
     unless pv_meter_map.all_required_key_values_non_nil?
-      raise EnergySparksUnexpectedStateException,
-            'Not all solar pv meters assigned'
+      raise EnergySparksUnexpectedStateExceptiJon, 'Not all solar pv meters assigned'
     end
 
     # Override the names of meters assigned during the aggregation process
@@ -284,6 +284,7 @@ class AggregateDataServiceSolar
 
     mpan = Dashboard::Meter.synthetic_aggregate_generation_meter(pv_meter_map.generation.mpan_mprn)
 
+    # debugger
     generation_amr_data = aggregate_amr_data_between_dates(
       generation_meters,
       :solar_pv,
@@ -308,6 +309,7 @@ class AggregateDataServiceSolar
     pv_meter_map.nil_generation_meters
     generation_mpans = generation_meters.map { |m1| m1.mpan_mprn.to_s }
     @meter_collection.electricity_meters.delete_if { |m| generation_mpans.include?(m.mpan_mprn.to_s) }
+    # debugger
     pv_meter_map.set_meter(:generation, generation_meter)
   end
 

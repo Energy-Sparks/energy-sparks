@@ -221,20 +221,15 @@ describe AggregateDataServiceSolar do
         end
       end
 
-
       context 'with multiple modelled ranges' do
         let(:meter_attributes) do
           super().merge(modelled_solar_pv_generation: [{ start_date: 5.days.ago.to_date, kwp: 1 },
                                                        { start_date: 1.day.ago.to_date, kwp: 2 }])
         end
 
-        fit 'generation meter has modelled added' do
-          # debugger
+        it 'generation meter has modelled added' do
           expect(sub_meters[:generation].amr_data.values.map { |value| value.one_day_kwh.round }).to \
             eq([48, 48, 58, 58, 58, 58, 78, 78])
-          # values = sub_meters[:generation].amr_data.values
-          # expect(values.first.one_day_kwh).to be_within(1).of(58)
-          # expect(values.last.one_day_kwh).to be_within(1).of(156)
         end
       end
     end
