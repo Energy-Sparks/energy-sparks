@@ -159,7 +159,7 @@ class DashboardEnergyAdvice
         raise EnergySparksNotEnoughDataException.new("Not enough data to fit model and provide advice, only #{days} days")
       end
 
-      SchoolDatePeriod.new(:alert, 'Current Year', start_date, end_date)
+      SchoolDatePeriod.new(:analysis, 'Current Year', start_date, end_date)
     end
 
     def best_model

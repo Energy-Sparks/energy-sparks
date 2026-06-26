@@ -38,8 +38,8 @@ module AnalyseHeatingAndHotWater
 
     def create_and_fit_model(heating_model_type, period, allow_more_than_1_year = false, non_heating_model_type = nil)
       logger.debug do
-        "create_and_fit_model start heat #{heating_model_type} " \
-          "hw #{non_heating_model_type} #{period.start_date} to #{period.end_date}"
+        "create_and_fit_model start. type: #{heating_model_type} " \
+          "non_model_type: #{non_heating_model_type}; period: #{period.type} #{period.start_date} to #{period.end_date}"
       end
       # use composite key to index model for caching
       model_type = { heat_model: heating_model_type, period: period, years: allow_more_than_1_year,
@@ -59,7 +59,10 @@ module AnalyseHeatingAndHotWater
         )
       end
 
-      return @models[model_type] if @models.key?(model_type)
+      if @models.key?(model_type)
+        logger.debug { 'Returning cached heating model' }
+        return @models[model_type]
+      end
 
       case heating_model_type
       when :simple_regression_temperature

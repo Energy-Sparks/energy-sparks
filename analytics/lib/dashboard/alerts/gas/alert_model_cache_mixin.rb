@@ -12,7 +12,7 @@ module AlertModelCacheMixin
   end
 
   protected def one_year_period(asof_date)
-    SchoolDatePeriod.new(:alert, 'Current Year', model_start_date(asof_date), asof_date)
+    SchoolDatePeriod.new(:analysis, 'Current Year', model_start_date(asof_date), asof_date)
   end
 
   protected def enough_data_for_model_fit
