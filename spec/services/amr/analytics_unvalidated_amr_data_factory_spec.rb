@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-module Amr # rubocop:disable Metrics/ModuleLength
+module Amr
   describe AnalyticsUnvalidatedAmrDataFactory do
     subject(:factory) { described_class.new(heat_meters: [g_meter], electricity_meters: [e_meter]) }
 
