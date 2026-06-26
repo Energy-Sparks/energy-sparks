@@ -5,13 +5,14 @@ require 'rails_helper'
 describe AggregateDataServiceSolar do
   subject(:processed_meters) { described_class.new(meter_collection).process_solar_pv_electricity_meters }
 
-  let(:meter_collection) { build(:meter_collection, random_generator: Random.new(51)) }
+  let(:meter_collection) { build(:meter_collection, random_generator: Random.new(51), end_date: Date.current) }
   let(:solar_pv_mpan_meter_mapping) { nil }
   let(:meter_attributes) do
     { solar_pv_mpan_meter_mapping: ([solar_pv_mpan_meter_mapping] unless solar_pv_mpan_meter_mapping.nil?) }.compact
   end
   let(:electricity_meter) do
-    build(:meter, meter_collection:, type: :electricity, meter_attributes:, kwh_data_x48: Array.new(48, 2))
+    build(:meter, meter_collection:, type: :electricity, meter_attributes:, kwh_data_x48: Array.new(48, 2),
+                  day_count: 8)
   end
   let(:solar_production_meter) { nil }
   let(:solar_export_meter) { nil }
@@ -195,21 +196,46 @@ describe AggregateDataServiceSolar do
     end
 
     context 'and modelled solar' do
-      let(:electricity_meter) do
-        amr_data = build(:amr_data, :with_date_range, start_date: meter_collection.solar_pv.start_date,
-                                                      end_date: meter_collection.solar_pv.end_date,
-                                                      kwh_data_x48: [1] * 48)
-        build(:meter, meter_collection:, type: :electricity, meter_attributes:, amr_data:)
-      end
-      let(:meter_attributes) do
-        super().merge(modelled_solar_pv_generation: [{ start_date: Date.new(2023), kwp: 1 },
-                                                     { start_date: 3.days.ago.to_date, kwp: 10 }])
+      context 'when metered solar starts later' do
+        let(:solar_production_meter) do
+          build(:meter, meter_collection:, type: :solar_pv, kwh_data_x48: [1] * 48, day_count: 4)
+        end
+        let(:meter_attributes) do
+          super().merge(modelled_solar_pv_generation: [{ start_date: 5.days.ago.to_date, kwp: 1 }])
+        end
+
+        it 'generation meter has modelled added' do
+          expect(sub_meters[:generation].amr_data.values.map { |value| value.one_day_kwh.round }).to \
+            eq([0, 0, 10, 10, 58, 58, 58, 58])
+        end
       end
 
-      it 'generation meter has modelled added' do
-        values = sub_meters[:generation].amr_data.values
-        expect(values.first.one_day_kwh).to be_within(1).of(58)
-        expect(values.last.one_day_kwh).to be_within(1).of(156)
+      context 'when modelled solar starts later' do
+        let(:meter_attributes) do
+          super().merge(modelled_solar_pv_generation: [{ start_date: 3.days.ago.to_date, kwp: 1 }])
+        end
+
+        it 'generation meter has modelled added' do
+          expect(sub_meters[:generation].amr_data.values.map { |value| value.one_day_kwh.round }).to \
+            eq([48, 48, 48, 48, 58, 58, 58, 58])
+        end
+      end
+
+
+      context 'with multiple modelled ranges' do
+        let(:meter_attributes) do
+          super().merge(modelled_solar_pv_generation: [{ start_date: 5.days.ago.to_date, kwp: 1 },
+                                                       { start_date: 1.day.ago.to_date, kwp: 2 }])
+        end
+
+        fit 'generation meter has modelled added' do
+          # debugger
+          expect(sub_meters[:generation].amr_data.values.map { |value| value.one_day_kwh.round }).to \
+            eq([48, 48, 58, 58, 58, 58, 78, 78])
+          # values = sub_meters[:generation].amr_data.values
+          # expect(values.first.one_day_kwh).to be_within(1).of(58)
+          # expect(values.last.one_day_kwh).to be_within(1).of(156)
+        end
       end
     end
   end
