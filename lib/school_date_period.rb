@@ -21,9 +21,13 @@ class SchoolDatePeriod
   # Implement equality such that a period can be used in a composite hash key
   # Title is treated as a comment, so only checking type and dates
   def ==(other)
-    type == other.type && start_date == other.start_date && end_date == other.end_date
+    other.is_a?(SchoolDatePeriod) && type == other.type && start_date == other.start_date && end_date == other.end_date
   end
   alias eql? ==
+
+  def hash
+    [self.class, type, start_date, end_date].hash
+  end
 
   def to_s
     "#{@title} (#{start_date.strftime('%a %d %b %Y')} to #{end_date.strftime('%a %d %b %Y')})"

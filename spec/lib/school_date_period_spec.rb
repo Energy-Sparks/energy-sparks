@@ -24,4 +24,14 @@ describe SchoolDatePeriod do
     it { expect(period).not_to eq(described_class.new(:nil, nil, Time.zone.today.last_month, Time.zone.today)) }
     it { expect(period).not_to eq(described_class.new(:nil, nil, Time.zone.today, Time.zone.tomorrow)) }
   end
+
+  describe '#hash' do
+    subject(:period) { described_class.new(nil, nil, Time.zone.yesterday, Time.zone.today) }
+
+    it { expect(period.hash).to eq(described_class.new(nil, nil, Time.zone.yesterday, Time.zone.today).hash) }
+
+    it {
+      expect(period.hash).not_to eq(described_class.new(:some_type, nil, Time.zone.yesterday, Time.zone.today).hash)
+    }
+  end
 end

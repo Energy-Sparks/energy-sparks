@@ -20,18 +20,6 @@ module AnalyseHeatingAndHotWater
       @models = {}
     end
 
-    def results(model_type)
-      @models[model_type]
-    end
-
-    def holidays
-      @meter.meter_collection.holidays
-    end
-
-    def temperatures
-      @meter.meter_collection.temperatures
-    end
-
     private def override_model_start_end_dates?(allow_more_than_1_year, period)
       return false if @model_overrides.fitting.nil?
       return false if period.end_date >= @model_overrides.fitting[:expiry_date_of_override]
