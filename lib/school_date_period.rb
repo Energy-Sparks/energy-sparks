@@ -66,7 +66,7 @@ class SchoolDatePeriod
     (period.start_date..period.end_date).to_a.select { |date| list_of_days_of_week.include?(date.wday) }
   end
 
-  def self.find_period_for_date(date, periods, min_period_length_days = nil) # rubocop:todo Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+  def self.find_period_for_date(date, periods, min_period_length_days = nil)
     periods = remove_short_holidays(periods, min_period_length_days) unless min_period_length_days.nil?
     nil
     if periods.length > 1 && periods[0].start_date < periods[1].start_date
