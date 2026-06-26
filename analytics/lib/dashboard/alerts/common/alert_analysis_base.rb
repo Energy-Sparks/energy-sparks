@@ -19,7 +19,6 @@ class AlertAnalysisBase < ContentBase
   def initialize(school, _report_type)
     super(school)
     @capital_cost = 0.0..0.0
-    clear_model_cache
   end
 
   def analyse(asof_date, use_max_meter_date_if_less_than_asof_date = false, **kwargs)
@@ -451,13 +450,6 @@ class AlertAnalysisBase < ContentBase
     else
       difference / base
     end
-  end
-
-  # the model cache cached at the aggregate meter and therefore the school level
-  # if in the analystics enronment we are running slightly different (asof_date v. chart_date)
-  # then clear the cache, however, then does further caching if in 'test' mode
-  private def clear_model_cache
-    @school.aggregated_heat_meters.model_cache.clear_model_cache unless @school.aggregated_heat_meters.nil?
   end
 
   public
