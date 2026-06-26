@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class AnalyticsMeterCollectionFactory
     def initialize(active_record_school, meter_collection_class = MeterCollectionFactory)
@@ -21,7 +23,8 @@ module Amr
 
     def validated_data
       heat_meters = @active_record_school.meters_with_validated_readings(:gas)
-      electricity_meters = @active_record_school.meters_with_validated_readings([:electricity, :solar_pv, :exported_solar_pv])
+      electricity_meters = @active_record_school.meters_with_validated_readings(%i[electricity solar_pv
+                                                                                   exported_solar_pv])
       data(AnalyticsValidatedAmrDataFactory, heat_meters, electricity_meters)
     end
 

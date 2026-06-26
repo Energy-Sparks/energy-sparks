@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-module Amr
+module Amr # rubocop:disable Metrics/ModuleLength
   describe AnalyticsUnvalidatedAmrDataFactory do
     subject(:factory) { described_class.new(heat_meters: [g_meter], electricity_meters: [e_meter]) }
 
@@ -17,7 +19,10 @@ module Amr
         expect(first_electricity_meter[:identifier]).to eq e_meter.mpan_mprn
         expect(first_electricity_meter[:dcc_meter]).to be false
         expect(first_electricity_meter[:readings].size).to eq 2
-        expect(first_electricity_meter[:readings].map(&:kwh_data_x48)).to match_array(e_meter.amr_data_feed_readings.map { |reading| reading.readings.map(&:to_f) })
+        expected_readings = e_meter.amr_data_feed_readings.map do |reading|
+          reading.readings.map(&:to_f)
+        end
+        expect(first_electricity_meter[:readings].map(&:kwh_data_x48)).to match_array(expected_readings)
       end
 
       it 'creates gas meters' do
@@ -25,8 +30,10 @@ module Amr
 
         expect(first_gas_meter[:identifier]).to eq g_meter.mpan_mprn
         expect(first_gas_meter[:dcc_meter]).to be true
-        expect(first_gas_meter[:readings].first.date).to eq Date.parse(g_meter.amr_data_feed_readings.first.reading_date)
-        expect(first_gas_meter[:readings].first.kwh_data_x48).to eq g_meter.amr_data_feed_readings.first.readings.map(&:to_f)
+        expected_date = g_meter.amr_data_feed_readings.first.reading_date
+        expect(first_gas_meter[:readings].first.date).to eq Date.parse(expected_date)
+        expected_readings = g_meter.amr_data_feed_readings.first.readings.map(&:to_f)
+        expect(first_gas_meter[:readings].first.kwh_data_x48).to eq expected_readings
       end
     end
 
@@ -80,7 +87,9 @@ module Amr
       end
 
       context 'with partial readings for day' do
-        let(:amr_data_feed_config) { create(:amr_data_feed_config, row_per_reading: false, missing_readings_limit: nil) }
+        let(:amr_data_feed_config) do
+          create(:amr_data_feed_config, row_per_reading: false, missing_readings_limit: nil)
+        end
 
         before do
           create(:amr_data_feed_reading,
@@ -102,7 +111,9 @@ module Amr
 
         context 'with a missing_readings_limit' do
           context 'when above the threshold' do
-            let(:amr_data_feed_config) { create(:amr_data_feed_config, row_per_reading: true, missing_readings_limit: 3) }
+            let(:amr_data_feed_config) do
+              create(:amr_data_feed_config, row_per_reading: true, missing_readings_limit: 3)
+            end
 
             it 'rejects the day' do
               expect(e_meter.amr_data_feed_readings.count).to be 3
@@ -111,7 +122,9 @@ module Amr
           end
 
           context 'when below the threshold' do
-            let(:amr_data_feed_config) { create(:amr_data_feed_config, row_per_reading: true, missing_readings_limit: 47) }
+            let(:amr_data_feed_config) do
+              create(:amr_data_feed_config, row_per_reading: true, missing_readings_limit: 47)
+            end
 
             it 'converts nil to 0.0' do
               expect(amr_data[:electricity_meters].last[:readings].last.kwh_data_x48[0]).to be 1.23
