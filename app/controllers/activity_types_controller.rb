@@ -3,7 +3,12 @@
 class ActivityTypesController < ApplicationController
   include Pagy::Backend
 
+  before_action :enable_bootstrap5, only: [:show]
   before_action :handle_head_request, only: [:show]
+  before_action :set_breadcrumbs
+
+  layout 'task', only: [:show]
+
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: %i[show search for_school]
 
@@ -28,7 +33,7 @@ class ActivityTypesController < ApplicationController
   end
 
   def for_school
-    school = School.find(params[:school_id])
+    school = School.find(params.expect(:school_id))
     redirect_to new_school_activity_path(school, activity_type_id: @activity_type.id)
   end
 
@@ -61,7 +66,7 @@ class ActivityTypesController < ApplicationController
 
   def limit_params(name, model)
     if params[name]
-      model.where(name: params[name].split(',').map { |s| CGI.unescape(s.strip) })
+      model.where(name: params.expect(name).split(',').map { |s| CGI.unescape(s.strip) })
     else
       []
     end
@@ -89,4 +94,9 @@ class ActivityTypesController < ApplicationController
     ['badge', list&.include?(item) ? "badge-#{color}" : 'badge-light outline'].join(' ')
   end
   helper_method :activity_types_badge_class
+
+  def set_breadcrumbs
+    @breadcrumbs = [{ name: t('common.labels.pupil_activities'),
+                      href: activity_categories_path }, { name: 'Record' }]
+  end
 end

@@ -30,6 +30,9 @@ en:
         other: Complete this activity to score your school <strong>%{count}</strong> points!
       download_resources: Download resources
       record_this_activity: Record this activity
+      related_activities:
+        one: Related activity
+        other: Related activities
       select_school: Select a school...
       view_related_activities:
         one: View 1 related activity

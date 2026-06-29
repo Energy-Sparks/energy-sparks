@@ -146,6 +146,10 @@ class ActivityType < ApplicationRecord
     :activity
   end
 
+  def related_activities
+    activity_category.activity_types.active - [self]
+  end
+
   private
 
   def copy_searchable_attributes

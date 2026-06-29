@@ -4,7 +4,7 @@ class ApplicationComponent < ViewComponent::Base
   include ApplicationHelper
   include LocaleHelper
 
-  attr_reader :id, :classes, :current_user
+  attr_reader :id, :classes, :current_user, :html_options
 
   # Structuring the initialize method in this manner offers flexibility for future enhancements
   # It allows the addition of new parameters without necessitating changes to other subclasses and also
@@ -18,11 +18,12 @@ class ApplicationComponent < ViewComponent::Base
   #   end
   # end
 
-  def initialize(*_args, id: nil, classes: '', current_user: nil, **_kwargs)
+  def initialize(*_args, id: nil, classes: '', current_user: nil, tooltip: nil, **_kwargs) # rubocop:disable Metrics/ParameterLists
     super()
     @id = id
     @classes = class_names(classes)
     @current_user = current_user
+    @html_options = { title: tooltip, data: { bs_toggle: 'tooltip', toggle: 'tooltip' } } if tooltip
     add_classes(self.class.name.underscore.dasherize.parameterize)
   end
 
