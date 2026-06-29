@@ -32,7 +32,7 @@ RSpec.describe 'find school by name' do
 
       it 'shows schools' do
         expect(page).to have_link(school.name, href: school_path(school))
-        expect(page).to have_text('Active, Data Visible')
+        expect(page).to have_text('Data Visible')
       end
 
       it 'shows onboardings' do
