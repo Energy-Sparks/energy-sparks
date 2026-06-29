@@ -25,13 +25,14 @@ RSpec.describe 'SolisCloud installation management' do
 
         fill_in('API ID', with: 'api_id')
         fill_in('API Secret', with: 'api_secret')
+        uncheck('Active')
 
         expect { click_on 'Submit' }.to change(SolisCloudInstallation, :count).by(1)
 
         expect(page).to have_text('api_id')
 
-        expect(SolisCloudInstallation.last.api_id).to eq('api_id')
-        expect(SolisCloudInstallation.last.api_secret).to eq('api_secret')
+        expect(SolisCloudInstallation.last).to have_attributes(api_id: 'api_id', api_secret: 'api_secret',
+                                                               active: false)
       end
 
       it 'allows an installation to be added' do

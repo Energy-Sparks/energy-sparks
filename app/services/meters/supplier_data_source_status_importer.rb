@@ -17,9 +17,11 @@ module Meters
           warn "Can't find supplier with name #{data[:supplier]}"
           return
         end
+        status = AdminMeterStatus.find_by(label: data[:status])
         if status.blank?
-          warn "Can't find meter status with name #{data[:supplier]}"
-          return
+          return unless meter.admin_meter_status.label == 'Manual Request'
+
+          warn 'This meter has status Manual Request: replacing with blank'
         end
         meter.update!(data_source:, supplier:, admin_meter_status: status)
       else
