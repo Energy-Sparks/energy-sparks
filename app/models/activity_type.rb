@@ -147,7 +147,8 @@ class ActivityType < ApplicationRecord
   end
 
   def related_activities
-    activity_category.activity_types.active - [self]
+    # probably shouldn't include self, but leave existing behaviour as is for now
+    activity_category.activity_types.active # - [self]
   end
 
   private
