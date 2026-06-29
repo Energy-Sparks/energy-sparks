@@ -98,7 +98,7 @@ class AggregateDataServiceSolar
     create_mains_plus_self_consume_meter(pv_meter_map)
 
     unless pv_meter_map.all_required_key_values_non_nil?
-      raise EnergySparksUnexpectedStateExceptiJon, 'Not all solar pv meters assigned'
+      raise EnergySparksUnexpectedStateException, 'Not all solar pv meters assigned'
     end
 
     # Override the names of meters assigned during the aggregation process
