@@ -21,7 +21,7 @@ describe AggregateDataServiceSolar do
   def sub_meters = processed_meters.first.sub_meters
 
   before do
-    travel_to Date.new(2025, 5, 31)
+    travel_to Date.new(2025, 5, 28)
     meters.each { |meter| meter_collection.add_electricity_meter(meter) }
   end
 
@@ -81,7 +81,7 @@ describe AggregateDataServiceSolar do
       it 'creates new self consumption and export meters' do
         sub_meters = processed_meters.first.sub_meters
         expect(sub_meters[:self_consume]).not_to be_nil
-        expect(sub_meters[:export].amr_data.values.map(&:one_day_kwh)).to eq(Array.new(30, 0))
+        expect(sub_meters[:export].amr_data.values.map(&:one_day_kwh)).to eq(Array.new(8, 0))
       end
     end
 
@@ -127,12 +127,13 @@ describe AggregateDataServiceSolar do
         end
 
         it 'overrides the export' do
-          expect(sub_meters[:export].amr_data[Date.new(2025, 5, 9)]).to have_attributes(type: 'SOLE', one_day_kwh: 0)
-          expect(sub_meters[:export].amr_data[Date.new(2025, 5, 10)]).to have_attributes(type: 'SOLE', one_day_kwh: -96)
+          expect(sub_meters[:export].amr_data.values.map { |reading| [reading.type, reading.one_day_kwh] }).to \
+            eq(['SOLE'].product([-96, -96, 0, -96, -96, 0, 0, 0]))
         end
 
         it 'modifies export only' do
-          expect(sub_meters[:generation].amr_data[Date.new(2025, 5, 3)].type).to eq('ORIG')
+          expect(sub_meters[:generation].amr_data.values.map { |reading| [reading.type, reading.one_day_kwh] }).to \
+            eq([['ORIG', 192]] * 8)
         end
       end
 
