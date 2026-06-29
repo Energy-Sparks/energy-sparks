@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: solar_edge_installations
 #
 #  id                      :bigint(8)        not null, primary key
+#  active                  :boolean          default(TRUE), not null
 #  api_key                 :text
 #  information             :json
 #  mpan                    :text
@@ -28,7 +31,9 @@ class SolarEdgeInstallation < ApplicationRecord
 
   has_many :meters
 
-  validates_presence_of :site_id, :mpan, :api_key
+  validates :site_id, :mpan, :api_key, presence: true
+
+  scope :active, -> { where(active: true) }
 
   def display_name
     site_id
@@ -39,13 +44,13 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def electricity_meter
-    meters.electricity.first if meters.electricity.present?
+    meters.electricity.presence&.first
   end
 
   def latest_electricity_reading
-    if electricity_meter && electricity_meter.amr_data_feed_readings.any?
-      Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
-    end
+    return unless electricity_meter&.amr_data_feed_readings&.any?
+
+    Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
   end
 
   def cached_api_information?
@@ -53,7 +58,8 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def api_latest_data_date
-    return nil unless information['dates'].present?
-    return Date.parse(information['dates'].last)
+    return nil if information['dates'].blank?
+
+    Date.parse(information['dates'].last)
   end
 end
