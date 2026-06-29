@@ -21,7 +21,7 @@
           <%= feature.with_tag(t(subject.i18n_key), colour: :warning, tooltip: t('activity_types.subjects')) %>
         <% end %>
         <%= feature.with_button(t('activity_types.show.view_related_activities',
-                                  count: @activity_type.activity_category.activity_types.active.count),
+                                  count: @activity_type.related_activities.count),
                                 activity_category_path(@activity_type.activity_category)) %>
 
       <% end %>
