@@ -115,6 +115,31 @@ RSpec.describe 'Admin dashboard' do
           end
         end
 
+        describe 'my impact reports' do
+          let!(:user_school_group) do
+            create(:school_group, :with_active_schools, count: 2, default_issues_admin_user: user)
+          end
+
+          let!(:non_user_school_group) { create(:school_group, :with_active_schools, count: 2) }
+
+          before do
+            click_on 'My Impact Reports'
+          end
+
+          it 'links to the impact reports page' do
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/impact_reports")
+            expect(page).to have_link('View all impact reports', href: admin_impact_reports_path)
+          end
+
+          it 'displays impact reports belonging to the user' do
+            expect(page).to have_text(user_school_group.name)
+          end
+
+          it 'does not display impact reports which do not belong to the user' do
+            expect(page).to have_no_text(non_user_school_group.name)
+          end
+        end
+
         describe 'my data sources' do
           let!(:user_data_source) { create(:data_source, owned_by: user) }
           let!(:non_user_data_source) { create(:data_source) }

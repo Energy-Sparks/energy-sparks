@@ -2,7 +2,7 @@
   <% content_for :title do %>
         <%= "#{@dashboard_user.display_name}'s Impact Reports" %>
     <% end %>
-    <%= link_to 'All Impact Reports', admin_impact_reports_path, class: 'btn btn-secondary btn-sm' %>
+    <%= link_to 'View all impact reports', admin_impact_reports_path, class: 'btn btn-secondary btn-sm' %>
 <% else %>
   <% content_for :page_title, 'Impact Reports' %>
   <h1>Impact Reports</h1>
