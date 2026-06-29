@@ -781,6 +781,8 @@ class School < ApplicationRecord
 
     return { title: 'Data Visible', classes: 'ms-1 badge rounded-pill text-bg-success' } if data_visible?
 
+    return { title: 'Visible', classes: 'ms-1 badge rounded-pill text-bg-success' } if visible?
+
     { title: 'Awaiting Activation', classes: 'ms-1 badge rounded-pill text-bg-danger' }
   end
 

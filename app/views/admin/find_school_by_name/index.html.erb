@@ -19,14 +19,16 @@ A maximum of 20 schools and 20 onboardings will be returned.
     </thead>
     <tbody>
       <% @schools.each do |school| %>
-        <tr>
-          <td><%= link_to school.name, school_path(school) %></td>
-          <td>School</td>
-          <td>
-            <%= tag.span school.status_display[:title],
-                         class: school.status_display[:classes] %>
-          </td>
-        </tr>
+        <% unless !school.visible && school.active %>
+          <tr>
+            <td><%= link_to school.name, school_path(school) %></td>
+            <td>School</td>
+            <td>
+              <%= tag.span school.status_display[:title],
+                           class: school.status_display[:classes] %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
       <% @onboardings.each do |onboarding| %>
         <tr>
