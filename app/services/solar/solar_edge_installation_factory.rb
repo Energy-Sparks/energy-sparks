@@ -11,7 +11,7 @@ module Solar
     end
 
     def self.update_information(installation)
-      update_information(installation, DataFeeds::SolarEdgeApi.new(installation.api_key))
+      update_installation_information(installation, DataFeeds::SolarEdgeApi.new(installation.api_key))
     rescue StandardError => e
       Rollbar.error(e, job: :solar_download, school: installation.school)
     end
@@ -46,11 +46,11 @@ module Solar
     private
 
     def solar_edge_api
-      @solar_edge_api ||= DataFeeds::SolarEdgeApi.new(@api_key)
+      @solar_edge_api ||= DataFeeds::SolarEdgeApi.new(@installation.api_key)
     end
 
     def first_reading_date
-      @first_reading_date ||= solar_edge_api.site_start_end_dates(@site_id).first
+      @first_reading_date ||= solar_edge_api.site_start_end_dates(@installation.site_id).first
     end
 
     def download_initial_readings(installation)
