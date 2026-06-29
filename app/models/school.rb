@@ -131,7 +131,10 @@ class School < ApplicationRecord
   include Commercial::LicenceHolder
   include PgSearch::Model
 
-  pg_search_scope :search_by_name, against: :name
+  pg_search_scope :search_by_name, against: :name,
+                                   using: {
+                                     tsearch: { prefix: true }
+                                   }
 
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
@@ -772,19 +775,13 @@ class School < ApplicationRecord
   end
 
   def status_display
-    return 'Deleted' if deleted?
+    return { title: 'Deleted', classes: 'ms-1 badge rounded-pill text-bg-dark border border-pale' } if deleted?
 
-    return 'Archived' if archived?
+    return { title: 'Archived', classes: 'ms-1 badge rounded-pill text-bg-dark border border-pale' } if archived?
 
-    status_display = 'Active'
-    if data_visible?
-      status_display += ', Data Visible'
-    else
-      status_display += ', Visible' if visible
-      status_display += ', Data Enabled' if data_enabled
-      status_display += ', Awaiting Activation'
-    end
-    status_display
+    return { title: 'Data Visible', classes: 'ms-1 badge rounded-pill text-bg-success' } if data_visible?
+
+    { title: 'Awaiting Activation', classes: 'ms-1 badge rounded-pill text-bg-danger' }
   end
 
   def self.status_counts

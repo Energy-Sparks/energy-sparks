@@ -63,7 +63,10 @@ class SchoolOnboarding < ApplicationRecord
   include RestrictsSchoolGroupTypes
   include PgSearch::Model
 
-  pg_search_scope :search_by_school_name, against: :school_name
+  pg_search_scope :search_by_school_name, against: :school_name,
+                                          using: {
+                                            tsearch: { prefix: true }
+                                          }
 
   validates :school_name, presence: true
   validates :contact_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -217,5 +220,13 @@ class SchoolOnboarding < ApplicationRecord
     establishment = Lists::Establishment.current_establishment_from_urn(urn)
     return nil unless establishment && establishment&.public_send(code_attr)
     SchoolGroup.find_by(group_type:, dfe_code: establishment.public_send(code_attr))
+  end
+
+  def status_display
+    return { title: 'Completed', classes: 'ms-1 badge rounded-pill text-bg-success' } if complete?
+
+    return { title: 'Not Yet Started', classes: 'ms-1 badge rounded-pill text-bg-danger' } unless started?
+
+    { title: 'In Progress', classes: 'ms-1 badge rounded-pill text-bg-warning' }
   end
 end

@@ -11,10 +11,10 @@ A maximum of 20 schools and 20 onboardings will be returned.
 <% end %>
 
 <% if @schools.any? || @onboardings.any? %>
-  <table class="table">
+  <table class="table table-sorted">
     <thead>
       <th>School</th>
-      <th>Model</th>
+      <th>Type</th>
       <th>Status</th>
     </thead>
     <tbody>
@@ -23,7 +23,8 @@ A maximum of 20 schools and 20 onboardings will be returned.
           <td><%= link_to school.name, school_path(school) %></td>
           <td>School</td>
           <td>
-            <%= school.status_display %>
+            <%= tag.span school.status_display[:title],
+                         class: school.status_display[:classes] %>
           </td>
         </tr>
       <% end %>
@@ -31,7 +32,10 @@ A maximum of 20 schools and 20 onboardings will be returned.
         <tr>
           <td><%= link_to onboarding.school_name, admin_school_onboardings_path %></td>
           <td>Onboarding</td>
-          <td></td>
+          <td>
+            <%= tag.span onboarding.status_display[:title],
+                         class: onboarding.status_display[:classes] %>
+          </td>
         </tr>
       <% end %>
     </tbody>
