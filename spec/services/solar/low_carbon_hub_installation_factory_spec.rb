@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'dashboard'
 
@@ -10,8 +12,10 @@ module Solar
 
       expect(amr_data_feed_config).not_to be_nil
 
-      factory = LowCarbonHubInstallationFactory.new(school: school, rbee_meter_id: rbee_meter_id, amr_data_feed_config: amr_data_feed_config,
-                                                    username: username, password: password)
+      factory = described_class.new(
+        ActiveSupport::OrderedOptions.new.merge(school:, rbee_meter_id:, username:, password:, active: true),
+        amr_data_feed_config
+      )
       expect { factory.perform }.to change(Meter, :count).by(3)
       expect(school.meters.solar_pv.count).to be 1
       expect(school.meters.electricity.count).to be 1
