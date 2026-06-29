@@ -1505,7 +1505,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
   end
 
   create_table "low_carbon_hub_installations", force: :cascade do |t|
-    t.boolean "active", default: false, null: false
+    t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.datetime "created_at", null: false
     t.json "information", default: {}
@@ -1790,7 +1790,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
   end
 
   create_table "rtone_variant_installations", force: :cascade do |t|
-    t.boolean "active", default: false, null: false
+    t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.json "configuration"
     t.datetime "created_at", null: false
@@ -2188,7 +2188,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
   end
 
   create_table "solar_edge_installations", force: :cascade do |t|
-    t.boolean "active", default: false, null: false
+    t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_key"
     t.datetime "created_at", null: false
@@ -2226,7 +2226,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
   end
 
   create_table "solis_cloud_installations", force: :cascade do |t|
-    t.boolean "active", default: false, null: false
+    t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_id"
     t.text "api_secret"
