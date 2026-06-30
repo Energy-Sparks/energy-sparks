@@ -13,7 +13,7 @@ namespace :meters do
                                 supplier: row['Supplier'],
                                 status: row['Updated Meter Status']
                               })
-      puts "Unable to import meter #{row['Meter']}" if meter.blank?
+      puts "Could not find meter #{row['Meter']}" if meter.blank?
     rescue => e # rubocop:disable Style/RescueStandardError
       puts row['Meter']
       puts e
