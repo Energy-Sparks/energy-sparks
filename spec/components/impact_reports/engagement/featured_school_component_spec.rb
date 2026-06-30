@@ -7,12 +7,13 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
   let(:school_group) { create(:school_group) }
   let!(:config) { create(:impact_report_configuration, school_group: school_group) }
   let(:school) { create(:school, :with_school_group, school_group: school_group) }
+  let(:yesterday) { 1.day.ago }
 
   context 'without override' do
     context 'with activities and actions' do
       before do
-        create_list(:activity, 2, school: school)
-        create_list(:observation, 2, :intervention, school: school)
+        create_list(:activity, 2, school: school, happened_on: yesterday)
+        create_list(:observation, 2, :intervention, school: school, at: yesterday)
         render_inline(described_class.new(school_group: school_group))
       end
 
@@ -26,7 +27,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
 
     context 'with a single action and no activities recorded' do
       before do
-        create_list(:observation, 1, :intervention, school: school)
+        create_list(:observation, 1, :intervention, school: school, at: yesterday)
         render_inline(described_class.new(school_group: school_group))
       end
 
@@ -35,7 +36,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
 
     context 'with a single activity and no actions recorded' do
       before do
-        create_list(:activity, 1, school: school)
+        create_list(:activity, 1, school: school, happened_on: yesterday)
         render_inline(described_class.new(school_group: school_group))
       end
 
@@ -73,16 +74,18 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
     let(:override_school) { create(:school, school_group: school_group) }
 
     before do
-      create_list(:observation, 1, :intervention, school: school)
+      create_list(:observation, 1, :intervention, school: school, at: yesterday)
 
-      config.update(
+      config.update!(
+        engagement_note: 'Note',
         engagement_school: override_school,
-        engagement_school_expiry_date: 1.day.ago
+        engagement_school_expiry_date: yesterday
       )
       render_inline(described_class.new(school_group: school_group))
     end
 
-    it { expect(page).to have_text(school.name) }
+    it { expect(page).to have_text('recorded 1 adult action in the last 12 months') }
+    it { expect(page).to have_css('.scoreboards-podium-component') }
   end
 
   context 'when school is not present' do
