@@ -23,20 +23,23 @@
 #  created_by_id         :bigint(8)
 #  product_id            :bigint(8)        not null
 #  updated_by_id         :bigint(8)
+#  xero_account_code_id  :bigint(8)
 #
 # Indexes
 #
-#  index_commercial_contracts_on_contract_holder  (contract_holder_type,contract_holder_id)
-#  index_commercial_contracts_on_created_by_id    (created_by_id)
-#  index_commercial_contracts_on_name             (name) UNIQUE
-#  index_commercial_contracts_on_product_id       (product_id)
-#  index_commercial_contracts_on_updated_by_id    (updated_by_id)
+#  index_commercial_contracts_on_contract_holder       (contract_holder_type,contract_holder_id)
+#  index_commercial_contracts_on_created_by_id         (created_by_id)
+#  index_commercial_contracts_on_name                  (name) UNIQUE
+#  index_commercial_contracts_on_product_id            (product_id)
+#  index_commercial_contracts_on_updated_by_id         (updated_by_id)
+#  index_commercial_contracts_on_xero_account_code_id  (xero_account_code_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (product_id => commercial_products.id)
 #  fk_rails_...  (updated_by_id => users.id)
+#  fk_rails_...  (xero_account_code_id => commercial_xero_account_codes.id)
 #
 module Commercial
   class Contract < ApplicationRecord # rubocop:disable Metrics/ClassLength
