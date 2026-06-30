@@ -136,7 +136,7 @@ GEM
       public_suffix (>= 2.0.2, < 8.0)
     after_party (2.1.0)
     amazing_print (1.7.2)
-    annotaterb (4.22.0)
+    annotaterb (4.23.0)
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
     ast (2.4.3)
