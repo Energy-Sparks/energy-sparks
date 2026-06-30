@@ -50,6 +50,7 @@
                    activities: @activity_type.activities_for_school(current_user_school).by_date,
                    school: current_user_school %>
       <% end %>
+
       <div class="activity_type">
         <h3>Task overview</h3>
         <%= @activity_type_content %>
@@ -63,7 +64,10 @@
         </div>
       <% end %>
       <% if @activity_type.related_activities.any? %>
-        <h4 class='pt-0'>Related activities</h4>
+        <h4 class='pt-0'>
+          <%= t('activity_types.show.related_activities',
+                count: @activity_type.related_activities.count) %>
+        </h4>
         <ul>
         <% @activity_type.related_activities.each do |activity_type| %>
           <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
