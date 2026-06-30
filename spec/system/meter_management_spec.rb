@@ -42,8 +42,8 @@ RSpec.shared_examples_for 'the show meter page' do |admin:|
     expect(page).to have_selector(:link_or_button, 'Edit', exact: true)
     if admin
       expect(page).to have_text('Admin details')
-      expect(page).to have_text('Meter type NHH AMR Data source Data Co Contract Status Manual reads? false ' \
-                                'Gas unit Cubic Meters')
+      expect(page).to have_text('Meter type NHH AMR Data source Data Co Supplier Supply Co Contract Status ' \
+                                'Manual reads? false Gas unit Cubic Meters')
     else
       expect(page).to have_no_text('Admin details')
     end
@@ -119,8 +119,9 @@ describe 'meter management', :include_application_helper, :meters do
   let(:school_name)     { 'Oldfield Park Infants' }
   let!(:school)         { create_active_school(name: school_name, school_group: create(:school_group)) }
   let!(:data_source)    { create(:data_source, name: 'Data Co') }
+  let!(:supplier)       { create(:supplier, name: 'Supply Co') }
   let(:active_meter)    do
-    create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, gas_unit: :m3)
+    create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, supplier:, gas_unit: :m3)
   end
   let(:inactive_meter) do
     create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, active: false)
