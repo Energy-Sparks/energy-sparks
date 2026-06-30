@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: rtone_variant_installations
@@ -34,8 +36,10 @@ class RtoneVariantInstallation < ApplicationRecord
 
   enum :rtone_component_type, { prod: 0, in1: 1, out1: 2, in2: 3 }
 
-  validates :school, :meter, :rtone_meter_id, :rtone_component_type, :username, :password, presence: true
+  validates :rtone_meter_id, :rtone_component_type, :username, :password, presence: true
   validates :rtone_meter_id, uniqueness: { scope: :school }
+
+  scope :active, -> { where(active: true) }
 
   def display_name
     rtone_meter_id

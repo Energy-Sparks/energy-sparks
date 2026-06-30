@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: solis_cloud_installations
@@ -27,6 +29,8 @@ class SolisCloudInstallation < ApplicationRecord
   has_many :schools, through: :solis_cloud_installation_schools
 
   validates :api_id, :api_secret, presence: true
+
+  scope :active, -> { where(active: true) }
 
   def self.mpan(serial_number)
     # serial number in api response appear to be hex, truncate to max length our mpan function supports for solar
