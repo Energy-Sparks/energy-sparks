@@ -19,6 +19,15 @@ module Commercial
 
     private
 
+    # contract holder name
+    # invoice number
+    # po number
+    # invoice created date
+    # description of line item, use template
+    # quantity is always one
+    # unit amount from fees
+    # account code - Add AccountCode model
+    #                Add AccountCode to contract and forms
     def headers
       %w[ContactName
          InvoiceNumber
@@ -31,6 +40,8 @@ module Commercial
          TaxType]
     end
 
+    # One line item per school, with their fees and date ranges
+    # One extra line item per extra fee with note, e.g. X meters
     def invoice_to_line_items(invoice)
       [[]]
     end
