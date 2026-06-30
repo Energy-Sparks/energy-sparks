@@ -39,7 +39,7 @@ module Amr
     def handle_header(array_of_rows)
       if array_of_rows.empty?
         array_of_rows
-      elsif @config.number_of_header_rows
+      elsif @config.number_of_header_rows.positive?
         if @config.number_of_header_rows > array_of_rows.length
           raise DataFeedException,
                 "Expected #{@config.number_of_header_rows} header rows but file has only #{array_of_rows.length}."
