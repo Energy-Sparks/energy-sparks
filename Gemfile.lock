@@ -868,7 +868,7 @@ GEM
       rubyzip (>= 2.4.0, < 4.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yard (0.9.42)
+    yard (0.9.44)
     zeitwerk (2.8.2)
 
 PLATFORMS
