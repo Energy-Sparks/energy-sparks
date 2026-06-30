@@ -9,7 +9,7 @@ namespace :after_party do
       description: 'Tem',
       notes: '',
       number_of_header_rows: 2,
-      mpan_mprn_field: '', # first column, header on 2nd row
+      mpan_mprn_field: '', # first column, header over 2 rows but we use first for unique names
       reading_date_field: 'Settlement Period',
       date_format: '%Y-%m-%d',
       header_example: ',Settlement Period,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,' \
