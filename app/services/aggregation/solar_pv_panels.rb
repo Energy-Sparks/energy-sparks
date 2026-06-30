@@ -94,12 +94,11 @@ module Aggregation
     #
     # @param [SolarMeterMap] pv_meter_map the solar meters
     def create_generation_data(pv_meter_map)
+      mains_consume = pv_meter_map.mains_consume
       if pv_meter_map.generation.nil?
         pv_meter_map.set_meter(:generation, create_generation_meter_from_mains(mains_consume))
       end
-      create_generation_amr_data(pv_meter_map.mains_consume.amr_data,
-                                 pv_meter_map.generation.amr_data,
-                                 pv_meter_map.mains_consume.mpan_mprn)
+      create_generation_amr_data(mains_consume.amr_data, pv_meter_map.generation.amr_data, mains_consume.mpan_mprn)
     end
 
     def create_export_meter_if_missing(pv_meter_map)
