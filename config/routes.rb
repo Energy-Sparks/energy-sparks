@@ -689,7 +689,7 @@ Rails.application.routes.draw do
         end
       end
       resources :products
-      resources :xero_account_codes
+      resources :xero_account_codes, except: [:show]
 
       get 'pricing', to: 'pricing#show'
     end

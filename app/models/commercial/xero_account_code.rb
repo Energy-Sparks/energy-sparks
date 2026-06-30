@@ -28,7 +28,9 @@ module Commercial
     has_many :contracts, class_name: 'Commercial::Contract', dependent: :restrict_with_error
 
     def deletable?
-      false if contracts.any?
+      return false if contracts.any?
+
+      true
     end
 
     def display_label

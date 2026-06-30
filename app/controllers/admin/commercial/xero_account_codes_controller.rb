@@ -23,6 +23,14 @@ module Admin
         end
       end
 
+      def destroy
+        if @xero_account_code.destroy
+          redirect_to(admin_commercial_xero_account_codes_path, notice: 'Code was successfully deleted')
+        else
+          redirect_to(admin_commercial_products_path, alert: @xero_account_code.errors.full_messages.to_sentence)
+        end
+      end
+
       private
 
       def xero_account_code_params
