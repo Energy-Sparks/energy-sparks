@@ -137,7 +137,8 @@ describe Commercial::Contract do
                                                                 :invoice_terms,
                                                                 :name, :number_of_schools,
                                                                 :product_id, :purchase_order_number,
-                                                                :start_date, :status, :updated_by_id)
+                                                                :start_date, :status, :updated_by_id,
+                                                                :xero_account_code_id)
       end
 
       context 'when confirmed' do

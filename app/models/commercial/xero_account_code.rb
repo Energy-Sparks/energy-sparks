@@ -5,10 +5,14 @@
 # Table name: commercial_xero_account_codes
 #
 #  id         :bigint(8)        not null, primary key
-#  code       :integer
-#  label      :string
+#  code       :integer          not null
+#  label      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_commercial_xero_account_codes_on_code  (code) UNIQUE
 #
 module Commercial
   class XeroAccountCode < ApplicationRecord

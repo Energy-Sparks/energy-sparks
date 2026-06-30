@@ -803,10 +803,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
   end
 
   create_table "commercial_xero_account_codes", force: :cascade do |t|
-    t.integer "code"
+    t.integer "code", null: false
     t.datetime "created_at", null: false
-    t.string "label"
+    t.string "label", null: false
     t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_commercial_xero_account_codes_on_code", unique: true
   end
 
   create_table "comparison_custom_periods", force: :cascade do |t|
