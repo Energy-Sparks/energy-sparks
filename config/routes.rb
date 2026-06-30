@@ -689,6 +689,7 @@ Rails.application.routes.draw do
         end
       end
       resources :products
+      resources :xero_account_codes
 
       get 'pricing', to: 'pricing#show'
     end

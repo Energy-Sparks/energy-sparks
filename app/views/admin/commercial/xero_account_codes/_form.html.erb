@@ -1,0 +1,23 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'All account codes', admin_commercial_xero_account_codes_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <% url = if xero_account_code.new_record?
+               admin_commercial_xero_account_codes_path
+             else
+               admin_commercial_xero_account_code_path(xero_account_code)
+             end %>
+    <%= simple_form_for(xero_account_code, as: :xero_account_code, url: url) do |f| %>
+      <%= render 'shared/errors', subject: xero_account_code, subject_name: 'xero_account_code' %>
+      <%= f.input :code,
+                  hint: 'The unique account code' %>
+      <%= f.input :label,
+                  hint: 'Label / name for the code' %>
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', admin_commercial_xero_account_codes_path, class: 'btn' %>
+    <% end %>
+  </div>
+</div>

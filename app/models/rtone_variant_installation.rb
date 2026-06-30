@@ -3,6 +3,7 @@
 # Table name: rtone_variant_installations
 #
 #  id                      :bigint(8)        not null, primary key
+#  active                  :boolean          default(TRUE), not null
 #  configuration           :json
 #  password                :string           not null
 #  rtone_component_type    :integer          not null

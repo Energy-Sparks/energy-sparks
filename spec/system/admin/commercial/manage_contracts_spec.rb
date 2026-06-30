@@ -701,7 +701,7 @@ describe 'manage contracts', :include_application_helper do
   context 'when viewing a contract' do
     let!(:contract) do
       create(:commercial_contract,
-             agreed_school_price: 600.0)
+             agreed_school_price: 600.0, xero_account_code: create(:commercial_xero_account_code))
     end
 
     before do
@@ -737,6 +737,7 @@ describe 'manage contracts', :include_application_helper do
       it { expect(page).to have_text(contract.number_of_schools) }
       it { expect(page).to have_text(FormatUnit.format(:£, contract.agreed_school_price)) }
       it { expect(page).to have_text(contract.comments) }
+      it { expect(page).to have_text(contract.xero_account_code.display_label) }
     end
 
     context 'when viewing licence summary' do

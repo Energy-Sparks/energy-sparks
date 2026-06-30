@@ -3,6 +3,7 @@
 # Table name: solar_edge_installations
 #
 #  id                      :bigint(8)        not null, primary key
+#  active                  :boolean          default(TRUE), not null
 #  api_key                 :text
 #  information             :json
 #  mpan                    :text

@@ -69,6 +69,7 @@ module Commercial
 
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
+    belongs_to :xero_account_code, optional: true, class_name: 'Commercial::XeroAccountCode'
 
     CONTRACT_STATUS = {
       provisional: 'provisional',
@@ -222,7 +223,8 @@ module Commercial
           :contract_holder_id,
           :licence_years,
           :number_of_schools,
-          :product
+          :product,
+          :xero_account_code
         ).merge(
           renewed_attributes
         )
@@ -251,7 +253,7 @@ module Commercial
     # Some are safe to always be changed, e.g. name
     # Others cannot be changed once invoicing has started, e.g. agreed_school_price
     def editable_attributes
-      fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
+      fields = %i[comments name purchase_order_number number_of_schools updated_by_id xero_account_code_id]
       fields += %i[status] if provisional?
       fields += [:licence_years] if custom? && !invoiced?
       fields += [:invoice_terms] if contract? && !invoiced?

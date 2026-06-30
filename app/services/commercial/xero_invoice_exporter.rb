@@ -21,15 +21,6 @@ module Commercial
 
     private
 
-    # contract holder name
-    # invoice number
-    # po number
-    # invoice created date
-    # description of line item, use template
-    # quantity is always one
-    # unit amount from fees
-    # account code - Add AccountCode model
-    #                Add AccountCode to contract and forms
     def headers
       %w[ContactName
          InvoiceNumber
@@ -47,37 +38,54 @@ module Commercial
     def invoice_to_line_items(invoice)
       invoice_line_items = []
       invoice.line_items.each do |line_item|
-        add_line_items(line_item)
+        add_line_items(invoice_line_items, invoice, line_item)
       end
       invoice_line_items
     end
 
     def add_line_items(invoice_line_items, invoice, line_item)
-      invoice_line_items << xero_line_item(invoice, line_item, 'TODO', line_item.base_price)
+      invoice_line_items << xero_line_item(invoice, base_price_description(line_item), line_item.base_price)
 
       if line_item.metering_fee.positive?
-        invoice_line_items << xero_line_item(invoice, line_item, 'TODO',
+        invoice_line_items << xero_line_item(invoice, metering_fee_description(line_item),
                                              line_item.metering_fee)
       end
 
       return unless line_item.private_account_fee.positive?
 
-      invoice_line_items << xero_line_item(invoice, line_item, 'TODO',
+      invoice_line_items << xero_line_item(invoice, private_account_fee_description(line_item),
                                            line_item.private_account_fee)
     end
 
-    def xero_line_item(invoice, description, amount)
+    def xero_line_item(invoice, description, price)
       [
         invoice.contract.contract_holder.name,
         invoice.invoice_number,
         invoice.purchase_order_number,
-        invoice.created_at.to_date.strftime('%d/%m/%Y'),
+        invoice.date.strftime('%d/%m/%Y'),
         description,
         1,
-        amount,
-        'TODO',
+        rounded_price(price),
+        invoice.contract.xero_account_code.code,
         TAX_TYPE
       ]
+    end
+
+    def base_price_description(line_item)
+      "Energy Sparks service fee for #{line_item.school.name} " \
+        "#{line_item.licence.start_date.to_fs(:es_short)}-#{line_item.licence.end_date.to_fs(:es_short)}"
+    end
+
+    def metering_fee_description(line_item)
+      "Analysis of data for #{line_item.number_of_meters} meters for #{line_item.school.name}"
+    end
+
+    def private_account_fee_description(line_item)
+      "Private account fee for #{line_item.school.name}"
+    end
+
+    def rounded_price(price)
+      format('%.2f', price.round(2))
     end
   end
 end

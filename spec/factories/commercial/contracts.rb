@@ -15,6 +15,7 @@ FactoryBot.define do
     product factory: %i[commercial_product]
     created_by factory: %i[user]
     updated_by factory: %i[user]
+    xero_account_code factory: %i[commercial_xero_account_code]
 
     trait :custom do
       licence_period { :custom }

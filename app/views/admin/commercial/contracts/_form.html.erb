@@ -164,6 +164,12 @@
       <div class="col-12 mb-4 bg-light rounded-2 pb-3">
         <h3>Invoicing</h3>
         <%= f.input :purchase_order_number if contract.editable_attribute?(:purchase_order_number) %>
+        <% if contract.editable_attribute?(:xero_account_code_id) %>
+          <%= f.input :xero_account_code_id,
+                      collection: Commercial::XeroAccountCode.all.by_code,
+                      label_method: :display_label,
+                      include_blank: true %>
+        <% end %>
       </div>
 
       <%= f.submit 'Save', class: 'btn btn-primary' %>
