@@ -1,5 +1,4 @@
 <h1>Examples</h1>
-
 <ul>
   <li><a href="#basic">Basic format</a></li>
   <li><a href="#longer-text">Longer text</a></li>
@@ -12,10 +11,9 @@
   <li><a href="#all">All options</a></li>
   <li><a href="#custom">Custom background colour</a></li>
   <li><a href="#compact">Compact style</a></li>
-
+  <li><a href="#content-action">Content with action</a></li>
   <li><a href="#columns">Rendering within columns</a></li>
 </ul>
-
 <h4 id='basic'>Basic format</h4>
 <%= render PromptComponent.new do |c| %>
   <p>
@@ -23,7 +21,6 @@
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='longer-text'>Longer text</h4>
 <%= render PromptComponent.new do |c| %>
   <p>
@@ -35,7 +32,6 @@
     cursus, ornare dolor eget, lacinia velit. Cras ac velit nec elit volutpat pulvinar.
   </p>
 <% end %>
-
 <h4 id='with-link'>Link</h4>
 <%= render PromptComponent.new do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
@@ -44,7 +40,6 @@
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='icon'>Icon</h4>
 <%= render PromptComponent.new icon: 'calendar' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
@@ -53,7 +48,6 @@
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='fuel-type'>Fuel type</h4>
 <%= render PromptComponent.new fuel_type: 'electricity' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
@@ -62,7 +56,6 @@
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='title'>Title</h4>
 <%= render PromptComponent.new do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
@@ -72,31 +65,28 @@
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='pill'>Pill</h4>
 <%= render PromptComponent.new do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <%= render PromptComponent.new do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'Title and a pill' } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='status'>Status colours</h4>
 <% PromptComponent.statuses.each do |status| %>
   <%= render PromptComponent.new status: status do |c| %>
@@ -105,55 +95,58 @@
     </p>
   <% end %>
 <% end %>
-
 <h4 id='all'>All options (link, title, pill, content)</h4>
-
 <%= render PromptComponent.new status: :neutral, icon: 'calendar-alt' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'This is the title' } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='custom'>Custom background colour</h4>
-
 <%= render PromptComponent.new classes: fuel_type_background_class(:gas), icon: 'calendar-alt' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'This is the title' } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='compact'>Compact Style</h4>
-
 <p>
   With <code>:compact</code> style, content should be wrapped in an outer tag. Longer content will force the row to wrap
 </p>
-
 <%= render PromptComponent.new status: :neutral, style: :compact, icon: 'calendar-alt' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'This is the title' } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
+<h4 id='content-action'>Content with action</h4>
+<%= render PromptComponent.new icon: 'tasks', status: :neutral do |c| %>
+  <% c.with_title { 'Activity score' } %>
+  <% c.with_content_action do |ca| %>
+    <% ca.with_body do %>
+      <p class="mb-2">Select a school to record this activity</p>
+    <% end %>
+    <% ca.with_action do %>
+      <button class="btn btn-primary">Record</button>
+    <% end %>
+  <% end %>
+<% end %>
 <h4 id='columns'>Rendering within columns</h4>
-
 <div class="row">
   <div class="col-12 col-lg-6">
     <%= render PromptComponent.new do |c| %>
@@ -166,7 +159,7 @@
       <% c.with_link { link_to 'This is the link', root_path } %>
       <% c.with_title { 'This is the title' } %>
       <% c.with_pill do %>
-        <span class="badge badge-warning">Warning</span>
+        <span class="badge text-bg-warning">Warning</span>
       <% end %>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
@@ -185,7 +178,7 @@
       <% c.with_link { link_to 'This is the link', root_path } %>
       <% c.with_title { 'This is the title' } %>
       <% c.with_pill do %>
-        <span class="badge badge-warning">Warning</span>
+        <span class="badge text-bg-warning">Warning</span>
       <% end %>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin

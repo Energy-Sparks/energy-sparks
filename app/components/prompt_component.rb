@@ -18,6 +18,7 @@ class PromptComponent < ApplicationComponent
   renders_one :link
   renders_one :title
   renders_one :pill
+  renders_one :content_action, ->(**kwargs) { Layout::Cards::ContentAction.new(**kwargs) }
 
   attr_reader :icon, :style, :fuel_type
 
@@ -36,7 +37,7 @@ class PromptComponent < ApplicationComponent
   end
 
   def render?
-    content || @always_render
+    content || content_action || @always_render
   end
 
   def validate
@@ -44,10 +45,10 @@ class PromptComponent < ApplicationComponent
   end
 
   def self.statuses
-    [:none, :positive, :negative, :neutral]
+    %i[none positive negative neutral]
   end
 
   def self.status_error
-    'Status must be: ' + self.statuses.to_sentence(last_word_connector: ' or ')
+    'Status must be: ' + statuses.to_sentence(last_word_connector: ' or ')
   end
 end
