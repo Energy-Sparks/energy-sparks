@@ -54,6 +54,7 @@ class Activity < ApplicationRecord
 
   scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
   scope :for_school, ->(school) { where(school: school) }
+  scope :for_owned_by, ->(owned_by) { select('activities.*').joins(school: :school_group).where(school_groups: { default_issues_admin_user_id: owned_by }) }
   scope :most_recent, -> { order(created_at: :desc) }
   scope :by_date, ->(order = :asc) { order(happened_on: order) }
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
