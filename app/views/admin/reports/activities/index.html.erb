@@ -2,10 +2,9 @@
   <% content_for :title do %>
     <%= "Activities for #{@dashboard_user.display_name}" %>
   <% end %>
-  <%= render Elements::ButtonComponent.new('Full Activities Report',
-                                           admin_reports_activities_path,
-                                           style: :secondary,
-                                           classes: 'mb-2 me-2') %>
+  <p>
+    <%= link_to 'Full Activities Report', admin_reports_activities_path, class: 'btn' %>
+  </p>
   <p>
     A list of all activities by <%= @dashboard_user.display_name %>'s schools in the last 12 months
     (since <%= nice_dates(1.year.ago) %>).
@@ -35,53 +34,5 @@
 The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the activity includes
 images provided by the user
 </p>
-
-<div class="bg-light ps-2 pt-2 my-2 border rounded-2">
-    <%= form_tag polymorphic_path(
-          path_helper
-        ),
-                 method: :get do %>
-      <div class='d-flex justify-content-between flex-wrap align-items-center'>
-        <div class="me-2 mb-2">
-          <%= text_field_tag :search, params[:search], autocomplete: 'off',
-                                                       placeholder: 'Search activities...',
-                                                       width: 200,
-                                                       class: '' %>
-        </div>
-        <% unless @dashboard_user %>
-          <div class="me-2 mb-2">
-            <%= select_tag :admin,
-                           options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:admin]),
-                           include_blank: 'Any admin user',
-                           class: 'form-control' %>
-          </div>
-        <% end %>
-        <div class="me-2 mb-2">
-          <%= select_tag :user_role,
-                         options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
-                         include_blank: 'Any admin user',
-                         class: 'form-control' %>
-        </div>
-        <div class="me-2 mb-2">
-          <%= select_tag :school,
-                         options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
-                         include_blank: 'Any admin user',
-                         class: 'form-control' %>
-        </div>
-        <div class="ms-xxl-auto me-2 mb-2">
-          <%= button_tag 'Filter',
-                         type: 'submit',
-                         class: 'btn btn-secondary btn-sm' %>
-
-          <%= button_tag 'CSV',
-                         type: 'submit',
-                         name: 'format',
-                         value: 'csv',
-                         class: 'btn btn-secondary btn-sm',
-                         data: { confirm: 'Are you sure?' } %>
-        </div>
-      </div>
-    <% end %>
-  </div>
 
 <%= render 'shared/activities', activities: @activities %>
