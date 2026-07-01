@@ -1,0 +1,49 @@
+<h1>Find schools by name</h1>
+
+<p>
+Use this form to find schools (including onboarding, archived and deleted schools) by name.
+A maximum of 20 schools and 20 onboardings will be returned.
+</p>
+
+<%= simple_form_for admin_schools_search_find_school_by_name_index_path, method: :get, html: { class: 'form' } do |f| %>
+  <%= f.input :school_name, label: 'School name', autofocus: true, input_html: { name: :query, value: params[:query] } %>
+  <%= f.submit :Search, class: 'btn btn-primary' %>
+<% end %>
+
+<% if @schools.any? || @onboardings.any? %>
+  <table class="table table-sorted">
+    <thead>
+      <th>School</th>
+      <th>Type</th>
+      <th>Status</th>
+    </thead>
+    <tbody>
+      <% @schools.each do |school| %>
+        <% unless !school.visible && school.active %>
+          <tr>
+            <td><%= link_to school.name, school_path(school) %></td>
+            <td>School</td>
+            <td>
+              <%= tag.span school.status_display[:title],
+                           class: school.status_display[:classes] %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+      <% @onboardings.each do |onboarding| %>
+        <tr>
+          <td><%= link_to onboarding.school_name, admin_school_onboardings_path %></td>
+          <td>Onboarding</td>
+          <td>
+            <%= tag.span onboarding.status_display[:title],
+                         class: onboarding.status_display[:classes] %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <% if params[:query].present? %>
+    <p>No schools were found with this name</p>
+  <% end %>
+<% end %>

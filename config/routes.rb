@@ -654,6 +654,7 @@ Rails.application.routes.draw do
 
         get :contract_holder_options, on: :collection
         get :choose, on: :collection
+        get :renew, on: :collection
         resources :invoices, controller: 'contracts/invoices', only: %i[new create] do
           get :raise_invoice, on: :collection
         end
@@ -721,6 +722,7 @@ Rails.application.routes.draw do
     resources :consent_grants, only: %i[index show]
     resources :find_school_by_mpxn, only: :index
     resources :find_school_by_urn, only: :index
+    resources :find_school_by_name, only: :index
     get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues', as: :meter_issues
 
     resources :consent_statements
@@ -934,6 +936,7 @@ Rails.application.routes.draw do
       namespace :search do
         resources :find_school_by_mpxn, only: :index
         resources :find_school_by_urn, only: :index
+        resources :find_school_by_name, only: :index
       end
     end
 
