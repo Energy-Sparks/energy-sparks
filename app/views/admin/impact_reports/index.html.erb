@@ -1,8 +1,11 @@
 <% if @dashboard_user %>
   <% content_for :title do %>
-        <%= "#{@dashboard_user.display_name}'s Impact Reports" %>
-    <% end %>
-    <%= link_to 'View all impact reports', admin_impact_reports_path, class: 'btn btn-secondary btn-sm' %>
+      <%= "#{@dashboard_user.display_name}'s Impact Reports" %>
+  <% end %>
+  <%= render Elements::ButtonComponent.new('View all impact reports',
+                                           admin_impact_reports_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
 <% else %>
   <% content_for :page_title, 'Impact Reports' %>
   <h1>Impact Reports</h1>
