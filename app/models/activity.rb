@@ -36,6 +36,7 @@
 class Activity < ApplicationRecord
   include Description
   include Todos::Recording
+  include CsvExportable
 
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities
@@ -53,8 +54,10 @@ class Activity < ApplicationRecord
   validates :happened_on, presence: true
 
   scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
-  scope :for_school, ->(school) { where(school: school) }
-  scope :for_owned_by, ->(owned_by) { select('activities.*').joins(school: :school_group).where(school_groups: { default_issues_admin_user_id: owned_by }) }
+  scope :for_school, ->(school) { where(school:) }
+  scope :for_school_group, ->(school_group) { where(school: { school_group: school_group }) }
+  scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
+  scope :for_user_role, ->(user_role) { where(created_by: { role: user_role }) }
   scope :most_recent, -> { order(created_at: :desc) }
   scope :by_date, ->(order = :asc) { order(happened_on: order) }
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
@@ -62,8 +65,12 @@ class Activity < ApplicationRecord
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
   }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
+  scope :recorded_in_last_year, -> { where(activities: { created_at: 1.year.ago.. }) }
+  scope :recorded_in_last_week, -> { where(activities: { created_at: 1.week.ago.. }) }
+
+  scope :search, lambda { |search|
+    joins(:rich_text_description).where('title ~* ? or action_text_rich_texts.body ~* ?', search, search)
+  }
 
   has_rich_text :description
 
@@ -80,6 +87,21 @@ class Activity < ApplicationRecord
   def academic_year = school.academic_year_for(happened_on)
 
   def type_name = activity_type&.name
+
+  def observation_user
+    observations.first&.created_by
+  end
+
+  def self.csv_headers
+    ['School Group', 'Admin', 'School', 'User', 'User Role', 'User Staff Role', 'Recorded', 'Happened', 'Title',
+     'Images?']
+  end
+
+  def self.csv_attributes
+    %w[school.school_group.name school.school_group.default_issues_admin_user.name school.name observation_user.name
+       observation_user.role observation_user.staff_role.title created_at.to_date.iso8601
+       happened_on.to_date.iso8601 title description_includes_images?]
+  end
 
   private
 
