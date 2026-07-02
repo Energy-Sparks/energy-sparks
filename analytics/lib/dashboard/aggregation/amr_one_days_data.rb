@@ -78,7 +78,7 @@ class OneDayAMRReading
   end
 
   def <=>(other)
-    other.class == self.class &&
+    other.instance_of?(self.class) &&
       [date, type, substitute_date] <=> [other.date, other.type, other.substitute_date] &&
       one_day_kwh <=> other.one_day_kwh &&
       @kwh_data_x48 <=> other.kwh_data_x48
