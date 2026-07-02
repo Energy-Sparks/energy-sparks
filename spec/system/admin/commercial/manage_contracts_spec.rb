@@ -872,12 +872,13 @@ describe 'manage contracts', :include_application_helper do
         let(:table_id) { '#invoices-table' }
         let(:expected_header) do
           [
-            %w[Number User Date Total]
+            ['', 'Number', 'User', 'Date', 'Total']
           ]
         end
         let(:expected_rows) do
           [
             [
+              '',
               invoice.invoice_number,
               invoice.created_by.display_name,
               invoice.date.to_fs(:es_short),
