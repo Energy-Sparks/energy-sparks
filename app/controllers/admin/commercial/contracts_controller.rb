@@ -118,9 +118,10 @@ module Admin
 
       def destroy
         if @contract.destroy
-          redirect_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
+          redirect_back_or_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
         else
-          redirect_to(admin_commercial_contracts_path, alert: @contract.errors.full_messages.to_sentence)
+          redirect_to fallback_location: admin_commercial_contracts_path,
+                      alert: @contract.errors.full_messages.to_sentence
         end
       end
 
@@ -131,7 +132,7 @@ module Admin
         else
           notice = 'Unable to confirm contract'
         end
-        redirect_to(admin_commercial_contract_path(@contract), notice:)
+        redirect_back_or_to(admin_commercial_contract_path(@contract), notice:)
       end
 
       private
