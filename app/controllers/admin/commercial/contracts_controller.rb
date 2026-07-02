@@ -120,8 +120,7 @@ module Admin
         if @contract.destroy
           redirect_back_or_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
         else
-          redirect_to fallback_location: admin_commercial_contracts_path,
-                      alert: @contract.errors.full_messages.to_sentence
+          redirect_back_or_to(admin_commercial_contracts_path, alert: @contract.errors.full_messages.to_sentence)
         end
       end
 
