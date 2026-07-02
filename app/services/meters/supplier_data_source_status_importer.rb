@@ -52,11 +52,11 @@ module Meters
       if data[:status].blank?
         nil
       else
-        new_status = AdminMeterStatus.find_by(name: data[:status])
+        new_status = AdminMeterStatus.find_by(label: data[:status])
         if new_status.present?
           new_status
         else
-          warn "Cannot find meter status with name #{data[:status]} for meter #{data[:meter]}"
+          warn "Cannot find meter status with label #{data[:status]} for meter #{data[:meter]}"
           meter.admin_meter_status
         end
       end
