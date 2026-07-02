@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dashboard'
-
 # Timed data from a meter
 # references consumption data, costs and carbon emissions
 class AMRData < HalfHourlyData

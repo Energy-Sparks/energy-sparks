@@ -1,5 +1,3 @@
-require 'dashboard'
-
 module Admin
   class ChartPreviewsController < AdminController
     before_action :load_chart_list

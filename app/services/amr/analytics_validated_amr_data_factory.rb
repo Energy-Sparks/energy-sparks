@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dashboard'
-
 module Amr
   class AnalyticsValidatedAmrDataFactory < AnalyticsUnvalidatedAmrDataFactory
     private

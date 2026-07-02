@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'dashboard'
 require 'rails_helper'
 
 module Amr
