@@ -79,8 +79,11 @@ RSpec.describe 'Admin dashboard' do
             click_on 'My School Groups'
           end
 
-          it 'links to the school groups page' do
+          it 'has the correct path' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups")
+          end
+
+          it 'links to the school groups page' do
             expect(page).to have_link('View all groups', href: admin_school_groups_path)
           end
 
@@ -101,8 +104,11 @@ RSpec.describe 'Admin dashboard' do
             click_on 'My Project Groups'
           end
 
-          it 'links to the project groups page' do
+          it 'has the correct path' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups?group_type=project")
+          end
+
+          it 'links to the project groups page' do
             expect(page).to have_link('View all groups', href: admin_school_groups_path(group_type: 'project'))
           end
 
@@ -115,6 +121,34 @@ RSpec.describe 'Admin dashboard' do
           end
         end
 
+        describe 'my impact reports' do
+          let!(:user_school_group) do
+            create(:school_group, :with_active_schools, count: 2, default_issues_admin_user: user)
+          end
+
+          let!(:non_user_school_group) { create(:school_group, :with_active_schools, count: 2) }
+
+          before do
+            click_on 'My Impact Reports'
+          end
+
+          it 'has the correct path' do
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/impact_reports")
+          end
+
+          it 'links to the impact reports page' do
+            expect(page).to have_link('View all impact reports', href: admin_impact_reports_path)
+          end
+
+          it 'displays impact reports belonging to the user' do
+            expect(page).to have_text(user_school_group.name)
+          end
+
+          it 'does not display impact reports which do not belong to the user' do
+            expect(page).to have_no_text(non_user_school_group.name)
+          end
+        end
+
         describe 'my data sources' do
           let!(:user_data_source) { create(:data_source, owned_by: user) }
           let!(:non_user_data_source) { create(:data_source) }
@@ -123,8 +157,11 @@ RSpec.describe 'Admin dashboard' do
             click_on 'My Data Sources'
           end
 
-          it 'links to the data sources page' do
+          it 'has the correct path' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/data_sources")
+          end
+
+          it 'links to the data sources page' do
             expect(page).to have_link('View all data sources', href: admin_data_sources_path)
           end
 
@@ -145,8 +182,11 @@ RSpec.describe 'Admin dashboard' do
             click_on 'My Suppliers'
           end
 
-          it 'links to the suppliers page' do
+          it 'has the correct path' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/suppliers")
+          end
+
+          it 'links to the suppliers page' do
             expect(page).to have_link('View all suppliers', href: admin_suppliers_path)
           end
 
@@ -167,8 +207,11 @@ RSpec.describe 'Admin dashboard' do
             click_on 'My Data Feeds'
           end
 
-          it 'links to the data feeds page' do
+          it 'has the correct path' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/amr_data_feed_configs")
+          end
+
+          it 'links to the data feeds page' do
             expect(page).to have_link('View all data feed configurations', href: admin_amr_data_feed_configs_path)
           end
 
@@ -189,8 +232,11 @@ RSpec.describe 'Admin dashboard' do
             click_on 'My Issues'
           end
 
-          it 'links to the issues page' do
+          it 'has the correct path' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/issues")
+          end
+
+          it 'links to the issues page' do
             expect(page).to have_no_text('Assigned to')
             expect(page).to have_link('View all issues', href: admin_issues_path)
           end
