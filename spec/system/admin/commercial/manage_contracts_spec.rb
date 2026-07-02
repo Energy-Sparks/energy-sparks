@@ -886,6 +886,16 @@ describe 'manage contracts', :include_application_helper do
         end
       end
     end
+
+    context 'with a School contract' do
+      let!(:contract) do
+        create(:commercial_contract, :with_school)
+      end
+
+      it { expect(page).to have_no_link('Add New Licence') }
+      it { expect(page).to have_no_link('Manage All Licences') }
+      it { expect(page).to have_no_link('Calculate Price') }
+    end
   end
 
   context 'when confirming a contract' do
