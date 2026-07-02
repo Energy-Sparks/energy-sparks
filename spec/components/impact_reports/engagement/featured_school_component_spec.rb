@@ -7,7 +7,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
   let(:school_group) { create(:school_group) }
   let!(:config) { create(:impact_report_configuration, school_group: school_group) }
   let(:school) { create(:school, :with_school_group, school_group: school_group) }
-  let(:yesterday) { 1.day.ago }
+  let(:yesterday) { 1.day.ago.beginning_of_day }
 
   context 'without override' do
     context 'with activities and actions' do
