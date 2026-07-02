@@ -72,9 +72,7 @@ module Aggregation
       check_temperature_data_covers_gas_meter_data_range
 
       # Extracts the :meter_corrections from the meter attributes and stores them
-      # as meter_correction_rules, for later processing. If this is a gas meter,
-      # and there are no other rules, then configures an :auto_insert_missing_readings
-      # rule that will set weekend data to zero
+      # as meter_correction_rules, for later processing.
       #
       # The corrections are applied in a later step
       process_meter_attributes
@@ -85,6 +83,15 @@ module Aggregation
       remove_dcc_bad_data_readings if @meter.dcc_meter
 
       remove_negative_readings if %i[electricity gas].include?(@meter.meter_type)
+
+      # Scans the amr data to look for gaps that are larger than @max_days_missing_data
+      # If found, then AMR data start date will be moved to the final day of the gap.
+      # Means that if there are any big holes in the data, it will be skipped.
+      #
+      # Ignores gaps which might be filled in the next step
+      check_for_long_gaps_in_data
+
+      Corrections::OverrideNightToZero.apply(nil, nil, @meter) if @meter.meter_type == :solar_pv
 
       # Adjusts amr data start/end by one day to ignore days with partial data
       # (This overlaps with the remove_final_meter_reading_if_today check done
@@ -98,15 +105,6 @@ module Aggregation
       # Note: @meter.meter_correction_rules will never be nil, as its initialised
       # to an empty array and can only be added to
       meter_corrections unless @meter.meter_correction_rules.nil?
-
-      Corrections::OverrideNightToZero.apply(nil, nil, @meter) if @meter.meter_type == :solar_pv
-
-      # Scans the amr data to look for gaps that are larger than @max_days_missing_data
-      # If found, then AMR data start date will be moved to the final day of the gap.
-      # Means that if there are any big holes in the data, it will be skipped.
-      #
-      # Ignores gaps which might be filled in the next step
-      check_for_long_gaps_in_data
 
       # Tries to find substitute data for all missing days.
       # Uses different approaches for gas and electricity data.
@@ -134,26 +132,13 @@ module Aggregation
     end
 
     # Finds the meter corrections attributes, then copies them to the
-    # meter_correction_rules for the meter. If there are no
-    # rules and this is a gas meter, then it will automatically add a rule to set
-    # any missing weekend data to zero
+    # meter_correction_rules for the meter.
     #
     # Note: as these rules are only used by this class, the list of rules could
     # just be a member variable, rather than adding a method/data to Meter
     def process_meter_attributes
       meter_attributes_corrections = @meter.attributes(:meter_corrections)
-      if meter_attributes_corrections.nil?
-        auto_insert_for_gas_if_no_other_rules
-      else
-        @meter.insert_correction_rules_first(meter_attributes_corrections)
-      end
-    end
-
-    def auto_insert_for_gas_if_no_other_rules
-      return unless @meter.meter_type.to_sym == :gas
-
-      logger.info "Adding auto insert missing readings as we're a gas meter & no other corrections"
-      @meter.insert_correction_rules_first([{ auto_insert_missing_readings: { type: :weekends } }])
+      @meter.insert_correction_rules_first(meter_attributes_corrections) unless meter_attributes_corrections.nil?
     end
 
     # Applies all the meter corrections configured in the meter attributes.
