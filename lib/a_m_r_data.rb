@@ -190,9 +190,9 @@ class AMRData < HalfHourlyData
   end
 
   def check_type(type)
-    unless %i[kwh £ economic_cost co2 £current current_economic_cost accounting_cost gbp].include?(type)
-      raise UnexpectedDataType, "Unexpected data type #{type}"
-    end
+    return if %i[kwh £ economic_cost co2 £current current_economic_cost accounting_cost gbp].include?(type)
+
+    raise UnexpectedDataType, "Unexpected data type #{type}"
   end
 
   def substitution_type(date)
@@ -256,10 +256,6 @@ class AMRData < HalfHourlyData
     a.map { |v| v * scalar }
   end
 
-  def set_days_kwh_x48(date, days_kwh_data_x48)
-    self[date].set_days_kwh_x48(days_kwh_data_x48)
-  end
-
   def scale_kwh(scale_factor, date1: start_date, date2: end_date)
     (date1..date2).each do |date|
       add(date, OneDayAMRReading.scale(self[date], scale_factor)) if date_exists?(date)
@@ -286,14 +282,6 @@ class AMRData < HalfHourlyData
 
   def kw(date, halfhour_index)
     kwh(date, halfhour_index) * 2.0
-  end
-
-  def set_kwh(date, halfhour_index, kwh)
-    self[date].set_kwh_halfhour(halfhour_index, kwh)
-  end
-
-  def add_to_kwh(date, halfhour_index, kwh)
-    self[date].set_kwh_halfhour(halfhour_index, kwh + kwh(date, halfhour_index))
   end
 
   def one_day_kwh(date, type = :kwh, community_use: nil)
@@ -469,7 +457,7 @@ class AMRData < HalfHourlyData
   def self.create_empty_dataset(type, start_date, end_date, reading_type = 'ORIG')
     data = AMRData.new(type)
     (start_date..end_date).each do |date|
-      data.add(date, OneDayAMRReading.new('Unknown', date, reading_type, nil, DateTime.now, one_day_zero_kwh_x48))
+      data.add(date, OneDayAMRReading.new(date, reading_type, nil, DateTime.now, one_day_zero_kwh_x48))
     end
     data
   end
@@ -477,7 +465,7 @@ class AMRData < HalfHourlyData
   def summarise_bad_data
     _, one_days_data = first
     logger.info '=' * 80
-    logger.info "Bad data for meter #{one_days_data.meter_id}"
+    logger.info "Bad data for meter #{one_days_data}"
     logger.info "Valid data between #{start_date} and #{end_date}"
     key, _value = first
     logger.info "Ignored data between #{key} and #{start_date} - because of long gaps" if key < start_date
@@ -518,24 +506,6 @@ class AMRData < HalfHourlyData
     end
     bad_dates = dates_with_non_finite_values
     puts "bad non finite data on these dates: #{bad_dates.join(';')}" unless bad_dates.empty?
-  end
-
-  # take one set (dd_data) of half hourly data from self
-  # - avoiding performance hit of taking a copy
-  # caller expected to ensure start and end dates reasonable
-  def minus_self(dd_data, min_value = nil)
-    sd = [start_date, dd_data.start_date].max
-    ed = [end_date, dd_data.end_date].min
-    (sd..ed).each do |date|
-      (0..47).each do |halfhour_index|
-        updated_kwh = kwh(date, halfhour_index) - dd_data.kwh(date, halfhour_index)
-        if min_value.nil?
-          set_kwh(date, halfhour_index, updated_kwh)
-        else
-          set_kwh(date, halfhour_index, [updated_kwh, min_value].max)
-        end
-      end
-    end
   end
 
   def each_date_kwh

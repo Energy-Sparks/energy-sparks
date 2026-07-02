@@ -29,7 +29,7 @@ module Amr
         @meter.meter_type =>
           {
             mpan_mprn: @meter.mpan_mprn,
-            readings: make_one_day_readings(meter_readings[:readings], @meter.mpan_mprn),
+            readings: make_one_day_readings(meter_readings[:readings]),
             missing_readings: meter_readings[:missing_readings]
           }
       }
@@ -38,9 +38,9 @@ module Amr
     private
 
     # TODO: remove, unnecessary, see note above
-    def make_one_day_readings(meter_readings_by_date, mpan_mprn)
+    def make_one_day_readings(meter_readings_by_date)
       meter_readings_by_date.to_h do |date, readings|
-        [date.to_date, OneDayAMRReading.new(mpan_mprn, date.to_date, 'ORIG', nil, DateTime.now, readings)]
+        [date.to_date, OneDayAMRReading.new(date.to_date, 'ORIG', nil, DateTime.now, readings)]
       end
     end
 

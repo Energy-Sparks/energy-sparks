@@ -63,14 +63,13 @@ module Amr
       Amr::AnalyticsMeterFactory.new(active_record_meter).build(readings.compact)
     end
 
-    def reading_if_valid(meter_id, reading)
+    def reading_if_valid(_meter_id, reading)
       return if reading_invalid?(reading)
 
       reading_date = date_from_string_using_date_format(reading)
       return if reading_date.nil?
 
       OneDayAMRReading.new(
-        meter_id,
         reading_date,
         'ORIG',
         nil,
