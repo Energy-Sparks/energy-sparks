@@ -130,7 +130,7 @@ class AlertSchoolWeekComparisonGas < AlertSchoolWeekComparisonElectricity
   end
 
   private def heating_on_in_period(asof_date, period) # rubocop:todo Naming/PredicateMethod
-    @heating_model ||= model_cache(aggregate_meter, asof_date)
+    @heating_model ||= model_cache(asof_date)
     school_days = (period.start_date..period.end_date).to_a.select { |date| date.wday.between?(1, 5) }
     heating_on_days = school_days.count { |school_day| @heating_model.heating_on?(school_day) }
     heating_on_days > (school_days.length / 2.0)

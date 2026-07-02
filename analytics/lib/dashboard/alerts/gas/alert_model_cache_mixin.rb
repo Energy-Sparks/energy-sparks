@@ -1,5 +1,5 @@
 module AlertModelCacheMixin
-  private def model_cache(_meter, asof_date)
+  private def model_cache(asof_date)
     aggregate_meter.model_cache.create_and_fit_model(:best, one_year_period(asof_date))
   end
 
