@@ -97,7 +97,7 @@ class AverageSchoolAggregator < VirtualSchool
       (amr_data.start_date..amr_data.end_date).each do |date|
         unless average_amr_data.date_exists?(date)
           average_amr_data.add(date,
-                               OneDayAMRReading.zero_reading(0, date, 'AGGR'))
+                               OneDayAMRReading.zero_reading(date, 'AGGR'))
         end
         average_amr_data[date] += OneDayAMRReading.scale(amr_data[date], scaling_factor)
         amr_data_count[date] += 1
