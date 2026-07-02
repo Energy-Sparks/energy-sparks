@@ -161,7 +161,7 @@ RSpec.describe 'Navigation -> second nav' do
 
         it 'shows mini podium with link to scoreboard' do
           expect(nav).to have_css('#mini-podium')
-          expect(nav).to have_link '1 points 1st'
+          expect(nav).to have_link '1 point 1st'
         end
       end
 

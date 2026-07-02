@@ -146,6 +146,11 @@ class ActivityType < ApplicationRecord
     :activity
   end
 
+  def related_activities
+    # probably shouldn't include self, but leave existing behaviour as is for now
+    activity_category.activity_types.active # - [self]
+  end
+
   private
 
   def copy_searchable_attributes

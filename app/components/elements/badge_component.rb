@@ -12,7 +12,7 @@ module Elements
     end
 
     def call
-      tag.span(id: id, class: classes) { "#{@text}#{content}".html_safe }
+      tag.span(id: id, class: classes, **html_options) { "#{@text}#{content}".html_safe }
     end
 
     def render?
