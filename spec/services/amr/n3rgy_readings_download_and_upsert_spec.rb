@@ -264,7 +264,7 @@ module Amr
           {
             meter.meter_type => {
               mpan_mprn: meter.mpan_mprn,
-              readings: { yesterday => OneDayAMRReading.new(meter.mpan_mprn, yesterday, 'ORIG', nil,
+              readings: { yesterday => OneDayAMRReading.new(yesterday, 'ORIG', nil,
                                                             yesterday, Array.new(48, 0.25)) },
               missing_readings: []
             }

@@ -340,7 +340,7 @@ module Aggregation
       # Setting start date will truncate earlier data. Application will end up
       # storing the FIXS reading as the earliest reading. Prior data will be deleted
       @amr_data.add(fix_start_date,
-                    OneDayAMRReading.new(meter_id, fix_start_date, 'FIXS', nil, DateTime.now, substitute_data_x48))
+                    OneDayAMRReading.new(fix_start_date, 'FIXS', nil, DateTime.now, substitute_data_x48))
       @amr_data.set_start_date(fix_start_date)
     end
 
@@ -360,7 +360,7 @@ module Aggregation
       # Setting end date will truncate earlier data. Application will end up
       # storing the FIXE reading as the latest reading. Later data will be deleted
       @amr_data.add(fix_end_date,
-                    OneDayAMRReading.new(meter_id, fix_end_date, 'FIXE', nil, DateTime.now, substitute_data_x48))
+                    OneDayAMRReading.new(fix_end_date, 'FIXE', nil, DateTime.now, substitute_data_x48))
       @amr_data.set_end_date(fix_end_date)
     end
 
@@ -397,7 +397,7 @@ module Aggregation
         next unless @amr_data.date_missing?(date) && toy >= start_toy && toy <= end_toy
 
         zero_data = Array.new(48, 0.0)
-        data = OneDayAMRReading.new(meter_id, date, type, nil, DateTime.now, zero_data)
+        data = OneDayAMRReading.new(date, type, nil, DateTime.now, zero_data)
         @amr_data.add(date, data)
 
         year_count[date.year] = 0 unless year_count.key?(date.year)
@@ -438,7 +438,7 @@ module Aggregation
         for_interpolation.each_key do |date|
           days_kwh_x48 = @amr_data.days_kwh_x48(date)
           days_kwh_x48.map! { |kwh| bad_dcc_value?(kwh) ? nil : kwh }
-          data = OneDayAMRReading.new(meter_id, date, 'DCCP', nil, DateTime.now, days_kwh_x48)
+          data = OneDayAMRReading.new(date, 'DCCP', nil, DateTime.now, days_kwh_x48)
           @amr_data.add(date, data)
         end
       end
@@ -450,7 +450,7 @@ module Aggregation
       @amr_data.each_date_kwh do |date, days_kwh_x48|
         x48_negative_nil = days_kwh_x48.map { |kwh| kwh&.negative? ? nil : kwh }
         if days_kwh_x48 != x48_negative_nil
-          @amr_data.add(date, OneDayAMRReading.new(meter_id, date, 'RNEG', nil, DateTime.now, x48_negative_nil))
+          @amr_data.add(date, OneDayAMRReading.new(date, 'RNEG', nil, DateTime.now, x48_negative_nil))
         end
       end
     end
@@ -549,7 +549,7 @@ module Aggregation
                  @amr_data[date].type
                end
         days_kwh_x48 = interpolate_zero_readings(days_kwh_x48, missing_data_value: missing_data_value)
-        updated_data = OneDayAMRReading.new(meter_id, date, type, nil, DateTime.now, days_kwh_x48)
+        updated_data = OneDayAMRReading.new(date, type, nil, DateTime.now, days_kwh_x48)
         @amr_data.add(date, updated_data)
       end
     end
@@ -691,12 +691,12 @@ module Aggregation
           if adjusted_date.nil?
             zero_kwh_readings = Array.new(48, 0.0)
             type = @meter.meter_type == @gas ? 'G0H1' : 'E0H1'
-            zero_gas_holiday_data = OneDayAMRReading.new(meter_id, date, type, adjusted_date, DateTime.now,
+            zero_gas_holiday_data = OneDayAMRReading.new(date, type, adjusted_date, DateTime.now,
                                                          zero_kwh_readings)
             @amr_data.add(date, zero_gas_holiday_data) # have to assume if no replacement holiday reading gas was completely off
           elsif @meter.meter_type == :electricity
             logger.debug "Correcting missing electricity holiday on #{date} with data from #{adjusted_date}"
-            substituted_electricity_holiday_data = OneDayAMRReading.new(meter_id, date, 'ESBH', adjusted_date,
+            substituted_electricity_holiday_data = OneDayAMRReading.new(date, 'ESBH', adjusted_date,
                                                                         DateTime.now, @amr_data[adjusted_date].kwh_data_x48)
             @amr_data.add(date, substituted_electricity_holiday_data)
           elsif @meter.meter_type == :gas
@@ -708,7 +708,7 @@ module Aggregation
             end
 
             substitute_gas_data = adjusted_substitute_heating_kwh(date, adjusted_date)
-            substituted_gas_holiday_data = OneDayAMRReading.new(meter_id, date, 'GSBH', adjusted_date, DateTime.now,
+            substituted_gas_holiday_data = OneDayAMRReading.new(date, 'GSBH', adjusted_date, DateTime.now,
                                                                 substitute_gas_data)
             @amr_data.add(date, substituted_gas_holiday_data)
           end
@@ -758,7 +758,7 @@ module Aggregation
         next unless DateTimeHelper.weekend?(date) && @amr_data.date_missing?(date)
 
         zero_data = Array.new(48, 0.0)
-        missing_weekend_data = OneDayAMRReading.new(meter_id, date, 'MWKE', nil, DateTime.now, zero_data)
+        missing_weekend_data = OneDayAMRReading.new(date, 'MWKE', nil, DateTime.now, zero_data)
         @amr_data.add(date, missing_weekend_data)
       end
     end
@@ -777,7 +777,7 @@ module Aggregation
         next unless @amr_data.date_missing?(date)
 
         zero_data = Array.new(48, 0.0)
-        missing_data_zero_in_date_range = OneDayAMRReading.new(meter_id, date, 'MDTZ', nil, DateTime.now, zero_data)
+        missing_data_zero_in_date_range = OneDayAMRReading.new(date, 'MDTZ', nil, DateTime.now, zero_data)
         @amr_data.add(date, missing_data_zero_in_date_range)
       end
     end
@@ -790,7 +790,7 @@ module Aggregation
         next unless @amr_data.date_exists?(date)
 
         zero_data = Array.new(48, 0.0)
-        zero_data_day = OneDayAMRReading.new(meter_id, date, 'ZDTR', nil, DateTime.now, zero_data)
+        zero_data_day = OneDayAMRReading.new(date, 'ZDTR', nil, DateTime.now, zero_data)
         @amr_data.add(date, zero_data_day)
       end
     end
@@ -812,7 +812,7 @@ module Aggregation
         next unless @amr_data.date_missing?(date)
 
         zero_data = Array.new(48, 0.0)
-        zero_data_day = OneDayAMRReading.new(meter_id, date, 'ZMDR', nil, DateTime.now, zero_data)
+        zero_data_day = OneDayAMRReading.new(date, 'ZMDR', nil, DateTime.now, zero_data)
         @amr_data.add(date, zero_data_day)
       end
     end
@@ -870,7 +870,7 @@ module Aggregation
         msg += "#{@amr_data.keys.index(min_date) - 1} days of data ignored" if @amr_data.keys.index(min_date)
         logger.info msg
         substitute_data = Array.new(48, 0.0)
-        @amr_data.add(min_date, OneDayAMRReading.new(meter_id, min_date, 'LGAP', nil, DateTime.now, substitute_data))
+        @amr_data.add(min_date, OneDayAMRReading.new(min_date, 'LGAP', nil, DateTime.now, substitute_data))
         break
       end
     end
@@ -1158,14 +1158,14 @@ module Aggregation
       amr_day_type = day_type_to_amr_type_letter(daytype(date))
       sub_type = "G#{sub_type_code}#{amr_day_type}1"
       adjusted_data = adjusted_substitute_heating_kwh(date, adjusted_date)
-      OneDayAMRReading.new(meter_id, date, sub_type, adjusted_date, DateTime.now, adjusted_data)
+      OneDayAMRReading.new(date, sub_type, adjusted_date, DateTime.now, adjusted_data)
     end
 
     def create_substituted_data(date, adjusted_date, sub_type_code, fuel_code)
       amr_day_type = day_type_to_amr_type_letter(daytype(date))
       sub_type = "#{fuel_code}#{sub_type_code}#{amr_day_type}1"
       substitute_data = @amr_data.days_kwh_x48(adjusted_date).deep_dup
-      OneDayAMRReading.new(meter_id, date, sub_type, adjusted_date, DateTime.now, substitute_data)
+      OneDayAMRReading.new(date, sub_type, adjusted_date, DateTime.now, substitute_data)
     end
 
     def average_temperature(date)

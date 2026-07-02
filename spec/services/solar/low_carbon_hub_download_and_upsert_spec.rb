@@ -4,9 +4,12 @@ module Solar
   describe LowCarbonHubDownloadAndUpsert do
     let!(:school)               { create(:school) }
     let(:rbee_meter_id)         { '216057958' }
-    let(:meter)         { create(:electricity_meter, low_carbon_hub_installation: installation, mpan_mprn: 90_000_000_123_085, pseudo: true, name: 'Test', school: school) }
+    let(:meter) do
+      create(:electricity_meter, low_carbon_hub_installation: installation, mpan_mprn: 90_000_000_123_085, pseudo: true,
+                                 name: 'Test', school: school)
+    end
 
-    let(:installation)  { create(:low_carbon_hub_installation, rbee_meter_id: rbee_meter_id, school: school) }
+    let(:installation) { create(:low_carbon_hub_installation, rbee_meter_id: rbee_meter_id, school: school) }
 
     let(:start_date)            { Date.parse('02/08/2016') }
     let(:end_date)              { start_date + 1.day }
@@ -16,22 +19,22 @@ module Solar
         solar_pv: {
           mpan_mprn: 70_000_000_123_085,
           readings: {
-            start_date => OneDayAMRReading.new(70_000_000_123_085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(70_000_000_123_085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
         },
         electricity: {
           mpan_mprn: 90_000_000_123_085,
           readings: {
-            start_date => OneDayAMRReading.new(90_000_000_123_085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(90_000_000_123_085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
         },
         exported_solar_pv: {
           mpan_mprn: 60_000_000_123_085,
           readings: {
-            start_date => OneDayAMRReading.new(60_000_000_123_085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(60_000_000_123_085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
         }
       }
@@ -45,7 +48,8 @@ module Solar
     let(:upserter) { Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date) }
 
     before do
-      expect(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(installation.username, installation.password).and_return(api)
+      expect(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(installation.username,
+                                                                         installation.password).and_return(api)
     end
 
     it 'handles and log exceptions' do
