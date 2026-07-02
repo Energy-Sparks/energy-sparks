@@ -678,7 +678,9 @@ Rails.application.routes.draw do
         end
       end
       resources :contract_holders, only: [:index]
-      resources :invoices, only: [:index, :show]
+      resources :invoices, only: [:index, :show] do
+        get :export, on: :collection
+      end
       resources :licences do
         collection do
           get :current
@@ -690,6 +692,7 @@ Rails.application.routes.draw do
         end
       end
       resources :products
+      resources :xero_account_codes, except: [:show]
 
       get 'pricing', to: 'pricing#show'
     end

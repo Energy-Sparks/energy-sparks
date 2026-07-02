@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -730,11 +730,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
     t.enum "status", default: "provisional", null: false, enum_type: "contract_status"
     t.datetime "updated_at", null: false
     t.bigint "updated_by_id"
+    t.bigint "xero_account_code_id"
     t.index ["contract_holder_type", "contract_holder_id"], name: "index_commercial_contracts_on_contract_holder"
     t.index ["created_by_id"], name: "index_commercial_contracts_on_created_by_id"
     t.index ["name"], name: "index_commercial_contracts_on_name", unique: true
     t.index ["product_id"], name: "index_commercial_contracts_on_product_id"
     t.index ["updated_by_id"], name: "index_commercial_contracts_on_updated_by_id"
+    t.index ["xero_account_code_id"], name: "index_commercial_contracts_on_xero_account_code_id"
   end
 
   create_table "commercial_invoices", force: :cascade do |t|
@@ -798,6 +800,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
     t.index ["default_product"], name: "index_commercial_products_on_default_product", unique: true, where: "(default_product = true)"
     t.index ["name"], name: "index_commercial_products_on_name", unique: true
     t.index ["updated_by_id"], name: "index_commercial_products_on_updated_by_id"
+  end
+
+  create_table "commercial_xero_account_codes", force: :cascade do |t|
+    t.integer "code", null: false
+    t.datetime "created_at", null: false
+    t.string "label", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_commercial_xero_account_codes_on_code", unique: true
   end
 
   create_table "comparison_custom_periods", force: :cascade do |t|
@@ -2546,6 +2556,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
   add_foreign_key "commercial_contract_contacts", "users", column: "created_by_id"
   add_foreign_key "commercial_contract_contacts", "users", column: "updated_by_id"
   add_foreign_key "commercial_contracts", "commercial_products", column: "product_id"
+  add_foreign_key "commercial_contracts", "commercial_xero_account_codes", column: "xero_account_code_id"
   add_foreign_key "commercial_contracts", "users", column: "created_by_id"
   add_foreign_key "commercial_contracts", "users", column: "updated_by_id"
   add_foreign_key "commercial_invoices", "commercial_contracts", column: "contract_id"

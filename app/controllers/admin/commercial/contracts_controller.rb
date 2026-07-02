@@ -203,7 +203,7 @@ module Admin
         params.expect(contract: %i[agreed_school_price comments contract_holder_id contract_holder_type
                                    end_date invoice_terms licence_period licence_years name
                                    number_of_schools product_id purchase_order_number
-                                   update_licences start_date status])
+                                   update_licences start_date status xero_account_code_id])
       end
     end
   end
