@@ -91,7 +91,7 @@ module Commercial
     end
 
     def rounded_price(price)
-      format('%.2f', price.round(2))
+      format('%.2f', price)
     end
   end
 end
