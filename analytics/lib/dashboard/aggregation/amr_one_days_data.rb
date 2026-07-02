@@ -31,7 +31,7 @@ class OneDayAMRReading
 
     if valid != 48
       raise EnergySparksBadAMRDataTypeException,
-            "Error: expecting all 48 half hour kWh values to be float or integer (or nil) (valid: #{valid}, date: #{date})"
+            "Expecting all 48 kWh values to be numeric or nil (valid: #{valid}, date: #{date})"
     end
 
     @one_day_kwh = has_nil ? nil : sum
@@ -71,7 +71,7 @@ class OneDayAMRReading
 
   def to_s
     date = @date.strftime('%d-%m-%Y')
-    upload_datetime = @date.strftime('%d-%m-%Y %H:%M')
+    upload_datetime = @upload_datetime.strftime('%d-%m-%Y %H:%M')
     sub_date = @substitute_date.nil? ? '' : @substitute_date.strftime('%d-%m-%Y')
     total = format('%4.1f', @one_day_kwh)
     [date, @type, total, upload_datetime, sub_date, @kwh_data_x48].flatten.join(',')
