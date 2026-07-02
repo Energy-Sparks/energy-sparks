@@ -85,7 +85,7 @@ module Commercial
         description,
         1,
         rounded_price(price),
-        invoice.contract.xero_account_code.code,
+        invoice.contract.xero_account_code&.code,
         TAX_TYPE
       ]
     end

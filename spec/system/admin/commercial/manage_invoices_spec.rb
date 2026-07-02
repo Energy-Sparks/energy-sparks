@@ -51,6 +51,11 @@ describe 'manage invoices', :include_application_helper do
     it { expect(page).to have_link('Pending Invoices', href: pending_invoicing_admin_commercial_contracts_path) }
     it { expect(page).to have_link('All Invoices', href: admin_commercial_invoices_path) }
 
+    it {
+      expect(page).to have_link('Xero export',
+                                href: export_admin_commercial_invoices_path(params: { invoices: invoice.id }))
+    }
+
     context 'when viewing summary' do
       it { expect(page).to have_text(invoice.purchase_order_number) }
       it { expect(page).to have_text(invoice.date.to_fs(:es_short)) }
