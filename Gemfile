@@ -29,6 +29,7 @@ gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 gem 'pg'
+gem 'pg_search'
 gem 'scenic'
 
 # analytics
