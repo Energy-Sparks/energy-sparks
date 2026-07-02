@@ -10,6 +10,8 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
   let!(:impact_report) { create(:impact_report_run, :with_metrics, school_group:) } # rubocop:disable RSpec/LetSetup
 
   before do
+    # stick inside national calendar for podium
+    travel_to Time.zone.local(2026, 5)
     # so we can display a testimonial
     create(:testimonial, case_study: create(:case_study, organisation: school_group))
   end
