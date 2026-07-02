@@ -64,7 +64,7 @@ describe SolarEdgeInstallation do
   end
 
   describe '#site_id_unique_to_school' do
-    it 'allows multiple installations for the same site and school' do
+    it 'allows multiple installations for the same school and site_id' do
       installation = build(:solar_edge_installation, site_id: solar_edge_installation.site_id,
                                                      school: solar_edge_installation.school)
       expect(installation).to be_valid
