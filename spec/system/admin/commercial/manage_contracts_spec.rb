@@ -713,7 +713,7 @@ describe 'manage contracts', :include_application_helper do
 
     it { expect(page).to have_text(contract.name) }
     it { expect(page).to have_text(contract.comments) }
-    it { expect(page).to have_link('All contracts', href: current_admin_commercial_contracts_path) }
+    it { expect(page).to have_link('All contracts', href: admin_commercial_contracts_path) }
 
     it do
       expect(page).to have_link('Contract holder contracts',
