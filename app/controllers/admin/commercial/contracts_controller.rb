@@ -118,9 +118,9 @@ module Admin
 
       def destroy
         if @contract.destroy
-          redirect_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
+          redirect_back_or_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
         else
-          redirect_to(admin_commercial_contracts_path, alert: @contract.errors.full_messages.to_sentence)
+          redirect_back_or_to(admin_commercial_contracts_path, alert: @contract.errors.full_messages.to_sentence)
         end
       end
 
@@ -131,7 +131,7 @@ module Admin
         else
           notice = 'Unable to confirm contract'
         end
-        redirect_to(admin_commercial_contract_path(@contract), notice:)
+        redirect_back_or_to(admin_commercial_contract_path(@contract), notice:)
       end
 
       private
@@ -203,7 +203,7 @@ module Admin
         params.expect(contract: %i[agreed_school_price comments contract_holder_id contract_holder_type
                                    end_date invoice_terms licence_period licence_years name
                                    number_of_schools product_id purchase_order_number
-                                   update_licences start_date status])
+                                   update_licences start_date status xero_account_code_id])
       end
     end
   end

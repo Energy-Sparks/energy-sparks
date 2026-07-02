@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_application_helper, :include_url_helpers,
                type: :component do
+  # Stick inside the national calendar
+  # The podium counts it's points from within the national scoreboard calendar. Which is 1st Sept to 30th June.
+  before { travel_to Time.zone.local(2026, 5) }
+
   let(:school_group) { create(:school_group) }
   let!(:config) { create(:impact_report_configuration, school_group: school_group) }
   let(:school) { create(:school, :with_school_group, school_group: school_group) }

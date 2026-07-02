@@ -6,6 +6,9 @@ module Admin::Commercial
       @products = Commercial::Product.with_default_first
     end
 
+    def edit
+    end
+
     def create
       @product = Commercial::Product.build(product_params.merge(created_by: current_user))
       if @product.save
@@ -13,9 +16,6 @@ module Admin::Commercial
       else
         render :new
       end
-    end
-
-    def edit
     end
 
     def update
@@ -28,9 +28,9 @@ module Admin::Commercial
 
     def destroy
       if @product.destroy
-        redirect_to(admin_commercial_products_path, notice: 'Product has been deleted')
+        redirect_back_or_to(admin_commercial_products_path, notice: 'Product has been deleted')
       else
-        redirect_to(admin_commercial_products_path, alert: @product.errors.full_messages.to_sentence)
+        redirect_back_or_to(admin_commercial_products_path, alert: @product.errors.full_messages.to_sentence)
       end
     end
 
@@ -38,7 +38,7 @@ module Admin::Commercial
 
     def product_params
       params.require(:product).permit(:name, :comments, :default_product, :small_school_price, :large_school_price, :size_threshold, :mat_price,
-      :private_account_fee, :metering_fee)
+                                      :private_account_fee, :metering_fee)
     end
   end
 end

@@ -2,9 +2,10 @@
   <% content_for :title do %>
     <%= "Activities for #{@dashboard_user.display_name}" %>
   <% end %>
-  <p>
-    <%= link_to 'Full Activities Report', admin_reports_activities_path, class: 'btn' %>
-  </p>
+  <%= render Elements::ButtonComponent.new('View full report',
+                                           admin_reports_activities_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
   <p>
     A list of all activities by <%= @dashboard_user.display_name %>'s schools in the last 12 months
     (since <%= nice_dates(1.year.ago) %>).
