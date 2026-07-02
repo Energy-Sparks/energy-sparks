@@ -15,7 +15,7 @@ module Aggregation
 
     private
 
-    def create_generation_amr_data(mains_amr_data, pv_amr_data, mpan, _create_zero_if_no_config)
+    def create_generation_amr_data(mains_amr_data, pv_amr_data, mpan)
       mains_amr_data.date_range.each do |date|
         next if pv_amr_data.date_exists?(date)
 

@@ -64,9 +64,9 @@ module Admin::Commercial
     def destroy
       path = admin_commercial_contract_path(@licence.contract)
       if @licence.destroy
-        redirect_to(path, alert: 'Licence has been deleted')
+        redirect_back_or_to(path, alert: 'Licence has been deleted')
       else
-        redirect_to(path, alert: @licence.errors.full_messages.to_sentence)
+        redirect_back_or_to(path, alert: @licence.errors.full_messages.to_sentence)
       end
     end
 

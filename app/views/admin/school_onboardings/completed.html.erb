@@ -2,12 +2,13 @@
   <% content_for :title do %>
     <%= "#{@dashboard_user.display_name}'s Recently Onboarded Schools" %>
   <% end %>
-<p>
-  <%= link_to 'Full Onboardings Report', completed_admin_school_onboardings_path, class: 'btn' %>
-</p>
-<p>
-  <%= "Schools onboarded in the last #{@days} days" %>
-</p>
+  <%= render Elements::ButtonComponent.new('Full Onboardings Report',
+                                           completed_admin_school_onboardings_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+  <p>
+    <%= "Schools onboarded in the last #{@days} days" %>
+  </p>
 <% else %>
   <h1>Schools recently onboarded</h1>
 <% end %>
