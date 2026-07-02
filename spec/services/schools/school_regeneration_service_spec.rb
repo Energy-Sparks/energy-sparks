@@ -29,7 +29,7 @@ describe Schools::SchoolRegenerationService, type: :service do
         expect(readings_service).to have_received(:perform)
         expect(meter_collection_factory).not_to have_received(:validated)
         expect(aggregate_data_service).to have_received(:aggregate_heat_and_electricity_meters)
-        expect(aggregate_school_service).to have_received(:cache)
+        expect(aggregate_school_service).to have_received(:cache).twice
         expect(aggregate_school_service).not_to have_received(:invalidate_cache)
         expect(school_metrics_generator).to have_received(:perform)
       end
@@ -41,7 +41,7 @@ describe Schools::SchoolRegenerationService, type: :service do
       def expect_correct_mocks_called
         expect(meter_collection_factory).to have_received(:validated)
         expect(aggregate_data_service).to have_received(:aggregate_heat_and_electricity_meters)
-        expect(aggregate_school_service).to have_received(:cache)
+        expect(aggregate_school_service).to have_received(:cache).twice
         expect(aggregate_school_service).not_to have_received(:invalidate_cache)
         expect(school_metrics_generator).to have_received(:perform)
       end
