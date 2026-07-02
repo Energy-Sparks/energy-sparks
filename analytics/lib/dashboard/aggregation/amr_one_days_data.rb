@@ -7,9 +7,15 @@ class OneDayAMRReading
 
   ZERO_X48 = Array.new(48, 0.0).freeze
 
-  def initialize(date, type, substitute_date, upload_datetime, kwh_data_x48) # rubocop:disable Metrics/AbcSize
-    raise EnergySparksBadAMRDataTypeException, 'Unexpected nil AMR bad data type' if type.nil?
-    raise EnergySparksBadAMRDataTypeException, "Unexpected AMR bad data type #{type}" unless AMR_TYPE_SET.include?(type)
+  def initialize(date, type, substitute_date, upload_datetime, kwh_data_x48)
+    unless AMR_TYPE_SET.include?(type)
+      raise EnergySparksBadAMRDataTypeException,
+            "Unexpected AMR bad data type #{type.inspect}"
+    end
+    unless kwh_data_x48.length == 48
+      raise EnergySparksBadAMRDataTypeException,
+            "Expecting 48 readings, got #{kwh_data_x48.length}"
+    end
 
     @date = date
     @upload_datetime = upload_datetime
@@ -17,23 +23,15 @@ class OneDayAMRReading
     @substitute_date = substitute_date
     @kwh_data_x48 = kwh_data_x48
 
-    valid = 0
     sum = 0.0
     has_nil = false
 
-    @kwh_data_x48.each do |kwh|
+    kwh_data_x48.each do |kwh|
       if kwh.nil?
-        valid += 1
         has_nil = true
-      elsif kwh.is_a?(Numeric)
-        valid += 1
+      else
         sum += kwh
       end
-    end
-
-    if valid != 48
-      raise EnergySparksBadAMRDataTypeException,
-            "Expecting all 48 kWh values to be numeric or nil (valid: #{valid}, date: #{date})"
     end
 
     @one_day_kwh = has_nil ? nil : sum
