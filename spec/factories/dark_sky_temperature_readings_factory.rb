@@ -1,5 +1,3 @@
-require 'dashboard'
-
 FactoryBot.define do
   factory :dark_sky_temperature_reading, class: 'DataFeeds::DarkSkyTemperatureReading' do
     dark_sky_area
