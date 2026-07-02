@@ -5,14 +5,14 @@ require 'rails_helper'
 RSpec.describe 'school group impact reports', :include_application_helper, :school_groups do
   include ActionView::Helpers::SanitizeHelper
 
+  before do
+    travel_to(Time.zone.local(2026, 5))
+    create(:testimonial, case_study: create(:case_study, organisation: school_group))
+  end
+
   let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
   let!(:config) { create(:impact_report_configuration, school_group:, visible: true) }
   let!(:impact_report) { create(:impact_report_run, :with_metrics, school_group:) } # rubocop:disable RSpec/LetSetup
-
-  before do
-    # so we can display a testimonial
-    create(:testimonial, case_study: create(:case_study, organisation: school_group))
-  end
 
   describe 'Access control' do
     shared_examples 'an access controlled impact page' do |message: 'This feature is not available'|
@@ -73,7 +73,7 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
 
       context 'when group run has less than 2 visible schools' do
         let!(:impact_report) do
-          create(:impact_report_run, :with_metrics, school_group:, overview: { visible_schools: { value: 1 } })
+          create(:impact_report_run, school_group:, visible_schools: 1)
         end
 
         it_behaves_like 'an access controlled impact page', message: 'Not enough data'

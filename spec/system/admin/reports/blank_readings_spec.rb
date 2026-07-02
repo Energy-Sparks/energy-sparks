@@ -10,6 +10,7 @@ describe 'Blank Readings Report', :include_application_helper do
                    start_date: 20.days.ago,
                    end_date: latest_reading_date,
                    data_source: create(:data_source, import_warning_days: 5),
+                   supplier: create(:supplier),
                    log: create(:amr_data_feed_import_log,
                                amr_data_feed_config: create(:amr_data_feed_config),
                                import_time: Time.zone.today))

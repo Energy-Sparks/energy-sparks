@@ -32,7 +32,7 @@
 #
 class Issue < ApplicationRecord
   include CsvExportable
-  delegated_type :issueable, types: %w[School SchoolGroup DataSource SchoolOnboarding]
+  delegated_type :issueable, types: %w[School SchoolGroup DataSource Supplier SchoolOnboarding]
   delegate :name, to: :issueable
 
   belongs_to :school_group, lambda {

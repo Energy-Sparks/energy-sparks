@@ -129,6 +129,12 @@ class School < ApplicationRecord
   include AlphabeticalScopes
   include Commercial::ContractHolder
   include Commercial::LicenceHolder
+  include PgSearch::Model
+
+  pg_search_scope :search_by_name, against: :name,
+                                   using: {
+                                     tsearch: { prefix: true }
+                                   }
 
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
@@ -768,6 +774,18 @@ class School < ApplicationRecord
     school_times.community_use.map(&:to_analytics)
   end
 
+  def status_display
+    return { title: 'Deleted', classes: 'ms-1 badge rounded-pill text-bg-dark border border-pale' } if deleted?
+
+    return { title: 'Archived', classes: 'ms-1 badge rounded-pill text-bg-dark border border-pale' } if archived?
+
+    return { title: 'Data Visible', classes: 'ms-1 badge rounded-pill text-bg-success' } if data_visible?
+
+    return { title: 'Visible', classes: 'ms-1 badge rounded-pill text-bg-success' } if visible?
+
+    { title: 'Awaiting Activation', classes: 'ms-1 badge rounded-pill text-bg-danger' }
+  end
+
   def self.status_counts
     { active: visible.count, data_visible: data_visible.count, invisible: not_visible.count,
       removed: inactive.count }
@@ -977,7 +995,21 @@ class School < ApplicationRecord
     licences.current.first&.contract_holder
   end
 
-  def summarised_contract_holder_name
+  def summarised_current_contract_holder_name
+    summarise_contract_holder(contract_holder)
+  end
+
+  def summarised_future_contract_holder_name
+    year = Calendar.default_national&.current_academic_year&.next_year
+    return nil unless year
+
+    future_licences = licences.not_provisional.for_period(year.start_date..year.end_date)
+    summarise_contract_holder(future_licences.first&.contract_holder)
+  end
+
+  private
+
+  def summarise_contract_holder(contract_holder)
     return nil unless contract_holder.present?
 
     case contract_holder
@@ -989,8 +1021,6 @@ class School < ApplicationRecord
       contract_holder.name
     end
   end
-
-  private
 
   def valid_uk_postcode
     return unless latitude.blank? || longitude.blank? || country.blank?

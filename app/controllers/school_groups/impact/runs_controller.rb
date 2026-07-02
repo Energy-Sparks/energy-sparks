@@ -15,8 +15,12 @@ module SchoolGroups
       end
 
       def latest
-        @run = @runs.latest_first.first
-        render :show
+        if (@run = @runs.latest_first.first)
+          render :show
+        else
+          redirect_to(school_group_impact_runs_path(@school_group),
+                      alert: 'No runs available for school group') # rubocop:disable Rails/I18nLocaleTexts
+        end
       end
     end
   end

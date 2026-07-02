@@ -65,11 +65,7 @@
   So this report will include more schools than are shown in the above table.
 </p>
 
-<%= form_tag deliver_admin_reports_funder_allocations_path, method: :post do %>
-  <%= button_tag(type: 'submit', class: 'btn btn-sm') do %>
-    <%= fa_icon('envelope') %> Email funder report
-  <% end %>
-<% end %>
+<%= render Forms::EmailReportButtonComponent.new(deliver_admin_reports_funder_allocations_path, 'Email funder report') %>
 
 <p>
   Summary of column headings:
@@ -84,7 +80,8 @@
   <li>Data sharing - whether the school data is Public, Private, or Within group</li>
   <li>Onboarding date - date school onboarding was completed. Will be empty for some older schools, or any created manually</li>
   <li>Date enabled date - date school was first made data enabled. Consistent with the "recently onboarded" report. Will be empty if school not yet visible</li>
-  <li>Contract holder - the contract holder for the school's current licence. Will be the name of a Funder, or "School self funding" or "MAT funding" (if contract is held by their School Group)</li>
+  <li>Current Contract holder - the contract holder for the school's current licence. Will be the name of a Funder, or "School self funding" or "MAT funding" (if contract is held by their School Group)</li>
+  <li>Future Contract holder - the contract holder for the school's first licence for the next academic year (Sept-Aug). Values as above.</li>
   <li>Funder - the funder linked to the school. Note: this is does not use the new contracting data</li>
   <li>Funding status</li>
   <li>Postcode</li>

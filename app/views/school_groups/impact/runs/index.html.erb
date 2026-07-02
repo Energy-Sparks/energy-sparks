@@ -4,9 +4,10 @@
 <table class="table">
   <thead>
     <tr>
-      <th class="text-start">Run date</th>
+      <th class="text-start">Date</th>
+      <th class="text-start">Schools</th>
       <th class="text-start">Total metrics</th>
-      <th class="text-start">With enough data</th>
+      <th class="text-start">Enough data</th>
       <th class="text-start">Overview</th>
       <th class="text-start">Energy efficiency</th>
       <th class="text-start">Engagement</th>
@@ -18,6 +19,7 @@
     <% @runs.each do |run| %>
       <tr>
         <td class="text-start"><%= run.run_date %></td>
+        <td class="text-center"><%= run.visible_schools %></td>
         <td class="text-center"><%= run.metrics.count %></td>
         <td class="text-center"><%= run.metrics.count(&:enough_data) %></td>
         <td class="text-center"><%= run.metrics.count(&:overview?) %></td>

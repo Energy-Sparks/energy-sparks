@@ -54,7 +54,7 @@
 //= require multi_select
 //= require depends_on
 
-//= require table_sorting
+//= require bootstrap4/table_sorting
 //= require map
 //= require live_data
 //= require gtag

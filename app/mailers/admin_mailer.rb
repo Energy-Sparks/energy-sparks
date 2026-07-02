@@ -15,6 +15,15 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: admin_subject(title))
   end
 
+  def school_supplier_report
+    to, supplier_id = params.values_at(:to, :supplier_id)
+    @supplier = Supplier.find(supplier_id)
+    title = "#{t('common.application')}-#{@supplier.name}-meters-#{Time.zone.now.iso8601}".parameterize
+    attachments["#{title}.csv"] = { mime_type: 'text/csv', content: @supplier.to_csv }
+
+    mail(to: to, subject: admin_subject(title))
+  end
+
   def school_procurement_route_report
     to, procurement_route_id = params.values_at(:to, :procurement_route_id)
     @procurement_route = ProcurementRoute.find(procurement_route_id)
@@ -67,6 +76,12 @@ class AdminMailer < ApplicationMailer
     title = "Funder allocation report #{Time.zone.today.iso8601}"
     attachments[funder_report.csv_filename] = { mime_type: 'text/csv', content: funder_report.csv }
     mail(to: to, subject: admin_subject(title))
+  end
+
+  def user_export_report
+    to, csv = params.values_at(:to, :csv)
+    attachments['users.csv'] = { mime_type: 'text/csv', content: csv }
+    mail(to:, subject: admin_subject("User export #{Time.zone.now.to_fs(:es_compact)}"))
   end
 
   def engaged_schools_report(to, csv, previous_year, school_group_id)

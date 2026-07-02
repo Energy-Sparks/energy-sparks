@@ -4,10 +4,9 @@ module ImpactReports
   class BaseComponent < ApplicationComponent # rubocop:disable ViewComponent/MissingPreview
     delegate :impact_t, to: :helpers
 
-    def initialize(run: nil, school_group: nil, **)
+    def initialize(school_group:, **)
       super(**)
-      @run = run || school_group&.latest_impact_report_run
-      @school_group = school_group || run&.school_group
+      @school_group = school_group
       @config = @school_group.impact_report_configuration
     end
   end

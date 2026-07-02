@@ -594,6 +594,7 @@ Rails.application.routes.draw do
       resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
       resources :data_sources, module: :dashboard
+      resources :suppliers, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
       resources :issues, module: :dashboard
       resources :school_onboardings, path: 'school_setup', module: :dashboard do
@@ -633,6 +634,7 @@ Rails.application.routes.draw do
       get 'disable', to: 'users#disable'
       get 'enable', to: 'users#enable'
       get 'mailchimp_redirect', to: 'users#mailchimp_redirect'
+      post 'deliver', on: :collection
 
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
@@ -651,6 +653,10 @@ Rails.application.routes.draw do
 
         get :contract_holder_options, on: :collection
         get :choose, on: :collection
+        get :renew, on: :collection
+        resources :invoices, controller: 'contracts/invoices', only: %i[new create] do
+          get :raise_invoice, on: :collection
+        end
         resources :licences, controller: 'contracts/licences' do
           collection do
             get :edit
@@ -715,6 +721,7 @@ Rails.application.routes.draw do
     resources :consent_grants, only: %i[index show]
     resources :find_school_by_mpxn, only: :index
     resources :find_school_by_urn, only: :index
+    resources :find_school_by_name, only: :index
     get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues', as: :meter_issues
 
     resources :consent_statements
@@ -832,6 +839,12 @@ Rails.application.routes.draw do
         concerns :issueable
       end
     end
+    resources :suppliers do
+      post :deliver
+      scope module: :suppliers do
+        concerns :issueable
+      end
+    end
     resources :testimonials
 
     resource :content_generation_run, controller: :content_generation_run
@@ -922,6 +935,7 @@ Rails.application.routes.draw do
       namespace :search do
         resources :find_school_by_mpxn, only: :index
         resources :find_school_by_urn, only: :index
+        resources :find_school_by_name, only: :index
       end
     end
 

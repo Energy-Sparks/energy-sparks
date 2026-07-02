@@ -137,6 +137,28 @@ RSpec.describe 'Admin dashboard' do
           end
         end
 
+        describe 'my suppliers' do
+          let!(:user_supplier) { create(:supplier, owned_by: user) }
+          let!(:non_user_supplier) { create(:data_source, name: 'non user supplier') }
+
+          before do
+            click_on 'My Suppliers'
+          end
+
+          it 'links to the suppliers page' do
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/suppliers")
+            expect(page).to have_link('View all suppliers', href: admin_suppliers_path)
+          end
+
+          it 'displays suppliers belonging to the user' do
+            expect(page).to have_text(user_supplier.name)
+          end
+
+          it 'does not display data sources which do not belong to the user' do
+            expect(page).to have_no_text(non_user_supplier.name)
+          end
+        end
+
         describe 'my data feeds' do
           let!(:user_data_feed) { create(:amr_data_feed_config, owned_by: user) }
           let!(:non_user_data_feed) { create(:amr_data_feed_config) }

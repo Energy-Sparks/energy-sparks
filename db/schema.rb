@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_23_091133) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1286,6 +1286,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.date "run_date", null: false
     t.bigint "school_group_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "visible_schools", default: 0, null: false
     t.index ["school_group_id"], name: "index_impact_report_runs_on_school_group_id"
   end
 
@@ -1504,6 +1505,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
   end
 
   create_table "low_carbon_hub_installations", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.datetime "created_at", null: false
     t.json "information", default: {}
@@ -1618,6 +1620,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.bigint "school_id", null: false
     t.bigint "solar_edge_installation_id"
     t.bigint "solis_cloud_installation_id"
+    t.bigint "supplier_id"
     t.datetime "updated_at", precision: nil, null: false
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
@@ -1628,6 +1631,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
     t.index ["solis_cloud_installation_id"], name: "index_meters_on_solis_cloud_installation_id"
+    t.index ["supplier_id"], name: "index_meters_on_supplier_id"
   end
 
   create_table "mobility_string_translations", force: :cascade do |t|
@@ -1786,6 +1790,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
   end
 
   create_table "rtone_variant_installations", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.json "configuration"
     t.datetime "created_at", null: false
@@ -2183,6 +2188,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
   end
 
   create_table "solar_edge_installations", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_key"
     t.datetime "created_at", null: false
@@ -2220,6 +2226,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
   end
 
   create_table "solis_cloud_installations", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_id"
     t.text "api_secret"
@@ -2247,6 +2254,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_095841) do
     t.bigint "school_id", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_subscription_generation_runs_on_school_id"
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.integer "owned_by_id"
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_suppliers_on_name", unique: true
   end
 
   create_table "tariff_import_logs", force: :cascade do |t|
