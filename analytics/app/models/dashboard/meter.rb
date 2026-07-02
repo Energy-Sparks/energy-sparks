@@ -386,8 +386,8 @@ module Dashboard
       if @meter_attributes.key?(:storage_heaters)
         @storage_heater_setup = StorageHeater.new(attributes(:storage_heaters))
       end
-      @solar_pv_setup           = Aggregation::SolarPvPanels.create(self, :solar_pv)
-      @solar_pv_overrides       = Aggregation::SolarPvPanels.create(self, :solar_pv_override)
+      @solar_pv_setup           = Aggregation::SolarPvPanels.create(self, :solar_pv, true)
+      @solar_pv_overrides       = Aggregation::SolarPvPanels.create(self, :solar_pv_override, false)
       @solar_pv_real_metering   = true if @meter_attributes.key?(:solar_pv_mpan_meter_mapping)
       @partial_meter_coverage ||= PartialMeterCoverage.new(attributes(:partial_meter_coverage))
       @meter_tariffs = GenericTariffManager.new(self)
