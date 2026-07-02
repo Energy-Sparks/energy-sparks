@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dashboard'
+
 module Amr
   class AnalyticsMeterFactory
     def initialize(active_record_meter)

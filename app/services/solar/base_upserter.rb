@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dashboard'
+
 module Solar
   class BaseUpserter
     def initialize(installation:, readings:, import_log:)

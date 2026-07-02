@@ -1,3 +1,5 @@
+require 'dashboard'
+
 FactoryBot.define do
   factory :dashboard_one_day_amr_reading, class: 'OneDayAMRReading' do
     transient do

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'dashboard'
 
 RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
   include_context 'low carbon hub data'

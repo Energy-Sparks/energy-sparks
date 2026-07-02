@@ -1,3 +1,5 @@
+require 'dashboard'
+
 module Amr
   class N3rgyReadingsUpserter
     def initialize(meter:, config:, readings:, import_log:)

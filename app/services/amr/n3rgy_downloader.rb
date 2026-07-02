@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dashboard'
+
 module Amr
   class N3rgyDownloader
     def initialize(meter:, start_date:, end_date:)

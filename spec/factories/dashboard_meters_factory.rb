@@ -1,3 +1,5 @@
+require 'dashboard'
+
 FactoryBot.define do
   factory :dashboard_gas_meter, class: 'Dashboard::Meter' do
     transient do

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dashboard'
+
 module Amr
   class AnalyticsSchoolFactory
     def initialize(active_record_school)

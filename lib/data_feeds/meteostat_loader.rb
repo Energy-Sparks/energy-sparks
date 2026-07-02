@@ -1,3 +1,5 @@
+require 'dashboard'
+
 module DataFeeds
   class MeteostatLoader
     attr_reader :insert_count, :update_count, :stations_processed

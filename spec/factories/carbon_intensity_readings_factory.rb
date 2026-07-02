@@ -1,3 +1,5 @@
+require 'dashboard'
+
 FactoryBot.define do
   factory :carbon_intensity_reading, class: 'DataFeeds::CarbonIntensityReading' do
     reading_date { 1.month.ago }

@@ -1,3 +1,5 @@
+require 'dashboard'
+
 module DataFeeds
   class SolarPvTuosLoader
     def initialize(start_date = Date.yesterday - 10.days, end_date = Date.yesterday, solar_pv_tuos_interface = PvLiveService.new)

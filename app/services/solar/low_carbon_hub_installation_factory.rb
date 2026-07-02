@@ -1,3 +1,5 @@
+require 'dashboard'
+
 module Solar
   class LowCarbonHubInstallationFactory
     def initialize(installation, amr_data_feed_config)

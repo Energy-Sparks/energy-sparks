@@ -1,3 +1,5 @@
+require 'dashboard'
+
 module Solar
   class SolarAreaLookupService
     def initialize(school)

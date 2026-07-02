@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'dashboard'
 
 RSpec.describe 'SolisCloud installation management' do
   let(:school) { create(:school) }

@@ -1,3 +1,5 @@
+require 'dashboard'
+
 class ScheduleDataManagerService
   CACHE_EXPIRY = 4.hours
 

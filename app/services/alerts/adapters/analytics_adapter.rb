@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dashboard'
+
 module Alerts
   module Adapters
     class AnalyticsAdapter < Adapter

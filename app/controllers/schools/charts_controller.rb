@@ -1,3 +1,5 @@
+require 'dashboard'
+
 class Schools::ChartsController < ApplicationController
   before_action :set_school
 

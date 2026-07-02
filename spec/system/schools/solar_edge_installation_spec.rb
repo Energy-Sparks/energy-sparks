@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'dashboard'
 
 RSpec.describe 'Solar edge installation management', :solar_edge_installations do
   let!(:admin)  { create(:admin) }

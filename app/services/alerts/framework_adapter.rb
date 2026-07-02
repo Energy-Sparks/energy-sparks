@@ -1,3 +1,5 @@
+require 'dashboard'
+
 module Alerts
   class FrameworkAdapter
     attr_reader :analysis_date

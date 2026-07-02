@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dashboard'
+
 class AggregateSchoolService
   def initialize(active_record_school, meter_collection = nil)
     @active_record_school = active_record_school

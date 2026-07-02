@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dashboard'
+
 module Amr
   class AnalyticsUnvalidatedAmrDataFactory
     def initialize(heat_meters: [], electricity_meters: [])

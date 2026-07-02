@@ -1,3 +1,5 @@
+require 'dashboard'
+
 module Solar
   class SolarEdgeInstallationFactory
     def initialize(installation, amr_data_feed_config)
