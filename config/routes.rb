@@ -593,6 +593,7 @@ Rails.application.routes.draw do
       resources :school_groups, module: :dashboard
       resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
+      resources :impact_reports, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :suppliers, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard

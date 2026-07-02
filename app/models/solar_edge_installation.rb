@@ -29,9 +29,10 @@ class SolarEdgeInstallation < ApplicationRecord
   belongs_to :school, inverse_of: :solar_edge_installations
   belongs_to :amr_data_feed_config
 
-  has_many :meters
+  has_many :meters, dependent: nil
 
   validates :site_id, :mpan, :api_key, presence: true
+  validate :site_id_unique_to_school
 
   scope :active, -> { where(active: true) }
 
@@ -61,5 +62,12 @@ class SolarEdgeInstallation < ApplicationRecord
     return nil if information['dates'].blank?
 
     Date.parse(information['dates'].last)
+  end
+
+  private
+
+  def site_id_unique_to_school
+    existing = self.class.where(site_id:).where.not(id:).where.not(school:)
+    errors.add(:site_id, 'is already associated with a different school') if existing.exists?
   end
 end

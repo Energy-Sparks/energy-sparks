@@ -106,7 +106,16 @@
         <% else %>
           <%= t('common.labels.not_set') %>
         <% end %>
-        </dd>
+      </dd>
+
+      <dt class="col-sm-3"><%= t('schools.meters.show.supplier') %></dt>
+      <dd class="col-sm-9">
+        <% if @meter.supplier %>
+          <%= link_to(@meter.supplier.name, admin_supplier_path(@meter.supplier)) %>
+        <% else %>
+          <%= t('common.labels.not_set') %>
+        <% end %>
+      </dd>
 
       <dt class="col-sm-3"><%= t('schools.meters.index.procurement_route') %></dt>
       <dd class="col-sm-9">
