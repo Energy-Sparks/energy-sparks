@@ -29,6 +29,10 @@ FactoryBot.define do
       contract_holder { association :school_group }
     end
 
+    trait :with_funder do
+      contract_holder { association :funder }
+    end
+
     trait :expired do
       start_date { Time.zone.today - 1.year }
       end_date { Time.zone.yesterday }
