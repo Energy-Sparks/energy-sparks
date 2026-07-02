@@ -40,7 +40,7 @@ module Amr
     # TODO: remove, unnecessary, see note above
     def make_one_day_readings(meter_readings_by_date, mpan_mprn)
       meter_readings_by_date.to_h do |date, readings|
-        [date.to_date, OneDayAMRReading.new(mpan_mprn, date.to_date, 'ORIG', nil, DateTime.now, readings, true)]
+        [date.to_date, OneDayAMRReading.new(mpan_mprn, date.to_date, 'ORIG', nil, DateTime.now, readings)]
       end
     end
 

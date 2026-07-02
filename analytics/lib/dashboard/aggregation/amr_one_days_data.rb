@@ -6,22 +6,25 @@ class OneDayAMRReading
   include Comparable
   include Logging
 
-  attr_reader :meter_id, :date, :type, :substitute_date, :upload_datetime
-  attr_reader :one_day_kwh, :kwh_data_x48
+  attr_reader :meter_id, :date, :type, :substitute_date, :upload_datetime, :one_day_kwh, :kwh_data_x48
 
-  def initialize(meter_id, date, type, substitute_date, upload_datetime, kwh_data_x48, nils_valid = true)
-    check_type(type)
+  def initialize(meter_id, date, type, substitute_date, upload_datetime, kwh_data_x48)
+    raise EnergySparksBadAMRDataTypeException, 'Unexpected nil AMR bad data type' if type.nil?
+    raise EnergySparksBadAMRDataTypeException, "Unexpected AMR bad data type #{type}" unless AMR_TYPE_SET.include?(type)
+
     @meter_id = meter_id.to_s
     @date = date
     @upload_datetime = upload_datetime
     @type = type
     @substitute_date = substitute_date
     @kwh_data_x48 = kwh_data_x48
-    valid = validate_data(nils_valid)
+    valid = validate_data
     if valid != 48
-      raise EnergySparksBadAMRDataTypeException, "Error: expecting all 48 half hour kWh values to be float or integer (or nil) (valid: #{valid}, meter_id: #{meter_id}, date: #{date})"
+      raise EnergySparksBadAMRDataTypeException,
+            "Error: expecting all 48 half hour kWh values to be float or integer (or nil) (valid: #{valid}, meter_id: #{meter_id}, date: #{date})"
     end
-    @one_day_kwh = (nils_valid && kwh_data_x48.any?(&:nil?)) ? nil : kwh_data_x48.inject(:+)
+
+    @one_day_kwh = kwh_data_x48.any?(&:nil?) ? nil : kwh_data_x48.inject(:+)
   end
 
   def +(other)
@@ -40,7 +43,7 @@ class OneDayAMRReading
   end
 
   def self.scale(one_days_reading, scale_factor)
-    scaled = OneDayAMRReading.new(
+    OneDayAMRReading.new(
       one_days_reading.meter_id,
       one_days_reading.date,
       one_days_reading.type,
@@ -48,7 +51,6 @@ class OneDayAMRReading
       DateTime.now,
       AMRData.fast_multiply_x48_x_scalar(one_days_reading.kwh_data_x48, scale_factor)
     )
-    scaled
   end
 
   def kwh_halfhour(half_hour_index)
@@ -69,14 +71,6 @@ class OneDayAMRReading
     @type = type
   end
 
-  def check_type(type)
-    if type.nil?
-      raise EnergySparksBadAMRDataTypeException.new('Unexpected nil AMR bad data type')
-    elsif !self.class.amr_types.key?(type)
-      raise EnergySparksBadAMRDataTypeException.new("Unexpected AMR bad data type #{type}")
-    end
-  end
-
   def set_meter_id(meter_id)
     @meter_id = meter_id
   end
@@ -85,18 +79,15 @@ class OneDayAMRReading
     date = @date.strftime('%d-%m-%Y')
     upload_datetime = @date.strftime('%d-%m-%Y %H:%M')
     sub_date = @substitute_date.nil? ? '' : @substitute_date.strftime('%d-%m-%Y')
-    total = sprintf('%4.1f', @one_day_kwh)
+    total = format('%4.1f', @one_day_kwh)
     [date, @type, total, upload_datetime, sub_date, @kwh_data_x48].flatten.join(',')
   end
 
-  def validate_data(nils_valid = false)
-    return 0 if !@kwh_data_x48.is_a?(Array)
+  def validate_data
+    return 0 unless @kwh_data_x48.is_a?(Array)
+
     data_count = @kwh_data_x48.count do |kwh|
-      if nils_valid
-        kwh.nil? || kwh.is_a?(Float) || kwh.is_a?(Integer)
-      else
-        kwh.is_a?(Float) || kwh.is_a?(Integer)
-      end
+      kwh.nil? || kwh.is_a?(Float) || kwh.is_a?(Integer)
     end
     if data_count != 48
       logger.info "Incomplete AMR data expecting 48 readings, got #{data_count} for date #{@date}"
@@ -107,8 +98,8 @@ class OneDayAMRReading
 
   def <=>(other)
     other.class == self.class &&
-    [meter_id, date, type, substitute_date] <=> [other.meter_id, other.date, other.type, other.substitute_date] &&
-    one_day_kwh <=> other.one_day_kwh &&
-    @kwh_data_x48 <=> other.kwh_data_x48
+      [meter_id, date, type, substitute_date] <=> [other.meter_id, other.date, other.type, other.substitute_date] &&
+      one_day_kwh <=> other.one_day_kwh &&
+      @kwh_data_x48 <=> other.kwh_data_x48
   end
 end
