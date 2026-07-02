@@ -100,7 +100,7 @@ describe 'manage invoices', :include_application_helper do
         let(:table_id) { "#invoice-#{invoice.id}-line-items-table" }
         let(:expected_header) do
           [
-            ['School Group', 'School', 'Private Account?', 'Number of Meters',
+            ['School Group', 'School', 'Start date', 'End date', 'Private Account?', 'Number of Meters',
              'Base price', 'Metering fee', 'Private account fee', 'Total']
           ]
         end
@@ -109,6 +109,8 @@ describe 'manage invoices', :include_application_helper do
             [
               '',
               line_item.school.name,
+              line_item.licence.start_date.to_fs(:es_short),
+              line_item.licence.end_date.to_fs(:es_short),
               'No',
               '0',
               format_price(line_item.value.base_price),
