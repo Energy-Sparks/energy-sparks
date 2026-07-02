@@ -1,6 +1,3 @@
-# originally amr_data was inherited from half_hourly_data which was a hash to 48 x halfhourly readings
-# to better represent whether the data has been artificially created as a result of bad or missing
-# data OneDayAMRReading replaces the 48 x halfhourly readings
 # type is the type of correction, original data = 'ORIG', a list of types (primary key/constaint) is held in AMR_TYPES
 class OneDayAMRReading
   include Comparable
