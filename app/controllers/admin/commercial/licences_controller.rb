@@ -30,9 +30,11 @@ module Admin::Commercial
     def new
       if params[:contract_id]
         @contract = Commercial::Contract.find(params[:contract_id])
+        @schools = @contract.candidate_schools
         @licence = Commercial::Licence.new(contract: @contract)
       else
         @licence = Commercial::Licence.new
+        @schools = School.visible.by_name
       end
     end
 
