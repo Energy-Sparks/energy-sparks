@@ -1,5 +1,3 @@
-require 'dashboard'
-
 module Schools
   class GenerateAnalysisChartConfiguration
     def initialize(

@@ -1,5 +1,3 @@
-require 'dashboard'
-
 module Admin
   class AnalysisController < AdminController
     before_action :set_school

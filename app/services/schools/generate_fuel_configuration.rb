@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dashboard'
-
 module Schools
   class GenerateFuelConfiguration
     def initialize(aggregated_meter_collection)

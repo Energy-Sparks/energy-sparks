@@ -1,5 +1,3 @@
-require 'dashboard'
-
 module Solar
   class SolisCloudUpserter < BaseUpserter
     private

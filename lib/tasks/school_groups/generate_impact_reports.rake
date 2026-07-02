@@ -2,7 +2,6 @@
 
 namespace :school_groups do
   task generate_impact_reports: :environment do
-    require 'dashboard'
     SchoolGroup.find_each do |school_group|
       next if school_group.assigned_schools.active.empty?
 

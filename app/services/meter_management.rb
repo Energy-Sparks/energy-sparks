@@ -1,5 +1,3 @@
-require 'dashboard'
-
 class MeterManagement
   include Wisper::Publisher
 
