@@ -14,49 +14,38 @@ module Aggregation
 
     include Logging
 
-    FSTRDEF = '%a %d %b %Y' # fixed format for reporting dates for error messages
     MAXGASAVGTEMPDIFF = 5 # max average temperature difference over which to adjust temperatures
     MAXSEARCHRANGEFORCORRECTEDDATA = 100
     NO_MODEL = 0 # model calc failed
+    MAX_DAYS_MISSING_DATA = 50 # largest gap allowed before readings truncated
 
-    attr_reader :data_problems, :meter_id, :meter
+    attr_reader :meter_id, :meter
 
-    def initialize(dashboard_meter, max_days_missing_data, holidays, temperatures)
+    def initialize(dashboard_meter, holidays, temperatures, max_days_missing_data: MAX_DAYS_MISSING_DATA)
       @meter = dashboard_meter
       @amr_data = dashboard_meter.amr_data
       @meter_id = dashboard_meter.mpan_mprn
       @holidays = holidays
       @temperatures = temperatures
       @max_days_missing_data = max_days_missing_data
-      @bad_data = 0
-      @run_date = Time.zone.today - 4 # TODO(PH,16Sep2019): needs rethink
-      @data_problems = {}
+
+      # Extracts the :meter_corrections from the meter attributes and stores them
+      # as meter_correction_rules, for later processing.
+      #
+      # The corrections are applied in a later step
+      process_meter_attributes
     end
 
-    def validate(debug_analysis: false)
-      logger.debug '=' * 150
-      logger.debug "Validating meter data of type #{@meter.meter_type} #{@meter.name} #{@meter.id}"
-      logger.debug "Meter data from #{@meter.amr_data.start_date} to #{@meter.amr_data.end_date}"
-      logger.debug "DCC Meter #{@meter.dcc_meter}"
-
-      if debug_analysis
-        assess_null_data # does nothing, count not used?
-        Rails.logger.debug { "Before validation #{missing_data} missing items of data" }
-      end
+    def validate
+      logger.debug { '=' * 150 }
+      logger.debug { "Validating meter data of type #{@meter.meter_type} #{@meter.name} #{@meter.id}" }
+      logger.debug { "Meter data from #{@meter.amr_data.start_date} to #{@meter.amr_data.end_date}" }
+      logger.debug { "DCC Meter #{@meter.dcc_meter}" }
 
       do_validations
 
-      # only summarise bad data in development
-      if debug_analysis || logger.level >= Logger::INFO
-        @amr_data.summarise_bad_data
-        @amr_data.summarise_bad_data_stdout if debug?
-      end
-      if debug_analysis
-        Rails.logger.debug { "After validation #{missing_data} missing items of data" }
-        Rails.logger.debug missing_data_stats
-        assess_null_data # does nothing, count not used?
-      end
-      logger.debug '=' * 150
+      @amr_data.summarise_bad_data if logger.level >= Logger::INFO
+      logger.debug { '=' * 150 }
     end
 
     private
@@ -70,12 +59,6 @@ module Aggregation
       # Raises exception if temperature data missing or doesn't cover entire range of
       # the gas meter data, prior to any corrections or adjustments
       check_temperature_data_covers_gas_meter_data_range
-
-      # Extracts the :meter_corrections from the meter attributes and stores them
-      # as meter_correction_rules, for later processing.
-      #
-      # The corrections are applied in a later step
-      process_meter_attributes
 
       # Meter readings from the DCC can include some known values for 'bad data'?
       # Remove these individual HH readings, or in some cases entire days of data
@@ -122,8 +105,6 @@ module Aggregation
       # Why not zero?
       Corrections::FinalMissing.correct(@meter)
     end
-
-    def debug? = false && [2_380_001_730_739].include?(@meter.mpxn.to_i)
 
     # Attempts to build a heating model from this meter's data. Model is used
     # to substitute missing gas data
@@ -376,7 +357,8 @@ module Aggregation
 
     def set_all_missing_data_to_zero_by_time_of_year(start_toy, end_toy, type)
       year_count = {}
-      end_date = [@amr_data.end_date, @run_date].max
+      run_date = Time.zone.today - 4 # TODO(PH,16Sep2019): needs rethink
+      end_date = [@amr_data.end_date, run_date].max
       (@amr_data.start_date..end_date).each do |date|
         toy = TimeOfYear.new(date.month, date.day)
         next unless @amr_data.date_missing?(date) && toy >= start_toy && toy <= end_toy
@@ -541,24 +523,6 @@ module Aggregation
         updated_data = OneDayAMRReading.new(meter_id, date, type, nil, DateTime.now, days_kwh_x48)
         @amr_data.add(date, updated_data)
       end
-    end
-
-    def assess_null_data
-      (@amr_data.start_date..@amr_data.end_date).sum do |date|
-        @amr_data.date_missing?(date) ? 48 : @amr_data.days_kwh_x48(date).count(&:nil?)
-      end
-    end
-
-    def missing_data_stats
-      stats = Hash.new { |h, k| h[k] = 0 }
-      (@amr_data.start_date..@amr_data.end_date).each do |date|
-        stats[@amr_data.substitution_type(date)] += 1
-      end
-      stats
-    end
-
-    def missing_data
-      (@amr_data.start_date..@amr_data.end_date).count { |date| @amr_data.date_missing?(date) }
     end
 
     # Takes an array of dates then attempts to create substitute date for that
@@ -856,7 +820,7 @@ module Aggregation
         @amr_data.set_start_date(min_date)
         if @amr_data.keys.index(min_date)
           logger.debug do
-            "Ignoring all data before #{min_date.strftime(FSTRDEF)} " \
+            "Ignoring all data before #{min_date.strftime('%a %d %b %Y')} " \
               "as gap of more than #{@max_days_missing_data} days " \
               "#{@amr_data.keys.index(min_date) - 1} days of data ignored"
           end
@@ -976,8 +940,6 @@ module Aggregation
     #   }
     #  ]
     def override_zero_days_electricity_readings_rules(rules)
-      Rails.logger.debug rules if debug?
-
       rule_dates = rule_override_dates(rules, :override_zero_days_electricity_readings)
 
       zero_dates = identify_zero_or_partially_reading_days(rule_dates)

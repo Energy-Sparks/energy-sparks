@@ -4,8 +4,8 @@ require 'rails_helper'
 
 describe Aggregation::ValidateAmrData, type: :service do
   def create_validator(meter, max_days_missing_data: 50)
-    described_class.new(meter, max_days_missing_data, meter.meter_collection.holidays,
-                        meter.meter_collection.temperatures)
+    described_class.new(meter, meter.meter_collection.holidays, meter.meter_collection.temperatures,
+                        max_days_missing_data:)
   end
 
   def create_meter(**kwargs)
@@ -21,8 +21,7 @@ describe Aggregation::ValidateAmrData, type: :service do
       meter = load_unvalidated_meter_collection(school: 'acme-academy', validate_and_aggregate: false)
               .meter?(1_591_058_886_735)
       validator = create_validator(meter)
-      validator.validate
-      expect(validator.data_problems).to be_empty
+      expect { validator.validate }.not_to raise_exception
     end
   end
 
@@ -36,8 +35,7 @@ describe Aggregation::ValidateAmrData, type: :service do
 
   it 'replaces missing night time solar readings with 0' do
     meter = create_meter(type: :solar_pv)
-    reading, validator = modify_arbitrary_reading_and_validate(meter) { |_reading, date| meter.amr_data.delete(date) }
-    expect(validator.data_problems).to be_empty
+    reading, = modify_arbitrary_reading_and_validate(meter) { |_reading, date| meter.amr_data.delete(date) }
     expect(reading.kwh_data_x48[0..3]).to eq([0.0] * 4)
     expect(reading.type).to eq('PROB')
   end
@@ -62,7 +60,7 @@ describe Aggregation::ValidateAmrData, type: :service do
     it 'replace night time readings with a rule with dates' do
       meter.meter_correction_rules[-1] = { override_night_to_zero: { start_date: meter.amr_data.start_date + 1.day,
                                                                      end_date: meter.amr_data.start_date + 2.days } }
-      create_validator(meter).validate(debug_analysis: true)
+      create_validator(meter).validate
       expect(arbitrary_night_readings(meter)).to eq([0.44, 0.0, 0.0, 0.44, 0.44, 0.44, 0.44, 0.44])
     end
 
