@@ -14,12 +14,13 @@ RSpec.describe Commercial::InvoicesComponent, :include_application_helper, :incl
       let(:table_id) { '#invoices-table' }
       let(:expected_header) do
         [
-          ['Number', 'Contract', 'Contract Holder', 'User', 'Date', 'Total']
+          ['', 'Number', 'Contract', 'Contract Holder', 'User', 'Date', 'Total']
         ]
       end
       let(:expected_rows) do
         [
           [
+            '',
             invoice.invoice_number,
             invoice.contract.name,
             invoice.contract_holder.name,

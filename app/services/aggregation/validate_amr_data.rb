@@ -814,25 +814,6 @@ module Aggregation
       end
     end
 
-    def override_with_sheffield_solar_pv_data(start_date, end_date)
-      if @meter.meter_type != :solar_pv
-        raise EnergySparksMeterSpecification,
-              "Unable to correct pv data, wrong meter type #{@meter.meter_type}"
-      end
-
-      sd = [start_date, @meter.amr_data.start_date].max
-      ed = [end_date,   @meter.amr_data.end_date].min
-      existing_kwh = sd <= ed ? @meter.amr_data.kwh_date_range(sd, ed) : 0.0
-      logger.info "Correcting solar pv production data using Sheffield #{start_date} to #{end_date} current total kwh #{existing_kwh}"
-      pv = SolarPvPanels.new(@meter.attributes(:solar_pv), @meter.meter_collection.solar_pv)
-      (start_date..end_date).each do |date|
-        pv_days_readings = pv.days_pv(date, @meter.solar_pv)
-        @amr_data.add(date, pv_days_readings)
-      end
-      updated_kwh = @meter.amr_data.kwh_date_range(start_date, end_date)
-      logger.info "Updated sheffield pv data kwh = #{updated_kwh}"
-    end
-
     def in_meter_correction_period?(date)
       @meter.meter_correction_rules.each do |rule|
         next unless rule.is_a?(Hash) && rule.key?(:auto_insert_missing_readings) &&

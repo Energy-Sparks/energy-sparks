@@ -295,6 +295,7 @@ en:
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
         school_meter_management: School meter management
         serial_number: Serial Number
+        supplier: Supplier
         tariff_report: Tariff Report
         title: "%{meter_name} (%{meter_mpan_mprn})"
         user_consented: User has consented

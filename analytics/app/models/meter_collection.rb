@@ -390,7 +390,7 @@ class MeterCollection
     @cached_close_time
   end
 
-  attr_reader :heat_meters, :electricity_meters, :storage_heater_meters, :school, :model_cache, :open_close_times
+  attr_reader :heat_meters, :electricity_meters, :storage_heater_meters, :school, :open_close_times
 
   def benchmark_school(benchmark_type = :benchmark)
     @benchmark_school ||= {}
