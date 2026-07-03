@@ -8,16 +8,8 @@ module Admin
       before_action :set_user
 
       def index
-        @activities = Activity.joins(school: :school_group)
-                              .where(school_group: { default_issues_admin_user_id: @dashboard_user })
-                              .where(created_at: 1.year.ago..)
-                              .includes(:observations,
-                                        :school,
-                                        :activity_type,
-                                        observations: :created_by,
-                                        school: :school_group,
-                                        rich_text_description: { embeds_attachments: :blob })
-                              .order(created_at: :desc)
+        super
+        @activities = @activities.for_admin(@dashboard_user)
 
         build_breadcrumbs([
                             { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
