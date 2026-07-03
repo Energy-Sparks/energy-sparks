@@ -50,8 +50,7 @@ module Aggregation
 
     private
 
-    # Carry out a series of validations and corrections to the underlying meter data
-    def do_validations
+    def remove_bad_readings
       # Removes data for today as it won't be complete
       # Also removes any spurious future dates
       remove_final_meter_reading_if_today
@@ -66,14 +65,9 @@ module Aggregation
       remove_dcc_bad_data_readings if @meter.dcc_meter
 
       remove_negative_readings if %i[electricity gas].include?(@meter.meter_type)
+    end
 
-      # Scans the amr data to look for gaps that are larger than @max_days_missing_data
-      # If found, then AMR data start date will be moved to the final day of the gap.
-      # Means that if there are any big holes in the data, it will be skipped.
-      #
-      # Ignores gaps which might be filled in the next step
-      check_for_long_gaps_in_data
-
+    def correct_for_bad_readings
       Corrections::OverrideNightToZero.apply(nil, nil, @meter) if @meter.meter_type == :solar_pv
 
       # Adjusts amr data start/end by one day to ignore days with partial data
@@ -98,6 +92,21 @@ module Aggregation
       # with data from similar holiday in previous year. Again electricity and
       # gas substitutions are slightly different
       correct_holidays_with_adjacent_academic_years
+    end
+
+    # Carry out a series of validations and corrections to the underlying meter data
+    def do_validations
+      remove_bad_readings
+
+      # Scans the amr data to look for gaps that are larger than @max_days_missing_data
+      # If found, then AMR data start date will be moved to the final day of the gap.
+      # Means that if there are any big holes in the data, it will be skipped.
+      #
+      # Ignores gaps which might be filled in the next step
+      check_for_long_gaps_in_data
+
+      # Apply automatic and manually configured corrections and substitutions
+      correct_for_bad_readings
 
       # One final pass to find missing days. In this case if found the day is
       # substituted with a fixed value of '0.0123456' for each HH reading and
@@ -197,14 +206,14 @@ module Aggregation
     #
     # @param rule either a Symbol or a Hash
     def apply_one_meter_correction(rule)
-      logger.debug '-' * 80
-      logger.debug "Manually defined meter corrections: #{rule}"
+      logger.debug { '-' * 80 }
+      logger.debug { "Manually defined meter corrections: #{rule}" }
       if rule.is_a?(Symbol) && rule == :set_all_missing_to_zero
-        logger.debug 'Setting all missing data to zero'
+        logger.debug { 'Setting all missing data to zero' }
         # set any missing days to have zero readings
         set_all_missing_data_to_zero
       elsif rule.is_a?(Symbol) && rule == :correct_zero_partial_data
-        logger.debug 'Correcting partially missing (zero) data'
+        logger.debug { 'Correcting partially missing (zero) data' }
         # fix dates with missing readings (defined as 0.0), interpolating
         # missing values, unless there are too many in which case entire day
         # is substituted
@@ -257,7 +266,7 @@ module Aggregation
           raise EnergySparksMeterSpecification, "unknown auto_insert_missing_readings meter attribute #{val}"
         end
       elsif rule.key?(:no_heating_in_summer_set_missing_to_zero)
-        logger.debug 'Got missing summer rule'
+        logger.debug { 'Got missing summer rule' }
         # Sets missing data to zero between the start/end time of year
         set_missing_data_to_zero_on_heating_meter_during_summer(
           rule[:no_heating_in_summer_set_missing_to_zero][:start_toy],
@@ -301,7 +310,7 @@ module Aggregation
     # A status code is applied to the date to indicate why it is being used
     def apply_readings_start_date(fix_start_date)
       check_date_exists(fix_start_date, :readings_start_date)
-      logger.debug "Fixing start date to #{fix_start_date} for #{@meter_id}"
+      logger.debug { "Fixing start date to #{fix_start_date} for #{@meter_id}" }
       substitute_data_x48 = @amr_data.one_days_data_x48(fix_start_date)
       # Setting start date will truncate earlier data. Application will end up
       # storing the FIXS reading as the earliest reading. Prior data will be deleted
@@ -321,7 +330,7 @@ module Aggregation
     # A status code is applied to the date to indicate why it is being used
     def apply_readings_end_date(fix_end_date)
       check_date_exists(fix_end_date, :readings_end_date)
-      logger.debug "Fixing end date to #{fix_end_date}"
+      logger.debug { "Fixing end date to #{fix_end_date}" }
       substitute_data_x48 = @amr_data.one_days_data_x48(fix_end_date)
       # Setting end date will truncate earlier data. Application will end up
       # storing the FIXE reading as the latest reading. Later data will be deleted
@@ -538,7 +547,7 @@ module Aggregation
       missing_dates.each do |date, type|
         date, updated_one_day_reading = substitute_missing_electricity_data(date, 'S')
         if updated_one_day_reading.nil?
-          logger.debug "Unable to override partial/missing data for #{@meter_id} on #{date}"
+          logger.debug { "Unable to override partial/missing data for #{@meter_id} on #{date}" }
         else
           updated_one_day_reading.set_type(type == 'ORIG' ? 'CMPH' : type)
           @amr_data.add(date, updated_one_day_reading.deep_dup)
@@ -648,7 +657,7 @@ module Aggregation
                                                          zero_kwh_readings)
             @amr_data.add(date, zero_gas_holiday_data) # have to assume if no replacement holiday reading gas was completely off
           elsif @meter.meter_type == :electricity
-            logger.debug "Correcting missing electricity holiday on #{date} with data from #{adjusted_date}"
+            logger.debug { "Correcting missing electricity holiday on #{date} with data from #{adjusted_date}" }
             substituted_electricity_holiday_data = OneDayAMRReading.new(meter_id, date, 'ESBH', adjusted_date,
                                                                         DateTime.now, @amr_data[adjusted_date].kwh_data_x48)
             @amr_data.add(date, substituted_electricity_holiday_data)
@@ -1105,7 +1114,9 @@ module Aggregation
           return [date, create_substituted_gas_data(date, substitute_date, sub_type_code)]
         end
       end
-      logger.debug "Error: Unable to find suitable substitute for missing day of gas data #{date} temperature #{avg_temperature.round(0)} daytype #{missing_daytype} heating? #{heating_on}"
+      logger.debug do
+        "Error: Unable to find suitable substitute for missing day of gas data #{date} temperature #{avg_temperature.round(0)} daytype #{missing_daytype} heating? #{heating_on}"
+      end
       [date, nil]
     end
 
@@ -1174,12 +1185,14 @@ module Aggregation
       # Predictions can be negative if the heating model has no base temperature.
       # See +RegressionModelTemperature.predicted_kwh_temperature+
       if kwh_prediction_for_missing_day.negative? && kwh_prediction_for_substitute_day.negative?
-        logger.debug "Warning: negative predictions for both missing day #{missing_day} and #{substitute_day} using unmodified data"
+        logger.debug do
+          "Warning: negative predictions for both missing day #{missing_day} and #{substitute_day} using unmodified data"
+        end
         return @amr_data.days_kwh_x48(substitute_day)
       elsif kwh_prediction_for_substitute_day == 0.0 && kwh_prediction_for_missing_day == 0.0
         return @amr_data.days_kwh_x48(substitute_day)
       elsif kwh_prediction_for_substitute_day == 0.0
-        logger.warn "Warning: zero predicted kwh for substitute day #{substitute_day} using unmodified data"
+        logger.debug { "Warning: zero predicted kwh for substitute day #{substitute_day} using unmodified data" }
         return @amr_data.days_kwh_x48(substitute_day)
       end
 
@@ -1188,7 +1201,9 @@ module Aggregation
 
       # Can be true if the heating model for either day has no base temperature
       if prediction_ratio.negative?
-        logger.debug "Warning: negative predicted data for missing day #{missing_day} using unmodified data from #{substitute_day}"
+        logger.debug do
+          "Warning: negative predicted data for missing day #{missing_day} using unmodified data from #{substitute_day}"
+        end
         return @amr_data.days_kwh_x48(substitute_day)
       end
 
