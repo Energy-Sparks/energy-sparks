@@ -361,7 +361,7 @@ module Aggregation
     # No readings are added at this point, so relies on subsequent meter corrections/validation
     # behaviour to fill in the blanks
     def extend_start_date(date)
-      logger.info "Extending start date to #{date}"
+      logger.debug { "Extending start date to #{date}" }
       @amr_data.set_start_date(date)
     end
 
@@ -370,7 +370,7 @@ module Aggregation
     # No readings are added at this point, so relies on subsequent meter corrections/validation
     # behaviour to fill in the blanks
     def extend_end_date(date)
-      logger.info "Extending end date to #{date}"
+      logger.debug { "Extending end date to #{date}" }
       @amr_data.set_end_date(date)
     end
 
@@ -389,12 +389,12 @@ module Aggregation
         year_count[date.year] += 1
       end
       year_count.each do |year, count|
-        logger.info "set during #{year} * #{count} to zero"
+        logger.debug {  "set during #{year} * #{count} to zero" }
       end
     end
 
     def remove_dcc_bad_data_readings
-      logger.info 'Checking dcc meter for bad values'
+      logger.debug { 'Checking dcc meter for bad values' }
       too_much_bad_data = {}
       for_interpolation = {}
       ok_data = {}
@@ -410,7 +410,9 @@ module Aggregation
       end
 
       if too_much_bad_data.length.positive?
-        logger.info 'The following dates have too much DCC bad data, so removing them for future whole day substitution'
+        logger.debug do
+          'The following dates have too much DCC bad data, so removing them for future whole day substitution'
+        end
         log_dates(too_much_bad_data)
         too_much_bad_data.each_key do |date|
           @amr_data.delete(date)
@@ -418,7 +420,7 @@ module Aggregation
       end
 
       if for_interpolation.length.positive?
-        logger.info 'The following dates have bad half hour kWh value, so nullifying for future interpolation'
+        logger.debug { 'The following dates have bad half hour kWh value, so nullifying for future interpolation' }
         log_dates(for_interpolation)
         for_interpolation.each_key do |date|
           days_kwh_x48 = @amr_data.days_kwh_x48(date)
@@ -428,7 +430,7 @@ module Aggregation
         end
       end
 
-      logger.info "Leaving #{ok_data.length} days of dcc data with no bad values"
+      logger.debug { "Leaving #{ok_data.length} days of dcc data with no bad values" }
     end
 
     def remove_negative_readings
@@ -447,13 +449,13 @@ module Aggregation
       (Time.zone.today..@meter.amr_data.end_date).each do |date|
         # would assume, unless spurious future readings are provided that the code only loops once
         @amr_data.set_end_date(date - 1)
-        logger.info "Removing final partial dcc meter reading for today #{date}"
+        logger.debug { "Removing final partial dcc meter reading for today #{date}" }
       end
     end
 
     def log_dates(dates_hash)
       dates_hash.keys.each_slice(8) do |dates|
-        logger.info dates.map { |d| d.strftime('%d-%b-%Y') }.join(' ')
+        logger.debug { dates.map { |d| d.strftime('%d-%b-%Y') }.join(' ') }
       end
     end
 
@@ -480,14 +482,16 @@ module Aggregation
     # interpolation or substitution.
     def remove_missing_start_end_dates_if_partial_nil
       if @amr_data.days_kwh_x48(@amr_data.start_date).any?(&:nil?)
-        logger.info "Moving meter start date #{@amr_data.start_date} 1 day forward as only partial data on start date"
+        logger.debug do
+          "Moving meter start date #{@amr_data.start_date} 1 day forward as only partial data on start date"
+        end
         @amr_data[@amr_data.start_date].set_type('PSTD')
         @amr_data.set_start_date(@amr_data.start_date + 1)
       end
 
       return unless @amr_data.days_kwh_x48(@amr_data.end_date).any?(&:nil?)
 
-      logger.info "Moving meter end date #{@amr_data.end_date} one day back as only partial data on end date"
+      logger.debug { "Moving meter end date #{@amr_data.end_date} one day back as only partial data on end date" }
       @amr_data[@amr_data.end_date].set_type('PETD')
       @amr_data.set_end_date(@amr_data.end_date - 1)
     end
@@ -636,13 +640,13 @@ module Aggregation
     # but there's nothing specific about the meter type or date range in the substitution
     # that is done.
     def set_missing_data_to_zero_on_heating_meter_during_summer(start_toy, end_toy)
-      logger.info "Setting missing data to zero between #{start_toy} and #{end_toy}"
+      logger.debug { "Setting missing data to zero between #{start_toy} and #{end_toy}" }
       set_all_missing_data_to_zero_by_time_of_year(start_toy, end_toy, 'SUMZ')
     end
 
     # Find all missing days of data and set their readings to zero
     def set_all_missing_data_to_zero
-      logger.info 'Setting all missing data to zero'
+      logger.debug { 'Setting all missing data to zero' }
       start_toy = TimeOfYear.new(1, 1) # 1st Jan
       end_toy = TimeOfYear.new(12, 31) # 31st Dec
       set_all_missing_data_to_zero_by_time_of_year(start_toy, end_toy, 'ALLZ')
@@ -653,7 +657,7 @@ module Aggregation
     # Typically used to correct where imperial to metric meter readings aren't
     # corrected to kWh properly at source
     def scale_amr_data(start_date, end_date, scale)
-      logger.info "Rescaling data between #{start_date} and #{end_date} by #{scale}"
+      logger.debug { "Rescaling data between #{start_date} and #{end_date} by #{scale}" }
       rescaler = Corrections::Rescaler.new(@amr_data, @meter_id)
       @amr_data = rescaler.perform(start_date: start_date, end_date: end_date, scale: scale)
     end
@@ -669,7 +673,7 @@ module Aggregation
 
         matching_holidays = list_of_similar_holidays(date, holiday_type)
         if matching_holidays.empty?
-          logger.info "Unable to find substitute matching holiday for date #{date}"
+          logger.debug { "Unable to find substitute matching holiday for date #{date}" }
         else
           adjusted_date = find_matching_holiday_day(@amr_data, matching_holidays, date.wday)
 
@@ -755,7 +759,7 @@ module Aggregation
     # @param Date start_date set to +nil+ to use meter start date
     # @param Date end_date set to +nil+ to use meter end date
     def replace_missing_data_with_zero(start_date, end_date)
-      logger.info "Replacing missing data between #{start_date} and #{end_date} with zero"
+      logger.debug { "Replacing missing data between #{start_date} and #{end_date} with zero" }
       start_date = @amr_data.start_date if start_date.nil?
       end_date = @amr_data.end_date if end_date.nil?
       (start_date..end_date).each do |date|
@@ -770,7 +774,7 @@ module Aggregation
     # Sets all data within the specified date range to zero. Only sets existing data
     # to zero, will not fill in any missing data
     def zero_data_in_date_range(start_date, end_date)
-      logger.info "Overwriting bad data between #{start_date} and #{end_date} with zero"
+      logger.debug { "Overwriting bad data between #{start_date} and #{end_date} with zero" }
       (start_date..end_date).each do |date|
         next unless @amr_data.date_exists?(date)
 
@@ -792,7 +796,7 @@ module Aggregation
       start_date = default_start_date(start_date)
       end_date   = default_end_date(end_date, zero_up_until_yesterday)
 
-      logger.info "Setting missing data between #{start_date} and #{end_date} to zero"
+      logger.debug { "Setting missing data between #{start_date} and #{end_date} to zero" }
       (start_date..end_date).each do |date|
         next unless @amr_data.date_missing?(date)
 
@@ -850,10 +854,14 @@ module Aggregation
         # Setting start date will truncate earlier data. Application will end up
         # storing the LGAP reading as the earliest reading. Prior data will be deleted
         @amr_data.set_start_date(min_date)
-        msg =  "Ignoring all data before #{min_date.strftime(FSTRDEF)}"
-        msg += " as gap of more than #{@max_days_missing_data} days "
-        msg += "#{@amr_data.keys.index(min_date) - 1} days of data ignored" if @amr_data.keys.index(min_date)
-        logger.info msg
+        if @amr_data.keys.index(min_date)
+          logger.debug do
+            "Ignoring all data before #{min_date.strftime(FSTRDEF)} " \
+              "as gap of more than #{@max_days_missing_data} days " \
+              "#{@amr_data.keys.index(min_date) - 1} days of data ignored"
+          end
+        end
+
         substitute_data = Array.new(48, 0.0)
         @amr_data.add(min_date, OneDayAMRReading.new(meter_id, min_date, 'LGAP', nil, DateTime.now, substitute_data))
         break
