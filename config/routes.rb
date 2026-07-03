@@ -593,6 +593,7 @@ Rails.application.routes.draw do
       resources :school_groups, module: :dashboard
       resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
+      resources :impact_reports, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :suppliers, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
@@ -677,7 +678,9 @@ Rails.application.routes.draw do
         end
       end
       resources :contract_holders, only: [:index]
-      resources :invoices, only: [:index, :show]
+      resources :invoices, only: [:index, :show] do
+        get :export, on: :collection
+      end
       resources :licences do
         collection do
           get :current
@@ -689,6 +692,7 @@ Rails.application.routes.draw do
         end
       end
       resources :products
+      resources :xero_account_codes, except: [:show]
 
       get 'pricing', to: 'pricing#show'
     end

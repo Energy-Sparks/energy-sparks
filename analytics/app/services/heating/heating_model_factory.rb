@@ -14,7 +14,7 @@ module Heating
     private
 
     def one_year_period
-      SchoolDatePeriod.new(:service, 'Current Year', model_start_date, @asof_date)
+      SchoolDatePeriod.new(:analysis, 'Current Year', model_start_date, @asof_date)
     end
 
     def model_start_date

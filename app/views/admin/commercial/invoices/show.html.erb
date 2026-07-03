@@ -6,6 +6,14 @@
 <% end %>
 
 <div class="row">
+  <div class="col">
+    <%= link_to 'Xero export',
+                export_admin_commercial_invoices_path(params: { invoices: @invoice.id }),
+                class: 'btn btn-sm' %>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-12">
     <%= render Layout::GridComponent.new(classes: 'mb-4',
                                          component_classes: 'd-flex flex-column flex-fill',

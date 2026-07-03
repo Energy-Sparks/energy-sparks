@@ -21,12 +21,13 @@ describe 'manage invoices', :include_application_helper do
       let(:table_id) { '#invoices-table' }
       let(:expected_header) do
         [
-          ['Number', 'Contract', 'Contract Holder', 'User', 'Date', 'Total']
+          ['', 'Number', 'Contract', 'Contract Holder', 'User', 'Date', 'Total']
         ]
       end
       let(:expected_rows) do
         [
           [
+            '',
             invoice.invoice_number,
             invoice.contract.name,
             invoice.contract_holder.name,
@@ -35,6 +36,18 @@ describe 'manage invoices', :include_application_helper do
             format_price(invoice.value.total)
           ]
         ]
+      end
+    end
+
+    context 'when downloading for xero' do
+      before do
+        check "invoice_#{invoice.id}"
+        click_on 'Export for xero', disabled: true # avoids enabling js, else can't access the response headers
+      end
+
+      it 'downloads a CSV' do
+        expect(page.response_headers['Content-Type']).to eq 'text/csv'
+        expect(page.response_headers['Content-Disposition']).to match(/energy-sparks-invoices/)
       end
     end
   end
@@ -50,6 +63,11 @@ describe 'manage invoices', :include_application_helper do
 
     it { expect(page).to have_link('Pending Invoices', href: pending_invoicing_admin_commercial_contracts_path) }
     it { expect(page).to have_link('All Invoices', href: admin_commercial_invoices_path) }
+
+    it {
+      expect(page).to have_link('Xero export',
+                                href: export_admin_commercial_invoices_path(params: { invoices: invoice.id }))
+    }
 
     context 'when viewing summary' do
       it { expect(page).to have_text(invoice.purchase_order_number) }
@@ -82,7 +100,8 @@ describe 'manage invoices', :include_application_helper do
         let(:table_id) { "#invoice-#{invoice.id}-line-items-table" }
         let(:expected_header) do
           [
-            ['School Group', 'School', 'Private Account?', 'Number of Meters',
+            ['School', 'Licence', 'Fees'],
+            ['School Group', 'School', 'Private Account?', 'Number of Meters', 'Start date', 'End date',
              'Base price', 'Metering fee', 'Private account fee', 'Total']
           ]
         end
@@ -93,6 +112,8 @@ describe 'manage invoices', :include_application_helper do
               line_item.school.name,
               'No',
               '0',
+              line_item.licence.start_date.to_fs(:es_short),
+              line_item.licence.end_date.to_fs(:es_short),
               format_price(line_item.value.base_price),
               format_price(line_item.value.metering_fee),
               format_price(line_item.value.private_account_fee),

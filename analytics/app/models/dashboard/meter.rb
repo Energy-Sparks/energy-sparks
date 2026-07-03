@@ -246,7 +246,7 @@ module Dashboard
 
     def up_to_one_year_model_period
       start_date = [amr_data.end_date - 364, amr_data.start_date].max
-      SchoolDatePeriod.new(:up_to_1_year_meter, 'Current Year', start_date, amr_data.end_date)
+      SchoolDatePeriod.new(:analysis, 'Current Year', start_date, amr_data.end_date)
     end
 
     def heating_model(period = up_to_one_year_model_period, model_type = :best, non_heating_model_type = nil)
@@ -386,8 +386,8 @@ module Dashboard
       if @meter_attributes.key?(:storage_heaters)
         @storage_heater_setup = StorageHeater.new(attributes(:storage_heaters))
       end
-      @solar_pv_setup           = Aggregation::SolarPvPanels.create(self, :solar_pv)
-      @solar_pv_overrides       = Aggregation::SolarPvPanels.create(self, :solar_pv_override)
+      @solar_pv_setup           = Aggregation::SolarPvPanels.create(self, :solar_pv, true)
+      @solar_pv_overrides       = Aggregation::SolarPvPanels.create(self, :solar_pv_override, false)
       @solar_pv_real_metering   = true if @meter_attributes.key?(:solar_pv_mpan_meter_mapping)
       @partial_meter_coverage ||= PartialMeterCoverage.new(attributes(:partial_meter_coverage))
       @meter_tariffs = GenericTariffManager.new(self)
