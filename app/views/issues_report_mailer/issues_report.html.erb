@@ -5,7 +5,7 @@
     <tr>
       <th></th>
       <% @columns.filter(&:display_html).each do |column| %>
-        <%= content_tag(:th, column.name) %>
+        <%= content_tag(:th, column.display_name) %>
       <% end %>
       <th></th>
     </tr>

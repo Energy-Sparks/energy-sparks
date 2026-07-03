@@ -6,7 +6,7 @@ module Columns
   private
 
   class Column
-    attr_reader :html_data
+    attr_reader :html_data, :name
 
     def initialize(name, csv_lambda, td_lambda = nil, display: :csv_and_html, html_data: nil)
       @name = name
@@ -16,7 +16,7 @@ module Columns
       @html_data = html_data
     end
 
-    def name
+    def display_name
       if @name.is_a?(Symbol)
         string = @name.to_s
         string.downcase == string ? string.titleize : string
@@ -47,6 +47,22 @@ module Columns
 
     def display_csv
       %i[csv_and_html csv].include?(@display)
+    end
+  end
+
+  class BoolColumn < Column
+    include ApplicationHelper
+
+    def initialize(name, accessor = nil)
+      super(name, ->(arg) { arg.public_send(accessor || name) })
+    end
+
+    def csv(arg)
+      y_n(super)
+    end
+
+    def td(arg)
+      checkmark(super)
     end
   end
 

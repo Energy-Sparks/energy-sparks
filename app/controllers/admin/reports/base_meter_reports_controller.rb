@@ -60,7 +60,7 @@ module Admin
                      ->(meter) { meter.school&.school_group&.name },
                      ->(meter, csv) { csv && link_to(csv, school_group_path(meter.school&.school_group)) }),
           Column.new(:admin,
-                     ->(meter) { meter.school&.school_group&.default_issues_admin_user&.name }),
+                     ->(meter) { meter.school&.default_issues_admin_user&.name }),
           Column.new(:school,
                      ->(meter) { meter.school.name },
                      ->(meter, csv) { link_to(csv, school_path(meter.school)) }),
