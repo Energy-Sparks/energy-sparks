@@ -5,8 +5,6 @@ module Admin
     class MeteredSolarController < BaseImportReportsController
       private
 
-      def results = Report::Table::MeteredSolarTable.query
-
       def columns
         column_names = %i[school_group admin school meter data_source supplier meter_status]
         columns = super.filter { |column| column_names.include?(column.name) }
@@ -33,6 +31,14 @@ module Admin
         Column.new('', nil,
                    ->(meter) { link_to('Attributes', admin_school_single_meter_attribute_path(meter.school, meter)) },
                    display: :html, html_data: { sortable: false })
+      end
+
+      def results = filter_results(Report::Table::MeteredSolarTable.query)
+
+      def filter_results(results)
+        filtered = super
+        filtered = filtered.where(school: School.find(params.expect(:school))) if params[:school].present?
+        filtered
       end
     end
   end
