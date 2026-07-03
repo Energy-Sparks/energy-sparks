@@ -245,4 +245,61 @@ describe Aggregation::ValidateAmrData, type: :service do
       end
     end
   end
+
+  context 'when checking for long gaps' do
+    let(:amr_data) do
+      build(:amr_data, :with_date_range, start_date: Date.new(2025, 1, 1), end_date: Date.new(2025, 3, 31))
+    end
+
+    let(:meter) { build(:meter, type: :electricity, amr_data:, meter_collection: build(:meter_collection)) }
+
+    before { travel_to Date.new(2025, 12, 31) }
+
+    context 'with no gaps' do
+      before { create_validator(meter).validate }
+
+      it 'does not truncate the meter' do
+        (amr_data.start_date..amr_data.end_date).each do |date|
+          expect(amr_data.days_amr_data(date).type).to eq('ORIG')
+        end
+      end
+    end
+
+    context 'with a gap' do
+      let(:after_gap_date) { Date.new(2025, 12, 31) }
+      let(:amr_data) do
+        amr_data = build(:amr_data, :with_date_range, start_date: Date.new(2025, 1, 1),
+                                                      end_date: Date.new(2025, 3, 31))
+        amr_data.add(after_gap_date, OneDayAMRReading.zero_reading(1, after_gap_date, 'ORIG'))
+        amr_data
+      end
+
+      context 'with electricity meter' do
+        before { create_validator(meter).validate }
+
+        it 'truncates the meter' do
+          expect(amr_data.start_date).to eq(after_gap_date)
+          expect(amr_data.days_amr_data(after_gap_date).type).to eq('LGAP')
+        end
+      end
+
+      context 'with gas meter' do
+        let(:meter) do
+          temperatures = build(:temperatures, :with_days, start_date: Date.new(2025, 1, 1),
+                                                          end_date: Date.new(2025, 12, 31))
+          build(:meter,
+                type: :gas,
+                amr_data:,
+                meter_collection: build(:meter_collection, temperatures:))
+        end
+
+        before { create_validator(meter).validate }
+
+        it 'truncates the meter' do
+          expect(amr_data.start_date).to eq(after_gap_date)
+          expect(amr_data.days_amr_data(after_gap_date).type).to eq('LGAP')
+        end
+      end
+    end
+  end
 end
