@@ -41,13 +41,6 @@ images provided by the user
     <div class="d-flex justify-content-between align-items-center">
       <div class="">
         <span class="nowrap">
-          <%= label_tag :search, nil, class: 'small' %>
-          <%= text_field_tag :search, params[:search], autocomplete: 'off',
-                                                       placeholder: 'Search issues...',
-                                                       width: 200,
-                                                       class: '' %>
-        </span>
-        <span class="nowrap">
           <%= label_tag :school_group, nil, class: 'small' %>
           <%= select_tag :school_group,
                          options_from_collection_for_select(SchoolGroup.by_name, :id, :name, params[:school_group]),
@@ -71,7 +64,8 @@ images provided by the user
         <span class="nowrap">
           <%= label_tag :user_role, nil, class: 'small' %>
           <%= select_tag :user_role,
-                         options_for_select(User.roles, params[:user_role]),
+                         options_for_select(User.roles.map { |roles| [roles[0].humanize, roles[1]] },
+                                            params[:user_role]),
                          include_blank: 'Any Role',
                          class: 'form-control-sm' %>
         </span>

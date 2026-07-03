@@ -120,7 +120,7 @@ describe 'Recently recorded activities report' do
 
       describe 'user role filter' do
         before do
-          select 'staff', from: 'user_role'
+          select 'Staff', from: 'user_role'
           click_on 'Filter'
         end
 

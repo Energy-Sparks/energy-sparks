@@ -17,7 +17,6 @@ module Admin
         @activities = @activities.for_admin(params[:admin]) if params[:admin].present?
         @activities = @activities.for_school(params[:school]) if params[:school].present?
         @activities = @activities.for_user_role(params[:user_role]) if params[:user_role].present?
-        @activities = @activities.search(params[:search]) if params[:search].present?
 
         format
       end

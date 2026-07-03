@@ -49,9 +49,10 @@
 #  fk_rails_...  (updated_by_id => users.id)
 #
 
-class Observation < ApplicationRecord
+class Observation < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Description
   include Todos::Recording
+  include CsvExportable
 
   belongs_to :school
   has_many :temperature_recordings
@@ -92,14 +93,17 @@ class Observation < ApplicationRecord
   scope :most_recent, -> { order(at: :desc, created_at: :desc) }
 
   scope :by_date, ->(order = :desc) { order(at: order) }
-  scope :for_school, ->(school) { where(school: school) }
+  scope :for_school, ->(school) { where(school:) }
+  scope :for_school_group, ->(school_group) { where(school: { school_group: school_group }) }
+  scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
+  scope :for_user_role, ->(user_role) { where(created_by: { role: user_role }) }
   scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date&.end_of_day) }
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
   }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
+  scope :recorded_in_last_year, -> { where(observations: { created_at: 1.year.ago.. })  }
+  scope :recorded_in_last_week, -> { where(observations: { created_at: 1.week.ago.. })  }
   scope :recorded_since, ->(range) { where(created_at: range) }
   scope :not_including, ->(school) { where.not(school:).recorded_since(school.current_academic_year.start_date..) }
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
@@ -169,6 +173,17 @@ class Observation < ApplicationRecord
 
     # Update points unless it remains in a previous academic year
     !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)
+  end
+
+  def self.csv_headers
+    ['School Group', 'Admin', 'School', 'User', 'User Role', 'User Staff Role', 'Recorded', 'Happened',
+     'Intervention Type', 'Images?']
+  end
+
+  def self.csv_attributes
+    %w[school.school_group.name school.school_group.default_issues_admin_user.name school.name created_by.name
+       created_by.role.humanize created_by.staff_role.title created_at.to_date.iso8601
+       happened_on.to_date.iso8601 intervention_type.name description_includes_images?]
   end
 
   def type_name = intervention_type&.name
