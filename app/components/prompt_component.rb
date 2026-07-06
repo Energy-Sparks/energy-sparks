@@ -43,4 +43,8 @@ class PromptComponent < ApplicationComponent
   def render?
     content || content_action || @always_render
   end
+
+  def self.statuses
+    STATUSES
+  end
 end
