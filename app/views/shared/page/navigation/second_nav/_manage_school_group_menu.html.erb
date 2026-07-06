@@ -44,6 +44,10 @@
                 school_group_timeline_path(school_group), class: 'dropdown-item' %>
     <% if current_user.admin? %>
       <div class="dropdown-divider"></div>
+      <% if school_group.organisation? %>
+        <%= link_to t('school_groups.sub_nav.contracts'),
+                    admin_school_group_contracts_path(school_group), class: 'dropdown-item' %>
+      <% end %>
       <%= link_to t('school_groups.sub_nav.edit_group'),
                   edit_admin_school_group_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.group_admin'),
@@ -55,6 +59,8 @@
 
       <%= link_to 'Issues',
                   admin_school_group_issues_path(school_group), class: 'dropdown-item' %>
+      <%= link_to t('school_groups.sub_nav.licence_summaries'),
+                  admin_school_group_licence_summaries_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.manage_users'),
                   admin_school_group_users_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.manage_partners'),

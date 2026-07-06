@@ -426,8 +426,10 @@ en:
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters
+      contracts: Contracts
       edit_group: Edit group
       group_admin: Group admin
+      licence_summaries: Licence Summaries
       manage_group: Manage Group
       manage_partners: Manage partners
       manage_users: Manage users
