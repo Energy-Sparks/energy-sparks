@@ -69,7 +69,7 @@ module Columns
   def csv_report(columns, rows)
     csv_columns = columns.filter(&:display_csv)
     CSV.generate(headers: true) do |csv|
-      csv << csv_columns.map(&:name)
+      csv << csv_columns.map(&:display_name)
       rows.each do |row|
         csv << csv_columns.map { |column| column.csv(row) }
       end

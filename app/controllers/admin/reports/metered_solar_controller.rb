@@ -33,7 +33,7 @@ module Admin
                    display: :html, html_data: { sortable: false })
       end
 
-      def results = filter_results(Report::Table::MeteredSolarTable.query)
+      def results = filter_results(Report::MeteredSolar.query)
 
       def filter_results(results)
         filtered = super
