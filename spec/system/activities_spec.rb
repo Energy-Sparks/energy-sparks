@@ -55,7 +55,7 @@ describe 'viewing and recording activities' do
       end
 
       it 'displays navigation' do
-        expect(page).to have_link("View #{activity_category.activity_types.count} related activity")
+        expect(page).to have_link("View #{activity_category.activity_types.count} activity in this category")
       end
 
       it 'displays resource links' do
