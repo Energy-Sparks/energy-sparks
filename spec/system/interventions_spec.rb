@@ -56,7 +56,7 @@ describe 'viewing and recording action' do
 
       it 'displays prompt to login' do
         expect(page).to have_text('Are you an Energy Sparks user?')
-        expect(page).to have_link('Sign in to record action')
+        expect(page).to have_link('Record action')
       end
     end
 
@@ -68,7 +68,7 @@ describe 'viewing and recording action' do
       end
 
       it 'redirects back to intervention after login' do
-        click_on 'Sign in to record action'
+        click_on 'Record action'
         fill_in 'Email', with: staff.email
         fill_in 'Password', with: staff.password
         within '#staff' do

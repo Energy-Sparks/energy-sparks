@@ -23,8 +23,10 @@
   </div>
 
   <% if current_user.nil? %>
-    <%= render 'shared/activities/prompt_login_to_record', label: 'action', score: @intervention_type.score,
-                                                           return_path: intervention_type_path(@intervention_type) %>
+    <%= render 'shared/activities/prompt_login_to_record',
+               label: t('common.labels.action').downcase,
+               score: @intervention_type.score,
+               return_path: intervention_type_path(@intervention_type) %>
   <% end %>
 
   <% if can?(:create, Observation) && @can_be_completed_for_schools.present? %>

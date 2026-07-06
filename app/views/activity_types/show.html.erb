@@ -31,7 +31,7 @@
       <% end %>
       <% if current_user.nil? %>
         <%= render 'shared/activities/prompt_login_to_record',
-                   label: 'activity',
+                   label: t('common.labels.activity').downcase,
                    score: @activity_type.score,
                    return_path: activity_type_path(@activity_type) %>
       <% end %>

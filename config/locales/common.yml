@@ -20,6 +20,7 @@ en:
     feature_not_available: This feature is not available
     gas: Gas
     labels:
+      action: Action
       actions: Actions
       activate: Activate
       active: Active

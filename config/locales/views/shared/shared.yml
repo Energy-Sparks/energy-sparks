@@ -20,6 +20,7 @@ en:
       previously_completed: "%{label} previously completed"
     prompt_login_to_record:
       are_you_an_energy_sparks_user: Are you an Energy Sparks user?
+      record_this_html: Record this %{label}
       sign_in_html:
         one: Sign in now to record this %{label} and score your school <strong>1</strong> point!
         other: Sign in now to record this %{label} and score your school <strong>%{count}</strong> points!
