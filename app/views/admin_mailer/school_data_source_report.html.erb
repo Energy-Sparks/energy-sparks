@@ -7,6 +7,8 @@
       <th>School</th>
       <th>MPAN/MPRN</th>
       <th>Meter type</th>
+      <th>Supplier</th>
+      <th>Data Source</th>
       <th>Active</th>
       <th>Half-Hourly</th>
       <th>First validated meter reading</th>
@@ -34,6 +36,8 @@
           <% end %>
         </td>
         <td><%= meter&.meter_type&.humanize %></td>
+        <td><%= meter&.supplier&.name %></td>
+        <td><%= meter&.data_source&.name %></td>
         <td><%= meter&.active %></td>
         <td><%= meter.t_meter_system %></td>
         <td><%= meter&.first_validated_reading %></td>
