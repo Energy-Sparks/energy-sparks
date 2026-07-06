@@ -6,7 +6,7 @@ module Admin
       private
 
       def columns
-        column_names = %i[school_group admin school meter data_source supplier meter_status]
+        column_names = %i[school_group admin school meter data_source supplier admin_meter_status]
         columns = super.filter { |column| column_names.include?(column.name) }
         columns.insert(4, BoolColumn.new(:active))
         columns + [

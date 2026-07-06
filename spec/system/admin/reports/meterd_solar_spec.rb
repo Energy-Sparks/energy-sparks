@@ -22,7 +22,7 @@ describe 'Meter solar report' do
     let(:table_id) { '.advice-table' }
     let(:expected_header) do
       [['School Group', 'Admin', 'School', 'Meter', 'Active',
-        'Supplier', 'Data Source', 'Meter Status', 'Real Generation Meters',
+        'Supplier', 'Data Source', 'Admin Meter Status', 'Real Generation Meters',
         'Modelled Solar Pv Generation?', 'Modelled Solar?', 'Solar Overrides?', '']]
     end
     let(:expected_rows) do
@@ -38,7 +38,7 @@ describe 'Meter solar report' do
     it 'is correct' do
       expect(CSV.parse(page.body)).to eq(
         [['School Group', 'Admin', 'School', 'Meter', 'Active',
-          'Supplier', 'Data Source', 'Meter Status', 'Real Generation Meters',
+          'Supplier', 'Data Source', 'Admin Meter Status', 'Real Generation Meters',
           'Modelled Solar Pv Generation?', 'Modelled Solar?', 'Solar Overrides?'],
          [school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s, 'Yes',
           meter.supplier.name, meter.data_source.name, meter.admin_meter_status.label, '1',
