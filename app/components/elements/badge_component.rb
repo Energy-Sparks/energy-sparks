@@ -2,7 +2,7 @@ module Elements
   class BadgeComponent < ApplicationComponent
     def initialize(text = nil, pill: false, colour: nil, **_kwargs)
       super
-      self.class.raise_unknown_variant_error(colour: colour) if colour
+      validate_colour_variant(colour: colour) if colour
       @text = text
 
       add_classes('d-inline-flex align-items-center badge')

@@ -1,9 +1,7 @@
 <%= tag.div id: id, class: classes do %>
-  <% if tags.any? %>
+  <% if render_tags?(:top) %>
     <div class='pb-2'>
-      <% tags.each do |tag| %>
-        <%= tag %>
-      <% end %>
+      <%= render_tags %>
     </div>
   <% end %>
   <%= header %>
@@ -29,6 +27,11 @@
   <% end %>
   <% links.each do |link| %>
     <%= link %>
+  <% end %>
+  <% if render_tags?(:bottom) %>
+    <div class='pb-2 mt-auto'>
+      <%= render_tags %>
+    </div>
   <% end %>
   <%= placeholder %>
 <% end %>

@@ -35,11 +35,9 @@
         <% else %>
           <div class="col">
             <%= content_action || content %>
-            <p>
-              <% if link %>
-                <%= link %>
-              <% end %>
-            </p>
+            <% if link %>
+              <%= link %>
+            <% end %>
           </div>
         <% end %>
       </div>

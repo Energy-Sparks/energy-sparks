@@ -5,11 +5,12 @@ class ActivityTypesController < ApplicationController
 
   before_action :enable_bootstrap5, only: [:show]
   before_action :handle_head_request, only: [:show]
-  before_action :set_breadcrumbs
 
   layout 'task', only: [:show]
 
   load_and_authorize_resource
+  before_action :set_breadcrumbs, only: [:show]
+
   skip_before_action :authenticate_user!, only: %i[show search for_school]
 
   def search
@@ -91,12 +92,25 @@ class ActivityTypesController < ApplicationController
 
   def activity_types_badge_class(list, item, color)
     item = CGI.escape(item)
-    ['badge', list&.include?(item) ? "badge-#{color}" : 'badge-light outline'].join(' ')
+    ['badge', list&.include?(item) ? "text-bg-#{color}" : 'badge-light outline'].join(' ')
   end
   helper_method :activity_types_badge_class
 
   def set_breadcrumbs
-    @breadcrumbs = [{ name: t('common.labels.pupil_activities'),
-                      href: activity_categories_path }, { name: 'Record' }]
+    @breadcrumbs = [
+      {
+        name: t('common.labels.pupil_activities'),
+        href: activity_categories_path
+      }
+    ]
+
+    if @activity_type.activity_category.present?
+      @breadcrumbs << {
+        name: @activity_type.activity_category.name,
+        href: activity_category_path(@activity_type.activity_category)
+      }
+    end
+
+    @breadcrumbs << { name: @activity_type.name }
   end
 end
