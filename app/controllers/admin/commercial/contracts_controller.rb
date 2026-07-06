@@ -96,6 +96,10 @@ module Admin
           renew_licences(@contract)
           redirect_to(admin_commercial_contract_path(@contract),
                       notice: 'Contract and provisional licences have been created')
+        elsif @contract.contract_holder.is_a?(School)
+          ::Commercial::LicenceManager.new(@contract.contract_holder).school_onboarded(@contract)
+          redirect_to(admin_commercial_contract_path(@contract),
+                      notice: 'Contract has been created and school licence added')
         else
           redirect_to(admin_commercial_contract_path(@contract), notice: 'Contract has been created')
         end
