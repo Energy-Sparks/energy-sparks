@@ -4,7 +4,7 @@
       <% c.with_body do %>
         <%= t('activities.prompt_login_to_record.sign_in_html', label: label, count: score) %>        <% end %>
       <% c.with_action do %>
-        <%= link_to t('activities.prompt_login_to_record.sign_in_to_record_html', label: label),
+        <%= link_to t('activity_types.show.record_this_activity'),
                     sign_in_and_redirect_path(url: return_path), class: 'btn btn-primary text-nowrap' %>
       <% end %>
   <% end %>
