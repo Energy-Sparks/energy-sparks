@@ -64,7 +64,7 @@ describe 'viewing and recording activities' do
 
       it 'displays prompt to login' do
         expect(page).to have_text('Are you an Energy Sparks user?')
-        expect(page).to have_link('Sign in to record activity')
+        expect(page).to have_link('Record this activity')
       end
     end
 
@@ -72,7 +72,7 @@ describe 'viewing and recording activities' do
       let!(:staff) { create(:staff, school:) }
 
       it 'redirects back to activity after login' do
-        click_on 'Sign in to record activity'
+        click_on 'Record this activity'
         fill_in 'Email', with: staff.email
         fill_in 'Password', with: staff.password
         within '#staff' do
