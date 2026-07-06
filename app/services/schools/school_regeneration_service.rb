@@ -14,6 +14,7 @@ module Schools
       if continue
         cache_meter_collection(meter_collection)
         regenerate_school_metrics(meter_collection)
+        cache_meter_collection(meter_collection)
         true
       else
         @logger.error('Unable to continue with regeneration')

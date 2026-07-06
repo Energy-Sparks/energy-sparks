@@ -496,4 +496,47 @@ describe Commercial::Contract do
       expect(described_class.pending_invoicing).to contain_exactly(funder_contract)
     end
   end
+
+  describe '#candidate_schools' do
+    context 'with School' do
+      let!(:contract) { create(:commercial_contract, :with_school) }
+
+      it { expect(contract.candidate_schools).to eq([]) }
+    end
+
+    context 'with Funder' do
+      let!(:school) { create(:school) }
+      let!(:contract) { create(:commercial_contract, :with_funder) }
+
+      it { expect(contract.candidate_schools).to eq([school]) }
+
+      context 'with an already licensed school' do
+        let!(:school) { create(:school) }
+
+        before do
+          create(:commercial_licence, contract:)
+        end
+
+        it { expect(contract.candidate_schools).to eq([school]) }
+      end
+    end
+
+    context 'with SchoolGroup' do
+      let!(:school_group) { create(:school_group, :with_active_schools) }
+      let!(:contract) { create(:commercial_contract, contract_holder: school_group) }
+
+      it { expect(contract.candidate_schools).to eq(school_group.assigned_schools.by_name) }
+
+      context 'with an already licensed school' do
+        let!(:school_group) { create(:school_group) }
+        let!(:school) { create(:school, school_group:) }
+
+        before do
+          create(:commercial_licence, contract:, school: create(:school, school_group:))
+        end
+
+        it { expect(contract.candidate_schools).to eq([school]) }
+      end
+    end
+  end
 end

@@ -15,7 +15,8 @@ RSpec.describe Commercial::LineItemsComponent, :include_application_helper, :inc
       let(:table_id) { "#invoice-#{invoice.id}-line-items-table" }
       let(:expected_header) do
         [
-          ['School Group', 'School', 'Private Account?', 'Number of Meters',
+          ['School', 'Licence', 'Fees'],
+          ['School Group', 'School', 'Private Account?', 'Number of Meters', 'Start date', 'End date',
            'Base price', 'Metering fee', 'Private account fee', 'Total']
         ]
       end
@@ -26,6 +27,8 @@ RSpec.describe Commercial::LineItemsComponent, :include_application_helper, :inc
             line_item.school.name,
             'No',
             '0',
+            line_item.licence.start_date.to_fs(:es_short),
+            line_item.licence.end_date.to_fs(:es_short),
             format_price(line_item.value.base_price),
             format_price(line_item.value.metering_fee),
             format_price(line_item.value.private_account_fee),
