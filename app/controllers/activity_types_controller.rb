@@ -34,7 +34,7 @@ class ActivityTypesController < ApplicationController
   end
 
   def for_school
-    school = School.find(params.expect(:school_id))
+    school = School.find(params[:school_id])
     redirect_to new_school_activity_path(school, activity_type_id: @activity_type.id)
   end
 
@@ -67,7 +67,7 @@ class ActivityTypesController < ApplicationController
 
   def limit_params(name, model)
     if params[name]
-      model.where(name: params.expect(name).split(',').map { |s| CGI.unescape(s.strip) })
+      model.where(name: params[name].split(',').map { |s| CGI.unescape(s.strip) })
     else
       []
     end
@@ -92,7 +92,7 @@ class ActivityTypesController < ApplicationController
 
   def activity_types_badge_class(list, item, color)
     item = CGI.escape(item)
-    ['badge', list&.include?(item) ? "text-bg-#{color}" : 'badge-light outline'].join(' ')
+    ['badge', list&.include?(item) ? "text-bg-#{color}" : 'text-bg-light outline'].join(' ')
   end
   helper_method :activity_types_badge_class
 

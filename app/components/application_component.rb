@@ -64,7 +64,7 @@ class ApplicationComponent < ViewComponent::Base
     return if permitted.include?(value.to_sym)
 
     raise ArgumentError,
-          "Unknown #{value} is not a permitted value for #{attribute}. " \
+          "Unknown '#{value}' is not a permitted value for #{attribute}. " \
           "Must be one of: #{permitted.to_sentence(two_words_connector: ' or ')}"
   end
 

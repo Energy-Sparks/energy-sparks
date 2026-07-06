@@ -59,7 +59,7 @@ RSpec.describe Elements::BadgeComponent, :include_application_helper, type: :com
     context 'when the colour is unrecognised' do
       let(:colour) { :notgood }
 
-      it { expect { html }.to raise_error(ArgumentError, 'Unknown :notgood is not a permitted value for colour. Must be one of: primary, secondary, success, info, warning, danger, light, and dark') }
+      it { expect { html }.to raise_error(ArgumentError, 'Unknown \'notgood\' is not a permitted value for colour. Must be one of: primary, secondary, success, info, warning, danger, light, and dark') }
     end
   end
 end
