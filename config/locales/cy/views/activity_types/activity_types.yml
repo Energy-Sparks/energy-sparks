@@ -37,11 +37,6 @@ cy:
       download_resources: Lawrlwytho adnoddau
       record_this_activity: Cofnodi'r gweithgaredd hwn
       select_school: Dewiswch ysgol...
-      view_related_activities:
-        one: Gweld 1 gweithgaredd cysylltiedig
-        two: Gweld %{count} weithgaredd cysylltiedig
-        many: Gweld %{count} o weithgareddau cysylltiedig
-        other: Gweld %{count} o weithgareddau cysylltiedig
     subjects: Pynciau
     timings: Amseroedd
     topics: Testunau

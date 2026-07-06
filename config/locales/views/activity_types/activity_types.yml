@@ -32,17 +32,11 @@ en:
         other: Complete this activity to score your school <strong>%{count}</strong> points!
       download_resources: Download resources
       record_this_activity: Record this activity
-      related_activities:
-        one: Related activity
-        other: Related activities
       related_programmes: Related programmes
       select_school: Select a school...
       view_category_activities:
         one: View 1 activity in this category
         other: View %{count} activities in this category
-      view_related_activities:
-        one: View 1 related activity
-        other: View %{count} related activities
     subjects: Subjects
     timings: Timings
     topics: Topics
