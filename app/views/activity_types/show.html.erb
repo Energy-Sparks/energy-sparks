@@ -1,4 +1,4 @@
-<%# cache_if current_user.nil?, [@activity_type, I18n.locale], expires_in: 1.hour do %>
+<% cache_if current_user.nil?, [@activity_type, I18n.locale], expires_in: 1.hour do %>
   <% content_for :page_title do %>
     <%= @activity_type.name %>
   <% end %>
@@ -86,4 +86,4 @@
       <% end %>
     </div>
   </div>
-  <%# end %>
+<% end %>
