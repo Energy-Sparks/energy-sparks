@@ -11,7 +11,8 @@ module Admin
                                              :created_by,
                                              school: :school_group,
                                              rich_text_description: { embeds_attachments: :blob })
-                                   .intervention.recorded_in_last_year.order(created_at: :desc)
+                                   .intervention
+                                   .recorded_in_last_year.order(created_at: :desc)
         @observations = @observations.for_school_group(params[:school_group]) if params[:school_group].present?
         @observations = @observations.for_admin(params[:admin]) if params[:admin].present?
         @observations = @observations.for_school(params[:school]) if params[:school].present?
