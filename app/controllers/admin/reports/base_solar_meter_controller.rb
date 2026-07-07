@@ -2,10 +2,8 @@
 
 module Admin
   module Reports
-    class MeteredSolarController < BaseImportReportsController
+    class BaseSolarMeterController < BaseImportReportsController
       private
-
-      def title = 'Metered Solar'
 
       def columns
         column_names = %i[school_group admin school meter data_source supplier admin_meter_status]
@@ -13,30 +11,12 @@ module Admin
         columns.insert(column_names.index(:meter) + 1, BoolColumn.new(:active))
         columns + [date_column(:start_date),
                    date_column(:end_date),
-                   real_generation_meters_column,
-                   BoolColumn.new(:modelled_solar_pv_generation, :has_modelled_solar_pv_generation_attribute),
-                   BoolColumn.new(:modelled_solar, :has_solar_pv_attribute),
-                   BoolColumn.new(:solar_overrides, :has_solar_pv_override_attribute),
-                   export_column,
                    action_column]
       end
 
       def date_column(type) = Column.new(type, ->(meter) { date_parse(meter.solar_pv_mapping_data[type.to_s]) })
 
       def date_parse(date) = date.present? ? Date.parse(date) : nil
-
-      def real_generation_meters_column
-        Column.new(:real_generation_meters,
-                   lambda { |meter|
-                     meter.solar_pv_mapping_data.count do |key, value|
-                       key.start_with?('production_') && value.present?
-                     end
-                   })
-      end
-
-      def export_column
-        BoolColumn.new(:export, ->(meter) { meter.solar_pv_mapping_data['export_mpan'].present? })
-      end
 
       def action_column
         Column.new('', nil,
@@ -48,7 +28,7 @@ module Admin
       end
 
       def results
-        filtered = filter_results(Report::MeteredSolar.query)
+        filtered = filter_results(query)
         filtered = filtered.where(school: School.find(params.expect(:school))) if params[:school].present?
         filtered
       end
