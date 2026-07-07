@@ -11,25 +11,19 @@ module Admin
         column_names = %i[school_group admin school meter data_source supplier admin_meter_status]
         columns = super.filter { |column| column_names.include?(column.name) }
         columns.insert(column_names.index(:meter) + 1, BoolColumn.new(:active))
-        columns + [
-          start_date_column,
-          end_date_column,
-          real_generation_meters_column,
-          BoolColumn.new(:modelled_solar_pv_generation, :has_modelled_solar_pv_generation_attribute),
-          BoolColumn.new(:modelled_solar, :has_solar_pv_attribute),
-          BoolColumn.new(:solar_overrides, :has_solar_pv_override_attribute),
-          export_column,
-          action_column
-        ]
+        columns + [date_column(:start_date),
+                   date_column(:end_date),
+                   real_generation_meters_column,
+                   BoolColumn.new(:modelled_solar_pv_generation, :has_modelled_solar_pv_generation_attribute),
+                   BoolColumn.new(:modelled_solar, :has_solar_pv_attribute),
+                   BoolColumn.new(:solar_overrides, :has_solar_pv_override_attribute),
+                   export_column,
+                   action_column]
       end
-
-      def start_date_column = date_column(:start_date)
-
-      def end_date_column = date_column(:end_date)
 
       def date_column(type) = Column.new(type, ->(meter) { date_parse(meter.solar_pv_mapping_data[type.to_s]) })
 
-      def date_parse(date) = s.present? ? Date.parse(date) : nil
+      def date_parse(date) = date.present? ? Date.parse(date) : nil
 
       def real_generation_meters_column
         Column.new(:real_generation_meters,
