@@ -53,8 +53,13 @@ module Columns
   class BoolColumn < Column
     include ApplicationHelper
 
-    def initialize(name, accessor = nil)
-      super(name, ->(arg) { arg.public_send(accessor || name) })
+    def initialize(name, lambda_or_accessor = nil)
+      lambda = if lambda_or_accessor.is_a?(Proc)
+                 lambda_or_accessor
+               else
+                 ->(arg) { arg.public_send(lambda_or_accessor || name) }
+               end
+      super(name, lambda)
     end
 
     def csv(arg)
