@@ -2,12 +2,12 @@
   <%= form_tag url_for(controller: controller_path, action: :index, only_path: true),
                method: :get, class: 'w-100' do |f| %>
     <div class="d-flex flex-wrap align-items-end gap-2">
-      <%= render 'filter',
+      <%= render 'admin/reports/base_meter_reports/filter',
                  field: :school_group,
                  options: options_from_collection_for_select(SchoolGroup.organisation_groups.by_name, :id, :name,
                                                              params[:school_group]),
                  blank: 'Any School Group' %>
-      <%= render 'filter',
+      <%= render 'admin/reports/base_meter_reports/filter',
                  field: :admin,
                  options: options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:admin]),
                  blank: 'Any Admin User' %>
