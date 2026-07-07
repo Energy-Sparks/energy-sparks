@@ -27,7 +27,7 @@ describe 'Meter solar report' do
     end
     let(:expected_rows) do
       [[school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s, '',
-        meter.supplier.name, meter.data_source.name, meter.admin_meter_status.label, '01/01/2023', '01/01/2024', '1',
+        meter.supplier.name, meter.data_source.name, meter.admin_meter_status.label, '2023-01-01', '2024-01-01', '1',
         '', '', '', '', 'Attributes']]
     end
   end
@@ -38,11 +38,11 @@ describe 'Meter solar report' do
     it 'is correct' do
       expect(CSV.parse(page.body)).to eq(
         [['School Group', 'Admin', 'School', 'Meter', 'Active',
-          'Supplier', 'Data Source', 'Admin Meter Status', 'Start Date', 'End Date', 'Real Generation Meters',
-          'Modelled Solar Pv Generation', 'Modelled Solar', 'Solar Overrides', 'Export'],
+          'Supplier', 'Data Source', 'Admin Meter Status', 'Start Date', 'End Date',
+          'Real Generation Meters', 'Modelled Solar Pv Generation', 'Modelled Solar', 'Solar Overrides', 'Export'],
          [school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s, 'Yes',
-          meter.supplier.name, meter.data_source.name, meter.admin_meter_status.label, '01/01/2023', '01/01/2024', '1',
-          'No', 'Yes', 'No', 'Yes']]
+          meter.supplier.name, meter.data_source.name, meter.admin_meter_status.label, '2023-01-01', '2024-01-01',
+          '1', 'No', 'Yes', 'No', 'Yes']]
       )
     end
   end
