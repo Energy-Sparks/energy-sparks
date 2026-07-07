@@ -46,7 +46,10 @@ module Admin
 
       def action_column
         Column.new('', nil,
-                   ->(meter) { link_to('Attributes', admin_school_single_meter_attribute_path(meter.school, meter)) },
+                   lambda { |meter|
+                     link_to('Attributes', admin_school_single_meter_attribute_path(meter.school, meter),
+                             class: 'btn btn-sm btn-secondary')
+                   },
                    display: :html, html_data: { sortable: false })
       end
 
