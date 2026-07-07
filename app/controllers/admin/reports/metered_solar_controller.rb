@@ -8,7 +8,7 @@ module Admin
       def columns
         column_names = %i[school_group admin school meter data_source supplier admin_meter_status]
         columns = super.filter { |column| column_names.include?(column.name) }
-        columns.insert(4, BoolColumn.new(:active))
+        columns.insert(column_names.index(:meter) + 1, BoolColumn.new(:active))
         columns + [
           real_generation_meters_column,
           BoolColumn.new(:modelled_solar_pv_generation?, :has_modelled_solar_pv_generation_attribute),
