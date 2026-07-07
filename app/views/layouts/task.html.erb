@@ -8,7 +8,14 @@
     </div>
   <% end %>
   <div class='container'>
-    <%= yield %>
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <%= yield %>
+      </div>
+      <div class="col-md-4">
+        <%= yield :rightcol %>
+      </div>
+    </div>
   </div>
 <% end %>
 <%= render template: 'layouts/page' %>
