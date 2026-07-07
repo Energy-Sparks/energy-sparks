@@ -10,6 +10,7 @@ module Admin
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
 
+      before_action :enable_bootstrap5
       before_action :set_metadata
 
       layout 'admin_reports'

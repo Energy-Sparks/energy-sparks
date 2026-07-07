@@ -15,7 +15,7 @@ module Report
     end
 
     def self.query
-      Meter.joins(:school)
+      Meter.joins(school: :school_group)
            .joins("JOIN meter_attributes solar_pv_mapping_attributes
                     ON solar_pv_mapping_attributes.meter_id = meters.id
                     #{active_attribute(:solar_pv_mpan_meter_mapping, :solar_pv_mapping_attributes)}")

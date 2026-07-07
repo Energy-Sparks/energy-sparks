@@ -23,9 +23,13 @@ module Admin
         ]
       end
 
-      def start_date_column = Column.new(:start_date, ->(meter) { meter.solar_pv_mapping_data['start_date'] })
+      def start_date_column = date_column(:start_date)
 
-      def end_date_column = Column.new(:end_date, ->(meter) { meter.solar_pv_mapping_data['end_date'] })
+      def end_date_column = date_column(:end_date)
+
+      def date_column(type) = Column.new(type, ->(meter) { date_parse(meter.solar_pv_mapping_data[type.to_s]) })
+
+      def date_parse(date) = s.present? ? Date.parse(date) : nil
 
       def real_generation_meters_column
         Column.new(:real_generation_meters,

@@ -1,4 +1,4 @@
-<span class="nowrap">
+<div>
   <%= label_tag field, nil, class: 'small' %>
-  <%= select_tag field, options, include_blank: blank, class: 'form-control-sm' %>
-</span>
+  <%= select_tag field, options, include_blank: (blank if defined? blank), class: 'form-control-sm' %>
+</div>
