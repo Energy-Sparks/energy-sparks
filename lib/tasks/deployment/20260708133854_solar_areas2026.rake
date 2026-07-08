@@ -26,6 +26,10 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
         back_fill_years: 8
       )
       area.save!
+
+      # If there was an existing area with same gsp_id then remove it
+      # Means the boundaries have changed
+      SolarPvTuosArea.where(gsp_id: row['gsp_id']).where.not(id: area.id).update(gsp_id: nil)
     end
 
     # Reassign schools to areas
@@ -34,9 +38,7 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
     end
 
     # Disable any areas not currently linked to schools
-    SolarPvTuosArea.find_each do |area|
-      area.update!(active: false) unless area.schools.active.any?
-    end
+    SolarPvTuosArea.where.not(id: School.active.select(:solar_pv_tuos_area_id)).update_all(active: false) # rubocop:disable Rails/SkipsModelValidations
 
     # Remove no longer updating areas and ensure any older unused areas are removed.
     SolarPvTuosArea.where(gsp_id: nil).destroy_all
