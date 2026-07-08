@@ -38,7 +38,7 @@ describe 'viewing and recording action' do
       end
 
       it 'displays score' do
-        expect(page).to have_text("#{intervention_type.score} points for this action")
+        expect(page).to have_text("#{intervention_type.score} points")
       end
 
       it 'displays description' do

@@ -110,7 +110,7 @@ describe 'Intervention Types', type: :system do
       refresh
       click_on intervention_type.name
       expect(page).to have_text('Overview')
-      expect(page).to have_text('99 points for this action')
+      expect(page).to have_text('99 points')
     end
 
     it 'can add and remove suggested next actions' do

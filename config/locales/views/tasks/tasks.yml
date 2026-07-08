@@ -36,6 +36,9 @@ en:
         completed_on: 'on'
         previously_completed: "%{label} previously completed"
     related_programmes: Related programmes
+    score:
+      action: Score for this action
+      activity: Score for this activity
     select_school: Select a school...
     show:
       action:
@@ -43,8 +46,8 @@ en:
           one: Complete this action on behalf of a school to score <strong>1</strong> point!
           other: Complete this action on behalf of a school to score <strong>%{count}</strong> points!
         complete_this_html:
-          one: Complete this action to score <strong>1</strong> point!
-          other: Complete this action to score <strong>%{count}</strong> points!
+          one: Complete this action to score your school <strong>1</strong> point!
+          other: Complete this action to score your school <strong>%{count}</strong> points!
         record_this: Record this action
         view_category_tasks:
           one: View 1 action in this category
@@ -54,8 +57,8 @@ en:
           one: Complete this activity on behalf of a school to score <strong>1</strong> point!
           other: Complete this activity on behalf of a school to score <strong>%{count}</strong> points!
         complete_this_html:
-          one: Complete this activity to score <strong>1</strong> point!
-          other: Complete this activity to score <strong>%{count}</strong> points!
+          one: Complete this activity to score your school <strong>1</strong> point!
+          other: Complete this activity to score your school <strong>%{count}</strong> points!
         record_this: Record this activity
         view_category_tasks:
           one: View 1 activity in this category

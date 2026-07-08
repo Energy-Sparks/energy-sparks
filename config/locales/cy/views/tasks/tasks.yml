@@ -2,6 +2,18 @@ cy:
   tasks:
     download_resources: Lawrlwytho adnoddau
     select_school: Dewiswch ysgol...
+    prompts:
+      login_to_record:
+        are_you_an_energy_sparks_user: Ydych chi'n ddefnyddiwr Sbarcynni
+        sign_in_html:
+          one: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>1</strong> pwynt i'ch ysgol!
+          two: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> bwynt i'ch ysgol!
+          many: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+          other: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+      previous_records:
+        completed_most_recently_on: yn fwyaf diweddar ar
+        completed_on: 'ar'
+        previously_completed: "%{label} wedi'i gwblhau o'r blaen"
     complete:
       action: Cwblhau gweithred
       activity: Cwblhau gweithgaredd
