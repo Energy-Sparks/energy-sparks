@@ -1,5 +1,7 @@
 cy:
   tasks:
+    download_resources: Lawrlwytho adnoddau
+    select_school: Dewiswch ysgol...
     complete:
       action: Cwblhau gweithred
       activity: Cwblhau gweithgaredd
@@ -23,3 +25,28 @@ cy:
     view:
       action: Gweld gweithred
       activity: Gweld gweithgaredd
+    show:
+      activity:
+        complete_this_for_group_html:
+          one: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>1</strong> pwynt!
+          two: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+          many: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+          other: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        complete_this_html:
+          one: Cwblhewch y gweithgaredd hwn i sgorio <strong>1</strong> pwynt!
+          two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
+          many: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+          other: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+        record_this: Cofnodi'r gweithgaredd hwn
+      action:
+        complete_this_html:
+          one: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> pwynt i'th ysgol!
+          two: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> bwynt i'th ysgol!
+          many: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> o bwyntiau i'th ysgol!
+          other: Cwblhewch y weithred hon i sgorio <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+        complete_this_for_group_html:
+          one: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+          two: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+          many: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+          other: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        record_this: Cofnodi'r weithred hon

@@ -3,86 +3,49 @@
     <%= @activity_type.name %>
   <% end %>
 
-  <% content_for(:header) do %>
-    <%= render Layout::GridComponent.new(cols: 2, classes: 'pb-4', id: 'feature') do |grid| %>
-      <%= grid.with_feature_card(tag_position: :bottom, size: :lg, classes: 'h-100', column_classes: 'col-12 col-md-8') do |feature| %>
-        <%= feature.with_header(title: @activity_type.name) %>
-        <%= feature.with_description { @activity_type.summary } %>
-        <%= feature.with_tag(t('nav.points', count: @activity_type.score),
-                             colour: :success, tooltip: t('activity_types.score_for_this_activity')) %>
-        <% @activity_type.key_stages.order(:name).each do |key_stage| %>
-          <%= feature.with_tag(t(key_stage.i18n_key), colour: :info, tooltip: t('activity_types.key_stages')) %>
-        <% end %>
-        <% @activity_type.subjects.order(:name).each do |subject| %>
-          <%= feature.with_tag(t(subject.i18n_key), colour: :warning, tooltip: t('activity_types.subjects')) %>
-        <% end %>
-      <% end %>
-      <%= grid.with_image(
-            src: @activity_type.t_attached_or_default(:image, placeholder: 'placeholder300x200.png'),
-            column_classes: 'col-12 col-md-4', height: '300px', fit: true, rounded: :all
-          ) %>
-    <% end %>
+  <% content_for :header do %>
+    <%= render 'shared/tasks/header', task: @activity_type %>
   <% end %>
 
   <% content_for :rightcol do %>
-    <% if @activity_type.download_links.present? %>
-      <%= render Layout::Cards::FeatureComponent.new(size: :sm, classes: 'mb-4') do |feature| %>
-        <%= feature.with_header(
-              title: "#{render(Elements::IconComponent.new(name: 'download'))} " \
-                      "#{t('activity_types.show.download_resources')}".html_safe
-            ) %>
-        <%= feature.with_block do %>
-          <%= @activity_type.download_links.to_s.html_safe %>
-        <% end %>
-      <% end %>
-    <% end %>
-    <% if @activity_type.activity_category %>
-      <%= render Layout::Cards::FeatureComponent.new(size: :sm, classes: 'mb-4') do |feature| %>
-        <%= feature.with_header(
-              title: "#{render(Elements::IconComponent.new(name: 'folder'))} " \
-                      "#{t('activity_types.category', category: @activity_type.activity_category.name)}".html_safe
-            ) %>
-        <%= feature.with_link(href: activity_category_path(@activity_type.activity_category)) do %>
-          <%= t('activity_types.show.view_category_activities',
-                count: @activity_type.activity_category.activity_types.count) %>
-        <% end %>
-      <% end %>
-    <% end %>
-    <% if @activity_type.programme_types_todo.active.any? %>
-      <%= render Layout::Cards::FeatureComponent.new(size: :sm, classes: 'mb-4') do |feature| %>
-        <%= feature.with_header(
-              title: "#{render(Elements::IconComponent.new(name: 'tasks'))} " \
-                      "#{t('activity_types.show.related_programmes')}".html_safe
-            ) %>
-        <% @activity_type.programme_types_todo.active.each do |programme_type| %>
-          <%= feature.with_link(href: programme_type_path(programme_type)) { programme_type.title } %>
-        <% end %>
-      <% end %>
-    <% end %>
+    <%= render 'shared/tasks/rightcol/download_links', task: @activity_type %>
+    <%= render 'shared/tasks/rightcol/category', task: @activity_type %>
+    <%= render 'shared/tasks/rightcol/programmes', task: @activity_type %>
   <% end %>
 
-  <% unless @activity_type.activities_for_school(current_user_school).empty? %>
-    <%= render 'activity_types/previous_records',
-               activities: @activity_type.activities_for_school(current_user_school).by_date,
-               school: current_user_school %>
+  <% if current_user_school && @activity_type.activities_for_school(current_user_school).any? %>
+    <%= render 'shared/tasks/prompts/previous_records',
+               label: t('common.labels.activity'),
+               recordings: @activity_type.activities_for_school(current_user_school).by_date,
+               school: current_user_school,
+               path_helper: :school_activity_path %>
   <% end %>
+
   <% if current_user.nil? %>
-    <%= render 'shared/activities/prompt_login_to_record',
+    <%= render 'shared/tasks/prompts/login_to_record',
                label: t('common.labels.activity').downcase,
                score: @activity_type.score,
                return_path: activity_type_path(@activity_type) %>
   <% end %>
-  <% if can?(:create, Activity) && @can_be_completed_for_schools.present? %>
-    <% if @can_be_completed_for_schools.one? %>
-      <%= render 'activity_types/prompt_score', activity_type: @activity_type,
-                                                school: @can_be_completed_for_schools.first %>
+  <% if can?(:create, Activity) && @available_schools_for_user.present? %>
+    <% if @available_schools_for_user.one? %>
+      <%= render 'shared/tasks/prompts/score', task: @activity_type,
+                                               url: new_school_activity_path(
+                                                 @available_schools_for_user.first,
+                                                 activity_type_id: @activity_type.id
+                                               ),
+                                               school: @available_schools_for_user.first %>
     <% else %>
-      <%= render 'activity_types/prompt_score_for_group', activity_type: @activity_type,
-                                                          schools: @can_be_completed_for_schools %>
+      <%= render 'shared/tasks/prompts/score_for_group', task: @activity_type,
+                                                         url: for_school_activity_type_path(@activity_type),
+                                                         schools: @available_schools_for_user %>
     <% end %>
   <% end %>
-  <div class="activity_type">
-    <h3 class="pt-0"><%= t('activity_types.overview') %></h3>
-    <%= @activity_type_content %>
-  </div>
+  <h3 class="pt-0"><%= t('common.labels.overview') %></h3>
+  <%= @activity_type_content %>
+
+  <% if can?(:edit, @activity_type) %>
+    <p><%= admin_button edit_admin_activity_type_path(@activity_type),
+                        classes: 'btn btn-default' %></p>
+  <% end %>
 <% end %>

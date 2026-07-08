@@ -1,6 +1,7 @@
 class InterventionTypesController < ApplicationController
   include Pagy::Backend
   load_and_authorize_resource
+  layout 'task', only: [:show]
 
   before_action :enable_bootstrap5, only: [:show]
   before_action :handle_head_request, only: [:show]
@@ -19,7 +20,7 @@ class InterventionTypesController < ApplicationController
     if current_user_school
       @interventions = current_user_school.observations.includes(:intervention_type).intervention.where(intervention_type: @intervention_type).visible.by_date
     end
-    @can_be_completed_for_schools = current_user.schools(current_ability:) if current_user
+    @available_schools_for_user = current_user.schools(current_ability:) if current_user
   end
 
   def for_school

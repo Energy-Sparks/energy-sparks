@@ -30,7 +30,7 @@ class ActivityTypesController < ApplicationController
                              else
                                @activity_type.description
                              end
-    @can_be_completed_for_schools = can_be_completed_for_schools(@activity_type, current_user) if current_user
+    @available_schools_for_user = available_schools_for_user(@activity_type, current_user) if current_user
   end
 
   def for_school
@@ -40,7 +40,7 @@ class ActivityTypesController < ApplicationController
 
   private
 
-  def can_be_completed_for_schools(activity_type, user)
+  def available_schools_for_user(activity_type, user)
     return user.schools if user.admin?
 
     user.schools(current_ability:).select do |school|
