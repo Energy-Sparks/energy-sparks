@@ -1,6 +1,5 @@
 cy:
   activity_types:
-    activity: Gweithgaredd
     errors:
       invalid_fuel_type:
         one: 'math o danwydd annilys:'
@@ -23,20 +22,6 @@ cy:
         many: Wedi canfod %{count} o ganlyniadau
         other: Wedi canfod %{count} o ganlyniadau
       title: Dod o hyd i weithgareddau disgyblion
-    show:
-      complete_this_activity_for_group_html:
-        one: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>1</strong> pwynt!
-        two: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
-        many: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
-        other: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
-      complete_this_activity_html:
-        one: Cwblhewch y gweithgaredd hwn i sgorio <strong>1</strong> pwynt!
-        two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
-        many: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
-        other: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
-      download_resources: Lawrlwytho adnoddau
-      record_this_activity: Cofnodi'r gweithgaredd hwn
-      select_school: Dewiswch ysgol...
     subjects: Pynciau
     timings: Amseroedd
     topics: Testunau

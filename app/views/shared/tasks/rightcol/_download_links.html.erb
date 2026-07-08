@@ -2,7 +2,7 @@
   <%= render Layout::Cards::FeatureComponent.new(size: :sm, classes: 'mb-4') do |feature| %>
     <%= feature.with_header(
           title: "#{render(Elements::IconComponent.new(name: 'download'))} " \
-                  "#{t('tasks.show.download_resources')}".html_safe
+                  "#{t('tasks.download_resources')}".html_safe
         ) %>
     <%= feature.with_block do %>
       <%= task.download_links.to_s.html_safe %>

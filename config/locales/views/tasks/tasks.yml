@@ -21,6 +21,9 @@ en:
       what_next: What do you want to do next?
     completed_on: Completed on %{date}
     download_resources: Download resources
+    points:
+      action: Points for this action
+      activity: Points for this activity
     prompts:
       login_to_record:
         are_you_an_energy_sparks_user: Are you an Energy Sparks user?
@@ -33,9 +36,6 @@ en:
         completed_on: 'on'
         previously_completed: "%{label} previously completed"
     related_programmes: Related programmes
-    score:
-      action: Score for this action
-      activity: Score for this activity
     select_school: Select a school...
     show:
       action:

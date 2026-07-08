@@ -3,7 +3,7 @@
     <%= feature.with_header(title: task.name) %>
     <%= feature.with_description { task.summary } %>
     <%= feature.with_tag(t('nav.points', count: task.score),
-                         colour: :success, tooltip: t('activity_types.score_for_this_activity')) %>
+                         colour: :success, tooltip: t("tasks.points.#{task.public_type}")) %>
     <% if task.is_a?(ActivityType) %>
       <% task.key_stages.order(:name).each do |key_stage| %>
         <%= feature.with_tag(t(key_stage.i18n_key), colour: :info, tooltip: t('activity_types.key_stages')) %>

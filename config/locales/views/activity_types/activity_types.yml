@@ -1,7 +1,6 @@
 ---
 en:
   activity_types:
-    activity: Activity
     errors:
       invalid_fuel_type:
         one: 'invalid fuel type: '

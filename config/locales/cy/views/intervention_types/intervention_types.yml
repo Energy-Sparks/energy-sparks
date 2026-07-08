@@ -38,12 +38,3 @@ cy:
       search: Chwilio
       search_for_actions_by_keyword: Chwilio am gamau gweithredu yn ôl allweddair
       title: Dod o hyd i gamau gweithredu
-    show:
-      download_resources: Lawrlwytho adnoddau
-      edit: Golygu
-      overview: Trosolwg
-      view_related_actions:
-        one: Gweld %{count} weithred gysylltiedig
-        two: Gweld %{count} weithred gysylltiedig
-        many: Gweld %{count} o weithredoedd cysylltiedig
-        other: Gweld %{count} o weithredoedd cysylltiedig

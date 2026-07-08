@@ -1,3 +1,6 @@
+<%# i18n-tasks-use t('tasks.show.action.view_category_tasks') %>
+<%# i18n-tasks-use t('tasks.show.activity.view_category_tasks') %>
+
 <% if task.category %>
   <%= render Layout::Cards::FeatureComponent.new(size: :sm, classes: 'mb-4') do |feature| %>
     <%= feature.with_header(
