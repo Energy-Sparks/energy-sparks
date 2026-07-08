@@ -4,8 +4,9 @@ module Admin
   module Reports
     class InterventionsController < AdminController
       include Pagy::Backend
+      include ActivityInterventionFilterable
 
-      def index # rubocop:disable Metrics/AbcSize
+      def index
         @observations = Observation.includes(:school,
                                              :intervention_type,
                                              :created_by,
@@ -13,11 +14,7 @@ module Admin
                                              rich_text_description: { embeds_attachments: :blob })
                                    .intervention
                                    .recorded_in_last_year.order(created_at: :desc)
-        @observations = @observations.for_school_group(params[:school_group]) if params[:school_group].present?
-        @observations = @observations.for_admin(params[:admin]) if params[:admin].present?
-        @observations = @observations.for_school(params[:school]) if params[:school].present?
-        @observations = @observations.for_user_role(params[:user_role]) if params[:user_role].present?
-
+        @observations = apply_filters(@observations)
         format
       end
 

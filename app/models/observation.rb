@@ -53,6 +53,7 @@ class Observation < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Description
   include Todos::Recording
   include CsvExportable
+  include ObservationFilters
 
   belongs_to :school
   has_many :temperature_recordings
@@ -91,12 +92,7 @@ class Observation < ApplicationRecord # rubocop:disable Metrics/ClassLength
   scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
   scope :most_recent, -> { order(at: :desc, created_at: :desc) }
-
   scope :by_date, ->(order = :desc) { order(at: order) }
-  scope :for_school, ->(school) { where(school:) }
-  scope :for_school_group, ->(school_group) { where(school: { school_group: school_group }) }
-  scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
-  scope :for_user_role, ->(user_role) { where(created_by: { role: user_role }) }
   scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date&.end_of_day) }
   scope :in_academic_year_for, lambda { |school, date|

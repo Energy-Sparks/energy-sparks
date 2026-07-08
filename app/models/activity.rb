@@ -37,6 +37,7 @@ class Activity < ApplicationRecord
   include Description
   include Todos::Recording
   include CsvExportable
+  include ObservationFilters
 
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities
@@ -53,14 +54,10 @@ class Activity < ApplicationRecord
 
   validates :happened_on, presence: true
 
-  scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
-  scope :for_school, ->(school) { where(school:) }
-  scope :for_school_group, ->(school_group) { where(school: { school_group: school_group }) }
-  scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
-  scope :for_user_role, ->(user_role) { where(created_by: { role: user_role }) }
-  scope :most_recent, -> { order(created_at: :desc) }
-  scope :by_date, ->(order = :asc) { order(happened_on: order) }
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
+  scope :by_date, ->(order = :asc) { order(happened_on: order) }
+  scope :most_recent, -> { order(created_at: :desc) }
+  scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
