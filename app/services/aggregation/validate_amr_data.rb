@@ -31,9 +31,7 @@ module Aggregation
 
       # Extracts the :meter_corrections from the meter attributes and stores them
       # as meter_correction_rules, for later processing.
-      #
-      # The corrections are applied in a later step
-      process_meter_attributes
+      @meter_correction_rules = @meter.attributes(:meter_corrections) || []
     end
 
     def validate
@@ -79,9 +77,7 @@ module Aggregation
       correct_nil_readings
 
       # Apply all of the meter correction attributes configured for the meter
-      # Note: @meter.meter_correction_rules will never be nil, as its initialised
-      # to an empty array and can only be added to
-      meter_corrections unless @meter.meter_correction_rules.nil?
+      meter_corrections
 
       # Tries to find substitute data for all missing days.
       # Uses different approaches for gas and electricity data.
@@ -121,26 +117,16 @@ module Aggregation
       @heating_model ||= create_heating_model
     end
 
-    # Finds the meter corrections attributes, then copies them to the
-    # meter_correction_rules for the meter.
-    #
-    # Note: as these rules are only used by this class, the list of rules could
-    # just be a member variable, rather than adding a method/data to Meter
-    def process_meter_attributes
-      meter_attributes_corrections = @meter.attributes(:meter_corrections)
-      @meter.insert_correction_rules_first(meter_attributes_corrections) unless meter_attributes_corrections.nil?
-    end
-
     # Applies all the meter corrections configured in the meter attributes.
-    # Relies on +process_meter_attributes+ having been called first to initialise
+    # Relies on the corrections having been extract from meter attributes first to initialise
     # the list of corrections
     #
     # Rules are split into "grouped" rules (defined by +grouped_rule?+) and "single rules".
     # Single rules are applied first, then the remaining grouped rules.
     def meter_corrections
-      return if @meter.meter_correction_rules.nil? # rules are never nil, but may be empty
+      return if @meter_correction_rules.empty?
 
-      single_rules, grouped_rules = split_into_single_and_grouped_rules(@meter.meter_correction_rules)
+      single_rules, grouped_rules = split_into_single_and_grouped_rules(@meter_correction_rules)
 
       apply_single_rules(single_rules)
 
@@ -792,7 +778,7 @@ module Aggregation
     end
 
     def in_meter_correction_period?(date)
-      @meter.meter_correction_rules.each do |rule|
+      @meter_correction_rules.each do |rule|
         next unless rule.is_a?(Hash) && rule.key?(:auto_insert_missing_readings) &&
                     rule[:auto_insert_missing_readings][:type] == :date_range
         if date.between?(rule[:auto_insert_missing_readings][:start_date],

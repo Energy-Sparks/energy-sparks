@@ -42,8 +42,7 @@ describe Aggregation::ValidateAmrData, type: :service do
 
   context 'with override_night_to_zero' do
     let(:meter) do
-      meter = create_meter
-      meter.meter_correction_rules << { override_night_to_zero: nil }
+      meter = create_meter(meter_attributes: { meter_corrections: [{ override_night_to_zero: nil }] })
       meter
     end
 
@@ -57,11 +56,21 @@ describe Aggregation::ValidateAmrData, type: :service do
       expect(meter.amr_data.first[1].type).to eq('SOLN')
     end
 
-    it 'replace night time readings with a rule with dates' do
-      meter.meter_correction_rules[-1] = { override_night_to_zero: { start_date: meter.amr_data.start_date + 1.day,
-                                                                     end_date: meter.amr_data.start_date + 2.days } }
-      create_validator(meter).validate
-      expect(arbitrary_night_readings(meter)).to eq([0.44, 0.0, 0.0, 0.44, 0.44, 0.44, 0.44, 0.44])
+    context 'with dates' do
+      let(:meter) do
+        meter = create_meter(meter_attributes: {
+                               meter_corrections: [{ override_night_to_zero: {
+                                 start_date: Date.new(2025, 5, 3) - 7.days,
+                                 end_date: Date.new(2025, 5, 3) - 6.days
+                               } }]
+                             })
+        meter
+      end
+
+      it 'replace night time readings with a rule with dates' do
+        create_validator(meter).validate
+        expect(arbitrary_night_readings(meter)).to eq([0.44, 0.0, 0.0, 0.44, 0.44, 0.44, 0.44, 0.44])
+      end
     end
 
     it 'has with missing data' do
