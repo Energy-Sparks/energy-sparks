@@ -15,10 +15,9 @@
 
   <% if current_user_school && @intervention_type.actions_for_school(current_user_school).any? %>
       <%= render 'shared/tasks/prompts/previous_records',
-                 label: t('common.labels.action'),
-                 recordings: @intervention_type.actions_for_school(current_user_school).by_date,
-                 school: current_user_school,
-                 path_helper: :school_intervention_path %>
+                 resource_type: :intervention,
+                 recordings: @intervention_type.actions_for_school(current_user_school),
+                 school: current_user_school %>
   <% end %>
 
   <% if current_user.nil? %>
