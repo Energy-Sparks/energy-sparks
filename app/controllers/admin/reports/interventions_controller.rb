@@ -24,10 +24,20 @@ module Admin
             @pagy, @observations = pagy(@observations)
           end
           format.csv do
-            send_data @observations.to_csv,
-                      filename: EnergySparks::Filenames.csv('interventions')
+            @headers = headers
+            filename = EnergySparks::Filenames.csv('interventions')
+            response.headers['Content-Type'] = 'text/csv'
+            response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
+            render partial: 'table'
           end
         end
+      end
+
+      private
+
+      def headers
+        ['School Group', 'Admin', 'School', 'User', 'User Role', 'User Staff Role', 'Recorded', 'Happened',
+         'Intervention Type', 'Images?']
       end
     end
   end

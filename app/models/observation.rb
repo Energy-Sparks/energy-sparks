@@ -171,17 +171,6 @@ class Observation < ApplicationRecord # rubocop:disable Metrics/ClassLength
     !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)
   end
 
-  def self.csv_headers
-    ['School Group', 'Admin', 'School', 'User', 'User Role', 'User Staff Role', 'Recorded', 'Happened',
-     'Intervention Type', 'Images?']
-  end
-
-  def self.csv_attributes
-    %w[school.school_group.name school.school_group.default_issues_admin_user.name school.name created_by.name
-       created_by.role.humanize created_by.staff_role.title created_at.to_date.iso8601
-       happened_on.to_date.iso8601 intervention_type.name description_includes_images?]
-  end
-
   def type_name = intervention_type&.name
 
   private

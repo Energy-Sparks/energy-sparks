@@ -93,17 +93,6 @@ class Activity < ApplicationRecord
     title.nil? ? activity_type.name : title
   end
 
-  def self.csv_headers
-    ['School Group', 'Admin', 'School', 'User', 'User Role', 'User Staff Role', 'Recorded', 'Happened', 'Title',
-     'Images?']
-  end
-
-  def self.csv_attributes
-    %w[school.school_group.name school.school_group.default_issues_admin_user.name school.name observation_user.name
-       observation_user.role.humanize observation_user.staff_role.title created_at.to_date.iso8601
-       happened_on.to_date.iso8601 display_title description_includes_images?]
-  end
-
   private
 
   def description_previously_changed? = rich_text_description&.previous_changes&.key?('body')
