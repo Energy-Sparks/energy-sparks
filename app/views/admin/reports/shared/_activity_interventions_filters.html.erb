@@ -41,7 +41,7 @@
                       controller: controller_path,
                       action: :index,
                       only_path: true,
-                      **params.permit(:search, :school_group, :admin, :school, :user_role).merge(format: :csv)
+                      **filter_params.merge(format: :csv)
                     ),
                     class: 'ml-2 btn btn-sm flex-grow-0' %>
       </div>
