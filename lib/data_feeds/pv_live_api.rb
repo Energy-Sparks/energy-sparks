@@ -17,8 +17,8 @@ module DataFeeds
 
     def gsp(gsp_id, start_date = nil, end_date = nil, extra_fields: ['installedcapacity_mwp'])
       get_data("gsp/#{gsp_id}", { extra_field: extra_fields,
-                                    start: ("#{format_date(start_date)}T00:00:00Z" if start_date),
-                                    end: ("#{format_date(end_date)}T23:59:59Z" if end_date) }.compact)
+                                  start: ("#{format_date(start_date)}T00:00:00Z" if start_date),
+                                  end: ("#{format_date(end_date)}T23:59:59Z" if end_date) }.compact)
     end
 
     private
