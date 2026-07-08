@@ -53,7 +53,7 @@ class Observation < ApplicationRecord
   include Description
   include Todos::Recording
   include CsvExportable
-  include ObservationFilters
+  include RecordingScopes
 
   belongs_to :school
   has_many :temperature_recordings
