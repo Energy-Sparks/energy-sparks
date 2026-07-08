@@ -9,15 +9,14 @@ module DataFeeds
     def initialize
       @connection = FaradayHelper.connection(url: BASE_URL,
                                              request: { params_encoder: Faraday::FlatParamsEncoder }) do |f|
-        f.request :json
         f.response(:json, parser_options: { symbolize_names: true })
       end
     end
 
-    def gsp_list = get_data('./gsp_list')
+    def gsp_list = get_data('gsp_list')
 
     def gsp(gsp_id, start_date = nil, end_date = nil, extra_fields: ['installedcapacity_mwp'])
-      get_data("./gsp/#{gsp_id}", { extra_field: extra_fields,
+      get_data("gsp/#{gsp_id}", { extra_field: extra_fields,
                                     start: ("#{format_date(start_date)}T00:00:00Z" if start_date),
                                     end: ("#{format_date(end_date)}T23:59:59Z" if end_date) }.compact)
     end

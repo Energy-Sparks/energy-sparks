@@ -9,26 +9,16 @@ module DataFeeds
       @solar_pv_tuos_interface = solar_pv_tuos_interface
     end
 
-    def import
-      SolarPvTuosArea.active.each do |area|
-        process_area(area)
-      end
-    end
+    def import = SolarPvTuosArea.active.each { |area| process_area(area) }
 
-    def import_area(area)
-      process_area(area)
-    end
+    def import_area(area) = process_area(area)
 
     private
 
     def process_area(area)
-      solar_pv_data, _missing_date_times, _whole_day_substitutes = @solar_pv_tuos_interface.historic_solar_pv_data(
-        area.gsp_id,
-        area.latitude,
-        area.longitude,
-        @start_date,
-        @end_date
-      )
+      solar_pv_data, _missing_date_times, _whole_day_substitutes =
+        @solar_pv_tuos_interface.historic_solar_pv_data(area.gsp_id, area.latitude, area.longitude, @start_date,
+                                                        @end_date)
 
       solar_pv_data = solar_pv_data.reject do |reading_date, generation_mw_x48|
         reading_date.nil? || generation_mw_x48.size != 48
