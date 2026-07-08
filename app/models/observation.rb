@@ -49,7 +49,7 @@
 #  fk_rails_...  (updated_by_id => users.id)
 #
 
-class Observation < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Observation < ApplicationRecord
   include Description
   include Todos::Recording
   include CsvExportable

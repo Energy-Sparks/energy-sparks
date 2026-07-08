@@ -19,11 +19,11 @@ describe 'Recently recorded interventions report' do
   let(:user_school) { create(:school, school_group: user_school_group) }
   let(:other_admin_school) { create(:school, school_group: other_admin_school_group) }
 
-  let!(:other_admin_observation) do
-    create(:observation, :intervention, school: other_admin_school, created_by: create(:staff))
-  end
+  let!(:user_observation) { create(:observation, :intervention, school: user_school, created_at: 2.days.ago) }
 
-  let!(:user_observation) { create(:observation, :intervention, school: user_school) }
+  let!(:other_admin_observation) do
+    create(:observation, :intervention, school: other_admin_school, created_by: create(:staff), created_at: 3.days.ago)
+  end
 
   before do
     sign_in(user)
@@ -152,15 +152,15 @@ describe 'Recently recorded interventions report' do
         expect(page.response_headers['content-type']).to eq('text/csv')
         expect(body).to \
           eq("School Group,Admin,School,User,User Role,User Staff Role,Recorded,Happened,Intervention Type,Images?\n" \
+             "#{user_school_group.name},#{user.name},#{user_school.name},,,," \
+             "#{user_observation.created_at.to_date.iso8601}," \
+             "#{user_observation.happened_on.to_date.iso8601},#{user_observation.intervention_type.name},false\n" \
              "#{other_admin_school_group.name},#{other_admin.name},#{other_admin_school.name}," \
              "#{other_admin_observation.created_by.name},#{other_admin_observation.created_by.role.humanize}," \
              "#{other_admin_observation.created_by.staff_role.title}," \
              "#{other_admin_observation.created_at.to_date.iso8601}," \
              "#{other_admin_observation.happened_on.to_date.iso8601}," \
-             "#{other_admin_observation.intervention_type.name},false\n" \
-             "#{user_school_group.name},#{user.name},#{user_school.name},,,," \
-             "#{user_observation.created_at.to_date.iso8601}," \
-             "#{user_observation.happened_on.to_date.iso8601},#{user_observation.intervention_type.name},false\n")
+             "#{other_admin_observation.intervention_type.name},false\n")
       end
     end
 

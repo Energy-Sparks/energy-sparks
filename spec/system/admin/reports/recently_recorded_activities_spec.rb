@@ -19,8 +19,10 @@ describe 'Recently recorded activities report' do
   let(:user_school) { create(:school, school_group: user_school_group) }
   let(:other_admin_school) { create(:school, school_group: other_admin_school_group) }
 
-  let!(:other_admin_activity) { create(:activity, school: other_admin_school, created_by: create(:staff)) }
-  let!(:user_activity) { create(:activity, school: user_school) }
+  let!(:user_activity) { create(:activity, school: user_school, created_at: 2.days.ago) }
+  let!(:other_admin_activity) do
+    create(:activity, school: other_admin_school, created_by: create(:staff), created_at: 3.days.ago)
+  end
 
   before do
     sign_in(user)
@@ -149,13 +151,13 @@ describe 'Recently recorded activities report' do
         expect(page.response_headers['content-type']).to eq('text/csv')
         expect(body).to \
           eq("School Group,Admin,School,User,User Role,User Staff Role,Recorded,Happened,Title,Images?\n" \
+             "#{user_school_group.name},#{user.name},#{user_school.name},,,," \
+             "#{user_activity.created_at.to_date.iso8601}," \
+             "#{user_activity.happened_on.to_date.iso8601},#{user_activity.title},false\n" \
              "#{other_admin_school_group.name},#{other_admin.name},#{other_admin_school.name}," \
              "#{other_admin_activity.created_by.name},#{other_admin_activity.created_by.role.humanize}," \
              "#{other_admin_activity.created_by.staff_role.title},#{other_admin_activity.created_at.to_date.iso8601}," \
-             "#{other_admin_activity.happened_on.to_date.iso8601},#{other_admin_activity.title},false\n" \
-             "#{user_school_group.name},#{user.name},#{user_school.name},,,," \
-             "#{user_activity.created_at.to_date.iso8601}," \
-             "#{user_activity.happened_on.to_date.iso8601},#{user_activity.title},false\n")
+             "#{other_admin_activity.happened_on.to_date.iso8601},#{other_admin_activity.title},false\n")
       end
     end
 
