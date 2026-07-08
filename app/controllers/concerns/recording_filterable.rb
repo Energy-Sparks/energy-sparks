@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ActivityInterventionFilterable
+module RecordingFilterable
   extend ActiveSupport::Concern
 
   included do

@@ -4,7 +4,7 @@ module Admin
   module Reports
     class ActivitiesController < AdminController
       include Pagy::Backend
-      include ActivityInterventionFilterable
+      include RecordingFilterable
 
       def index
         @activities = Activity.includes(:observations,

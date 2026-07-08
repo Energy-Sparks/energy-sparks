@@ -37,7 +37,7 @@ class Activity < ApplicationRecord
   include Description
   include Todos::Recording
   include CsvExportable
-  include ObservationFilters
+  include RecordingScopes
 
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities

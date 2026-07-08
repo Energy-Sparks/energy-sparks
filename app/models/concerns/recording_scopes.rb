@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ObservationFilters
+module RecordingScopes
   extend ActiveSupport::Concern
 
   included do
