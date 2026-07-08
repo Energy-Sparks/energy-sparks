@@ -250,7 +250,7 @@ describe 'manage contracts', :include_application_helper do
     end
   end
 
-  context 'when adding a new contract for a contract holder' do
+  context 'when adding a new contract for a School Group' do
     let!(:product) { create(:commercial_product, :default_product) }
     let(:contract_holder) { create(:school_group) }
 
@@ -412,6 +412,59 @@ describe 'manage contracts', :include_application_helper do
             }
           end
         end
+      end
+    end
+  end
+
+  context 'when adding a new contract for a School' do
+    let!(:product) { create(:commercial_product, :default_product) }
+    let!(:contract_holder) { create(:school) }
+
+    before do
+      visit admin_school_contracts_path(contract_holder)
+      click_on 'New contract'
+
+      within('div#standard') do
+        click_on 'Create this type of contract'
+      end
+    end
+
+    context 'with valid data', :js do
+      before do
+        fill_in 'Name', with: 'Standard contract'
+        fill_in 'Comments', with: 'Some notes'
+
+        select product.name, from: 'Product'
+        fill_in 'Number of schools', with: 100
+        fill_in 'Agreed school price', with: 525
+
+        set_date('#contract_start_date', '01/01/2026')
+        set_date('#contract_end_date', '31/12/2026')
+
+        click_on 'Save'
+      end
+
+      it 'creates the contract' do
+        expect(page).to have_text('Contract has been created')
+        expect(Commercial::Contract.last).to have_attributes({
+                                                               name: 'Standard contract',
+                                                               comments: 'Some notes',
+                                                               product: product,
+                                                               contract_holder: contract_holder,
+                                                               licence_period: 'contract',
+                                                               invoice_terms: 'full',
+                                                               number_of_schools: 100,
+                                                               start_date: Date.new(2026, 1, 1),
+                                                               end_date: Date.new(2026, 12, 31),
+                                                               agreed_school_price: BigDecimal(525),
+                                                               created_by: user
+                                                             })
+      end
+
+      it 'automatically adds a licence' do
+        expect(page).to have_text('Contract has been created and school licence added')
+        licence = contract_holder.licences.first
+        expect(licence).to have_attributes(contract: Commercial::Contract.last)
       end
     end
   end
@@ -887,6 +940,16 @@ describe 'manage contracts', :include_application_helper do
           ]
         end
       end
+    end
+
+    context 'with a School contract' do
+      let!(:contract) do
+        create(:commercial_contract, :with_school)
+      end
+
+      it { expect(page).to have_no_link('Add New Licence') }
+      it { expect(page).to have_no_link('Manage All Licences') }
+      it { expect(page).to have_no_link('Calculate Price') }
     end
   end
 
