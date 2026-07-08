@@ -24,9 +24,9 @@ module DataFeeds
       @api_key = api_key
       # retries 2 times, and honours the Retry-After time requested by server
       # https://github.com/lostisland/faraday/blob/master/docs/middleware/request/retry.md
-      @connection = Faraday.new(url: base_url, headers:) do |f|
+      @connection = FaradayHelper.connection(url: base_url, headers:, retry_options:) do |f|
         f.adapter(:test, stubs) if stubs
-        f.request(:retry, retry_options)
+        f.request :json
       end
     end
 
@@ -90,15 +90,9 @@ module DataFeeds
         interval: 0.5,
         interval_randomness: 0.5,
         backoff_factor: 2
-        # retry_block: -> (x) { binding.pry }
       }
     end
 
-    def get(url)
-      response = @connection.get(url)
-      raise HttpError, "status #{response.status} #{response.body}" unless response.status == 200
-
-      JSON.parse(response.body)
-    end
+    def get(url) = @connection.get(url).body
   end
 end

@@ -1,8 +1,9 @@
-require 'dashboard'
+# frozen_string_literal: true
 
 module DataFeeds
   class SolarPvTuosLoader
-    def initialize(start_date = Date.yesterday - 10.days, end_date = Date.yesterday, solar_pv_tuos_interface = PvLiveService.new)
+    def initialize(start_date = Date.yesterday - 10.days, end_date = Date.yesterday,
+                   solar_pv_tuos_interface = PvLiveService.new)
       @start_date = start_date
       @end_date = end_date
       @solar_pv_tuos_interface = solar_pv_tuos_interface
@@ -18,7 +19,7 @@ module DataFeeds
       process_area(area)
     end
 
-  private
+    private
 
     def process_area(area)
       solar_pv_data, _missing_date_times, _whole_day_substitutes = @solar_pv_tuos_interface.historic_solar_pv_data(
@@ -41,13 +42,14 @@ module DataFeeds
         }
       end
 
-       SolarPvTuosReading.upsert_all(
-         attributes,
-         unique_by: [:area_id, :reading_date],
-         on_duplicate: :update
-       )
-    rescue => e
-      EnergySparks::Log.exception(e, job: :solar_pv_tuos_area, start_date: @start_date, end_date: @end_date, area_id: area.id, area: area.title )
+      SolarPvTuosReading.upsert_all( # rubocop:disable Rails/SkipsModelValidations
+        attributes,
+        unique_by: %i[area_id reading_date],
+        on_duplicate: :update
+      )
+    rescue StandardError => e
+      EnergySparks::Log.exception(e, job: :solar_pv_tuos_area, start_date: @start_date, end_date: @end_date,
+                                     area_id: area.id, area: area.title)
     end
   end
 end
