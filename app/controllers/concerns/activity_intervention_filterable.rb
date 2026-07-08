@@ -21,6 +21,6 @@ module ActivityInterventionFilterable
   end
 
   def filter_params
-    params.permit(:search, :school_group, :admin, :school, :user_role)
+    params.permit(:school_group, :admin, :school, :user_role)
   end
 end
