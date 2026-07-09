@@ -21,6 +21,8 @@ class SolarPvTuosArea < Area
 
   scope :assignable, -> { where.not(gsp_id: nil) }
 
+  scope :by_gsp_id, -> { order(:gsp_id) }
+
   # reinstate once we've finished tidying up areas
   # validates_uniqueness_of :gsp_id
 

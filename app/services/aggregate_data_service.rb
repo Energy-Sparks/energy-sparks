@@ -30,8 +30,6 @@ class AggregateDataService
   include Logging
   include AggregationMixin
 
-  MAX_DAYS_MISSING_DATA = 50
-
   attr_reader :meter_collection
 
   def initialize(meter_collection)
@@ -147,7 +145,7 @@ class AggregateDataService
   def validate_meter_list(list_of_meters)
     log "Validating #{list_of_meters.length} meters"
     list_of_meters.each do |meter|
-      validate_meter = Aggregation::ValidateAmrData.new(meter, MAX_DAYS_MISSING_DATA, @meter_collection.holidays,
+      validate_meter = Aggregation::ValidateAmrData.new(meter, @meter_collection.holidays,
                                                         @meter_collection.temperatures)
       validate_meter.validate
     rescue StandardError => e

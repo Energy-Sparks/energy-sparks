@@ -15,7 +15,8 @@ describe 'admin user meter report' do
     let(:table_id) { '.advice-table' }
     let(:expected_header) do
       [['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter Type', 'Meter System', 'Active', 'Supplier',
-        'Data Source', 'Procurement Route', 'Meter Status', 'Manual Reads', 'Last Validated Date', 'Issues & Notes']]
+        'Data Source', 'Procurement Route', 'Admin Meter Status', 'Manual Reads', 'Last Validated Date',
+        'Issues & Notes']]
     end
     let(:expected_rows) do
       [[school.school_group.name, 'Admin', school.name, meter.mpan_mprn.to_s, meter.name, '', 'NHH AMR',
@@ -29,7 +30,7 @@ describe 'admin user meter report' do
     it 'has the correct CSV' do
       expect(CSV.parse(page.body)).to eq(
         [['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter Type', 'Meter System', 'Active',
-          'Supplier', 'Data Source', 'Procurement Route', 'Meter Status', 'Manual Reads', 'Last Validated Date',
+          'Supplier', 'Data Source', 'Procurement Route', 'Admin Meter Status', 'Manual Reads', 'Last Validated Date',
           'Issues', 'Notes'],
          [school.school_group.name, 'Admin', school.name, meter.mpan_mprn.to_s, meter.name, 'gas', 'NHH AMR',
           meter.active.to_s, nil, nil, nil, nil, 'N', nil, '0', '0']]

@@ -26,14 +26,13 @@ describe 'onboarding report', :include_application_helper do
       let(:table_id) { '#recently_onboarded_table' }
       let(:expected_header) do
         [
-          ['Country', 'School group', 'School name', 'Contact email', 'Onboarding started', 'Onboarding completed',
+          ['School group', 'School name', 'Contact email', 'Onboarding started', 'Onboarding completed',
            'Data enabled?', 'Data enabled on', 'Days until enabled']
         ]
       end
       let(:expected_rows) do
         [
           [
-            onboarding.school.country.presence&.capitalize,
             onboarding.school.school_group&.name.to_s,
             onboarding.school.name,
             onboarding.contact_email,
