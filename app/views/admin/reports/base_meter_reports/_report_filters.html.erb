@@ -7,10 +7,12 @@
                  options: options_from_collection_for_select(SchoolGroup.organisation_groups.by_name, :id, :name,
                                                              params[:school_group]),
                  blank: 'Any School Group' %>
-      <%= render 'admin/reports/base_meter_reports/filter',
-                 field: :admin,
-                 options: options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:admin]),
-                 blank: 'Any Admin User' %>
+      <% unless @dashboard_user %>
+        <%= render 'admin/reports/base_meter_reports/filter',
+                   field: :admin,
+                   options: options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:admin]),
+                   blank: 'Any Admin User' %>
+      <% end %>
       <%= yield %>
       <div class="d-flex ms-auto gap-2">
         <%= submit_tag 'Filter', class: 'btn btn-sm btn-secondary' %>
