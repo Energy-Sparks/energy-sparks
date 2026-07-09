@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 module Admin
   class SchoolGroupsController < AdminController
     load_and_authorize_resource
+    include AdminSchoolGroupBreadcrumbs
 
     before_action :enable_bootstrap5, only: [:show]
 
@@ -15,6 +18,10 @@ module Admin
           filename: ::SchoolGroups::CsvGenerator.filename
         end
       end
+    end
+
+    def show
+      breadcrumbs
     end
 
     def new
@@ -81,6 +88,10 @@ module Admin
 
     def organisation_group?
       SchoolGroup::ORGANISATION_GROUP_TYPE_KEYS.include?(group_type)
+    end
+
+    def breadcrumbs
+      build_breadcrumbs([{ name: @school_group.name }])
     end
   end
 end
