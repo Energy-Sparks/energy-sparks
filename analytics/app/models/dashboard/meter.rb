@@ -6,7 +6,7 @@ module Dashboard
 
     # Extra fields - potentially a concern or mix-in
     attr_reader :fuel_type, :meter_collection, :meter_attributes
-    attr_reader :storage_heater_setup, :sub_meters, :meter_correction_rules, :model_cache, :partial_meter_coverage,
+    attr_reader :storage_heater_setup, :sub_meters, :model_cache, :partial_meter_coverage,
                 :meter_tariffs, :community_opening_times, :constituent_meters
     attr_accessor :amr_data, :floor_area, :number_of_pupils, :solar_pv_setup, :solar_pv_overrides, :id, :name,
                   :external_meter_id
@@ -32,7 +32,6 @@ module Dashboard
       @floor_area = floor_area
       @number_of_pupils = number_of_pupils
       @solar_pv_installation = solar_pv_installation
-      @meter_correction_rules = []
       @sub_meters = Dashboard::SubMeters.new
       @external_meter_id = external_meter_id
       @dcc_meter = dcc_meter
@@ -265,10 +264,6 @@ module Dashboard
 
     def electricity_meter?
       %i[electricity solar_pv aggregated_electricity].include?(fuel_type)
-    end
-
-    def insert_correction_rules_first(rules)
-      @meter_correction_rules = rules + @meter_correction_rules
     end
 
     # Matches ES AR version

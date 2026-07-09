@@ -89,7 +89,8 @@ RSpec.describe DataSource, type: :model do
     subject { data_source.to_csv }
 
     let(:data_source) { create(:data_source) }
-    let(:header) { 'School group,Admin,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
+    let(:supplier) { create(:supplier) }
+    let(:header) { 'School group,Admin,School,MPAN/MPRN,Meter type,Supplier,Data Source,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
 
     before { freeze_time }
 
@@ -98,9 +99,21 @@ RSpec.describe DataSource, type: :model do
       let!(:meters) do
         school_group = create(:school_group, default_issues_admin_user: create(:admin))
         [
-          create(:gas_meter, data_source: data_source, school: create(:school, active: true), admin_meter_status: admin_meter_status, created_at: 3.seconds.ago),
-          create(:gas_meter, data_source: data_source, school: create(:school, school_group: school_group, active: true), admin_meter_status: admin_meter_status, created_at: 2.seconds.ago),
-          create(:gas_meter, data_source: data_source, school: create(:school, active: false), admin_meter_status: admin_meter_status, created_at: 1.second.ago)
+          create(:gas_meter, data_source:,
+                             supplier:,
+                             school: create(:school, active: true),
+                             admin_meter_status:,
+                             created_at: 3.seconds.ago),
+          create(:gas_meter, data_source:,
+                             supplier:,
+                             school: create(:school, school_group: school_group, active: true),
+                             admin_meter_status:,
+                             created_at: 2.seconds.ago),
+          create(:gas_meter, data_source:,
+                             supplier:,
+                             school: create(:school, active: false),
+                             admin_meter_status:,
+                             created_at: 1.second.ago)
         ]
       end
       let(:first_reading_date) { 1.year.ago.to_date + 2.days }
@@ -130,6 +143,8 @@ RSpec.describe DataSource, type: :model do
                 meters[i].school.name,
                 meters[i].mpan_mprn,
                 meters[i].meter_type.humanize,
+                meters[i].supplier&.name,
+                meters[i].data_source&.name,
                 meters[i].active,
                 meters[i].t_meter_system,
                 first_reading_date,
