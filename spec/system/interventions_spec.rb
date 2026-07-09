@@ -47,7 +47,7 @@ describe 'viewing and recording action' do
       end
 
       it 'displays navigation' do
-        expect(page).to have_link("View #{intervention_type.intervention_type_group.intervention_types.count} related action")
+        expect(page).to have_link "View #{intervention_type.category.intervention_types.count} action in this category"
       end
 
       it 'displays resource links' do

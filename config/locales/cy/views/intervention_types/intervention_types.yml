@@ -12,8 +12,6 @@ cy:
         two: o bwyntiau ar gyfer y weithred hon
         many: o bwyntiau ar gyfer y weithred hon
         other: o bwyntiau ar gyfer y weithred hon
-    previous_records:
-      action: Gweithred
     prompt_score:
       complete_this_action_for_group_html:
         one: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!

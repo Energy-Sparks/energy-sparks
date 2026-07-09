@@ -9,8 +9,6 @@ en:
       points_for_this_action:
         one: point for this action
         other: points for this action
-    previous_records:
-      action: Action
     search:
       all_actions: All actions
       no_results_found: No results found
