@@ -7,9 +7,9 @@ module FaradayHelper
 
   def self.connection(retry_options: {}, **)
     Faraday.new(**) do |f|
-      f.request :retry, RETRY_OPTIONS.merge(retry_options) unless retry_options.nil?
-      f.response :logger if Rails.env.development?
-      f.response :raise_error
+      f.request(:retry, RETRY_OPTIONS.merge(retry_options)) unless retry_options.nil?
+      f.response(:logger) if Rails.env.development?
+      f.response(:raise_error, allowed_statuses: retry_options&.[](:retry_statuses))
       yield f if block_given?
     end
   end
