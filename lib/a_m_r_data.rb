@@ -462,6 +462,29 @@ class AMRData < HalfHourlyData
     data
   end
 
+  def summarise_bad_data
+    _, one_days_data = first
+    logger.info '=' * 80
+    logger.info "Bad data for meter #{one_days_data.meter_id}"
+    logger.info "Valid data between #{start_date} and #{end_date}"
+    key, _value = first
+    logger.info "Ignored data between #{key} and #{start_date} - because of long gaps" if key < start_date
+    bad_data_count
+    percent_bad = 100.0
+    percent_bad = (100.0 * (length - bad_data_count['ORIG'].length) / length).round(1) if bad_data_count.key?('ORIG')
+    logger.info "bad data summary: #{percent_bad}% substituted"
+    bad_data_count.each do |type, dates|
+      type_description = format('%-60.60s', OneDayAMRReading.amr_types[type][:name])
+      logger.info " #{type}: #{type_description} * #{dates.length}"
+      if type != 'ORIG'
+        cpdp = CompactDatePrint.new(dates)
+        cpdp.log
+      end
+    end
+    bad_dates = dates_with_non_finite_values
+    logger.info "bad non finite data on these dates: #{bad_dates.join(';')}" unless bad_dates.empty?
+  end
+
   # take one set (dd_data) of half hourly data from self
   # - avoiding performance hit of taking a copy
   # caller expected to ensure start and end dates reasonable
