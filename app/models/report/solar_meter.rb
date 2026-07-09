@@ -37,10 +37,18 @@ module Report
                    'AS has_modelled_solar_pv_generation_attribute')
     end
 
+    def self.metered_school_ids
+      Meter.joins(solar_attribute_join(:solar_pv_mpan_meter_mapping)).pluck(:school_id)
+    end
+
     def self.modelled
       query.joins(solar_attribute_join(:solar_pv))
            .select('meters.*',
                    'solar_pv_mapping_attributes.input_data AS solar_pv_mapping_data')
+    end
+
+    def self.modelled_school_ids
+      Meter.joins(solar_attribute_join(:solar_pv_mpan_meter_mapping)).pluck(:school_id)
     end
   end
 end

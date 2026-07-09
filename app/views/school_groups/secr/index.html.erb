@@ -32,8 +32,8 @@
           active_schools: schools.length,
           gas_meters: meters.gas.count,
           electricity_meters: meters.electricity.count,
-          metered_solar_schools: (MeterAttribute.metered_solar.pluck(:school_id) & schools).length,
-          estimated_solar_schools: (MeterAttribute.solar_pv.pluck(:school_id) & schools).length,
+          metered_solar_schools: (Report::SolarMeter.metered_school_ids & schools).length,
+          estimated_solar_schools: (Report::SolarMeter.modelled_school_ids & schools).length,
           number_of_pupils:) %>
     <%= t('school_groups.secr.data.carbon_emission_factors_html') %>
     <h2><%= t('school_groups.secr.data.downloads.title') %></h2>
