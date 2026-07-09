@@ -14,7 +14,7 @@ describe 'Modelled solar report' do
   before do
     sign_in(create(:admin))
     visit admin_reports_path
-    click_on 'Modelled Solar'
+    click_on 'Modelled'
   end
 
   it_behaves_like 'it contains the expected data table', aligned: false do
