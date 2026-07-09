@@ -17,7 +17,7 @@ class BlogService
     @key = "blog:#{url}"
     @retries = retries
 
-    @connection = FaradayHelper.connection(url:)
+    @connection = FaradayHelper.connection(url:, retry_options: retries ? { max: retries } : {})
   end
 
   def items
