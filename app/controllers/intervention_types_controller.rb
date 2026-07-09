@@ -36,7 +36,7 @@ class InterventionTypesController < ApplicationController
     category = @intervention_type.category
     @breadcrumbs = [
       { name: t('common.labels.adult_actions'), href: intervention_type_groups_path },
-      ({ name: category.name, href: intervention_type_groups_path(category) } if category),
+      ({ name: category.name, href: intervention_type_group_path(category) } if category),
       { name: @intervention_type.name }
     ].compact
   end
