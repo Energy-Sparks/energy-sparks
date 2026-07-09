@@ -144,6 +144,25 @@ describe 'manage licences' do
           created_by: user
         )
       end
+
+      context 'when the contract is confirmed and school is data enabled' do
+        let!(:contract) { create(:commercial_contract, status: :confirmed) }
+
+        it 'creates the model' do
+          expect(page).to have_text('Licence has been created')
+          expect(Commercial::Licence.last).to have_attributes(
+            contract:,
+            school:,
+            start_date: Date.new(2026, 1, 1),
+            end_date: Date.new(2026, 12, 31),
+            status: 'pending_invoice',
+            invoice_reference: 'INV-001',
+            school_specific_price: 250.0,
+            comments: 'my comments',
+            created_by: user
+          )
+        end
+      end
     end
 
     context 'with no dates' do
@@ -196,7 +215,7 @@ describe 'manage licences' do
 
     context 'with valid data', :js do
       before do
-        select 'Pending invoice', from: 'Status'
+        select 'Confirmed', from: 'Status'
         set_date('#licence_start_date', '01/01/2026')
         set_date('#licence_end_date', '31/12/2026')
         fill_in 'Invoice reference', with: 'INV-001'
@@ -211,13 +230,36 @@ describe 'manage licences' do
           contract: licence.contract,
           start_date: Date.new(2026, 1, 1),
           end_date: Date.new(2026, 12, 31),
-          status: 'pending_invoice',
+          status: 'confirmed',
           invoice_reference: 'INV-001',
           school_specific_price: 250.0,
           comments: 'my comments',
           created_by: licence.created_by,
           updated_by: user
         )
+      end
+
+      context 'with confirmed contract for data enabled school' do
+        let!(:licence) do
+          create(:commercial_licence,
+                 contract: create(:commercial_contract, status: :confirmed),
+                 school: create(:school, data_enabled: true))
+        end
+
+        it 'updates the model' do
+          expect(page).to have_text('Licence has been updated')
+          expect(licence.reload).to have_attributes(
+            contract: licence.contract,
+            start_date: Date.new(2026, 1, 1),
+            end_date: Date.new(2026, 12, 31),
+            status: 'pending_invoice',
+            invoice_reference: 'INV-001',
+            school_specific_price: 250.0,
+            comments: 'my comments',
+            created_by: licence.created_by,
+            updated_by: user
+          )
+        end
       end
     end
 
