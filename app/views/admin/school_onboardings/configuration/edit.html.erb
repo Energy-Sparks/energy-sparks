@@ -88,9 +88,9 @@
     <div class="form-group col-md-12">
       <%= f.label :contract_id %>
       <%= f.select :contract_id,
-                   options_for_select(Commercial::Contract.current.by_name.pluck(:name, :id),
+                   options_for_select(Commercial::Contract.current_and_future.by_name.pluck(:name, :id),
                                       @school_onboarding.contract_id),
-                   { include_blank: true }, { class: 'form-control' } %>
+                   { include_blank: true }, { class: 'form-control select2' } %>
       <p class="small">
         Which contract will this school be using when it completes onboarding?
         Self-fundeds school will not have a contract until they have completed onboarding.
