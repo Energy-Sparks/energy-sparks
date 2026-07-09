@@ -18,7 +18,11 @@ describe 'group contracts and licences' do
   end
 
   context 'when visiting licence summaries' do
-    before { click_on 'Licence Summaries' }
+    before do
+      within('#admin') do
+        click_on 'Licence Summaries'
+      end
+    end
 
     it { expect(page).to have_css('div.commercial-licensing-summary-component') }
     it { expect(page).to have_text(licence.school.name) }
@@ -33,7 +37,11 @@ describe 'group contracts and licences' do
   context 'when visiting contracts' do
     let!(:contract) { create(:commercial_contract, contract_holder: school_group) }
 
-    before { click_on 'Contracts' }
+    before do
+      within('#admin') do
+        click_on 'Contracts'
+      end
+    end
 
     it { expect(page).to have_css('div.commercial-contracts-component') }
     it { expect(page).to have_text(contract.name) }
