@@ -10,6 +10,7 @@ namespace :after_party do
     # have been used already.
     Commercial::Licence
       .joins(:contract, :school)
+      .where('start_date > ?', Time.zone.today)
       .where(commercial_contracts: { status: 'confirmed' })
       .merge(School.where(data_enabled: true))
       .update_all(status: 'pending_invoice') # rubocop:disable Rails/SkipsModelValidations
