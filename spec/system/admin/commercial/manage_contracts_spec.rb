@@ -543,7 +543,7 @@ describe 'manage contracts', :include_application_helper do
     end
 
     context 'when there are licences' do
-      let!(:licence) { create(:commercial_licence, contract:) }
+      let!(:licence) { create(:commercial_licence, contract:, school: create(:school, data_enabled: false)) }
 
       before { click_on 'Edit' }
 
@@ -969,7 +969,7 @@ describe 'manage contracts', :include_application_helper do
       end
 
       context 'when there are licences' do
-        let!(:licence) { create(:commercial_licence, contract:) }
+        let!(:licence) { create(:commercial_licence, contract:, school: create(:school, data_enabled: false)) }
 
         it 'confirms the licences' do
           click_on 'Confirm'
