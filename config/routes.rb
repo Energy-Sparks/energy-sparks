@@ -844,7 +844,7 @@ Rails.application.routes.draw do
       end
     end
     resources :suppliers do
-      post :deliver
+      post :deliver, on: :member
       scope module: :suppliers do
         concerns :issueable
       end
@@ -928,6 +928,7 @@ Rails.application.routes.draw do
       resources :work_allocation, only: [:index]
       resources :zero_readings, only: [:index]
       resources :pupil_number_updates, only: :index
+      resources :metered_solar, only: :index
     end
 
     resource :settings, only: %i[show update]

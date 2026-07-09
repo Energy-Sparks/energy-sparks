@@ -28,7 +28,7 @@ RSpec.describe 'onboarding', :schools do
   let!(:diocese) { create(:school_group, group_type: :diocese) }
   let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area) }
   let!(:funder) { create(:funder) }
-  let!(:contract) { create(:commercial_contract) }
+  let!(:contract) { create(:commercial_contract, :future) }
 
   let(:last_email) { ActionMailer::Base.deliveries.last }
 
@@ -69,7 +69,7 @@ RSpec.describe 'onboarding', :schools do
 
         it { expect(page).to have_select('Data Sharing', selected: 'Public') }
         it { expect(page).to have_select('Funder', options: [''] + Funder.all.by_name.map(&:name)) }
-        it { expect(page).to have_select('Contract', options: [''] + Commercial::Contract.current.by_name.map(&:name)) }
+        it { expect(page).to have_select('Contract', options: [''] + Commercial::Contract.current_and_future.by_name.map(&:name)) }
 
         it {
           expect(page).to have_select('Project Group', options: [''] + SchoolGroup.project_groups.by_name.map(&:name))
