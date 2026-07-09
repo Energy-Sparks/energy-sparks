@@ -455,7 +455,7 @@ class AggregateDataServiceSolar
       "Backfilling pv meter #{meter.mpan_mprn} with zeros between #{mains_meter_start_date} and #{meter.amr_data.start_date}"
     end
     (mains_meter_start_date..meter.amr_data.start_date).each do |date|
-      meter.amr_data.add(date, OneDayAMRReading.zero_reading(meter.id, date, 'BKPV'))
+      meter.amr_data.add(date, OneDayAMRReading.zero_reading(date, 'BKPV'))
     end
   end
 
@@ -467,7 +467,7 @@ class AggregateDataServiceSolar
 
     logger.debug { "Backfilling pv meter #{meter.mpan_mprn} with zeros between #{start_date} and #{end_date}" }
     (start_date..end_date).each do |date|
-      meter.amr_data.add(date, OneDayAMRReading.zero_reading(meter.id, date, 'BKPV'))
+      meter.amr_data.add(date, OneDayAMRReading.zero_reading(date, 'BKPV'))
     end
   end
 

@@ -18,13 +18,13 @@ class HotWaterHeatingSplitter
       if @heating_model.model_type?(date) == :summer_occupied_all_days
         hotwater_days.add(date, meter.amr_data.days_amr_data(date))
       elsif @heating_model.model_type?(date) != :none
-        hw_day = OneDayAMRReading.new(0, date, 'HSIM', nil, DateTime.now, average_hot_water_only_day_kwh_x48)
+        hw_day = OneDayAMRReading.new(date, 'HSIM', nil, DateTime.now, average_hot_water_only_day_kwh_x48)
         hotwater_days.add(date, hw_day)
 
         days_data_kwh_x48 = meter.amr_data.days_kwh_x48(date)
         heating_days_data_kwh_x48 = remove_hot_water_from_heating_data(date, days_data_kwh_x48,
                                                                        average_hot_water_only_day_kwh_x48)
-        heating_day = OneDayAMRReading.new(0, date, 'HSIM', nil, DateTime.now, heating_days_data_kwh_x48)
+        heating_day = OneDayAMRReading.new(date, 'HSIM', nil, DateTime.now, heating_days_data_kwh_x48)
         heating_days.add(date, heating_day)
         heating_day_dates.push(date)
       end

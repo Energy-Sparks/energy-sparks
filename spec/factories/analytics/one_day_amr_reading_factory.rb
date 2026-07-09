@@ -3,7 +3,6 @@
 FactoryBot.define do
   factory :one_day_amr_reading, class: 'OneDayAMRReading' do
     transient do
-      sequence(:meter_id)   { |n| n }
       date                  { Date.today }
       type                  { 'ORIG' }
       substitute_date       { nil }
@@ -12,7 +11,7 @@ FactoryBot.define do
     end
 
     initialize_with do
-      new(meter_id, date, type, substitute_date,
+      new(date, type, substitute_date,
           upload_datetime, kwh_data_x48)
     end
   end

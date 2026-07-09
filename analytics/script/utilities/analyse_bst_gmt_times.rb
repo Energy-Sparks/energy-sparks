@@ -1,5 +1,5 @@
 require 'require_all'
-require_relative '../../lib/dashboard.rb'
+require_relative '../../lib/dashboard'
 require_rel '../../test_support'
 require 'tzinfo'
 
@@ -12,7 +12,7 @@ def transition_times(back_years = 5)
   mid_summer = Date.new(Date.today.year, 6, 21)
   tz = TZInfo::Timezone.get('Europe/London')
 
-  mid_summer_dates = (0..back_years).to_a.map { |year_offset| mid_summer - 365 * year_offset }
+  mid_summer_dates = (0..back_years).to_a.map { |year_offset| mid_summer - (365 * year_offset) }
 
   mid_summer_dates.map do |date|
     period = tz.periods_for_local(date.to_time)[0]
@@ -31,11 +31,11 @@ def summer_times(back_years = 5)
   transition_times(back_years)
 end
 
-def amr_to_wallclock_time(amr_data, summer_times, mpxn)
+def amr_to_wallclock_time(amr_data, summer_times)
   count = 0
   now = DateTime.now
-  bm = Benchmark.realtime {
-    summer_times.reverse.each do |(summer_start_date, summer_end_date)|
+  Benchmark.realtime do
+    summer_times.reverse_each do |(summer_start_date, summer_end_date)|
       start_date = [summer_start_date, amr_data.start_date].max
       end_date   = [summer_end_date, amr_data.end_date].min
       next if end_date < start_date
@@ -44,17 +44,16 @@ def amr_to_wallclock_time(amr_data, summer_times, mpxn)
         kwh_x48_yesterday = date > amr_data.start_date ? amr_data.one_days_data_x48(date - 1) : amr_data.one_days_data_x48(date)
         kwh_x48_today = amr_data.one_days_data_x48(date)
         corrected_kwh_x48 = kwh_x48_yesterday[46..47] + kwh_x48_today[0..45]
-        days_data = OneDayAMRReading.new(mpxn, date, 'ORIG', nil, now, corrected_kwh_x48)
+        days_data = OneDayAMRReading.new(date, 'ORIG', nil, now, corrected_kwh_x48)
         amr_data.add(date, days_data)
         count += 1
       end
     end
-  }
-  bm
+  end
 end
 
 def school_days_from_offset(school, transition_date, days: 5, direction: 1)
-  school_day_dates= []
+  school_day_dates = []
   date = transition_date
   while school_day_dates.length < days
     school_day_dates.push(date) if school.holidays.occupied?(date)
@@ -124,13 +123,13 @@ def analyse_meter(school, meter, transition_dates)
 end
 
 def save_to_csv(transition_dates, data)
-  filename = "Results\\analyse meter bst-gmt times.csv"
+  filename = 'Results\\analyse meter bst-gmt times.csv'
   puts "Saving to #{filename}"
   CSV.open(filename, 'w') do |csv|
     csv << ['school', 'mpxn', 'conversion time', transition_dates].flatten
     data.each do |school_name, meters|
       meters.each do |mpxn, d|
-        date_to_offset = d.select { | d, _offset| d.is_a?(Date) }
+        date_to_offset = d.select { |d, _offset| d.is_a?(Date) }
         csv << [school_name, mpxn, d[:t], date_to_offset.values].flatten
       end
     end
@@ -146,20 +145,18 @@ school_names = RunTests.resolve_school_list(source_db, school_name_pattern_match
 data = {}
 
 school_names.each do |school_name|
-  begin
-    school = SchoolFactory.new.load_or_use_cached_meter_collection(:name, school_name, source_db)
-    electric_meters = school.electricity_meters # real_meters2.select { |meter| meter.fuel_type == :electricity }
-    t = 0
-    electric_meters.each do |meter|
-      t  = amr_to_wallclock_time(meter.amr_data, summer_times, meter.mpxn)
-      data[school_name] ||= {}
-      data[school_name][meter.mpxn] = analyse_meter(school, meter, transition_dates)
-      data[school_name][meter.mpxn][:t] = t
-    end
-  rescue => e
-    puts "#{school_name} #{e.message}"
-    puts e.backtrace
+  school = SchoolFactory.new.load_or_use_cached_meter_collection(:name, school_name, source_db)
+  electric_meters = school.electricity_meters # real_meters2.select { |meter| meter.fuel_type == :electricity }
+  t = 0
+  electric_meters.each do |meter|
+    t = amr_to_wallclock_time(meter.amr_data, summer_times)
+    data[school_name] ||= {}
+    data[school_name][meter.mpxn] = analyse_meter(school, meter, transition_dates)
+    data[school_name][meter.mpxn][:t] = t
   end
+rescue StandardError => e
+  puts "#{school_name} #{e.message}"
+  puts e.backtrace
 end
 
 ap data

@@ -275,7 +275,7 @@ describe Aggregation::ValidateAmrData, type: :service do
     context 'with a gap' do
       let(:amr_data) do
         amr_data = super()
-        amr_data.add(after_gap_date, OneDayAMRReading.zero_reading(1, after_gap_date, 'ORIG'))
+        amr_data.add(after_gap_date, OneDayAMRReading.zero_reading(after_gap_date, 'ORIG'))
         amr_data
       end
 
