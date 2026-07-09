@@ -6,7 +6,9 @@ module DataFeeds
 
     def initialize
       @connection = FaradayHelper.connection(url: ENV.fetch('PERSE_API_URL'),
-                                             headers: { 'api_key' => ENV.fetch('PERSE_API_KEY') },
+                                             # should this be an Accept rather than content-type header?
+                                             headers: { content_type: 'application/json',
+                                                        'api_key' => ENV.fetch('PERSE_API_KEY') },
                                              # don't retry due to limit below?
                                              retry_options: nil) do |f|
         f.request :json
