@@ -15,16 +15,13 @@
 
   <% if current_user_school && @intervention_type.actions_for_school(current_user_school).any? %>
       <%= render 'shared/tasks/prompts/previous_records',
-                 resource_type: :intervention,
                  recordings: @intervention_type.actions_for_school(current_user_school),
+                 resource_type: :intervention,
                  school: current_user_school %>
   <% end %>
 
   <% if current_user.nil? %>
-    <%= render 'shared/tasks/prompts/login_to_record',
-               label: t('common.labels.action').downcase,
-               score: @intervention_type.score,
-               return_path: intervention_type_path(@intervention_type) %>
+    <%= render 'shared/tasks/prompts/login_to_record', task: @intervention_type %>
   <% end %>
 
   <% if can?(:create, Observation) && @available_schools_for_user.present? %>

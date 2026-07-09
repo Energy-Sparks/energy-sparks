@@ -20,11 +20,9 @@
   <% end %>
 
   <% if current_user.nil? %>
-    <%= render 'shared/tasks/prompts/login_to_record',
-               label: t('common.labels.activity').downcase,
-               score: @activity_type.score,
-               return_path: activity_type_path(@activity_type) %>
+    <%= render 'shared/tasks/prompts/login_to_record', task: @activity_type %>
   <% end %>
+
   <% if can?(:create, Activity) && @available_schools_for_user.present? %>
     <% if @available_schools_for_user.one? %>
       <%= render 'shared/tasks/prompts/score', task: @activity_type,
