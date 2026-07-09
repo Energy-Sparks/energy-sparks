@@ -42,7 +42,7 @@ module Aggregation
 
       do_validations
 
-      @amr_data.summarise_bad_data(@meter.id) if logger.level >= Logger::INFO
+      @amr_data.summarise_bad_data(@meter.id) if logger.level == Logger::DEBUG
       logger.debug { '=' * 150 }
     end
 
