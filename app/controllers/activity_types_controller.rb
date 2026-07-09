@@ -3,10 +3,10 @@
 class ActivityTypesController < ApplicationController
   include Pagy::Backend
 
+  layout 'task', only: [:show]
+
   before_action :enable_bootstrap5, only: [:show]
   before_action :handle_head_request, only: [:show]
-
-  layout 'task', only: [:show]
 
   load_and_authorize_resource
   before_action :set_breadcrumbs, only: [:show]
@@ -97,20 +97,12 @@ class ActivityTypesController < ApplicationController
   helper_method :activity_types_badge_class
 
   def set_breadcrumbs
+    category = @activity_type.category
+
     @breadcrumbs = [
-      {
-        name: t('common.labels.pupil_activities'),
-        href: activity_categories_path
-      }
-    ]
-
-    if @activity_type.activity_category.present?
-      @breadcrumbs << {
-        name: @activity_type.activity_category.name,
-        href: activity_category_path(@activity_type.activity_category)
-      }
-    end
-
-    @breadcrumbs << { name: @activity_type.name }
+      { name: t('common.labels.pupil_activities'), href: activity_categories_path },
+      ({ name: category.name, href: activity_category_path(category) } if category),
+      { name: @activity_type.name }
+    ].compact
   end
 end

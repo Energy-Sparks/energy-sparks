@@ -1,10 +1,14 @@
 class InterventionTypesController < ApplicationController
   include Pagy::Backend
-  load_and_authorize_resource
+
   layout 'task', only: [:show]
 
   before_action :enable_bootstrap5, only: [:show]
   before_action :handle_head_request, only: [:show]
+
+  load_and_authorize_resource
+  before_action :set_breadcrumbs, only: [:show]
+
   skip_before_action :authenticate_user!, only: [:search, :show, :for_school]
 
   def search
@@ -26,5 +30,14 @@ class InterventionTypesController < ApplicationController
   def for_school
     school = School.find(params[:school_id])
     redirect_to new_school_intervention_path(school, intervention_type_id: @intervention_type.id)
+  end
+
+  def set_breadcrumbs
+    category = @intervention_type.category
+    @breadcrumbs = [
+      { name: t('common.labels.adult_actions'), href: intervention_type_groups_path },
+      ({ name: category.name, href: intervention_type_groups_path(category) } if category),
+      { name: @intervention_type.name }
+    ].compact
   end
 end
