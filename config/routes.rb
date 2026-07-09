@@ -844,7 +844,7 @@ Rails.application.routes.draw do
       end
     end
     resources :suppliers do
-      post :deliver
+      post :deliver, on: :member
       scope module: :suppliers do
         concerns :issueable
       end

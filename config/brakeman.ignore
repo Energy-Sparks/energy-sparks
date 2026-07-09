@@ -229,6 +229,29 @@
       "note": ""
     },
     {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "cbc3a9bdefbaf072bf041009fad6b41e065149f332f5a1594eb79e7aab33d896",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/report/metered_solar.rb",
+      "line": 21,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Meter.joins(:school => :school_group).joins(\"JOIN meter_attributes solar_pv_mapping_attributes\\n                    ON solar_pv_mapping_attributes.meter_id = meters.id\\n                    #{active_attribute(:solar_pv_mpan_meter_mapping, :solar_pv_mapping_attributes)}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Report::MeteredSolar",
+        "method": "Report::MeteredSolar.query"
+      },
+      "user_input": "active_attribute(:solar_pv_mpan_meter_mapping, :solar_pv_mapping_attributes)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Remote Code Execution",
       "warning_code": 25,
       "fingerprint": "cf374106a18b43d13ea563c4d7cd6b3d82d6f515ebb00b1f88bb623236553383",
