@@ -15,9 +15,9 @@ module Admin
                    date_column(:end_date),
                    real_generation_meters_column,
                    BoolColumn.new(:modelled_solar_pv_generation, :has_modelled_solar_pv_generation_attribute),
-                   BoolColumn.new(:modelled_solar, :has_solar_pv_attribute),
-                   BoolColumn.new(:solar_overrides, :has_solar_pv_override_attribute),
                    export_column,
+                   BoolColumn.new(:modelled_solar, :has_solar_pv_attribute),
+                   BoolColumn.new(:solar_override, :has_solar_pv_override_attribute),
                    action_column]
       end
 
