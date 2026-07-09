@@ -6,7 +6,7 @@ class HotWaterHeatingSplitter
     @fault_tolerant_model_dates = fault_tolerant_model_dates
   end
 
-  def split_heat_and_hot_water(start_date, end_date, meter: @school.aggregated_heat_meters) # rubocop:disable Metrics/MethodLength
+  def split_heat_and_hot_water(start_date, end_date, meter: @school.aggregated_heat_meters) # rubocop:todo Metrics/MethodLength
     average_hot_water_only_day_kwh_x48 = average_hot_water_day_x48(start_date, end_date, meter: meter)
     average_hot_water_only_day_kwh = average_hot_water_only_day_kwh_x48.sum
     heating_day_dates = []
@@ -187,7 +187,7 @@ class HotWaterHeatingSplitter
       start_date = [end_date - 365, meter.amr_data.start_date].max
     end
 
-    model_period = SchoolDatePeriod.new(:heat_balance_simulation, 'Current Year', start_date, end_date)
+    model_period = SchoolDatePeriod.new(:analysis, 'Current Year', start_date, end_date)
     meter.heating_model(model_period)
   end
 end

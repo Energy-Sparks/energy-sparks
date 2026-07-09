@@ -36,15 +36,14 @@ module Amr
 
     def load_all_readings
       rows = AmrDataFeedReading
-             .joins(:meter)
-             .where(meters: { id: all_meter_ids })
-             .order('amr_data_feed_readings.created_at ASC')
+             .where(meter_id: all_meter_ids)
+             .order(meter_id: :asc, created_at: :asc)
              .pluck(
-               'meters.id',
-               'amr_data_feed_readings.amr_data_feed_config_id',
-               'amr_data_feed_readings.reading_date',
-               'amr_data_feed_readings.created_at',
-               'amr_data_feed_readings.readings'
+               :meter_id,
+               :amr_data_feed_config_id,
+               :reading_date,
+               :created_at,
+               :readings
              )
 
       rows.group_by { |meter_id, *_| meter_id }

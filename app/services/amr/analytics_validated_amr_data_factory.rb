@@ -9,16 +9,15 @@ module Amr
     # override parent method to load validated readings instead
     def load_all_readings
       rows = AmrValidatedReading
-             .joins(:meter)
-             .where(meters: { id: all_meter_ids })
-             .order('amr_validated_readings.reading_date ASC')
+             .where(meter_id: all_meter_ids)
+             .order(reading_date: :asc)
              .pluck(
-               'meters.id',
-               'amr_validated_readings.reading_date',
-               'amr_validated_readings.status',
-               'amr_validated_readings.substitute_date',
-               'amr_validated_readings.upload_datetime',
-               'amr_validated_readings.kwh_data_x48'
+               :meter_id,
+               :reading_date,
+               :status,
+               :substitute_date,
+               :upload_datetime,
+               :kwh_data_x48
              )
 
       rows.group_by { |meter_id, *_| meter_id }

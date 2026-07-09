@@ -240,6 +240,18 @@ module Commercial
       scope.includes(:contract_holder, :product).by_start_date
     end
 
+    # list of schools that might be added to this contract
+    def candidate_schools
+      return [] if contract_holder.is_a?(School)
+
+      scope = if contract_holder.is_a?(Funder)
+                School.visible.by_name
+              else
+                contract_holder.assigned_schools.visible.by_name
+              end
+      scope.where.not(id: schools)
+    end
+
     def status_colour
       STATUS_COLOUR[status.to_sym]
     end
