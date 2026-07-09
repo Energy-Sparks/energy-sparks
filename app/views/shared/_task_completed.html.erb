@@ -61,9 +61,9 @@
       buttons: { t("tasks.completed.#{task_type}.view_link") => recording_path(recording) }
     ) %>
 
-<%= render 'schools/prompt_to_complete_programme',
+<%= render 'schools/prompts/complete_programme',
            programmes: school.programmes.active.started.order(started_on: :desc),
            style: :compact %>
-<%= render 'schools/prompt_join_programme', school: school, style: :compact %>
-<%= render 'schools/prompt_audit', audit: Audits::AuditService.new(school).last_audit, style: :compact %>
-<%= render 'schools/prompt_recommended', scope: recommendations_scope_for(task_type), icon: true, style: :compact %>
+<%= render 'schools/prompts/join_programme', school: school, style: :compact %>
+<%= render 'schools/prompts/audit', audit: Audits::AuditService.new(school).last_audit, style: :compact %>
+<%= render 'schools/prompts/recommended', scope: recommendations_scope_for(task_type), icon: true, style: :compact %>
