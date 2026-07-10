@@ -14,7 +14,7 @@ module Admin
                    action_column]
       end
 
-      def date_column(type) = Column.new(type, ->(meter) { date_parse(meter.solar_pv_mapping_data[type.to_s]) })
+      def date_column(type) = Column.new(type, ->(meter) { date_parse(meter.solar_attribute_data[type.to_s]) })
 
       def date_parse(date) = date.present? ? Date.parse(date) : nil
 

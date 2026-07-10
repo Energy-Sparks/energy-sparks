@@ -19,13 +19,13 @@ module Admin
       def real_generation_meters_column
         Column.new(:real_generation_meters,
                    lambda { |meter|
-                     meter.solar_pv_mapping_data.count do |key, value|
+                     meter.solar_attribute_data.count do |key, value|
                        key.start_with?('production_') && value.present?
                      end
                    })
       end
 
-      def export_column = BoolColumn.new(:export, ->(meter) { meter.solar_pv_mapping_data['export_mpan'].present? })
+      def export_column = BoolColumn.new(:export, ->(meter) { meter.solar_attribute_data['export_mpan'].present? })
 
       def query = Report::SolarMeter.metered
     end
