@@ -929,6 +929,7 @@ Rails.application.routes.draw do
       resources :zero_readings, only: [:index]
       resources :pupil_number_updates, only: :index
       resources :metered_solar, only: :index
+      resources :solar_installations, only: :index
     end
 
     resource :settings, only: %i[show update]
