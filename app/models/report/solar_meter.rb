@@ -15,9 +15,9 @@ module Report
     end
 
     private_class_method def self.solar_attribute_join(type)
-      "JOIN meter_attributes solar_pv_mapping_attributes
-       ON solar_pv_mapping_attributes.meter_id = meters.id
-       #{active_attribute(type, :solar_pv_mapping_attributes)}"
+      "JOIN meter_attributes solar_attributes
+       ON solar_attributes.meter_id = meters.id
+       #{active_attribute(type, :solar_attributes)}"
     end
 
     private_class_method def self.query
@@ -30,7 +30,7 @@ module Report
     def self.metered
       query.joins(solar_attribute_join(:solar_pv_mpan_meter_mapping))
            .select('meters.*',
-                   'solar_pv_mapping_attributes.input_data AS solar_pv_mapping_data',
+                   'solar_attributes.input_data AS solar_pv_mapping_data',
                    "EXISTS (#{first_attribute_subquery(:solar_pv_override)}) AS has_solar_pv_override_attribute",
                    "EXISTS (#{first_attribute_subquery(:solar_pv)}) AS has_solar_pv_attribute",
                    "EXISTS (#{first_attribute_subquery(:modelled_solar_pv_generation)}) " \
@@ -44,7 +44,7 @@ module Report
     def self.modelled
       query.joins(solar_attribute_join(:solar_pv))
            .select('meters.*',
-                   'solar_pv_mapping_attributes.input_data AS solar_pv_mapping_data')
+                   'solar_attributes.input_data AS solar_pv_data')
     end
 
     def self.modelled_school_ids
