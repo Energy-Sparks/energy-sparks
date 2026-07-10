@@ -222,6 +222,12 @@
     <p>
       The following table includes all licences for this contract sorted by start date.
     </p>
+    <% if @overlapping_licences.any? %>
+      <%= render PromptComponent.new(id: 'overlapping-licences', status: :negative, icon: 'calendar-xmark') do |p| %>
+        <% p.with_link { link_to 'Overlapping licences', overlapping_admin_commercial_licences_path } %>
+        <%= "#{@overlapping_licences.count} of these licences overlap with licences from other contracts" %>
+      <% end %>
+    <% end %>
     <%= render Commercial::LicencesComponent.new(id: 'licences',
                                                  licences: @contract.licences.by_start_date,
                                                  show_contract: false,
