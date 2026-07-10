@@ -16,7 +16,6 @@ describe Report::SolarMeter do
                                            production_mpan4: '4',
                                            production_mpan5: '5' })
   end
-
   let!(:pv_attribute) do
     create(:solar_pv_attribute, meter:)
   end
@@ -32,21 +31,24 @@ describe Report::SolarMeter do
   describe '.modelled' do
     let(:meters) { described_class.modelled }
 
-    it 'returns expected data' do
+    it 'returns the expected data' do
       expect(meters.size).to eq 1
       expect(meters.first).to have_attributes(id: meter.id, solar_attribute_data: pv_attribute.input_data)
     end
   end
 
-  describe '.metered' do
-    # let!(:other_attribute) do
-    #   create(:meter_attribute, attribute_type: :targeting_and_tracking_profiles_maximum_retries,
-    #                            input_data: { number_of_retries: 1 })
-    # end
-    let(:meters) { described_class.metered }
-    let(:mapping) { solar_panels.first }
+  describe '.modelled_school_ids' do
+    let!(:mapping_attribute) { nil }
 
-    it 'returns expected data' do
+    it 'returns the expected data' do
+      expect(described_class.modelled_school_ids).to eq([meter.school_id])
+    end
+  end
+
+  describe '.metered' do
+    let(:meters) { described_class.metered }
+
+    it 'returns the expected data' do
       expect(meters.size).to eq 1
       expect(meters.first).to have_attributes(id: meter.id,
                                               solar_attribute_data: mapping_attribute.input_data,
@@ -57,7 +59,7 @@ describe Report::SolarMeter do
 
     describe '.metered_school_ids' do
       it 'has the school id' do
-        expect(described_class.metered_school_ids).to eq([mapping_attribute.meter.school_id])
+        expect(described_class.metered_school_ids).to eq([meter.school_id])
       end
     end
   end

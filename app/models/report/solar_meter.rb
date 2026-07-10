@@ -48,7 +48,7 @@ module Report
     end
 
     def self.modelled_school_ids
-      Meter.joins(solar_attribute_join(:solar_pv_mpan_meter_mapping)).pluck(:school_id)
+      Meter.joins(solar_attribute_join(:solar_pv)).pluck(:school_id)
     end
   end
 end
