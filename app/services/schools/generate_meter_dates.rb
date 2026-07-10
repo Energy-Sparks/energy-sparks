@@ -1,5 +1,3 @@
-require 'dashboard'
-
 module Schools
   class GenerateMeterDates
     def initialize(meter_collection)

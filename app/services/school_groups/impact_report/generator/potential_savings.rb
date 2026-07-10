@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dashboard'
-
 module SchoolGroups
   module ImpactReport
     class Generator

@@ -1,5 +1,3 @@
-require 'dashboard'
-
 class ChartData
   OPERATIONS = %i[move extend contract compare].freeze
 
