@@ -34,8 +34,7 @@ describe Report::SolarMeter do
 
     it 'returns expected data' do
       expect(meters.size).to eq 1
-      expect(meters.first).to have_attributes(id: meter.id,
-                                              solar_pv_data: pv_attribute.input_data)
+      expect(meters.first).to have_attributes(id: meter.id, solar_attribute_data: pv_attribute.input_data)
     end
   end
 
@@ -50,7 +49,7 @@ describe Report::SolarMeter do
     it 'returns expected data' do
       expect(meters.size).to eq 1
       expect(meters.first).to have_attributes(id: meter.id,
-                                              solar_pv_mapping_data: mapping_attribute.input_data,
+                                              solar_attribute_data: mapping_attribute.input_data,
                                               has_solar_pv_override_attribute: true,
                                               has_solar_pv_attribute: true,
                                               has_modelled_solar_pv_generation_attribute: true)
