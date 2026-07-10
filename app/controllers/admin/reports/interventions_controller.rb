@@ -33,7 +33,7 @@ module Admin
                                   .intervention
                                   .recorded_in_last_year.order(created_at: :desc)
 
-        apply_filters(observations)
+        observations = apply_filters(observations)
         observations = apply_dashboard_filters(observations) if @dashboard_user
         observations
       end
