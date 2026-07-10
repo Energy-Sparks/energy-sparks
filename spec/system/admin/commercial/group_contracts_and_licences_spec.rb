@@ -20,7 +20,7 @@ describe 'group contracts and licences' do
   context 'when visiting licence summaries' do
     before do
       within('#admin') do
-        click_on 'Licence Summaries'
+        click_on 'Licence summaries'
       end
     end
 
