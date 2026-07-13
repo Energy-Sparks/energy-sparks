@@ -26,6 +26,12 @@
           The form has been populated using the existing contractual details, including contract terms, length and
           agreed pricing.
         </p>
+        <% if @contract.licence_period != @original.licence_period %>
+          <p>
+            <strong>Note</strong> based on the chosen option the licence period has been changed to
+            <%= @contract.licence_period.to_s.humanize %>
+          </p>
+        <% end %>
       <% end %>
     <% elsif contract.persisted? && contract.invoiced? %>
       <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
@@ -124,7 +130,14 @@
           <%= f.input :start_date, as: :tempus_dominus_date if contract.editable_attribute?(:start_date) %>
           <%= f.input :end_date, as: :tempus_dominus_date if contract.editable_attribute?(:end_date) %>
 
-          <%= f.input :invoice_terms, as: :hidden %>
+          <% if contract.editable_attribute?(:invoice_terms) && !contract.custom? %>
+            <%= f.input :invoice_terms,
+                        collection: collection_from_enum(Commercial::Contract.invoice_terms),
+                        include_blank: false %>
+          <% else %>
+            <%= f.input :invoice_terms, as: :hidden %>
+          <% end %>
+
           <%= f.input :licence_period, as: :hidden %>
           <%= if contract.custom? && contract.editable_attribute?(:licence_years)
                 f.input :licence_years, hint: 'Length of custom licence in years. E.g. 1.0, 2.0, 3.0, 1.2, 1.5, etc'
@@ -151,6 +164,12 @@
       <div class="col-12 mb-4 bg-light rounded-2 pb-3">
         <h3>Invoicing</h3>
         <%= f.input :purchase_order_number if contract.editable_attribute?(:purchase_order_number) %>
+        <% if contract.editable_attribute?(:xero_account_code_id) %>
+          <%= f.input :xero_account_code_id,
+                      collection: Commercial::XeroAccountCode.all.by_code,
+                      label_method: :display_label,
+                      include_blank: true %>
+        <% end %>
       </div>
 
       <%= f.submit 'Save', class: 'btn btn-primary' %>

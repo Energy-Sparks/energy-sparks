@@ -134,9 +134,11 @@ describe Commercial::Contract do
 
       it 'has the expected fields' do
         expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
+                                                                :invoice_terms,
                                                                 :name, :number_of_schools,
                                                                 :product_id, :purchase_order_number,
-                                                                :start_date, :status, :updated_by_id)
+                                                                :start_date, :status, :updated_by_id,
+                                                                :xero_account_code_id)
       end
 
       context 'when confirmed' do
@@ -144,9 +146,10 @@ describe Commercial::Contract do
 
         it 'has the expected fields' do
           expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
+                                                                  :invoice_terms,
                                                                   :name, :number_of_schools,
                                                                   :product_id, :purchase_order_number,
-                                                                  :start_date, :updated_by_id)
+                                                                  :start_date, :updated_by_id, :xero_account_code_id)
         end
       end
 
@@ -157,7 +160,8 @@ describe Commercial::Contract do
 
         it 'has the expected fields' do
           expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools,
-                                                                  :purchase_order_number, :status, :updated_by_id)
+                                                                  :purchase_order_number, :status, :updated_by_id,
+                                                                  :xero_account_code_id)
         end
       end
     end
@@ -169,7 +173,8 @@ describe Commercial::Contract do
         expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
                                                                 :licence_years, :name, :number_of_schools,
                                                                 :product_id, :purchase_order_number,
-                                                                :start_date, :status, :updated_by_id)
+                                                                :start_date, :status, :updated_by_id,
+                                                                :xero_account_code_id)
       end
 
       context 'when confirmed' do
@@ -179,7 +184,7 @@ describe Commercial::Contract do
           expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
                                                                   :licence_years, :name, :number_of_schools,
                                                                   :product_id, :purchase_order_number,
-                                                                  :start_date, :updated_by_id)
+                                                                  :start_date, :updated_by_id, :xero_account_code_id)
         end
       end
 
@@ -190,39 +195,70 @@ describe Commercial::Contract do
 
         it 'has the expected fields' do
           expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools,
-                                                                  :purchase_order_number, :status, :updated_by_id)
+                                                                  :purchase_order_number, :status, :updated_by_id,
+                                                                  :xero_account_code_id)
         end
       end
     end
   end
 
   describe '#as_renewal' do
-    subject(:renewed) { described_class.as_renewal(original) }
+    context 'when renewing as a custom contract' do
+      subject(:renewed) { described_class.as_renewal(original, chosen_type: :custom) }
 
-    let(:original) do
-      create(:commercial_contract,
-             :custom,
-             agreed_school_price: 450.0,
-             licence_years: 2.0,
-             number_of_schools: 15)
+      let(:original) do
+        create(:commercial_contract,
+               :custom,
+               agreed_school_price: 450.0,
+               licence_years: 2.0,
+               number_of_schools: 15)
+      end
+
+      it 'correctly populates the new contract' do
+        expect(renewed).to have_attributes(
+          agreed_school_price: original.agreed_school_price,
+          comments: "Renewed from #{original.name}",
+          contract_holder: original.contract_holder,
+          invoice_terms: original.invoice_terms,
+          licence_period: original.licence_period,
+          licence_years: original.licence_years,
+          number_of_schools: original.number_of_schools,
+          product: original.product,
+          start_date: original.end_date + 1.day,
+          end_date: original.end_date.next_year
+        )
+      end
+
+      context 'when switching type' do
+        let(:original) do
+          create(:commercial_contract,
+                 licence_period: :contract,
+                 invoice_terms: :pro_rata,
+                 agreed_school_price: 450.0,
+                 licence_years: 2.0,
+                 number_of_schools: 15)
+        end
+
+        it 'correctly switches the contract options' do
+          expect(renewed).to have_attributes(
+            agreed_school_price: original.agreed_school_price,
+            comments: "Renewed from #{original.name}",
+            contract_holder: original.contract_holder,
+            invoice_terms: 'full',
+            licence_period: 'custom',
+            licence_years: original.licence_years,
+            number_of_schools: original.number_of_schools,
+            product: original.product,
+            start_date: original.end_date + 1.day,
+            end_date: original.end_date.next_year
+          )
+        end
+      end
     end
 
-    it 'correctly populates the defaults' do
-      expect(renewed).to have_attributes(
-        agreed_school_price: original.agreed_school_price,
-        comments: "Renewed from #{original.name}",
-        contract_holder: original.contract_holder,
-        invoice_terms: original.invoice_terms,
-        licence_period: original.licence_period,
-        licence_years: original.licence_years,
-        number_of_schools: original.number_of_schools,
-        product: original.product,
-        start_date: original.end_date + 1.day,
-        end_date: original.end_date.next_year
-      )
-    end
+    context 'when renewing as a standard contract' do
+      subject(:renewed) { described_class.as_renewal(original, chosen_type: :pro_rata) }
 
-    context 'when the original licence terms were pro_rata' do
       let(:original) do
         create(:commercial_contract,
                licence_period: :contract,
@@ -231,7 +267,7 @@ describe Commercial::Contract do
                number_of_schools: 15)
       end
 
-      it 'correctly populates the defaults' do
+      it 'correctly populates the new contract' do
         expect(renewed).to have_attributes(
           agreed_school_price: original.agreed_school_price,
           comments: "Renewed from #{original.name}",
@@ -244,29 +280,54 @@ describe Commercial::Contract do
           end_date: original.end_date.next_year
         )
       end
-    end
 
-    context 'when the original licence terms were full' do
-      let(:original) do
-        create(:commercial_contract,
-               licence_period: :contract,
-               invoice_terms: :full,
-               agreed_school_price: 450.0,
-               number_of_schools: 15)
+      context 'when the original licence terms were full' do
+        let(:original) do
+          create(:commercial_contract,
+                 licence_period: :contract,
+                 invoice_terms: :full,
+                 agreed_school_price: 450.0,
+                 number_of_schools: 15)
+        end
+
+        it 'switches to a pro-rata contract' do
+          expect(renewed).to have_attributes(
+            agreed_school_price: original.agreed_school_price,
+            comments: "Renewed from #{original.name}",
+            contract_holder: original.contract_holder,
+            invoice_terms: 'pro_rata',
+            licence_period: original.licence_period,
+            number_of_schools: original.number_of_schools,
+            product: original.product,
+            start_date: original.end_date + 1.day,
+            end_date: original.end_date.next_year
+          )
+        end
       end
 
-      it 'switches to a pro-rata contract' do
-        expect(renewed).to have_attributes(
-          agreed_school_price: original.agreed_school_price,
-          comments: "Renewed from #{original.name}",
-          contract_holder: original.contract_holder,
-          invoice_terms: 'pro_rata',
-          licence_period: original.licence_period,
-          number_of_schools: original.number_of_schools,
-          product: original.product,
-          start_date: original.end_date + 1.day,
-          end_date: original.end_date.next_year
-        )
+      context 'when switching type' do
+        let(:original) do
+          create(:commercial_contract,
+                 :custom,
+                 agreed_school_price: 450.0,
+                 licence_years: 2.0,
+                 number_of_schools: 15)
+        end
+
+        it 'correctly switches the contract options' do
+          expect(renewed).to have_attributes(
+            agreed_school_price: original.agreed_school_price,
+            comments: "Renewed from #{original.name}",
+            contract_holder: original.contract_holder,
+            invoice_terms: 'pro_rata',
+            licence_period: 'contract',
+            licence_years: original.licence_years,
+            number_of_schools: original.number_of_schools,
+            product: original.product,
+            start_date: original.end_date + 1.day,
+            end_date: original.end_date.next_year
+          )
+        end
       end
     end
   end
@@ -433,6 +494,49 @@ describe Commercial::Contract do
 
     it 'returns only contracts with pending invoices' do
       expect(described_class.pending_invoicing).to contain_exactly(funder_contract)
+    end
+  end
+
+  describe '#candidate_schools' do
+    context 'with School' do
+      let!(:contract) { create(:commercial_contract, :with_school) }
+
+      it { expect(contract.candidate_schools).to eq([]) }
+    end
+
+    context 'with Funder' do
+      let!(:school) { create(:school) }
+      let!(:contract) { create(:commercial_contract, :with_funder) }
+
+      it { expect(contract.candidate_schools).to eq([school]) }
+
+      context 'with an already licensed school' do
+        let!(:school) { create(:school) }
+
+        before do
+          create(:commercial_licence, contract:)
+        end
+
+        it { expect(contract.candidate_schools).to eq([school]) }
+      end
+    end
+
+    context 'with SchoolGroup' do
+      let!(:school_group) { create(:school_group, :with_active_schools) }
+      let!(:contract) { create(:commercial_contract, contract_holder: school_group) }
+
+      it { expect(contract.candidate_schools).to eq(school_group.assigned_schools.by_name) }
+
+      context 'with an already licensed school' do
+        let!(:school_group) { create(:school_group) }
+        let!(:school) { create(:school, school_group:) }
+
+        before do
+          create(:commercial_licence, contract:, school: create(:school, school_group:))
+        end
+
+        it { expect(contract.candidate_schools).to eq([school]) }
+      end
     end
   end
 end

@@ -593,6 +593,7 @@ Rails.application.routes.draw do
       resources :school_groups, module: :dashboard
       resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
+      resources :impact_reports, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :suppliers, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
@@ -653,6 +654,7 @@ Rails.application.routes.draw do
 
         get :contract_holder_options, on: :collection
         get :choose, on: :collection
+        get :renew, on: :collection
         resources :invoices, controller: 'contracts/invoices', only: %i[new create] do
           get :raise_invoice, on: :collection
         end
@@ -676,7 +678,9 @@ Rails.application.routes.draw do
         end
       end
       resources :contract_holders, only: [:index]
-      resources :invoices, only: [:index, :show]
+      resources :invoices, only: [:index, :show] do
+        get :export, on: :collection
+      end
       resources :licences do
         collection do
           get :current
@@ -688,6 +692,7 @@ Rails.application.routes.draw do
         end
       end
       resources :products
+      resources :xero_account_codes, except: [:show]
 
       get 'pricing', to: 'pricing#show'
     end
@@ -720,6 +725,7 @@ Rails.application.routes.draw do
     resources :consent_grants, only: %i[index show]
     resources :find_school_by_mpxn, only: :index
     resources :find_school_by_urn, only: :index
+    resources :find_school_by_name, only: :index
     get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues', as: :meter_issues
 
     resources :consent_statements
@@ -838,7 +844,7 @@ Rails.application.routes.draw do
       end
     end
     resources :suppliers do
-      post :deliver
+      post :deliver, on: :member
       scope module: :suppliers do
         concerns :issueable
       end
@@ -922,6 +928,7 @@ Rails.application.routes.draw do
       resources :work_allocation, only: [:index]
       resources :zero_readings, only: [:index]
       resources :pupil_number_updates, only: :index
+      resources :metered_solar, only: :index
     end
 
     resource :settings, only: %i[show update]
@@ -933,6 +940,7 @@ Rails.application.routes.draw do
       namespace :search do
         resources :find_school_by_mpxn, only: :index
         resources :find_school_by_urn, only: :index
+        resources :find_school_by_name, only: :index
       end
     end
 

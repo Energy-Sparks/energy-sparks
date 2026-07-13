@@ -28,7 +28,7 @@ RSpec.describe 'onboarding', :schools do
   let!(:diocese) { create(:school_group, group_type: :diocese) }
   let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area) }
   let!(:funder) { create(:funder) }
-  let!(:contract) { create(:commercial_contract) }
+  let!(:contract) { create(:commercial_contract, :future) }
 
   let(:last_email) { ActionMailer::Base.deliveries.last }
 
@@ -58,6 +58,26 @@ RSpec.describe 'onboarding', :schools do
         expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name))
       }
 
+      context 'when using an existing URN' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+        let!(:existing_school) { create(:school, urn: 12_345) }
+
+        before do
+          fill_in 'School name', with: 'Name'
+          fill_in 'URN', with: 12_345
+          fill_in 'Contact email', with: 'oldfield@test.com'
+          select school_group.name, from: 'School Group'
+          click_on 'Next'
+        end
+
+        it 'displays an error' do
+          expect(page).to have_text("This URN is already in use by #{existing_school.name}")
+        end
+
+        it 'links to the existing school' do
+          expect(page).to have_link(existing_school.name, href: school_path(existing_school))
+        end
+      end
+
       context 'when completing the first form' do
         before do
           fill_in 'School name', with: school_name
@@ -69,7 +89,7 @@ RSpec.describe 'onboarding', :schools do
 
         it { expect(page).to have_select('Data Sharing', selected: 'Public') }
         it { expect(page).to have_select('Funder', options: [''] + Funder.all.by_name.map(&:name)) }
-        it { expect(page).to have_select('Contract', options: [''] + Commercial::Contract.current.by_name.map(&:name)) }
+        it { expect(page).to have_select('Contract', options: [''] + Commercial::Contract.current_and_future.by_name.map(&:name)) }
 
         it {
           expect(page).to have_select('Project Group', options: [''] + SchoolGroup.project_groups.by_name.map(&:name))

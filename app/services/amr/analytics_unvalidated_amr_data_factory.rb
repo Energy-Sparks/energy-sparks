@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Amr
@@ -6,6 +8,7 @@ module Amr
       @heat_meters = heat_meters
       @electricity_meters = electricity_meters
       @feed_configs = load_configs
+      @all_readings_by_meter = load_all_readings
     end
 
     def build
@@ -20,29 +23,52 @@ module Amr
       meters
     end
 
-  private
+    private
 
     # load just the data we need to convert data formats and enforce missing readings limit
     def load_configs
       AmrDataFeedConfig.select(:id, :date_format, :row_per_reading, :missing_readings_limit).index_by(&:id)
     end
 
+    def all_meter_ids
+      (@heat_meters + @electricity_meters).map(&:id)
+    end
+
+    def load_all_readings
+      rows = AmrDataFeedReading
+             .where(meter_id: all_meter_ids)
+             .order(meter_id: :asc, created_at: :asc)
+             .pluck(
+               :meter_id,
+               :amr_data_feed_config_id,
+               :reading_date,
+               :created_at,
+               :readings
+             )
+
+      rows.group_by { |meter_id, *_| meter_id }
+    end
+
+    def readings_for_meter(active_record_meter)
+      @all_readings_by_meter[active_record_meter.id] || []
+    end
+
     def build_meter_data(active_record_meter)
-      readings = AmrDataFeedReading.order(created_at: :asc)
-        .where(meter_id: active_record_meter.id)
-        .pluck(:amr_data_feed_config_id, :reading_date, :created_at, :readings).map do |reading|
+      readings = readings_for_meter(active_record_meter).map do |(_, config_id, reading_date, created_at, values)|
+        reading = [config_id, reading_date, created_at, values]
         reading_if_valid(active_record_meter.mpan_mprn, reading)
       end
 
       Amr::AnalyticsMeterFactory.new(active_record_meter).build(readings.compact)
     end
 
-    def reading_if_valid(meter_id, reading)
+    def reading_if_valid(_meter_id, reading)
       return if reading_invalid?(reading)
-      reading_date = date_from_string_using_date_format(reading,)
+
+      reading_date = date_from_string_using_date_format(reading)
       return if reading_date.nil?
+
       OneDayAMRReading.new(
-        meter_id,
         reading_date,
         'ORIG',
         nil,

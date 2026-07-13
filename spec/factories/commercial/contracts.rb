@@ -15,6 +15,7 @@ FactoryBot.define do
     product factory: %i[commercial_product]
     created_by factory: %i[user]
     updated_by factory: %i[user]
+    xero_account_code factory: %i[commercial_xero_account_code]
 
     trait :custom do
       licence_period { :custom }
@@ -27,6 +28,10 @@ FactoryBot.define do
 
     trait :with_school_group do
       contract_holder { association :school_group }
+    end
+
+    trait :with_funder do
+      contract_holder { association :funder }
     end
 
     trait :expired do

@@ -45,7 +45,7 @@ module Heating
     end
 
     def predicted_kwh(temperature)
-      a + b * temperature
+      a + (b * temperature)
     end
 
     def latest_blended_tariff_£_per_kwh
@@ -85,7 +85,8 @@ module Heating
       # otherwise the chart is too complicated for most
       # users to understand if the thermally massive model is used
       start_date = [aggregate_meter.amr_data.end_date - 364, aggregate_meter.amr_data.start_date].max
-      last_year = SchoolDatePeriod.new(:analysis, 'validate amr', start_date, aggregate_meter.amr_data.end_date)
+      last_year = SchoolDatePeriod.new(:analysis, 'thermostatic analysis', start_date,
+                                       aggregate_meter.amr_data.end_date)
       aggregate_meter.heating_model(last_year, :simple_regression_temperature)
     end
 

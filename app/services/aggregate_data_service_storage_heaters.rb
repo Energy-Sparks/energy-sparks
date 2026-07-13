@@ -116,7 +116,7 @@ class AggregateDataServiceStorageHeaters
 
     # Create new AMRData instances one for the storage heater use and one for the rest of the consumption
     electric_only_amr, storage_heater_amr =
-      meter.storage_heater_setup.disaggregate_amr_data(meter.amr_data, meter.mpan_mprn)
+      meter.storage_heater_setup.disaggregate_amr_data(meter.amr_data)
 
     map[:storage_heater] =
       create_meter(meter, storage_heater_amr, :storage_heater_disaggregated_storage_heater, :storage_heater)

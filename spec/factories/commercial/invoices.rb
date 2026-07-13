@@ -6,5 +6,15 @@ FactoryBot.define do
 
     contract factory: %i[commercial_contract]
     created_by factory: %i[user]
+
+    trait :with_line_items do
+      transient do
+        count { 1 }
+      end
+
+      after(:build) do |invoice, evaluator|
+        create_list(:commercial_line_item, evaluator.count, invoice:)
+      end
+    end
   end
 end

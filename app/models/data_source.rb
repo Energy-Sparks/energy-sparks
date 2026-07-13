@@ -65,6 +65,8 @@ class DataSource < ApplicationRecord
           meter&.school&.name,
           meter&.mpan_mprn,
           meter&.meter_type&.humanize,
+          meter&.supplier&.name,
+          meter&.data_source&.name,
           meter&.active,
           meter.t_meter_system,
           meter&.first_validated_reading,
@@ -79,7 +81,7 @@ class DataSource < ApplicationRecord
   private
 
   def csv_headers
-    ['School group', 'Admin', 'School', 'MPAN/MPRN', 'Meter type', 'Active', 'Half-Hourly', 'First validated meter reading',
+    ['School group', 'Admin', 'School', 'MPAN/MPRN', 'Meter type', 'Supplier', 'Data Source', 'Active', 'Half-Hourly', 'First validated meter reading',
      'Last validated meter reading', 'Admin Meter Status', 'Open issues count', 'Open issues']
   end
 end

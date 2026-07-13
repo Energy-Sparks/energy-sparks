@@ -13,7 +13,7 @@ module Admin
     def show; end
 
     def deliver
-      @supplier = Supplier.expect(:supplier_id)
+      @supplier = Supplier.find(params.expect(:supplier_id))
       SendSupplierReportJob.perform_later(to: current_user.email, supplier_id: @supplier.id)
       redirect_back_or_to admin_supplier_path(@supplier), notice: "Supplier report for #{@supplier.name}
                                                                   requested to be sent to #{current_user.email}"
