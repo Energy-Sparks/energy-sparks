@@ -8,6 +8,8 @@
                                            style: :secondary,
                                            classes: 'mb-2 me-2') %>
 
+<% elsif @issueable.is_a?(SchoolGroup) %>
+  <% content_for :header_title, "Issues & Notes for #{@school_group.name}" %>
 <% else %>
   <%= render 'header', title: 'Issues & Notes' do %>
     <% if @issueable.try(:school_group) %>

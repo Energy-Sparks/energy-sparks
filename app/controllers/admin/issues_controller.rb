@@ -3,6 +3,7 @@
 module Admin
   class IssuesController < AdminController
     include Pagy::Backend
+    include SchoolGroupBreadcrumbs
 
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
@@ -109,6 +110,10 @@ module Admin
       respond_to do |format|
         format.html do
           @pagy, @issues = pagy(@issues.by_priority_order)
+          if @issueable.is_a?(SchoolGroup)
+            breadcrumbs
+            render :index, layout: 'group_settings'
+          end
         end
         format.csv do
           issues = @issues.with_rich_text_description.includes(meters: %i[data_source admin_meter_status])
@@ -155,6 +160,10 @@ module Admin
     def issue_params
       params.expect(issue: [:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :review_date, :pinned,
                             { meter_ids: [] }, { issue_tag_ids: [] }])
+    end
+
+    def breadcrumbs
+      build_breadcrumbs([{ name: t('school_groups.titles.issues') }]) if @issueable.is_a?(SchoolGroup)
     end
   end
 end

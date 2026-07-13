@@ -445,9 +445,14 @@ en:
       comparisons: Comparisons
       contracts: Contracts
       current_scores: Current Scores
+      edit: Edit group
       impact_report: Impact report
-      licence_summaries: Licence Summaries
+      issues: Issues
+      licence_summaries: Licence summaries
       map: Map
+      meter_attributes: Meter attributes
+      meter_updates: Meter updates
+      partners: Manage partners
       previous_scores: Previous Scores
       priority_actions: Priority Actions
       recent_usage: Recent Usage
@@ -456,3 +461,4 @@ en:
       secr: SECR report
       settings: Settings
       show: Group Dashboard
+      users: Manage users

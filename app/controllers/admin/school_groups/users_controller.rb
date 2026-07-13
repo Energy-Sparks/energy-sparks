@@ -1,8 +1,16 @@
+# frozen_string_literal: true
+
 module Admin
   module SchoolGroups
     class UsersController < AdminController
       include ApplicationHelper
+      include SchoolGroupBreadcrumbs
+
       load_and_authorize_resource :school_group
+
+      before_action :breadcrumbs
+
+      layout 'group_settings'
 
       def show
         @group_admins = @school_group.users.sort_by(&:email)
@@ -84,6 +92,10 @@ module Admin
           y_n(user.access_locked?),
           y_n(user.climate_action_lead)
         ]
+      end
+
+      def breadcrumbs
+        build_breadcrumbs([{ name: t('school_groups.titles.users') }])
       end
     end
   end

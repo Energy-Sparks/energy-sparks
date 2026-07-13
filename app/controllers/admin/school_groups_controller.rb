@@ -2,8 +2,10 @@
 
 module Admin
   class SchoolGroupsController < AdminController
-    load_and_authorize_resource
+    include SchoolGroupBreadcrumbs
     include AdminSchoolGroupBreadcrumbs
+
+    load_and_authorize_resource
 
     before_action :enable_bootstrap5, only: [:show]
 
@@ -31,6 +33,8 @@ module Admin
 
     def edit
       @schools = @school_group.assigned_schools.by_name
+      group_settings_breadcrumbs('edit')
+      render :edit, layout: 'group_settings'
     end
 
     def create
@@ -92,6 +96,10 @@ module Admin
 
     def breadcrumbs
       build_breadcrumbs([{ name: @school_group.name }])
+    end
+
+    def group_settings_breadcrumbs(page)
+      build_breadcrumbs([{ name: t("school_groups.titles.#{page}") }]) if @issueable.is_a?(SchoolGroup)
     end
   end
 end
