@@ -58,6 +58,26 @@ RSpec.describe 'onboarding', :schools do
         expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name))
       }
 
+      context 'when using an existing URN' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+        let!(:existing_school) { create(:school, urn: 12_345) }
+
+        before do
+          fill_in 'School name', with: 'Name'
+          fill_in 'URN', with: 12_345
+          fill_in 'Contact email', with: 'oldfield@test.com'
+          select school_group.name, from: 'School Group'
+          click_on 'Next'
+        end
+
+        it 'displays an error' do
+          expect(page).to have_text("This URN is already in use by #{existing_school.name}")
+        end
+
+        it 'links to the existing school' do
+          expect(page).to have_link(existing_school.name, href: school_path(existing_school))
+        end
+      end
+
       context 'when completing the first form' do
         before do
           fill_in 'School name', with: school_name

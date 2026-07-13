@@ -41,7 +41,7 @@ module Admin::Commercial
     def edit
     end
 
-    def create
+    def create # rubocop:disable Metrics/AbcSize
       @licence = Commercial::Licence.build(licence_params.merge(created_by: current_user))
       if @licence.start_date.nil? && @licence.end_date.nil?
         @licence.assign_attributes(
@@ -49,7 +49,7 @@ module Admin::Commercial
         )
       end
       if @licence.save
-        redirect_to admin_commercial_contract_path(@licence.contract), notice: 'Licence has been created'
+        redirect_to admin_commercial_contract_path(@licence.contract), redirect_flash(@licence, 'created')
       else
         render :new
       end
@@ -57,7 +57,7 @@ module Admin::Commercial
 
     def update
       if @licence.update(licence_params.merge(updated_by: current_user))
-        redirect_to admin_commercial_contract_path(@licence.contract), notice: 'Licence has been updated'
+        redirect_to admin_commercial_contract_path(@licence.contract), redirect_flash(@licence, 'updated')
       else
         render :edit
       end
@@ -76,6 +76,14 @@ module Admin::Commercial
 
     def filter_params
       params.fetch(:filters, {})
+    end
+
+    def redirect_flash(licence, action)
+      if Commercial::Licence.overlapping.where(school_id: licence.school_id).any?
+        { alert: "Licence has been #{action}. But this school now has overlapping licences" }
+      else
+        { notice: "Licence has been #{action}" }
+      end
     end
 
     def load_licences(scope)

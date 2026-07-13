@@ -86,6 +86,20 @@ describe 'manage licences' do
       end
     end
 
+    context 'when school has an existing licence that overlap', :js do
+      before do
+        create(:commercial_licence, school:, start_date: Date.new(2026, 1, 1), end_date: Date.new(2026, 12, 31))
+        select contract.name, from: 'Contract'
+        select school.name, from: 'School'
+        select 'Confirmed', from: 'Status'
+        set_date('#licence_start_date', '01/01/2026')
+        set_date('#licence_end_date', '31/12/2026')
+        click_on 'Save'
+      end
+
+      it { expect(page).to have_text('Licence has been created. But this school now has overlapping licences') }
+    end
+
     context 'with no dates' do
       before do
         select contract.name, from: 'Contract'
@@ -219,6 +233,21 @@ describe 'manage licences' do
           updated_by: user
         )
       end
+    end
+
+    context 'when school has an existing licence that overlap', :js do
+      before do
+        create(:commercial_licence,
+               school: licence.school,
+               start_date: Date.new(2026, 1, 1),
+               end_date: Date.new(2026, 12, 31))
+        select 'Pending invoice', from: 'Status'
+        set_date('#licence_start_date', '01/01/2026')
+        set_date('#licence_end_date', '31/12/2026')
+        click_on 'Save'
+      end
+
+      it { expect(page).to have_text('Licence has been updated. But this school now has overlapping licences') }
     end
 
     context 'when licence is invoiced' do

@@ -918,7 +918,6 @@ Rails.application.routes.draw do
       resources :recent_audits, only: [:index]
       resources :school_scenarios, only: [:index]
       resources :school_targets, only: :index
-      resources :solar_panels, only: [:index]
       get 'tariffs', to: 'tariffs#index', as: :tariffs
       get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
       resources :tariff_import_logs, only: [:index]
@@ -929,6 +928,7 @@ Rails.application.routes.draw do
       resources :zero_readings, only: [:index]
       resources :pupil_number_updates, only: :index
       resources :metered_solar, only: :index
+      resources :modelled_solar, only: :index
       resources :solar_installations, only: :index
     end
 

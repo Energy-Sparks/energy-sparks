@@ -23,7 +23,9 @@ describe 'bulk updating procurement routes and data sources' do
   before do
     sign_in(create(:admin))
     visit admin_school_group_path(school.school_group)
-    click_on 'Meter updates'
+    within '#school-group-button-panel' do
+      click_on 'Meter updates'
+    end
   end
 
   context 'with data source' do

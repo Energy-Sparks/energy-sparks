@@ -88,7 +88,8 @@ module Admin
 
       # def count_subquery(model)
       #   if model.table_name == 'solis_cloud_installations'
-      #     "(#{model.joins(:solis_cloud_installation_schools).select('COUNT(solis_cloud_installation_schools.*)').to_sql}
+      #     "(#{model.joins(:solis_cloud_installation_schools)
+      #        .select('COUNT(solis_cloud_installation_schools.*)').to_sql}
       #       AND solis_cloud_installation_schools.school_id = schools.id)"
       #   else
       #     "(#{model.select('COUNT(*)').to_sql} AND #{model.table_name}.school_id = schools.id)"

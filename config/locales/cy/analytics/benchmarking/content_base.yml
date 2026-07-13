@@ -26,6 +26,9 @@ cy:
           gas_consumption: Defnydd o nwy
           gbp: "£"
           kwh: kWh
+          last_year: Y llynedd
+          last_year_per_floor_area: Y llynedd fesul m²
+          last_year_per_pupil: Y llynedd fesul disgybl
           metering: Mesurydd
           percent_changed: Newid canrannol
           solar_self_consumption: Hunan-ddefnydd solar
@@ -44,6 +47,7 @@ cy:
           baseload_percent: Llwyth sylfaenol fel canran o gyfanswm y defnydd
           change_in_baseload_last_week_v_year_kw: Newid yn y llwyth sylfaenol wythnos diwethaf yn erbyn blwyddyn (kW)
           change_in_baseload_last_week_v_year_pct: Newid yn y llwyth sylfaenol wythnos diwethaf yn erbyn blwyddyn (%)
+          change_in_kwh_pct: Newid mewn defnydd (kWh) o'i gymharu â'r flwyddyn flaenorol (%)
           change_kwh: Newid kWh
           change_pct: Newid %
           change_£current: Newid £ (tariff diweddaraf)
@@ -81,6 +85,7 @@ cy:
           last_year_energy_kwh_pupil: Ynni y llynedd kWh/disgybl
           last_year_energy_£_floor_area: Ynni y llynedd £/arwynebedd llawr
           last_year_energy_£_pupil: Y llynedd ynni £/disgybl
+          last_year_gas_kwh_floor_area: Nwy y llynedd kWh/m²
           last_year_gas_kwh_pupil: Nwy y llynedd kWh/disgybl
           last_year_gas_£: Y llynedd Nwy £
           last_year_out_of_hours_co2: ' Co2 y tu allan i oriau y llynedd'
@@ -119,7 +124,7 @@ cy:
           saving_co2_kg: Arbed CO2 kg
           saving_if_improve_to_exemplar: Arbediad os caiff ei wella i batrwm enghreifftiol (ar y tariff diweddaraf)
           saving_if_match_exemplar_£: Arbediad os yw'n cyfateb (£ ar y tariff diweddaraf)
-          saving_if_matched_exemplar_school: Arbediad os yw'n cyfateb i ysgol enghreifftiol (gan ddefnyddio'r tariff diweddaraf)
+          saving_if_matched_exemplar_school: Arbedion posib
           saving_if_same_all_year_around: Arbediad os yr un peth drwy gydol y flwyddyn (ar y tariff diweddaraf)
           saving_improving_timing: Arbediad gwella amseru
           saving_optimal_panels: Arbediad blynyddol ar y tariff diweddaraf os gosodir y maint panel gorau posibl

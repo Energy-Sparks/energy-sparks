@@ -63,7 +63,7 @@ cy:
           school_address: Cyfeiriad yr ysgol
           school_has_its_own_swimming_pool: Mae gan yr ysgol ei phwll nofio ei hun
           school_has_night_storage_heaters: Mae gan yr ysgol stôr-wresogyddion nos
-          school_has_solar_pv_panels: Mae gan yr ysgol baneli solar PV
+          school_has_solar_pv_panels: Mae gan yr ysgol baneli solar ffotofoltaig
           school_name: Enw'r ysgol
           school_serves_school_dinners_on_site: Mae'r ysgol yn gweini cinio ysgol ar y safle
           stage_of_education: Cyfnod addysg
@@ -133,8 +133,7 @@ cy:
       name_hint: Gallai hyn fod yn enw dosbarth neu dîm eco
       name_placeholder: e.e. cyfrinair dosbarth %{school_name}
       pupil_password: Cyfrinair disgybl
-      pupil_password_hint: Gwnewch ef yn gofiadwy ac yn hawdd i ddisgyblion ei deipio
-      pupil_password_placeholder: e.e. arbedwyrynniarbennig
+      pupil_password_hint: Gwnewch hi'n gofiadwy ac yn hawdd i ddisgyblion deipio. Rhaid bod o leiaf 12 nod.
       title: Creu eich cyfrif disgybl
       title_for_update: Diweddaru eich cyfrif disgybl
       update: Diweddaru cyfrif disgybl

@@ -5,3 +5,5 @@ cy:
       once: unwaith
       several_times: sawl gwaith
       twice: dwywaith
+    short_dates:
+      today: Heddiw

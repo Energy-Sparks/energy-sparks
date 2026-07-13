@@ -13,10 +13,10 @@ en:
     book: Book a workshop
     details:
       description_html: |-
-        Workshops are available on a paid-for basis, with prices ranging from £250 to £550 depending on location and whether provided in-person or online.<br><br>
-        Some schools in designated regions will be eligible for free in-person workshops. We will let you know if you are eligible for a free workshop or provide an accurate quote after you have completed the workshop booking form.
-      price: "£250 to £550 + VAT"
-      title: Workshop details
+        <p>In-school half day workshop - £550+VAT</p>
+        <p>In-school whole day workshop - £765+VAT</p>
+        <p>Online 1 hour pupil workshop or bespoke staff training session - £150+VAT</p>
+      title: Workshop prices
     feature:
       description: Whether you are looking to inspire the next generation of energy saving champions, or want to encourage your staff to cut costs and emissions, our workshops can help you.
       title: 'Energy saving workshops: motivate your pupils and staff'

@@ -89,7 +89,7 @@ RSpec.describe Elements::IconComponent, type: :component do
         { fuel_type: :electricity, colour: :notgood }
       end
 
-      it { expect { html }.to raise_error(ArgumentError, 'Unknown colour variant: notgood. Valid values are: primary, secondary, success, info, warning, danger, light, dark') }
+      it { expect { html }.to raise_error(ArgumentError, 'Unknown \'notgood\' is not a permitted value for colour. Must be one of: primary, secondary, success, info, warning, danger, light, and dark') }
     end
   end
 end

@@ -59,7 +59,7 @@ RSpec.describe 'activity type', type: :system do
         expect(page).to have_text(activity_type_1_1.name)
         expect(page).to have_text('school specific descriptive text here')
 
-        click_link "View #{activity_category_1.activity_types.count} related activities"
+        click_link "View #{activity_category_1.activity_types.count} activities in this category"
         expect(page).to have_text(activity_category_1.name)
 
         click_link 'All activities'

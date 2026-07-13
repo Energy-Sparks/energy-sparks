@@ -103,7 +103,8 @@ module NavHelper
 
   def school_group_context?
     # Historically we have not allowed /admin/school_group routes to have school group
-    # context menus etc, so leaving as is for now. Something to consider for the future
-    current_school_group && request.path.starts_with?('/school_groups/')
+    # context menus etc, but have changed this to allow the Manage Group menu to be displayed on admin pages
+    current_school_group &&
+      request.path.match?(%r{\A/(?:school_groups|admin/school_groups|admin/dashboards/\d+/school_groups)(?:/|$)})
   end
 end
