@@ -16,6 +16,6 @@
   <%= grid.with_image(
         src: cdn_link_url(task.t_attached_or_default(:image, placeholder: 'placeholder300x200.png')),
         column_classes: 'col-12 col-md-4 d-flex align-items-center justify-content-center',
-        classes: 'img-fluid', fit: false, rounded: :all
+        classes: 'img-fluid max-header-height', fit: false, rounded: :all
       ) %>
 <% end %>
