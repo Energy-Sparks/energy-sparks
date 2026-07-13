@@ -1,0 +1,14 @@
+cy:
+  components:
+    cms:
+      audience:
+        descriptions:
+          anyone: unrhyw un sy'n defnyddio gwefan Sbarcynni
+          group_admins: Gweinyddwyr grŵp
+          school_admins: Gweinyddwyr Ysgol a Grŵp
+          school_users: holl ddefnyddwyr cofrestredig yr ysgol
+        incorrect_permissions: Ni fydd gennych ganiatâd i ddilyn yr holl gyfarwyddiadau ar y dudalen hon.
+        logged_in: Rydych chi wedi mewngofnodi ar hyn o bryd fel defnyddiwr %{role}.
+        message: Mae'r dudalen hon yn darparu cymorth i %{audience}.
+        not_logged_in_html: Bydd angen i chi <a href="%{link}">fewngofnodi</a> i ddilyn y cyfarwyddiadau ar y dudalen hon.
+        title: Cynulleidfa

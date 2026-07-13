@@ -1,0 +1,56 @@
+cy:
+  school_groups:
+    advice_pages:
+      heating_control:
+        analysis:
+          comparisons:
+            chart:
+              header: Mae'r siartiau canlynol yn dangos faint o nwy sydd wedi cael ei ddefnyddio i gynhesu ysgolion yn ystod cyfnodau o dywydd cynnes. Gweler y tabl isod am fwy o fanylion gan gynnwys sut mae tywydd cynnes yn cael ei ddiffinio.
+              subtitle: Pa ganran o nwy a ddefnyddiwyd ar gyfer gwresogi a ddefnyddiwyd yn ystod cyfnod o dywydd cynnes dros y 12 mis diwethaf?
+              title: Canran o wres blynyddol a ddefnyddiwyd mewn tywydd cynnes
+            table:
+              header_html: |-
+                <p>
+                Mae'r siart uchod a'r tabl canlynol ill dau yn defnyddio'r 12 mis diweddaraf o ddata ar gyfer pob ysgol.
+                </p>
+                <p>
+                Mae'r dadansoddiad yn cyfeirio at y nwy a ddefnyddir ar gyfer gwresogi yn hytrach na dŵr poeth neu ddefnydd cegin. Mae hyn yn seiliedig ar y model gwresogi rydyn ni wedi'i gyfrifo ar gyfer pob ysgol, y gellir
+                ei ddefnyddio i ragweld pryd mae'r gwresogi ymlaen neu i ffwrdd yn ystod pob diwrnod.
+                </p>
+                <p>
+                Diffinnir tywydd cynnes fel unrhyw ddiwrnod lle mae'r tymheredd cyfartalog yn uwch na %{temperature}. Defnyddir data tywydd lleol i amcangyfrif tymereddau cyfartalog dyddiol ar gyfer pob ysgol dros y 12 mis diwethaf.
+                </p>
+            title: Cymhariaeth ysgolion
+          potential_savings:
+            table:
+              header_html: |-
+                <p>
+                Caiff ysgolion eu meincnodi ag ysgolion cymharol yn seiliedig ar sawl nodwedd allweddol gan gynnwys arwynebedd llawr,
+                lleoliad, nifer y disgyblion a math.
+                </p>
+                <p>
+                Mae'r tabl canlynol yn crynhoi sut rydym wedi meincnodi pob ysgol yn eich grŵp yn ôl ansawdd eu rheolaeth gwres. Mae rheolaeth dda yn golygu nad yw'r gwres yn rhedeg yn ystod cyfnodau o dywydd cynhesach.
+                <p>
+                Mae'r arbedion ar gyfer pob ysgol yn seiliedig ar wella'r rheolaeth dros eu gwres i gyd-fynd â rhai <a data-toggle="modal" data-target="#%{modal_id}" data-remote="false" href="#">ysgol Enghreifftiol â nodweddion tebyg</a>.
+                </p>
+            title: Arbedion posib
+          summary: Mae'r dudalen hon yn rhoi trosolwg o ansawdd y rheolaeth gwresogi ar draws yr ysgolion yn eich grŵp.
+        insights:
+          current_use:
+            summary_html: |-
+              <p>
+              Dylai ysgolion anelu at gadw eu gwres i ffwrdd cymaint â phosibl mewn tywydd cynnes.
+              </p>
+              <p>
+              Mae'r tabl canlynol yn crynhoi pa mor aml y gadewir y gwres ymlaen yn ystod tywydd cynhesach ym mhob ysgol.
+              <p>
+              <p>Mae <a href="%{link}">tabl a siart mwy manwl</a> ar gael hefyd.
+              </p>
+            title: Gadael y gwres ymlaen yn ystod tywydd cynnes
+          what_is_heating_control_html: |-
+            <p>
+            Mae rheolaeth gwres yn cyfeirio at y gosodiadau a ddefnyddir i wresogi'r ysgol yn effeithiol tra bydd yn cael ei defnyddio'n llawn ac i leihau gwastraff y tu allan i oriau ysgol.
+            </p>
+            Gall cael y rheolaeth gwres yn iawn ar gyfer eich ysgol arbed arian a charbon yn gyflym iawn yn ogystal â gwella'r amgylchedd dysgu i fyfyrwyr.
+            </p>
+        page_title: Dadansoddiad rheolaeth gwres
