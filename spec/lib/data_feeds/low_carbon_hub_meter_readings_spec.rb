@@ -41,10 +41,13 @@ describe DataFeeds::LowCarbonHubMeterReadings do
     end
 
     it 'returns expected data' do
-      expect(response.keys).to include(:solar_pv, :electricity, :exported_solar_pv)
-      expect(response[:electricity][:mpan_mprn]).to eq(90_000_006_802_318)
-      expect(response[:solar_pv][:mpan_mprn]).to eq(70_000_006_802_318)
-      expect(response[:exported_solar_pv][:mpan_mprn]).to eq(60_000_006_802_318)
+      expect(response.transform_values { |h| h.slice(:mpan_mprn) }).to eq(
+        {
+          solar_pv: { mpan_mprn: 70_000_006_802_318 },
+          electricity: { mpan_mprn: 90_000_006_802_318 },
+          exported_solar_pv: { mpan_mprn: 60_000_006_802_318 }
+        }
+      )
       %i[solar_pv electricity exported_solar_pv].each do |type|
         expect(response[type][:readings].length).to eq(6)
       end
