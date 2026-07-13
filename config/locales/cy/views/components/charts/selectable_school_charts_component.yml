@@ -1,0 +1,8 @@
+cy:
+  components:
+    selectable_school_charts_component:
+      chart_selection_chart_type: Dewis siart
+      chart_selection_dynamic_footer:
+        link: Gweld dadansoddiad llawn
+      chart_selection_fuel_type: Dewis math o danwydd
+      chart_selection_school_id: Dewis ysgol
