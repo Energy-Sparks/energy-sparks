@@ -38,6 +38,7 @@ describe Schools::PupilNumberUpdater do
       expect(school.meter_attributes.count).to be >= 1
       expect(attributes.last.input_data['start_date']).to eq(start_date)
       expect(attributes.last.input_data['number_of_pupils']).to eq(pupils.to_s)
+      expect(attributes.last.meter_types).to eq(['school_level_data'])
     end
 
     it 'updates number_of_pupils' do
