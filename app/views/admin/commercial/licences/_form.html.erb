@@ -42,7 +42,7 @@
         <h3>Basic information</h3>
         <% if licence.new_record? %>
           <%= f.input :school_id,
-                      collection: School.visible.by_name,
+                      collection: @schools,
                       include_blank: false,
                       input_html: { class: 'select2' } %>
         <% else %>

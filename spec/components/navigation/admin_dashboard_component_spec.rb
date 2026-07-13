@@ -31,6 +31,11 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
                                   href: admin_dashboard_school_groups_path(current_user, group_type: 'project'))
       end
 
+      it 'links to impact reports' do
+        expect(page).to have_link('My Impact Reports',
+                                  href: admin_dashboard_impact_reports_path(current_user))
+      end
+
       it 'links to data sources' do
         expect(page).to have_link('My Data Sources',
                                   href: admin_dashboard_data_sources_path(current_user))

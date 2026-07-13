@@ -62,10 +62,19 @@ module Admin
         }
       end
 
+      def renew
+        @original = ::Commercial::Contract.find(params.expect(:original_contract_id))
+        @chosen_params = {
+          contract_holder_id: params[:contract_holder_id],
+          contract_holder_type: params[:contract_holder_type],
+          original_contract_id: params[:original_contract_id]
+        }
+      end
+
       def new
         if renewal_request?
           @original = ::Commercial::Contract.find(params.expect(:original_contract_id))
-          @contract = ::Commercial::Contract.as_renewal(@original)
+          @contract = ::Commercial::Contract.as_renewal(@original, chosen_type: params.expect(:chosen_type).to_sym)
         else
           redirect_to choose_admin_commercial_contracts_path and return if chosen_params[:chosen_type].blank?
 
@@ -87,6 +96,10 @@ module Admin
           renew_licences(@contract)
           redirect_to(admin_commercial_contract_path(@contract),
                       notice: 'Contract and provisional licences have been created')
+        elsif @contract.contract_holder.is_a?(School)
+          ::Commercial::LicenceManager.new(@contract.contract_holder).school_onboarded(@contract)
+          redirect_to(admin_commercial_contract_path(@contract),
+                      notice: 'Contract has been created and school licence added')
         else
           redirect_to(admin_commercial_contract_path(@contract), notice: 'Contract has been created')
         end
@@ -109,9 +122,9 @@ module Admin
 
       def destroy
         if @contract.destroy
-          redirect_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
+          redirect_back_or_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
         else
-          redirect_to(admin_commercial_contracts_path, alert: @contract.errors.full_messages.to_sentence)
+          redirect_back_or_to(admin_commercial_contracts_path, alert: @contract.errors.full_messages.to_sentence)
         end
       end
 
@@ -122,7 +135,7 @@ module Admin
         else
           notice = 'Unable to confirm contract'
         end
-        redirect_to(admin_commercial_contract_path(@contract), notice:)
+        redirect_back_or_to(admin_commercial_contract_path(@contract), notice:)
       end
 
       private
@@ -194,7 +207,7 @@ module Admin
         params.expect(contract: %i[agreed_school_price comments contract_holder_id contract_holder_type
                                    end_date invoice_terms licence_period licence_years name
                                    number_of_schools product_id purchase_order_number
-                                   update_licences start_date status])
+                                   update_licences start_date status xero_account_code_id])
       end
     end
   end

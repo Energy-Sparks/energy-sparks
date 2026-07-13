@@ -2,30 +2,29 @@
 # classes to simulate multiple inheritance
 module AlertPeriodComparisonTemperatureAdjustmentMixin
   include AlertModelCacheMixin
-  attr_reader :total_previous_period_unadjusted_kwh
-  attr_reader :total_previous_period_unadjusted_£
-  attr_reader :total_previous_period_unadjusted_co2
-  attr_reader :previous_period_kwhs_adjusted
+
+  attr_reader :total_previous_period_unadjusted_kwh, :total_previous_period_unadjusted_£,
+              :total_previous_period_unadjusted_co2, :previous_period_kwhs_adjusted
 
   def self.unadjusted_template_variables
     {
       total_previous_period_unadjusted_kwh: {
         description: 'Total kwh in previous period, unadjusted for temperature or length of holiday',
-        units:  :kwh,
+        units: :kwh,
         benchmark_code: 'uapk'
       },
       total_previous_period_unadjusted_£: {
         description: 'Total cost £ in previous period, unadjusted for temperature or length of holiday',
-        units:  :£
+        units: :£
       },
-      total_previous_period_unadjusted_co2:{
+      total_previous_period_unadjusted_co2: {
         description: 'Total co2 in previous period, unadjusted for temperature or length of holiday',
-        units:  :co2
+        units: :co2
       }
     }
   end
 
-  private def temperature_adjust; true end
+  private def temperature_adjust = true
 
   private def average_current_period_temperature
     @average_current_period_temperature ||= calculate_average_current_period_temperature
@@ -39,7 +38,8 @@ module AlertPeriodComparisonTemperatureAdjustmentMixin
 
     t_kwh = target_kwh(previous_date, :kwh)
 
-    adjustment_kwh = @model_calc.temperature_compensated_one_day_gas_kwh(previous_date, average_current_period_temperature, t_kwh, 0.0, community_use: community_use)
+    adjustment_kwh = @model_calc.temperature_compensated_one_day_gas_kwh(previous_date,
+                                                                         average_current_period_temperature, t_kwh, 0.0, community_use: community_use)
 
     adjustment = t_kwh == 0.0 ? 1.0 : adjustment_kwh / t_kwh
 
@@ -54,7 +54,7 @@ module AlertPeriodComparisonTemperatureAdjustmentMixin
 
   private def model_calculation(asof_date)
     @model_asof_date = asof_date
-    @model = model_cache(aggregate_meter, asof_date)
+    @model = model_cache(asof_date)
   end
 
   #
@@ -78,7 +78,8 @@ module AlertPeriodComparisonTemperatureAdjustmentMixin
 
   def total_previous_period_unadjusted_values(data_type)
     _current_period, previous_period = last_two_periods(@asof_date)
-    aggregate_meter.amr_data.kwh_date_range(previous_period.start_date, previous_period.end_date, data_type, community_use: community_use)
+    aggregate_meter.amr_data.kwh_date_range(previous_period.start_date, previous_period.end_date, data_type,
+                                            community_use: community_use)
   end
 
   def set_previous_period_unadjusted_kwh_£_co2_variables

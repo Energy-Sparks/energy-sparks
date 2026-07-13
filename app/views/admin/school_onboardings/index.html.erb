@@ -2,7 +2,10 @@
   <% content_for :title do %>
       <%= "School Onboardings for #{@dashboard_user.display_name}'s Groups" %>
   <% end %>
-      <%= link_to 'All Onboardings', admin_school_onboardings_path, class: 'btn btn-sm' %>
+  <%= render Elements::ButtonComponent.new('All Onboardings',
+                                           admin_school_onboardings_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
 <% else %>
   <h1>School onboardings currently in progress</h1>
 <% end %>

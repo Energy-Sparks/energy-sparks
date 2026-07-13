@@ -7,21 +7,12 @@ module Admin
 
       before_action :set_user
 
-      def index
-        @observations = Observation.joins(school: :school_group)
-                                   .where(school_group: { default_issues_admin_user_id: @dashboard_user })
-                                   .where(created_at: 1.year.ago..)
-                                   .includes(:school,
-                                             :intervention_type,
-                                             :created_by,
-                                             school: :school_group,
-                                             rich_text_description: { embeds_attachments: :blob })
-                                   .intervention
-                                   .order(created_at: :desc)
+      def apply_dashboard_filters(observations)
         build_breadcrumbs([
                             { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
                             { name: 'Interventions' }
                           ])
+        observations.for_admin(@dashboard_user)
       end
     end
   end
