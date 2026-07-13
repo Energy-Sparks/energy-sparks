@@ -1,6 +1,6 @@
 module Layout
   module Cards
-    class FeatureComponent < LayoutComponent # rubocop:disable ViewComponent/PreferComposition
+    class FeatureComponent < LayoutComponent
       attr_reader :size, :tag_position
 
       renders_one :header, lambda { |**kwargs|
@@ -37,8 +37,8 @@ module Layout
 
       def initialize(size: :md, tag_position: :top, **_kwargs)
         super
-        validate_inclusion size: size, in: SIZES.keys
-        validate_inclusion tag_position: tag_position, in: TAG_POSITIONS
+        validate_inclusion size:, in: SIZES.keys
+        validate_inclusion tag_position:, in: TAG_POSITIONS
 
         @size = size
         @tag_position = tag_position
