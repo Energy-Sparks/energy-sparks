@@ -79,10 +79,10 @@ module DataFeeds
       (start_date..end_date).each do |date|
         if raw_meter_readings.key?(date)
           meter_readings[date] =
-            OneDayAMRReading.new(mpan_mprn, date, 'ORIG', nil, DateTime.now, raw_meter_readings[date])
+            OneDayAMRReading.new(date, 'ORIG', nil, DateTime.now, raw_meter_readings[date])
         else
           meter_readings[date] =
-            OneDayAMRReading.new(mpan_mprn, date, 'ORIG', nil, DateTime.now, Array.new(48, 0.0))
+            OneDayAMRReading.new(date, 'ORIG', nil, DateTime.now, Array.new(48, 0.0))
           message = "Warning: missing meter readings for #{mpan_mprn} on #{date}"
           Rails.logger.warn message
         end
