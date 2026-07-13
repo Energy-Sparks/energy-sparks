@@ -53,6 +53,7 @@ module Admin
 
       def show
         @pricing = ::Commercial::ContractPriceCalculator.new(@contract)
+        @overlapping_licences = ::Commercial::Licence.overlapping.where(contract_id: @contract.id)
       end
 
       def choose
