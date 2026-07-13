@@ -1,10 +1,6 @@
-<%= content_for :page_title, t('pupils.digital_signage.index.title') %>
+<%= render 'admin/shared/dashboard_message', messageable: @school_group %>
 
-<div class="row">
-  <div class="col-12">
-    <h1><%= t('pupils.digital_signage.index.title') %></h1>
-  </div>
-</div>
+<% content_for :header_title, "#{@school_group.name} - #{t('pupils.digital_signage.index.title')}" %>
 
 <div class="row">
   <div class="col-12">
