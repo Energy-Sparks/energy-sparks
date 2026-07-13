@@ -31,7 +31,7 @@ class InterventionType < ApplicationRecord
   include Searchable
   include TranslatableAttachment
   include FuelTypeable
-  include Recordable
+  include Task
 
   TX_REWRITEABLE_FIELDS = %i[description_cy download_links_cy].freeze
 
