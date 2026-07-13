@@ -27,6 +27,16 @@ module Admin
     end
 
     def create
+      existing_school = School.find_by(urn: params[:school_onboarding][:urn])
+      if existing_school
+        flash.now[:alert] = view_context.safe_join(
+          [
+            'This URN is already in use by ',
+            view_context.link_to(existing_school.name, school_path(existing_school))
+          ]
+        )
+        return render :new
+      end
       @school_onboarding.populate_default_values(current_user)
       if @school_onboarding.save
         redirect_to edit_admin_school_onboarding_configuration_path(@school_onboarding)
