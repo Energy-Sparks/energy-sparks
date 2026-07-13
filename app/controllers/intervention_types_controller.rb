@@ -32,6 +32,8 @@ class InterventionTypesController < ApplicationController
     redirect_to new_school_intervention_path(school, intervention_type_id: @intervention_type.id)
   end
 
+  private
+
   def set_breadcrumbs
     category = @intervention_type.category
     @breadcrumbs = [

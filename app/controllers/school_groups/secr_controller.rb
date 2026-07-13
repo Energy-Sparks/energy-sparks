@@ -4,6 +4,8 @@ module SchoolGroups
   class SecrController < BaseController
     before_action :redirect_unless_authorised
 
+    layout 'group_settings'
+
     def index
       build_breadcrumbs([{ name: I18n.t('school_groups.sub_nav.secr_report') }])
       @last_two_academic_year_periods = Periods::FixedAcademicYear.enumerator(
@@ -11,7 +13,9 @@ module SchoolGroups
       ).to_a.reverse
       @meters = @school_group.meters.active.where('schools.active')
       respond_to do |format|
-        format.html
+        format.html do
+          render :index
+        end
         format.csv do
           type, previous = params[:csv].split('_')
           year = @last_two_academic_year_periods[previous.nil? ? 1 : 0][0].year

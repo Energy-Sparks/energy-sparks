@@ -8,6 +8,8 @@
                                            style: :secondary,
                                            classes: 'mb-2 me-2') %>
 
+<% elsif @issueable.is_a?(SchoolGroup) %>
+  <% content_for :header_title, "Issues & Notes for #{@school_group.name}" %>
 <% else %>
   <%= render 'header', title: 'Issues & Notes' do %>
     <% if @issueable.try(:school_group) %>
@@ -17,16 +19,16 @@
       <%= header_nav_link "#{@issueable.name} #{@issueable.model_name.human.downcase}", [:admin, @issueable] %>
     <% end %>
   <% end %>
-
-  <div class="d-flex align-items-center">
-    <%= render 'breadcrumbs' %>
-    <% if @issueable %>
-      <div class="ms-auto">
-        <%= render 'issues_links', issueable: @issueable %>
-      </div>
-    <% end %>
-  </div>
 <% end %>
+
+<div class="d-flex align-items-center">
+  <%= render 'breadcrumbs' %>
+  <% if @issueable %>
+    <div class="ms-auto">
+      <%= render 'issues_links', issueable: @issueable %>
+    </div>
+  <% end %>
+</div>
 
  <%= render Elements::ButtonComponent.new('Manage Issue Tags',
                                           admin_issue_tags_path,
