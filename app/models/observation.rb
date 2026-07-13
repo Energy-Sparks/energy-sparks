@@ -52,6 +52,8 @@
 class Observation < ApplicationRecord
   include Description
   include Todos::Recording
+  include CsvExportable
+  include RecordingScopes
 
   belongs_to :school
   has_many :temperature_recordings
@@ -90,16 +92,14 @@ class Observation < ApplicationRecord
   scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
   scope :most_recent, -> { order(at: :desc, created_at: :desc) }
-
   scope :by_date, ->(order = :desc) { order(at: order) }
-  scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date&.end_of_day) }
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
   }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
+  scope :recorded_in_last_year, -> { where(observations: { created_at: 1.year.ago.. })  }
+  scope :recorded_in_last_week, -> { where(observations: { created_at: 1.week.ago.. })  }
   scope :recorded_since, ->(range) { where(created_at: range) }
   scope :not_including, ->(school) { where.not(school:).recorded_since(school.current_academic_year.start_date..) }
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
