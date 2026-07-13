@@ -14,7 +14,7 @@ module DataFeeds
     # find area matching by gsp_name
     def find_areas(name)
       data = @pv_live_api.gsp_list
-      areas  = decode_areas(data[:data], data[:meta])
+      areas = decode_areas(data[:data], data[:meta])
       areas.select do |area|
         area[:gsp_name] == name
       end
