@@ -48,6 +48,7 @@ class ActivityType < ApplicationRecord
   TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
 
   belongs_to :activity_category
+  alias category activity_category
 
   t_has_one_attached :image
   has_and_belongs_to_many :key_stages, join_table: :activity_type_key_stages

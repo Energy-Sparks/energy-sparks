@@ -55,7 +55,7 @@ class Activity < ApplicationRecord
   validates :happened_on, presence: true
 
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
-  scope :by_date, ->(order = :asc) { order(happened_on: order) }
+  scope :by_date, ->(order = :asc) { order(happened_on: order, id: order) }
   scope :most_recent, -> { order(created_at: :desc) }
   scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
