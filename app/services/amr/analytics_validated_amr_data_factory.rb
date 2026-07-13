@@ -27,7 +27,6 @@ module Amr
       raw_readings = readings_for_meter(active_record_meter)
       readings = raw_readings.map do |(_, reading_date, status, substitute_date, upload_datetime, kwh_data_x48)|
         OneDayAMRReading.new(
-          active_record_meter.mpan_mprn,
           reading_date,
           status,
           substitute_date,

@@ -75,7 +75,7 @@ module Aggregation
     #
     # @param [Date] date the day to calculate
     # @param [String] mpan the mpan for the meter
-    def days_pv(date, mpan)
+    def days_pv(date, _mpan)
       capacity = degraded_kwp(date, :override_generation)
       pv_yield = @synthetic_sheffield_solar_pv_yields[date]
       scaled_pv_kwh_x48 = AMRData.one_day_zero_kwh_x48
@@ -83,7 +83,7 @@ module Aggregation
         scaled_pv_kwh_x48 = AMRData.fast_multiply_x48_x_scalar(pv_yield,
                                                                capacity / 2.0)
       end
-      OneDayAMRReading.new(mpan, date, 'SOLR', nil, DateTime.now, scaled_pv_kwh_x48)
+      OneDayAMRReading.new(date, 'SOLR', nil, DateTime.now, scaled_pv_kwh_x48)
     end
 
     # Creates a solar generation meter, if required, then populates the meter
@@ -403,8 +403,8 @@ module Aggregation
       @solar_pv_panel_config.degraded_kwp(date, override_key)
     end
 
-    def one_day_reading(mpan, date, type, data_x48 = Array.new(48, 0.0))
-      OneDayAMRReading.new(mpan, date, type, nil, DateTime.now, data_x48)
+    def one_day_reading(_mpan, date, type, data_x48 = Array.new(48, 0.0))
+      OneDayAMRReading.new(date, type, nil, DateTime.now, data_x48)
     end
 
     # Is the school unoccupied on a given date

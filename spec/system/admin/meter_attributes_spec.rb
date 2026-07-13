@@ -20,7 +20,9 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       it 'shows broken index' do
         create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
-        click_on 'Meter attributes'
+        within '#manage-school-menu' do
+          click_on 'Meter attributes'
+        end
         expect(page).to have_text('Meter attributes for Oldfield Park Infants')
         expect(page).to have_text('There was an error')
       end
@@ -28,7 +30,9 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       it 'deletes broken meter attribute' do
         create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
-        click_on 'Meter attributes'
+        within '#manage-school-menu' do
+          click_on 'Meter attributes'
+        end
         click_on 'Delete'
         expect(gas_meter.reload.meter_attributes.active.count).to eq(0)
         expect(gas_meter.reload.meter_attributes.deleted.count).to eq(1)
@@ -38,7 +42,9 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       it 'deletes broken school attribute' do
         create(:school_meter_attribute, school: school)
         visit school_path(school)
-        click_on 'Meter attributes'
+        within '#manage-school-menu' do
+          click_on 'Meter attributes'
+        end
         click_on 'School-wide attributes'
         click_on 'Delete'
         expect(school.reload.meter_attributes.active.count).to eq(0)
@@ -72,7 +78,9 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
     describe 'managing meter attributes' do
       before do
         visit school_path(school)
-        click_on 'Meter attributes'
+        within '#manage-school-menu' do
+          click_on 'Meter attributes'
+        end
       end
 
       context 'when creating an attribute' do
@@ -228,7 +236,9 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
     describe 'managing school meter attributes' do
       before do
         visit school_path(school)
-        click_on 'Meter attributes'
+        within '#manage-school-menu' do
+          click_on 'Meter attributes'
+        end
         click_on 'School-wide attributes'
       end
 
@@ -330,7 +340,9 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
         within 'table' do
           click_on 'Manage'
         end
-        click_on 'Meter attributes'
+        within '#school-group-button-panel' do
+          click_on 'Meter attributes'
+        end
       end
 
       context 'when creating an attribute' do

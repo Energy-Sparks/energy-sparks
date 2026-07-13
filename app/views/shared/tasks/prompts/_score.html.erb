@@ -1,0 +1,15 @@
+<%# i18n-tasks-use t('tasks.activity.complete_this_html') %>
+<%# i18n-tasks-use t('tasks.action.complete_this_html') %>
+<%# i18n-tasks-use t('tasks.activity.record_this') %>
+<%# i18n-tasks-use t('tasks.action.record_this') %>
+
+<%= render PromptComponent.new(icon: 'tasks', theme: :dark, classes: 'mb-4') do |prompt| %>
+  <% prompt.with_content_action do |c| %>
+      <% c.with_body { t("tasks.#{task.public_type}.complete_this_html", count: task.score) } %>
+      <% c.with_action do %>
+        <%= link_to t("tasks.#{task.public_type}.record_this"),
+                    url,
+                    class: 'btn btn-primary text-nowrap' %>
+      <% end %>
+  <% end %>
+<% end %>

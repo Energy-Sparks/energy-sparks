@@ -1,7 +1,7 @@
 module Layout
   module Cards
     class FeatureComponent < LayoutComponent
-      attr_reader :size, :position
+      attr_reader :size, :tag_position
 
       renders_one :header, lambda { |**kwargs|
         Elements::HeaderComponent.new(level: header_size, **kwargs)
@@ -30,24 +30,32 @@ module Layout
         Elements::TagComponent.new(:div, **merge_classes('mt-auto', kwargs))
       }
 
-      def initialize(size: :md, **_kwargs)
+      SIZES = { xl: 1, lg: 2, md: 3, sm: 4 }.freeze
+      private_constant :SIZES
+      TAG_POSITIONS = %i[top bottom].freeze
+      private_constant :TAG_POSITIONS
+
+      def initialize(size: :md, tag_position: :top, **_kwargs)
         super
+        validate_inclusion size:, in: SIZES.keys
+        validate_inclusion tag_position:, in: TAG_POSITIONS
+
         @size = size
-        raise ArgumentError.new(self.class.size_error) unless self.class.sizes.key?(@size.to_sym)
+        @tag_position = tag_position
 
         add_classes('d-flex flex-column')
       end
 
-      def self.sizes
-        { xl: 1, lg: 2, md: 3, sm: 4 }
-      end
-
       def header_size
-        self.class.sizes[size]
+        SIZES[size]
       end
 
-      def self.size_error
-        'Size must be: ' + sizes.keys.to_sentence(two_words_connector: ' or ')
+      def render_tags?(position)
+        tag_position == position && tags.any?
+      end
+
+      def render_tags
+        safe_join(tags, ' ')
       end
     end
   end

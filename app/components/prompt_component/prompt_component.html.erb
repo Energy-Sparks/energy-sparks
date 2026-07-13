@@ -25,7 +25,7 @@
       <div class="row">
         <% if style == :compact %>
           <div class="col-12 col-md-10">
-            <%= content %>
+            <%= content_action || content %>
           </div>
           <% if link %>
             <div class="col col-md-2">
@@ -34,12 +34,10 @@
           <% end %>
         <% else %>
           <div class="col">
-            <%= content %>
-            <p>
+            <%= content_action || content %>
             <% if link %>
               <%= link %>
             <% end %>
-            </p>
           </div>
         <% end %>
       </div>

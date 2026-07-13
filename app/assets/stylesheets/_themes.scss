@@ -27,6 +27,10 @@
     .btn-secondary {
       @extend .btn-outline-white;
     }
+
+    .elements-icon-component {
+      color: $blue-very-dark;
+    }
   }
 
   &.theme-light, &.theme-accent, &.theme-pale {

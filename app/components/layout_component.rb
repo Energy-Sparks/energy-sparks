@@ -9,21 +9,11 @@ class LayoutComponent < ApplicationComponent
 
   def initialize(*_args, theme: nil, component_classes: '', **_kwargs)
     super
-    add_theme(theme)
     @component_classes = component_classes
   end
 
   def before_render
     add_classes('position-relative') if placeholder
-  end
-
-  def add_theme(theme)
-    return unless theme
-
-    @theme = theme
-    raise ArgumentError, 'Unknown theme' unless self.class.themes.include?(theme)
-
-    add_classes "theme theme-#{theme}"
   end
 
   # This is to be overriden if we want to wrap the component
@@ -49,10 +39,6 @@ class LayoutComponent < ApplicationComponent
 
     def types(*definitions)
       definitions.reduce(&:merge)
-    end
-
-    def themes
-      %i[dark light accent pale white]
     end
   end
 end

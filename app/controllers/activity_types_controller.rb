@@ -3,8 +3,14 @@
 class ActivityTypesController < ApplicationController
   include Pagy::Backend
 
+  layout 'task', only: [:show]
+
+  before_action :enable_bootstrap5, only: [:show]
   before_action :handle_head_request, only: [:show]
+
   load_and_authorize_resource
+  before_action :set_breadcrumbs, only: [:show]
+
   skip_before_action :authenticate_user!, only: %i[show search for_school]
 
   def search
@@ -24,7 +30,7 @@ class ActivityTypesController < ApplicationController
                              else
                                @activity_type.description
                              end
-    @can_be_completed_for_schools = can_be_completed_for_schools(@activity_type, current_user) if current_user
+    @available_schools_for_user = available_schools_for_user(@activity_type, current_user) if current_user
   end
 
   def for_school
@@ -34,7 +40,7 @@ class ActivityTypesController < ApplicationController
 
   private
 
-  def can_be_completed_for_schools(activity_type, user)
+  def available_schools_for_user(activity_type, user)
     return user.schools if user.admin?
 
     user.schools(current_ability:).select do |school|
@@ -86,7 +92,17 @@ class ActivityTypesController < ApplicationController
 
   def activity_types_badge_class(list, item, color)
     item = CGI.escape(item)
-    ['badge', list&.include?(item) ? "badge-#{color}" : 'badge-light outline'].join(' ')
+    ['badge', list&.include?(item) ? "text-bg-#{color}" : 'text-bg-light outline'].join(' ')
   end
   helper_method :activity_types_badge_class
+
+  def set_breadcrumbs
+    category = @activity_type.category
+
+    @breadcrumbs = [
+      { name: t('common.labels.pupil_activities'), href: activity_categories_path },
+      ({ name: category.name, href: activity_category_path(category) } if category),
+      { name: @activity_type.name }
+    ].compact
+  end
 end

@@ -1,7 +1,8 @@
 <div class="row mt-5">
   <div class="col-sm-2">
     <%= link_to activity_type_path(activity_type) do %>
-      <%= render 'activity_types/image', activity_type: activity_type, css_class: "activity-card-img-thumbnail" %>
+      <%= render 'activity_types/image', activity_type: activity_type,
+                                         css_class: 'activity-card-img-thumbnail' %>
     <% end %>
   </div>
   <div class="col-sm-10">
@@ -14,7 +15,9 @@
       <%= render 'activity_types/activity_type_key_stages', activity_type: activity_type %>
       <%= render 'activity_types/activity_type_subjects', activity_type: activity_type %>
     <% else %>
-      <%= render 'activity_types/previous_records', activities: activity_type.activities_for_school(school).by_date, school: school %>
+      <%= render 'shared/tasks/prompts/previous_records',
+                 recordings: activity_type.activities_for_school(school),
+                 school: school, resource_type: :activity %>
   <% end %>
   </div>
 </div>

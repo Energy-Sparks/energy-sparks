@@ -9,7 +9,7 @@
         <%= form_with url: schools_path, method: :get, local: true,
                       class: 'd-flex align-items-center justify-content-end' do |form| %>
             <%= form.select :school, options_for_select(schools.pluck(:name, :slug)),
-                            { prompt: t('activity_types.show.select_school') }, class: 'form-control select2' %>
+                            { prompt: t('tasks.select_school') }, class: 'form-control select2' %>
             <%= form.submit t('common.labels.view'), class: 'btn btn-primary ms-2' %>
         <% end %>
       <% end %>

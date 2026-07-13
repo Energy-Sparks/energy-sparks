@@ -540,7 +540,7 @@ module ApplicationHelper
 
     link = link_to to, path,
                    class: classes,
-                   data: { toggle: 'tooltip', placement: 'right' },
+                   data: { bs_toggle: 'tooltip', toggle: 'tooltip', bs_placement: 'right', placement: 'right' },
                    title: 'Admin Only'
     tag ? content_tag(tag, link) : link
   end

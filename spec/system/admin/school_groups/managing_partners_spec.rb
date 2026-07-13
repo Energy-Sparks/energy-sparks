@@ -23,7 +23,9 @@ RSpec.describe 'Managing school group partners', :include_application_helper, :s
         fill_in partners.last.name, with: '1'
         fill_in partners.second.name, with: '2'
         click_on 'Update associated partners', match: :first
-        click_on 'Manage partners'
+        within '#school-group-button-panel' do
+          click_on 'Manage partners'
+        end
       end
 
       it 'partners are ordered' do
@@ -36,7 +38,9 @@ RSpec.describe 'Managing school group partners', :include_application_helper, :s
         before do
           fill_in partners.last.name, with: ''
           click_on 'Update associated partners', match: :first
-          click_on 'Manage partners'
+          within '#school-group-button-panel' do
+            click_on 'Manage partners'
+          end
         end
 
         it 'removes partner' do
@@ -49,8 +53,9 @@ RSpec.describe 'Managing school group partners', :include_application_helper, :s
   before do
     sign_in(admin)
     visit admin_school_group_path(school_group)
-
-    click_on 'Manage partners'
+    within '#school-group-button-panel' do
+      click_on 'Manage partners'
+    end
   end
 
   context 'with an organisation group' do
