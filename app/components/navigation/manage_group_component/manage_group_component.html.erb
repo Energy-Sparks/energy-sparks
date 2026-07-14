@@ -57,7 +57,7 @@
                     visible: current_user.admin?,
                     options: { match_controller: false } do |s| %>
     <% if school_group.organisation? %>
-      <% s.with_item(name: 'Contracts',
+      <% s.with_item(name: t('school_groups.sub_nav.contracts'),
                      href: admin_school_group_contracts_path(school_group), classes:) %>
     <% end %>
     <% s.with_item(name: t('school_groups.sub_nav.edit_group'),
@@ -70,12 +70,15 @@
     <% end %>
     <% s.with_item(name: 'Issues',
                    href: admin_school_group_issues_path(school_group), classes:) %>
-    <% s.with_item(name: 'Licence Summaries',
+    <% s.with_item(name: t('school_groups.sub_nav.licence_summaries'),
                    href: admin_school_group_licence_summaries_path(school_group), classes:) %>
     <% s.with_item(name: t('school_groups.sub_nav.manage_users'),
                    href: admin_school_group_users_path(school_group), classes:) %>
-
     <% s.with_item(name: t('school_groups.sub_nav.manage_partners'),
                    href: admin_school_group_partners_path(school_group), classes:) %>
+    <% s.with_item(name: 'Meter attributes',
+                   href: admin_school_group_meter_attributes_path(@school_group), classes:) %>
+    <% s.with_item(name: 'Meter updates',
+                   href: admin_school_group_meter_updates_path(@school_group), classes:) %>
   <% end %>
 <% end %>
