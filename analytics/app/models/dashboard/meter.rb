@@ -12,7 +12,7 @@ module Dashboard
                   :external_meter_id
 
     # Energy Sparks activerecord fields:
-    attr_reader :active, :created_at, :meter_type, :school, :updated_at, :mpan_mprn, :dcc_meter
+    attr_reader :active, :created_at, :meter_type, :updated_at, :mpan_mprn, :dcc_meter
 
     # enum meter_type: [:electricity, :gas]
 
@@ -43,10 +43,6 @@ module Dashboard
 
     def mpxn
       mpan_mprn
-    end
-
-    def aggregate_meter?
-      false
     end
 
     def set_meter_attributes(meter_attributes)
@@ -250,10 +246,6 @@ module Dashboard
 
     def heating_model(period = up_to_one_year_model_period, model_type = :best, non_heating_model_type = nil)
       @model_cache.create_and_fit_model(model_type, period, false, non_heating_model_type)
-    end
-
-    def meter_collection
-      school || @meter_collection
     end
 
     delegate :solar_pv, to: :meter_collection
