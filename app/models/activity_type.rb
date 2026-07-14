@@ -33,7 +33,7 @@ class ActivityType < ApplicationRecord
   include Searchable
   include TranslatableAttachment
   include FuelTypeable
-  include Recordable
+  include Task
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
