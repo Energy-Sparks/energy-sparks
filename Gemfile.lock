@@ -821,7 +821,7 @@ GEM
     terminal-notifier-guard (1.7.0)
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
-    terser (1.2.7)
+    terser (1.2.8)
       execjs (>= 0.3.0, < 3)
     test-prof (1.6.1)
     text-table (1.2.4)
