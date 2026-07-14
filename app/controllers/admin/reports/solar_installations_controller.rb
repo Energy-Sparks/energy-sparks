@@ -45,10 +45,12 @@ module Admin
       def filter_results(results)
         filtered = super
         if params[:installation_type].present?
-          filtered = filtered.where("#{join_alias(TYPES[params[:installation_type]])}.count > 0")
+          filtered = filtered.where(where_solar_installation(TYPES[params[:installation_type]]))
         end
         filtered
       end
+
+      def where_solar_installation(model) = "#{join_alias(model)}.count > 0"
 
       def results
         filter_results(School.joins(:school_group)
@@ -56,11 +58,8 @@ module Admin
                              .joins(join_count(LowCarbonHubInstallation))
                              .joins(join_count(RtoneVariantInstallation))
                              .joins(join_count(solis_cloud_installation))
-                             .select('schools.*',
-                                     *select_active_inactive(SolarEdgeInstallation),
-                                     *select_active_inactive(LowCarbonHubInstallation),
-                                     *select_active_inactive(RtoneVariantInstallation),
-                                     *select_active_inactive(SolisCloudInstallation))
+                             .select('schools.*', *select_active_inactive)
+                             .where(where_any_solar_installations)
                              .includes(school_group: %i[default_issues_admin_user]))
       end
 
@@ -82,21 +81,13 @@ module Admin
 
       def join_alias(model) = "#{model.table_name}_counts"
 
-      def select_active_inactive(model) = %i[active inactive].map { |type| select_type(model, type) }
+      def select_active_inactive
+        TYPES.values.product(%i[active inactive]).map { |model, type| select_type(model, type) }
+      end
 
       def select_type(model, type) = "COALESCE(#{join_alias(model)}.#{type}, 0) AS #{alias_name(model, type)}"
 
-      # def count_subquery(model)
-      #   if model.table_name == 'solis_cloud_installations'
-      #     "(#{model.joins(:solis_cloud_installation_schools)
-      #        .select('COUNT(solis_cloud_installation_schools.*)').to_sql}
-      #       AND solis_cloud_installation_schools.school_id = schools.id)"
-      #   else
-      #     "(#{model.select('COUNT(*)').to_sql} AND #{model.table_name}.school_id = schools.id)"
-      #   end
-      # end
-
-      # def count_subquery_alias(model, type) = "#{count_subquery(model)} AS #{alias_name(model, type)}"
+      def where_any_solar_installations = TYPES.values.map { |model| where_solar_installation(model) }.join(' OR ')
 
       def alias_name(model, type) = "#{model.table_name}_#{type}_count"
     end
