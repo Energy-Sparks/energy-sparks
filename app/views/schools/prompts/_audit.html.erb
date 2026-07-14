@@ -2,7 +2,7 @@
   <%= render PromptComponent.new(icon: 'laptop', status: :neutral, style: local_assigns[:style]) do |prompt| %>
     <% prompt.with_link do %>
       <%= link_to t('common.labels.view_now'),
-                  sign_in_and_redirect_path(url: school_audit_path(audit.school, audit)) %>
+                  school_audit_path(audit.school, audit) %>
     <% end %>
     <%= Completables::Progress.new(audit).notification %>
   <% end %>
