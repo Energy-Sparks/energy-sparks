@@ -10,18 +10,7 @@ describe 'Solar installations report' do
     create(:low_carbon_hub_installation, school:)
     create(:rtone_variant_installation, school:)
     create(:solis_cloud_installation).schools << school
-    # debugger
-  end
 
-  # let!(:meter) do
-  #   meter = create(:electricity_meter, school:, data_source: create(:data_source), supplier: create(:supplier),
-  #                                      admin_meter_status: create(:admin_meter_status))
-  #   create(:solar_pv_mpan_meter_mapping, meter:, export_mpan: '55555')
-  #   create(:solar_pv_attribute, meter:)
-  #   meter
-  # end
-
-  before do
     sign_in(create(:admin))
     visit admin_reports_path
     click_on 'Solar Installations'
