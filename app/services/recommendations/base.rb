@@ -1,6 +1,6 @@
 module Recommendations
   class Base
-    NUMBER_OF_SUGGESTIONS = 5
+    NUMBER_OF_SUGGESTIONS = 4
 
     attr_reader :school
 
@@ -67,19 +67,19 @@ module Recommendations
     def audit_suggestions(limit, suggestions: [])
       count = limit - suggestions.length
 
-      count > 0 ? audit_tasks.active.not_including(completed_this_year + suggestions).limit(count) : []
+      count.positive? ? audit_tasks.active.not_including(completed_this_year + suggestions).limit(count) : []
     end
 
     def task_suggestions(task, limit, suggestions: [])
       count_remaining = limit - suggestions.length
 
-      count_remaining > 0 ? task_tasks(task).active.not_including(completed_this_year + suggestions).limit(count_remaining) : []
+      count_remaining.positive? ? task_tasks(task).active.not_including(completed_this_year + suggestions).limit(count_remaining) : []
     end
 
     def random_suggestions(limit, suggestions: [])
       count_remaining = limit - suggestions.length
 
-      count_remaining > 0 ? all(excluding: completed_this_year + suggestions).active.sample(count_remaining) : []
+      count_remaining.positive? ? all(excluding: completed_this_year + suggestions).active.sample(count_remaining) : []
     end
 
     def all(excluding: [])

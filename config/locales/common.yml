@@ -132,9 +132,11 @@ en:
       minutes:
         one: "%{count} minute"
         other: "%{count} minutes"
+    view_adult_action: View adult action
     view_all_potential_savings: View all potential savings
     view_analysis: View analysis
     view_dashboard: View dashboard
+    view_pupil_activity: View pupil activity
     view_scoreboard: View scoreboard
     view_timeline: View timeline
   kwh: kWh
