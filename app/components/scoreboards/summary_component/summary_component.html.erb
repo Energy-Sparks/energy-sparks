@@ -1,13 +1,13 @@
 <%= tag.div id: id, class: classes do %>
   <div class="row">
-    <div class="col-12 col-md-6">
-      <div class="row">
-        <div class="col">
-          <% if title.present? %>
-            <h2 id="scoreboard-update" class="scrollable-title"><%= title %></h2>
-          <% end %>
+    <div class="col-12 col-md-6<%= ' p-4' if title.to_s.blank? %>">
+      <% unless title.to_s.blank? %>
+        <div class="row">
+          <div class="col">
+              <h2 id="scoreboard-update" class="scrollable-title"><%= title %></h2>
+          </div>
         </div>
-      </div>
+      <% end %>
       <%= description %>
     </div>
     <div class="col-12 col-md-6">
