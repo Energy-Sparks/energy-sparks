@@ -43,12 +43,7 @@ module Commercial
     def update_licence_statuses
       # update status for those that have not already advanced
       @contract.licences.where.not(status: %i[pending_invoice invoiced]).find_each do |licence|
-        status = if @contract.confirmed? && licence.school.data_enabled?
-                   :pending_invoice
-                 else
-                   @contract.status
-                 end
-        licence.update!(status:)
+        licence.update!(status: @contract.status)
       end
     end
   end
