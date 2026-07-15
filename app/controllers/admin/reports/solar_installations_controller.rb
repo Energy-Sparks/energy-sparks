@@ -44,13 +44,13 @@ module Admin
 
       def filter_results(results)
         filtered = super
-        if params[:installation_type].present?
+        if params[:installation_type].present? && TYPES.key?(params[:installation_type])
           filtered = filtered.where(where_solar_installation(TYPES[params[:installation_type]]))
         end
         filtered
       end
 
-      def where_solar_installation(model) = "#{join_alias(model)}.count > 0"
+      def where_solar_installation(model) = "#{join_alias(model)}.total > 0"
 
       def results
         filter_results(School.joins(:school_group)
@@ -64,9 +64,9 @@ module Admin
       end
 
       def join_count(model)
-        "LEFT JOIN (SELECT COUNT(*),
+        "LEFT JOIN (SELECT COUNT(*) AS total,
                            COUNT(*) FILTER (WHERE active) AS active,
-                           COUNT(*) FILTER (WHERE active = false) AS inactive,
+                           COUNT(*) FILTER (WHERE NOT active) AS inactive,
                            school_id
                     FROM #{model.instance_of?(Class) ? model.table_name : "(#{model.to_sql}) AS installations"}
                     GROUP BY school_id)
