@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Commercial::LicenceManager do
-  let(:school) { create(:school) }
+  let(:school) { create(:school, data_enabled: false) }
 
   let(:service) { described_class.new(school) }
 
@@ -89,6 +89,20 @@ describe Commercial::LicenceManager do
                                            })
       end
 
+      context 'when school is data enabled' do
+        let(:school) { create(:school, data_enabled: true) }
+
+        it 'creates a licence that is pending invoicing' do
+          expect(licence).to have_attributes({
+                                               contract:,
+                                               school:,
+                                               status: 'pending_invoice',
+                                               start_date: Time.zone.today,
+                                               end_date: contract.end_date
+                                             })
+        end
+      end
+
       context 'when the contract is not confirmed' do
         let!(:contract) { create(:commercial_contract, status: :provisional, licence_period: :contract) }
 
@@ -117,6 +131,20 @@ describe Commercial::LicenceManager do
                                              start_date: Time.zone.today,
                                              end_date: Time.zone.today + 364.days
                                            })
+      end
+
+      context 'when school is data enabled' do
+        let(:school) { create(:school, data_enabled: true) }
+
+        it 'creates a licence that is pending invoicing' do
+          expect(licence).to have_attributes({
+                                               contract:,
+                                               school:,
+                                               status: 'pending_invoice',
+                                               start_date: Time.zone.today,
+                                               end_date: Time.zone.today + 364.days
+                                             })
+        end
       end
 
       context 'when there is a fractional licence_years period' do

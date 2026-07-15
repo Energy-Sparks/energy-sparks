@@ -38,7 +38,13 @@ describe Commercial::ContractManager do
     end
 
     context 'with provisional licences' do
-      let!(:licence) { create(:commercial_licence, contract:, status: :provisional, start_date: 1.year.ago) }
+      let!(:licence) do
+        create(:commercial_licence,
+               contract:,
+               school: create(:school, data_enabled: false),
+               status: :provisional,
+               start_date: 1.year.ago)
+      end
 
       before { service.cascade_updates_to_licences }
 
@@ -48,6 +54,24 @@ describe Commercial::ContractManager do
           start_date: contract.start_date,
           status: 'confirmed'
         )
+      end
+
+      context 'when school is data enabled' do
+        let!(:licence) do
+          create(:commercial_licence,
+                 contract:,
+                 school: create(:school, data_enabled: true),
+                 status: :provisional,
+                 start_date: 1.year.ago)
+        end
+
+        it 'updates the licence' do
+          expect(licence.reload).to have_attributes(
+            updated_by: admin,
+            start_date: contract.start_date,
+            status: 'pending_invoice'
+          )
+        end
       end
     end
   end

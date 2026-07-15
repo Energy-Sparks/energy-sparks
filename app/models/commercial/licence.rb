@@ -43,6 +43,8 @@ module Commercial
     delegate :product, to: :contract
     delegate :contract_holder, to: :contract
 
+    before_save :move_to_pending_if_school_data_enabled
+
     LICENCE_STATUS = {
       provisional: 'provisional',
       confirmed: 'confirmed',
@@ -108,6 +110,12 @@ module Commercial
 
     def destroy_error_message
       'Cannot delete an invoiced licence'
+    end
+
+    def move_to_pending_if_school_data_enabled
+      return if pending_invoice? || invoiced?
+
+      self.status = 'pending_invoice' if contract.confirmed? && school.data_enabled?
     end
   end
 end

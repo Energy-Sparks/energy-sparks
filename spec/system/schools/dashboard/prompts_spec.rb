@@ -9,7 +9,7 @@ RSpec.describe 'adult dashboard prompts', type: :system do
   end
   let!(:school_dashboard_message)       { school.create_dashboard_message(message: 'School message') }
   let!(:programme)                      {}
-  let!(:audit)                          { create(:audit, :with_activity_and_intervention_types, school: school) }
+  let!(:audit)                          { create(:audit, :with_todos, school: school) }
 
   before do
     SiteSettings.create!(audit_activities_bonus_points: 50)
@@ -128,10 +128,10 @@ RSpec.describe 'adult dashboard prompts', type: :system do
     describe 'programme prompt' do
       context 'when there is a programme' do
         let(:programme) do
-          create(:programme, programme_type: create(:programme_type_with_activity_types), started_on: '2020-01-01',
-                             school: school)
+          create(:programme, programme_type: create(:programme_type, :with_todos), started_on: '2020-01-01',
+                             school:)
         end
-        let(:message) { 'You have completed 0/3' }
+        let(:message) { 'You haven\'t yet completed any of the tasks' }
 
         it_behaves_like 'a standard prompt', displayed: true
       end
