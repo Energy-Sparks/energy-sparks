@@ -11,6 +11,17 @@
   <td>
     <%= contract_holder_for(@first_range).join(',') %>
   </td>
+  <% licence = first_licence_for(@first_range) %>
+  <td>
+    <% if licence %>
+      <%= licence.start_date.to_fs(:es_short) %>
+    <% end %>
+  </td>
+  <td>
+    <% if licence %>
+      <%= licence.end_date.to_fs(:es_short) %>
+    <% end %>
+  </td>
   <% if @second_range.present? %>
     <td>
       <%= render(Elements::BadgeComponent.new(licensed_for(@second_range).to_s.humanize,
@@ -20,6 +31,17 @@
     </td>
     <td>
       <%= contract_holder_for(@second_range).join(',') %>
+    </td>
+    <% licence = first_licence_for(@second_range) %>
+    <td>
+      <% if licence %>
+        <%= licence.start_date.to_fs(:es_short) %>
+      <% end %>
+    </td>
+    <td>
+      <% if licence %>
+        <%= licence.end_date.to_fs(:es_short) %>
+      <% end %>
     </td>
   <% end %>
   <td>

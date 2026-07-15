@@ -46,6 +46,10 @@ module Commercial
 
         @school.licences.for_period(range).map { |x| x.contract_holder.name }
       end
+
+      def first_licence_for(range)
+        @school.licences.for_period(range).first
+      end
     end
   end
 end

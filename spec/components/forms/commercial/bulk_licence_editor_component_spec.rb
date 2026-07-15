@@ -211,12 +211,17 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
           let(:expected_header) do
             [
               ['', 'Current Academic Year', 'Contract Period', ''],
-              ['School', 'Licensed?', 'Funder', 'Licensed?', 'Funder', '']
+              [
+                'School',
+                'Licensed?', 'Funder', 'First licence start', 'First licence end',
+                'Licensed?', 'Funder', 'First licence start', 'First licence end',
+                ''
+              ]
             ]
           end
           let(:expected_rows) do
             [
-              [additional_school.name, 'No', '', 'No', '', 'Add licence Licences Issues']
+              [additional_school.name, 'No', '', '', '', 'No', '', '', '', 'Add licence Licences Issues']
             ]
           end
         end
