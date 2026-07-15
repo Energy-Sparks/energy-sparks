@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :school_group do
-    # sequence(:name) {|n| "School group #{n}"}
-    sequence(:name, 'School group AAAAA1')
+    sequence(:name) {|n| "School group #{n}"}
     default_issues_admin_user { create(:admin) }
     public { true }
 
