@@ -60,16 +60,10 @@ class PromptComponent < ApplicationComponent
   end
 
   def media_cols
-    return 'col-1' if icon?
-    return 'col-2' if image?
-
-    ''
+    'col-1' if media?
   end
 
   def main_cols
-    return 'col-md-11' if @icon
-    return 'col-md-10' if @image
-
-    ''
+    'col-md-11' if media?
   end
 end

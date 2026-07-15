@@ -16,26 +16,8 @@
   <% end %>
 </h1>
 <% end %>
-<%# recording.programmes_completed_todos.completed.recently_ended.each do |programme| %>
-<% school.programmes.take(1).each do |programme| %>
-  <%= render PromptComponent.new(
-        image: programme.programme_type.t_attached_or_default(
-          :image, placeholder: 'placeholder300x200.png'
-        ),
-        status: :positive, style: :compact, classes: 'mt-2'
-      ) do |prompt| %>
-    <% prompt.with_link do %>
-      <%= link_to t('common.labels.view'),
-                  programme_type_path(programme.programme_type) %>
-    <% end %>
-    <p>
-      <%= t('schools.prompts.completed_programme.message_html',
-            title: programme.title,
-            count: programme.points_for_completion) %>
-    </p>
-  <% end %>
 
-<% end %>
+<%= render 'schools/prompts/completed_programme', recording:, style: :compact %>
 
 <h3><%= t('tasks.completed.what_next') %></h3>
 
