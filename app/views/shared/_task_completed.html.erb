@@ -16,13 +16,13 @@
   <% end %>
 </h1>
 <% end %>
-<% recording.programmes_completed_todos.completed.recently_ended.each do |programme| %>
-<%# school.programmes.each do |programme| %>
+<%# recording.programmes_completed_todos.completed.recently_ended.each do |programme| %>
+<% school.programmes.take(1).each do |programme| %>
   <%= render PromptComponent.new(
         image: programme.programme_type.t_attached_or_default(
           :image, placeholder: 'placeholder300x200.png'
         ),
-        status: :positive, style: :compact
+        status: :positive, style: :compact, classes: 'mt-2'
       ) do |prompt| %>
     <% prompt.with_link do %>
       <%= link_to t('common.labels.view'),

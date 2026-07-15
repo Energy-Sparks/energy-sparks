@@ -47,13 +47,21 @@ class PromptComponent < ApplicationComponent
 
   private
 
+  def image?
+    !!@image
+  end
+
+  def icon?
+    @fuel_type || @icon
+  end
+
   def media?
-    @icon || @image
+    icon? || image?
   end
 
   def media_cols
-    return 'col-1' if @icon
-    return 'col-2' if @image
+    return 'col-1' if icon?
+    return 'col-2' if image?
 
     ''
   end

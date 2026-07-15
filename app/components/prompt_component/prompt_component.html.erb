@@ -2,11 +2,11 @@
   <%# Padding added to create space within div %>
   <div class="row py-3">
     <% if media? %>
-      <%# Icon is hidden on smallest size, visible from sm and above as single column %>
+      <%# Media is hidden on smallest size, visible from sm and above as single column %>
       <div class="d-none d-sm-block <%= media_cols %>">
-        <% if icon %>
+        <% if icon? %>
           <%= render Elements::IconComponent.new fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
-        <% elsif image %>
+        <% elsif image? %>
           <%= render Elements::ImageComponent.new src: image %>
         <% end %>
       </div>
