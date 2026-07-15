@@ -1,0 +1,24 @@
+<% if school %>
+  <% if (programme_type, count = school.suggested_programme_type) %>
+    <% if programme_type.todos.length == count %>
+      <%= render PromptComponent.new(icon: 'tasks', status: :neutral, style: local_assigns[:style]) do |prompt| %>
+        <% prompt.with_link do %>
+          <%= link_to t('common.labels.complete'),
+                      programme_type_path(programme_type) %>
+        <% end %>
+        <%= t('schools.prompts.programme.join.completed_message_html',
+              count: programme_type.bonus_score,
+              title: programme_type.title) %>
+      <% end %>
+    <% else %>
+      <%= render PromptComponent.new(icon: 'tasks', status: :neutral, style: local_assigns[:style]) do |prompt| %>
+        <% prompt.with_link do %>
+          <%= link_to t('common.labels.start'), programme_type_path(programme_type) %>
+        <% end %>
+        <%= t('schools.prompts.programme.join.message_html',
+              count: count,
+              title: programme_type.title) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

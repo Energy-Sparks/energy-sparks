@@ -19,7 +19,7 @@
   </div>
 </div>
 
-<%= render 'schools/prompt_recommended', scope: :adult %>
+<%= render 'schools/prompts/recommended', scope: :adult %>
 
 <% if Flipper.enabled?(:todos, current_user) %>
   <%= render 'shared/tasks/programme_types', programme_types: @programme_types %>
