@@ -127,7 +127,7 @@ module Heating
 
     def calculate_heating_model
       # The period could be alerted here to parameterise the analysis based on date
-      period_start_date = [amr_end_date - 365, amr_start_date].max
+      period_start_date = [amr_end_date - 364, amr_start_date].max
       last_year = SchoolDatePeriod.new(:analysis, 'seasonal analysis', period_start_date, amr_end_date)
       aggregate_meter.heating_model(last_year)
     end

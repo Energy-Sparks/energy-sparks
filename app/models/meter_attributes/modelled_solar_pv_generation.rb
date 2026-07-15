@@ -5,6 +5,7 @@ module MeterAttributes
     id :modelled_solar_pv_generation
     aggregate_over :modelled_solar_pv_generation
     name 'Solar > Modelled Solar PV Generation'
+    description 'Supplemental modelled generation for metered solar'
 
     structure MeterAttributeTypes::Hash.define(
       structure: {

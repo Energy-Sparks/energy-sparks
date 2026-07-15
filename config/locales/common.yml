@@ -20,6 +20,7 @@ en:
     feature_not_available: This feature is not available
     gas: Gas
     labels:
+      action: Action
       actions: Actions
       activate: Activate
       active: Active
@@ -62,6 +63,7 @@ en:
       not_applicable: N/A
       not_set: Not set
       onboarded_date: Onboarded date
+      overview: Overview
       place: Place
       points: Points
       previous: Previous

@@ -2,6 +2,8 @@ module SchoolGroups
   class DigitalSignageController < BaseController
     before_action :redirect_unless_authorised
 
+    layout 'group_settings'
+
     def index
       build_breadcrumbs([{ name: I18n.t('manage_school_menu.digital_signage') }])
     end

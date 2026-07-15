@@ -56,11 +56,7 @@
                     link: 'common.labels.view_now',
                     path: programme_type_path(programme.programme_type)) do %>
         <p>
-          <% if Flipper.enabled?(:todos, user) %>
-            <%= Completables::Progress.new(programme).notification %>
-          <% else %>
-            <%= Programmes::Progress.new(programme).notification %>
-          <% end %>
+          <%= Completables::Progress.new(programme).notification %>
         </p>
       <% end %>
     <% end %>

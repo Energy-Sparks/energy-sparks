@@ -1,0 +1,30 @@
+cy:
+  school_groups:
+    advice_pages:
+      long_term:
+        analysis:
+          comparisons:
+            chart:
+              header: Mae'r siart ganlynol yn dangos y newid yn y defnydd o %{fuel_type} ar gyfer pob ysgol. Mae'r gymhariaeth yn defnyddio'r 12 mis diweddaraf o ddata ar gyfer pob ysgol, gan gymharu hynny â'r cyfnod 12 mis blaenorol.
+              subtitle: Canran y newid yn y defnydd o %{fuel_type} dros y ddwy flynedd ddiwethaf ar gyfer pob ysgol
+              title: Newid yn y defnydd o %{fuel_type} dros y ddwy flynedd ddiwethaf
+            title: Cymhariaeth ysgolion
+          potential_savings:
+            table:
+              header_html: "<p>\nMae ysgolion yn cael eu meincnodi ag ysgolion cymharol yn seiliedig ar sawl nodwedd allweddol gan gynnwys arwynebedd llawr, \nllleoliad, niferoedd disgyblion a math.\n</p>\n<p>\n</p>Mae'r tabl canlynol yn crynhoi sut rydym wedi meincnodi pob ysgol yn eich grŵp yn ôl ei defnydd hirdymor o %{fuel_type}.\n<p>\nMae'r arbedion ar gyfer pob ysgol yn seiliedig ar leihau eu defnydd o %{fuel_type} i gyd-fynd â rhai <a data-toggle=\"modal\" data-target=\"#%{modal_id}\" data-remote=\"false\" href=\"#\">ysgol Enghreifftiol â nodweddion tebyg.</a>.\n</p>"
+            title: Arbedion posib
+          summary: Mae'r dudalen hon yn rhoi trosolwg o'r defnydd blynyddol o %{fuel_type} ar draws yr ysgolion yn eich grŵp
+        insights:
+          current_use:
+            summary_html: |-
+              <p>
+              Mae'r tabl canlynol yn crynhoi'r defnydd hirdymor o %{fuel_type} ar draws pob ysgol.
+              <p>
+              <p>Mae <a href="%{link}">tabl a siart mwy manwl</a> ar gael hefyd.
+              </p>
+            title: Defnydd blynyddol
+          what_is_out_of_hours_usage_html: |-
+            <p>
+            Gall olrhain tueddiadau hirdymor yn eich defnydd o %{fuel_type} eich helpu i fonitro eich cynnydd cyffredinol tuag at leihau eich costau ac allyriadau carbon.
+            </p>
+        page_title: Defnydd hirdymor %{fuel_type}

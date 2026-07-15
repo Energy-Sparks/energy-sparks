@@ -1,5 +1,61 @@
 cy:
   school_groups:
+    advice:
+      alerts:
+        subtitle_html: Crynodeb o rybuddion defnydd ynni sy'n cael eu dangos i ysgolion yn y grŵp hwn ar hyn o bryd
+        title: Rhybuddion diweddar
+      charts:
+        introduction: Mae'r dudalen hon yn darparu mynediad cyflym i amrywiaeth o siartiau defnydd ynni ar gyfer ysgolion yn y grŵp hwn. Mae set ehangach o siartiau ar gael ar y tudalennau cyngor ar gyfer pob ysgol.
+        title: Siartiau defnydd ynni ysgolion
+      comparison_reports:
+        introduction: Dewiswch un o'r adroddiadau canlynol i gymharu'r defnydd o ynni ar draws ysgolion yn y grŵp hwn
+        links:
+          annual: Defnydd blynyddol
+          annual_change: Newid blynyddol
+          annual_energy: Defnydd ynni blynyddol
+          baseload_per_pupil: Llwyth sylfaenol fesul disgybl
+          baseload_variation: Amrywiad llwyth sylfaenol
+          change_thermostat: Arbediad blynyddol trwy ostyngiad o 1C yn nhymheredd y thermostat
+          current_holiday: Defnydd yn ystod y gwyliau presennol
+          electricity_per_pupil: Trydan (fesul disgybl)
+          gas_per_floor_area: Nwy (fesul arwynebedd llawr)
+          heating_hot_water: Defnydd gwresogi yn erbyn dŵr poeth
+          heating_times: Amser cychwyn gwres
+          hot_water_efficiency: Effeithlonrwydd dŵr poeth
+          last_two_holidays: Newid mewn defnydd rhwng y ddau wyliau diwethaf
+          peak_use: Uchafbwynt defnydd trydan diwrnod ysgol
+          per_floor_area: per_floor_area
+          per_pupil: fesul disgybl
+          progress: Cynnydd yn erbyn y targed
+          recent_baseload: Newid diweddar yn y llwyth sylfaenol
+          same_holiday: Newid yn y defnydd rhwng y gwyliau yma a'r un gwyliau llynedd
+          savings_potential: Potensial arbedion blynyddol
+          seasonal: Tymhorol
+          solar_benefit: Mantais gosod solar
+          solar_change: Newid blynyddol mewn cynhyrchiad solar ffotofoltaig ac arbedion CO2 o ganlyniad
+          solar_generation: Crynodeb cenhedlaeth solar
+          thermostatic_control: Ansawdd o reolaeth thermostatig
+          upcoming_holiday: Cost yr ynni a ddefnyddiwyd yn ystod y gwyliau sydd i ddod y llynedd
+          warm_weather: Gwres a ddefnyddiwyd mewn tywydd cynnes
+          weekday: Dydd wythnos
+        lists:
+          baseload: Llwyth sylfaenol a defnydd ynni brig
+          heating: Rheoli gwresogi a dŵr poeth
+          long_term: Defnydd ynni hirdymor
+          out_of_hours: Defnydd ynni y tu allan i oriau
+          solar: Solar
+          total: Cyfanswm y defnydd o ynni
+        page_heading: Dewiswch adroddiad
+        title: "Cymhariaethau ysgol %{name}"
+      priorities:
+        title: Cyfleoedd arbed ynni
+      scores:
+        title: "Sgorfwrdd %{name} "
+      show:
+        recent_energy_use:
+          title: Defnydd diweddar o ynni
+        subtitle_html: Adolygu data defnydd ynni diweddaraf ar gyfer y grŵp, archwilio arbedion posibl a chymharu defnydd ar draws y grŵp
+        title: Trosolwg effeithlonrwydd ynni
     chart_updates:
       bulk_update_charts:
         notice:
@@ -21,9 +77,12 @@ cy:
       edit:
         title: Golygu clwstwr
       group_type:
-        general: Grwp Ysgol
+        diocese: Esgobaeth
+        general: Grŵp
         local_authority: Awdurdod Lleol
+        local_authority_area: Ardal Awdurdod Lleol
         multi_academy_trust: Ymddiriedolaeth Aml-Academi
+        project: Prosiect
       index:
         all_schools: Mae pob ysgol mewn clwstwr
         cluster: "Clwstwr %{cluster}"
@@ -34,6 +93,7 @@ cy:
         no_schools: Nid oes gan y clwstwr hwn unrhyw ysgolion
         select_cluster: Dewiswch glwstwr
         title: Clystyrau
+        unassign_selected: Dadaseinio'r rhai a ddewiswyd
         unassigned_title: Ysgolion nad ydynt mewn clwstwr
       intro: Mae clwstwr yn set o ysgolion sydd wedi eu grwpio gyda'i gilydd o fewn eich %{group_type}. Er enghraifft, efallai y byddwch am grwpio'ch holl ysgolion deheuol a gogleddol, eich holl ysgolion cynradd, ac ati. Bydd grwpio ysgolion yn glystyrau yn eich galluogi i gymharu ysgolion cysylltiedig yn haws.
       labels:
@@ -84,6 +144,11 @@ cy:
       view_map: Gweld y map
     labels:
       floor_area: Arwynebedd llawr (m2)
+    login_prompt:
+      login: Mewngofnodwch fel defnyddiwr grŵp neu ysgol ar gyfer y grŵp hwn i weld y dangosfwrdd a'r dadansoddiad ynni
+      restricted_html: <a href='%{href}'>Archwiliwch grwpiau ysgol eraill</a> sydd ar gael yn gyhoeddus
+      title: Mae mynediad at %{school_group} wedi'i gyfyngu
+    meters_as_csv: Lawrlwytho mesuryddion fel CSV
     priority_actions:
       alert_types:
         alert_electricity_annual_versus_benchmark_html: |-
@@ -95,11 +160,11 @@ cy:
           </p>
         alert_electricity_baseload_versus_benchmark_html: |-
           <p>
-            Llwyth sylfaen trydan yw'r trydan sydd ei angen i ddarparu pŵer i offer sy'n dal i redeg bob amser.
+            Llwyth sylfaenol trydan yw'r trydan sydd ei angen i ddarparu pŵer i offer sy'n dal i redeg bob amser.
            Gall fod y ffordd gyflymaf o leihau costau ynni ysgol a lleihau ei hôl troed carbon.
           </p>
           <p>
-           Mae'r ffigurau hyn yn cynrychioli cymhariaeth o lwyth sylfaen ysgolion dros y 12 mis diwethaf yn erbyn yr ysgolion sy'n perfformio orau..
+           Mae'r ffigurau hyn yn cynrychioli cymhariaeth o lwyth sylfaenol ysgolion dros y 12 mis diwethaf yn erbyn yr ysgolion sy'n perfformio orau..
           </p>
         alert_electricity_peak_kw_versus_benchmark_html: |-
           <p>
@@ -185,24 +250,184 @@ cy:
         <p>Mae'r dudalen hon yn crynhoi'r arbedion posibl hyn ar draws y grŵp cyfan hwn o ysgolion. Cliciwch ar bennawd i weld yr arbedion ar gyfer ysgolion unigol ac archwilio'r dadansoddiad manwl.</p>
       modal_intro: Mae'r weithred hon wedi'i nodi fel blaenoriaeth ar gyfer yr ysgolion canlynol.
       view_analysis: Gweler dadansoddiad
+    school_engagement:
+      active_users: Defnyddwyr gweithredol
+      completed_transport_survery: Wedi cwblhau arolwg trafnidiaeth
+      energy_saving_target: Targed arbed ynni
+      intro_html: |-
+        <p>Mae'r adroddiad hwn yn rhoi crynodeb o sut mae eich ysgolion yn ymgysylltu â'r ystod o nodweddion a ddarperir gan Sbarcynni.</p>
+        <p>Rydym yn canfod bod ysgolion sy'n ymgysylltu'n llawn â'r offer yn fwy llwyddiannus wrth leihau eu defnydd o ynni. Mae yna hefyd isafswm o ymgysylltiad a ddisgwylir gan bob ysgol sy'n derbyn lleoedd am ddim.</p>
+        <p>Mae'r ffigurau isod yn dangos ymgysylltiad ers dechrau mis Medi (blwyddyn academaidd Lloegr) hyd yn hyn.</p>
+      last_visit: Ymweliad olaf
+      received_an_audit: Wedi derbyn archwiliad
+      recorded_temperatures: Wedi cofnodi tymereddau
+      title: Ymgysylltiad ysgolion
+    schools_as_csv: Lawrlwytho ysgolion fel CSV
+    secr:
+      csv:
+        consumption_for_the_year: Defnydd am y flwyddyn
+        earliest_validated_reading: Darlleniad dilys cynharaf
+        latest_validated_reading: Darlleniad dilys diweddaraf
+        meter_name: Enw'r mesurydd
+        meter_serial: Cyfresol mesurydd
+        quality: Ansawdd
+      data:
+        carbon_emission_factors_html: |-
+          <h4>Ffactorau Allyriadau Carbon</h4>
+          <p>Daw'r ffactorau allyriadau yn y tabl uchod o
+          <a href='https://www.gov.uk/government/collections/government-conversion-factors-for-company-reporting'>
+          ffactorau trosi'r Llywodraeth ar gyfer adrodd cwmnïau ar allyriadau nwyon tŷ gwydr</a>. Rydym wedi defnyddio'r dull
+          'Mwyafrif' - gan ddefnyddio'r ffactorau o'r flwyddyn galendr y mae'r gyfran fwyaf o'ch
+          data ynddi. Er enghraifft, ar gyfer y flwyddyn academaidd 2023/24, rydym wedi defnyddio ffactorau trosi 2024.</p>
+        current_table_title: Blwyddyn academaidd bresennol (%{start_date} i %{end_date})
+        data_quality_html: |-
+          <h4>Ansawdd data</h4>
+          <p>Yn y lawrlwythiadau CSV, rydym yn defnyddio'r codau ansawdd data canlynol. Efallai yr hoffech chi ddisodli data ar gyfer misoedd sydd
+          </p>wedi'u hamlygu fel rhai sydd â data ar goll neu wedi'i amcangyfrif.
+          <ul>
+          <li>I - anghyflawn</li>
+          <li>A - gwirioneddol</li>
+          <li>E - amcangyfrifedig</li>
+          <li>C - wedi'i gywiro</li>
+          </ul>
+        downloads:
+          electricity: defnydd o drydan %{year}
+          export: 'allforyn solar %{year} '
+          gas: defnydd o nwy %{year}
+          introduction: 'Gellir defnyddio''r lawrlwythiadau CSV canlynol i nodi:'
+          self: hunan-ddefnydd solar %{year}
+          title: Lawrlwythiadau data manwl
+        introduction: Mae'r tablau canlynol yn rhoi crynodeb o'ch defnydd a'ch allyriadau dros y ddwy flynedd academaidd ddiwethaf (%{last_start_date} i %{last_end_date} a %{current_start_date} i %{current_end_date}).
+        previous_table_title: Blwyddyn academaidd flaenorol (%{start_date} i %{end_date})
+        supporting_notes_html: |-
+          <h4>Nodiadau ategol</h4>
+          <p>
+          Mae'r ffigurau uchod yn seiliedig ar y pwyntiau data canlynol. Gweler y lawrlwythiadau data isod am fanylion ysgolion unigol, mesuryddion a phroblemau ansawdd data.
+          </p>
+          <ul>
+          <li>Nifer yr ysgolion gweithredol: %{active_schools}</li>
+          <li>Nifer y mesuryddion nwy gweithredol: %{gas_meters}</li>
+          <li>Nifer y mesuryddion trydan gweithredol: %{electricity_meters}</li>
+          <li>Nifer yr ysgolion sydd â chyflenwad solar wedi'i fesur: %{metered_solar_schools}</li>
+          <li>Nifer yr ysgolion gyda solar amcangyfrifedig: %{estimated_solar_schools}</li>
+          <li>Nifer y disgyblion: %{number_of_pupils}</li>
+          </ul>
+      table:
+        co2e_per_pupil: Tunnelli CO2e fesul disgybl
+        consumption: Defnydd (kWh)
+        conversion_factor: Ffactor trosi (kg CO₂e / kWh)
+        emissions: Allyriadau (tunnelli CO₂e)
+        gas_consumption: Defnydd o nwy
+        intensity_ratio: Cymhareb dwyster
+        missing: Ffactorau trosi ar goll ar gyfer y flwyddyn %{year}
+        net: Net
+        purchased_electricity: Trydan wedi'i brynu
+        scope1_total: Cyfanswm Cwmpas 1
+        scope2_total: Cyfanswm Cwmpas 2
+        scope3_total: Cyfanswm Cwmpas 3
+        solar_export: Allforyn solar
+        solar_self_consumption: Solar hunanddefnydd
+        total: Cyfanswm
+        transmission_and_distribution: Trosglwyddo a dosbarthu trydan
+      tabs:
+        data: Data
+        usage: Cyfarwyddiadau
+      title: Data Adrodd SECR
+      usage:
+        how_to_identify_gaps_html: |-
+          <h3>Sut i adnabod a llenwi bylchau mewn data</h3>
+          <p>Ni all data a lawrlwythwyd o Sbarcynni gwmpasu holl ofynion adrodd SECR. Er enghraifft:</p>
+          <ul>
+          <li>Dim ond data nwy a thrydan sydd gan Sbarcynni, nid ydym yn gallu cyflwyno data defnydd ar gyfer
+          </li>tanwyddau amgen fel olew neu fiomas.
+          <li>Nid yw Sbarcynni yn cynnwys data ynni ar gyfer trafnidiaeth na gweithgareddau eraill.</li>
+          </ul>
+          <p>
+          Mae'n debygol y bydd bylchau ychwanegol yn y data, felly dylech adolygu'r data sydd ar gael yn Sbarcynni a chael
+          data drwy filiau ynni neu brosesau adrodd mewnol eraill i lenwi'r bylchau hyn. Er enghraifft:
+          <ul>
+          <li>Efallai na fydd Sbarcynni yn cwmpasu pob ysgol o fewn y MAT</li>
+          <li>Efallai na fydd gan Sbarcynni fynediad at ddata ar gyfer pob mesurydd ym mhob ysgol</li>
+          <li>Efallai y bydd bylchau yn y cyfnod adrodd - er enghraifft oherwydd mesuryddion diffygiol</li>
+          <li>Am rai misoedd, gall ansawdd y data fod yn isel oherwydd problemau gyda'r mesurydd neu amcangyfrif o'r defnydd a dderbyniwyd gan eich cyflenwr ynni.</li>
+          </ul>
+          </p>
+          <p>
+          Mae'r tab Data yn cynnwys lawrlwythiadau CSV o'r holl ddata sydd ar gael ar gyfer eich ysgolion yn fisol. Bob mis, rhoddir
+          cod ansawdd i'r data i ddangos a yw'n gyflawn ai peidio.
+          </p>
+          <p>
+          Os byddwch yn diweddaru unrhyw ffigurau misol neu'n llenwi unrhyw fylchau, peidiwch ag anghofio diweddaru'r cyfansymiau defnydd ac
+          ailgyfrifo data allyriadau.
+          </p>
+        how_to_improve_html: |-
+          <h3>Sut i wella'r broses hon yn y dyfodol</h3>
+          <p>
+          Mae'r offeryn Sbarcynni hwn wedi'i gynllunio i gefnogi rhywun nad yw wedi casglu data ar gyfer adrodd SECR o'r blaen.
+          Dylai'r wybodaeth yma wneud y broses yn haws, gan leihau'r angen i gasglu gwybodaeth o'ch biliau
+          ynni. Fodd bynnag, byddwch yn gallu llunio eich adroddiad SECR yn gyflymach yn y dyfodol os cesglir ffigurau defnydd o ysgolion bob mis a'u cofnodi'n ganolog.
+          </p>
+        purpose_of_this_tool_html: |-
+          <h3>Pwrpas yr offeryn hwn</h3>
+          <p>
+          Mae'n ofynnol i Ymddiriedolaethau Aml-Academi sy'n defnyddio mwy na swm penodol o ynni adrodd ar eu defnydd o ynni ac allyriadau nwyon tŷ gwydr cysylltiedig. Am ragor o fanylion, gweler <a href=\"https://www.gov.uk/government/publications/streamlined-energy-and-carbon-reporting-secr-for-academy-trusts/streamlined-energy-and-carbon-reporting-secr-for-academy-trusts\">Adroddiadau Ynni a Charbon Syml (SECR)
+          ar gyfer ymddiriedolaethau academi - GOV.UK</a>.
+          </p>
+          <p>
+          Mae Sbarcynni yn darparu storfa unigryw o ddata ynni ar gyfer MATs, ac yn cyflwyno cyfle i leihau'r ymdrech sydd ei hangen ar staff MAT wrth lunio eu hadroddiadau SECR. Fodd bynnag, ni fydd eich set ddata Sbarcynni bob amser yn cwmpasu'r holl ddata ynni sydd ei angen. Er enghraifft, efallai na fyddwn yn cynnwys eich holl ysgolion; efallai bod gan rai ysgolion fesuryddion nad ydynt yn gallu anfon data atom; neu efallai bod bylchau yn rhywfaint o'r data ynni a
+          adroddwyd.
+          </p>
+          <p>Dylai'r wybodaeth isod eich cynorthwyo i nodi a llenwi unrhyw fylchau.</p>
+        what_is_included_html: |-
+          <h3>Beth sydd wedi'i gynnwys yn yr adroddiad?</h3>
+          <p>
+          Mae'r tab Data yn cynnwys data defnydd nwy a thrydan, ffactorau trosi a data allyriadau cysylltiedig mewn
+          fformat sy'n gydnaws ag adrodd SECR. Fodd bynnag, bydd angen i chi wirio ei fod yn gyflawn ac ychwanegu unrhyw ddata
+          gofynnol arall.
+          </p>
+    settings:
+      charts: Gosodwch eich unedau arddangos diofyn ar gyfer siartiau ynni - dewiswch rhwng kg CO₂, kWh, £, neu'r rhagosodyn system
+      clusters: Grwpiwch ysgolion tebyg o fewn eich sefydliad yn glystyrau i symleiddio cymariaethau
+      digital_signage: Dangoswch eich dadansoddiad ar arwyddion cyhoeddus o amgylch ysgolion
+      engagement: Mae'r adroddiad hwn yn crynhoi sut mae eich ysgolion yn ymgysylltu â nodweddion Sbarcynni. Mae mwy o ymgysylltu fel arfer yn arwain at arbedion ynni mwy.
+      history: Rheoli'r gweithgareddau a'r camau gweithredu a gofnodwyd yn flaenorol gan eich ysgolion
+      secr: Defnyddiwch yr offeryn hwn i baratoi adroddiadau SECR ar gyfer eich Ymddiriedolaeth Aml-Academi trwy adolygu eich data defnydd ynni ac allyriadau
+      status: Gweld statws ysgolion yn y grŵp hwn
+      tariffs: Rheoli tariffau ynni cyfredol a hanesyddol ar gyfer eich grŵp ac ysgolion
     show:
       change_units: Newid unedau
+      chart_note: Mae'r siart yn dangos pob ysgol sydd ag o leiaf blwyddyn o ddata ar gael.
+      energy_use:
+        title: Defnydd o ynni
+      intro_html: Archwiliwch y data ynni diweddaraf, adolygwch <a href="#alerts-and-reminders">rybuddion defnydd ynni</a> diweddar a gweld y <a href="#scoreboard-update">gweithgareddau diweddaraf yn yr ysgolion hyn</a>.
       metric:
         change: "% Newid"
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Defnyddio (kWh)
+      status_note_html: Mae'r tabl hwn yn dangos ysgolion sydd â data cyhoeddedig. <a href="%{path}">Gweld rhestr lawn o ysgolion a'u statws</a>
       we_are_working_with:
         in_partnership_with_html:
-          one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
-          two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
-          many: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn mewn partneriaeth â %{partners}
-          other: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn mewn partneriaeth â %{partners}
+          one: Rydym yn gweithio gydag 1 ysgol yn y %{group_type} hwn mewn partneriaeth â %{partners}
+          two: Rydym yn gweithio gyda %{count} o ysgolion yn y %{group_type} hwn mewn partneriaeth â %{partners}
+          many: Rydym yn gweithio gyda %{count} o ysgolion yn y %{group_type} hwn mewn partneriaeth â %{partners}
+          other: Rydym yn gweithio gyda %{count} o ysgolion yn y %{group_type} hwn mewn partneriaeth â %{partners}
         no_partnership:
-          one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn
-          two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn
-          many: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn
-          other: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn
+          one: Rydym yn gweithio gydag 1 ysgol yn y %{group_type} hwn
+          two: Rydym yn gweithio gyda %{count} o ysgolion yn y %{group_type} hwn
+          many: Rydym yn gweithio gyda %{count} o ysgolion yn y %{group_type} hwn
+          other: Rydym yn gweithio gyda %{count} o ysgolion yn y %{group_type} hwn
+    status:
+      data_published: Cyhoeddwyd data
+      individual_meter_data: Data mesuryddion unigol
+      key_dates: Dyddiadau allweddol
+      made_visible: Wedi'i wneud yn weladwy
+      no_meters: Nid oes mesuryddion wedi'u ffurfweddu yn yr ysgol hon
+      no_schools: Nid oes unrhyw ysgolion yn y grŵp hwn
+      not_data_enabled: Bydd gwybodaeth am y mesurydd yn ymddangos yma unwaith y bydd data'r ysgol wedi'i gyhoeddi
+      number_of_users: Nifer y defnyddwyr
+      receiving_alerts: "(%{count} yn derbyn rhybuddion)"
+      school_info: Gwybodaeth ysgol
     sub_nav:
       chart_settings: Gosodiadau siart
       clusters: Rheoli clystyrau
@@ -211,12 +436,24 @@ cy:
       manage_group: Rheoli'r Grŵp
       manage_partners: Rheoli partneriaid
       manage_users: Rheoli defnyddwyr
+      school_engagement: Ymgysylltiad ysgol
+      secr_report: Adroddiad SECR
       set_message: Gosod neges
+    timeline:
+      activity_in_current_year: Rhestr o'r holl weithgareddau dan arweiniad oedolion a disgyblion yn y grŵp ysgol hwn a gofnodwyd yn y flwyddyn ysgol gyfredol
+      activity_in_year: Rhestr o'r holl weithgareddau dan arweiniad oedolion a disgyblion yn y grŵp ysgol hwn a gofnodwyd yn y flwyddyn ysgol %{school_year}
     titles:
+      advice: Cyngor
+      charts: Siartiau defnydd ynni
       comparisons: Cymariaethau
       current_scores: Sgoriau Presennol
+      impact_report: Adroddiad effaith
       map: Map
       previous_scores: Sgorau Blaenorol
       priority_actions: Gweithredoedd Blaenoriaeth
       recent_usage: Defnydd Diweddar
+      reports: Adroddiadau
+      school_status: Statws ysgol
+      secr: Adroddiad SECR
+      settings: Gosodiadau
       show: Dangosfwrdd Grŵp

@@ -2,7 +2,7 @@
   <% header_nav.with_header title: @contract.name %>
   <% header_nav.with_button 'Contract holder contracts',
                             polymorphic_path([:admin, @contract.contract_holder, :contracts]) %>
-  <% header_nav.with_button 'All contracts', current_admin_commercial_contracts_path %>
+  <% header_nav.with_button 'All contracts', admin_commercial_contracts_path %>
 <% end %>
 
 <div class="row">
@@ -16,8 +16,11 @@
                     method: :post,
                     class: 'btn btn-warning btn-sm'
           end %>
-      <%= link_to 'Manage All Licences', edit_admin_commercial_contract_licences_path(@contract),
-                  class: 'btn btn-secondary btn-sm' %>
+      <%= unless @contract.contract_holder.is_a?(School)
+            link_to 'Manage All Licences',
+                    edit_admin_commercial_contract_licences_path(@contract),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
 
       <%= unless @contract.future?
             link_to 'Renew', renew_admin_commercial_contracts_path(original_contract_id: @contract.id),
@@ -28,10 +31,16 @@
                     raise_invoice_admin_commercial_contract_invoices_path(@contract),
                     class: 'btn btn-secondary btn-sm'
           end %>
-      <%= link_to 'Add New Licence', new_admin_commercial_licence_path(contract_id: @contract.id),
-                  class: 'btn btn-secondary btn-sm' %>
-      <%= link_to 'Calculate Price', admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
-                  class: 'btn btn-secondary btn-sm' %>
+      <%= unless @contract.contract_holder.is_a?(School)
+            link_to 'Add New Licence',
+                    new_admin_commercial_licence_path(contract_id: @contract.id),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
+      <%= unless @contract.contract_holder.is_a?(School)
+            link_to 'Calculate Price',
+                    admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
       <%= render(Forms::DeleteButtonComponent.new(admin_commercial_contract_path(@contract), resource: @contract)) %>
     </p>
   </div>
@@ -123,6 +132,12 @@
               <%= @contract.purchase_order_number %>
             </dd>
             <dt class="col-5">
+              Account code
+            </dt>
+            <dd class="col-7">
+              <%= @contract.xero_account_code&.display_label %>
+            </dd>
+            <dt class="col-5">
               Comments
             </dt>
             <dd class="col-7">
@@ -207,6 +222,12 @@
     <p>
       The following table includes all licences for this contract sorted by start date.
     </p>
+    <% if @overlapping_licences.any? %>
+      <%= render PromptComponent.new(id: 'overlapping-licences', status: :negative, icon: 'calendar-xmark') do |p| %>
+        <% p.with_link { link_to 'Overlapping licences', overlapping_admin_commercial_licences_path } %>
+        <%= "#{@overlapping_licences.count} of these licences overlap with licences from other contracts" %>
+      <% end %>
+    <% end %>
     <%= render Commercial::LicencesComponent.new(id: 'licences',
                                                  licences: @contract.licences.by_start_date,
                                                  show_contract: false,

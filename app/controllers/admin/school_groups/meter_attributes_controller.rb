@@ -1,7 +1,15 @@
+# frozen_string_literal: true
+
 module Admin
   module SchoolGroups
     class MeterAttributesController < AdminController
+      include SchoolGroupBreadcrumbs
+
       load_and_authorize_resource :school_group
+
+      before_action :breadcrumbs
+
+      layout 'group_settings'
 
       def index
         @meter_attributes = @school_group.meter_attributes.active
@@ -73,6 +81,10 @@ module Admin
                     notice: 'Meter attribute successfully deleted'
       rescue => e
         redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
+      end
+
+      def breadcrumbs
+        build_breadcrumbs([{ name: t('school_groups.titles.meter_attributes') }])
       end
     end
   end

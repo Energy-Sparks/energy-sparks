@@ -20,7 +20,9 @@
   <thead>
     <tr>
       <th>School Group</th>
-      <th>Admin</th>
+      <% unless @dashboard_user %>
+        <th>Admin</th>
+      <% end %>
       <th>School</th>
       <th>Reason</th>
       <th data-orderable="false"></th>
@@ -31,7 +33,9 @@
          reasons = find_reasons(school) %>
       <tr>
         <td><%= school.school_group&.name %></td>
-        <td><%= school.default_issues_admin_user&.name %></td>
+        <% unless @dashboard_user %>
+          <td><%= school.default_issues_admin_user&.name %></td>
+        <% end %>
         <td><%= link_to school.name, school_path(school) %></td>
         <td><%= reasons.join(', ') %></td>
         <td><%= link_to :Attributes, admin_school_school_attributes_path(school), class: 'btn btn-sm' %></td>

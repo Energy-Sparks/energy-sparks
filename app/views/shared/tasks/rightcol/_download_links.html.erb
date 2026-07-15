@@ -1,0 +1,11 @@
+<% if task.download_links.present? %>
+  <%= render Layout::Cards::FeatureComponent.new(size: :sm, classes: 'mb-4') do |feature| %>
+    <%= feature.with_header(
+          title: "#{render(Elements::IconComponent.new(name: 'download'))} " \
+                  "#{t('tasks.download_resources')}".html_safe
+        ) %>
+    <%= feature.with_block do %>
+      <%= task.download_links.to_s.html_safe %>
+    <% end %>
+  <% end %>
+<% end %>

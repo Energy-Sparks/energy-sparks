@@ -36,7 +36,7 @@ RSpec.describe 'i18n', type: :system do
     it 'redirects back to activity page in english after login' do
       staff.update(preferred_locale: 'en')
       visit "http://energysparks.test#{activity_type_path(activity_type)}"
-      click_on 'Sign in to record activity'
+      click_on 'Record this activity'
       fill_in 'Email', with: staff.email
       fill_in 'Password', with: staff.password
       within '#staff' do
@@ -50,7 +50,7 @@ RSpec.describe 'i18n', type: :system do
     it 'redirects back to activity page in welsh after login' do
       staff.update(preferred_locale: 'cy')
       visit "http://energysparks.test#{activity_type_path(activity_type)}"
-      click_on 'Sign in to record activity'
+      click_on 'Record this activity'
       fill_in 'Email', with: staff.email
       fill_in 'Password', with: staff.password
       within '#staff' do

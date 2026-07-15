@@ -15,14 +15,14 @@ module Aggregation
 
     private
 
-    def create_generation_amr_data(mains_amr_data, pv_amr_data, mpan, _create_zero_if_no_config)
+    def create_generation_amr_data(mains_amr_data, pv_amr_data, _mpan)
       mains_amr_data.date_range.each do |date|
         next if pv_amr_data.date_exists?(date)
 
         # pad out generation data to that of mains electric meter
         # so downstream analysis doesn't need to continually test
         # for its existence
-        pv_amr_data.add(date, OneDayAMRReading.zero_reading(mpan, date, 'SOL0'))
+        pv_amr_data.add(date, OneDayAMRReading.zero_reading(date, 'SOL0'))
       end
     end
 

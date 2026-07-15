@@ -62,4 +62,18 @@ describe SolarEdgeInstallation do
       end
     end
   end
+
+  describe '#site_id_unique_to_school' do
+    it 'allows multiple installations for the same school and site_id' do
+      installation = build(:solar_edge_installation, site_id: solar_edge_installation.site_id,
+                                                     school: solar_edge_installation.school)
+      expect(installation).to be_valid
+    end
+
+    it 'does not allow the same site_id for different schools' do
+      installation = build(:solar_edge_installation, site_id: solar_edge_installation.site_id)
+      expect(installation).not_to be_valid
+      expect(installation.errors[:site_id]).to eq(['is already associated with a different school'])
+    end
+  end
 end

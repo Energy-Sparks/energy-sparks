@@ -137,7 +137,8 @@ describe Commercial::Contract do
                                                                 :invoice_terms,
                                                                 :name, :number_of_schools,
                                                                 :product_id, :purchase_order_number,
-                                                                :start_date, :status, :updated_by_id)
+                                                                :start_date, :status, :updated_by_id,
+                                                                :xero_account_code_id)
       end
 
       context 'when confirmed' do
@@ -148,7 +149,7 @@ describe Commercial::Contract do
                                                                   :invoice_terms,
                                                                   :name, :number_of_schools,
                                                                   :product_id, :purchase_order_number,
-                                                                  :start_date, :updated_by_id)
+                                                                  :start_date, :updated_by_id, :xero_account_code_id)
         end
       end
 
@@ -159,7 +160,8 @@ describe Commercial::Contract do
 
         it 'has the expected fields' do
           expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools,
-                                                                  :purchase_order_number, :status, :updated_by_id)
+                                                                  :purchase_order_number, :status, :updated_by_id,
+                                                                  :xero_account_code_id)
         end
       end
     end
@@ -171,7 +173,8 @@ describe Commercial::Contract do
         expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
                                                                 :licence_years, :name, :number_of_schools,
                                                                 :product_id, :purchase_order_number,
-                                                                :start_date, :status, :updated_by_id)
+                                                                :start_date, :status, :updated_by_id,
+                                                                :xero_account_code_id)
       end
 
       context 'when confirmed' do
@@ -181,7 +184,7 @@ describe Commercial::Contract do
           expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date,
                                                                   :licence_years, :name, :number_of_schools,
                                                                   :product_id, :purchase_order_number,
-                                                                  :start_date, :updated_by_id)
+                                                                  :start_date, :updated_by_id, :xero_account_code_id)
         end
       end
 
@@ -192,7 +195,8 @@ describe Commercial::Contract do
 
         it 'has the expected fields' do
           expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools,
-                                                                  :purchase_order_number, :status, :updated_by_id)
+                                                                  :purchase_order_number, :status, :updated_by_id,
+                                                                  :xero_account_code_id)
         end
       end
     end
@@ -490,6 +494,49 @@ describe Commercial::Contract do
 
     it 'returns only contracts with pending invoices' do
       expect(described_class.pending_invoicing).to contain_exactly(funder_contract)
+    end
+  end
+
+  describe '#candidate_schools' do
+    context 'with School' do
+      let!(:contract) { create(:commercial_contract, :with_school) }
+
+      it { expect(contract.candidate_schools).to eq([]) }
+    end
+
+    context 'with Funder' do
+      let!(:school) { create(:school) }
+      let!(:contract) { create(:commercial_contract, :with_funder) }
+
+      it { expect(contract.candidate_schools).to eq([school]) }
+
+      context 'with an already licensed school' do
+        let!(:school) { create(:school) }
+
+        before do
+          create(:commercial_licence, contract:)
+        end
+
+        it { expect(contract.candidate_schools).to eq([school]) }
+      end
+    end
+
+    context 'with SchoolGroup' do
+      let!(:school_group) { create(:school_group, :with_active_schools) }
+      let!(:contract) { create(:commercial_contract, contract_holder: school_group) }
+
+      it { expect(contract.candidate_schools).to eq(school_group.assigned_schools.by_name) }
+
+      context 'with an already licensed school' do
+        let!(:school_group) { create(:school_group) }
+        let!(:school) { create(:school, school_group:) }
+
+        before do
+          create(:commercial_licence, contract:, school: create(:school, school_group:))
+        end
+
+        it { expect(contract.candidate_schools).to eq([school]) }
+      end
     end
   end
 end

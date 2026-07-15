@@ -1,0 +1,43 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Xero Account Codes' %>
+  <% header_nav.with_button 'Contracts & Licensing', admin_commercial_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'New account code', new_admin_commercial_xero_account_code_path,
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Label</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @xero_account_codes.each do |xero_account_code| %>
+      <tr>
+        <td>
+          <%= xero_account_code.code %>
+        </td>
+        <td>
+          <%= xero_account_code.label %>
+        </td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_commercial_xero_account_code_path(xero_account_code),
+                        class: 'btn btn-secondary btn-sm' %>
+            <%= render(Forms::DeleteButtonComponent.new(admin_commercial_xero_account_code_path(xero_account_code),
+                                                        resource: xero_account_code)) %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

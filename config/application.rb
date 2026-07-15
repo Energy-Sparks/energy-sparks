@@ -95,6 +95,9 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'allowfullscreen'
       ActionText::ContentHelper.allowed_tags = Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_tags
       ActionText::ContentHelper.allowed_tags.add 'iframe'
+       # makes sure analytics code is pulled in, can't be done before the application as requires some of the
+       # application code
+      require 'dashboard'
     end
   end
 end

@@ -55,7 +55,13 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
     context 'with unrecognised status' do
       let(:params) { { id: id, status: :unrecognised, icon: icon, classes: classes } }
 
-      it { expect { html }.to raise_error(ArgumentError, 'Status must be: none, positive, negative or neutral') }
+      it do
+        expect { html }.to raise_error(
+          ArgumentError,
+          "Unknown 'unrecognised' is not a permitted value for status. " \
+          'Must be one of: none, positive, negative, and neutral'
+        )
+      end
     end
 
     context 'with no status' do

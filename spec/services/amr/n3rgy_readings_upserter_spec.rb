@@ -10,7 +10,7 @@ module Amr
       {
         meter.meter_type => {
           mpan_mprn: meter.mpan_mprn,
-          readings: { start_date => OneDayAMRReading.new(meter.mpan_mprn, start_date, 'ORIG', nil,
+          readings: { start_date => OneDayAMRReading.new(start_date, 'ORIG', nil,
                                                          start_date, Array.new(48, 0.25)) },
           missing_readings: []
         }
@@ -43,7 +43,7 @@ module Amr
         {
           meter.meter_type => {
             mpan_mprn: meter.mpan_mprn,
-            readings: { start_date => OneDayAMRReading.new('1234567890009', start_date, 'ORIG', nil, start_date,
+            readings: { start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date,
                                                            Array.new(48, 0.25)) },
             missing_readings: []
           }

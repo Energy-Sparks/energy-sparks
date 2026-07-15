@@ -18,17 +18,22 @@ class PromptComponent < ApplicationComponent
   renders_one :link
   renders_one :title
   renders_one :pill
+  renders_one :content_action, ->(**kwargs) { Layout::Cards::ContentAction.new(**kwargs) }
+
+  STATUSES = %i[none positive negative neutral].freeze
+  private_constant :STATUSES
 
   attr_reader :icon, :style, :fuel_type
 
-  def initialize(id: nil, icon: nil, fuel_type: nil, status: nil, style: :full, classes: '', always_render: false)
-    super(id: id, classes: "#{status} #{classes}")
+  def initialize(icon: nil, fuel_type: nil, status: nil, style: :full, always_render: false, **_kwargs)
+    super
+    validate_inclusion(status: status, in: STATUSES) if status
+    add_classes(status)
     @icon = icon
     @fuel_type = fuel_type
     @status = status
     @style = style
     @always_render = always_render
-    validate
   end
 
   def render_icon?
@@ -36,18 +41,10 @@ class PromptComponent < ApplicationComponent
   end
 
   def render?
-    content || @always_render
-  end
-
-  def validate
-    raise ArgumentError.new(self.class.status_error) unless @status.nil? || self.class.statuses.include?(@status.to_sym)
+    content || content_action || @always_render
   end
 
   def self.statuses
-    [:none, :positive, :negative, :neutral]
-  end
-
-  def self.status_error
-    'Status must be: ' + self.statuses.to_sentence(last_word_connector: ' or ')
+    STATUSES
   end
 end

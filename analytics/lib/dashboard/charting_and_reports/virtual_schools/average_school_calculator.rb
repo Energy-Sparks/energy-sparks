@@ -1,5 +1,5 @@
 class AverageSchoolCalculator
-  class UnexpectedSchoolTypeException < StandardError;  end
+  class UnexpectedSchoolTypeException < StandardError; end
 
   def initialize(school)
     @school = school
@@ -10,7 +10,8 @@ class AverageSchoolCalculator
   end
 
   def normalised_amr_data(benchmark_type:, fuel_type:, degreeday_adjustment: false)
-    calculate_school_amr_data(meter: @school.aggregate_meter(fuel_type), benchmark_type: benchmark_type, pupils: 1, floor_area: 1, degreeday_adjustment: degreeday_adjustment)
+    calculate_school_amr_data(meter: @school.aggregate_meter(fuel_type), benchmark_type: benchmark_type, pupils: 1,
+                              floor_area: 1, degreeday_adjustment: degreeday_adjustment)
   end
 
   def self.remap_low_sample_holiday(holiday_type, date)
@@ -42,7 +43,8 @@ class AverageSchoolCalculator
 
   private
 
-  def calculate_school_amr_data(meter:, benchmark_type: :benchmark, pupils: @school.number_of_pupils, floor_area: @school.floor_area, degreeday_adjustment: true)
+  def calculate_school_amr_data(meter:, benchmark_type: :benchmark, pupils: @school.number_of_pupils,
+                                floor_area: @school.floor_area, degreeday_adjustment: true)
     amr_data = meter.amr_data
     average_amr_data = AMRData.new(benchmark_type)
 
@@ -51,22 +53,24 @@ class AverageSchoolCalculator
     # calculation approx ~20 ms per year
     now = DateTime.now
 
-    scale_by =  if meter.fuel_type == :electricity
-                  pupils
-                elsif degreeday_adjustment
-                  degree_days_to_average_factor_reversed(meter.meter_collection, amr_data.start_date, amr_data.end_date, floor_area)
-                else
-                  floor_area
-                end
+    scale_by = if meter.fuel_type == :electricity
+                 pupils
+               elsif degreeday_adjustment
+                 degree_days_to_average_factor_reversed(meter.meter_collection, amr_data.start_date,
+                                                        amr_data.end_date, floor_area)
+               else
+                 floor_area
+               end
 
     (amr_data.start_date..amr_data.end_date).each do |date|
-      avg_kwh_x48_by_school_type = school_type_profiles_to_average_x48(date, benchmark_type, interpolators, meter.fuel_type)
+      avg_kwh_x48_by_school_type = school_type_profiles_to_average_x48(date, benchmark_type, interpolators,
+                                                                       meter.fuel_type)
 
       kWh_per_pupil_x48 = AMRData.fast_average_multiple_x48(avg_kwh_x48_by_school_type)
 
       kWh_x48 = AMRData.fast_multiply_x48_x_scalar(kWh_per_pupil_x48, scale_by)
 
-      average_amr_data.add(date, OneDayAMRReading.new(meter.mpxn, date, 'CAVG', nil, now, kWh_x48))
+      average_amr_data.add(date, OneDayAMRReading.new(date, 'CAVG', nil, now, kWh_x48))
     end
 
     average_amr_data
@@ -121,13 +125,13 @@ class AverageSchoolCalculator
   # penalised, so for moment use :special despite the lack of samples
   def averaged_school_type_map(school_type)
     school_map = {
-      primary:                      [ :primary ],
-      special:                      [ :special ],
-      secondary:                    [ :secondary ],
-      mixed_primary_and_secondary:  [ :primary, :secondary ],
-      middle:                       [ :primary, :secondary ],
-      infant:                       [ :primary ],
-      junior:                       [ :primary ],
+      primary: [:primary],
+      special: [:special],
+      secondary: [:secondary],
+      mixed_primary_and_secondary: %i[primary secondary],
+      middle: %i[primary secondary],
+      infant: [:primary],
+      junior: [:primary]
     }
 
     raise UnexpectedSchoolTypeException, "Unknown school type #{school_type}" unless school_map.key?(school_type.to_sym)

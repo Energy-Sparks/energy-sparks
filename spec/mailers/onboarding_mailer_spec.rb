@@ -252,7 +252,7 @@ describe OnboardingMailer, :aggregate_failures do
     it 'sends the onboarded email in cy' do
       setup_and_send(:cy)
       expect(email.subject).to eq('Mae Test School bellach yn fyw ar Sbarcynni')
-      expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('onboarded_email_cy'))
+      expect(bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('onboarded_email_cy').chomp)
     end
   end
 
@@ -338,7 +338,7 @@ describe OnboardingMailer, :aggregate_failures do
 
     it 'sends the staff email in welsh' do
       setup_and_send(:staff, :cy)
-      expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
+      expect(email.subject).to eq('Mae data ynni bellach ar gael ar Sbarcynni ar gyfer Test School')
       expect(bootstrap_email_body(email).css('a').map { |a| URI(a['href']).host }.uniq).to \
         contain_exactly('cy.localhost', 'www.youtube.com')
     end

@@ -3,6 +3,8 @@
 module SchoolGroups
   module Impact
     class ConfigurationsController < AdminController
+      include SchoolGroupBreadcrumbs
+
       layout 'group_settings'
 
       before_action :enable_bootstrap5
@@ -11,6 +13,7 @@ module SchoolGroups
         latest_impact_report_run
       ]
       before_action :fetch_config_and_run, only: %i[edit update]
+      before_action :breadcrumbs
 
       def show
         redirect_to edit_school_group_impact_configuration_path(@school_group)
@@ -43,6 +46,10 @@ module SchoolGroups
              engagement_image_remove engagement_school_expiry_date
              energy_efficiency_school_id energy_efficiency_note energy_efficiency_image
              energy_efficiency_image_remove energy_efficiency_school_expiry_date])
+      end
+
+      def breadcrumbs
+        build_breadcrumbs([{ name: t('school_groups.titles.impact_report') }])
       end
     end
   end

@@ -27,7 +27,7 @@ module Admin
           Column.new(:procurement_route,
                      ->(meter) { meter.procurement_route&.organisation_name },
                      ->(meter, csv) { csv && link_to(csv, admin_procurement_route_path(meter.procurement_route)) }),
-          Column.new(:meter_status,
+          Column.new(:admin_meter_status,
                      ->(meter) { meter.admin_meter_status_label }),
           Column.new(:manual_reads,
                      ->(meter) { meter.manual_reads ? 'Y' : 'N' }),

@@ -23,20 +23,23 @@
 #  created_by_id         :bigint(8)
 #  product_id            :bigint(8)        not null
 #  updated_by_id         :bigint(8)
+#  xero_account_code_id  :bigint(8)
 #
 # Indexes
 #
-#  index_commercial_contracts_on_contract_holder  (contract_holder_type,contract_holder_id)
-#  index_commercial_contracts_on_created_by_id    (created_by_id)
-#  index_commercial_contracts_on_name             (name) UNIQUE
-#  index_commercial_contracts_on_product_id       (product_id)
-#  index_commercial_contracts_on_updated_by_id    (updated_by_id)
+#  index_commercial_contracts_on_contract_holder       (contract_holder_type,contract_holder_id)
+#  index_commercial_contracts_on_created_by_id         (created_by_id)
+#  index_commercial_contracts_on_name                  (name) UNIQUE
+#  index_commercial_contracts_on_product_id            (product_id)
+#  index_commercial_contracts_on_updated_by_id         (updated_by_id)
+#  index_commercial_contracts_on_xero_account_code_id  (xero_account_code_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (product_id => commercial_products.id)
 #  fk_rails_...  (updated_by_id => users.id)
+#  fk_rails_...  (xero_account_code_id => commercial_xero_account_codes.id)
 #
 module Commercial
   class Contract < ApplicationRecord # rubocop:disable Metrics/ClassLength
@@ -69,6 +72,7 @@ module Commercial
 
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
+    belongs_to :xero_account_code, optional: true, class_name: 'Commercial::XeroAccountCode'
 
     CONTRACT_STATUS = {
       provisional: 'provisional',
@@ -222,7 +226,8 @@ module Commercial
           :contract_holder_id,
           :licence_years,
           :number_of_schools,
-          :product
+          :product,
+          :xero_account_code
         ).merge(
           renewed_attributes
         )
@@ -233,6 +238,18 @@ module Commercial
       date = Date.parse(date) if date.present? && date.is_a?(String)
       scope = date.present? ? public_send(scope_name, date) : public_send(scope_name)
       scope.includes(:contract_holder, :product).by_start_date
+    end
+
+    # list of schools that might be added to this contract
+    def candidate_schools
+      return [] if contract_holder.is_a?(School)
+
+      scope = if contract_holder.is_a?(Funder)
+                School.visible.by_name
+              else
+                contract_holder.assigned_schools.visible.by_name
+              end
+      scope.where.not(id: schools)
     end
 
     def status_colour
@@ -251,7 +268,7 @@ module Commercial
     # Some are safe to always be changed, e.g. name
     # Others cannot be changed once invoicing has started, e.g. agreed_school_price
     def editable_attributes
-      fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
+      fields = %i[comments name purchase_order_number number_of_schools updated_by_id xero_account_code_id]
       fields += %i[status] if provisional?
       fields += [:licence_years] if custom? && !invoiced?
       fields += [:invoice_terms] if contract? && !invoiced?

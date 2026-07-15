@@ -1,0 +1,31 @@
+cy:
+  school_groups:
+    advice_pages:
+      how_have_we_analysed_your_data:
+        school_characteristics_html: |-
+          <p>
+            Mae ein dadansoddiad yn ystyried amrywiaeth o nodweddion ar gyfer pob ysgol, gan gynnwys ei harwynebedd llawr, ei lleoliad, nifer y disgyblion a'i math.
+          </p>
+        summary_table_notes_html: |-
+          <p>
+          Mae'r tabl hwn yn crynhoi'r defnydd diweddar yn seiliedig ar y data diweddaraf sydd ar gael ar gyfer pob ysgol.
+          </p>
+          <p>Mae "<strong>Wythnos ddiwethaf</strong>" yn adrodd ar ddata'r wythnos lawn ddiweddaraf. Mae newid mewn
+          </p>defnydd yn cael ei fesur yn erbyn yr wythnos flaenorol.
+          <p>"Mae<strong>Mis diwethaf</strong>" yn adrodd ar ddata'r mis calendr llawn diwethaf. Mae newid mewn
+          </p>defnydd yn cael ei fesur yn erbyn yr un mis y llynedd.
+          <p>Mae "<strong>Llynedd</strong>" yn adrodd ar ddata’r 12 mis diwethaf (365 diwrnod) ar gyfer yr ysgol. Mae newid mewn
+          yn cael ei fesur yn erbyn y cyfnod blaenorol o 12 mis. Cyfnod treigl o 12 mis yw hwn yn hytrach na blynyddoedd calendr neu
+          academaidd.</p>
+          <p>Mae llinell doriad ("-") yn dangos nad oes gennym ddigon o ddata diweddar i adrodd ar y cyfnod hwnnw.</p>
+          <p>Mae "amh" yn dangos nad oes gennym ddigon o ddata hanesyddol er mwyn gwneud cymhariaeth.</p>
+      show:
+        page_summary:
+          baseload: Deall faint o ynni mae ysgolion yn ei ddefnyddio i gadw offer yn rhedeg drwy'r amser
+          electricity_long_term: Gweld tueddiadau hirdymor mewn defnydd trydan
+          electricity_out_of_hours: Faint o drydan mae ysgolion yn ei ddefnyddio y tu allan i oriau ysgol?
+          gas_long_term: Gweld tueddiadau hirdymor yn eich defnydd o nwy
+          gas_out_of_hours: Faint o nwy mae ysgolion yn ei ddefnyddio y tu allan i oriau ysgol?
+          heating_control: Adolygu pa mor dda mae ysgolion yn rheoli eu gwres
+        pages: Esboniad o ddefnydd ynni eich grŵp
+        pages_intro: Mae'r tudalennau hyn yn rhoi mwy o fewnwelediadau a dadansoddiadau i ddefnydd ynni ar draws yr ysgolion yn y grŵp hwn. Mae meysydd sydd angen eu gwella neu lle rydych chi'n gwneud yn dda wedi'u hamlygu.

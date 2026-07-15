@@ -593,6 +593,7 @@ Rails.application.routes.draw do
       resources :school_groups, module: :dashboard
       resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
+      resources :impact_reports, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :suppliers, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
@@ -677,7 +678,9 @@ Rails.application.routes.draw do
         end
       end
       resources :contract_holders, only: [:index]
-      resources :invoices, only: [:index, :show]
+      resources :invoices, only: [:index, :show] do
+        get :export, on: :collection
+      end
       resources :licences do
         collection do
           get :current
@@ -689,6 +692,7 @@ Rails.application.routes.draw do
         end
       end
       resources :products
+      resources :xero_account_codes, except: [:show]
 
       get 'pricing', to: 'pricing#show'
     end
@@ -840,7 +844,7 @@ Rails.application.routes.draw do
       end
     end
     resources :suppliers do
-      post :deliver
+      post :deliver, on: :member
       scope module: :suppliers do
         concerns :issueable
       end
@@ -914,7 +918,6 @@ Rails.application.routes.draw do
       resources :recent_audits, only: [:index]
       resources :school_scenarios, only: [:index]
       resources :school_targets, only: :index
-      resources :solar_panels, only: [:index]
       get 'tariffs', to: 'tariffs#index', as: :tariffs
       get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
       resources :tariff_import_logs, only: [:index]
@@ -924,6 +927,8 @@ Rails.application.routes.draw do
       resources :work_allocation, only: [:index]
       resources :zero_readings, only: [:index]
       resources :pupil_number_updates, only: :index
+      resources :metered_solar, only: :index
+      resources :modelled_solar, only: :index
     end
 
     resource :settings, only: %i[show update]
