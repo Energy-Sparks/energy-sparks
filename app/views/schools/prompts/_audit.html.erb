@@ -1,4 +1,6 @@
-<% if local_assigns[:audit] && audit.todos_incomplete? %>
+<% audit = Audits::AuditService.new(school).last_audit %>
+
+<% if audit && audit.todos_incomplete? %>
   <%= render PromptComponent.new(icon: 'laptop', status: :neutral, style: local_assigns[:style]) do |prompt| %>
     <% prompt.with_link do %>
       <%= link_to t('common.labels.view_now'),
