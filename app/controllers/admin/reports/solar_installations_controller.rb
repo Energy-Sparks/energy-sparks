@@ -68,7 +68,7 @@ module Admin
                            COUNT(*) FILTER (WHERE active) AS active,
                            COUNT(*) FILTER (WHERE active = false) AS inactive,
                            school_id
-                    FROM #{model.instance_of?(Class) ? model.table_name : "(#{model.to_sql})"}
+                    FROM #{model.instance_of?(Class) ? model.table_name : "(#{model.to_sql}) AS installations"}
                     GROUP BY school_id)
          AS #{join_alias(model)} ON #{join_alias(model)}.school_id = schools.id"
       end
