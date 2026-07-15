@@ -52,7 +52,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
         let(:table_id) { "#contract-#{contract.id}-licence-table" }
         let(:expected_header) do
           [
-            ['Id', 'School', 'Start', 'End', 'Status', 'Price', 'Invoice Ref', '']
+            ['Id', 'School', 'Data Visible', 'Start', 'End', 'Status', 'Price', 'Invoice Ref', '']
           ]
         end
       end
@@ -89,6 +89,10 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
 
         it 'links to school' do
           expect(main).to have_link(licence.school.name, href: school_path(licence.school))
+        end
+
+        it 'shows data visibility to school' do
+          expect(main).to have_text('Yes')
         end
 
         it 'renders the date fields' do
@@ -165,7 +169,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
           let(:table_id) { "#contract-#{contract.id}-licence-table" }
           let(:expected_header) do
             [
-              ['Id', 'School', 'Start', 'End', 'Status', 'Price', '']
+              ['Id', 'School', 'Data Visible', 'Start', 'End', 'Status', 'Price', '']
             ]
           end
         end
@@ -212,7 +216,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
             [
               ['', 'Current Academic Year', 'Contract Period', ''],
               [
-                'School',
+                'School', 'Data visible',
                 'Licensed?', 'Funder', 'First licence start', 'First licence end',
                 'Licensed?', 'Funder', 'First licence start', 'First licence end',
                 ''
@@ -221,7 +225,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
           end
           let(:expected_rows) do
             [
-              [additional_school.name, 'No', '', '', '', 'No', '', '', '', 'Add licence Licences Issues']
+              [additional_school.name, 'Yes', 'No', '', '', '', 'No', '', '', '', 'Add licence Licences Issues']
             ]
           end
         end

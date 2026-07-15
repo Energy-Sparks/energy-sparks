@@ -8,8 +8,10 @@ module Commercial
       RowComponent.new(**kwargs)
     }
 
+    # rubocop:disable Metrics/ParameterLists
     def initialize(first_range: nil, second_range: nil,
                    labels: { first: 'Current Academic Year', second: nil },
+                   show_data_visibility: false,
                    table_id: 'summary-table', **)
       super(**)
       @table_id = table_id
@@ -18,19 +20,22 @@ module Commercial
         year.start_date..year.end_date
       end
       @second_range = second_range
+      @show_data_visibility = show_data_visibility
     end
+    # rubocop:enable Metrics/ParameterLists
 
     class RowComponent < ViewComponent::Base
       attr_reader :school, :date_range
 
       renders_many :buttons
 
-      def initialize(school:, first_range:, second_range: nil, id: "school-#{school.id}")
+      def initialize(school:, first_range:, second_range: nil, show_data_visibility: false, id: "school-#{school.id}")
         super()
         @id = id
         @school = school
         @first_range = first_range
         @second_range = second_range
+        @show_data_visibility = show_data_visibility
       end
 
       private
