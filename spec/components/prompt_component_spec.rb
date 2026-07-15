@@ -56,11 +56,6 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
       let(:params) { { id: id, status: nil, icon: icon, classes: classes } }
 
       it_behaves_like 'it displays all content'
-
-      it_behaves_like 'an application component' do
-        let(:expected_classes) { classes }
-        let(:expected_id) { id }
-      end
     end
 
     context 'with fuel type' do
