@@ -70,9 +70,10 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
       render_inline described_class.new(first_range: date_range.begin..date_range.end,
                                         second_range: (date_range.end + 1)..(date_range.end + 364),
                                         labels: { first: 'Current Year', second: 'Following Year' },
+                                        show_data_visibility: true,
                                         id: 'custom-id',
                                         classes: 'extra-classes') do |c|
-        c.with_row id: "custom-school-id-#{school.id}", school: school
+        c.with_row id: "custom-school-id-#{school.id}", school: school, show_data_visibility: true
       end
     end
 
