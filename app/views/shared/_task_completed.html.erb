@@ -29,4 +29,7 @@
 <%= render 'schools/prompts/audit', audit: Audits::AuditService.new(school).last_audit, style: :compact %>
 <%= render 'schools/prompts/recommended', scope: recommendations_scope_for(task_type), icon: true, style: :compact %>
 
-<%= render Scoreboards::SchoolSummaryComponent.new(podium: current_school_podium, title: '') %>
+<% content_for :footer_theme, 'bg-light' %>
+<% content_for(:footer) do %>
+  <%= render Scoreboards::SchoolSummaryComponent.new(podium: current_school_podium, classes: 'mt-4 mb-4') %>
+<% end %>
