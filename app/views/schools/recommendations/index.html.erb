@@ -1,12 +1,15 @@
-<h1><%= t('schools.recommendations.title') %></h1>
+<% content_for(:header) do %>
+  <h1><%= t('schools.recommendations.title') %></h1>
+  <p><%= t('schools.recommendations.intro') %></p>
+<% end %>
 
-<p><%= t('schools.recommendations.intro') %></p>
-
-<%= render 'schools/prompts/complete_programme',
-           programmes: @school.programmes.active.started.order(started_on: :desc),
-           style: :compact %>
-<%= render 'schools/prompts/join_programme', school: @school, style: :compact %>
-<%= render 'schools/prompts/audit', audit: Audits::AuditService.new(@school).last_audit, style: :compact %>
+<div class='pt-1'>
+  <%= render 'schools/prompts/complete_programme',
+             programmes: @school.programmes.active.started.order(started_on: :desc),
+             style: :compact %>
+  <%= render 'schools/prompts/join_programme', school: @school, style: :compact %>
+  <%= render 'schools/prompts/audit', audit: Audits::AuditService.new(@school).last_audit, style: :compact %>
+</div>
 
 <% display_options = { classes: 'pb-4', limit: 5, limit_lg: 3 } %>
 <% display_limit = display_options[:limit] %>
