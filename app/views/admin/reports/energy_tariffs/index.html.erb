@@ -1,39 +1,93 @@
-<% content_for :page_title, 'Energy tariffs report' %>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+      <%= "Energy Tariffs for #{@dashboard_user.display_name}" %>
+    <% end %>
+  <%= render Elements::ButtonComponent.new('View full report',
+                                           admin_reports_energy_tariffs_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
 
-<h1>Energy tariffs overview</h1>
+  <p>
+    The following table summarises the energy tariffs currently configured in the system for
+     <%= "#{@dashboard_user.display_name}'s" %> school groups.
+  </p>
+<% else %>
 
-<p>
-The following table summarises the energy tariffs currently configured in the system.
-</p>
+  <% content_for :page_title, 'Energy tariffs report' %>
+
+  <h1>Energy tariffs overview</h1>
+
+  <p>
+    The following table summarises the energy tariffs currently configured in the system.
+  </p>
+<% end %>
 
 <p>
  It only counts tariffs that are currently enabled and in-use. As well as a count
  of how many tariffs for each school group, it lists how many schools in those groups
- have their own tariffs, either manually entered or imported via their smart meters.
+ have their own tariffs, both electricity and gas.
 </p>
+
+<%= render Elements::ButtonComponent.new('Download CSV',
+                                         url_for(
+                                           controller: controller_path,
+                                           action: :index,
+                                           only_path: true,
+                                           format: :csv
+                                         ),
+                                         style: :secondary,
+                                         classes: 'mb-2 me-2') %>
 
 <table class="advice-table mt-4 table table-sm table-sorted">
   <thead>
     <tr>
       <th>School Group</th>
       <th>Tariffs</th>
-      <th>Schools with Tariffs</th>
-      <th>Schools with DCC Tariffs</th>
+      <th>Current electricity tariff start and end dates</th>
+      <th>Current gas tariff start and end dates</th>
+      <th>Schools with electricity tariffs</th>
+      <th>Schools with gas tariffs</th>
     </tr>
   </thead>
   <tbody>
-    <% SchoolGroup.organisation_groups.with_visible_schools.order(:name).each do |school_group| %>
+    <% @school_groups.organisation_groups.with_visible_schools.order(:name).each do |school_group| %>
       <tr>
         <td><%= link_to school_group.name, school_group_energy_tariffs_path(school_group) %></td>
-        <td>
+        <td style="text-align:center">
           <% if @count_by_school_group[school_group.slug].present? %>
+            <% current_tariffs = school_group.energy_tariffs.current.by_start_date %>
             <%= link_to(@count_by_school_group[school_group.slug], school_group_energy_tariffs_path(school_group)) %>
           <% else %>
             -
           <% end %>
         </td>
+        <% if current_tariffs.present? %>
+          <% electricity_tariff = current_tariffs.electricity&.last %>
+          <% gas_tariff = current_tariffs.gas&.last %>
+          <td style="text-align:center">
+            <% if electricity_tariff.present? %>
+              <%= electricity_tariff.display_date_range %>
+            <% else %>
+              -
+            <% end %>
+          </td>
+          <td style="text-align:center">
+            <% if gas_tariff.present? %>
+              <%= gas_tariff.display_date_range %>
+            <% else %>
+              -
+            <% end %>
+          </td>
+        <% else %>
+          <td style="text-align:center">
+            -
+          </td>
+          <td style="text-align:center">
+            -
+          </td>
+        <% end %>
         <td>
-          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group) %>
+          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :electricity) %>
           <% if count > 0 %>
             <%= link_to count, group_school_tariffs_school_group_energy_tariffs_path(school_group) %>
           <% else %>
@@ -41,9 +95,9 @@ The following table summarises the energy tariffs currently configured in the sy
           <% end %>
         </td>
         <td>
-          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :dcc) %>
+          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :gas) %>
           <% if count > 0 %>
-            <%= link_to count, admin_reports_tariffs_path(anchor: school_group.name.parameterize) %>
+            <%= link_to count, group_school_tariffs_school_group_energy_tariffs_path(school_group) %>
           <% else %>
             -
           <% end %>
