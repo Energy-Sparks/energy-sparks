@@ -25,11 +25,13 @@ module Admin
       end
 
       def headers
-        ['School Group', 'Tariffs',
-         'Current electricity tariff start and end dates',
-         'Current gas tariff start and end dates',
-         'Schools with electricity tariffs',
-         'Schools with gas tariffs']
+        ['School Group', 'Admin', 'Tariffs',
+         'Current electricity tariff start date',
+         'Current electricity tariff end date',
+         'Current gas tariff start date',
+         'Current gas tariff end date',
+         'School electricity tariffs',
+         'School gas tariffs']
       end
 
       def school_groups

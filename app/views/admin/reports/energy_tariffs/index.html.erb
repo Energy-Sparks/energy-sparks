@@ -40,19 +40,37 @@
 
 <table class="advice-table mt-4 table table-sm table-sorted">
   <thead>
+    <tr align=center style="text-align:center">
+      <% unless @dashboard_user %>
+        <th colspan=3></th>
+      <% else %>
+        <th colspan=2></th>
+      <% end %>
+      <th colspan=2 style="text-align:center">Current electricity tariff</th>
+      <th colspan=2 style="text-align:center">Current gas tariff</th>
+      <th colspan=2 style="text-align:center">School tariffs</th>
+    </tr>
     <tr>
-      <th>School Group</th>
-      <th>Tariffs</th>
-      <th>Current electricity tariff start and end dates</th>
-      <th>Current gas tariff start and end dates</th>
-      <th>Schools with electricity tariffs</th>
-      <th>Schools with gas tariffs</th>
+      <th style="text-align:center">School Group</th>
+      <% unless @dashboard_user %>
+        <th style="text-align:center">Admin</th>
+      <% end %>
+      <th style="text-align:center">Tariffs</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th style="text-align:center">Electricity</th>
+      <th style="text-align:center">Gas</th>
     </tr>
   </thead>
   <tbody>
     <% @school_groups.organisation_groups.with_visible_schools.order(:name).each do |school_group| %>
       <tr>
         <td><%= link_to school_group.name, school_group_energy_tariffs_path(school_group) %></td>
+        <% unless @dashboard_user %>
+          <td><%= school_group.default_issues_admin_user.display_name %></td>
+        <% end %>
         <td style="text-align:center">
           <% if @count_by_active_school_group[school_group.slug].present? %>
             <% current_tariffs = school_group.energy_tariffs.current.by_start_date %>
@@ -65,20 +83,36 @@
         <% if current_tariffs.present? %>
           <% electricity_tariff = current_tariffs.electricity&.last %>
           <% gas_tariff = current_tariffs.gas&.last %>
-          <td style="text-align:center">
-            <% if electricity_tariff.present? %>
-              <%= electricity_tariff.display_date_range %>
-            <% else %>
+          <% if electricity_tariff.present? %>
+            <td style="text-align:center">
+              <%= electricity_tariff.display_start_date %>
+            </td>
+            <td style="text-align:center">
+              <%= electricity_tariff.display_end_date %>
+            </td>
+          <% else %>
+            <td style="text-align:center">
               -
-            <% end %>
-          </td>
-          <td style="text-align:center">
-            <% if gas_tariff.present? %>
-              <%= gas_tariff.display_date_range %>
-            <% else %>
+            </td>
+            <td style="text-align:center">
               -
-            <% end %>
-          </td>
+            </td>
+          <% end %>
+          <% if gas_tariff.present? %>
+            <td style="text-align:center">
+              <%= gas_tariff.display_start_date %>
+            </td>
+            <td style="text-align:center">
+              <%= gas_tariff.display_end_date %>
+            </td>
+          <% else %>
+            <td style="text-align:center">
+              -
+            </td>
+            <td style="text-align:center">
+              -
+            </td>
+          <% end %>
         <% else %>
           <td style="text-align:center">
             -
@@ -86,8 +120,14 @@
           <td style="text-align:center">
             -
           </td>
+          <td style="text-align:center">
+            -
+          </td>
+          <td style="text-align:center">
+            -
+          </td>
         <% end %>
-        <td>
+        <td style="text-align:center">
           <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :electricity) %>
           <% if count > 0 %>
             <%= link_to count, group_school_tariffs_school_group_energy_tariffs_path(school_group) %>
@@ -95,7 +135,7 @@
             -
           <% end %>
         </td>
-        <td>
+        <td style="text-align:center">
           <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :gas) %>
           <% if count > 0 %>
             <%= link_to count, group_school_tariffs_school_group_energy_tariffs_path(school_group) %>

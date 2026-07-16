@@ -10,9 +10,12 @@ CSV.generate do |csv|
     gas_schools = EnergyTariff.count_schools_with_tariff_by_group(school_group, :gas)
     csv << [
       school_group.name,
+      school_group.default_issues_admin_user.display_name,
       @count_by_active_school_group[school_group.slug],
-      electricity_tariff&.display_date_range,
-      gas_tariff&.display_date_range,
+      electricity_tariff&.display_start_date,
+      electricity_tariff&.display_end_date,
+      gas_tariff&.display_start_date,
+      gas_tariff&.display_end_date,
       electricity_schools,
       gas_schools
     ]

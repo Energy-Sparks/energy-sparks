@@ -109,10 +109,6 @@ class EnergyTariff < ApplicationRecord
     where(meter_type:, source:).where.not(end_date: nil).order(end_date: :desc)
   }
 
-  def display_date_range
-    "#{display_start_date} to #{display_end_date}"
-  end
-
   def display_start_date
     start_date ? start_date&.to_fs(:es_compact) : 'No start date'
   end

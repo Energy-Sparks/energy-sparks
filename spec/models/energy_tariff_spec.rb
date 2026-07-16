@@ -413,16 +413,6 @@ describe EnergyTariff do
     end
   end
 
-  describe '#display_date_range' do
-    let(:date_range) do
-      "#{energy_tariff.start_date&.to_fs(:es_compact)} to #{energy_tariff.end_date&.to_fs(:es_compact)}"
-    end
-
-    it 'returns a readable date range' do
-      expect(energy_tariff.display_date_range).to eq(date_range)
-    end
-  end
-
   describe '#usable' do
     before { EnergyTariff.delete_all }
 

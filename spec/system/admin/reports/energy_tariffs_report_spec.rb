@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'TariffsReport', type: :system do
   let(:admin)                   { create(:admin) }
-  let(:school_group)            { create(:school_group) }
+  let(:school_group)            { create(:school_group, default_issues_admin_user: admin) }
   let(:school)                  { create(:school, school_group: school_group) }
 
   let!(:current_group_electricity_tariff) do
@@ -33,17 +33,23 @@ describe 'TariffsReport', type: :system do
   end
 
   describe 'energy tariffs table' do
-    let(:header) do
-      ['School Group', 'Tariffs', 'Current electricity tariff start and end dates',
-       'Current gas tariff start and end dates', 'Schools with electricity tariffs',
-       'Schools with gas tariffs']
+    let(:first_header) do
+      ['', 'Current electricity tariff', 'Current gas tariff', 'School tariffs']
+    end
+
+    let(:second_header) do
+      ['School Group', 'Admin', 'Tariffs', 'Start date', 'End date', 'Start date', 'End date', 'Electricity', 'Gas']
     end
 
     let(:expected_rows) do
       [
-        header,
-        [school_group.name, '5', current_group_electricity_tariff.display_date_range,
-         current_group_gas_tariff.display_date_range, '1', '1']
+        first_header,
+        second_header,
+        [school_group.name, school_group.default_issues_admin_user.display_name, '5',
+         current_group_electricity_tariff.display_start_date,
+         current_group_electricity_tariff.display_end_date,
+         current_group_gas_tariff.display_start_date,
+         current_group_gas_tariff.display_end_date, '1', '1']
       ]
     end
 
@@ -57,7 +63,7 @@ describe 'TariffsReport', type: :system do
     end
 
     it 'displays energy tariffs table' do
-      rows = all('tr').map { |tr| tr.all('th, td').map(&:text) }
+      rows = all('tr').map { |tr| tr.all('th, td, td').map(&:text) }
       expect(rows).to eq(expected_rows)
     end
   end
@@ -67,12 +73,15 @@ describe 'TariffsReport', type: :system do
       click_on 'CSV'
       expect(page.response_headers['content-type']).to eq('text/csv')
       expect(body).to \
-        eq('School Group,Tariffs,Current electricity tariff start and end dates,' \
-           'Current gas tariff start and end dates,Schools with electricity tariffs,' \
-           "Schools with gas tariffs\n" \
-           "#{school_group.name},5," \
-           "#{current_group_electricity_tariff.display_date_range}," \
-           "#{current_group_gas_tariff.display_date_range},1,1\n")
+        eq('School Group,Admin,Tariffs,Current electricity tariff start date,' \
+           'Current electricity tariff end date,Current gas tariff start date,' \
+           'Current gas tariff end date,School electricity tariffs,' \
+           "School gas tariffs\n" \
+           "#{school_group.name},#{school_group.default_issues_admin_user.display_name},5," \
+           "#{current_group_electricity_tariff.display_start_date}," \
+           "#{current_group_electricity_tariff.display_end_date}," \
+           "#{current_group_gas_tariff.display_start_date}," \
+           "#{current_group_gas_tariff.display_end_date},1,1\n")
     end
   end
 end
