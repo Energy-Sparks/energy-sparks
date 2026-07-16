@@ -23,21 +23,18 @@ class PromptComponent < ApplicationComponent
   STATUSES = %i[none positive negative neutral].freeze
   private_constant :STATUSES
 
-  attr_reader :icon, :style, :fuel_type
+  attr_reader :icon, :image, :style, :fuel_type
 
-  def initialize(icon: nil, fuel_type: nil, status: nil, style: :full, always_render: false, **_kwargs)
+  def initialize(icon: nil, image: nil, fuel_type: nil, status: nil, style: :full, always_render: false, **_kwargs)
     super
-    validate_inclusion(status: status, in: STATUSES) if status
+    validate_inclusion(status:, in: STATUSES) if status
     add_classes(status)
     @icon = icon
+    @image = image
     @fuel_type = fuel_type
     @status = status
     @style = style
     @always_render = always_render
-  end
-
-  def render_icon?
-    @fuel_type || @icon
   end
 
   def render?
@@ -46,5 +43,27 @@ class PromptComponent < ApplicationComponent
 
   def self.statuses
     STATUSES
+  end
+
+  private
+
+  def image?
+    !!@image
+  end
+
+  def icon?
+    @fuel_type || @icon
+  end
+
+  def media?
+    icon? || image?
+  end
+
+  def media_cols
+    'col-1' if media?
+  end
+
+  def main_cols
+    'col-md-11' if media?
   end
 end
