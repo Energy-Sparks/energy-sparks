@@ -19,8 +19,9 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
       render_inline described_class.new(first_range:
         date_range.begin..date_range.end,
                                         id: 'custom-id',
-                                        classes: 'extra-classes') do |c|
-        c.with_row id: "custom-school-id-#{school.id}", school: school
+                                        classes: 'extra-classes',
+                                        show_data_visibility: true) do |c|
+        c.with_row id: "custom-school-id-#{school.id}", school: school, show_data_visibility: true
       end
     end
 
@@ -40,15 +41,18 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
         let(:expected_header) do
           [
             ['', 'Current Academic Year', ''],
-            ['School', 'Licensed?', 'Funder', '']
+            ['School', 'Data visible', 'Licensed?', 'Funder', 'First licence start', 'First licence end', '']
           ]
         end
         let(:expected_rows) do
           [
             [
               school.name,
+              'Yes',
               'Full',
               licence.contract.contract_holder.name,
+              licence.start_date.to_fs(:es_short),
+              licence.end_date.to_fs(:es_short),
               ''
             ]
           ]
@@ -66,9 +70,10 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
       render_inline described_class.new(first_range: date_range.begin..date_range.end,
                                         second_range: (date_range.end + 1)..(date_range.end + 364),
                                         labels: { first: 'Current Year', second: 'Following Year' },
+                                        show_data_visibility: true,
                                         id: 'custom-id',
                                         classes: 'extra-classes') do |c|
-        c.with_row id: "custom-school-id-#{school.id}", school: school
+        c.with_row id: "custom-school-id-#{school.id}", school: school, show_data_visibility: true
       end
     end
 
@@ -77,17 +82,27 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
       let(:expected_header) do
         [
           ['', 'Current Year', 'Following Year', ''],
-          ['School', 'Licensed?', 'Funder', 'Licensed?', 'Funder', '']
+          [
+            'School', 'Data visible',
+            'Licensed?', 'Funder', 'First licence start', 'First licence end',
+            'Licensed?', 'Funder', 'First licence start', 'First licence end',
+            ''
+          ]
         ]
       end
       let(:expected_rows) do
         [
           [
             school.name,
+            'Yes',
             'Full',
             licence.contract.contract_holder.name,
+            licence.start_date.to_fs(:es_short),
+            licence.end_date.to_fs(:es_short),
             'Partial',
             school.licences.by_start_date.last.contract_holder.name,
+            school.licences.by_start_date.last.start_date.to_fs(:es_short),
+            school.licences.by_start_date.last.end_date.to_fs(:es_short),
             ''
           ]
         ]

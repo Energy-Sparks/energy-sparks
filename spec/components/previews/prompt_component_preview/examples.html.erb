@@ -14,6 +14,7 @@
   <li><a href="#compact">Compact style</a></li>
   <li><a href="#content-action">Content with action</a></li>
   <li><a href="#columns">Rendering within columns</a></li>
+  <li><a href="#image">Compact with image</a></li>
 </ul>
 
 <h4 id='basic'>Basic format</h4>
@@ -158,6 +159,15 @@
       <button class="btn btn-primary">Record</button>
     <% end %>
   <% end %>
+<% end %>
+
+<h4 id='image'>Compact with image</h4>
+<%= render PromptComponent.new image: 'audit-boiler.jpg', status: :neutral, style: :compact do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
 <% end %>
 
 <h4 id='columns'>Rendering within columns</h4>
