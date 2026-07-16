@@ -1,0 +1,11 @@
+<% audit = Audits::AuditService.new(school).last_audit %>
+
+<% if audit && audit.todos_incomplete? %>
+  <%= render PromptComponent.new(icon: 'laptop', status: :neutral, style: local_assigns[:style]) do |prompt| %>
+    <% prompt.with_link do %>
+      <%= link_to t('common.labels.view_now'),
+                  school_audit_path(audit.school, audit) %>
+    <% end %>
+    <%= Completables::Progress.new(audit).notification %>
+  <% end %>
+<% end %>

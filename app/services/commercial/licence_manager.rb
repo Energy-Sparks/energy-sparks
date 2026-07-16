@@ -78,7 +78,7 @@ module Commercial
         end_date: licence_dates[:end_date],
         school_specific_price:,
         comments:,
-        status: contract.confirmed? ? :confirmed : :provisional
+        status: contract.status
       )
     end
 

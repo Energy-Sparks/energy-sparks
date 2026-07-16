@@ -19,6 +19,7 @@ class ActivityCategory < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   include TranslatableAttachment
+  include TaskCategory
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }

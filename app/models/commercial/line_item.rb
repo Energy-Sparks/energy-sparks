@@ -27,6 +27,8 @@
 #
 module Commercial
   class LineItem < ApplicationRecord
+    include CsvExportable
+
     self.table_name = 'commercial_line_items'
 
     belongs_to :invoice, class_name: 'Commercial::Invoice'
@@ -35,6 +37,25 @@ module Commercial
     validates :base_price, :metering_fee, :private_account_fee, presence: true
 
     delegate :school, to: :licence
+
+    scope :with_context, -> { includes(:invoice, :licence) }
+    scope :invoice_order, -> { order(invoice_id: :asc, id: :asc) }
+
+    def self.csv_headers
+      ['ID', 'Contract', 'Contract Holder',
+       'Created By', 'Date', 'Purchase Order Number',
+       'School', 'Licence Id', 'Licence Start Date', 'Licence End Date',
+       'Private Account', 'Number of Meters',
+       'Base Price', 'Metering Fee', 'Private Account Fee', 'Total']
+    end
+
+    def self.csv_attributes
+      %w[invoice.invoice_number invoice.contract.name invoice.contract_holder.name
+         invoice.created_by.display_name invoice.date invoice.purchase_order_number
+         school.name licence.id licence.start_date licence.end_date
+         private_account number_of_meters
+         base_price metering_fee private_account_fee value.total]
+    end
 
     def value
       Price.new(base_price:, metering_fee:, private_account_fee:)

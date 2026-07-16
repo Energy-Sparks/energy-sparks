@@ -1,0 +1,9 @@
+<% if @school || current_user_school %>
+  <%= render PromptComponent.new(icon: 'clipboard-list', status: :neutral, style: local_assigns[:style]) do |prompt| %>
+    <% prompt.with_link do %>
+      <%= link_to t('schools.prompts.recommended_for_your_school.button'),
+                  school_recommendations_path(@school || current_user_school, scope: local_assigns[:scope]) %>
+    <% end %>
+    <%= t('schools.prompts.recommended_for_your_school.message') %>
+  <% end %>
+<% end %>

@@ -1,0 +1,19 @@
+<% if (programmes = school.programmes.active.started.order(started_on: :desc)).any? %>
+  <% programmes.each do |programme| %>
+    <%= render PromptComponent.new(icon: 'tasks', status: :neutral, style: local_assigns[:style]) do |prompt| %>
+      <% prompt.with_link do %>
+        <%= link_to t('common.labels.view_now'),
+                    programme_type_path(programme.programme_type) %>
+      <% end %>
+      <%= Completables::Progress.new(programme).notification %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= render PromptComponent.new(icon: 'tasks', status: :positive, style: local_assigns[:style]) do |prompt| %>
+    <% prompt.with_link do %>
+      <%= link_to t('schools.prompts.programme.start_a_new_programme'),
+                  programme_types_path %>
+    <% end %>
+    <%= t('schools.prompts.programme.choose_a_new_programme_message') %>
+  <% end %>
+<% end %>

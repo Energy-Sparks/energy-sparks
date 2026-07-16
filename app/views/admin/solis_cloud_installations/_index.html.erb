@@ -10,7 +10,7 @@
     <% @resources.order(:api_id).each do |installation| %>
       <tr>
         <td><%= link_to installation.api_id, edit_admin_solis_cloud_installation_path(installation) %></td>
-        <td><%= installation.meters.map { |meter| meter.school.name }.uniq.join(', ') %>
+        <td><%= installation.meters.map { |meter| meter.school.name }.uniq.join(', ') %></td>
         <td>
           <div class='btn-group'>
             <%= link_to 'Edit', edit_admin_solis_cloud_installation_path(installation), class: 'btn' %>

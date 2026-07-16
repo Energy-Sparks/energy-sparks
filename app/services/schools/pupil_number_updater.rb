@@ -62,7 +62,8 @@ module Schools
         input_data: { start_date: start_date.strftime(DATE_FORMAT),
                       number_of_pupils: number_of_pupils.to_s,
                       floor_area: attribute&.input_data&.[]('floor_area') }.compact,
-        reason:
+        reason:,
+        meter_types: ['school_level_data']
       )
     end
 

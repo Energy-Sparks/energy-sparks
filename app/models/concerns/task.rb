@@ -1,4 +1,6 @@
-module Recordable
+# frozen_string_literal: true
+
+module Task
   extend ActiveSupport::Concern
 
   included do
@@ -27,7 +29,8 @@ module Recordable
     not_counted_yet = observation.points.to_i.zero? || observation.academic_year_changed? ? 1 : 0
 
     # Prevent awarding points if frequency limit for the academic year is exceeded
-    return 0 if (count_existing_for_academic_year(observation.school, observation.academic_year) + not_counted_yet) > maximum_frequency
+    return 0 if (count_existing_for_academic_year(observation.school,
+                                                  observation.academic_year) + not_counted_yet) > maximum_frequency
 
     # Return base points plus bonus points for any images
     points + observation.available_bonus_points
@@ -41,6 +44,7 @@ module Recordable
   def exceeded_maximum_in_year?(school, date = Time.zone.today)
     academic_year = school.academic_year_for(date)
     return false unless academic_year&.current?
+
     count_existing_for_academic_year(school, academic_year) >= maximum_frequency
   end
 
@@ -52,6 +56,10 @@ module Recordable
 
   # Publically we refer to ActivityType as activity and InterventionType as action
   def public_type
+    raise NoMethodError, 'Implement in including class!'
+  end
+
+  def category
     raise NoMethodError, 'Implement in including class!'
   end
 end
