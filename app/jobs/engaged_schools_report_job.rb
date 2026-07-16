@@ -18,7 +18,7 @@ class EngagedSchoolsReportJob < ApplicationJob
     { school_group: ->(service) { service.school_group.name },
       school: ->(service) { service.school.name },
       school_type: ->(service) { service.school.school_type&.humanize },
-      funder: ->(service) { service.school.funder&.name },
+      funder: ->(service) { service.school.summarised_current_contract_holder_name },
       country: ->(service) { service.school.country.humanize },
       active: ->(service) { format_bool(service.school.active) },
       data_visible: ->(service) { format_bool(service.school.data_visible?) },
