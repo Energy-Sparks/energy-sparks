@@ -3,7 +3,7 @@
     <tr class="bg-light">
       <td><%= link_to school.name, school_path(school) %> <%= link_to(dashboard_message_icon(school),
                                                                       edit_admin_school_dashboard_message_path(school)) %></td>
-      <td><%= school.funder&.name || school&.school_group&.funder&.name %></td>
+      <td><%= school.summarised_current_contract_holder_name %></td>
       <td><%= render 'shared/school_status_buttons', school: school %></td>
       <td class="nowrap text-end">
         <%= link_to issue_type_icons(school.issues, label: 'Issues'), admin_school_issues_path(school),

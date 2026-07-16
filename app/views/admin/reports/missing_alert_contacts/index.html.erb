@@ -53,7 +53,7 @@
         <% unless @dashboard_user %>
           <td><%= school.school_group.default_issues_admin_user&.display_name %></td>
         <% end %>
-        <td><%= school.funder&.name %></td>
+        <td><%= school.summarised_current_contract_holder_name %></td>
         <td><%= school.country.humanize %></td>
         <td data-order="<%= school.school_onboarding&.completed_on&.iso8601 || 'last' %>">
             <% if school.school_onboarding.present? %>
