@@ -19,6 +19,7 @@ module Colours
         very_dark: '#192a52'.freeze, # new nav blue (adult) and headings
       },
       yellow: { # yellow_pale etc
+        very_pale: '#fbf8e4'.freeze,
         pale: '#fdefc8'.freeze, # not currently used
         light: '#fcdc8b'.freeze,
         medium: '#f9b233'.freeze,

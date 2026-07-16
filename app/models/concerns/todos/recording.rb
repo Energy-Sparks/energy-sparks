@@ -9,5 +9,10 @@ module Todos
       has_many :programmes_completed_todos, through: :completed_todos, source: :completable, source_type: 'Programme'
       has_many :audits_completed_todos, through: :completed_todos, source: :completable, source_type: 'Audit'
     end
+
+    def task
+      # return activity_type or intervention_type
+      raise NoMethodError, 'Implement task'
+    end
   end
 end
