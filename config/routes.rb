@@ -606,6 +606,7 @@ Rails.application.routes.draw do
       resources :missing_alert_contacts, module: :dashboard
       resources :activities, module: :dashboard
       resources :interventions, module: :dashboard
+      resources :energy_tariffs, module: :dashboard
 
       resources :amr_data_feed_import_logs, module: :dashboard
       resources :blank_readings, :lagging_meters, :zero_readings, module: :dashboard
