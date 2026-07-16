@@ -56,6 +56,11 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
                                   href: admin_dashboard_issues_path(current_user))
       end
 
+      it 'links to energy tariffs' do
+        expect(page).to have_link('My Energy Tariffs',
+                                  href: admin_dashboard_energy_tariffs_path(current_user))
+      end
+
       describe 'my schools section' do
         it 'has the correct links' do # rubocop:disable RSpec/MultipleExpectations, RSpec/ExampleLength
           expect(page).to have_link('Onboarding',
