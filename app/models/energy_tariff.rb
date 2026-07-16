@@ -93,15 +93,15 @@ class EnergyTariff < ApplicationRecord
     order(Arel.sql('(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) ASC, start_date asc, end_date asc'))
   }
 
-  scope :count_by_school_group, lambda {
+  scope :count_by_active_school_group, lambda {
     enabled.joins(:school_group).merge(SchoolGroup.with_active_schools).group('school_groups.slug').count(:id)
   }
 
-  scope :for_schools_in_group, lambda { |school_group, meter_type|
+  scope :for_schools_in_group, lambda { |school_group, meter_type = :electricity|
     enabled.where(meter_type:).joins(:school).where({ schools: { active: true, school_group: } })
   }
 
-  scope :count_schools_with_tariff_by_group, lambda { |school_group, meter_type|
+  scope :count_schools_with_tariff_by_group, lambda { |school_group, meter_type = :electricity|
     for_schools_in_group(school_group, meter_type).select(:tariff_holder_id).distinct.count
   }
 

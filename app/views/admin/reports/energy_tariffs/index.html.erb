@@ -54,9 +54,10 @@
       <tr>
         <td><%= link_to school_group.name, school_group_energy_tariffs_path(school_group) %></td>
         <td style="text-align:center">
-          <% if @count_by_school_group[school_group.slug].present? %>
+          <% if @count_by_active_school_group[school_group.slug].present? %>
             <% current_tariffs = school_group.energy_tariffs.current.by_start_date %>
-            <%= link_to(@count_by_school_group[school_group.slug], school_group_energy_tariffs_path(school_group)) %>
+            <%= link_to(@count_by_active_school_group[school_group.slug],
+                        school_group_energy_tariffs_path(school_group)) %>
           <% else %>
             -
           <% end %>

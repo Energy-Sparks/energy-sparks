@@ -4,7 +4,7 @@ module Admin
   module Reports
     class EnergyTariffsController < AdminController
       def index
-        @count_by_school_group = EnergyTariff.count_by_school_group
+        @count_by_active_school_group = EnergyTariff.count_by_active_school_group
         @school_groups = school_groups
 
         respond_to do |format|
