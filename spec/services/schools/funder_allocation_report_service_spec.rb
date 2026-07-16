@@ -59,8 +59,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
                       local_authority_area: local_authority_area,
                       percentage_free_school_meals: 50,
                       funder: funder,
-                      removal_date: nil,
-                      default_contract_holder: school_group)
+                      removal_date: nil)
       school.project_groups << create(:school_group, :project)
       school.organisation_group = school_group
       contract = create(:commercial_contract, contract_holder: school_group)
