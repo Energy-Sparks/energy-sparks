@@ -71,7 +71,7 @@ module Schools
       @breadcrumbs = [
         { name: t('common.labels.adult_actions'), href: intervention_type_groups_path },
         { name: intervention_type.name, href: intervention_type_path(intervention_type) },
-        { name: t('activities.form.record_action') }
+        { name: t('interventions.form.record_action') }
       ].compact
     end
   end

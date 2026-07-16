@@ -32,12 +32,14 @@
       <% end %>
       <%= feature.with_tag(t('nav.points', count: task.score),
                            colour: :success, tooltip: t("tasks.points.#{task.public_type}")) %>
-      <% if activity_type? %>
-        <% task.key_stages.order(:name).each do |key_stage| %>
-          <%= feature.with_tag(t(key_stage.i18n_key), colour: :info, tooltip: t('activity_types.key_stages')) %>
-        <% end %>
-        <% task.subjects.order(:name).each do |subject| %>
-          <%= feature.with_tag(t(subject.i18n_key), colour: :warning, tooltip: t('activity_types.subjects')) %>
+      <% unless recording? %>
+        <% if activity_type? %>
+          <% task.key_stages.order(:name).each do |key_stage| %>
+            <%= feature.with_tag(t(key_stage.i18n_key), colour: :info, tooltip: t('activity_types.key_stages')) %>
+          <% end %>
+          <% task.subjects.order(:name).each do |subject| %>
+            <%= feature.with_tag(t(subject.i18n_key), colour: :warning, tooltip: t('activity_types.subjects')) %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>

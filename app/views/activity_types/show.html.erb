@@ -2,6 +2,7 @@
   <% content_for :page_title do %>
     <%= @activity_type.name %>
   <% end %>
+  <% @audience = :pupil_tasks %>
   <% content_for :header do %>
     <%= render Tasks::Header.new(task: @activity_type) %>
   <% end %>
