@@ -13,8 +13,8 @@ module Admin
             render :index
           end
           format.csv do
-            csv = export_detail? ? @invoices.to_csv : ::Commercial::LineItem.with_context.invoice_order.to_csv
-            file_name = export_detail? ? 'invoices' : 'invoice-details'
+            csv = export_summary? ? @invoices.to_csv : ::Commercial::LineItem.with_context.invoice_order.to_csv
+            file_name = export_summary? ? 'invoices' : 'invoice-details'
             send_data csv, filename: EnergySparks::Filenames.csv(file_name)
           end
         end
@@ -32,7 +32,7 @@ module Admin
         params.require(:invoices)
       end
 
-      def export_detail?
+      def export_summary?
         export_params[:detail] == 'summary'
       end
 
