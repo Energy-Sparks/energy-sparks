@@ -1,0 +1,15 @@
+<% content_for :page_title, t('our_impact.title') %>
+<div class="container-fluid adult mb-5 py-5">
+  <%= render Layout::GridComponent.new(
+        id: 'hero', cols: 2, classes: 'container', feature: true, cell_classes: 'my-auto'
+      ) do |grid| %>
+    <% grid.with_feature_card(size: :xl) do |feature| %>
+      <%= feature.with_header title: t('our_impact.feature.title') %>
+      <%= feature.with_description { t('our_impact.feature.description') } %>
+    <% end %>
+    <%= grid.with_image src: 'our-impact-image.jpg' %>
+  <% end %>
+</div>
+
+<div class="container">
+</div>

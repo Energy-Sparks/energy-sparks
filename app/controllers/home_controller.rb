@@ -89,7 +89,7 @@ class HomeController < ApplicationController
     @trustees = TeamMember.trustee.order(:position)
   end
 
-  def impact
+  def our_impact
     redirect_to home_page_path unless Flipper.enabled?(:org_impact_page, current_user)
   end
 
