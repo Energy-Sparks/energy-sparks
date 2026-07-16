@@ -1081,7 +1081,6 @@ describe School do
         {
           active: false,
           country: :scotland,
-          funder: create(:funder),
           local_authority_area: create(:local_authority_area),
           name: 'New name',
           percentage_free_school_meals: 15,

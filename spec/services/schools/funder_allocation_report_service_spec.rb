@@ -58,7 +58,6 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
                       local_authority_area_group: create(:school_group, :local_authority_area),
                       local_authority_area: local_authority_area,
                       percentage_free_school_meals: 50,
-                      funder: funder,
                       removal_date: nil)
       school.project_groups << create(:school_group, :project)
       school.organisation_group = school_group
@@ -102,7 +101,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     # only basic data, helps to catch errors checking for nils
     let!(:school_2) do
       create(:school, visible: true, active: false, removal_date: nil, archived_date: Time.zone.today,
-                      school_group: create(:school_group), funder: funder_2)
+                      school_group: create(:school_group))
     end
     # not included in export
     let!(:not_visible) do
