@@ -1448,6 +1448,40 @@ describe School do
         expect(school.licensed_for_period(start_date..end_date)).to eq(:full)
       end
     end
+
+    describe '#with_current_licence_for_contract_holder' do
+      let!(:contract_holder) { create(:funder) }
+
+      context 'with no licence' do
+        it { expect(described_class.with_current_licence_for_contract_holder(contract_holder)).to be_empty }
+      end
+
+      context 'when there is a current contract for a Funder' do
+        before do
+          create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+        end
+
+        it { expect(described_class.with_current_licence_for_contract_holder(contract_holder)).to eq([school]) }
+      end
+
+      context 'when there is a current licence for a School Group' do
+        let!(:contract_holder) { create(:school_group) }
+
+        before do
+          create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+        end
+
+        it { expect(described_class.with_current_licence_for_contract_holder(contract_holder)).to be_empty }
+      end
+
+      context 'when there is an expired licence for a Funder' do
+        before do
+          create(:commercial_licence, :expired, school:, contract: create(:commercial_contract, contract_holder:))
+        end
+
+        it { expect(described_class.with_current_licence_for_contract_holder(contract_holder)).to be_empty }
+      end
+    end
   end
 
   describe '#summarised_current_contract_holder_name' do
