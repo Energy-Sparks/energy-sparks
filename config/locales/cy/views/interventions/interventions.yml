@@ -4,7 +4,7 @@ cy:
       page_title: Diweddaru gweithred arbed ynni
       title: Diweddarwch eich gweithred arbed ynni
     form:
-      adding_a_photo_to_document_your_action_will_score_you: Gall ychwanegu llun i ddogfennu eich gweithred sgorio
+      bonus_points_message: Gall ychwanegu llun i ddogfennu eich gweithred sgorio
       adding_some_background_detail_label: Gall ychwanegu rhai manylion cefndir eich helpu i olrhain a monitro gwelliannau
       bonus_points:
         one: pwynt bonws

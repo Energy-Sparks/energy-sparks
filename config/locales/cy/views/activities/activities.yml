@@ -8,7 +8,7 @@ cy:
       page_title: Diweddaru gweithgaredd
       update_your_activity: Diweddaru eich gweithgaredd
     form:
-      adding_a_photo_to_document_your_activity_will_score_you: Gall ychwanegu llun i ddogfennu eich gweithgaredd sgorio
+      bonus_points_message: Gall ychwanegu llun i ddogfennu eich gweithgaredd sgorio
       bonus_points:
         one: pwynt bonws
         two: pwyntiau bonws

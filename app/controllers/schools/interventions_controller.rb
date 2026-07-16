@@ -6,7 +6,6 @@ module Schools
     skip_before_action :authenticate_user!, only: %i[show]
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
-    before_action :load_intervention_type
     before_action :set_breadcrumbs, only: %i[new create edit update]
 
     def show
@@ -18,7 +17,7 @@ module Schools
     end
 
     def new
-      @observation = @school.observations.intervention.new(intervention_type_id: @intervention_type.id)
+      @observation = @school.observations.intervention.new(intervention_type: intervention_type)
       authorize! :create, @observation
     end
 
@@ -56,8 +55,8 @@ module Schools
       params.require(:observation).permit(:description, :at, :intervention_type_id, :involved_pupils, :pupil_count)
     end
 
-    def load_intervention_type
-      @intervention_type =
+    def intervention_type
+      @intervention_type ||=
         if params[:intervention_type_id].present?
           InterventionType.find(params[:intervention_type_id])
         elsif @observation.present?
@@ -66,11 +65,13 @@ module Schools
     end
 
     def set_breadcrumbs
-      @intervention_type.category
+      return unless intervention_type
+
+      intervention_type.category
       @breadcrumbs = [
         { name: t('common.labels.adult_actions'), href: intervention_type_groups_path },
-        { name: @intervention_type.name, href: intervention_type_path(@intervention_type) },
-        { name: 'Record' }
+        { name: intervention_type.name, href: intervention_type_path(intervention_type) },
+        { name: t('activities.form.record_action') }
       ].compact
     end
   end

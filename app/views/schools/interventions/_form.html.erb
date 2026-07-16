@@ -1,59 +1,67 @@
-<div class='row g-5'>
-  <div class='col-lg-6'>
-    <%= f.input :at, as: :tempus_dominus_date,
-                     label: t('interventions.form.when_did_you_complete_this_action'),
-                     label_html: { class: 'fw-semibold mb-1' },
-                     input_html: {
-                       placeholder: t('common.select_date')
-                     },
-                     hint: t('interventions.form.you_can_record_label') %>
-  </div>
-  <div class='col-lg-6'>
-    <%= f.input :pupil_count, as: :numeric,
-                              label: t('activities.form.how_many_pupils_were_involved_in_this_activity'),
-                              label_html: { class: 'fw-semibold  mb-1' },
-                              placeholder: t('common.enter_number'),
-                              hint: t('interventions.form.pupil_count_hint') %>
-  </div>
-</div>
-<div class='row'>
-  <div class='col-12'>
-    <hr>
-    <h4 class='d-flex align-items-center'>
-      <%= f.label t('interventions.form.tell_us_more'), for: :description, class: '' %>
-      <% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
-        <%= render Elements::BadgeComponent.new(
-              colour: :secondary, themed: true, classes: 'ms-auto mt-2',
-              tooltip: t('interventions.form.adding_a_photo_to_document_your_action_will_score_you')
-            ) do %>
-          <%= SiteSettings.current.photo_bonus_points %>
-          <%= t('interventions.form.bonus_points', count: SiteSettings.current.photo_bonus_points) %>
-        <% end %>
-      <% end %>
-    </h4>
-    <div>
-      <small><%= t('interventions.form.adding_some_background_detail_label') %>.</small>
-      <% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
-          <small>
-            <%= t('interventions.form.adding_a_photo_to_document_your_action_will_score_you') %>
-            <strong>
-              <%= SiteSettings.current.photo_bonus_points %>
-              <%= t('interventions.form.bonus_points', count: SiteSettings.current.photo_bonus_points) %>.
-            </strong>
-          </small>
-      <% end %>
-    </div>
-    <p><small class="text-muted"><%= t('interventions.form.you_can_add_formatting_label') %>.</small></p>
+<%= simple_form_for(
+      [@observation],
+      url: if observation.persisted?
+             school_intervention_path(@school,
+                                      @observation)
+           else
+             school_interventions_path(@school)
+           end,
+      html: { class: 'bg-white px-5 pt-5 pb-4 rounded-3' }
+    ) do |f| %>
 
-    <div class="mt-4">
-      <%= render(Forms::TrixComponent.new(form: f, field: :description, button_size: :default, controls: :simple)) %>
+  <h2 class='pt-0 pb-4'>
+    <%= t("interventions.#{observation.persisted? ? 'edit' : 'new'}.title") %>
+  </h2>
+
+  <div class='row g-5'>
+    <div class='col-lg-6'>
+      <%= f.input :at, as: :tempus_dominus_date,
+                       label: t('interventions.form.when_did_you_complete_this_action'),
+                       label_html: { class: 'fw-semibold mb-1' },
+                       input_html: {
+                         placeholder: t('common.select_date')
+                       },
+                       hint: t('interventions.form.you_can_record_label') %>
     </div>
-    <hr class='my-4'>
-    <div class="d-flex justify-content-end gap-2">
-      <%= f.hidden_field :intervention_type_id, value: intervention_type.id, required: true %>
-      <%= link_to 'Cancel', 'javascript:history.back()', class: 'btn btn-secondary' %>
-      <%= f.submit t("interventions.form.#{observation.persisted? ? 'update' : 'record'}_action"),
-                   class: 'btn btn-primary' %>
+    <div class='col-lg-6'>
+      <%= f.input :pupil_count, as: :numeric,
+                                label: t('activities.form.how_many_pupils_were_involved_in_this_activity'),
+                                label_html: { class: 'fw-semibold  mb-1' },
+                                placeholder: t('common.enter_number'),
+                                hint: t('interventions.form.pupil_count_hint') %>
     </div>
   </div>
-</div>
+  <div class='row'>
+    <div class='col-12'>
+      <hr>
+      <h4 class='d-flex align-items-center'>
+        <%= f.label t('interventions.form.tell_us_more'), for: :description, class: '' %>
+        <%= render 'shared/tasks/bonus_points', type: 'interventions' %>
+      </h4>
+      <div>
+        <small><%= t('interventions.form.adding_some_background_detail_label') %>.</small>
+        <% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
+            <small>
+              <%= t('interventions.form.bonus_points_message') %>
+              <strong>
+                <%= SiteSettings.current.photo_bonus_points %>
+                <%= t('interventions.form.bonus_points', count: SiteSettings.current.photo_bonus_points) %>.
+              </strong>
+            </small>
+        <% end %>
+      </div>
+      <p><small class="text-muted"><%= t('interventions.form.you_can_add_formatting_label') %>.</small></p>
+
+      <div class="mt-4">
+        <%= render(Forms::TrixComponent.new(form: f, field: :description, button_size: :default, controls: :simple)) %>
+      </div>
+      <hr class='my-4'>
+      <div class="d-flex justify-content-end gap-2">
+        <%= f.hidden_field :intervention_type_id, value: observation.intervention_type.id, required: true %>
+        <%= link_to 'Cancel', intervention_type_path(observation.intervention_type), class: 'btn btn-secondary' %>
+        <%= f.submit t("interventions.form.#{observation.persisted? ? 'update' : 'record'}_action"),
+                     class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+<% end %>

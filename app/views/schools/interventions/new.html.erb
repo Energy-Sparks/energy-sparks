@@ -1,9 +1,5 @@
 <% content_for :page_title, t('interventions.new.title') %>
 <% content_for :main_classes, 'bg-blue-pale' %>
 <%= render Tasks::Header.new(recording: @observation) %>
-<%= simple_form_for([@observation],
-                    url: school_interventions_path(@school),
-                    html: { class: 'bg-white px-5 pt-5 pb-4 rounded-3' }) do |f| %>
-  <h2 class='pt-0 pb-4'><%= t('interventions.new.page_title') %></h2>
-  <%= render 'form', f: f, observation: @observation, intervention_type: @intervention_type %>
-<% end %>
+
+<%= render 'form', observation: @observation %>
