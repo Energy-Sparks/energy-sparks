@@ -73,6 +73,10 @@ module EnergyTariffsHelper
     end
   end
 
+  def sortable_date(date)
+    date&.to_date&.iso8601 || ''
+  end
+
   def energy_tariff_price_title(energy_tariff_price)
     I18n.t(
       'schools.tariffs_helper.rate_from',

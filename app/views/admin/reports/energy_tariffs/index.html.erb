@@ -74,59 +74,42 @@
         <td style="text-align:center">
           <% if @count_by_active_school_group[school_group.slug].present? %>
             <% current_tariffs = school_group.energy_tariffs.current.by_start_date %>
+            <% electricity_tariff = current_tariffs.electricity&.last %>
+            <% gas_tariff = current_tariffs.gas&.last %>
             <%= link_to(@count_by_active_school_group[school_group.slug],
                         school_group_energy_tariffs_path(school_group)) %>
           <% else %>
             -
           <% end %>
         </td>
-        <% if current_tariffs.present? %>
-          <% electricity_tariff = current_tariffs.electricity&.last %>
-          <% gas_tariff = current_tariffs.gas&.last %>
+        <td data-order="<%= sortable_date(electricity_tariff&.start_date) %>" style="text-align:center">
           <% if electricity_tariff.present? %>
-            <td style="text-align:center">
-              <%= electricity_tariff.display_start_date %>
-            </td>
-            <td style="text-align:center">
-              <%= electricity_tariff.display_end_date %>
-            </td>
+            <%= electricity_tariff.display_start_date %>
           <% else %>
-            <td style="text-align:center">
-              -
-            </td>
-            <td style="text-align:center">
-              -
-            </td>
+            -
           <% end %>
+        </td>
+        <td data-order="<%= sortable_date(electricity_tariff&.end_date) %>" style="text-align:center">
+          <% if electricity_tariff.present? %>
+            <%= electricity_tariff.display_end_date %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td data-order="<%= sortable_date(gas_tariff&.start_date) %>" style="text-align:center">
           <% if gas_tariff.present? %>
-            <td style="text-align:center">
-              <%= gas_tariff.display_start_date %>
-            </td>
-            <td style="text-align:center">
-              <%= gas_tariff.display_end_date %>
-            </td>
+            <%= gas_tariff.display_start_date %>
           <% else %>
-            <td style="text-align:center">
-              -
-            </td>
-            <td style="text-align:center">
-              -
-            </td>
+            -
           <% end %>
-        <% else %>
-          <td style="text-align:center">
+        </td>
+        <td data-order="<%= sortable_date(gas_tariff&.end_date) %>" style="text-align:center">
+          <% if gas_tariff.present? %>
+            <%= gas_tariff.display_end_date %>
+          <% else %>
             -
-          </td>
-          <td style="text-align:center">
-            -
-          </td>
-          <td style="text-align:center">
-            -
-          </td>
-          <td style="text-align:center">
-            -
-          </td>
-        <% end %>
+          <% end %>
+        </td>
         <td style="text-align:center">
           <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :electricity) %>
           <% if count > 0 %>
