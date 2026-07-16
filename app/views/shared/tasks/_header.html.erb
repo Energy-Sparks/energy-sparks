@@ -1,8 +1,15 @@
+<%# i18n-tasks-use t('activities.form.exceeded_maximum_in_year') %>
+<%# i18n-tasks-use t('interventions.form.exceeded_maximum_in_year') %>
+<%# i18n-tasks-use t('activities.form.completing_this_activity') %>
+<%# i18n-tasks-use t('interventions.form.completing_this_activity') %>
+<%# i18n-tasks-use t('activities.form.previous_years') %>
+<%# i18n-tasks-use t('interventions.form.previous_years') %>
+
 <%# Great candidate for a component! %>
 <% recording = local_assigns[:recording] %>
 <% task = local_assigns[:task] ||= recording.task %>
 
-<%= render Layout::GridComponent.new(cols: 2, classes: 'pb-4', id: 'feature') do |grid| %>
+<%= render Layout::GridComponent.new(cols: 2, classes: 'pb-4', id: 'task-header') do |grid| %>
   <%= grid.with_feature_card(tag_position: :bottom, size: :lg, classes: 'h-100', column_classes: 'col-12 col-md-8') do |feature| %>
     <%= feature.with_header(title: task.name) %>
     <%= feature.with_description(classes: 'pt-2 pb-2') do %>

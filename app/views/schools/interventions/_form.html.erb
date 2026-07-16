@@ -1,16 +1,18 @@
 <div class='row g-5'>
   <div class='col-lg-6'>
-    <%= f.label "#{t('interventions.form.when_did_you_complete_this_action')} *", for: :at, class: 'fw-bold' %>
-    <%= f.input :at, as: :tempus_dominus_date, label: false, required: true,
+    <%= f.input :at, as: :tempus_dominus_date,
+                     label: t('interventions.form.when_did_you_complete_this_action'),
+                     label_html: { class: 'fw-semibold mb-1' },
                      input_html: {
-                       placeholder: Time.zone.today.to_fs(:es_compact)
+                       placeholder: t('common.select_date')
                      },
                      hint: t('interventions.form.you_can_record_label') %>
   </div>
   <div class='col-lg-6'>
-    <%= f.label t('activities.form.how_many_pupils_were_involved_in_this_activity'), for: :pupil_count, class: 'fw-bold' %>
-    <%= f.input :pupil_count, as: :numeric, label: false,
-                              placeholder: t('interventions.form.enter_a_number'),
+    <%= f.input :pupil_count, as: :numeric,
+                              label: t('activities.form.how_many_pupils_were_involved_in_this_activity'),
+                              label_html: { class: 'fw-semibold  mb-1' },
+                              placeholder: t('common.enter_number'),
                               hint: t('interventions.form.pupil_count_hint') %>
   </div>
 </div>
