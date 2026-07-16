@@ -2,6 +2,7 @@
 
 module Schools
   class InterventionsController < ApplicationController
+    before_action :enable_bootstrap5, except: %i[show]
     skip_before_action :authenticate_user!, only: %i[show]
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
@@ -21,47 +22,32 @@ module Schools
     end
 
     def edit
-      authorize! :edit, @observation
       @intervention_type = @observation.intervention_type
     end
 
     def create
-      if Flipper.enabled?(:todos, current_user)
-        @observation = @school.observations.intervention.new(observation_params)
+      @observation = @school.observations.intervention.new(observation_params)
 
-        authorize! :create, @observation
-        if Tasks::Recorder.new(@observation, current_user).process
-          redirect_to completed_school_intervention_path(@school, @observation)
-        else
-          @intervention_type = @observation.intervention_type
-          render :new
-        end
+      authorize! :create, @observation
+      if Tasks::Recorder.new(@observation, current_user).process
+        redirect_to completed_school_intervention_path(@school, @observation)
       else
-        @observation = @school.observations.new(observation_params.merge(observation_type: :intervention,
-                                                                         created_by: current_user))
-        authorize! :create, @observation
-        if @observation.save
-          redirect_to completed_school_intervention_path(@school, @observation)
-        else
-          @intervention_type = @observation.intervention_type
-          render :new
-        end
+        @intervention_type = @observation.intervention_type
+        render :new
       end
     end
 
     def update
-      authorize! :update, @observation
       if @observation.update(observation_params.merge(updated_by: current_user))
-        redirect_to school_interventions_path(@school)
+        redirect_to school_interventions_path(@school), notice: I18n.t('interventions.notices.updated')
       else
         render :edit
       end
     end
 
     def destroy
-      authorize! :delete, @observation
       ObservationRemoval.new(@observation).process
-      redirect_to school_interventions_path(@school)
+      redirect_to school_interventions_path(@school), notice: I18n.t('interventions.notices.removed')
     end
 
     def completed; end

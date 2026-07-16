@@ -34,6 +34,9 @@ en:
     new:
       page_title: Record activity
       record_a_new_activity: Record a new energy saving activity for your school
+    notices:
+      removed: Activity was successfully removed
+      updated: Activity was successfully updated
     show:
       activity_description: Activity description
       all_activities: All activities
