@@ -23,6 +23,8 @@
 #
 module Commercial
   class Invoice < ApplicationRecord
+    include CsvExportable
+
     self.table_name = 'commercial_invoices'
 
     scope :by_date, -> { order(created_at: :asc) }
@@ -35,6 +37,18 @@ module Commercial
 
     delegate :contract_holder, to: :contract
     accepts_nested_attributes_for :line_items
+
+    def self.csv_headers
+      ['ID', 'Contract', 'Contract Holder',
+       'Created By', 'Date', 'Purchase Order Number',
+       'Base Price', 'Metering Fee', 'Private Account Fee', 'Total']
+    end
+
+    def self.csv_attributes
+      %w[invoice_number contract.name contract.contract_holder.name
+         created_by.display_name date purchase_order_number
+         value.base_price value.metering_fee value.private_account_fee value.total]
+    end
 
     def date
       created_at.to_date
