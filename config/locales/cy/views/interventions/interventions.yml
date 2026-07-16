@@ -1,6 +1,7 @@
 cy:
   interventions:
     edit:
+      page_title: Diweddaru gweithred arbed ynni
       title: Diweddarwch eich gweithred arbed ynni
     form:
       bonus_points_message: Gall ychwanegu llun i ddogfennu eich gweithred sgorio
@@ -24,6 +25,8 @@ cy:
       you_can_add_formatting_label: Gallwch ychwanegu fformatio, dolenni ac atodi lluniau gan ddefnyddio'r bar offer isod. Gallwch hofran dros bob eicon i ddysgu beth mae'n ei wneud
       you_can_record_label: Gallwch gofnodi gweithrediadau diweddar a hŷn i greu cofnod cyflawn o'r holl weithgareddau arbed ynni rydych wedi'u cyflawni fel ysgol
     new:
+      page_title: Cofnodi gweithred arbed ynni
       title: Cofnodi gweithred arbed ynni ar gyfer eich ysgol
     show:
+      page_title: Cam Gweithredu Arbed Ynni
       pupils_involved_in_this_activity: Disgyblion sy'n cymryd rhan yn y gweithgaredd hwn
