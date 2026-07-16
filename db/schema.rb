@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_16_094940) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1959,7 +1959,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.integer "default_chart_preference", default: 0, null: false
     t.bigint "diocese_id"
     t.boolean "full_school", default: true
-    t.bigint "funder_id"
     t.bigint "local_authority_area_id"
     t.text "notes"
     t.bigint "project_group_id"
@@ -1977,7 +1976,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["diocese_id"], name: "index_school_onboardings_on_diocese_id"
-    t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
     t.index ["local_authority_area_id"], name: "index_school_onboardings_on_local_authority_area_id"
     t.index ["project_group_id"], name: "index_school_onboardings_on_project_group_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
@@ -2058,7 +2056,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.bigint "establishment_id"
     t.decimal "floor_area"
     t.boolean "full_school", default: true
-    t.bigint "funder_id"
     t.integer "funding_status", default: 0, null: false
     t.boolean "has_battery", default: false, null: false
     t.boolean "has_swimming_pool", default: false, null: false

@@ -84,7 +84,6 @@
 #  dark_sky_area_id                        :bigint(8)
 #  default_contract_holder_id              :bigint(8)
 #  establishment_id                        :bigint(8)
-#  funder_id                               :bigint(8)
 #  local_authority_area_id                 :bigint(8)
 #  local_distribution_zone_id              :bigint(8)
 #  met_office_area_id                      :bigint(8)
@@ -248,7 +247,6 @@ class School < ApplicationRecord
 
   belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
 
-  belongs_to :funder, optional: true
   belongs_to :local_distribution_zone, optional: true
   belongs_to :default_contract_holder, polymorphic: true, optional: true
 
