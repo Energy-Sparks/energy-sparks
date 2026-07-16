@@ -95,7 +95,7 @@ describe 'viewing and recording action' do
       it 'redirects to new intervention recording page' do
         select other_school.name, from: :school_id
         click_on 'Record this action'
-        expect(page).to have_text('Record an energy saving action for your school')
+        expect(page).to have_text('Record energy saving action')
         expect(page).to have_text(other_school.name)
       end
     end
@@ -162,7 +162,7 @@ describe 'viewing and recording action' do
       it 'redirects to new activity recording page' do
         select school_1.name, from: :school_id
         click_on 'Record this action'
-        expect(page).to have_text('Record an energy saving action for your school')
+        expect(page).to have_text('Record energy saving action')
         expect(page).to have_text(school_1.name)
       end
     end

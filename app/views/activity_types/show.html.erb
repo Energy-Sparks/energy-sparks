@@ -2,27 +2,22 @@
   <% content_for :page_title do %>
     <%= @activity_type.name %>
   <% end %>
-
   <% content_for :header do %>
-    <%= render 'shared/tasks/header', task: @activity_type %>
+    <%= render Tasks::Header.new(task: @activity_type) %>
   <% end %>
-
   <% content_for :rightcol do %>
     <%= render 'shared/tasks/rightcol/download_links', task: @activity_type %>
     <%= render 'shared/tasks/rightcol/category', task: @activity_type %>
     <%= render 'shared/tasks/rightcol/programmes', task: @activity_type %>
   <% end %>
-
   <% if current_user_school && @activity_type.activities_for_school(current_user_school).any? %>
     <%= render 'shared/tasks/prompts/previous_records',
                recordings: @activity_type.activities_for_school(current_user_school),
                school: current_user_school, resource_type: :activity %>
   <% end %>
-
   <% if current_user.nil? %>
     <%= render 'shared/tasks/prompts/login_to_record', task: @activity_type %>
   <% end %>
-
   <% if can?(:create, Activity) && @available_schools_for_user.present? %>
     <% if @available_schools_for_user.one? %>
       <%= render 'shared/tasks/prompts/score', task: @activity_type,
@@ -39,7 +34,6 @@
   <% end %>
   <h3 class="pt-0"><%= t('common.labels.overview') %></h3>
   <%= @activity_type_content %>
-
   <% if can?(:edit, @activity_type) %>
     <p><%= admin_button edit_admin_activity_type_path(@activity_type),
                         classes: 'btn btn-default' %></p>

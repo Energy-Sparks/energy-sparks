@@ -1,8 +1,6 @@
 <% content_for :page_title, t('interventions.edit.title') %>
 <% content_for :main_classes, 'bg-blue-pale' %>
-
-<%= render 'shared/tasks/header', recording: @observation, recording_key: 'interventions' %>
-
+<%= render Tasks::Header.new(recording: @observation) %>
 <%= simple_form_for([@observation],
                     url: school_intervention_path(@school, @observation),
                     html: { class: 'bg-white px-5 pt-5 pb-4 rounded-3' }) do |f| %>
