@@ -25,7 +25,6 @@ module Admin
           :data_sharing,
           :default_chart_preference,
           :diocese_id,
-          :funder_id,
           :local_authority_area_id,
           :project_group_id,
           :scoreboard_id,
