@@ -5,10 +5,8 @@ describe SchoolFilter do
   let(:school_group_b)      { create(:school_group) }
   let(:scoreboard_a)        { create(:scoreboard) }
   let(:scoreboard_b)        { create(:scoreboard) }
-  let(:funder_1)            { create(:funder) }
-  let(:funder_2)            { create(:funder) }
   let!(:school_1) do
-    create(:school, school_group: school_group_a, scoreboard: scoreboard_a, funder: funder_1)
+    create(:school, school_group: school_group_a, scoreboard: scoreboard_a)
   end
   let!(:school_2) do
     create(:school, school_group: school_group_b, scoreboard: scoreboard_b, school_type: :secondary)
@@ -67,8 +65,17 @@ describe SchoolFilter do
                             school_group_ids: [school_group_b.id]).filter).to eq [school_3_invisible]
   end
 
-  it 'filters by funder' do
-    expect(SchoolFilter.new(funder: funder_1.id).filter).to eq [school_1]
-    expect(SchoolFilter.new(funder: funder_2.id).filter).to eq []
+  context 'when filtering by Funder' do
+    let(:funder_1)            { create(:funder) }
+    let(:funder_2)            { create(:funder) }
+
+    before do
+      create(:commercial_licence, school: school_1, contract: create(:commercial_contract, contract_holder: funder_1))
+    end
+
+    it 'filters by funder' do
+      expect(SchoolFilter.new(funder: funder_1.id).filter).to eq [school_1]
+      expect(SchoolFilter.new(funder: funder_2.id).filter).to eq []
+    end
   end
 end
