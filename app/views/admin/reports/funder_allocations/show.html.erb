@@ -1,59 +1,16 @@
 <%= render 'admin/reports/title', title: 'Funder allocation report' %>
 
-<h2>Funded schools</h2>
-
 <p>
   <%= render PromptComponent.new(icon: 'circle-info', status: :neutral) do |prompt| %>
     <p>
-      The following table shows schools LINKED to the funder and does not use the new Contracts & Licensing data.
-      For a summary of schools funded by current contract holders view the contract holder report.
+      For a summary of the number of schools supported by current contract holders, including Funders, then
+      please view the contract holder report.
     </p>
     <% prompt.with_link do %>
         <%= link_to 'Contract Holders', admin_commercial_contract_holders_path %>
     <% end %>
   <% end %>
 </p>
-
-<p>
-  This table summarises the number of visible and data enabled schools for each funder, along with a count of
-  schools which have no funder assigned.
-</p>
-<p>
-  Visible schools have finished onboarding, but do not yet have their data enabled. Funders are either directly linked
-  to schools or via their school group.
-</p>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Funder</th>
-      <th scope="col">Visible not data enabled</th>
-      <th scope="col">Visible and data enabled</th>
-      <th scope="col">Onboarding</th>
-      <th scope="col">Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @funders_visible.each do |funder_name, school_count| %>
-      <% funder = Funder.find_by(name: funder_name) %>
-      <tr>
-        <td><%= link_to funder_name, admin_funder_path(funder) %></td>
-        <td><%= school_count %></td>
-        <td><%= @funders_visible_and_enabled[funder_name] %></td>
-        <td><%= @onboarding[funder_name] %>
-        <td><%= school_count + @funders_visible_and_enabled[funder_name] + @onboarding[funder_name] %></td>
-      </tr>
-    <% end %>
-    <tr>
-      <td>No funder</td>
-      <td><%= @unfunded_visible %></td>
-      <td><%= @unfunded_visible_and_enabled %></td>
-      <td><%= @unfunded_onboarding %></td>
-      <td><%= @unfunded_visible + @unfunded_visible_and_enabled + @unfunded_onboarding %></td>
-    </tr>
-  </tbody>
-</table>
-
-<h1>Funder allocation report</h1>
 
 <p>
   Generates a report designed to support allocating schools across potential funders. The report includes all
