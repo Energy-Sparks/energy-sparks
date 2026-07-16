@@ -6,6 +6,7 @@
           <tr>
             <th>Id</th>
             <th>School</th>
+            <th>Data Visible</th>
             <% if show_field?(:start_date) %>
               <th>Start</th>
             <% end %>
@@ -59,10 +60,11 @@
       <%= render ::Commercial::LicensingSummaryComponent.new(
             table_id: "contract-#{@contract.id}-additional-schools-table",
             second_range: @contract.as_range,
+            show_data_visibility: true,
             labels: { first: 'Current Academic Year', second: 'Contract Period' }
           ) do |c| %>
         <% @additional_schools.each do |school| %>
-          <% c.with_row id: "additional-school-#{school.id}", school: school do |r| %>
+          <% c.with_row id: "additional-school-#{school.id}", show_data_visibility: true, school: school do |r| %>
             <% r.with_button do %>
               <%= button_to 'Add licence',
                             create_licence_admin_commercial_contract_licences_path(@contract),

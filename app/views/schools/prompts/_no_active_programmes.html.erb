@@ -1,0 +1,9 @@
+<% if school && school.programmes.active.started.none? %>
+  <%= render PromptComponent.new(icon: 'tasks', status: :neutral, style: local_assigns[:style]) do |prompt| %>
+    <% prompt.with_link do %>
+      <%= link_to t('schools.prompts.no_active_programmes.choose_programme'),
+                  programme_types_path %>
+    <% end %>
+    <%= t('schools.prompts.no_active_programmes.message') %>
+  <% end %>
+<% end %>

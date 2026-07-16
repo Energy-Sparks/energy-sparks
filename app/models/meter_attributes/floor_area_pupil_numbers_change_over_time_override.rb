@@ -9,7 +9,7 @@ module MeterAttributes
       structure: {
         start_date: MeterAttributeTypes::Date.define,
         end_date: MeterAttributeTypes::Date.define,
-        floor_area: MeterAttributeTypes::Float.define(required: true),
+        floor_area: MeterAttributeTypes::Float.define,
         number_of_pupils: MeterAttributeTypes::Float.define(required: true)
       }
     )
