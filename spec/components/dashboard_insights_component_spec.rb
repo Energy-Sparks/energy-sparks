@@ -99,7 +99,7 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
 
       it 'displays a negative electricity prompt' do
         expect(div_text).to eq(
-          "Unfortunately you are not meeting your target to reduce your electricity usage\n\n\nReview progress"
+          "Unfortunately you are not meeting your target to reduce your electricity usage\n\nReview progress"
         )
         expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/electricity_target")
       end
@@ -122,7 +122,7 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
 
       it 'displays a positive gas prompt' do
         expect(div_text).to eq(
-          "Well done, you are making progress towards achieving your target to reduce your gas usage!\n\n\n" \
+          "Well done, you are making progress towards achieving your target to reduce your gas usage!\n\n" \
           'Review progress'
         )
         expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/gas_target")
@@ -143,7 +143,7 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
       it 'shows the prompt' do
         expect(div_text).to eq('We have limited energy data for your school. You can enter monthly consumption data ' \
                                'to show progress against any targets set or observe changes in consumption over a ' \
-                               "longer period of time.\n\n\nSupply historical manual readings")
+                               "longer period of time.\n\nSupply historical manual readings")
       end
     end
 

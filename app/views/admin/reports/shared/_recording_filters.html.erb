@@ -1,0 +1,50 @@
+<div class="clearfix bg-light py-2 px-2 my-2 border rounded">
+  <%= form_tag url_for(controller: controller_path, action: :index, only_path: true), method: :get do |f| %>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="">
+        <span class="nowrap">
+          <%= label_tag :school_group, nil, class: 'small' %>
+          <%= select_tag :school_group,
+                         options_from_collection_for_select(SchoolGroup.by_name, :id, :name, params[:school_group]),
+                         include_blank: 'Any School Group',
+                         class: 'form-control-sm' %>
+        </span>
+        <% unless @dashboard_user %>
+          <span class="nowrap">
+            <%= label_tag :admin, nil, class: 'small' %>
+            <%= select_tag :admin,
+                           options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:admin]),
+                           include_blank: 'Any Admin User',
+                           class: 'form-control-sm' %>
+          </span>
+        <% end %>
+        <span class="nowrap">
+          <%= label_tag :school, nil, class: 'small' %>
+          <%= select_tag :school,
+                         options_from_collection_for_select(School.by_name, :id, :name, params[:school]),
+                         include_blank: 'Any School',
+                         class: 'form-control-sm' %>
+        </span>
+        <span class="nowrap">
+          <%= label_tag :user_role, nil, class: 'small' %>
+          <%= select_tag :user_role,
+                         options_for_select(User.roles.map { |roles| [roles[0].humanize, roles[1]] },
+                                            params[:user_role]),
+                         include_blank: 'Any Role',
+                         class: 'form-control-sm' %>
+        </span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <%= submit_tag 'Filter', class: 'btn btn-sm flex-grow-0' %>
+        <%= link_to 'CSV',
+                    url_for(
+                      controller: controller_path,
+                      action: :index,
+                      only_path: true,
+                      **filter_params.merge(format: :csv)
+                    ),
+                    class: 'ml-2 btn btn-sm flex-grow-0' %>
+      </div>
+    </div>
+  <% end %>
+</div>

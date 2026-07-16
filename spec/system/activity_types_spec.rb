@@ -157,11 +157,11 @@ describe 'activity types' do
         end
 
         it 'toggles selected filter highlight' do
-          expect(page).to have_css('a.badge-light', text: subjects[1].name)
+          expect(page).to have_css('a.text-bg-light', text: subjects[1].name)
           click_on subjects[1].name
-          expect(page).to have_css('a.badge-dark', text: subjects[1].name)
+          expect(page).to have_css('a.text-bg-dark', text: subjects[1].name)
           click_on subjects[1].name
-          expect(page).to have_css('a.badge-light', text: subjects[1].name)
+          expect(page).to have_css('a.text-bg-light', text: subjects[1].name)
         end
       end
     end

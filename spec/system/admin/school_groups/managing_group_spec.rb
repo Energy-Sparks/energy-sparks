@@ -229,7 +229,11 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     it { expect(page).to have_link('Delete', href: admin_school_group_path(school_group)) }
 
     context "when clicking 'Download issues' button" do
-      before { click_link 'Issues' }
+      before do
+        within('#school-group-button-panel') do
+          click_link 'Issues'
+        end
+      end
 
       it { expect(page).to have_current_path(admin_school_group_issues_path(school_group, all: true, format: :csv)) }
     end
@@ -466,10 +470,15 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     it_behaves_like 'a basic button panel'
 
     context 'with only a basic button panel' do
-      it { expect(page).to have_no_link('Meter attributes') }
-      it { expect(page).to have_no_link('Manage tariffs') }
-      it { expect(page).to have_no_link('Meter updates') }
-      it { expect(page).to have_no_link('Chart updates') }
+      it 'has no extra buttons' do
+        within('#school-group-button-panel') do
+          puts page.html
+          expect(page).to have_no_link('Meter attributes')
+          expect(page).to have_no_link('Manage tariffs')
+          expect(page).to have_no_link('Meter updates')
+          expect(page).to have_no_link('Chart updates')
+        end
+      end
     end
 
     describe 'School counts by school type panel' do
@@ -630,10 +639,15 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     it_behaves_like 'a basic button panel'
 
     context 'with only a basic button panel' do
-      it { expect(page).to have_no_link('Meter attributes') }
-      it { expect(page).to have_no_link('Manage tariffs') }
-      it { expect(page).to have_no_link('Meter updates') }
-      it { expect(page).to have_no_link('Chart updates') }
+      it 'has no extra buttons' do
+        within('#school-group-button-panel') do
+          puts page.html
+          expect(page).to have_no_link('Meter attributes')
+          expect(page).to have_no_link('Manage tariffs')
+          expect(page).to have_no_link('Meter updates')
+          expect(page).to have_no_link('Chart updates')
+        end
+      end
     end
 
     describe 'School counts by school type panel' do

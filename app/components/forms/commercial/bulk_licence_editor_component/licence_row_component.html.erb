@@ -3,7 +3,13 @@
     <%= lf.hidden_field :id %>
     <td><%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %></td>
     <td><%= link_to licence.school.name, school_path(licence.school) %></td>
-
+    <td>
+      <% if licence.school.data_enabled? %>
+        <span class="badge rounded-pill text-bg-success">Yes</span>
+      <% else %>
+        <span class="badge rounded-pill text-bg-danger">No</span>
+      <% end %>
+    </td>
     <% if show_field?(:start_date) %>
       <td class="col-2">
         <%= lf.input :start_date, as: :tempus_dominus_date, label: false, disabled: licence.invoiced? %>
@@ -45,7 +51,7 @@
   </tr>
   <% if show_field?(:comments) %>
     <tr id="<%= "licence-#{licence.id}-comments-row" %>" class="comments-row">
-      <td colspan="2"></td>
+      <td colspan="3"></td>
       <td colspan="5">
         <%= lf.input :comments,
                      as: :text,

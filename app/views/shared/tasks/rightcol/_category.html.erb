@@ -1,0 +1,15 @@
+<%# i18n-tasks-use t('tasks.action.view_category_tasks') %>
+<%# i18n-tasks-use t('tasks.activity.view_category_tasks') %>
+
+<% if task.category %>
+  <%= render Layout::Cards::FeatureComponent.new(size: :sm, classes: 'mb-4') do |feature| %>
+    <%= feature.with_header(
+          title: "#{render(Elements::IconComponent.new(name: 'folder'))} " \
+                  "#{t('tasks.category', category: task.category.name)}".html_safe
+        ) %>
+    <%= feature.with_link(href: polymorphic_path(task.category)) do %>
+      <%= t("tasks.#{task.public_type}.view_category_tasks",
+            count: task.category.tasks.active.count) %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,18 +1,18 @@
 Rydym yn gweithio i gael mynediad at ddata ynni eich ysgol.
 
-In the meantime, here is our quick guide for making the most of your Energy Sparks account:
+Yn y cyfamser, dyma ein canllaw cyflym ar gyfer gwneud y gorau o'ch cyfrif Sbarcynni:
 
-1. **Familiarise yourself** with using Energy Sparks, we have [lots of useful guidance and information about training](http://cy.localhost/intervention_types/74).
-2. **Build an energy saving team:** consider [setting up a student team](http://cy.localhost/activity_types/33) to lead on energy efficiency at your school and help them to [find their energy allies](http://cy.localhost/activity_types/174). They can start using our educational activities straight away. Watch our [video](https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9) on how to record activities.
-3. **Set up a holiday switch off routine:** On average, 15% of schools' energy is used during the holidays. Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some [example switch-off checklists](http://cy.localhost/intervention_types/71) available for you to use.
-4. **Sign up to energy saving alerts and messages:** Our alert system has helped some schools save thousands of pounds by notifying them about expected changes in their energy use. You can also receive regular tips and updates to help your school make the most of its Energy Sparks account throughout the year. [Change your email preferences here.](http://cy.localhost/profiles)
-5. **Review our range of [energy saving actions](http://cy.localhost/intervention_type_groups)** that you, other members of staff and volunteers can carry out to start improving your energy usage.
+1. **Ymgyfarwyddwch** â defnyddio Sbarcynni, mae gennym ni [lawer o ganllawiau a gwybodaeth ddefnyddiol am hyfforddiant](http://cy.localhost/intervention_types/74).
+2. **Adeiladu tîm arbed ynni:** ystyriwch [sefydlu tîm myfyrwyr](http://cy.localhost/activity_types/33) i arwain ar effeithlonrwydd ynni yn eich ysgol a'u helpu i [ddod o hyd i'w cynghreiriaid ynni](http://cy.localhost/activity_types/174). Gallant ddechrau defnyddio ein gweithgareddau addysgol ar unwaith. Gwyliwch ein [fideo](https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9) ar sut i gofnodi gweithgareddau.
+3. **Sefydlu trefn diffodd ar gyfer y gwyliau:** Ar gyfartaledd, mae 15% o ynni ysgolion yn cael ei ddefnyddio yn ystod y gwyliau. Mae creu rhestr wirio diffodd ynni ar gyfer y gwyliau a mynd drwy'r rhestr ar ddiwedd y tymor yn un o'r ffyrdd hawsaf a rhataf o leihau biliau ynni, hyd yn oed i ysgolion sydd â chlybiau gwyliau. Mae gennym rai [rhestrau gwirio diffodd enghreifftiol](http://cy.localhost/intervention_types/71) ar gael i chi eu defnyddio.
+4. **Cofrestrwch ar gyfer rhybuddion a negeseuon arbed ynni:** Mae ein system rhybuddio wedi helpu rhai ysgolion i arbed miloedd o bunnoedd drwy eu hysbysu am newidiadau disgwyliedig yn eu defnydd o ynni. Gallwch hefyd dderbyn awgrymiadau a diweddariadau rheolaidd i helpu eich ysgol i wneud y gorau o'i chyfrif Sbarcynni drwy gydol y flwyddyn. [Newidiwch eich dewisiadau e-bost yma.](http://cy.localhost/profiles)
+5. **Adolygwch ein hamrywiaeth o [weithredoedd arbed ynni](http://cy.localhost/intervention_type_groups)** y gallwch chi, aelodau eraill o staff a gwirfoddolwyr eu cymryd i ddechrau gwella eich defnydd o ynni.
 
 Byddwn mewn cysylltiad yn fuan i gadarnhau pan fyddwn wedi gorffen cael mynediad at eich data ynni.
 
-We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
+Gobeithiwn y bydd Sbarcynni yn grymuso eich disgyblion, staff yr ysgol, a chymuned ehangach yr ysgol i gymryd camau i wneud eich ysgol yn fwy ynni-effeithlon.
 
 [Cysylltwch](http://cy.localhost/contact) os oes gennych unrhyw gwestiynau pellach.
 
-Many thanks
+Diolch yn fawr
 Admin

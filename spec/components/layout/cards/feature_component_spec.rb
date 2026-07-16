@@ -53,7 +53,7 @@ RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, typ
       it { expect(html).to have_css('h3') }
     end
 
-    described_class.sizes.each do |size, value|
+    described_class.const_get(:SIZES).each do |size, value|
       context "when size = #{size}" do
         let(:params) { base_params.merge(size: size) }
 

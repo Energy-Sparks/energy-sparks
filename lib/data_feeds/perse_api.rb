@@ -5,11 +5,14 @@ module DataFeeds
     extend Limiter::Mixin
 
     def initialize
-      @connection = Faraday.new(ENV.fetch('PERSE_API_URL'), headers: { content_type: 'application/json',
-                                                                       'api_key' => ENV.fetch('PERSE_API_KEY') }) do |f|
+      @connection = FaradayHelper.connection(url: ENV.fetch('PERSE_API_URL'),
+                                             # should this be an Accept rather than content-type header?
+                                             headers: { content_type: 'application/json',
+                                                        'api_key' => ENV.fetch('PERSE_API_KEY') },
+                                             # don't retry due to limit below?
+                                             retry_options: nil) do |f|
+        f.request :json
         f.response :json
-        f.response :raise_error
-        f.response :logger if Rails.env.development?
       end
     end
 

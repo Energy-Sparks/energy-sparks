@@ -10,8 +10,8 @@ class Elements::IconComponent < ApplicationComponent
 
   def initialize(name: nil, size: 'f5', fuel_type: nil, fixed_width: false, icon_set: 'fas', style: :default, colour: nil, **_kwargs)
     super
-    self.class.raise_unknown_variant_error(colour: colour) if colour
-    raise 'Unknown icon style' unless [:default, :circle].include?(style)
+    validate_colour_variant(colour: colour) if colour
+    validate_inclusion(style: style, in: %i[default circle])
     @name = name
     @fuel_type = fuel_type
     @style = style

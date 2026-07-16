@@ -3,7 +3,11 @@
 module Admin
   module SchoolGroups
     class LicenceSummariesController < AdminController
+      include SchoolGroupBreadcrumbs
+
       load_and_authorize_resource :school_group
+
+      before_action :breadcrumbs
 
       layout 'group_settings'
 
@@ -22,6 +26,10 @@ module Admin
                    content_type: 'text/plain')
           end
         end
+      end
+
+      def breadcrumbs
+        build_breadcrumbs([{ name: t('school_groups.titles.licence_summaries') }])
       end
     end
   end

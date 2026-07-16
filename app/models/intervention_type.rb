@@ -17,6 +17,7 @@
 #
 # Indexes
 #
+
 #  index_intervention_types_on_intervention_type_group_id  (intervention_type_group_id)
 #
 # Foreign Keys
@@ -30,9 +31,9 @@ class InterventionType < ApplicationRecord
   include Searchable
   include TranslatableAttachment
   include FuelTypeable
-  include Recordable
+  include Task
 
-  TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
+  TX_REWRITEABLE_FIELDS = %i[description_cy download_links_cy].freeze
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
@@ -40,6 +41,8 @@ class InterventionType < ApplicationRecord
   translates :download_links, backend: :action_text
 
   belongs_to :intervention_type_group
+  alias category intervention_type_group
+
   has_many :observations
 
   has_many :intervention_type_suggestions
@@ -56,9 +59,13 @@ class InterventionType < ApplicationRecord
   has_many :audit_intervention_types, dependent: nil
   has_many :audits, through: :audit_intervention_types
 
-  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes|
+    attributes[:source].blank?
+  }, allow_destroy: true
 
-  accepts_nested_attributes_for :intervention_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :intervention_type_suggestions, reject_if: proc { |attributes|
+    attributes[:suggested_type_id].blank?
+  }, allow_destroy: true
 
   validates :intervention_type_group, :name, presence: true
   validates :name, uniqueness: { scope: :intervention_type_group_id }
@@ -98,7 +105,7 @@ class InterventionType < ApplicationRecord
   private
 
   def copy_searchable_attributes
-    self.write_attribute(:name, self.name(locale: :en))
+    self[:name] = name(locale: :en)
   end
 
   class << self
@@ -108,7 +115,7 @@ class InterventionType < ApplicationRecord
       if show_all
         %|"#{table_name}"."active" in ('true', 'false') AND "#{table_name}"."custom" = 'false'|
       else
-        %|"#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'|
+        %("#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false')
       end
     end
 

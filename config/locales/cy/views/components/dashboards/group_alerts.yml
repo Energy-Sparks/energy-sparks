@@ -1,0 +1,15 @@
+cy:
+  components:
+    dashboards:
+      group_alerts:
+        school_descriptions:
+          all: pob ysgol
+          almost_all: bron pob ysgol
+          few: ychydig o ysgolion
+          most: y rhan fwyaf o ysgolion
+          no_schools: dim ysgolion
+          one: un ysgol
+          schools: ysgolion
+          several: sawl ysgol
+          some: rhai ysgolion
+          two: dwy ysgol

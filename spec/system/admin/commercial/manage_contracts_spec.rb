@@ -543,7 +543,7 @@ describe 'manage contracts', :include_application_helper do
     end
 
     context 'when there are licences' do
-      let!(:licence) { create(:commercial_licence, contract:) }
+      let!(:licence) { create(:commercial_licence, contract:, school: create(:school, data_enabled: false)) }
 
       before { click_on 'Edit' }
 
@@ -914,6 +914,27 @@ describe 'manage contracts', :include_application_helper do
       end
     end
 
+    context 'when viewing licences' do
+      before do
+        create(:commercial_licence, status: :confirmed, contract:)
+        refresh
+      end
+
+      it { expect(page).to have_css('#licences') }
+      it { expect(page).to have_no_link('Overlapping licences', href: overlapping_admin_commercial_licences_path) }
+
+      context 'with an overlapping licence' do
+        before do
+          existing = contract.licences.last
+          create(:commercial_licence, school: existing.school, start_date: existing.start_date)
+          refresh
+        end
+
+        it { expect(page).to have_link('Overlapping licences', href: overlapping_admin_commercial_licences_path) }
+        it { expect(page).to have_text('1 of these licences overlap with licences from other contracts') }
+      end
+    end
+
     context 'when viewing invoices' do
       let!(:invoice) { create(:commercial_invoice, contract:) }
 
@@ -969,7 +990,7 @@ describe 'manage contracts', :include_application_helper do
       end
 
       context 'when there are licences' do
-        let!(:licence) { create(:commercial_licence, contract:) }
+        let!(:licence) { create(:commercial_licence, contract:, school: create(:school, data_enabled: false)) }
 
         it 'confirms the licences' do
           click_on 'Confirm'

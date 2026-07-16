@@ -1,0 +1,63 @@
+cy:
+  school_groups:
+    advice:
+      chart_types:
+        electricity:
+          baseload:
+            label: Llwyth sylfaenol hirdymor
+            subtitle: Mae'r siart hon yn dangos y duedd hirdymor mewn llwyth sylfaenol ar gyfer {{name}} gan ddefnyddio'r holl ddata sydd ar gael
+          baseload_lastyear:
+            label: Llwyth sylfaenol
+            subtitle: Mae'r siart hon yn dangos y llwyth sylfaenol trydan ar gyfer {{name}} gan ddefnyddio'r flwyddyn ddiweddaraf o ddata
+            title: Llwyth sylfaenol trydan am y 12 mis diwethaf
+          baseload_versus_benchmarks:
+            label: Llwyth sylfaenol hirdymor gyda chymhariaeth
+            subtitle: Mae'r siart hon yn dangos y duedd hirdymor mewn llwyth sylfaenol ar gyfer {{name}}, ac mae'n cynnwys cymhariaeth ag ysgolion 'meincnod' ac 'enghreifftiol'
+            title: Cymhariaeth llwyth sylfaenol hirdymor gydag ysgolion meincnod ac enghreifftiol
+          daytype_breakdown_electricity_tolerant:
+            label: Defnydd trydan y tu allan i oriau ysgol
+            subtitle: Mae'r siart hon yn dangos dadansoddiad o'r defnydd trydan ar gyfer {{name}} dros y 12 mis diwethaf
+            title: Manylion defnydd trydan
+          electricity_by_day_of_week_tolerant:
+            label: Defnydd trydan y tu allan i oriau ysgol yn ôl diwrnod yr wythnos
+            subtitle: Mae'r siart hon yn dangos cyfanswm y trydan a ddefnyddiwyd gan {{name}} dros y 12 mis diwethaf, wedi'i ddadansoddi yn ôl diwrnod yr wythnos ac amser y defnydd
+            title: Defnydd trydan yn ôl diwrnod yr wythnos
+          group_by_week_electricity_meter_breakdown_one_year:
+            label: Defnydd trydan yn ôl mesurydd
+            subtitle: Mae'r siart hon yn rhoi dadansoddiad wythnosol o'r defnydd o drydan yn ôl mesurydd ar gyfer {{name}}
+            title: Defnydd trydan yn ôl mesurydd
+          management_dashboard_group_by_week_electricity:
+            label: Defnydd trydan yn ôl wythnos
+            subtitle: Mae'r siart hon yn rhoi dadansoddiad o'r defnydd o drydan rhwng diwrnodau ysgol agored a chau, gwyliau a phenwythnosau ar gyfer pob wythnos ar gyfer {{name}}
+            title: Defnydd trydan yn ôl wythnos
+        gas:
+          daytype_breakdown_gas_tolerant:
+            label: Defnydd nwy y tu allan i oriau ysgol
+            subtitle: Mae'r siart hon yn dangos dadansoddiad o'r defnydd o nwy ar gyfer {{name}} dros y 12 mis diwethaf
+            title: Manylion defnydd nwy
+          gas_by_day_of_week_tolerant:
+            label: Defnydd nwy y tu allan i oriau ysgol yn ôl diwrnod yr wythnos
+            subtitle: Mae'r siart hon yn dangos cyfanswm y nwy a ddefnyddiwyd gan {{name}} dros y 12 mis diwethaf, wedi'i ddadansoddi yn ôl diwrnod yr wythnos ac amser y defnydd
+            title: Defnydd nwy yn ôl diwrnod yr wythnos
+          group_by_week_gas_meter_breakdown_one_year:
+            label: Defnydd nwy yn ôl mesurydd
+            subtitle: Mae'r siart hon yn rhoi dadansoddiad wythnosol o ddefnydd nwy yn ôl mesurydd ar gyfer {{name}}
+            title: Defnydd nwy yn ôl mesurydd
+          management_dashboard_group_by_week_gas:
+            label: Defnydd nwy yn ôl wythnos
+            subtitle: Mae'r siart hon yn rhoi dadansoddiad o'r defnydd o nwy rhwng diwrnodau ysgol agored a chau, gwyliau a phenwythnosau ar gyfer pob wythnos ar gyfer {{name}}
+            title: Defnydd nwy yn ôl wythnos
+        solar_pv:
+          management_dashboard_group_by_month_solar_pv:
+            label: Cynhyrchiad a defnydd solar yn ôl mis
+            subtitle: Mae'r siart isod yn dangos y defnydd o drydan, y cynhyrchiad ynni solar a'r ynni solar a allforiwyd ar gyfer {{name}} dros y 12 mis diwethaf. Mae'n cynnwys arwydd o ba mor llachar oedd yr haul yn ystod pob mis.
+            title: Defnydd trydan a solar ffotofoltaig am y 12 mis diwethaf
+        storage_heaters:
+          storage_heater_by_day_of_week_tolerant:
+            label: Defnydd trydan stôr-wresogyddion y tu allan i oriau gwaith yn ôl diwrnod yr wythnos
+            subtitle: Mae'r siart hon yn dangos cyfanswm y trydan a ddefnyddiwyd gan stôr-wresogyddion yn {{name}} dros y 12 mis diwethaf, wedi'i rannu'n ddyddiau'r wythnos
+            title: Defnydd trydan stôr-wresogyddion yn ôl diwrnod yr wythnos
+          storage_heater_group_by_week:
+            label: Defnydd trydan stôr-wresogyddion yn ôl wythnos
+            subtitle: Mae'r siart isod yn dangos y defnydd o drydan stôr-wresogyddion wedi'i ddadansoddi'n wythnosol rhwng {{name}}
+            title: Defnydd o drydan stôr-wresogyddion ar gyfer y llynedd
