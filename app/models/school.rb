@@ -334,7 +334,11 @@ class School < ApplicationRecord
                       .where.not(school_id: nil)
                       .select('users.id AS user_id, users.school_id AS school_id')
 
-    joins("LEFT JOIN (#{adult_users.to_sql}) AS adult_users ON adult_users.school_id = schools.id")
+    cluster_users = User.joins('INNER JOIN cluster_schools_users ON cluster_schools_users.user_id = users.id')
+                        .where(role: [User.roles[:school_admin], User.roles[:staff]])
+                        .select('users.id AS user_id, cluster_schools_users.school_id AS school_id')
+
+    joins("LEFT JOIN (#{adult_users.to_sql} UNION #{cluster_users.to_sql}) AS adult_users ON adult_users.school_id = schools.id")
       .group('schools.id')
       .having('COUNT(DISTINCT adult_users.user_id) < 3')
   }
