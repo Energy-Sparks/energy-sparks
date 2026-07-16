@@ -1,0 +1,4 @@
+<%= render 'filter',
+           field: :installation_type,
+           options: options_for_select(controller.class::TYPES.keys, params[:installation_type]),
+           blank: 'Any Installation Type' %>
