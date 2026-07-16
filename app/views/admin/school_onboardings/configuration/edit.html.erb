@@ -99,18 +99,6 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md-12">
-      <%= f.label :funder_id %>
-      <%= f.select :funder_id,
-                   options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), @school_onboarding.funder_id),
-                   { include_blank: true }, { class: 'form-control' } %>
-      <p class="small">
-        Note: this field will shortly be retired, but please complete for now.
-      </p>
-    </div>
-  </div>
-
   <h2>Weather and Geographic Areas</h2>
 
   <div class="row">
