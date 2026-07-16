@@ -31,15 +31,7 @@ module Schools
 
         params[:school].delete(attributes)
       end
-
-      default_contract_holder_type = case school_params[:default_contract_holder_id]
-                                     when '', nil
-                                       nil
-                                     else
-                                       SchoolGroup
-                                     end
-
-      @school.update!(school_params.merge(default_contract_holder_type:))
+      @school.update!(school_params)
       redirect_to school_path(@school)
     end
 
@@ -55,7 +47,6 @@ module Schools
         :country,
         :dark_sky_area_id,
         :data_sharing,
-        :default_contract_holder_id,
         :full_school,
         :local_authority_area_id,
         :region,

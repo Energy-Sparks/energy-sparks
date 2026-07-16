@@ -95,20 +95,6 @@
     </div>
   </div>
 
-  <h3>Contracts & Licensing</h3>
-
-  <div class="row">
-    <div class="form-group col-md-12">
-      <%= f.label :default_contract_holder_id, 'Default contract holder' %>
-      <%= f.select :default_contract_holder_id,
-                   options_for_select([['Self funding', nil], ['MAT funded', school.organisation_group&.id]],
-                                      school.default_contract_holder_id),
-                   { include_blank: false },
-                   { class: 'form-control' } %>
-      <p class="small">Indicates whether we expect a school may be self-funded or funded by their MAT in future</p>
-    </div>
-  </div>
-
   <h3>Weather and Solar Data Feeds</h3>
   <p>Select the right data sources to support analysis of school data.</p>
 

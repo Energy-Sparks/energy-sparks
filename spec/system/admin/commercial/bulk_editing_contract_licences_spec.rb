@@ -85,8 +85,7 @@ describe 'bulk editing contract licences' do
 
     context 'when there are additional schools' do
       let!(:additional_school) do
-        create(:school, :with_trust, group: contract.contract_holder,
-                                     default_contract_holder: contract.contract_holder)
+        create(:school, :with_trust, group: contract.contract_holder)
       end
 
       before { refresh }

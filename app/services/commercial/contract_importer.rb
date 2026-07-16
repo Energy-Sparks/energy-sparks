@@ -37,9 +37,6 @@ module Commercial
         updated_by: @import_user
       )
 
-      # Self-funding
-      contract_holder.update!(default_contract_holder: nil) if contract_holder.is_a?(School)
-
       contract
     end
 

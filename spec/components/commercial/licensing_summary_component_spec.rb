@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helper, :include_url_helpers,
                type: :component do
-  let!(:school) { create(:school, default_contract_holder: create(:school_group)) }
+  let!(:school) { create(:school) }
   let!(:licence) do
     create(:commercial_licence,
            school:,

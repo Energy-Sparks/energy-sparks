@@ -17,9 +17,6 @@
         <th>Start date</th>
         <th>End date</th>
         <th>Status</th>
-        <% if @show_renewal_data %>
-          <th>Future Funding Source</th>
-        <% end %>
         <% if @show_actions %>
           <th class="text-end no-sort">Actions</th>
         <% end %>
@@ -61,16 +58,6 @@
                          colour: licence.status_colour
                        )) %>
           </td>
-          <% if @show_renewal_data %>
-            <td>
-              <% if licence.school.default_contract_holder.nil? %>
-                Self funding
-              <% else %>
-                MAT funded
-              <% end %>
-            </td>
-          <% end %>
-
           <% if @show_actions %>
             <td class="text-end">
               <div class="btn-group">
