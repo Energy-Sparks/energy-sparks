@@ -12,4 +12,85 @@
 </div>
 
 <div class="container">
+
+  <%= render Layout::GridComponent.new(id: 'overview-cards',
+                                       cols: 3,
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'school', style: :circle, size: 'f3' %>
+      <%= card.with_header level: 3, title: 'Schools' %>
+      <%= card.with_figure number_with_delimiter(1300) %>
+      <%= card.with_subtext do
+            'Active schools'
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'children', style: :circle, size: 'f3' %>
+      <%= card.with_header level: 3, title: 'Pupils' %>
+      <%= card.with_figure number_with_delimiter(734_000) %>
+      <%= card.with_subtext do
+            'Benefitting from access to our educational programme'
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'person-chalkboard', style: :circle, size: 'f3' %>
+      <%= card.with_header level: 3, title: 'Educators' %>
+      <%= card.with_figure number_with_delimiter(2500) %>
+      <%= card.with_subtext do
+            'With access to our platform'
+          end %>
+    <% end %>
+  <% end %>
+
+  <%= render Layout::GridComponent.new(id: 'overview-cards',
+                                       cols: 2,
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark bg-success') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'clipboard', style: :circle, size: 'f3' %>
+      <%= card.with_header level: 3, title: 'Pupil activities' %>
+      <%= card.with_figure number_with_delimiter(1300) %>
+      <%= card.with_subtext do
+            'Completed in 2024/2025'
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'person-chalkboard', style: :circle, size: 'f3' %>
+      <%= card.with_header level: 3, title: 'Staff energy saving actions' %>
+      <%= card.with_figure number_with_delimiter(2500) %>
+      <%= card.with_subtext do
+            'Completed in 2024/2025'
+          end %>
+    <% end %>
+  <% end %>
+
+  <%= render Layout::Cards::SectionHeaderComponent.new(
+        id: 'totod'
+      ) do |section_header| %>
+    <%= section_header.with_header title: 'Estimated savings across all Energy Sparks schools' %>
+    <%= section_header.with_description { 'Savings in the 2024/2025 academic year' } %>
+  <% end %>
+
+  <%= render Layout::GridComponent.new(id: 'overview-cards',
+                                       cols: 2,
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-accent') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'cloud', style: :circle, size: 'f3' %>
+      <%= card.with_header level: 3, title: 'Reduced emissions' %>
+      <%= card.with_figure "#{number_with_delimiter(10_000)} tonnes of CO2" %>
+      <%= card.with_subtext do
+            'That’s the same amount of CO2 as flying 1,700 times around the world!'
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'sterling-sign', style: :circle, size: 'f3' %>
+      <%= card.with_header level: 3, title: 'Cost savings' %>
+      <%= card.with_figure "£#{number_with_delimiter(57_000_000)}" %>
+      <%= card.with_subtext do
+            'Saved on energy bills in 2024/25 based on current tariffs'
+          end %>
+    <% end %>
+  <% end %>
 </div>
