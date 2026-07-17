@@ -1,6 +1,16 @@
 ---
 en:
   our_impact:
+    energy_savings:
+      description: Estimated savings across all Energy Sparks schools in the 2025/26 academic year
+      title: Energy savings
+    engagement_cards:
+      pupils:
+        description: Completed in the 2025/26 academic year
+        title: Pupil activities
+      staff:
+        description: Completed in the 2025/26 academic year
+        title: Adult actions
     feature:
       description_html: |-
         <p>
@@ -15,7 +25,66 @@ en:
          Take a look at our impact in the 2025/26 academic year.
         </p>
       title: Our impact
+    find_out_more:
+      description_html: |-
+        <p>Energy Sparks publishes an annual report exploring energy efficiency in schools.</p>
+        <p>Based on our experience of working with and analysing the data for thousands of schools
+        we provide insights into how schools around the UK can reduce their energy use</p>
+        <p>We also publish regular case studies exploring how individual schools and whole trusts
+        are using our energy management tool to make savings</p>
+      report_button: Energy efficiency report
+      title: Looking for further insights?
     overview:
-      description: How many schools and pupils did we support in the 2025/26 academic year?
+      description: How many schools were using our energy management tool and educational programme in the 2025/26 academic year?
       title: Overview
+    overview_cards:
+      pupils:
+        description: Benefitting from access to our educational programme
+        title: Pupils
+      schools:
+        description: With access to our energy management tool
+        title: Schools
+      staff:
+        description: Benefitting our energy management tool, advice and support
+        title: Adult users
+    percentage_cards:
+      primary:
+        description: Reduced their energy consumption in the 2025/26 academic year
+        title: Primary schools
+      secondary:
+        description: Reduced their reduced energy consumption in the 2025/26 academic year
+        title: Secondary schools
+    percentage_savings:
+      description: Percentage of schools reducing their energy use in the 2025/26 academic year
+      title: Schools making savings
+    primary_savings:
+      carbon:
+        description: Reduced CO2 emissions from reducing energy use
+        title: Reduced emissions
+      cost:
+        description: Cost savings from reducing energy use using current tariffs
+        title: Cost savings
+      description: Savings made by the average primary school using Energy Sparks in the 2025/26 academic year
+      electricity:
+        description: Average reduction in electricity use
+        title: Electricity use
+      gas:
+        description: Average reduction in gas use
+        title: Gas use
+      title: Primary school savings
+    secondary_savings:
+      carbon:
+        description: Reduced CO2 emissions from reducing energy use
+        title: Reduced emissions
+      cost:
+        description: Cost savings from reducing energy use using current tariffs
+        title: Cost savings
+      description: Savings made by the average secondary school using Energy Sparks in the 2025/26 academic year
+      electricity:
+        description: Average reduction in electricity use
+        title: Electricity use
+      gas:
+        description: Average reduction in gas use
+        title: Gas use
+      title: Secondary school savings
     title: Our impact
