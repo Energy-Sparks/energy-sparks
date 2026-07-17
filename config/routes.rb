@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   get 'energy-audits', to: 'home#energy_audits'
   get 'education-workshops', to: 'home#education_workshops'
   get 'product', to: 'home#product'
+  get 'our-impact', to: 'home#our_impact'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show',
                                                            as: :data_feeds_dark_sky_temperature_readings

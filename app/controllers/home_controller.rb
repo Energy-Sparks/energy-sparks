@@ -89,6 +89,10 @@ class HomeController < ApplicationController
     @trustees = TeamMember.trustee.order(:position)
   end
 
+  def our_impact
+    redirect_to home_page_path unless Flipper.enabled?(:org_impact_page, current_user)
+  end
+
   private
 
   def find_school_statistics
