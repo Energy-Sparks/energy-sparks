@@ -39,10 +39,10 @@
   <tbody>
     <% @schools.each do |school| %>
       <tr>
-        <td><%= link_to school.school_group.name, school_group_path(school.school_group) %></td>
+        <td><%= link_to school.school_group&.name, school_group_path(school.school_group) %></td>
         <td><%= link_to school.name, school_path(school) %></td>
         <% unless @dashboard_user %>
-          <td><%= school.school_group.default_issues_admin_user&.display_name %></td>
+          <td><%= school.school_group&.default_issues_admin_user&.display_name %></td>
         <% end %>
         <td><%= school.summarised_current_contract_holder_name %></td>
         <td><%= school.all_school_admins.count %></td>
