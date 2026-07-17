@@ -472,7 +472,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     context 'with only a basic button panel' do
       it 'has no extra buttons' do
         within('#school-group-button-panel') do
-          puts page.html
           expect(page).to have_no_link('Meter attributes')
           expect(page).to have_no_link('Manage tariffs')
           expect(page).to have_no_link('Meter updates')
@@ -641,7 +640,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     context 'with only a basic button panel' do
       it 'has no extra buttons' do
         within('#school-group-button-panel') do
-          puts page.html
           expect(page).to have_no_link('Meter attributes')
           expect(page).to have_no_link('Manage tariffs')
           expect(page).to have_no_link('Meter updates')
@@ -820,6 +818,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         create(:school_onboarding, created_by: admin, school_group: school_group)
         create(:school, visible: true, data_enabled: true, school_group: school_group)
         create(:school, visible: false, school_group: school_group)
+        create(:school, active: false, removal_date: 1.day.ago, school_group: school_group)
         create(:school, active: false, school_group: school_group)
 
         visit admin_school_group_path(school_group)
@@ -829,7 +828,8 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       it { expect(page).to have_text('Active (with data visible) 1') }
       it { expect(page).to have_text('Invisible 1') }
       it { expect(page).to have_text('Onboarding 1') }
-      it { expect(page).to have_text('Removed 1') }
+      it { expect(page).to have_text('Archived 1') }
+      it { expect(page).to have_text('Deleted 1') }
     end
 
     describe 'School counts by school type panel' do
