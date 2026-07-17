@@ -48,6 +48,10 @@ module Admin
           icon: 'school-circle-xmark', link: 'View Engaged Groups',
           path: admin_dashboard_engaged_groups_path(dashboard_id: @user),
           content: "You have #{low_engaged_schools_count} groups with engagement below 50%" },
+        { id: 'limited-user-schools', check: prompt_for_limited_user_schools?, status: :neutral,
+          icon: 'user-xmark', link: 'View Limited Users',
+          path: admin_dashboard_limited_users_path(dashboard_id: @user),
+          content: "You have #{limited_user_schools_count} schools with less than 3 adult users" },
         { id: 'missing-alert-contacts', check: prompt_for_missing_alert_contacts?,
           status: :neutral, icon: 'address-book', link: 'View Schools',
           path: admin_dashboard_missing_alert_contacts_path(dashboard_id: @user),
@@ -91,6 +95,10 @@ module Admin
 
     def prompt_for_low_engaged_schools?
       true unless low_engaged_schools_count.nil? || low_engaged_schools_count.zero?
+    end
+
+    def prompt_for_limited_user_schools?
+      true unless limited_user_schools_count.nil? || limited_user_schools_count.zero?
     end
 
     def prompt_for_missing_alert_contacts?
@@ -151,13 +159,23 @@ module Admin
     def low_engaged_schools_count
       engagement_percentage_threshold = 50
       @low_engaged_schools_count ||= SchoolGroup.organisation_groups
-                                                .where(default_issues_admin_user: @user)
+                                                .where(default_issues_admin_user: user)
                                                 .count_active_schools
                                                 .count_engaged_schools
                                                 .where('COALESCE(active.count, 0) > 0')
                                                 .where('COALESCE(engaged.count, 0) * 1.0 < ? / 100.0 * active.count',
                                                        engagement_percentage_threshold)
                                                 .count
+    end
+
+    def limited_user_schools_count
+      @limited_user_schools_count ||= School.visible
+                                            .limited_users
+                                            .joins(:school_group)
+                                            .where(school_group: { default_issues_admin_user: user })
+                                            .pluck(:id)
+                                            .uniq
+                                            .count
     end
 
     def missing_alert_contacts_count

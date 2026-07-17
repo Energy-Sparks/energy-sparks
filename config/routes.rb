@@ -604,6 +604,7 @@ Rails.application.routes.draw do
         end
       end
       resources :missing_alert_contacts, module: :dashboard
+      resources :limited_users, module: :dashboard
       resources :activities, module: :dashboard
       resources :interventions, module: :dashboard
       resources :energy_tariffs, module: :dashboard
@@ -914,6 +915,7 @@ Rails.application.routes.draw do
       resources :meter_loading_reports, only: :index
       resources :meter_reports, only: :index
       resources :missing_alert_contacts, only: [:index]
+      resources :limited_users, only: [:index]
       resources :new_data_inactive_meter_report, only: [:index]
       resources :perse_meter, only: [:index]
       resources :recent_audits, only: [:index]
