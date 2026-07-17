@@ -2,7 +2,6 @@
   &.theme-dark {
     background-color: $blue-very-dark;
     color: $blue-light;
-    --elements-icon-colour: #{$blue-very-dark};
 
     h1, h2, h3, h4, h5, h6, .text-main {
       color: $white;
@@ -27,6 +26,10 @@
 
     .btn-secondary {
       @extend .btn-outline-white;
+    }
+
+    &.prompt-component .elements-icon-component {
+      color: $blue-very-dark;
     }
   }
 
@@ -73,8 +76,4 @@
   &.theme-pale {
     background-color: $blue-pale;
   }
-}
-
-.elements-icon-component {
-  color: var(--elements-icon-colour, currentColor);
 }
