@@ -5,13 +5,19 @@
       ) do |grid| %>
     <% grid.with_feature_card(size: :xl) do |feature| %>
       <%= feature.with_header title: t('our_impact.feature.title') %>
-      <%= feature.with_description { t('our_impact.feature.description') } %>
+      <%= feature.with_description { t('our_impact.feature.description_html') } %>
     <% end %>
     <%= grid.with_image src: 'our-impact-image.jpg' %>
   <% end %>
 </div>
 
 <div class="container">
+  <%= render Layout::Cards::SectionHeaderComponent.new(
+        id: 'overview-header'
+      ) do |section_header| %>
+    <%= section_header.with_header title: t('our_impact.overview.title') %>
+    <%= section_header.with_description { t('our_impact.overview.description') } %>
+  <% end %>
 
   <%= render Layout::GridComponent.new(id: 'overview-cards',
                                        cols: 3,

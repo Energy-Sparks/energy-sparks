@@ -2,6 +2,20 @@
 en:
   our_impact:
     feature:
-      description: Lorem ipsum
-      title: Energy Sparks annual impact overview
-    title: Annual impact overview
+      description_html: |-
+        <p>
+         Through our work to help schools and Trusts save energy, we are achieving significant reductions in costs and
+         carbon emissions.
+        </p>
+        <p>
+         Energy savings have been achieved through simple, no-cost behaviour change and heating control optimisation
+         guided by energy data insights from <a href="/product">our energy management tool</a>.
+        </p>
+        <p>
+         Take a look at our impact in the 2025/26 academic year.
+        </p>
+      title: Our impact
+    overview:
+      description: How many schools and pupils did we support in the 2025/26 academic year?
+      title: Overview
+    title: Our impact
