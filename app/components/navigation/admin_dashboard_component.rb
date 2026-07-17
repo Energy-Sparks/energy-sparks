@@ -11,7 +11,8 @@ module Navigation
         { name: 'My Data Sources', path: admin_dashboard_data_sources_path(current_user) },
         { name: 'My Suppliers', path: admin_dashboard_suppliers_path(current_user) },
         { name: 'My Data Feeds', path: admin_dashboard_amr_data_feed_configs_path(current_user) },
-        { name: 'My Issues', path: admin_dashboard_issues_path(current_user) }
+        { name: 'My Issues', path: admin_dashboard_issues_path(current_user) },
+        { name: 'My Energy Tariffs', path: admin_dashboard_energy_tariffs_path(current_user) }
       ]
     end
 

@@ -16,23 +16,23 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
   let(:always_render) { false }
 
   shared_examples 'it displays all content' do
-    it { expect(html).to have_text(title) }
-    it { expect(html).to have_text('Warning') }
+    it { expect(page).to have_text(title) }
+    it { expect(page).to have_text('Warning') }
 
-    it { expect(html).to have_link('Link text', href: 'href') }
-    it { expect(html).to have_text(content) }
+    it { expect(page).to have_link('Link text', href: 'href') }
+    it { expect(page).to have_text(content) }
 
-    let(:icon_html) { html.css('span.fa-stack') }
+    let(:icon_html) { page.find('span.fa-stack') }
 
     it 'has the icon' do
-      expect(html).to have_css('span.fa-stack')
+      expect(page).to have_css('span.fa-stack')
       expect(icon_html).to have_css('i.fa-circle')
       expect(icon_html).to have_css("i.fa-#{icon}")
     end
   end
 
   context 'with all params' do
-    let(:html) do
+    before do
       render_inline(described_class.new(**params)) do |c|
         c.with_link { link }
         c.with_title { title }
@@ -42,7 +42,7 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
     end
 
     it 'has the status class' do
-      expect(html).to have_css('div.prompt-component.neutral')
+      expect(page).to have_css('div.prompt-component.neutral')
     end
 
     it_behaves_like 'it displays all content'
@@ -52,27 +52,10 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
       let(:expected_id) { id }
     end
 
-    context 'with unrecognised status' do
-      let(:params) { { id: id, status: :unrecognised, icon: icon, classes: classes } }
-
-      it do
-        expect { html }.to raise_error(
-          ArgumentError,
-          "Unknown 'unrecognised' is not a permitted value for status. " \
-          'Must be one of: none, positive, negative, and neutral'
-        )
-      end
-    end
-
     context 'with no status' do
       let(:params) { { id: id, status: nil, icon: icon, classes: classes } }
 
       it_behaves_like 'it displays all content'
-
-      it_behaves_like 'an application component' do
-        let(:expected_classes) { classes }
-        let(:expected_id) { id }
-      end
     end
 
     context 'with fuel type' do
@@ -89,19 +72,46 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
       it_behaves_like 'it displays all content'
     end
 
+    context 'with image' do
+      let(:params) { { id: id, image: '/path/to/image.png' } }
+
+      it 'renders the image' do
+        expect(page).to have_css("img[src='/path/to/image.png']")
+      end
+    end
+  end
+
+  context 'with status validation' do
     context 'with recognised statuses' do
       %i[none positive negative neutral].each do |status|
         let(:params) { { id: id, status: status, icon: icon, classes: classes } }
         it "recognises #{status}" do
-          expect { html }.not_to raise_error
+          expect do
+            render_inline(described_class.new(**params))
+          end.not_to raise_error
         end
+      end
+    end
+
+    context 'with unrecognised status' do
+      let(:params) { { id: id, status: :unrecognised, icon: icon, classes: classes } }
+
+      it 'raises an error' do
+        expect do
+          render_inline(described_class.new(**params))
+        end.to raise_error(
+          ArgumentError,
+          "Unknown 'unrecognised' is not a permitted value for status. " \
+          'Must be one of: none, positive, negative, and neutral'
+        )
       end
     end
   end
 
   context 'with compact style' do
     let(:params) { { id: id, status: :neutral, icon: icon, classes: classes, style: :compact } }
-    let(:html) do
+
+    before do
       render_inline(described_class.new(**params)) do |c|
         c.with_link { link }
         c.with_title { title }
@@ -111,37 +121,32 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
     end
 
     it_behaves_like 'it displays all content'
-
-    it_behaves_like 'an application component' do
-      let(:expected_classes) { classes }
-      let(:expected_id) { id }
-    end
   end
 
   context 'with no link' do
-    let(:html) do
+    before do
       render_inline(described_class.new(**params)) do |_c|
         content
       end
     end
 
-    it { expect(html).to have_text(content) }
-    it { expect(html).to have_no_link('Link text', href: 'href') }
+    it { expect(page).to have_text(content) }
+    it { expect(page).to have_no_link('Link text', href: 'href') }
   end
 
   context 'with no content' do
-    let(:html) do
+    before do
       render_inline(described_class.new(**params)) do |c|
         c.with_link { link }
       end
     end
 
-    it { expect(html.to_html).to be_blank }
+    it { expect(rendered_content).to be_blank }
 
     context 'when always_render is set to true' do
       let(:always_render) { true }
 
-      it { expect(html).to have_link('Link text', href: 'href') }
+      it { expect(page).to have_link('Link text', href: 'href') }
     end
   end
 end

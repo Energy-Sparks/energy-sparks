@@ -1,6 +1,7 @@
 <% content_for :page_title, t("tasks.completed.#{task_type}.page_title", school: school.name) %>
 
-<h1 class="text-center">
+<% content_for :header do %>
+<h1>
   <%= t('tasks.completed.congratulations') %>
   <% if recording.points.to_i.positive? %>
     <% if recording.academic_year.future? %>
@@ -14,30 +15,19 @@
     <%= t("tasks.completed.#{task_type}.no_points") %>
   <% end %>
 </h1>
-
-<% recording.programmes_completed_todos.completed.recently_ended.each do |programme| %>
-  <%= render InfoBarComponent.new(
-        status: :neutral,
-        title: t('schools.prompts.completed_programme.message_html',
-                 title: programme.title,
-                 count: programme.points_for_completion),
-        icon: image_tag(programme.programme_type.t_attached_or_default(
-                          :image, placeholder: 'placeholder300x200.png'
-                        ),
-                        class: 'img-fluid'),
-        icon_cols: 2,
-        buttons: { t('common.labels.view') => programme_type_path(programme.programme_type) }
-      ) %>
 <% end %>
 
-<%= render Scoreboards::SchoolSummaryComponent.new(podium: current_school_podium, title: '') %>
+<%= render 'schools/prompts/completed_programme', recording:, style: :compact %>
 
 <h3><%= t('tasks.completed.what_next') %></h3>
 
 <%= render 'schools/prompts/share', recording:, task_type:, style: :compact %>
-<%= render 'schools/prompts/complete_programme',
-           programmes: school.programmes.active.started.order(started_on: :desc),
-           style: :compact %>
-<%= render 'schools/prompts/join_programme', school: school, style: :compact %>
-<%= render 'schools/prompts/audit', audit: Audits::AuditService.new(school).last_audit, style: :compact %>
+<%= render 'schools/prompts/complete_programme', school:, style: :compact %>
+<%= render 'schools/prompts/join_programme', school:, style: :compact %>
+<%= render 'schools/prompts/audit', school:, style: :compact %>
 <%= render 'schools/prompts/recommended', scope: recommendations_scope_for(task_type), icon: true, style: :compact %>
+
+<% content_for :footer_theme, 'bg-light' %>
+<% content_for(:footer) do %>
+  <%= render Scoreboards::SchoolSummaryComponent.new(podium: current_school_podium, classes: 'mt-4 mb-4') %>
+<% end %>

@@ -167,7 +167,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/models/concerns/temporal_range.rb",
-      "line": 50,
+      "line": 52,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "joins(\"INNER JOIN #{table_name} AS t2\\n  ON #{temporal_group_keys.map do\n \"t2.#{key} = #{table_name}.#{key}\"\n end.join(\" AND \")}\\n AND t2.id <> #{table_name}.id\\n AND t2.start_date <= #{table_name}.end_date\\n AND t2.end_date >= #{table_name}.start_date\\n\".squish)",
       "render_path": null,
@@ -225,29 +225,6 @@
       "confidence": "High",
       "cwe_id": [
         77
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "cbc3a9bdefbaf072bf041009fad6b41e065149f332f5a1594eb79e7aab33d896",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/report/metered_solar.rb",
-      "line": 21,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Meter.joins(:school => :school_group).joins(\"JOIN meter_attributes solar_pv_mapping_attributes\\n                    ON solar_pv_mapping_attributes.meter_id = meters.id\\n                    #{active_attribute(:solar_pv_mpan_meter_mapping, :solar_pv_mapping_attributes)}\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Report::MeteredSolar",
-        "method": "Report::MeteredSolar.query"
-      },
-      "user_input": "active_attribute(:solar_pv_mpan_meter_mapping, :solar_pv_mapping_attributes)",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
       ],
       "note": ""
     },

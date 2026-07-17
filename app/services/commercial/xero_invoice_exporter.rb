@@ -50,7 +50,7 @@ module Commercial
     # One extra line item per extra fee with note, e.g. X meters
     def invoice_to_line_items(invoice)
       invoice_line_items = []
-      invoice.line_items.each do |line_item|
+      invoice.line_items.invoice_order.each do |line_item|
         add_base_price(invoice_line_items, invoice, line_item)
         add_metering_fee(invoice_line_items, invoice, line_item)
         add_private_account_fee(invoice_line_items, invoice, line_item)
