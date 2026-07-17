@@ -49,10 +49,8 @@ en:
         title: Adult users
     percentage_cards:
       primary:
-        description: Reduced their energy consumption in the 2025/26 academic year
         title: Primary schools
       secondary:
-        description: Reduced their reduced energy consumption in the 2025/26 academic year
         title: Secondary schools
     percentage_savings:
       description: Percentage of schools reducing their energy use in the 2025/26 academic year
