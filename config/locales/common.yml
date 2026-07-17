@@ -15,6 +15,7 @@ en:
     electricity_and_solar_pv: Electricity and Solar PV
     email_us: email us
     engagement: Engagement
+    enter_number: Enter a number
     explore_energy_data: Explore energy data
     exported_solar_pv: Exported Solar PV
     feature_not_available: This feature is not available
@@ -115,6 +116,7 @@ en:
       secondary: Secondary
       special: Special or Alternative Provision
     schools: Schools
+    select_date: Select date
     settings: Settings
     solar_pv: Solar PV
     storage_heater: Storage heater

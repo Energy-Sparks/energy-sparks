@@ -173,6 +173,10 @@ class Observation < ApplicationRecord
 
   def type_name = intervention_type&.name
 
+  def task
+    intervention_type if intervention?
+  end
+
   private
 
   def add_points_for_activities
