@@ -28,7 +28,7 @@
       @extend .btn-outline-white;
     }
 
-    .elements-icon-component {
+    &.prompt-component .elements-icon-component {
       color: $blue-very-dark;
     }
   }
