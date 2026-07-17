@@ -17,6 +17,12 @@
 #
 # Indexes
 #
+#  index_intervention_types_on_intervention_type_group_id  (intervention_type_group_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (intervention_type_group_id => intervention_type_groups.id) ON DELETE => cascade
+#
 
 #  index_intervention_types_on_intervention_type_group_id  (intervention_type_group_id)
 #

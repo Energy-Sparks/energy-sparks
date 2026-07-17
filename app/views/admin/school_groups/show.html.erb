@@ -55,8 +55,12 @@
             </span>
           </div>
           <div class="d-flex justify-content-between align-items-center">
-            <span>Removed</span>
-            <span class="badge text-bg-secondary"><%= @school_group.assigned_schools.inactive.count %></span>
+            <span>Archived</span>
+            <span class="badge text-bg-secondary"><%= @school_group.assigned_schools.archived.count %></span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Deleted</span>
+            <span class="badge text-bg-secondary"><%= @school_group.assigned_schools.deleted.count %></span>
           </div>
         </div>
       </div>
