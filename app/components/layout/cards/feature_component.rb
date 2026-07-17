@@ -30,7 +30,7 @@ module Layout
         Elements::TagComponent.new(:div, **merge_classes('mt-auto', kwargs))
       }
 
-      SIZES = { xl: 1, lg: 2, md: 3, sm: 4 }.freeze
+      SIZES = { xl: 1, lg: 2, md: 3, sm: 4, xs: 5 }.freeze
       private_constant :SIZES
       TAG_POSITIONS = %i[top bottom].freeze
       private_constant :TAG_POSITIONS

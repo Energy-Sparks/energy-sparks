@@ -3,10 +3,3 @@
   max-height: 150px;
   object-fit: contain;
 }
-
-/* only have a max width for md and up */
-@media(min-width:768px) {
-  .recommendations-component .card {
-    max-width: 300px;
-  }
-}

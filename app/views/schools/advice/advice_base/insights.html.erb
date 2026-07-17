@@ -14,11 +14,11 @@
     <p><%= @advice_page_insights_next_steps %></p>
   <% end %>
 
-  <%= render RecommendationsComponent.new(recommendations: @activity_types,
+  <%= render RecommendationsComponent.new(tasks: @activity_types,
                                           title: t('advice_pages.insights.recommendations.activities_title'),
                                           classes: 'pb-4') %>
 
-  <%= render RecommendationsComponent.new(recommendations: @intervention_types,
+  <%= render RecommendationsComponent.new(tasks: @intervention_types,
                                           title: t('advice_pages.insights.recommendations.actions_title'),
                                           classes: 'pb-4') %>
 
