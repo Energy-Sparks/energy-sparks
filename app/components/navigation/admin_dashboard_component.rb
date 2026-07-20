@@ -16,7 +16,7 @@ module Navigation
       ]
     end
 
-    def my_schools_section
+    def my_schools_section # rubocop:disable Metrics/AbcSize
       [
         { name: 'Onboarding', classes: 'small', path: admin_dashboard_school_onboardings_path(current_user) },
         { name: 'Awaiting activation', classes: 'small', path: admin_dashboard_activations_path(current_user) },
@@ -25,6 +25,8 @@ module Navigation
         { name: 'Engaged schools', classes: 'small', path: admin_dashboard_engaged_groups_path(current_user) },
         { name: 'Recent activities', classes: 'small', path: admin_dashboard_activities_path(current_user) },
         { name: 'Recent actions', classes: 'small', path: admin_dashboard_interventions_path(current_user) },
+        { name: 'Limited users', classes: 'small',
+          path: admin_dashboard_limited_users_path(current_user) },
         { name: 'Missing alert contacts', classes: 'small',
           path: admin_dashboard_missing_alert_contacts_path(current_user) },
         { name: 'Pupil number updates', classes: 'small',

@@ -12,6 +12,18 @@ module Commercial
           id: Commercial::Licence.current.select(:school_id)
         )
       }
+
+      scope :with_current_licence_for_contract_holder, lambda { |contract_holder_id, contract_holder_type = 'Funder'|
+        joins(licences: :contract)
+          .merge(Licence.current)
+          .where(
+            commercial_contracts: {
+              contract_holder_id: contract_holder_id,
+              contract_holder_type: contract_holder_type
+            }
+          )
+          .distinct
+      }
     end
 
     def current_licence

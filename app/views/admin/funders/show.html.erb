@@ -56,37 +56,3 @@
     </tr>
   </tbody>
 </table>
-
-<h2>Linked schools</h2>
-
-<p>
-  The following shows numbers of schools and onboardings linked to the funder. This is the old style of managing
-  funder information. The above is more up to date and reliable.
-</p>
-
-<table class="table table-sm">
-  <thead>
-    <th>Category</th>
-    <th>Schools</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Onboarding</td>
-      <td>
-        <%= @funder.school_onboardings.where(school_id: nil).count %>
-      </td>
-    </tr>
-    <tr>
-      <td>Visible not data enabled</td>
-      <td><%= @funder.schools.visible.where(data_enabled: false).count %></td>
-    </tr>
-    <tr>
-      <td>Visible and data enabled</td>
-      <td><%= @funder.schools.visible.data_enabled.count %></td>
-    </tr>
-    <tr>
-      <td>Total</td>
-      <td><%= @funder.schools.visible.count + @funder.school_onboardings.where(school_id: nil).count %></td>
-    </tr>
-  </tbody>
-</table>

@@ -190,7 +190,6 @@ class SchoolsController < ApplicationController
       country
       enable_targets_feature
       floor_area
-      funder_id
       funding_status
       has_battery
       has_swimming_pool

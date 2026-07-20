@@ -4,7 +4,6 @@
       <tr>
         <th><%= check_box_tag "check-all-#{school_group.id}", false, false, { class: 'check-all' } %></th>
         <th>School</th>
-        <th>Funder</th>
         <th>Contract</th>
         <th>Contact email</th>
         <th>Invite sent</th>
@@ -19,7 +18,6 @@
             <%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %>
           </td>
           <td class="col-2"><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
-          <td class="col-1"><%= onboarding&.school&.funder&.name || onboarding&.funder&.name %></td>
           <td class="col-1">
             <% if onboarding.contract %>
               <%= link_to onboarding.contract.name, admin_commercial_contract_path(onboarding.contract) %>

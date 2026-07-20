@@ -129,7 +129,6 @@ class User < ApplicationRecord
   scope :mailchimp_update_required, lambda {
     joins('LEFT JOIN schools ON schools.id = users.school_id')
       .joins('LEFT JOIN school_groups ON school_groups.id = users.school_group_id')
-      .joins('LEFT JOIN funders ON funders.id = schools.funder_id')
       .joins('LEFT JOIN local_authority_areas ON local_authority_areas.id = schools.local_authority_area_id')
       .joins('LEFT JOIN scoreboards ON scoreboards.id = schools.scoreboard_id')
       .joins('LEFT JOIN staff_roles ON staff_roles.id = users.staff_role_id')
@@ -137,7 +136,7 @@ class User < ApplicationRecord
       # include any we've not pushed to mailchimp, or any that are out of date based on timestamps
       .where('mailchimp_updated_at IS NULL OR ' \
              'GREATEST(users.mailchimp_fields_changed_at, schools.mailchimp_fields_changed_at,  ' \
-             'school_groups.mailchimp_fields_changed_at, funders.mailchimp_fields_changed_at,  ' \
+             'school_groups.mailchimp_fields_changed_at,  ' \
              'local_authority_areas.mailchimp_fields_changed_at, scoreboards.mailchimp_fields_changed_at,  ' \
              'staff_roles.mailchimp_fields_changed_at) > mailchimp_updated_at')
   }
@@ -351,7 +350,6 @@ class User < ApplicationRecord
         'School data enabled',
         'Current Contract Holder',
         'Future Contract Holder',
-        'Funder',
         'Region',
         'Name',
         'Email',
@@ -385,7 +383,6 @@ class User < ApplicationRecord
           else
             ''
           end,
-          user.school&.funder&.name || '',
           user.school&.region&.to_s&.titleize || '',
           user.name,
           user.email,

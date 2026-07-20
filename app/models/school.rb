@@ -16,7 +16,6 @@
 #  country                                 :integer          default("england"), not null
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
-#  default_contract_holder_type            :string
 #  enable_targets_feature                  :boolean          default(TRUE)
 #  floor_area                              :decimal(, )
 #  full_school                             :boolean          default(TRUE)
@@ -82,9 +81,7 @@
 #  updated_at                              :datetime         not null
 #  calendar_id                             :bigint(8)
 #  dark_sky_area_id                        :bigint(8)
-#  default_contract_holder_id              :bigint(8)
 #  establishment_id                        :bigint(8)
-#  funder_id                               :bigint(8)
 #  local_authority_area_id                 :bigint(8)
 #  local_distribution_zone_id              :bigint(8)
 #  met_office_area_id                      :bigint(8)
@@ -99,7 +96,6 @@
 # Indexes
 #
 #  index_schools_on_calendar_id                 (calendar_id)
-#  index_schools_on_default_contract_holder     (default_contract_holder_type,default_contract_holder_id)
 #  index_schools_on_establishment_id            (establishment_id)
 #  index_schools_on_latitude_and_longitude      (latitude,longitude)
 #  index_schools_on_local_authority_area_id     (local_authority_area_id)
@@ -136,7 +132,7 @@ class School < ApplicationRecord
                                      tsearch: { prefix: true }
                                    }
 
-  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
+  watch_mailchimp_fields :active, :country, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
@@ -248,9 +244,7 @@ class School < ApplicationRecord
 
   belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
 
-  belongs_to :funder, optional: true
   belongs_to :local_distribution_zone, optional: true
-  belongs_to :default_contract_holder, polymorphic: true, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
@@ -327,8 +321,20 @@ class School < ApplicationRecord
   scope :joined_programme, ->(range) { where(id: Programme.recently_started_non_default(range).select(:school_id)) }
   # TODO: cluster users, not just those directly linked
   scope :with_recently_logged_in_users, ->(date) { where(id: User.recently_logged_in(date).select(:school_id)) }
-  scope :unfunded, -> { where(schools: { funder_id: nil }) }
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
+  scope :limited_users, lambda {
+    adult_users = User.where(role: [User.roles[:school_admin], User.roles[:staff]])
+                      .where.not(school_id: nil)
+                      .select('users.id AS user_id, users.school_id AS school_id')
+
+    cluster_users = User.joins('INNER JOIN cluster_schools_users ON cluster_schools_users.user_id = users.id')
+                        .where(role: [User.roles[:school_admin], User.roles[:staff]])
+                        .select('users.id AS user_id, cluster_schools_users.school_id AS school_id')
+
+    joins("LEFT JOIN (#{adult_users.to_sql} UNION #{cluster_users.to_sql}) AS adult_users ON adult_users.school_id = schools.id")
+      .group('schools.id')
+      .having('COUNT(DISTINCT adult_users.user_id) < 3')
+  }
   scope :full_school, -> { where(full_school: true) }
 
   def self.with_energy_tariffs
@@ -557,6 +563,10 @@ class School < ApplicationRecord
     User.where(id: school_admin).or(
       User.where(id: cluster_users)
     )
+  end
+
+  def all_staff
+    User.where(id: staff).distinct
   end
 
   def all_adult_school_users
@@ -985,10 +995,6 @@ class School < ApplicationRecord
     # 1 - "Nursery"
     # 6 - "16 plus"
     # 7 - "All-through"
-  end
-
-  def self_funded_in_future?
-    default_contract_holder.nil?
   end
 
   def contract_holder

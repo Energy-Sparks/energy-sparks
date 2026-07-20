@@ -250,7 +250,11 @@ describe 'compare pages', :compare, type: :system do
     # the stubbed out geocoder stamps on the country if the postcode is defaulted
     let!(:school_group)    { create(:school_group, name: 'Group 1') }
     let!(:school_group_2)  { create(:school_group, name: 'Group 2') }
-    let!(:school)          { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group, funder: funder) }
+    let!(:school) do
+      school = create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group)
+      create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder: funder))
+      school
+    end
     let!(:school_2)        { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group_2) }
     let!(:school_3)        { create(:school, country: :scotland, school_group: create(:school_group, name: 'Not Public', public: false)) }
 

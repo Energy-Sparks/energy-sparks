@@ -1,0 +1,55 @@
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "Schools with limited users for #{@dashboard_user.display_name}" %>
+  <% end %>
+
+  <%= render Elements::ButtonComponent.new('View full report',
+                                           admin_reports_limited_users_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+
+  <p>
+    This report lists all visible schools for <%= @dashboard_user.display_name %>'s groups that have less than 3 adult users (school admin or staff).
+  </p>
+
+<% else %>
+  <%= render 'admin/reports/title', title: 'Schools with limited users' %>
+
+<p>
+  This report lists all visible schools that have less than 3 adult users (school admin or staff).
+</p>
+
+<% end %>
+
+<table class="table table-sorted table-sm">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>School</th>
+      <% unless @dashboard_user %>
+        <th>Admin</th>
+      <% end %>
+      <th>Current Funder</th>
+      <th>Number of School Admins</th>
+      <th>Number of Staff Users</th>
+      <th>Total Number of Adult Users </th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @schools.each do |school| %>
+      <tr>
+        <td><%= link_to school.school_group&.name, school_group_path(school.school_group) %></td>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <% unless @dashboard_user %>
+          <td><%= school.school_group&.default_issues_admin_user&.display_name %></td>
+        <% end %>
+        <td><%= school.summarised_current_contract_holder_name %></td>
+        <td><%= school.all_school_admins.count %></td>
+        <td><%= school.all_staff.count %></td>
+        <td><%= school.all_adult_school_users.count %></td>
+        <td><%= link_to 'Manage Users', school_users_path(school) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

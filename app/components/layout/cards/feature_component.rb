@@ -18,7 +18,7 @@ module Layout
         Elements::TagComponent.new(:a, *args, **merge_classes('', kwargs))
       }
       renders_one :description, lambda { |**kwargs|
-        Elements::TagComponent.new(:div, **merge_classes('pt-2 pb-4', kwargs))
+        Elements::TagComponent.new(:div, classes: 'pt-2 pb-4', **kwargs)
       }
       renders_many :buttons, lambda { |*args, **kwargs|
         Elements::ButtonComponent.new(*args,  classes: 'mb-1 me-2', **kwargs)

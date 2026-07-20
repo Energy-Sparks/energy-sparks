@@ -1,0 +1,11 @@
+
+
+<% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
+  <%= render Elements::BadgeComponent.new(
+        colour: :secondary, themed: true, classes: 'ms-auto mt-2',
+        tooltip: t("#{type}.form.bonus_points_message")
+      ) do %>
+    <%= SiteSettings.current.photo_bonus_points %>
+    <%= t("#{type}.form.bonus_points", count: SiteSettings.current.photo_bonus_points) %>
+  <% end %>
+<% end %>
