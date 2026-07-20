@@ -989,6 +989,9 @@ Rails.application.routes.draw do
 
     resources :local_distribution_zones, except: [:destroy]
     resources :secr_co2_equivalences, except: %i[destroy show]
+    resources :organisation_statements do
+      post :make_current, on: :member
+    end
   end
 
   get 'admin/mailer_previews/*path' => 'rails/mailers#preview', as: :admin_mailer_preview

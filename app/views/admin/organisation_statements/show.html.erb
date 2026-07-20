@@ -1,0 +1,62 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @organisation_statement.academic_year %>
+  <% header_nav.with_button 'All statements', admin_organisation_statements_path %>
+<% end %>
+
+<p>Current: <%= checkmark(@organisation_statement.current?) %></p>
+
+<div class="row">
+  <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+    <h3>Overview</h3>
+    <p>Schools: <%= number_with_delimiter @organisation_statement.schools %></p>
+    <p>Pupils: <%= number_with_delimiter @organisation_statement.pupils %></p>
+    <p>Staff: <%= number_with_delimiter @organisation_statement.staff %></p>
+    <p>Activities: <%= number_with_delimiter @organisation_statement.activities %></p>
+    <p>Actions: <%= number_with_delimiter @organisation_statement.actions %></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+    <h3>Total savings</h3>
+    <p>Total cost savings: <%= number_with_delimiter @organisation_statement.total_cost_savings %></p>
+    <p>Total carbon savings: <%= number_with_delimiter @organisation_statement.total_carbon_savings %></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+    <h3>Percentage savings</h3>
+    <p>Average primary saving: <%= number_with_delimiter @organisation_statement.average_primary_saving %></p>
+    <p>Average secondary saving: <%= number_with_delimiter @organisation_statement.average_secondary_saving %></p>
+    <p>Best saving: <%= number_with_delimiter @organisation_statement.best_saving %></p>
+  </div>
+</div>
+
+<% %i[primary secondary].each do |school_type| %>
+  <div class="row">
+    <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+      <h3><%= "#{school_type.to_s.humanize} savings" %></h3>
+      <p>Electricity saving:
+        <%= number_with_delimiter @organisation_statement.attributes["#{school_type}_saving_electricity"] %>
+      </p>
+      <p>Gas saving:
+        <%= number_with_delimiter @organisation_statement.attributes["#{school_type}_saving_gas"] %>
+      </p>
+      <p>Cost saving:
+        <%= number_with_delimiter @organisation_statement.attributes["#{school_type}_cost_saving"] %>
+      </p>
+      <p>Carbon saving:
+        <%= number_with_delimiter @organisation_statement.attributes["#{school_type}_carbon_saving"] %>
+      </p>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <%= link_to 'Edit', edit_admin_organisation_statement_path(@organisation_statement),
+                class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', admin_organisation_statements_path, class: 'btn' %>
+  </div>
+</div>

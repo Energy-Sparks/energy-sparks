@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_16_124419) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1289,6 +1289,32 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_16_124419) do
     t.integer "value"
     t.index ["impact_report_run_id", "metric_category", "fuel_type", "metric_type", "unit"], name: "index_impact_report_metrics_unique", unique: true
     t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
+  end
+
+  create_table "impact_report_organisation_statements", force: :cascade do |t|
+    t.string "academic_year", null: false
+    t.integer "actions", default: 0, null: false
+    t.integer "activities", default: 0, null: false
+    t.integer "average_primary_saving", default: 0, null: false
+    t.integer "average_secondary_saving", default: 0, null: false
+    t.integer "best_saving", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.boolean "current", default: false, null: false
+    t.integer "primary_carbon_saving", default: 0, null: false
+    t.integer "primary_cost_saving", default: 0, null: false
+    t.integer "primary_saving_electricity", default: 0, null: false
+    t.integer "primary_saving_gas", default: 0, null: false
+    t.integer "pupils", default: 0, null: false
+    t.integer "schools", default: 0, null: false
+    t.integer "secondary_carbon_saving", default: 0, null: false
+    t.integer "secondary_cost_saving", default: 0, null: false
+    t.integer "secondary_saving_electricity", default: 0, null: false
+    t.integer "secondary_saving_gas", default: 0, null: false
+    t.integer "staff", default: 0, null: false
+    t.integer "total_carbon_savings", default: 0, null: false
+    t.integer "total_cost_savings", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["academic_year"], name: "index_impact_report_organisation_statements_on_academic_year", unique: true
   end
 
   create_table "impact_report_runs", force: :cascade do |t|

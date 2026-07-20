@@ -1,0 +1,84 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'All statements', admin_organisation_statements_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <% url = if organisation_statement.new_record?
+               admin_organisation_statements_path
+             else
+               admin_organisation_statement_path(organisation_statement)
+             end %>
+    <%= simple_form_for(organisation_statement, as: :organisation_statement, url: url) do |f| %>
+      <%= render 'shared/errors', subject: organisation_statement, subject_name: 'organisation statement' %>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <%= f.input :academic_year,
+                    hint: 'Short version of academic year, e.g. 2025/26' %>
+        <%= f.input :current,
+                    hint: 'Is this our current statement, set to true when publishing' %>
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Overview</h3>
+        <%= f.input :schools,
+                    hint: 'Number of active schools in this academic year' %>
+        <%= f.input :pupils,
+                    hint: 'Number of pupils with access to Energy Sparks this academic year' %>
+        <%= f.input :staff,
+                    hint: 'Number of adult users with access to Energy Sparks this academic year' %>
+        <%= f.input :activities,
+                    hint: 'Number of pupil activities recorded this academic year' %>
+        <%= f.input :actions,
+                    hint: 'Number of adult actions recorded this academic year' %>
+
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Total savings</h3>
+        <%= f.input :total_cost_savings,
+                    hint: 'Total cost saving across all schools this academic year (£)' %>
+        <%= f.input :total_carbon_savings,
+                    hint: 'Total CO2 reduction across all schools this academic year (t/CO2)' %>
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Percentage savings</h3>
+        <%= f.input :average_primary_saving,
+                    hint: 'Average primary school reduction in energy use (%)' %>
+        <%= f.input :average_secondary_saving,
+                    hint: 'Average secondary school reduction in energy use (%)' %>
+        <%= f.input :best_saving,
+                    hint: 'Biggest percentage reduction in energy use (%)' %>
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Primary school savings</h3>
+        <%= f.input :primary_saving_electricity,
+                    hint: 'Average primary school reduction in electricity use (%)' %>
+        <%= f.input :primary_saving_gas,
+                    hint: 'Average primary school reduction in gas use (%)' %>
+        <%= f.input :primary_cost_saving,
+                    hint: 'Average primary school cost saving (£)' %>
+        <%= f.input :primary_carbon_saving,
+                    hint: 'Average primary school cost saving (kg/CO2)' %>
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Secondary school savings</h3>
+        <%= f.input :secondary_saving_electricity,
+                    hint: 'Average secondary school reduction in electricity use (%)' %>
+        <%= f.input :secondary_saving_gas,
+                    hint: 'Average secondary school reduction in gas use (%)' %>
+        <%= f.input :secondary_cost_saving,
+                    hint: 'Average secondary school cost saving (£)' %>
+        <%= f.input :secondary_carbon_saving,
+                    hint: 'Average secondary school cost saving (kg/CO2)' %>
+      </div>
+
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', admin_organisation_statements_path, class: 'btn' %>
+    <% end %>
+  </div>
+</div>
