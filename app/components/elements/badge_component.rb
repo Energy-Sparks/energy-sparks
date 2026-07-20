@@ -1,6 +1,6 @@
 module Elements
   class BadgeComponent < ApplicationComponent
-    def initialize(text = nil, pill: false, colour: nil, **_kwargs)
+    def initialize(text = nil, pill: false, colour: nil, themed: false, **_kwargs)
       super
       validate_colour_variant(colour: colour) if colour
       @text = text
@@ -9,6 +9,7 @@ module Elements
       add_classes('rounded-pill') if pill
       add_classes("bg-#{colour}") if colour
       add_classes('text-dark') if !colour || [:light, :warning].include?(colour)
+      add_classes('themed') if themed
     end
 
     def call

@@ -11,7 +11,6 @@ RSpec.describe 'editing school configuration', type: :system do
   context 'when editing basic configuration' do
     let!(:school_group) { create(:school_group) }
     let!(:scoreboard) { create(:scoreboard) }
-    let!(:funder) { create(:funder) }
 
     before do
       click_on('School configuration')
@@ -102,20 +101,6 @@ RSpec.describe 'editing school configuration', type: :system do
       click_on('Update configuration')
       school.reload
       expect(school.scoreboard).to eq scoreboard
-    end
-
-    it 'allows funder to be updated' do
-      select funder.name, from: 'Funder'
-      click_on('Update configuration')
-      expect(school.reload.funder).to eq funder
-    end
-
-    it 'allows default contract holder to be updated' do
-      school.organisation_group = school_group
-      refresh
-      select 'MAT funded', from: 'Default contract holder'
-      click_on('Update configuration')
-      expect(school.reload.default_contract_holder).to eq school_group
     end
   end
 

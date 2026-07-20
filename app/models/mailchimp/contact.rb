@@ -108,7 +108,7 @@ module Mailchimp
         contact.local_authority = user.school&.local_authority_area&.name
         contact.region = user.school&.region&.humanize
         contact.country = user.school.country&.humanize
-        contact.funder = user.school&.funder&.name
+        contact.funder = nil # TODO: revise later when we decide on new approach
         contact.tags = tags_for_school_user(user, tags, [user.school.slug])
       end
       contact
