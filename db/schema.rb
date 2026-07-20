@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_16_094940) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_16_124419) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2050,8 +2050,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_16_094940) do
     t.bigint "dark_sky_area_id"
     t.boolean "data_enabled", default: false
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
-    t.bigint "default_contract_holder_id"
-    t.string "default_contract_holder_type"
     t.boolean "enable_targets_feature", default: true
     t.bigint "establishment_id"
     t.decimal "floor_area"
@@ -2126,7 +2124,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_16_094940) do
     t.bigint "weather_station_id"
     t.string "website"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
-    t.index ["default_contract_holder_type", "default_contract_holder_id"], name: "index_schools_on_default_contract_holder"
     t.index ["establishment_id"], name: "index_schools_on_establishment_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"

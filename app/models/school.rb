@@ -16,7 +16,6 @@
 #  country                                 :integer          default("england"), not null
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
-#  default_contract_holder_type            :string
 #  enable_targets_feature                  :boolean          default(TRUE)
 #  floor_area                              :decimal(, )
 #  full_school                             :boolean          default(TRUE)
@@ -82,7 +81,6 @@
 #  updated_at                              :datetime         not null
 #  calendar_id                             :bigint(8)
 #  dark_sky_area_id                        :bigint(8)
-#  default_contract_holder_id              :bigint(8)
 #  establishment_id                        :bigint(8)
 #  local_authority_area_id                 :bigint(8)
 #  local_distribution_zone_id              :bigint(8)
@@ -98,7 +96,6 @@
 # Indexes
 #
 #  index_schools_on_calendar_id                 (calendar_id)
-#  index_schools_on_default_contract_holder     (default_contract_holder_type,default_contract_holder_id)
 #  index_schools_on_establishment_id            (establishment_id)
 #  index_schools_on_latitude_and_longitude      (latitude,longitude)
 #  index_schools_on_local_authority_area_id     (local_authority_area_id)
@@ -248,7 +245,6 @@ class School < ApplicationRecord
   belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
 
   belongs_to :local_distribution_zone, optional: true
-  belongs_to :default_contract_holder, polymorphic: true, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
@@ -999,10 +995,6 @@ class School < ApplicationRecord
     # 1 - "Nursery"
     # 6 - "16 plus"
     # 7 - "All-through"
-  end
-
-  def self_funded_in_future?
-    default_contract_holder.nil?
   end
 
   def contract_holder

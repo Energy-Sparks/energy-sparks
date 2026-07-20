@@ -15,11 +15,6 @@ module Commercial
                class_name: 'Commercial::ContractContact',
                dependent: :restrict_with_error
 
-      has_many :default_contracted_schools,
-               as: :default_contract_holder,
-               class_name: 'School',
-               dependent: :nullify
-
       has_many :invoices, through: :contracts
 
       scope :with_current_contracts, lambda {

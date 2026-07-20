@@ -102,14 +102,6 @@ RSpec.describe 'editing school configuration', type: :system do
       school.reload
       expect(school.scoreboard).to eq scoreboard
     end
-
-    it 'allows default contract holder to be updated' do
-      school.organisation_group = school_group
-      refresh
-      select 'MAT funded', from: 'Default contract holder'
-      click_on('Update configuration')
-      expect(school.reload.default_contract_holder).to eq school_group
-    end
   end
 
   context 'when editing data feeds' do
