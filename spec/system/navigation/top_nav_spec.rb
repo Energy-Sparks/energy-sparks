@@ -7,6 +7,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
 
   before do
     Flipper.enable :support_pages
+    Flipper.enable :org_impact_page
     sign_in(user) if user
     visit root_path(locale: locale)
   end
@@ -46,6 +47,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       expect(our_services).to have_link('Education workshops')
       expect(our_services).to have_link('Training')
       expect(our_services).to have_link('Case studies')
+      expect(our_services).to have_link('Our impact')
       expect(our_services).to have_link('Newsletters')
       expect(our_services).to have_link('Videos')
     end
