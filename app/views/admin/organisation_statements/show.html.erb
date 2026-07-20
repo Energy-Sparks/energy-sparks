@@ -3,7 +3,11 @@
   <% header_nav.with_button 'All statements', admin_organisation_statements_path %>
 <% end %>
 
-<p>Current: <%= checkmark(@organisation_statement.current?) %></p>
+<p>
+  Current: <%= checkmark(@organisation_statement.current?) %>
+  Efficiency Report Link: <%= link_to @organisation_statement.efficiency_report_link,
+                                      @organisation_statement.efficiency_report_link %>
+</p>
 
 <div class="row">
   <div class="col-12 mb-4 bg-light rounded-2 pb-3">

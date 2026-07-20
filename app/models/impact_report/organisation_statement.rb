@@ -12,6 +12,7 @@
 #  average_secondary_saving     :integer          default(0), not null
 #  best_saving                  :integer          default(0), not null
 #  current                      :boolean          default(FALSE), not null
+#  efficiency_report_link       :string
 #  primary_carbon_saving        :integer          default(0), not null
 #  primary_cost_saving          :integer          default(0), not null
 #  primary_saving_electricity   :integer          default(0), not null

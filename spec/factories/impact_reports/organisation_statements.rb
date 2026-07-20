@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :impact_report_organisation_statement, class: 'ImpactReport::OrganisationStatement' do
     sequence(:academic_year) { |n| "Academic Year #{n}" }
+    sequence(:efficiency_report_link) { |n| "https://example.org/#{n}" }
     current { false }
 
     schools { rand(100..1000) }

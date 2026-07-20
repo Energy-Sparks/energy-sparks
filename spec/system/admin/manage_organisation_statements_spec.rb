@@ -21,6 +21,8 @@ describe 'manage organisation impact statement' do
     context 'with valid data' do
       before do
         fill_in 'Academic year', with: '2026/27'
+        fill_in 'Efficiency report link', with: 'http://example.org/efficiency_report_link'
+
         fill_in 'Schools', with: 1000
         fill_in 'Pupils', with: 10_000
         fill_in 'Staff', with: 200
@@ -52,6 +54,7 @@ describe 'manage organisation impact statement' do
         expect(ImpactReport::OrganisationStatement.last).to have_attributes(
           academic_year: '2026/27',
           current: false,
+          efficiency_report_link: 'http://example.org/efficiency_report_link',
           schools: 1000,
           pupils: 10_000,
           staff: 200,
@@ -91,6 +94,7 @@ describe 'manage organisation impact statement' do
       click_on 'Organisational Impact Statements'
       click_on 'Edit'
       fill_in 'Academic year', with: '2026/27'
+      fill_in 'Efficiency report link', with: 'http://example.org/efficiency_report_link'
       fill_in 'Schools', with: 1000
       fill_in 'Pupils', with: 10_000
       fill_in 'Staff', with: 200
@@ -122,6 +126,7 @@ describe 'manage organisation impact statement' do
       expect(statement.reload).to have_attributes(
         academic_year: '2026/27',
         current: false,
+        efficiency_report_link: 'http://example.org/efficiency_report_link',
         schools: 1000,
         pupils: 10_000,
         staff: 200,

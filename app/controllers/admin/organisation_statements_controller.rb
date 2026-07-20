@@ -49,6 +49,7 @@ module Admin
       params.expect(
         organisation_statement: %i[academic_year actions activities average_primary_saving average_secondary_saving
                                    best_saving current
+                                   efficiency_report_link
                                    primary_carbon_saving primary_cost_saving primary_saving_electricity
                                    primary_saving_electricity primary_saving_gas pupils schools
                                    secondary_carbon_saving secondary_cost_saving

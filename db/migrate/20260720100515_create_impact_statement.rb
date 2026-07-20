@@ -23,6 +23,7 @@ class CreateImpactStatement < ActiveRecord::Migration[8.1]
       t.integer :secondary_saving_gas, null: false, default: 0
       t.integer :secondary_cost_saving, null: false, default: 0
       t.integer :secondary_carbon_saving, null: false, default: 0
+      t.string :efficiency_report_link
       t.timestamps
     end
   end
