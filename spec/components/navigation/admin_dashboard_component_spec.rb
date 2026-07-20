@@ -56,26 +56,57 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
                                   href: admin_dashboard_issues_path(current_user))
       end
 
-      describe 'my schools section' do
-        it 'has the correct links' do # rubocop:disable RSpec/MultipleExpectations, RSpec/ExampleLength
-          expect(page).to have_link('Onboarding',
-                                    href: admin_dashboard_school_onboardings_path(current_user))
-          expect(page).to have_link('Awaiting activation',
-                                    href: admin_dashboard_activations_path(current_user))
-          expect(page).to have_link('Recently onboarded',
-                                    href: completed_admin_dashboard_school_onboardings_path(current_user))
-          expect(page).to have_link('Engaged schools',
-                                    href: admin_dashboard_engaged_groups_path(current_user))
-          expect(page).to have_link('Recent activities',
-                                    href: admin_dashboard_activities_path(current_user))
-          expect(page).to have_link('Recent actions',
-                                    href: admin_dashboard_interventions_path(current_user))
-          expect(page).to have_link('Missing alert contacts',
-                                    href: admin_dashboard_missing_alert_contacts_path(current_user))
-          expect(page).to have_link('Pupil number updates',
-                                    href: admin_dashboard_pupil_number_updates_path(dashboard_id: current_user,
-                                                                                    admin: current_user))
-        end
+      it 'links to energy tariffs' do
+        expect(page).to have_link('My Energy Tariffs',
+                                  href: admin_dashboard_energy_tariffs_path(current_user))
+      end
+    end
+
+    describe 'my schools section' do
+      it 'links to onboardings' do
+        expect(page).to have_link('Onboarding',
+                                  href: admin_dashboard_school_onboardings_path(current_user))
+      end
+
+      it 'links to activations' do
+        expect(page).to have_link('Awaiting activation',
+                                  href: admin_dashboard_activations_path(current_user))
+      end
+
+      it 'links to recently onboarded' do
+        expect(page).to have_link('Recently onboarded',
+                                  href: completed_admin_dashboard_school_onboardings_path(current_user))
+      end
+
+      it 'links to engaged schools' do
+        expect(page).to have_link('Engaged schools',
+                                  href: admin_dashboard_engaged_groups_path(current_user))
+      end
+
+      it 'links to activities' do
+        expect(page).to have_link('Recent activities',
+                                  href: admin_dashboard_activities_path(current_user))
+      end
+
+      it 'links to actions' do
+        expect(page).to have_link('Recent actions',
+                                  href: admin_dashboard_interventions_path(current_user))
+      end
+
+      it 'links to missing alert contacts' do
+        expect(page).to have_link('Missing alert contacts',
+                                  href: admin_dashboard_missing_alert_contacts_path(current_user))
+      end
+
+      it 'links to pupil number updates' do
+        expect(page).to have_link('Pupil number updates',
+                                  href: admin_dashboard_pupil_number_updates_path(dashboard_id: current_user,
+                                                                                  admin: current_user))
+      end
+
+      it 'links to limited users' do
+        expect(page).to have_link('Limited users',
+                                  href: admin_dashboard_limited_users_path(current_user))
       end
 
       describe 'my meters section' do

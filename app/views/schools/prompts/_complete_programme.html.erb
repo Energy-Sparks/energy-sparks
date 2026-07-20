@@ -1,4 +1,4 @@
-<% if local_assigns[:programmes].try(:any?) %>
+<% if (programmes = school.programmes.active.started.order(started_on: :desc)).any? %>
   <% programmes.each do |programme| %>
     <%= render PromptComponent.new(icon: 'tasks', status: :neutral, style: local_assigns[:style]) do |prompt| %>
       <% prompt.with_link do %>

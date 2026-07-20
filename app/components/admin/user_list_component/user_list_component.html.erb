@@ -17,15 +17,23 @@
       </tr>
     </thead>
     <tbody>
+      <% duplicate_users = {} %>
       <% users_to_display do |user| %>
         <tr class="<%= row_class(user) %>">
           <% if show_organisation? %>
             <td>
-                <% if user.group_user? %>
-                  <%= link_to user.school_group.name, admin_school_group_path(user.school_group) %>
-                <% elsif user.school.present? %>
-                  <%= link_to user.school.name, school_users_path(user.school) %>
+              <% if user.group_user? %>
+                <%= link_to user.school_group.name, admin_school_group_path(user.school_group) %>
+              <% elsif user.has_other_schools? %>
+                <% if duplicate_users[user.id].nil? %>
+                  <% duplicate_users[user.id] = 0 %>
                 <% end %>
+                <% school = user.cluster_schools.to_a[duplicate_users[user.id]] %>
+                <% duplicate_users[user.id] += 1 %>
+                <%= link_to school.name, school_users_path(school) %>
+              <% elsif user.school.present? %>
+                <%= link_to user.school.name, school_users_path(user.school) %>
+              <% end %>
             </td>
           <% end %>
           <td>

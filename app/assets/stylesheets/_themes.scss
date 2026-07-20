@@ -28,7 +28,7 @@
       @extend .btn-outline-white;
     }
 
-    .elements-icon-component {
+    &.prompt-component .elements-icon-component {
       color: $blue-very-dark;
     }
   }
@@ -75,5 +75,14 @@
 
   &.theme-pale {
     background-color: $blue-pale;
+  }
+}
+
+.badge {
+    &.themed {
+    font-size: $f9;
+    padding: 6px 14px;
+    @extend .fw-normal;
+    @extend .text-uppercase;
   }
 }

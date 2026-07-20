@@ -256,6 +256,31 @@ RSpec.describe 'Admin dashboard' do
           end
         end
 
+        describe 'my energy tariffs' do
+          let!(:user_school_group) { create(:school_group, :with_active_schools, default_issues_admin_user: user) }
+          let!(:non_user_school_group) { create(:school_group) }
+
+          before do
+            click_on 'My Energy Tariffs'
+          end
+
+          it 'has the correct path' do
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/energy_tariffs")
+          end
+
+          it 'links to the energy tariffs page' do
+            expect(page).to have_link('View full report', href: admin_reports_energy_tariffs_path)
+          end
+
+          it 'displays energy tariffs for school groups belonging to the user' do
+            expect(page).to have_text(user_school_group.name)
+          end
+
+          it 'does not display energy tariffs for school groups which do not belong to the user' do
+            expect(page).to have_no_text(non_user_school_group.name)
+          end
+        end
+
         describe 'my schools' do
           let(:user_school_group) { create(:school_group, default_issues_admin_user: user) }
           let(:non_user_school_group) { create(:school_group) }

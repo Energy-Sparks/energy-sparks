@@ -2,6 +2,15 @@
   <td>
     <%= link_to school.name, school_path(school) %>
   </td>
+  <% if @show_data_visibility %>
+    <td>
+      <% if school.data_enabled? %>
+        <span class="badge rounded-pill text-bg-success">Yes</span>
+      <% else %>
+        <span class="badge rounded-pill text-bg-danger">No</span>
+      <% end %>
+    </td>
+  <% end %>
   <td>
     <%= render(Elements::BadgeComponent.new(licensed_for(@first_range).to_s.humanize,
                                             pill: true,

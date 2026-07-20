@@ -604,8 +604,10 @@ Rails.application.routes.draw do
         end
       end
       resources :missing_alert_contacts, module: :dashboard
+      resources :limited_users, module: :dashboard
       resources :activities, module: :dashboard
       resources :interventions, module: :dashboard
+      resources :energy_tariffs, module: :dashboard
 
       resources :amr_data_feed_import_logs, module: :dashboard
       resources :blank_readings, :lagging_meters, :zero_readings, module: :dashboard
@@ -913,6 +915,7 @@ Rails.application.routes.draw do
       resources :meter_loading_reports, only: :index
       resources :meter_reports, only: :index
       resources :missing_alert_contacts, only: [:index]
+      resources :limited_users, only: [:index]
       resources :new_data_inactive_meter_report, only: [:index]
       resources :perse_meter, only: [:index]
       resources :recent_audits, only: [:index]
@@ -929,6 +932,7 @@ Rails.application.routes.draw do
       resources :pupil_number_updates, only: :index
       resources :metered_solar, only: :index
       resources :modelled_solar, only: :index
+      resources :solar_installations, only: :index
     end
 
     resource :settings, only: %i[show update]
