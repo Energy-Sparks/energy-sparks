@@ -135,7 +135,7 @@ class School < ApplicationRecord
                                      tsearch: { prefix: true }
                                    }
 
-  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
+  watch_mailchimp_fields :active, :country, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
@@ -325,7 +325,6 @@ class School < ApplicationRecord
   scope :joined_programme, ->(range) { where(id: Programme.recently_started_non_default(range).select(:school_id)) }
   # TODO: cluster users, not just those directly linked
   scope :with_recently_logged_in_users, ->(date) { where(id: User.recently_logged_in(date).select(:school_id)) }
-  scope :unfunded, -> { where(schools: { funder_id: nil }) }
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
   scope :full_school, -> { where(full_school: true) }
 
