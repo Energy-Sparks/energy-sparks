@@ -109,17 +109,6 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="form-group col-md-12">
-      <%= f.label :funder_id, 'Funder' %>
-      <%= f.select :funder_id,
-                   options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id),
-                   { include_blank: true },
-                   { class: 'form-control' } %>
-      <p class="small">Note: this field will shortly be retired, but please complete for now.</p>
-    </div>
-  </div>
-
   <h3>Weather and Solar Data Feeds</h3>
   <p>Select the right data sources to support analysis of school data.</p>
 

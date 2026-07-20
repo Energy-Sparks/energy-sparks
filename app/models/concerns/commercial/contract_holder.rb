@@ -21,6 +21,12 @@ module Commercial
                dependent: :nullify
 
       has_many :invoices, through: :contracts
+
+      scope :with_current_contracts, lambda {
+        joins(:contracts)
+          .merge(Commercial::Contract.current)
+          .distinct
+      }
     end
   end
 end

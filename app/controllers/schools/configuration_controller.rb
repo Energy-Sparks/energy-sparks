@@ -56,7 +56,6 @@ module Schools
         :dark_sky_area_id,
         :data_sharing,
         :default_contract_holder_id,
-        :funder_id,
         :full_school,
         :local_authority_area_id,
         :region,

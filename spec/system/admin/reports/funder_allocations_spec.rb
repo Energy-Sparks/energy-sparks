@@ -3,17 +3,22 @@
 require 'rails_helper'
 
 describe 'FunderAllocations' do
+  include ActiveJob::TestHelper
+  include EmailHelpers
+
   before do
-    funder = Funder.create(name: 'A funder')
-    create(:school, funder:)
-    create(:school_onboarding, funder:)
+    travel_to(Time.zone.local(2026, 7, 16, 15, 30))
+    create(:school, :with_school_group)
     sign_in(create(:admin))
+    visit admin_reports_funder_allocations_path
   end
 
-  it 'shows the expected table' do
-    visit admin_reports_funder_allocations_path
-    headers = ['Funder', 'Visible not data enabled', 'Visible and data enabled', 'Onboarding', 'Total']
-    rows = [['A funder', '0', '1', '1', '2'], ['No funder', '0', '0', '0', '0']]
-    expect(page).to have_selector(:table, rows: rows.map { |row| headers.zip(row).to_h })
+  describe 'when sending the report' do
+    subject(:email) { last_email }
+
+    before { perform_enqueued_jobs { click_on 'Email funder report' } }
+
+    it { expect(email.attachments.first.filename).to eq('funder-allocation-report-2026-07-16.csv') }
+    it { expect(email.subject).to eq('[energy-sparks-unknown] Energy Sparks - Funder allocation report 2026-07-16') }
   end
 end

@@ -20,7 +20,6 @@
 #  created_user_id          :bigint(8)
 #  dark_sky_area_id         :bigint(8)
 #  diocese_id               :bigint(8)
-#  funder_id                :bigint(8)
 #  local_authority_area_id  :bigint(8)
 #  project_group_id         :bigint(8)
 #  school_group_id          :bigint(8)
@@ -35,7 +34,6 @@
 #  index_school_onboardings_on_created_by_id            (created_by_id)
 #  index_school_onboardings_on_created_user_id          (created_user_id)
 #  index_school_onboardings_on_diocese_id               (diocese_id)
-#  index_school_onboardings_on_funder_id                (funder_id)
 #  index_school_onboardings_on_local_authority_area_id  (local_authority_area_id)
 #  index_school_onboardings_on_project_group_id         (project_group_id)
 #  index_school_onboardings_on_school_group_id          (school_group_id)
@@ -82,7 +80,6 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :scoreboard, optional: true
   belongs_to :created_user, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User', optional: true
-  belongs_to :funder, optional: true
   belongs_to :contract, class_name: 'Commercial::Contract', optional: true
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
