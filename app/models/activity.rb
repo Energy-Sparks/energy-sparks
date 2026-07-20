@@ -93,6 +93,10 @@ class Activity < ApplicationRecord
     title.nil? ? activity_type.name : title
   end
 
+  def task
+    activity_type
+  end
+
   private
 
   def description_previously_changed? = rich_text_description&.previous_changes&.key?('body')

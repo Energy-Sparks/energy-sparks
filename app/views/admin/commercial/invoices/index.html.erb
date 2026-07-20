@@ -3,4 +3,14 @@
   <% header_nav.with_button 'Contracts & Licensing', admin_commercial_path %>
 <% end %>
 
+<p>
+<%= link_to 'Export summary to CSV',
+            admin_commercial_invoices_path(format: :csv, params: { detail: :summary }),
+            class: 'btn btn-sm' %>
+<%= link_to 'Export detail to CSV',
+            admin_commercial_invoices_path(format: :csv, params: { detail: :full }),
+            class: 'btn btn-sm' %>
+
+</p>
+
 <%= render ::Commercial::InvoicesComponent.new(invoices: @invoices) %>

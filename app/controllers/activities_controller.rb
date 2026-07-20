@@ -3,10 +3,11 @@
 class ActivitiesController < ApplicationController
   include ActivityTypeFilterable
 
+  before_action :enable_bootstrap5, except: %i[show]
+  skip_before_action :authenticate_user!, only: %i[show]
   load_resource :school
   load_and_authorize_resource through: :school
-
-  skip_before_action :authenticate_user!, only: %i[show]
+  before_action :set_breadcrumbs, only: %i[new create edit update]
 
   def show
     interpolator = TemplateInterpolation.new(@activity.activity_type, render_with: SchoolTemplate.new(@school))
@@ -22,58 +23,32 @@ class ActivitiesController < ApplicationController
   def new
     return if params[:activity_type_id].blank?
 
-    activity_type = ActivityType.find(params[:activity_type_id])
-    return if activity_type.blank?
-
-    @activity.activity_type = activity_type
-    @activity.activity_category = activity_type.activity_category
+    @activity.activity_type = ActivityType.find(params[:activity_type_id])
+    @activity.activity_category = @activity.activity_type.activity_category
   end
 
   def edit; end
 
   def create
-    if Flipper.enabled?(:todos, current_user)
-      if Tasks::Recorder.new(@activity, current_user).process
-        redirect_to completed_school_activity_path(@school, @activity)
-      else
-        render :new
-      end
+    if Tasks::Recorder.new(@activity, current_user).process
+      redirect_to completed_school_activity_path(@school, @activity)
     else
-      respond_to do |format|
-        if ActivityCreator.new(@activity, current_user).process
-          format.html { redirect_to completed_school_activity_path(@school, @activity) }
-          format.json { render :show, status: :created, location: @school }
-        else
-          format.html { render :new }
-          format.json { render json: @activity.errors, status: :unprocessable_entity }
-        end
-      end
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @activity.update(activity_params.merge(updated_by: current_user))
-        format.html do
-          redirect_to school_activity_path(@school, @activity), notice: 'Activity was successfully updated.'
-        end
-        format.json { render :show, status: :ok, location: @school }
-      else
-        format.html { render :edit }
-        format.json { render json: @activity.errors, status: :unprocessable_entity }
-      end
+    if @activity.update(activity_params.merge(updated_by: current_user))
+      redirect_to school_activity_path(@school, @activity), notice: I18n.t('activities.notices.updated')
+    else
+      render :edit
     end
   end
 
   def destroy
     @activity.observations.each { |observation| ObservationRemoval.new(observation).process }
     @activity.destroy
-    respond_to do |format|
-      format.html do
-        redirect_to school_activities_path(@school), notice: 'Activity was successfully destroyed.'
-      end
-      format.json { head :no_content }
-    end
+    redirect_to school_activities_path(@school), notice: I18n.t('activities.notices.removed')
   end
 
   private
@@ -81,5 +56,25 @@ class ActivitiesController < ApplicationController
   def activity_params
     params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content,
                                      :pupil_count)
+  end
+
+  def activity_type
+    @activity_type ||=
+      if params[:activity_type_id].present?
+        ActivityType.find(params[:activity_type_id])
+      elsif @activity.present?
+        @activity.activity_type
+      end
+  end
+
+  def set_breadcrumbs
+    return unless activity_type
+
+    activity_type.category
+    @breadcrumbs = [
+      { name: t('common.labels.pupil_activities'), href: activity_categories_path },
+      { name: activity_type.name, href: activity_type_path(activity_type) },
+      { name: t('activities.new.page_title') }
+    ].compact
   end
 end

@@ -132,7 +132,7 @@ class School < ApplicationRecord
                                      tsearch: { prefix: true }
                                    }
 
-  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
+  watch_mailchimp_fields :active, :country, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
@@ -321,8 +321,20 @@ class School < ApplicationRecord
   scope :joined_programme, ->(range) { where(id: Programme.recently_started_non_default(range).select(:school_id)) }
   # TODO: cluster users, not just those directly linked
   scope :with_recently_logged_in_users, ->(date) { where(id: User.recently_logged_in(date).select(:school_id)) }
-  scope :unfunded, -> { where(schools: { funder_id: nil }) }
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
+  scope :limited_users, lambda {
+    adult_users = User.where(role: [User.roles[:school_admin], User.roles[:staff]])
+                      .where.not(school_id: nil)
+                      .select('users.id AS user_id, users.school_id AS school_id')
+
+    cluster_users = User.joins('INNER JOIN cluster_schools_users ON cluster_schools_users.user_id = users.id')
+                        .where(role: [User.roles[:school_admin], User.roles[:staff]])
+                        .select('users.id AS user_id, cluster_schools_users.school_id AS school_id')
+
+    joins("LEFT JOIN (#{adult_users.to_sql} UNION #{cluster_users.to_sql}) AS adult_users ON adult_users.school_id = schools.id")
+      .group('schools.id')
+      .having('COUNT(DISTINCT adult_users.user_id) < 3')
+  }
   scope :full_school, -> { where(full_school: true) }
 
   def self.with_energy_tariffs
@@ -551,6 +563,10 @@ class School < ApplicationRecord
     User.where(id: school_admin).or(
       User.where(id: cluster_users)
     )
+  end
+
+  def all_staff
+    User.where(id: staff).distinct
   end
 
   def all_adult_school_users

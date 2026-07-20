@@ -1,13 +1,6 @@
 <% content_for :page_title, t('activities.edit.page_title') %>
 
-<div class="row justify-content-md-center mt-2">
-  <div class="col col-lg-8">
-    <h2><%= t('activities.edit.update_your_activity') %></h2>
-  </div>
-</div>
+<% content_for :main_classes, 'bg-yellow-very-pale' %>
+<%= render Tasks::Header.new(recording: @activity) %>
 
-<div class="row justify-content-md-center mt-2">
-  <div class="col col-lg-8">
-    <%= render 'form', activity: @activity %>
-  </div>
-</div>
+<%= render 'form', activity: @activity %>

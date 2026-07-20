@@ -41,7 +41,6 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let(:procurement_route_3) { create(:procurement_route) }
 
     let!(:funder) { Funder.create(name: 'Funder 1') }
-    let!(:funder_2) { Funder.create(name: 'Funder 2') }
 
     let(:school_group) { create(:school_group) }
 
