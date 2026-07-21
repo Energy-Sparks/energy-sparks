@@ -16,7 +16,6 @@ module Schools
       if params[:existing].present? || @installation.save
         # @school.meter_z_installations << @installation
         begin
-
           update_installation_with_meters
         rescue StandardError
           notice = "#{self.class::MODEL.model_name.human} was created but did not verify. " \
@@ -35,13 +34,13 @@ module Schools
     end
 
     def update
-      if params[:button]&.start_with?('unassign_meter_')
-        meter = Meter.find(params[:button].split('_').last)
+      if params[:unassign].present?
+        meter = Meter.find(params.expect(:unassign))
         MeterManagement.new(meter).delete_meter! if meter
-        redirect_to edit_school_solis_cloud_installation_path(@school, @installation), notice: 'Meter unassigned'
+        redirect_to edit_school_solis_cloud_installation_path(@school, @installation), notice: 'Meter unassigned' # rubocop:disable Rails/I18nLocaleTexts
       elsif params[:assign].present?
         @installation.create_meter(params[:assign], @school.id)
-        redirect_to edit_school_meter_z_installation_path(@school, @installation), notice: 'Meter assigned'
+        redirect_to edit_school_meter_z_installation_path(@school, @installation), notice: 'Meter assigned' # rubocop:disable Rails/I18nLocaleTexts
       elsif @installation.update(resource_params)
         redirect_to school_solar_feeds_configuration_index_path(@school),
                     notice: "#{self.class::MODEL.model_name.human} was updated"

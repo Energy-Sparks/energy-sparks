@@ -52,10 +52,10 @@
   </div>
 <% else %>
   <% options = SolisCloudInstallation.where.not(id: school.solis_cloud_installations).map do |installation|
-                 name = "API ID: #{installation.api_id}, Stations: " \
-                        "#{installation.inverter_detail_list.map { |d| d['stationName'] }.uniq.join(', ')}"
-                 [name, installation.id]
-               end %>
+       name = "API ID: #{installation.api_id}, Stations: " \
+              "#{installation.inverter_detail_list.map { |d| d['stationName'] }.uniq.join(', ')}"
+       [name, installation.id]
+     end %>
   <%= render 'existing', options: %>
 <% end %>
 <%= form.input :api_id, as: :string, label: 'API ID', hint: 'The Solis Cloud API Key' %>

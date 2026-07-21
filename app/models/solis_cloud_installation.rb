@@ -32,7 +32,6 @@ class SolisCloudInstallation < ApplicationRecord
 
   scope :active, -> { where(active: true) }
 
-
   def display_name
     api_id
   end
@@ -54,19 +53,20 @@ class SolisCloudInstallation < ApplicationRecord
                  name: meter_name(meter_serial_number))
   end
 
-  def find_
-   @installation.inverter_detail_list.find { |inverter| inverter['sn'] == meter.meter_serial_number }
+  def meter_name(serial)
+    inverter = find_stored_api_data(serial)
+    name = "#{[inverter['name'], inverter['stationName']].compact.join(' / ')} (#{inverter['sno']})" if inverter
+    "SolisCloud - #{name || serial}"
+  end
+
+  def find_stored_api_data(meter_serial_number)
+    @installation.inverter_detail_list.find { |inverter| inverter['sn'] == meter_serial_number }
+  end
 
   private
 
   def mpan(serial_number)
     # serial number in api response appear to be hex, truncate to max length our mpan function supports for solar
     Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(serial_number.to_i(16).to_s.last(13), :solar_pv)
-  end
-
-  def meter_name(serial)
-    inverter = inverter_detail_list.find { |inverter| inverter['sn'] == serial }
-    name = "#{[inverter['name'], inverter['stationName']].compact.join(' / ')} (#{inverter['sno']})" if inverter
-    "SolisCloud - #{name || serial}"
   end
 end

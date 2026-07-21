@@ -65,8 +65,7 @@ module Solar
       indexed_readings = Array.new(48) { [] }
       minute_boundary = [0, 30]
       merged.each do |time, power|
-        total_minutes = time.hour * 60 + time.min
-        index = total_minutes / 30
+        index = hh_index(time)
         indexed_readings[index] << [time, power]
         indexed_readings[index - 1] << [time, power] if minute_boundary.include?(time.min) && time.sec == 0
       end

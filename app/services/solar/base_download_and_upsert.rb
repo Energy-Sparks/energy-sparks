@@ -11,7 +11,6 @@ module Solar
     def perform
       download_and_upsert
     rescue StandardError => e
-      raise
       EnergySparks::Log.exception(e, job: job, school: school&.name, start_date:, end_date:,
                                      installation_id: @installation.id)
       import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date} : " \
@@ -56,6 +55,11 @@ module Solar
 
     def end_date
       @requested_end_date.presence || Date.yesterday
+    end
+
+    def hh_index(time)
+      total_minutes = (time.hour * 60) + time.min
+      total_minutes / 30
     end
   end
 end
