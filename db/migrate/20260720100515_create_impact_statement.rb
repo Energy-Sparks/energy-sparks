@@ -12,9 +12,6 @@ class CreateImpactStatement < ActiveRecord::Migration[8.1]
       t.integer :actions, null: false, default: 0
       t.integer :total_cost_savings, null: false, default: 0
       t.integer :total_carbon_savings, null: false, default: 0
-      t.integer :average_primary_saving, null: false, default: 0
-      t.integer :average_secondary_saving, null: false, default: 0
-      t.integer :best_saving, null: false, default: 0
       t.integer :primary_saving_electricity, null: false, default: 0
       t.integer :primary_saving_gas, null: false, default: 0
       t.integer :primary_cost_saving, null: false, default: 0

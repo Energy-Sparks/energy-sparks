@@ -17,82 +17,6 @@
 
 <div class="container">
   <%= render Layout::Cards::SectionHeaderComponent.new(
-        id: 'overview'
-      ) do |section_header| %>
-    <%= section_header.with_header title: t('our_impact.overview.title') %>
-    <%= section_header.with_description do
-          t('our_impact.overview.description', academic_year: @organisation_statement.academic_year)
-        end %>
-  <% end %>
-
-  <%= render Layout::GridComponent.new(id: 'overview-cards',
-                                       cols: 3,
-                                       cell_classes: 'mb-3',
-                                       component_classes: 'theme theme-dark') do |grid| %>
-    <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'school', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.overview_cards.schools.title') %>
-      <%= card.with_figure number_with_delimiter(@organisation_statement.schools) %>
-      <%= card.with_subtext do
-            t('our_impact.overview_cards.schools.description')
-          end %>
-    <% end %>
-    <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'children', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.overview_cards.pupils.title') %>
-      <%= card.with_figure number_with_delimiter(@organisation_statement.pupils) %>
-      <%= card.with_subtext do
-            t('our_impact.overview_cards.pupils.description')
-          end %>
-    <% end %>
-    <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'person-chalkboard', style: :circle, size: 'f3' %>
-      <%= card.with_header level: 4, title: t('our_impact.overview_cards.staff.title') %>
-      <%= card.with_figure number_with_delimiter(@organisation_statement.staff) %>
-      <%= card.with_subtext do
-            t('our_impact.overview_cards.staff.description')
-          end %>
-    <% end %>
-  <% end %>
-
-  <%= render Layout::GridComponent.new(id: 'engagement-cards',
-                                       cols: 2,
-                                       cell_classes: 'mb-4',
-                                       component_classes: 'theme theme-dark bg-success') do |grid| %>
-    <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'clipboard', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.engagement_cards.pupils.title') %>
-      <%= card.with_figure number_with_delimiter(@organisation_statement.activities) %>
-      <%= card.with_subtext do
-            t('our_impact.engagement_cards.pupils.description', academic_year: @organisation_statement.academic_year)
-          end %>
-    <% end %>
-    <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'clipboard', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.engagement_cards.staff.title') %>
-      <%= card.with_figure number_with_delimiter(@organisation_statement.actions) %>
-      <%= card.with_subtext do
-            t('our_impact.engagement_cards.staff.description', academic_year: @organisation_statement.academic_year)
-          end %>
-    <% end %>
-  <% end %>
-
-  <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
-                                           show_markers: false,
-                                           theme: :accent,
-                                           classes: 'rounded-3 p-4 mb-4',
-                                           show_arrows: :side) do |carousel| %>
-    <% CaseStudy.published.where(created_at: 1.year.ago..).order(:position).each do |case_study| %>
-      <% if case_study.testimonials.active.none? %>
-        <%= carousel.with_case_study_card(case_study: case_study, landscape: false) %>
-      <% end %>
-      <% case_study.testimonials.active.each do |testimonial| %>
-        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
-      <% end %>
-    <% end %>
-  <% end %>
-
-  <%= render Layout::Cards::SectionHeaderComponent.new(
         id: 'energy-savings'
       ) do |section_header| %>
     <%= section_header.with_header title: t('our_impact.energy_savings.title') %>
@@ -106,45 +30,36 @@
                                        component_classes: 'theme theme-dark') do |grid| %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.energy_savings_cards.total_cost_savings.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.energy_savings.cards.total_cost_savings.title') %>
       <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.total_cost_savings)}" %>
       <%= card.with_subtext do
-            t('our_impact.energy_savings_cards.total_cost_savings.description',
+            t('our_impact.energy_savings.cards.total_cost_savings.description',
               academic_year: @organisation_statement.academic_year)
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.energy_savings_cards.total_carbon_savings.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.energy_savings.cards.total_carbon_savings.title') %>
       <%= card.with_figure t('our_impact.tonnes_of_carbon',
                              volume: number_with_delimiter(@organisation_statement.total_carbon_savings)) %>
       <%= card.with_subtext do
-            t('our_impact.energy_savings_cards.total_carbon_savings.description')
+            t('our_impact.energy_savings.cards.total_carbon_savings.description')
           end %>
     <% end %>
   <% end %>
 
-  <%= render Layout::Cards::SectionHeaderComponent.new(
-        id: 'percentage-savings'
-      ) do |section_header| %>
-    <%= section_header.with_header title: t('our_impact.percentage_savings.title') %>
-    <%= section_header.with_description do
-          t('our_impact.percentage_savings.description', academic_year: @organisation_statement.academic_year)
-        end %>
-  <% end %>
-
-  <%= render Layout::GridComponent.new(id: 'percentage-cards',
-                                       cols: 2,
-                                       component_classes: 'theme theme-dark bg-success') do |grid| %>
-    <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'school', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.percentage_cards.primary.title') %>
-      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.average_primary_saving)}%" %>
-    <% end %>
-    <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'school-flag', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.percentage_cards.secondary.title') %>
-      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.average_secondary_saving)}%" %>
+  <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
+                                           show_markers: false,
+                                           theme: :accent,
+                                           classes: 'rounded-3 p-4 mt-4 mb-4',
+                                           show_arrows: :side) do |carousel| %>
+    <% CaseStudy.published.where(created_at: 1.year.ago..).order(:position).each do |case_study| %>
+      <% if case_study.testimonials.active.none? %>
+        <%= carousel.with_case_study_card(case_study: case_study, landscape: false) %>
+      <% end %>
+      <% case_study.testimonials.active.each do |testimonial| %>
+        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+      <% end %>
     <% end %>
   <% end %>
 
@@ -163,36 +78,51 @@
                                        component_classes: 'theme theme-dark') do |grid| %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :electricity, style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.primary_savings.electricity.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.primary_savings.cards.electricity.title') %>
       <%= card.with_figure "#{number_with_delimiter(@organisation_statement.primary_saving_electricity)}%" %>
       <%= card.with_subtext do
-            t('our_impact.primary_savings.electricity.description')
+            t('our_impact.primary_savings.cards.electricity.description')
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :gas, style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.primary_savings.gas.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.primary_savings.cards.gas.title') %>
       <%= card.with_figure "#{number_with_delimiter(@organisation_statement.primary_saving_gas)}%" %>
       <%= card.with_subtext do
-            t('our_impact.primary_savings.gas.description')
+            t('our_impact.primary_savings.cards.gas.description')
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.primary_savings.cost.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.primary_savings.cards.cost.title') %>
       <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.primary_cost_saving)}" %>
       <%= card.with_subtext do
-            t('our_impact.primary_savings.cost.description')
+            t('our_impact.primary_savings.cards.cost.description')
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.primary_savings.carbon.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.primary_savings.cards.carbon.title') %>
       <%= card.with_figure t('our_impact.tonnes_of_carbon',
                              volume: number_with_delimiter(@organisation_statement.primary_carbon_saving)) %>
       <%= card.with_subtext do
-            t('our_impact.primary_savings.carbon.description')
+            t('our_impact.primary_savings.cards.carbon.description')
           end %>
+    <% end %>
+  <% end %>
+
+  <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
+                                           show_markers: false,
+                                           theme: :accent,
+                                           classes: 'rounded-3 p-4 mt-4 mb-4',
+                                           show_arrows: :side) do |carousel| %>
+    <% CaseStudy.published.where(created_at: 1.year.ago..).order(:position).each do |case_study| %>
+      <% if case_study.testimonials.active.none? %>
+        <%= carousel.with_case_study_card(case_study: case_study, landscape: false) %>
+      <% end %>
+      <% case_study.testimonials.active.each do |testimonial| %>
+        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+      <% end %>
     <% end %>
   <% end %>
 
@@ -211,51 +141,117 @@
                                        component_classes: 'theme theme-dark') do |grid| %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :electricity, style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.secondary_savings.electricity.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.secondary_savings.cards.electricity.title') %>
       <%= card.with_figure "#{number_with_delimiter(@organisation_statement.secondary_saving_electricity)}%" %>
       <%= card.with_subtext do
-            t('our_impact.secondary_savings.electricity.description')
+            t('our_impact.secondary_savings.cards.electricity.description')
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :gas, style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.secondary_savings.gas.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.secondary_savings.cards.gas.title') %>
       <%= card.with_figure "#{number_with_delimiter(@organisation_statement.secondary_saving_gas)}%" %>
       <%= card.with_subtext do
-            t('our_impact.secondary_savings.gas.description')
+            t('our_impact.secondary_savings.cards.gas.description')
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.secondary_savings.cost.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.secondary_savings.cards.cost.title') %>
       <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.secondary_cost_saving)}" %>
       <%= card.with_subtext do
-            t('our_impact.secondary_savings.cost.description')
+            t('our_impact.secondary_savings.cards.cost.description')
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: t('our_impact.secondary_savings.carbon.title') %>
+      <%= card.with_header level: 4, title: t('our_impact.secondary_savings.cards.carbon.title') %>
       <%= card.with_figure t('our_impact.tonnes_of_carbon',
                              volume: number_with_delimiter(@organisation_statement.secondary_carbon_saving)) %>
       <%= card.with_subtext do
-            t('our_impact.secondary_savings.carbon.description')
+            t('our_impact.secondary_savings.cards.carbon.description')
+          end %>
+    <% end %>
+  <% end %>
+
+  <%= render Layout::Cards::SectionHeaderComponent.new(
+        id: 'our-reach'
+      ) do |section_header| %>
+    <%= section_header.with_header title: t('our_impact.our_reach.title') %>
+  <% end %>
+
+  <%= render Layout::GridComponent.new(id: 'our-reach-cards',
+                                       cols: 3,
+                                       cell_classes: 'mb-3',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'school', style: :circle, size: 'f4' %>
+      <%= card.with_header level: 4, title: t('our_impact.our_reach.cards.schools.title') %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.schools) %>
+      <%= card.with_subtext do
+            t('our_impact.our_reach.cards.schools.description')
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'children', style: :circle, size: 'f4' %>
+      <%= card.with_header level: 4, title: t('our_impact.our_reach.cards.pupils.title') %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.pupils) %>
+      <%= card.with_subtext do
+            t('our_impact.our_reach.cards.pupils.description')
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'person-chalkboard', style: :circle, size: 'f3' %>
+      <%= card.with_header level: 4, title: t('our_impact.our_reach.cards.staff.title') %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.staff) %>
+      <%= card.with_subtext do
+            t('our_impact.our_reach.cards.staff.description')
+          end %>
+    <% end %>
+  <% end %>
+
+  <%= render Layout::Cards::SectionHeaderComponent.new(
+        id: 'behaviour-change'
+      ) do |section_header| %>
+    <%= section_header.with_header title: t('our_impact.behaviour_change.title') %>
+  <% end %>
+
+  <%= render Layout::GridComponent.new(id: 'behaviour-change-cards',
+                                       cols: 2,
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark bg-success') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'clipboard', style: :circle, size: 'f4' %>
+      <%= card.with_header level: 4, title: t('our_impact.behaviour_change.cards.pupils.title') %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.activities) %>
+      <%= card.with_subtext do
+            t('our_impact.behaviour_change.cards.pupils.description',
+              academic_year: @organisation_statement.academic_year)
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'clipboard', style: :circle, size: 'f4' %>
+      <%= card.with_header level: 4, title: t('our_impact.behaviour_change.cards.staff.title') %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.actions) %>
+      <%= card.with_subtext do
+            t('our_impact.behaviour_change.cards.staff.description',
+              academic_year: @organisation_statement.academic_year)
           end %>
     <% end %>
   <% end %>
 
   <%= render Layout::GridComponent.new(
-        id: 'find-out-more',
+        id: 'further-insights',
         cols: 2,
         theme: :light,
         classes: 'rounded-xl p-4 my-4',
         cell_classes: 'my-auto'
       ) do |grid| %>
     <%= grid.with_feature_card(classes: '', size: :lg) do |feature| %>
-      <%= feature.with_header(title: t('our_impact.find_out_more.title')) %>
-      <%= feature.with_description { t('our_impact.find_out_more.description_html') } %>
+      <%= feature.with_header(title: t('our_impact.further_insights.title')) %>
+      <%= feature.with_description { t('our_impact.further_insights.description_html') } %>
       <%= if @organisation_statement.efficiency_report_link
-            feature.with_button(t('our_impact.find_out_more.report_button'),
+            feature.with_button(t('our_impact.further_insights.report_button'),
                                 @organisation_statement.efficiency_report_link,
                                 style: :primary)
           end %>

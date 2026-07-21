@@ -11,7 +11,6 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
         primary_carbon_saving: 7000,
         secondary_cost_saving: 21_000,
         secondary_carbon_saving: 26_000,
-        best_saving: 40,
         current: true
       )
     end
@@ -25,9 +24,6 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
         actions: 5930,
         total_cost_savings: 5_700_000,
         total_carbon_savings: 10_000,
-        average_primary_saving: 65,
-        average_secondary_saving: 62,
-        best_saving: 40,
         primary_cost_saving: 2900,
         primary_carbon_saving: 5000,
         primary_saving_electricity: 7,

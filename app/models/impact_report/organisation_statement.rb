@@ -8,9 +8,6 @@
 #  academic_year                :string           not null
 #  actions                      :integer          default(0), not null
 #  activities                   :integer          default(0), not null
-#  average_primary_saving       :integer          default(0), not null
-#  average_secondary_saving     :integer          default(0), not null
-#  best_saving                  :integer          default(0), not null
 #  current                      :boolean          default(FALSE), not null
 #  efficiency_report_link       :string
 #  primary_carbon_saving        :integer          default(0), not null

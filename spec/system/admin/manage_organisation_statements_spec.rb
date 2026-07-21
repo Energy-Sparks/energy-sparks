@@ -32,10 +32,6 @@ describe 'manage organisation impact statement' do
         fill_in 'Total cost savings', with: 1_000_000
         fill_in 'Total carbon savings', with: 1000
 
-        fill_in 'Average primary saving', with: 42
-        fill_in 'Average secondary saving', with: 79
-        fill_in 'Best saving', with: 55
-
         fill_in 'Primary saving electricity', with: 67
         fill_in 'Primary saving gas', with: 76
         fill_in 'Primary cost saving', with: 987
@@ -62,9 +58,6 @@ describe 'manage organisation impact statement' do
           actions: 1500,
           total_cost_savings: 1_000_000,
           total_carbon_savings: 1000,
-          average_primary_saving: 42,
-          average_secondary_saving: 79,
-          best_saving: 55,
           primary_saving_electricity: 67,
           primary_saving_gas: 76,
           primary_cost_saving: 987,
@@ -104,10 +97,6 @@ describe 'manage organisation impact statement' do
       fill_in 'Total cost savings', with: 1_000_000
       fill_in 'Total carbon savings', with: 1000
 
-      fill_in 'Average primary saving', with: 42
-      fill_in 'Average secondary saving', with: 79
-      fill_in 'Best saving', with: 55
-
       fill_in 'Primary saving electricity', with: 67
       fill_in 'Primary saving gas', with: 76
       fill_in 'Primary cost saving', with: 987
@@ -134,9 +123,6 @@ describe 'manage organisation impact statement' do
         actions: 1500,
         total_cost_savings: 1_000_000,
         total_carbon_savings: 1000,
-        average_primary_saving: 42,
-        average_secondary_saving: 79,
-        best_saving: 55,
         primary_saving_electricity: 67,
         primary_saving_gas: 76,
         primary_cost_saving: 987,
@@ -188,12 +174,6 @@ describe 'manage organisation impact statement' do
     it 'shows total savings' do
       expect(page).to have_text(number_with_delimiter(statement.total_carbon_savings))
       expect(page).to have_text(number_with_delimiter(statement.total_cost_savings))
-    end
-
-    it 'shows average savings' do
-      expect(page).to have_text(number_with_delimiter(statement.average_primary_saving))
-      expect(page).to have_text(number_with_delimiter(statement.average_secondary_saving))
-      expect(page).to have_text(number_with_delimiter(statement.best_saving))
     end
 
     %i[primary secondary].each do |school_type|

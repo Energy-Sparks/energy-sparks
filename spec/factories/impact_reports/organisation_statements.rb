@@ -14,10 +14,6 @@ FactoryBot.define do
     total_cost_savings { rand(1_000_000..10_000_000) }
     total_carbon_savings { rand(1..1000) }
 
-    average_primary_saving { rand(1..100) }
-    average_secondary_saving { rand(1..100) }
-    best_saving { rand(1..100) }
-
     primary_saving_electricity { rand(1..100) }
     primary_saving_gas { rand(1..100) }
     primary_cost_saving { rand(100..10_000) }

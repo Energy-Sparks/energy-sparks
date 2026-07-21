@@ -1295,9 +1295,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.string "academic_year", null: false
     t.integer "actions", default: 0, null: false
     t.integer "activities", default: 0, null: false
-    t.integer "average_primary_saving", default: 0, null: false
-    t.integer "average_secondary_saving", default: 0, null: false
-    t.integer "best_saving", default: 0, null: false
     t.datetime "created_at", null: false
     t.boolean "current", default: false, null: false
     t.string "efficiency_report_link"
