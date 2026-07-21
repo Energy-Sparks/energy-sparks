@@ -24,13 +24,13 @@ class Testimonial < ApplicationRecord
   belongs_to :case_study, optional: true
 
   has_many :impact_report_organisation_statements_as_first,
-           class_name: 'ImpactReportOrganisationStatement',
+           class_name: 'ImpactReport::OrganisationStatement',
            foreign_key: :first_testimonial_id,
            dependent: :restrict_with_error,
            inverse_of: :first_testimonial
 
   has_many :impact_report_organisation_statements_as_second,
-           class_name: 'ImpactReportOrganisationStatement',
+           class_name: 'ImpactReport::OrganisationStatement',
            foreign_key: :second_testimonial_id,
            dependent: :restrict_with_error,
            inverse_of: :second_testimonial
