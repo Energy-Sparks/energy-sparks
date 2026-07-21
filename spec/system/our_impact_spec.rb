@@ -8,8 +8,6 @@ describe 'manage organisation impact statement' do
   let!(:statement) { create(:impact_report_organisation_statement, :current) }
 
   before do
-    create(:testimonial, case_study: create(:case_study))
-
     Flipper.enable :org_impact_page
     visit our_impact_path
   end
@@ -46,7 +44,7 @@ describe 'manage organisation impact statement' do
     end
   end
 
-  context 'when showing overview' do
+  context 'when showing our reach' do
     it 'shows the correct title' do
       within('#our-reach') do
         expect(page).to have_text(I18n.t('our_impact.our_reach.title'))
@@ -73,6 +71,20 @@ describe 'manage organisation impact statement' do
       within('#behaviour-change-cards') do
         expect(page).to have_text(number_with_delimiter(statement.activities))
         expect(page).to have_text(number_with_delimiter(statement.actions))
+      end
+    end
+  end
+
+  context 'when showing testimonials' do
+    it 'shows first testimonial' do
+      within('#first-testimonial') do
+        expect(page).to have_text(statement.first_testimonial.title)
+      end
+    end
+
+    it 'shows second testimonial' do
+      within('#second-testimonial') do
+        expect(page).to have_text(statement.second_testimonial.title)
       end
     end
   end

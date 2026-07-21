@@ -24,6 +24,9 @@ FactoryBot.define do
     secondary_cost_saving { rand(100..10_000) }
     secondary_carbon_saving { rand(100..10_000) }
 
+    first_testimonial factory: [:testimonial]
+    second_testimonial factory: [:testimonial]
+
     trait :current do
       current { true }
     end

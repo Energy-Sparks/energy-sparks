@@ -23,21 +23,6 @@
       </div>
 
       <div class="col-12 mb-4 bg-light rounded-2 pb-3">
-        <h3>Overview</h3>
-        <%= f.input :schools,
-                    hint: 'Number of active schools in this academic year' %>
-        <%= f.input :pupils,
-                    hint: 'Number of pupils with access to Energy Sparks this academic year' %>
-        <%= f.input :staff,
-                    hint: 'Number of adult users with access to Energy Sparks this academic year' %>
-        <%= f.input :activities,
-                    hint: 'Number of pupil activities recorded this academic year' %>
-        <%= f.input :actions,
-                    hint: 'Number of adult actions recorded this academic year' %>
-
-      </div>
-
-      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
         <h3>Total savings</h3>
         <%= f.input :total_cost_savings,
                     hint: 'Total cost saving across all schools this academic year (£)' %>
@@ -67,6 +52,41 @@
                     hint: 'Average secondary school cost saving (£)' %>
         <%= f.input :secondary_carbon_saving,
                     hint: 'Average secondary school cost saving (t/CO2)' %>
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Our reach</h3>
+        <%= f.input :schools,
+                    hint: 'Number of active schools in this academic year' %>
+        <%= f.input :pupils,
+                    hint: 'Number of pupils with access to Energy Sparks this academic year' %>
+        <%= f.input :staff,
+                    hint: 'Number of adult users with access to Energy Sparks this academic year' %>
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Behaviour Change</h3>
+        <%= f.input :activities,
+                    hint: 'Number of pupil activities recorded this academic year' %>
+        <%= f.input :actions,
+                    hint: 'Number of adult actions recorded this academic year' %>
+
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Testimonials</h3>
+        <%= f.input :first_testimonial_id,
+                    collection: Testimonial.active.by_title,
+                    include_blank: true,
+                    label_method: :title,
+                    value_method: :id,
+                    input_html: { class: 'select2' } %>
+        <%= f.input :second_testimonial_id,
+                    collection: Testimonial.active.by_title,
+                    include_blank: true,
+                    label_method: :title,
+                    value_method: :id,
+                    input_html: { class: 'select2' } %>
       </div>
 
       <%= f.submit 'Save', class: 'btn btn-primary' %>

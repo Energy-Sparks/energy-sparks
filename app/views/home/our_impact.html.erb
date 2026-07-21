@@ -48,20 +48,12 @@
     <% end %>
   <% end %>
 
-  <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
-                                           show_markers: false,
-                                           theme: :accent,
-                                           classes: 'rounded-3 p-4 mt-4 mb-4',
-                                           show_arrows: :side) do |carousel| %>
-    <% CaseStudy.published.where(created_at: 1.year.ago..).order(:position).each do |case_study| %>
-      <% if case_study.testimonials.active.none? %>
-        <%= carousel.with_case_study_card(case_study: case_study, landscape: false) %>
-      <% end %>
-      <% case_study.testimonials.active.each do |testimonial| %>
-        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
-      <% end %>
-    <% end %>
-  <% end %>
+  <%= if @organisation_statement.first_testimonial
+        render Layout::Cards::TestimonialComponent.new(testimonial: @organisation_statement.first_testimonial,
+                                                       id: 'first-testimonial',
+                                                       theme: :accent,
+                                                       classes: 'rounded-3 p-4 mt-4 mb-4')
+      end %>
 
   <%= render Layout::Cards::SectionHeaderComponent.new(
         id: 'primary-savings'
@@ -111,20 +103,12 @@
     <% end %>
   <% end %>
 
-  <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
-                                           show_markers: false,
-                                           theme: :accent,
-                                           classes: 'rounded-3 p-4 mt-4 mb-4',
-                                           show_arrows: :side) do |carousel| %>
-    <% CaseStudy.published.where(created_at: 1.year.ago..).order(:position).each do |case_study| %>
-      <% if case_study.testimonials.active.none? %>
-        <%= carousel.with_case_study_card(case_study: case_study, landscape: false) %>
-      <% end %>
-      <% case_study.testimonials.active.each do |testimonial| %>
-        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
-      <% end %>
-    <% end %>
-  <% end %>
+  <%= if @organisation_statement.second_testimonial
+        render Layout::Cards::TestimonialComponent.new(testimonial: @organisation_statement.second_testimonial,
+                                                       id: 'second-testimonial',
+                                                       theme: :accent,
+                                                       classes: 'rounded-3 p-4 mt-4 mb-4')
+      end %>
 
   <%= render Layout::Cards::SectionHeaderComponent.new(
         id: 'secondary-savings'

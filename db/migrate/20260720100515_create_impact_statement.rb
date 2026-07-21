@@ -21,6 +21,12 @@ class CreateImpactStatement < ActiveRecord::Migration[8.1]
       t.integer :secondary_cost_saving, null: false, default: 0
       t.integer :secondary_carbon_saving, null: false, default: 0
       t.string :efficiency_report_link
+
+      t.references :first_testimonial,
+                   foreign_key: { to_table: :testimonials, on_delete: :restrict }
+      t.references :second_testimonial,
+                   foreign_key: { to_table: :testimonials, on_delete: :restrict }
+
       t.timestamps
     end
   end

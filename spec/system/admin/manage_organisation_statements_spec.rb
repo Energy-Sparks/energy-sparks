@@ -6,6 +6,8 @@ describe 'manage organisation impact statement' do
   include ActionView::Helpers::NumberHelper
 
   let(:user) { create(:admin) }
+  let!(:first_testimonial) { create(:testimonial) }
+  let!(:second_testimonial) { create(:testimonial) }
 
   before do
     sign_in(user)
@@ -42,6 +44,9 @@ describe 'manage organisation impact statement' do
         fill_in 'Secondary cost saving', with: 1999
         fill_in 'Secondary carbon saving', with: 8000
 
+        select first_testimonial.title, from: 'First testimonial'
+        select second_testimonial.title, from: 'Second testimonial'
+
         click_on 'Save'
       end
 
@@ -65,7 +70,9 @@ describe 'manage organisation impact statement' do
           secondary_saving_electricity: 33,
           secondary_saving_gas: 89,
           secondary_cost_saving: 1999,
-          secondary_carbon_saving: 8000
+          secondary_carbon_saving: 8000,
+          first_testimonial_id: first_testimonial.id,
+          second_testimonial_id: second_testimonial.id
         )
       end
     end
@@ -107,6 +114,9 @@ describe 'manage organisation impact statement' do
       fill_in 'Secondary cost saving', with: 1999
       fill_in 'Secondary carbon saving', with: 8000
 
+      select first_testimonial.title, from: 'First testimonial'
+      select second_testimonial.title, from: 'Second testimonial'
+
       click_on 'Save'
     end
 
@@ -130,7 +140,9 @@ describe 'manage organisation impact statement' do
         secondary_saving_electricity: 33,
         secondary_saving_gas: 89,
         secondary_cost_saving: 1999,
-        secondary_carbon_saving: 8000
+        secondary_carbon_saving: 8000,
+        first_testimonial_id: first_testimonial.id,
+        second_testimonial_id: second_testimonial.id
       )
     end
   end

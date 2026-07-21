@@ -5,20 +5,11 @@
 
 <p>
   Current: <%= checkmark(@organisation_statement.current?) %>
-  Efficiency Report Link: <%= link_to @organisation_statement.efficiency_report_link,
-                                      @organisation_statement.efficiency_report_link %>
+  <% if @organisation_statement.efficiency_report_link.present? %>
+    Efficiency Report Link: <%= link_to @organisation_statement.efficiency_report_link,
+                                        @organisation_statement.efficiency_report_link %>
+  <% end %>
 </p>
-
-<div class="row">
-  <div class="col-12 mb-4 bg-light rounded-2 pb-3">
-    <h3>Overview</h3>
-    <p>Schools: <%= number_with_delimiter @organisation_statement.schools %></p>
-    <p>Pupils: <%= number_with_delimiter @organisation_statement.pupils %></p>
-    <p>Staff: <%= number_with_delimiter @organisation_statement.staff %></p>
-    <p>Activities: <%= number_with_delimiter @organisation_statement.activities %></p>
-    <p>Actions: <%= number_with_delimiter @organisation_statement.actions %></p>
-  </div>
-</div>
 
 <div class="row">
   <div class="col-12 mb-4 bg-light rounded-2 pb-3">
@@ -47,6 +38,25 @@
     </div>
   </div>
 <% end %>
+
+<div class="row">
+  <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+    <h3>Our reach</h3>
+    <p>Schools: <%= number_with_delimiter @organisation_statement.schools %></p>
+    <p>Pupils: <%= number_with_delimiter @organisation_statement.pupils %></p>
+    <p>Staff: <%= number_with_delimiter @organisation_statement.staff %></p>
+    <p>Activities: <%= number_with_delimiter @organisation_statement.activities %></p>
+    <p>Actions: <%= number_with_delimiter @organisation_statement.actions %></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+    <h3>Behaviour change</h3>
+    <p>Activities: <%= number_with_delimiter @organisation_statement.activities %></p>
+    <p>Actions: <%= number_with_delimiter @organisation_statement.actions %></p>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-12">
