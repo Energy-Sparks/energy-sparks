@@ -5,7 +5,9 @@
       ) do |grid| %>
     <% grid.with_feature_card(size: :xl) do |feature| %>
       <%= feature.with_header title: t('our_impact.feature.title') %>
-      <%= feature.with_description { t('our_impact.feature.description_html') } %>
+      <%= feature.with_description do
+            t('our_impact.feature.description_html', academic_year: @organisation_statement.academic_year)
+          end %>
       <%= feature.with_button t('home.buttons.our_tool'), product_path, style: :primary %>
       <%= feature.with_button t('support_us.title'), support_us_path %>
     <% end %>
@@ -18,7 +20,9 @@
         id: 'overview'
       ) do |section_header| %>
     <%= section_header.with_header title: t('our_impact.overview.title') %>
-    <%= section_header.with_description { t('our_impact.overview.description') } %>
+    <%= section_header.with_description do
+          t('our_impact.overview.description', academic_year: @organisation_statement.academic_year)
+        end %>
   <% end %>
 
   <%= render Layout::GridComponent.new(id: 'overview-cards',
@@ -28,7 +32,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'school', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.overview_cards.schools.title') %>
-      <%= card.with_figure number_with_delimiter(1300) %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.schools) %>
       <%= card.with_subtext do
             t('our_impact.overview_cards.schools.description')
           end %>
@@ -36,7 +40,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'children', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.overview_cards.pupils.title') %>
-      <%= card.with_figure number_with_delimiter(734_000) %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.pupils) %>
       <%= card.with_subtext do
             t('our_impact.overview_cards.pupils.description')
           end %>
@@ -44,7 +48,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'person-chalkboard', style: :circle, size: 'f3' %>
       <%= card.with_header level: 4, title: t('our_impact.overview_cards.staff.title') %>
-      <%= card.with_figure number_with_delimiter(2500) %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.staff) %>
       <%= card.with_subtext do
             t('our_impact.overview_cards.staff.description')
           end %>
@@ -58,17 +62,17 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'clipboard', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.engagement_cards.pupils.title') %>
-      <%= card.with_figure number_with_delimiter(4532) %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.activities) %>
       <%= card.with_subtext do
-            t('our_impact.engagement_cards.pupils.description')
+            t('our_impact.engagement_cards.pupils.description', academic_year: @organisation_statement.academic_year)
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'clipboard', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.engagement_cards.staff.title') %>
-      <%= card.with_figure number_with_delimiter(5930) %>
+      <%= card.with_figure number_with_delimiter(@organisation_statement.actions) %>
       <%= card.with_subtext do
-            t('our_impact.engagement_cards.staff.description')
+            t('our_impact.engagement_cards.staff.description', academic_year: @organisation_statement.academic_year)
           end %>
     <% end %>
   <% end %>
@@ -92,7 +96,9 @@
         id: 'energy-savings'
       ) do |section_header| %>
     <%= section_header.with_header title: t('our_impact.energy_savings.title') %>
-    <%= section_header.with_description { t('our_impact.energy_savings.description') } %>
+    <%= section_header.with_description do
+          t('our_impact.energy_savings.description', academic_year: @organisation_statement.academic_year)
+        end %>
   <% end %>
 
   <%= render Layout::GridComponent.new(id: 'overview-cards',
@@ -101,7 +107,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: 'Cost savings' %>
-      <%= card.with_figure "£#{number_with_delimiter(570_000_0)}" %>
+      <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.total_cost_savings)}" %>
       <%= card.with_subtext do
             'Saved on energy bills in 2024/25 based on current tariffs'
           end %>
@@ -109,7 +115,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: 'Reduced emissions' %>
-      <%= card.with_figure "#{number_with_delimiter(10_000)} tonnes of CO2" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.total_carbon_savings)} tonnes of CO₂" %>
       <%= card.with_subtext do
             'That’s the same amount of CO2 as flying 1,700 times around the world!'
           end %>
@@ -120,7 +126,9 @@
         id: 'percentage-savings'
       ) do |section_header| %>
     <%= section_header.with_header title: t('our_impact.percentage_savings.title') %>
-    <%= section_header.with_description { t('our_impact.percentage_savings.description') } %>
+    <%= section_header.with_description do
+          t('our_impact.percentage_savings.description', academic_year: @organisation_statement.academic_year)
+        end %>
   <% end %>
 
   <%= render Layout::GridComponent.new(id: 'percentage-cards',
@@ -129,12 +137,12 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'school', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.percentage_cards.primary.title') %>
-      <%= card.with_figure "#{number_with_delimiter(65)}%" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.average_primary_saving)}%" %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'school-flag', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.percentage_cards.secondary.title') %>
-      <%= card.with_figure "#{number_with_delimiter(62)}%" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.average_secondary_saving)}%" %>
     <% end %>
   <% end %>
 
@@ -142,7 +150,9 @@
         id: 'primary-savings'
       ) do |section_header| %>
     <%= section_header.with_header title: t('our_impact.primary_savings.title') %>
-    <%= section_header.with_description { t('our_impact.primary_savings.description') } %>
+    <%= section_header.with_description do
+          t('our_impact.primary_savings.description', academic_year: @organisation_statement.academic_year)
+        end %>
   <% end %>
 
   <%= render Layout::GridComponent.new(id: 'primary-cards',
@@ -152,7 +162,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :electricity, style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.electricity.title') %>
-      <%= card.with_figure "#{number_with_delimiter(7)}%" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.primary_saving_electricity)}%" %>
       <%= card.with_subtext do
             t('our_impact.primary_savings.electricity.description')
           end %>
@@ -160,7 +170,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :gas, style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.gas.title') %>
-      <%= card.with_figure "#{number_with_delimiter(13)}%" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.primary_saving_gas)}%" %>
       <%= card.with_subtext do
             t('our_impact.primary_savings.gas.description')
           end %>
@@ -168,7 +178,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.cost.title') %>
-      <%= card.with_figure "£#{number_with_delimiter(2900)}" %>
+      <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.primary_cost_saving)}" %>
       <%= card.with_subtext do
             t('our_impact.primary_savings.cost.description')
           end %>
@@ -176,7 +186,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.carbon.title') %>
-      <%= card.with_figure "#{number_with_delimiter(5000)} kg CO₂" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.primary_carbon_saving)} tonnes of CO₂" %>
       <%= card.with_subtext do
             t('our_impact.primary_savings.carbon.description')
           end %>
@@ -187,7 +197,9 @@
         id: 'secondary-savings'
       ) do |section_header| %>
     <%= section_header.with_header title: t('our_impact.secondary_savings.title') %>
-    <%= section_header.with_description { t('our_impact.secondary_savings.description') } %>
+    <%= section_header.with_description do
+          t('our_impact.secondary_savings.description', academic_year: @organisation_statement.academic_year)
+        end %>
   <% end %>
 
   <%= render Layout::GridComponent.new(id: 'secondary-cards',
@@ -197,7 +209,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :electricity, style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.secondary_savings.electricity.title') %>
-      <%= card.with_figure "#{number_with_delimiter(7)}%" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.secondary_saving_electricity)}%" %>
       <%= card.with_subtext do
             t('our_impact.secondary_savings.electricity.description')
           end %>
@@ -205,7 +217,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :gas, style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.secondary_savings.gas.title') %>
-      <%= card.with_figure "#{number_with_delimiter(13)}%" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.secondary_saving_gas)}%" %>
       <%= card.with_subtext do
             t('our_impact.secondary_savings.gas.description')
           end %>
@@ -213,7 +225,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.secondary_savings.cost.title') %>
-      <%= card.with_figure "£#{number_with_delimiter(1460)}" %>
+      <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.secondary_cost_saving)}" %>
       <%= card.with_subtext do
             t('our_impact.secondary_savings.cost.description')
           end %>
@@ -221,7 +233,7 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.secondary_savings.carbon.title') %>
-      <%= card.with_figure "#{number_with_delimiter(26_000)} kg CO₂" %>
+      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.secondary_carbon_saving)} tonnes of CO₂" %>
       <%= card.with_subtext do
             t('our_impact.secondary_savings.carbon.description')
           end %>
@@ -238,10 +250,11 @@
     <%= grid.with_feature_card(classes: '', size: :lg) do |feature| %>
       <%= feature.with_header(title: t('our_impact.find_out_more.title')) %>
       <%= feature.with_description { t('our_impact.find_out_more.description_html') } %>
-      <%= feature.with_button(t('our_impact.find_out_more.report_button'),
-                              'https://blog.energysparks.uk/our-new-energy-efficiency-report-reveals-schools-can-save'\
-                              '-thousands-of-pounds-on-their-energy-bills-by-making-simple-zero-cost-changes/',
-                              style: :primary) %>
+      <%= if @organisation_statement.efficiency_report_link
+            feature.with_button(t('our_impact.find_out_more.report_button'),
+                                @organisation_statement.efficiency_report_link,
+                                style: :primary)
+          end %>
       <%= feature.with_button(t('home.buttons.read_case_studies'),
                               case_studies_path, style: :secondary) %>
     <% end %>

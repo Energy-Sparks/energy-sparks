@@ -90,7 +90,9 @@ class HomeController < ApplicationController
   end
 
   def our_impact
+    @organisation_statement = ImpactReport::OrganisationStatement.current_statement
     redirect_to home_page_path unless Flipper.enabled?(:org_impact_page, current_user)
+    redirect_to home_page_path unless @organisation_statement
   end
 
   private

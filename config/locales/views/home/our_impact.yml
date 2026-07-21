@@ -2,14 +2,14 @@
 en:
   our_impact:
     energy_savings:
-      description: Estimated savings across all Energy Sparks schools in the 2025/26 academic year
+      description: Estimated savings across all Energy Sparks schools in the  %{academic_year} academic year
       title: Energy savings
     engagement_cards:
       pupils:
-        description: Completed in the 2025/26 academic year
+        description: Completed in the  %{academic_year} academic year
         title: Pupil activities
       staff:
-        description: Completed in the 2025/26 academic year
+        description: Completed in the  %{academic_year} academic year
         title: Adult actions
     feature:
       description_html: |-
@@ -22,7 +22,7 @@ en:
          guided by energy data insights from <a href="/product">our energy management tool</a>.
         </p>
         <p>
-         Take a look at our impact in the 2025/26 academic year.
+         Take a look at our impact in the %{academic_year} academic year.
         </p>
       title: Our impact
     find_out_more:
@@ -35,7 +35,7 @@ en:
       report_button: Energy efficiency report
       title: Looking for further insights?
     overview:
-      description: How many schools were using our energy management tool and educational programme in the 2025/26 academic year?
+      description: How many schools were using our energy management tool and educational programme in the  %{academic_year} academic year?
       title: Overview
     overview_cards:
       pupils:
@@ -53,7 +53,7 @@ en:
       secondary:
         title: Secondary schools
     percentage_savings:
-      description: Percentage of schools reducing their energy use in the 2025/26 academic year
+      description: Percentage of schools reducing their energy use in the %{academic_year} academic year
       title: Schools making savings
     primary_savings:
       carbon:
@@ -62,7 +62,7 @@ en:
       cost:
         description: Cost savings from reducing energy use using current tariffs
         title: Cost savings
-      description: Savings made by the average primary school using Energy Sparks in the 2025/26 academic year
+      description: Savings made by the average primary school using Energy Sparks in the %{academic_year} academic year
       electricity:
         description: Average reduction in electricity use
         title: Electricity use
@@ -77,7 +77,7 @@ en:
       cost:
         description: Cost savings from reducing energy use using current tariffs
         title: Cost savings
-      description: Savings made by the average secondary school using Energy Sparks in the 2025/26 academic year
+      description: Savings made by the average secondary school using Energy Sparks in the %{academic_year} academic year
       electricity:
         description: Average reduction in electricity use
         title: Electricity use
