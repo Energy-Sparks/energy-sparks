@@ -4,6 +4,7 @@ module Schools
   class BaseInstallationsController < ApplicationController
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school, instance_name: :installation
+    before_action :enable_bootstrap5
     before_action :set_breadcrumbs
 
     def show; end
@@ -37,7 +38,16 @@ module Schools
     private
 
     def set_breadcrumbs
-      @breadcrumbs = [{ name: 'Solar API Feeds' }]
+      @breadcrumbs = [{ name: 'Solar API Feeds', href: school_solar_feeds_configuration_index_path(@school) },
+                      { name: self.class::NAME }]
+    end
+
+    def existing_or_create
+      if params[:existing].present?
+        @installation = self.class::MODEL.find(params.expect(:existing))
+      else
+        @installation.amr_data_feed_config = AmrDataFeedConfig.find_by!(identifier: self.class::ID_PREFIX)
+      end
     end
   end
 end

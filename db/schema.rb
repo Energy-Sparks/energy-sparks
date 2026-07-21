@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_20_095126) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1607,6 +1607,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.index ["user_id"], name: "index_meter_reviews_on_user_id"
   end
 
+  create_table "meter_z_installations", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.bigint "amr_data_feed_config_id", null: false
+    t.text "api_key", null: false
+    t.datetime "created_at", null: false
+    t.jsonb "meters_list"
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_meter_z_installations_on_amr_data_feed_config_id"
+    t.index ["api_key"], name: "index_meter_z_installations_on_api_key", unique: true
+  end
+
   create_table "meters", force: :cascade do |t|
     t.boolean "active", default: true
     t.bigint "admin_meter_statuses_id"
@@ -1622,6 +1633,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.text "meter_serial_number"
     t.integer "meter_system", default: 0
     t.integer "meter_type"
+    t.bigint "meter_z_installation_id"
     t.bigint "mpan_mprn"
     t.string "name"
     t.enum "perse_api", enum_type: "meter_perse_api"
@@ -1636,6 +1648,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
+    t.index ["meter_z_installation_id"], name: "index_meters_on_meter_z_installation_id"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DataFeeds::MeterZApi do
+RSpec.describe DataFeeds::MeterZ do
   subject(:client) { described_class.new(api_key) }
 
   let(:api_key) { 'secret-api-key' }

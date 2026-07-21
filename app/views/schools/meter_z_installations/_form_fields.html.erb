@@ -4,20 +4,18 @@
   <table class="table">
     <thead>
       <tr>
+        <th>Site Name</th>
         <th>Meter Name</th>
-        <th>Meter serial</th>
-        <th>Pseudo MPAN</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <% installation.inverter_detail_list.each do |inverter| %>
-        <% next if installation.meters.pluck(:meter_serial_number).include?(inverter['sn']) %>
+      <% installation.meters_list.sort_by { |meter| [meter['site_name'], meter['meter_name']] }.each do |meter| %>
+        <%# next if installation.meters.pluck(:meter_serial_number).include?(inverter['sn']) %>
         <tr>
-          <td><%= [inverter['stationName'], inverter['name']].compact.join(' / ') %></td>
-          <td><%= inverter['sn'] %></td>
-          <td>-</td>
-          <td><%= button_tag('Assign', value: "assign_meter_#{inverter['sn']}", class: 'btn btn-primary') %></td>
+          <td><%= meter['site_name'] %></td>
+          <td><%= meter['meter_name'] %></td>
+          <td><%= button_tag('Assign', name: 'assign', value: meter['meter_id'], class: 'btn btn-primary') %></td>
         </tr>
       <% end %>
     </tbody>
@@ -47,16 +45,11 @@
     <%= link_to 'Back', school_solar_feeds_configuration_index_path(school), class: 'btn' %>
   </div>
   <div class="other-actions">
-    <%= link_to 'Update Inverter List', check_school_solis_cloud_installation_path(school, installation),
+    <%= link_to 'Update Meter List', check_school_meter_z_installation_path(school, installation),
                 method: :post, class: 'btn btn-primary mb-4' %>
   </div>
 <% else %>
-  <% options = SolisCloudInstallation.where.not(id: school.solis_cloud_installations).map do |installation|
-                 name = "API ID: #{installation.api_id}, Stations: " \
-                        "#{installation.inverter_detail_list.map { |d| d['stationName'] }.uniq.join(', ')}"
-                 [name, installation.id]
-               end %>
-  <%= render 'existing', options: %>
+  <%= render 'existing',
+             options: MeterZInstallation.all.map { |installation| [installation.api_key, installation.id] } %>
 <% end %>
-<%= form.input :api_id, as: :string, label: 'API ID', hint: 'The Solis Cloud API Key' %>
-<%= form.input :api_secret, as: :string, label: 'API Secret', hint: 'The Solid Cloud API Secret' %>
+<%= form.input :api_key, as: :string, label: 'API Key' %>

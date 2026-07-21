@@ -84,7 +84,6 @@
 #  dark_sky_area_id                        :bigint(8)
 #  default_contract_holder_id              :bigint(8)
 #  establishment_id                        :bigint(8)
-#  funder_id                               :bigint(8)
 #  local_authority_area_id                 :bigint(8)
 #  local_distribution_zone_id              :bigint(8)
 #  met_office_area_id                      :bigint(8)
@@ -207,6 +206,7 @@ class School < ApplicationRecord
   has_many :rtone_variant_installations, inverse_of: :school
   has_many :solis_cloud_installation_schools
   has_many :solis_cloud_installations, through: :solis_cloud_installation_schools
+  has_many :meter_z_installations, through: :meters
 
   has_many :equivalences
 

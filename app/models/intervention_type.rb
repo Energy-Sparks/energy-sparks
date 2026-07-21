@@ -17,7 +17,6 @@
 #
 # Indexes
 #
-
 #  index_intervention_types_on_intervention_type_group_id  (intervention_type_group_id)
 #
 # Foreign Keys
