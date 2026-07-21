@@ -47,7 +47,6 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       expect(our_services).to have_link('Education workshops')
       expect(our_services).to have_link('Training')
       expect(our_services).to have_link('Case studies')
-      expect(our_services).to have_link('Our impact')
       expect(our_services).to have_link('Newsletters')
       expect(our_services).to have_link('Videos')
     end
@@ -64,6 +63,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       expect(about_us).to have_link('Contact')
       expect(about_us).to have_link('Team')
       expect(about_us).to have_link('Blog')
+      expect(about_us).to have_link('Our impact')
       expect(about_us).to have_link('Our funders')
       expect(about_us).to have_link('Support us', href: support_us_path)
       expect(about_us).to have_link('Jobs')

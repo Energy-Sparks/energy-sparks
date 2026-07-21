@@ -9,7 +9,7 @@ en:
         staff:
           description: Completed in the  %{academic_year} academic year
           title: Adult-led energy saving actions
-      title: Behaviour Change
+      title: Behaviour change
     energy_savings:
       cards:
         total_carbon_savings:
