@@ -29,7 +29,7 @@
                                        cols: 2,
                                        component_classes: 'theme theme-dark') do |grid| %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'coins', classes: 'text-yellow-light', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.energy_savings.cards.total_cost_savings.title') %>
       <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.total_cost_savings)}" %>
       <%= card.with_subtext do
@@ -38,7 +38,7 @@
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'cloud', classes: 'text-success', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.energy_savings.cards.total_carbon_savings.title') %>
       <%= card.with_figure t('our_impact.tonnes_of_carbon',
                              volume: number_with_delimiter(@organisation_statement.total_carbon_savings)) %>
@@ -75,7 +75,7 @@
   <%= render Layout::GridComponent.new(id: 'primary-cards',
                                        cols: 4,
                                        cell_classes: 'mb-4',
-                                       component_classes: 'theme theme-dark') do |grid| %>
+                                       component_classes: 'theme theme-dark bg-success') do |grid| %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :electricity, style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.cards.electricity.title') %>
@@ -93,7 +93,7 @@
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'coins', classes: 'text-yellow-light', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.cards.cost.title') %>
       <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.primary_cost_saving)}" %>
       <%= card.with_subtext do
@@ -101,7 +101,7 @@
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'cloud', classes: 'text-success', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.cards.carbon.title') %>
       <%= card.with_figure t('our_impact.tonnes_of_carbon',
                              volume: number_with_delimiter(@organisation_statement.primary_carbon_saving)) %>
@@ -156,7 +156,7 @@
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'coins', classes: 'text-yellow-light', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.secondary_savings.cards.cost.title') %>
       <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.secondary_cost_saving)}" %>
       <%= card.with_subtext do
@@ -164,7 +164,7 @@
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'cloud', classes: 'text-success', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.secondary_savings.cards.carbon.title') %>
       <%= card.with_figure t('our_impact.tonnes_of_carbon',
                              volume: number_with_delimiter(@organisation_statement.secondary_carbon_saving)) %>
@@ -185,7 +185,7 @@
                                        cell_classes: 'mb-3',
                                        component_classes: 'theme theme-dark') do |grid| %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'school', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'school', classes: 'text-info', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.our_reach.cards.schools.title') %>
       <%= card.with_figure number_with_delimiter(@organisation_statement.schools) %>
       <%= card.with_subtext do
@@ -193,7 +193,7 @@
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'children', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'children', classes: 'text-info', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.our_reach.cards.pupils.title') %>
       <%= card.with_figure number_with_delimiter(@organisation_statement.pupils) %>
       <%= card.with_subtext do
@@ -201,7 +201,7 @@
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'person-chalkboard', style: :circle, size: 'f3' %>
+      <%= card.with_icon name: 'person-chalkboard', classes: 'text-info', style: :circle, size: 'f3' %>
       <%= card.with_header level: 4, title: t('our_impact.our_reach.cards.staff.title') %>
       <%= card.with_figure number_with_delimiter(@organisation_statement.staff) %>
       <%= card.with_subtext do
@@ -221,7 +221,7 @@
                                        cell_classes: 'mb-4',
                                        component_classes: 'theme theme-dark bg-success') do |grid| %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'clipboard', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'clipboard', classes: 'text-success', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.behaviour_change.cards.pupils.title') %>
       <%= card.with_figure number_with_delimiter(@organisation_statement.activities) %>
       <%= card.with_subtext do
@@ -230,7 +230,7 @@
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
-      <%= card.with_icon name: 'clipboard', style: :circle, size: 'f4' %>
+      <%= card.with_icon name: 'clipboard', classes: 'text-success', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.behaviour_change.cards.staff.title') %>
       <%= card.with_figure number_with_delimiter(@organisation_statement.actions) %>
       <%= card.with_subtext do
