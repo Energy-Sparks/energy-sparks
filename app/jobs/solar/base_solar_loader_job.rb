@@ -9,7 +9,7 @@ module Solar
 
     def perform(installation:, notify_email:, start_date: nil, end_date: nil)
       @installation = installation
-      @upserter = upserter(start_date, end_date)
+      @upserter = upserter.new(installation:, start_date:, end_date:)
       @upserter.perform
       send_notification(notify_email, import_log: @upserter.import_log)
     rescue StandardError => e
@@ -20,7 +20,7 @@ module Solar
 
     private
 
-    def upserter(_start_date, _end_date)
+    def upserter
       raise 'Not implemented'
     end
 

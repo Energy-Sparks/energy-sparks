@@ -2,7 +2,7 @@
 
 module Solar
   class BaseDownloadAndUpsert
-    def initialize(start_date:, end_date:, installation:)
+    def initialize(installation:, start_date: nil, end_date: nil)
       @requested_start_date = start_date
       @requested_end_date = end_date
       @installation = installation
@@ -11,6 +11,7 @@ module Solar
     def perform
       download_and_upsert
     rescue StandardError => e
+      raise
       EnergySparks::Log.exception(e, job: job, school: school&.name, start_date:, end_date:,
                                      installation_id: @installation.id)
       import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date} : " \
@@ -18,11 +19,9 @@ module Solar
     end
 
     def import_log
-      @import_log ||= AmrDataFeedImportLog.create(
-        amr_data_feed_config: @installation.amr_data_feed_config,
-        file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
-        import_time: DateTime.now.utc
-      )
+      @import_log ||= AmrDataFeedImportLog.create(amr_data_feed_config: @installation.amr_data_feed_config,
+                                                  file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
+                                                  import_time: DateTime.now.utc)
     end
 
     protected

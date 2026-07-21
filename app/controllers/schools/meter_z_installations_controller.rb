@@ -59,7 +59,7 @@ module Schools
     private
 
     def update_installation_with_meters
-      api = DataFeeds::MeterZ.new(@installation.api_key)
+      api = @installation.api
       organisation_id = api.organisations.first['organisation_id']
       @installation.update!(meters_list: api.meters(organisation_id))
     end

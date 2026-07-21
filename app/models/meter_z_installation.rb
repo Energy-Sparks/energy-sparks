@@ -40,7 +40,23 @@ class MeterZInstallation < ApplicationRecord
     Meter.create(meter_serial_number: api_meter_id, school_id:, meter_z_installation_id: id,
                  meter_type: :solar_pv, pseudo: true, active: false,
                  mpan_mprn: generate_mpan(api_meter_id),
-                 name: generate_meter_name(api_meter_id))
+                 name: meter_name(api_meter_id))
+  end
+
+  def api = DataFeeds::MeterZ.new(api_key)
+
+  def readings(meter_id, start_date)
+    data = find_stored_api_data(meter_id)
+    return [] if data.nil?
+
+    api.readings(data['organisation_id'], data['site_id'], meter_id, start_date)
+  end
+
+  def find_stored_api_data(meter_id) = meters_list&.find { |meter| meter['meter_id'] == meter_id }
+
+  def meter_name(meter_id)
+    meter = find_stored_api_data(meter_id)
+    "MeterZ - #{meter&.[]('meter_name')} (#{meter&.[]('site_name')})"
   end
 
   private
@@ -48,10 +64,5 @@ class MeterZInstallation < ApplicationRecord
   def generate_mpan(meter_id)
     # uuid, truncate to max length our mpan function supports for solar
     Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(meter_id.delete('-').to_i(16).to_s.last(13), :solar_pv)
-  end
-
-  def generate_meter_name(meter_id)
-    meter = meters_list.find { |meter| meter['meter_id'] == meter_id }
-    "MeterZ - #{meter&.[]('meter_name')} (#{meter&.[]('site_name')})"
   end
 end
