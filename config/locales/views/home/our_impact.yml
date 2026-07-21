@@ -4,6 +4,13 @@ en:
     energy_savings:
       description: Estimated savings across all Energy Sparks schools in the  %{academic_year} academic year
       title: Energy savings
+    energy_savings_cards:
+      total_carbon_savings:
+        description: That's the same amount of CO₂ as flying 1,700 times around the world!
+        title: Reduced emissions
+      total_cost_savings:
+        description: Saved on energy bills in %{academic_year} based on current tariffs
+        title: Cost savings
     engagement_cards:
       pupils:
         description: Completed in the  %{academic_year} academic year
@@ -57,7 +64,7 @@ en:
       title: Schools making savings
     primary_savings:
       carbon:
-        description: Reduced CO2 emissions from reducing energy use
+        description: Reduced CO₂ emissions from reducing energy use
         title: Reduced emissions
       cost:
         description: Cost savings from reducing energy use using current tariffs
@@ -72,7 +79,7 @@ en:
       title: Primary school savings
     secondary_savings:
       carbon:
-        description: Reduced CO2 emissions from reducing energy use
+        description: Reduced CO₂ emissions from reducing energy use
         title: Reduced emissions
       cost:
         description: Cost savings from reducing energy use using current tariffs
@@ -86,3 +93,4 @@ en:
         title: Gas use
       title: Secondary school savings
     title: Our impact
+    tonnes_of_carbon: "%{volume} tonnes of CO₂"

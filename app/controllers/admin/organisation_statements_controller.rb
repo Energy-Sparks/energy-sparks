@@ -35,7 +35,7 @@ module Admin
     end
 
     def make_current
-      notice = if @organisation_statement.update(current: true)
+      notice = if @organisation_statement.make_current!
                  'Organisation statement is now current and live on the website'
                else
                  'Unable to make current'

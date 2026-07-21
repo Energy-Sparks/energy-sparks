@@ -101,23 +101,25 @@
         end %>
   <% end %>
 
-  <%= render Layout::GridComponent.new(id: 'overview-cards',
+  <%= render Layout::GridComponent.new(id: 'energy-savings-cards',
                                        cols: 2,
                                        component_classes: 'theme theme-dark') do |grid| %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'coins', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: 'Cost savings' %>
+      <%= card.with_header level: 4, title: t('our_impact.energy_savings_cards.total_cost_savings.title') %>
       <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.total_cost_savings)}" %>
       <%= card.with_subtext do
-            'Saved on energy bills in 2024/25 based on current tariffs'
+            t('our_impact.energy_savings_cards.total_cost_savings.description',
+              academic_year: @organisation_statement.academic_year)
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
-      <%= card.with_header level: 4, title: 'Reduced emissions' %>
-      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.total_carbon_savings)} tonnes of CO₂" %>
+      <%= card.with_header level: 4, title: t('our_impact.energy_savings_cards.total_carbon_savings.title') %>
+      <%= card.with_figure t('our_impact.tonnes_of_carbon',
+                             volume: number_with_delimiter(@organisation_statement.total_carbon_savings)) %>
       <%= card.with_subtext do
-            'That’s the same amount of CO2 as flying 1,700 times around the world!'
+            t('our_impact.energy_savings_cards.total_carbon_savings.description')
           end %>
     <% end %>
   <% end %>
@@ -186,7 +188,8 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.carbon.title') %>
-      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.primary_carbon_saving)} tonnes of CO₂" %>
+      <%= card.with_figure t('our_impact.tonnes_of_carbon',
+                             volume: number_with_delimiter(@organisation_statement.primary_carbon_saving)) %>
       <%= card.with_subtext do
             t('our_impact.primary_savings.carbon.description')
           end %>
@@ -233,7 +236,8 @@
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon name: 'cloud', style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.secondary_savings.carbon.title') %>
-      <%= card.with_figure "#{number_with_delimiter(@organisation_statement.secondary_carbon_saving)} tonnes of CO₂" %>
+      <%= card.with_figure t('our_impact.tonnes_of_carbon',
+                             volume: number_with_delimiter(@organisation_statement.secondary_carbon_saving)) %>
       <%= card.with_subtext do
             t('our_impact.secondary_savings.carbon.description')
           end %>

@@ -49,5 +49,12 @@ module ImpactReport
     def deletable?
       !current
     end
+
+    def make_current!
+      self.class.transaction do
+        self.class.where.not(id: id).update_all(current: false) # rubocop:disable Rails/SkipsModelValidations
+        update!(current: true)
+      end
+    end
   end
 end
