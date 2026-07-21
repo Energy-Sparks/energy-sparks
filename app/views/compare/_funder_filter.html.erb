@@ -3,7 +3,7 @@
   <div>
     <%= select_tag :funder,
                    options_for_select(
-                     Funder.with_schools.distinct.by_name
+                     Funder.with_current_contracts.by_name
                            .map { |funder| ["Funded by #{funder.name}", funder.id] }, @filter[:funder]
                    ),
                    include_blank: 'All schools', class: 'form-control' %>

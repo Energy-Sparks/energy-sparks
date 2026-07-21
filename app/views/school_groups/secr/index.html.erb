@@ -41,10 +41,10 @@
     <h2><%= t('school_groups.secr.data.downloads.title') %></h2>
     <p><%= t('school_groups.secr.data.downloads.introduction') %></p>
     <ul>
-      <% types = %w[electricity gas self export]
-         years = @last_two_academic_year_periods.map { | date| "#{date[0].year}/#{(date[0].year + 1).to_s.last(2)}" }
-         years.each_with_index do |year, i|
-           types.each do |type| %>
+      <% types = %w[electricity gas self export] %>
+      <% years = @last_two_academic_year_periods.map { |date| "#{date[0].year}/#{(date[0].year + 1).to_s.last(2)}" } %>
+      <% years.each_with_index do |year, i| %>
+        <% types.each do |type| %>
           <% csv = "#{type}#{i.zero? ? '_previous' : ''}" %>
           <%# i18n-tasks-use t('school_groups.secr.data.downloads.electricity') %>
           <%# i18n-tasks-use t('school_groups.secr.data.downloads.gas') %>

@@ -23,7 +23,6 @@
 #
 #  fk_rails_...  (intervention_type_group_id => intervention_type_groups.id) ON DELETE => cascade
 #
-
 class InterventionType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable

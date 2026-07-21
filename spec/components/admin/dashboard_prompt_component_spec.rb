@@ -149,7 +149,6 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
   describe 'monthly group reviews prompt' do
     context 'when there are no overdue group reviews' do
       before do
-        puts render_inline(described_class.new(user: user)).content
         render_inline described_class.new(user: user)
       end
 
@@ -321,6 +320,33 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       it 'displays the low engagement prompt' do
         expect(page).to have_text('You have 1 groups with engagement below 50%')
         expect(page).to have_link('View Engaged Groups', href: admin_dashboard_engaged_groups_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'limited users prompt' do
+    context 'when there are no schools with limited users' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the limited users prompt' do
+        expect(page).to have_no_text('schools with less than 3 adult users')
+      end
+    end
+
+    context 'when there are groups with low engagement' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+      let(:school) { create(:school, school_group:) }
+
+      before do
+        create_list(:staff, 2, school:)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the low engagement prompt' do
+        expect(page).to have_text('You have 1 schools with less than 3 adult users')
+        expect(page).to have_link('View Limited Users', href: admin_dashboard_limited_users_path(dashboard_id: user))
       end
     end
   end

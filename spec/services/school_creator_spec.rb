@@ -10,7 +10,6 @@ describe SchoolCreator, :schools, type: :service do
   let(:school_group) { create(:school_group, name: 'BANES') }
   let(:scoreboard) { create(:scoreboard, name: 'BANES scoreboard') }
   let(:weather_station) { create(:weather_station, title: 'BANES weather') }
-  let(:funder) { create(:funder) }
   let(:contract) { create(:commercial_contract) }
 
   describe '#onboard_school!' do
@@ -27,7 +26,6 @@ describe SchoolCreator, :schools, type: :service do
                           weather_station:,
                           school_will_be_public: true,
                           data_sharing: :within_group,
-                          funder:,
                           contract:)
       onboarding.issues.create!(created_by: onboarding_user, updated_by: onboarding_user,
                                 title: 'onboarding issue', description: 'description')
@@ -48,14 +46,12 @@ describe SchoolCreator, :schools, type: :service do
 
       it 'assigns attributes' do
         expect(school.school_group).to eq(school_group)
-        expect(school.default_contract_holder).to eq(school_group)
         expect(school.template_calendar).to eq template_calendar
         expect(school.calendar.based_on).to eq(template_calendar)
         expect(school.dark_sky_area).to eq(dark_sky_area)
         expect(school.scoreboard).to eq(scoreboard)
         expect(school.configuration).not_to be_nil
         expect(school.weather_station).not_to be_nil
-        expect(school.funder).to eq(funder)
       end
 
       it { expect(school.project_groups).to be_empty }

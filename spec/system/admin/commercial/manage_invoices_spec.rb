@@ -17,6 +17,16 @@ describe 'manage invoices', :include_application_helper do
 
     it { expect(page).to have_text('All Invoices') }
 
+    it {
+      expect(page).to have_link('Export summary to CSV',
+                                href: admin_commercial_invoices_path(format: :csv, detail: :summary))
+    }
+
+    it {
+      expect(page).to have_link('Export detail to CSV',
+                                href: admin_commercial_invoices_path(format: :csv, detail: :full))
+    }
+
     it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
       let(:table_id) { '#invoices-table' }
       let(:expected_header) do
@@ -47,7 +57,29 @@ describe 'manage invoices', :include_application_helper do
 
       it 'downloads a CSV' do
         expect(page.response_headers['Content-Type']).to eq 'text/csv'
+        expect(page.response_headers['Content-Disposition']).to match(/energy-sparks-xero-invoices/)
+      end
+    end
+
+    context 'when downloading summary CSV' do
+      before do
+        click_on 'Export summary to CSV'
+      end
+
+      it 'downloads a CSV' do
+        expect(page.response_headers['Content-Type']).to eq 'text/csv'
         expect(page.response_headers['Content-Disposition']).to match(/energy-sparks-invoices/)
+      end
+    end
+
+    context 'when downloading detail CSV' do
+      before do
+        click_on 'Export detail to CSV'
+      end
+
+      it 'downloads a CSV' do
+        expect(page.response_headers['Content-Type']).to eq 'text/csv'
+        expect(page.response_headers['Content-Disposition']).to match(/energy-sparks-invoice-details/)
       end
     end
   end

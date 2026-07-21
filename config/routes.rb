@@ -456,7 +456,6 @@ Rails.application.routes.draw do
       resource :public, only: %i[create destroy], controller: :public
       resource :data_processing, only: %i[create destroy], controller: :data_processing
       resource :data_enabled, only: %i[create destroy], controller: :data_enabled
-      resource :self_funded, only: %i[create destroy], controller: :self_funded
       resources :contacts
       resources :subscription_generation_runs, only: %i[index show]
       resources :alert_subscription_events, only: [:show]
@@ -589,8 +588,10 @@ Rails.application.routes.draw do
         end
       end
       resources :missing_alert_contacts, module: :dashboard
+      resources :limited_users, module: :dashboard
       resources :activities, module: :dashboard
       resources :interventions, module: :dashboard
+      resources :energy_tariffs, module: :dashboard
 
       resources :amr_data_feed_import_logs, module: :dashboard
       resources :blank_readings, :lagging_meters, :zero_readings, module: :dashboard
@@ -898,6 +899,7 @@ Rails.application.routes.draw do
       resources :meter_loading_reports, only: :index
       resources :meter_reports, only: :index
       resources :missing_alert_contacts, only: [:index]
+      resources :limited_users, only: [:index]
       resources :new_data_inactive_meter_report, only: [:index]
       resources :perse_meter, only: [:index]
       resources :recent_audits, only: [:index]

@@ -11,11 +11,12 @@ module Navigation
         { name: 'My Data Sources', path: admin_dashboard_data_sources_path(current_user) },
         { name: 'My Suppliers', path: admin_dashboard_suppliers_path(current_user) },
         { name: 'My Data Feeds', path: admin_dashboard_amr_data_feed_configs_path(current_user) },
-        { name: 'My Issues', path: admin_dashboard_issues_path(current_user) }
+        { name: 'My Issues', path: admin_dashboard_issues_path(current_user) },
+        { name: 'My Energy Tariffs', path: admin_dashboard_energy_tariffs_path(current_user) }
       ]
     end
 
-    def my_schools_section
+    def my_schools_section # rubocop:disable Metrics/AbcSize
       [
         { name: 'Onboarding', classes: 'small', path: admin_dashboard_school_onboardings_path(current_user) },
         { name: 'Awaiting activation', classes: 'small', path: admin_dashboard_activations_path(current_user) },
@@ -24,6 +25,8 @@ module Navigation
         { name: 'Engaged schools', classes: 'small', path: admin_dashboard_engaged_groups_path(current_user) },
         { name: 'Recent activities', classes: 'small', path: admin_dashboard_activities_path(current_user) },
         { name: 'Recent actions', classes: 'small', path: admin_dashboard_interventions_path(current_user) },
+        { name: 'Limited users', classes: 'small',
+          path: admin_dashboard_limited_users_path(current_user) },
         { name: 'Missing alert contacts', classes: 'small',
           path: admin_dashboard_missing_alert_contacts_path(current_user) },
         { name: 'Pupil number updates', classes: 'small',

@@ -29,7 +29,7 @@ describe 'editing an activity' do
 
     fill_in :activity_happened_on, with: Time.zone.today.strftime('%d/%m/%Y')
     click_on 'Update activity'
-    expect(page.has_content?('Activity was successfully updated.')).to be true
+    expect(page.has_content?('Activity was successfully updated')).to be true
     expect(page.has_content?(Time.zone.today.strftime('%A, %d %B %Y'))).to be true
   end
 
@@ -41,7 +41,7 @@ describe 'editing an activity' do
     fill_in_trix with: new_activity_description
 
     click_on 'Update activity'
-    expect(page.has_content?('Activity was successfully updated.')).to be true
+    expect(page.has_content?('Activity was successfully updated')).to be true
     expect(page.has_content?(new_activity_description)).to be true
     expect(page.has_content?(custom_title)).to be true
   end
