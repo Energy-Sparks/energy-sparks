@@ -56,24 +56,17 @@ module Schools
       super
     end
 
-    def check
-      begin
-        @api_ok = @installation.update_inverter_detail_list.present?
-      rescue StandardError
-        @api_ok = false
-      end
-      respond_to do |format|
-        format.html { redirect_to edit_school_solis_cloud_installation_path(@school, @installation) }
-        format.js
-      end
-    end
-
     private
 
     def update_installation_with_meters
       api = DataFeeds::MeterZ.new(@installation.api_key)
       organisation_id = api.organisations.first['organisation_id']
       @installation.update!(meters_list: api.meters(organisation_id))
+    end
+
+    def installation_ok?
+      update_installation_with_meters
+      @installation.meters_list.present?
     end
 
     def resource_params

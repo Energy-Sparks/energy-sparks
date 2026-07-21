@@ -35,6 +35,18 @@ module Schools
                           "An email will be sent to #{current_user.email} when complete."
     end
 
+    def check
+      begin
+        @api_ok = installation_ok?
+      rescue StandardError
+        @api_ok = false
+      end
+      respond_to do |format|
+        format.html { redirect_to polymorphic_path([:edit, @school, @installation]) }
+        format.js
+      end
+    end
+
     private
 
     def set_breadcrumbs

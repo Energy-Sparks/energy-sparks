@@ -2641,8 +2641,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_095126) do
   add_foreign_key "meter_reviews", "consent_grants"
   add_foreign_key "meter_reviews", "schools"
   add_foreign_key "meter_reviews", "users"
+  add_foreign_key "meter_z_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "meter_reviews"
+  add_foreign_key "meters", "meter_z_installations", on_delete: :cascade
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
   add_foreign_key "meters", "solis_cloud_installations", on_delete: :cascade

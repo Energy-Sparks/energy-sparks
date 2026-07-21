@@ -56,19 +56,9 @@ module Schools
       super
     end
 
-    def check
-      begin
-        @api_ok = @installation.update_inverter_detail_list.present?
-      rescue StandardError
-        @api_ok = false
-      end
-      respond_to do |format|
-        format.html { redirect_to edit_school_solis_cloud_installation_path(@school, @installation) }
-        format.js
-      end
-    end
-
     private
+
+    def installation_ok? = @installation.update_inverter_detail_list.present?
 
     def resource_params
       params.expect(solis_cloud_installation: %i[api_id api_secret active])
