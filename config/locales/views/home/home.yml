@@ -64,10 +64,12 @@ en:
         figure: "£5,000"
         header: Primary schools
         subtext: and 7 tonnes CO₂ - average saving in 2023/24
+        subtext_with_metric: and %{carbon_saving} tonnes CO₂ - average saving in %{academic_year}
       card_3:
         figure: "£21,000"
         header: Secondary schools
         subtext: and 26 tonnes CO₂ - average saving in 2023/24
+        subtext_with_metric: and %{carbon_saving} tonnes CO₂ - average saving in %{academic_year}
       card_4:
         header: Empower pupils
         subtext: Eco-team and curriculum-linked energy saving activities related to energy use data to maximise impact

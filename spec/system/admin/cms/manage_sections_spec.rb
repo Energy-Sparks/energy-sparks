@@ -14,7 +14,7 @@ describe 'manage sections' do
 
     context 'when adding a new section', :js do
       before do
-        click_on('Pages')
+        find('a', text: 'Pages', exact_text: true).click
         click_on 'New Section'
         fill_in 'Title en', with: 'Section Title'
         within('.body-trix-editor-en') do

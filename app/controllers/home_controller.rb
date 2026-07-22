@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
   before_action :set_blog_service, only: [:index, :show]
+  before_action :set_impact_statement, only: [:index, :show]
 
   def index
   end
@@ -90,7 +91,9 @@ class HomeController < ApplicationController
   end
 
   def our_impact
+    @organisation_statement = ImpactReport::OrganisationStatement.current_statement
     redirect_to home_page_path unless Flipper.enabled?(:org_impact_page, current_user)
+    redirect_to home_page_path unless @organisation_statement
   end
 
   private
@@ -109,6 +112,10 @@ class HomeController < ApplicationController
 
   def set_blog_service
     @blog = BlogService.new
+  end
+
+  def set_impact_statement
+    @organisation_statement = ImpactReport::OrganisationStatement.current_statement
   end
 
   def redirect_if_logged_in # rubocop:disable Metrics/AbcSize

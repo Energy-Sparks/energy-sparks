@@ -1,0 +1,48 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Impact Statements' %>
+  <% header_nav.with_button 'Admin home', admin_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'New statement', new_admin_organisation_statement_path,
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Academic Year</th>
+      <th>Current?</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @organisation_statements.each do |organisation_statement| %>
+      <tr>
+        <td>
+          <%= link_to organisation_statement.academic_year, admin_organisation_statement_path(organisation_statement) %>
+        </td>
+        <td>
+          <%= checkmark(organisation_statement.current?) %>
+        </td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_organisation_statement_path(organisation_statement),
+                        class: 'btn btn-primary btn-sm' %>
+            <%= unless organisation_statement.current?
+                  button_to 'Make current', make_current_admin_organisation_statement_path(organisation_statement),
+                            class: 'btn btn-secondary btn-sm'
+                end %>
+            <%= render(Forms::DeleteButtonComponent.new(admin_organisation_statement_path(organisation_statement),
+                                                        resource: organisation_statement)) %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

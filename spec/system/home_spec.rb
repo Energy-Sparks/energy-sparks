@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'home', type: :system do
+RSpec.describe 'home' do
+  include ActionView::Helpers::NumberHelper
+
   describe 'Home page' do
     it 'has a home page' do
       visit root_path
@@ -42,14 +46,27 @@ RSpec.describe 'home', type: :system do
       end
     end
 
-    context 'without any tesimonials in the :default category' do
+    context 'without any testimonials in the :default category' do
       before do
         create(:testimonial, category: :audit)
         visit root_path
       end
 
-      it 'does not render the tesimonials component' do
+      it 'does not render the testimonials component' do
         expect(page).to have_no_css('#testimonials')
+      end
+    end
+
+    context 'with organisation impact statement' do
+      let!(:statement) { create(:impact_report_organisation_statement, :current) }
+
+      before { visit root_path }
+
+      it 'shows the metrics' do
+        expect(page).to have_text(number_with_delimiter(statement.primary_cost_saving))
+        expect(page).to have_text(number_with_delimiter(statement.primary_carbon_saving))
+        expect(page).to have_text(number_with_delimiter(statement.secondary_cost_saving))
+        expect(page).to have_text(number_with_delimiter(statement.secondary_carbon_saving))
       end
     end
   end
@@ -128,7 +145,7 @@ RSpec.describe 'home', type: :system do
     it 'preserves utm params in redirect' do
       old_paths.each do |path|
         get "/#{path}", params: utm_params
-        expect(response).to redirect_to(product_path + '?' + utm_params.to_query)
+        expect(response).to redirect_to("#{product_path}?#{utm_params.to_query}")
       end
     end
   end
@@ -242,7 +259,10 @@ RSpec.describe 'home', type: :system do
         it { expect(page).to have_css('#events') }
         it { expect(displayed_events.count).to eq 4 }
         it { expect(page).to have_text('Training') }
-        it { expect(page).to have_text('This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.') }
+
+        it {
+          expect(page).to have_text('This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.')
+        }
 
         it 'has available event' do
           expect(available).to have_css("img[src*='https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F113596237%2F481005514167%2F1%2Foriginal.20201005-092822?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C161%2C1086%2C543&s=1279466ca350155300d6b315d128f3d9']")

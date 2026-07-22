@@ -32,17 +32,40 @@
         <%= card.with_figure t('home.stats.card_1.figure') %>
         <%= card.with_subtext { t('home.stats.card_1.subtext') } %>
       <% end %>
-      <% grid.with_stats_card do |card| %>
-        <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
-        <%= card.with_header title: t('home.stats.card_2.header') %>
-        <%= card.with_figure t('home.stats.card_2.figure') %>
-        <%= card.with_subtext { t('home.stats.card_2.subtext') } %>
-      <% end %>
-      <% grid.with_stats_card do |card| %>
-        <%= card.with_icon name: 'hotel', style: :circle, classes: 'text-success' %>
-        <%= card.with_header title: t('home.stats.card_3.header') %>
-        <%= card.with_figure t('home.stats.card_3.figure') %>
-        <%= card.with_subtext { t('home.stats.card_3.subtext') } %>
+      <% if @organisation_statement.present? %>
+        <% grid.with_stats_card do |card| %>
+          <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
+          <%= card.with_header title: t('home.stats.card_2.header') %>
+          <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.primary_cost_saving)}" %>
+          <%= card.with_subtext do
+                t('home.stats.card_2.subtext_with_metric',
+                  carbon_saving: number_with_delimiter(@organisation_statement.primary_carbon_saving),
+                  academic_year: @organisation_statement.academic_year)
+              end %>
+        <% end %>
+        <% grid.with_stats_card do |card| %>
+          <%= card.with_icon name: 'hotel', style: :circle, classes: 'text-success' %>
+          <%= card.with_header title: t('home.stats.card_3.header') %>
+          <%= card.with_figure "£#{number_with_delimiter(@organisation_statement.secondary_cost_saving)}" %>
+          <%= card.with_subtext do
+                t('home.stats.card_3.subtext_with_metric',
+                  carbon_saving: number_with_delimiter(@organisation_statement.secondary_carbon_saving),
+                  academic_year: @organisation_statement.academic_year)
+              end %>
+        <% end %>
+      <% else %>
+        <% grid.with_stats_card do |card| %>
+          <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
+          <%= card.with_header title: t('home.stats.card_2.header') %>
+          <%= card.with_figure t('home.stats.card_2.figure') %>
+          <%= card.with_subtext { t('home.stats.card_2.subtext') } %>
+        <% end %>
+        <% grid.with_stats_card do |card| %>
+          <%= card.with_icon name: 'hotel', style: :circle, classes: 'text-success' %>
+          <%= card.with_header title: t('home.stats.card_3.header') %>
+          <%= card.with_figure t('home.stats.card_3.figure') %>
+          <%= card.with_subtext { t('home.stats.card_3.subtext') } %>
+        <% end %>
       <% end %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon name: 'book-open-reader', style: :circle, classes: 'text-yellow-light' %>
