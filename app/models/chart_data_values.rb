@@ -128,6 +128,9 @@ class ChartDataValues
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => Colours.chart_electricity_consumed_from_solar_pv,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME_I18N_KEY}") => Colours.chart_electric_dark,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME_I18N_KEY}") => Colours.chart_gas_light_line,
+      I18n.t('analytics.benchmarking.configuration.column_headings.solar_self_consume') => Colours.chart_electricity_consumed_from_solar_pv,
+      I18n.t('analytics.benchmarking.configuration.column_headings.solar_mains_consume') => Colours.chart_electric_dark,
+      I18n.t('analytics.benchmarking.configuration.column_headings.solar_export') => Colours.chart_gas_light_line,
       I18n.t('analytics.series_data_manager.y2_solar_label') => Colours.chart_y2_solar_label,
       I18n.t('analytics.series_data_manager.y2_rating') => Colours.chart_y2_rating
     }

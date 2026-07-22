@@ -24,5 +24,13 @@ module Comparisons
     def load_data
       Comparison::SolarGenerationSummary.for_schools(@schools).with_data.sort_default
     end
+
+    def create_charts(results)
+      create_multi_chart(results, {
+                           annual_mains_consumed_kwh: :solar_mains_consume,
+                           annual_solar_pv_consumed_onsite_kwh: :solar_self_consume,
+                           annual_exported_solar_pv_kwh: :solar_export
+                         }, 1.0, :kwh)
+    end
   end
 end
