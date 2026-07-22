@@ -67,7 +67,7 @@
   <%= render Layout::GridComponent.new(id: 'primary-cards',
                                        cols: 4,
                                        cell_classes: 'mb-4',
-                                       component_classes: 'theme theme-dark bg-success') do |grid| %>
+                                       component_classes: 'theme theme-dark') do |grid| %>
     <% grid.with_stats_card do |card| %>
       <%= card.with_icon fuel_type: :electricity, style: :circle, size: 'f4' %>
       <%= card.with_header level: 4, title: t('our_impact.primary_savings.cards.electricity.title') %>
@@ -102,13 +102,6 @@
           end %>
     <% end %>
   <% end %>
-
-  <%= if @organisation_statement.second_testimonial
-        render Layout::Cards::TestimonialComponent.new(testimonial: @organisation_statement.second_testimonial,
-                                                       id: 'second-testimonial',
-                                                       theme: :accent,
-                                                       classes: 'rounded-3 p-4 mt-4 mb-4')
-      end %>
 
   <%= render Layout::Cards::SectionHeaderComponent.new(
         id: 'secondary-savings'
@@ -157,6 +150,13 @@
           end %>
     <% end %>
   <% end %>
+
+  <%= if @organisation_statement.second_testimonial
+        render Layout::Cards::TestimonialComponent.new(testimonial: @organisation_statement.second_testimonial,
+                                                       id: 'second-testimonial',
+                                                       theme: :accent,
+                                                       classes: 'rounded-3 p-4 mt-4 mb-4')
+      end %>
 
   <%= render Layout::Cards::SectionHeaderComponent.new(
         id: 'our-reach'

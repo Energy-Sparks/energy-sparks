@@ -23,7 +23,7 @@
 
   <tbody>
     <% @organisation_statements.each do |organisation_statement| %>
-      <tr class="<%= class_names('table-info': organisation_statement.current?) %>">
+      <tr>
         <td>
           <%= link_to organisation_statement.academic_year, admin_organisation_statement_path(organisation_statement) %>
         </td>
