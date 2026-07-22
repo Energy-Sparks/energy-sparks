@@ -13,6 +13,9 @@
     <%= link_to t('about_menu.team'), team_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.blog'), 'http://blog.energysparks.uk',
                 target: '_blank', class: 'dropdown-item', rel: 'noopener' %>
+    <% if Flipper.enabled?(:org_impact_page, current_user) %>
+      <%= link_to t('about_menu.our_impact'), our_impact_path, class: 'dropdown-item' %>
+    <% end %>
     <%= link_to t('about_menu.funders'), funders_path, class: 'dropdown-item' %>
     <%= link_to t('support_us.title'), support_us_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.jobs'), jobs_path, class: 'dropdown-item' %>
