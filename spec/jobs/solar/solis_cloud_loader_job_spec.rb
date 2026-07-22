@@ -9,5 +9,6 @@ describe Solar::SolisCloudLoaderJob do
     end
     let(:upserter_class) { Solar::SolisCloudDownloadAndUpsert }
     let(:solar_feed_type) { 'SolisCloud' }
+    let(:installation_for) { installation.display_name }
   end
 end

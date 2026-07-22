@@ -9,5 +9,6 @@ describe Solar::MeterZLoaderJob do
     end
     let(:upserter_class) { Solar::MeterZDownloadAndUpsert }
     let(:solar_feed_type) { 'MeterZ' }
+    let(:installation_for) { installation.display_name }
   end
 end
