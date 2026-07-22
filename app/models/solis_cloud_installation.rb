@@ -60,7 +60,7 @@ class SolisCloudInstallation < ApplicationRecord
   end
 
   def find_stored_api_data(meter_serial_number)
-    @installation.inverter_detail_list.find { |inverter| inverter['sn'] == meter_serial_number }
+    inverter_detail_list.find { |inverter| inverter['sn'] == meter_serial_number }
   end
 
   private
