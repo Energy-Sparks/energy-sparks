@@ -34,7 +34,7 @@ RSpec.describe AlertMailer do
       end
 
       it 'uses the correct body font-size' do
-        expect(html_email(email).at('p')['style'].split(/; */)).to include('font-size: 18px')
+        expect(EmailHelpers.html_email(email).at('p')['style'].split(/; */)).to include('font-size: 18px')
       end
 
       %i[en cy].each do |locale|

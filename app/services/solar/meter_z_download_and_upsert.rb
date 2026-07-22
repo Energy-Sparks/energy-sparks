@@ -2,12 +2,12 @@
 
 module Solar
   class MeterZDownloadAndUpsert < BaseDownloadAndUpsert
+    private
+
     def download_and_upsert
       readings = download
       MeterZUpserter.new(installation: @installation, readings:, import_log:).perform
     end
-
-    private
 
     def school = nil
 
