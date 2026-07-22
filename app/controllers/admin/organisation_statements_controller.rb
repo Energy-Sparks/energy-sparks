@@ -47,13 +47,25 @@ module Admin
 
     def organisation_statement_params
       params.expect(
-        organisation_statement: %i[academic_year actions activities efficiency_report_link
-                                   first_testimonial_id second_testimonial_id
-                                   primary_carbon_saving primary_cost_saving primary_saving_electricity
-                                   primary_saving_electricity primary_saving_gas pupils schools
-                                   secondary_carbon_saving secondary_cost_saving
-                                   secondary_saving_electricity secondary_saving_gas
-                                   staff total_carbon_savings total_cost_savings]
+        organisation_statement: %i[academic_year
+                                   actions
+                                   activities
+                                   efficiency_report_link
+                                   first_testimonial_id
+                                   primary_carbon_saving
+                                   primary_cost_saving
+                                   primary_saving_electricity
+                                   primary_saving_gas
+                                   pupils
+                                   schools
+                                   secondary_carbon_saving
+                                   secondary_cost_saving
+                                   secondary_saving_electricity
+                                   secondary_saving_gas
+                                   second_testimonial_id
+                                   staff
+                                   total_carbon_savings
+                                   total_cost_savings]
       )
     end
   end

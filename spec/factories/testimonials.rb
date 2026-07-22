@@ -8,7 +8,7 @@ FactoryBot.define do
 
     # Translated attributes
     sequence(:title_en) { |n| "Testimonial #{n} title in English" }
-    sequence(:title_cy) { |n| "Testimonial #{n} title in English" }
+    sequence(:title_cy) { |n| "Testimonial #{n} title in Welsh" }
 
     quote_en { 'Testimonial quote in English' }
     quote_cy { 'Testimonial quote in Welsh' }

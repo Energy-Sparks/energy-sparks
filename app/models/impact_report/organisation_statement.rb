@@ -56,9 +56,9 @@ module ImpactReport
     validates :academic_year, presence: true, uniqueness: true
     validates :current, uniqueness: { message: 'already exists' }, if: :current? # rubocop:disable Rails/I18nLocaleTexts
 
-    scope :current_statement, lambda {
-      where(current: true).first
-    }
+    def self.current_statement
+      find_by(current: true)
+    end
 
     def deletable?
       !current
