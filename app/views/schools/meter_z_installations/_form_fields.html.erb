@@ -1,6 +1,6 @@
 <% if installation.persisted? %>
-  <h3>Inverters</h3>
-  <h3>Unassigned</h3>
+  <h3>Meters</h3>
+  <h4>Unassigned</h4>
   <table class="table">
     <thead>
       <tr>
@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody>
-      <% installation.meters_list.sort_by { |meter| [meter['site_name'], meter['meter_name']] }.each do |meter| %>
+      <% (installation.meters_list || []).sort_by { |meter| [meter['site_name'], meter['meter_name']] }.each do |meter| %>
         <%# next if installation.meters.pluck(:meter_serial_number).include?(inverter['sn']) %>
         <tr>
           <td><%= meter['site_name'] %></td>

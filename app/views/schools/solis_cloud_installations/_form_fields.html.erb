@@ -1,6 +1,6 @@
 <% if installation.persisted? %>
   <h3>Inverters</h3>
-  <h3>Unassigned</h3>
+  <h4>Unassigned</h4>
   <table class="table">
     <thead>
       <tr>
@@ -11,13 +11,13 @@
       </tr>
     </thead>
     <tbody>
-      <% installation.inverter_detail_list.each do |inverter| %>
+      <% (installation.inverter_detail_list || []).each do |inverter| %>
         <% next if installation.meters.pluck(:meter_serial_number).include?(inverter['sn']) %>
         <tr>
           <td><%= [inverter['stationName'], inverter['name']].compact.join(' / ') %></td>
           <td><%= inverter['sn'] %></td>
           <td>-</td>
-          <td><%= button_tag('Assign', value: "assign_meter_#{inverter['sn']}", class: 'btn btn-primary') %></td>
+          <td><%= button_tag('Assign', name: :assign, value: inverter['sn'], class: 'btn btn-primary') %></td>
         </tr>
       <% end %>
     </tbody>
@@ -38,7 +38,7 @@
           <td><%= meter.name %></td>
           <td><%= meter.meter_serial_number %></td>
           <td><%= link_to meter.mpan_mprn, school_meter_path(meter.school_id, meter.id) %></td>
-          <td><%= button_tag('Unassign', value: "unassign_meter_#{meter.id}", class: 'btn btn-primary') %></td>
+          <td><%= button_tag('Unassign', name: :unassign, value: meter.id, class: 'btn btn-primary') %></td>
         </tr>
       <% end %>
     </tbody>

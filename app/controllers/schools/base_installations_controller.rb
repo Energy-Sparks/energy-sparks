@@ -13,7 +13,27 @@ module Schools
 
     def edit; end
 
+    def create
+      find_or_create_installation
+      if @installation.persisted?
+        begin
+          verify_and_update_installation
+        rescue StandardError
+          notice = "#{self.class::MODEL.model_name.human} did not verify. " \
+                   'Check API details and try again.'
+        else
+          notice = "#{self.class::MODEL.model_name.human} was verified"
+        end
+        redirect_to polymorphic_path([:edit, @school, @installation]), notice:
+      else
+        render :new
+      end
+    end
+
     def update
+      return unassign_meter if params[:unassign].present?
+      return assign_meter if params[:assign].present?
+
       if @installation.update(resource_params)
         redirect_to school_solar_feeds_configuration_index_path(@school),
                     notice: "#{self.class::NAME} API feed was updated"
@@ -25,7 +45,7 @@ module Schools
     def destroy
       @installation.meters.where(school: @school).find_each { |meter| MeterManagement.new(meter).delete_meter! }
       @installation.destroy if !@installation.respond_to?(:schools) || @installation.schools.empty?
-      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{self.class::NAME} API feed deleted"
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{self.class::NAME} deleted"
     end
 
     def submit_job
@@ -54,12 +74,31 @@ module Schools
                       { name: self.class::NAME }]
     end
 
-    def existing_or_create
+    def find_or_create_installation
       if params[:existing].present?
         @installation = self.class::MODEL.find(params.expect(:existing))
+        flash[:existing] = 'Using existing installation.' # rubocop:disable Rails/I18nLocaleTexts
       else
-        @installation.amr_data_feed_config = AmrDataFeedConfig.find_by!(identifier: self.class::ID_PREFIX)
+        existing = find_existing_by_api_details
+        if existing
+          @installation = existing
+          flash[:existing] = 'Found existing installation with same API details' # rubocop:disable Rails/I18nLocaleTexts
+        else
+          @installation.amr_data_feed_config = AmrDataFeedConfig.find_by!(identifier: self.class::ID_PREFIX)
+          @installation.save
+        end
       end
+    end
+
+    def unassign_meter
+      meter = Meter.find(params.expect(:unassign))
+      MeterManagement.new(meter).delete_meter!
+      redirect_to polymorphic_path([:edit, @school, @installation]), notice: 'Meter unassigned' # rubocop:disable Rails/I18nLocaleTexts
+    end
+
+    def assign_meter
+      @installation.create_meter(params[:assign], @school.id)
+      redirect_to polymorphic_path([:edit, @school, @installation]), notice: 'Meter assigned' # rubocop:disable Rails/I18nLocaleTexts
     end
   end
 end
