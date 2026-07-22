@@ -65,5 +65,9 @@ describe 'solar_generation_summary' do
         ]
       end
     end
+
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end
