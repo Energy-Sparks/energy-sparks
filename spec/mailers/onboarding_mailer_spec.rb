@@ -269,7 +269,8 @@ describe OnboardingMailer, :aggregate_failures do
 
       it 'sends the welcome email in en' do
         expect(email.subject).to eq('Welcome to Energy Sparks')
-        expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_school_admin_not_data_enabled'))
+        expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to \
+          eq(read_md('welcome_email_school_admin_not_data_enabled'))
       end
     end
 
@@ -278,7 +279,8 @@ describe OnboardingMailer, :aggregate_failures do
 
       it 'sends the welcome email in en' do
         expect(email.subject).to eq('Welcome to Energy Sparks')
-        expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_staff_not_data_enabled'))
+        expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to \
+          eq(read_md('welcome_email_staff_not_data_enabled'))
       end
     end
 
@@ -333,7 +335,8 @@ describe OnboardingMailer, :aggregate_failures do
     it 'sends the admin email' do
       setup_and_send(:school_admin, :en)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
-      expect(EmailHelpers.bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('data_enabled_email_admin').chomp)
+      expect(EmailHelpers.bootstrap_email_body_to_markdown(email).chomp).to \
+        eq(read_md('data_enabled_email_admin').chomp)
     end
 
     it 'sends the staff email in welsh' do
