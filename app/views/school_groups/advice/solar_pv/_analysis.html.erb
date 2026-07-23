@@ -2,8 +2,8 @@
 
 <ul>
   <li>
-    <%= link_to(t('school_groups.advice_pages.solar_pv.analysis.potential_savings.title'),
-                '#potential-savings') %>
+    <%= link_to(t('school_groups.advice_pages.solar_pv.analysis.potential_benefits.title'),
+                '#potential-benefits') %>
   </li>
   <li>
     <%= link_to(t('school_groups.advice_pages.solar_pv.analysis.comparisons.title'), '#comparison') %>
@@ -12,9 +12,9 @@
 
 <%= render 'schools/advice/section_title',
            section_id: 'comparison',
-           section_title: t('school_groups.advice_pages.solar_pv.analysis.potential_savings.title') %>
+           section_title: t('school_groups.advice_pages.solar_pv.analysis.potential_benefits.title') %>
 
-<%= t('school_groups.advice_pages.solar_pv.analysis.potential_savings.summary_html') %>
+<%= t('school_groups.advice_pages.solar_pv.analysis.potential_benefits.summary_html') %>
 
 <%= render 'comparisons/solar_pv_benefit_estimate/table',
            results: @benefit_report_results,

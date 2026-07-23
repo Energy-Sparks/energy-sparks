@@ -19,7 +19,7 @@ en:
                 exported to the national grid, with a comparison of how this compares to overall grid consumption.
                 </p>
             title: School comparison
-          potential_savings:
+          potential_benefits:
             summary_html: |-
               <p>
                 The table below summarises the potential benefits of installing solar at schools which don't already
@@ -37,7 +37,7 @@ en:
                 each school, and our internal estimates of solar installation costs per kWp. The savings assume installation
                 of estimated panel sizes. View the analysis for individual schools for more details and scenarios.
               </p>
-            title: Potential savings
+            title: Potential benefits
           summary: This page provides an overview of how schools are benefitting from installed solar panels and estimates of potential benefits of installing solar at additional schools.
         insights:
           current_benefits:
