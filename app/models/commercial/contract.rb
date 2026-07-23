@@ -204,6 +204,15 @@ module Commercial
 
     def self.temporal_group_keys = %i[contract_holder_id contract_holder_type]
 
+    def self.new_with_defaults(attributes)
+      defaults = {
+        start_date: Time.zone.today,
+        end_date: Time.zone.today.next_year - 1.day,
+        xero_account_code: ::Commercial::XeroAccountCode.find_by(code: 29)
+      }.merge(attributes)
+      new(defaults)
+    end
+
     def self.as_renewal(original, chosen_type: nil)
       renewed_attributes = {
         comments: "Renewed from #{original.name}",

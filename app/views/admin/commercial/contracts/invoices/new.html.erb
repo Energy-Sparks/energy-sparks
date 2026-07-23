@@ -4,7 +4,8 @@
 <% end %>
 
 <p>
-  Creating a new invoice for <%= @contract.name %>.
+  Creating a new invoice for <strong><%= @contract.name %></strong> using
+  <strong><%= @contract.xero_account_code&.display_label %></strong>.
 </p>
 
 <p>
