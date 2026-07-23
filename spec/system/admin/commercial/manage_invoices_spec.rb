@@ -184,6 +184,8 @@ describe 'manage invoices', :include_application_helper do
         expect(page).to have_link('manage all licences', href: edit_admin_commercial_contract_licences_path(contract))
       }
 
+      it { expect(page).to have_text(contract.xero_account_code.display_label) }
+
       it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
         let(:table_id) { '#raise-invoice-table' }
         let(:expected_header) do
@@ -217,6 +219,7 @@ describe 'manage invoices', :include_application_helper do
         end
 
         it { expect(page).to have_text('Create Invoice') }
+        it { expect(page).to have_text(contract.xero_account_code.display_label) }
 
         it 'populates the line item fields' do
           prefix = 'commercial_invoice[line_items_attributes][0]'

@@ -23,7 +23,7 @@ module Commercial
           content: "There are currently #{overlapping_licences} overlapping licences for the same school." },
         { id: 'pending-invoices', check: pending_invoices?, status: :negative,
           icon: 'file-invoice', link: 'Pending invoices', path: pending_invoicing_admin_commercial_contracts_path,
-          content: "There are currently #{pending_invoices} contracts with pending invoices." }
+          content: "There are #{pending_invoices} current contracts with pending invoices." }
       ]
     end
 
@@ -58,7 +58,7 @@ module Commercial
     end
 
     def pending_invoices
-      @pending_invoices ||= ::Commercial::Contract.pending_invoicing.count
+      @pending_invoices ||= ::Commercial::Contract.pending_invoicing.current.count
     end
 
     def add_prompt(list:, status:, icon:, check: true, id: nil, link: nil, path: nil) # rubocop:disable Metrics/ParameterLists
