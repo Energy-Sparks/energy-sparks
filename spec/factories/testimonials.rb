@@ -7,8 +7,9 @@ FactoryBot.define do
     image { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/images/pupils-jumping.jpg'), 'image/jpeg') }
 
     # Translated attributes
-    title_en { 'Testimonial title in English' }
-    title_cy { 'Testimonial title in Welsh' }
+    sequence(:title_en) { |n| "Testimonial #{n} title in English" }
+    sequence(:title_cy) { |n| "Testimonial #{n} title in Welsh" }
+
     quote_en { 'Testimonial quote in English' }
     quote_cy { 'Testimonial quote in Welsh' }
     role_en { 'Testimonial role in English' }

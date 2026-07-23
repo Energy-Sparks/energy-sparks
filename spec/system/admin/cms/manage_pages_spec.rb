@@ -61,7 +61,7 @@ describe 'manage pages' do
     let!(:cms_page) { create(:page, :with_sections, published: false, sections_published: true) }
 
     before do
-      click_on('Pages')
+      find('a', text: 'Pages', exact_text: true).click
     end
 
     it 'shows page counts' do

@@ -79,7 +79,7 @@ module Admin
           school&.school_type&.humanize || '',
           school ? y_n(school&.active?) : '',
           school ? y_n(school&.data_enabled?) : '',
-          school&.funder&.name || '',
+          school.summarised_current_contract_holder_name,
           school&.region&.to_s&.titleize || '',
           user.name,
           user.pupil? ? 'N/A' : user.email,

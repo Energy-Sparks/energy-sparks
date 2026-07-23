@@ -6,6 +6,10 @@ div.container-fluid.pupil {
   background: white;
 }
 
+div.container-fluid.pupil_tasks {
+  background: $yellow-very-pale;
+}
+
 div.dashboards {
   div.analysis-chart {
     height: 400px;

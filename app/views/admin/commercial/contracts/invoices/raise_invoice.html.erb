@@ -8,6 +8,12 @@
   <%= link_to @contract.name, admin_commercial_contract_path(@contract) %> contract.
 </p>
 
+<h3>Review account code</h3>
+
+<p>This contract is set to raise invoices using <strong><%= @contract.xero_account_code&.display_label %></strong></p>
+
+<p><%= link_to 'Edit the contract ', edit_admin_commercial_contract_path(@contract) %> to change the code</p>
+
 <h3>Review licence terms and schools status</h3>
 
 <p>

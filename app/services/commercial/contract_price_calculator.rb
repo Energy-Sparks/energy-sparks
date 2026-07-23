@@ -128,8 +128,8 @@ module Commercial
         CASE
           WHEN licences.school_specific_price = 0
             THEN 0
-          WHEN COALESCE(meters.meter_count, 0) > 5
-            THEN #{metering_fee_sql} * (meters.meter_count - 5)
+          WHEN COALESCE(meters.meter_count, 0) > #{PriceCalculator::METER_LIMIT}
+            THEN #{metering_fee_sql} * (meters.meter_count - #{PriceCalculator::METER_LIMIT})
           ELSE 0
         END AS metering_fee
       SQL

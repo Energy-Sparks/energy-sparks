@@ -371,7 +371,6 @@ describe User do
                                  'School data enabled',
                                  'Current Contract Holder',
                                  'Future Contract Holder',
-                                 'Funder',
                                  'Region',
                                  'Name',
                                  'Email',
@@ -387,7 +386,6 @@ describe User do
                                  school.school_type.humanize,
                                  'Yes',
                                  'Yes',
-                                 '',
                                  '',
                                  '',
                                  '',
@@ -414,7 +412,6 @@ describe User do
                                    '',
                                    '',
                                    '',
-                                   '',
                                    user.name,
                                    user.email,
                                    I18n.t(user.role, scope: :role),
@@ -434,9 +431,8 @@ describe User do
       end
     end
 
-    context 'when the school has a funder and region' do
-      let!(:funder) { create(:funder) }
-      let!(:school) { create(:school, school_group:, funder:, region: :east_of_england) }
+    context 'when the school has a region' do
+      let!(:school) { create(:school, school_group:, region: :east_of_england) }
 
       it 'includes those fields' do
         expect(parsed[1]).to eq([school_group.name,
@@ -446,7 +442,6 @@ describe User do
                                  'Yes',
                                  '',
                                  '',
-                                 funder.name,
                                  'East Of England',
                                  user.name,
                                  user.email,
@@ -487,7 +482,6 @@ describe User do
                                  'Yes',
                                  current_licence.contract_holder.name,
                                  'School self funding',
-                                 '',
                                  '',
                                  user.name,
                                  user.email,
@@ -724,16 +718,6 @@ describe User do
         context 'when user has been updated' do
           before do
             user.update!(name: 'New name')
-          end
-
-          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
-        end
-
-        context 'when funder has been updated' do
-          let!(:school) { create(:school, :with_school_group, funder: create(:funder)) }
-
-          before do
-            school.funder.update!(name: 'New funder name')
           end
 
           it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }

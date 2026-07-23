@@ -2,6 +2,8 @@
 
 module Commercial
   class PriceCalculator
+    METER_LIMIT = 5 # Above this number of meters we charge extra fee
+
     # Calculates a price for a single school based on the pricing rules for a specific product
     # and the characteristics of the school.
     #
@@ -40,9 +42,9 @@ module Commercial
     end
 
     def metering_fee(product:, number_of_meters:)
-      return 0.0 unless number_of_meters > 5
+      return 0.0 unless number_of_meters > METER_LIMIT
 
-      product.metering_fee * (number_of_meters - 5)
+      product.metering_fee * (number_of_meters - METER_LIMIT)
     end
 
     def private_account_fee(product:, private_account: false)

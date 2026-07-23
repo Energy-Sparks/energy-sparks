@@ -27,7 +27,6 @@ RSpec.describe 'onboarding', :schools do
   let!(:project_group) { create(:school_group, group_type: :project) }
   let!(:diocese) { create(:school_group, group_type: :diocese) }
   let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area) }
-  let!(:funder) { create(:funder) }
   let!(:contract) { create(:commercial_contract, :future) }
 
   let(:last_email) { ActionMailer::Base.deliveries.last }
@@ -88,7 +87,6 @@ RSpec.describe 'onboarding', :schools do
         end
 
         it { expect(page).to have_select('Data Sharing', selected: 'Public') }
-        it { expect(page).to have_select('Funder', options: [''] + Funder.all.by_name.map(&:name)) }
         it { expect(page).to have_select('Contract', options: [''] + Commercial::Contract.current_and_future.by_name.map(&:name)) }
 
         it {
@@ -105,7 +103,6 @@ RSpec.describe 'onboarding', :schools do
             select project_group.name, from: 'Project Group'
             select diocese.name, from: 'Diocese'
             select local_authority_area.name, from: 'Local Authority Area'
-            select funder.name, from: 'Funder'
             select contract.name, from: 'Contract'
             select 'Within Group', from: 'Data Sharing'
 
@@ -127,7 +124,6 @@ RSpec.describe 'onboarding', :schools do
             it { expect(onboarding.project_group).to eq(project_group) }
             it { expect(onboarding.diocese).to eq(diocese) }
             it { expect(onboarding.local_authority_area).to eq(local_authority_area) }
-            it { expect(onboarding.funder).to eq(funder) }
             it { expect(onboarding.contract).to eq(contract) }
 
             it { expect(page).to have_link(contract.name, href: admin_commercial_contract_path(contract)) }
@@ -178,7 +174,6 @@ RSpec.describe 'onboarding', :schools do
         fill_in 'School name', with: 'A new name'
         click_on 'Next'
 
-        select funder.name, from: 'Funder'
         select contract.name, from: 'Contract'
         select other_template_calendar.title, from: 'Template calendar'
         select 'Scotland', from: 'Country'
@@ -192,7 +187,6 @@ RSpec.describe 'onboarding', :schools do
       it { expect(onboarding.template_calendar).to eq(other_template_calendar) }
       it { expect(onboarding.default_chart_preference).to eq 'cost' }
       it { expect(onboarding.country).to eq 'scotland' }
-      it { expect(onboarding.funder).to eq(funder) }
       it { expect(onboarding.contract).to eq(contract) }
 
       context 'when revisiting the forms' do
@@ -203,7 +197,6 @@ RSpec.describe 'onboarding', :schools do
 
         it 'is showing right values' do
           click_on 'Next'
-          expect(page).to have_select('Funder', selected: funder.name)
           expect(page).to have_select('Contract', selected: contract.name)
           expect(page).to have_select('Template calendar', selected: onboarding.template_calendar.title)
           expect(page).to have_select('Country', selected: 'Scotland')

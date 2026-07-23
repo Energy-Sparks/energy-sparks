@@ -37,7 +37,7 @@ module Admin
       end
 
       def pending_invoicing
-        @contracts = ::Commercial::Contract.pending_invoicing
+        @contracts = ::Commercial::Contract.pending_invoicing.by_start_date
       end
 
       def contract_holder_options
@@ -163,20 +163,14 @@ module Admin
       end
 
       def build_contract
-        attributes = {
-          start_date: Time.zone.today,
-          end_date: Time.zone.today.next_year - 1.day
-        }
-
-        attributes.merge!(CONTRACT_DEFAULTS[chosen_params[:chosen_type]])
-
+        contract = ::Commercial::Contract.new_with_defaults(CONTRACT_DEFAULTS[chosen_params[:chosen_type]])
         if contract_holder_request?
-          attributes[:contract_holder] = find_contract_holder
+          contract.contract_holder = find_contract_holder
         else
-          attributes[:contract_holder_type] = 'Funder'
+          contract.contract_holder_type = 'Funder'
         end
 
-        ::Commercial::Contract.new(attributes)
+        contract
       end
 
       def renewal_request?

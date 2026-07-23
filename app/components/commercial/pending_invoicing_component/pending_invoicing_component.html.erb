@@ -2,13 +2,14 @@
   <table id="pending-invoicing-table" class="table table-paged table-sm">
     <thead>
       <tr>
-        <th colspan="2"></th>
+        <th colspan="3"></th>
         <th class="text-center" colspan="3">Schools</th>
         <th colspan="2"></th>
       </tr>
       <tr>
         <th>Name</th>
         <th>Contract Holder</th>
+        <th>Start Date</th>
         <th class="text-end">To be invoiced</th>
         <th class="text-end">Invoiced</th>
         <th class="text-end">Licensed</th>
@@ -19,8 +20,11 @@
     <tbody>
       <% @contracts.each do |contract| %>
         <tr>
-          <td><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
-          <td><%= contract.contract_holder.name %></td>
+          <td class="col-2"><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
+          <td class="col-2"><%= contract.contract_holder.name %></td>
+          <td class="text-end col-2" data-order="<%= contract.start_date.iso8601 %>">
+            <%= contract.start_date.to_fs(:es_short) %>
+          </td>
           <td class="text-end col-1"><%= contract.licences.pending_invoice.count %></td>
           <td class="text-end col-1"><%= contract.licences.invoiced.count %></td>
           <td class="text-end col-1"><%= contract.licences.count %></td>

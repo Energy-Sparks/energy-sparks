@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1291,6 +1291,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
   end
 
+  create_table "impact_report_organisation_statements", force: :cascade do |t|
+    t.string "academic_year", null: false
+    t.integer "actions", default: 0, null: false
+    t.integer "activities", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.boolean "current", default: false, null: false
+    t.string "efficiency_report_link"
+    t.bigint "first_testimonial_id"
+    t.integer "primary_carbon_saving", default: 0, null: false
+    t.integer "primary_cost_saving", default: 0, null: false
+    t.integer "primary_saving_electricity", default: 0, null: false
+    t.integer "primary_saving_gas", default: 0, null: false
+    t.integer "pupils", default: 0, null: false
+    t.integer "schools", default: 0, null: false
+    t.bigint "second_testimonial_id"
+    t.integer "secondary_carbon_saving", default: 0, null: false
+    t.integer "secondary_cost_saving", default: 0, null: false
+    t.integer "secondary_saving_electricity", default: 0, null: false
+    t.integer "secondary_saving_gas", default: 0, null: false
+    t.integer "staff", default: 0, null: false
+    t.integer "total_carbon_savings", default: 0, null: false
+    t.integer "total_cost_savings", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["academic_year"], name: "index_impact_report_organisation_statements_on_academic_year", unique: true
+    t.index ["first_testimonial_id"], name: "idx_on_first_testimonial_id_cb853f1169"
+    t.index ["second_testimonial_id"], name: "idx_on_second_testimonial_id_b6b14d56f5"
+  end
+
   create_table "impact_report_runs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "run_date", null: false
@@ -1959,7 +1987,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.integer "default_chart_preference", default: 0, null: false
     t.bigint "diocese_id"
     t.boolean "full_school", default: true
-    t.bigint "funder_id"
     t.bigint "local_authority_area_id"
     t.text "notes"
     t.bigint "project_group_id"
@@ -1977,7 +2004,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["diocese_id"], name: "index_school_onboardings_on_diocese_id"
-    t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
     t.index ["local_authority_area_id"], name: "index_school_onboardings_on_local_authority_area_id"
     t.index ["project_group_id"], name: "index_school_onboardings_on_project_group_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
@@ -2052,13 +2078,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.bigint "dark_sky_area_id"
     t.boolean "data_enabled", default: false
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
-    t.bigint "default_contract_holder_id"
-    t.string "default_contract_holder_type"
     t.boolean "enable_targets_feature", default: true
     t.bigint "establishment_id"
     t.decimal "floor_area"
     t.boolean "full_school", default: true
-    t.bigint "funder_id"
     t.integer "funding_status", default: 0, null: false
     t.boolean "has_battery", default: false, null: false
     t.boolean "has_swimming_pool", default: false, null: false
@@ -2129,7 +2152,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
     t.bigint "weather_station_id"
     t.string "website"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
-    t.index ["default_contract_holder_type", "default_contract_holder_id"], name: "index_schools_on_default_contract_holder"
     t.index ["establishment_id"], name: "index_schools_on_establishment_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
@@ -2601,6 +2623,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_30_144526) do
   add_foreign_key "impact_report_configurations", "schools", column: "energy_efficiency_school_id"
   add_foreign_key "impact_report_configurations", "schools", column: "engagement_school_id"
   add_foreign_key "impact_report_metrics", "impact_report_runs"
+  add_foreign_key "impact_report_organisation_statements", "testimonials", column: "first_testimonial_id", on_delete: :restrict
+  add_foreign_key "impact_report_organisation_statements", "testimonials", column: "second_testimonial_id", on_delete: :restrict
   add_foreign_key "impact_report_runs", "school_groups"
   add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade

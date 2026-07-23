@@ -130,8 +130,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
         let(:table_id) { '#licences-table' }
         let(:expected_header) do
           [
-            ['ID', 'School Group', 'School', 'Product', 'Contract', 'Start date', 'End date', 'Status',
-             'Future Funding Source']
+            ['ID', 'School Group', 'School', 'Product', 'Contract', 'Start date', 'End date', 'Status']
           ]
         end
         let(:expected_rows) do
@@ -144,8 +143,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
               licence.contract.name,
               licence.start_date.to_fs(:es_short),
               licence.end_date.to_fs(:es_short),
-              licence.status.to_s.humanize,
-              'Self funding'
+              licence.status.to_s.humanize
             ]
           ]
         end
