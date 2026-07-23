@@ -16,7 +16,7 @@ RSpec.describe Commercial::PendingInvoicingComponent, type: :component do
     let(:expected_header) do
       [
         ['', 'Schools', ''],
-        ['Name', 'Contract Holder', 'To be invoiced', 'Invoiced', 'Licensed', 'Invoices', 'Actions']
+        ['Name', 'Contract Holder', 'Start Date', 'To be invoiced', 'Invoiced', 'Licensed', 'Invoices', 'Actions']
       ]
     end
     let(:expected_rows) do
@@ -24,6 +24,7 @@ RSpec.describe Commercial::PendingInvoicingComponent, type: :component do
         [
           contract.name,
           contract.contract_holder.name,
+          contract.start_date.to_fs(:es_short),
           '3',
           '1',
           '4',

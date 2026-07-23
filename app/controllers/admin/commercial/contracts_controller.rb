@@ -37,7 +37,7 @@ module Admin
       end
 
       def pending_invoicing
-        @contracts = ::Commercial::Contract.pending_invoicing
+        @contracts = ::Commercial::Contract.pending_invoicing.by_start_date
       end
 
       def contract_holder_options
