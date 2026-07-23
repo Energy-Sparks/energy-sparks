@@ -35,8 +35,7 @@ module Schools
       return assign_meter if params[:assign].present?
 
       if @installation.update(resource_params)
-        redirect_to school_solar_feeds_configuration_index_path(@school),
-                    notice: "#{self.class::NAME} API feed was updated"
+        redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{self.class::NAME} was updated"
       else
         render :edit
       end

@@ -36,7 +36,7 @@
           <td><%= meter.name %></td>
           <td><%= meter.meter_serial_number %></td>
           <td><%= link_to meter.mpan_mprn, school_meter_path(meter.school_id, meter.id) %></td>
-          <td><%= button_tag('Unassign', value: "unassign_meter_#{meter.id}", class: 'btn btn-primary') %></td>
+          <td><%= button_tag('Unassign', name: 'unassign', value: meter.id, class: 'btn btn-primary') %></td>
         </tr>
       <% end %>
     </tbody>

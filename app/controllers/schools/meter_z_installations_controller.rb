@@ -2,15 +2,13 @@
 
 module Schools
   class MeterZInstallationsController < BaseInstallationsController
-    # skip_load_and_authorize_resource through: :school, instance_name: :installation
     skip_load_and_authorize_resource
-
     load_and_authorize_resource :meter_z_installation, instance_name: :installation
 
     MODEL = MeterZInstallation
     NAME = MODEL.model_name.human
     ID_PREFIX = 'meter-z'
-    JOB_CLASS = Solar::SolisCloudLoaderJob
+    JOB_CLASS = Solar::MeterZLoaderJob
 
     private
 
@@ -23,7 +21,8 @@ module Schools
     end
 
     def installation_ok?
-      update_installation_with_meters
+      verify_and_update_installation
+
       @installation.meters_list.present?
     end
 

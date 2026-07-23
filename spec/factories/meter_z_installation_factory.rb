@@ -7,7 +7,7 @@ FactoryBot.define do
     meters_list do
       [{ 'organisation_id' => 'organisation_id',
          'site_id' => 'site_id',
-         'meter_id' => 'meter_id' }]
+         'meter_id' => '123' }]
     end
   end
 end
