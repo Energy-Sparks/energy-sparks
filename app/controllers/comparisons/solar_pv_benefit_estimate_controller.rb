@@ -3,13 +3,7 @@ module Comparisons
     private
 
     def headers
-      [
-        t('analytics.benchmarking.configuration.column_headings.school'),
-        t('analytics.benchmarking.configuration.column_headings.size_kwp'),
-        t('analytics.benchmarking.configuration.column_headings.payback_years'),
-        t('analytics.benchmarking.configuration.column_headings.reduction_in_mains_consumption_pct'),
-        t('analytics.benchmarking.configuration.column_headings.saving_optimal_panels')
-      ]
+      Comparison::SolarPvBenefitEstimate.report_headers
     end
 
     def key

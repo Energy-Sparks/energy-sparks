@@ -105,7 +105,7 @@ en:
           number_of_days_heating_on_in_warm_weather: Number of days heating on in warm weather
           optimum_start_rating: Optimum start rating
           overnight_charging: Overnight charging
-          payback_years: Payback (years)
+          payback_years: Payback years
           percent_above_or_below_target_since_target_set: Percent above or below target since target set
           percent_increase_on_winter_baseload_over_summer: Percent increase on winter baseload over summer
           percentage_of_annual_heating_consumed_in_warm_weather: Percentage of annual heating consumed in warm weather
@@ -119,7 +119,7 @@ en:
           previous_year_temperature_adjusted: Previous year (temperature adjusted)
           projected_usage_by_end_of_holiday: Projected usage by end of holiday
           pupils: Pupils
-          reduction_in_mains_consumption_pct: Reduction in mains consumption (%)
+          reduction_in_mains_consumption_pct: Reduction in mains consumption
           regression_model_optimum_start_r2: Regression model optimum start r2
           regression_model_optimum_start_sensitivity_to_outside_temperature: Regression model optimum start sensitivity to outside temperature
           regression_model_optimum_start_time: Regression model optimum start time
@@ -129,7 +129,7 @@ en:
           saving_if_matched_exemplar_school: Potential savings
           saving_if_same_all_year_around: Saving if same all year around (at latest tariff)
           saving_improving_timing: Saving improving timing
-          saving_optimal_panels: Annual saving at latest tariff if optimal panel size installed
+          saving_optimal_panels: Annual saving
           saving_through_improved_thermostatic_control: Saving through improved thermostatic control
           saving_through_turning_heating_off_in_warm_weather_kwh: Saving through turning heating off in warm weather (kWh)
           saving_with_pou_electric_hot_water: Saving with POU electric hot water
@@ -137,7 +137,7 @@ en:
           school: School
           school_day_closed: School Day Closed
           school_day_open: School Day Open
-          size_kwp: 'Size: kWp'
+          size_kwp: Capacity (kWp)
           solar_export: Export (kWh)
           solar_generation: Generation (kWh)
           solar_mains_consume: Mains consumption (kWh)

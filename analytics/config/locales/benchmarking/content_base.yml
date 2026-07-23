@@ -105,7 +105,7 @@ en:
           number_of_days_heating_on_in_warm_weather: Number of days heating on in warm weather
           optimum_start_rating: Optimum start rating
           overnight_charging: Overnight charging
-          payback_years: Payback (years)
+          payback_years: Payback years
           percent_above_or_below_target_since_target_set: Percent above or below target since target set
           percent_increase_on_winter_baseload_over_summer: Percent increase on winter baseload over summer
           percentage_of_annual_heating_consumed_in_warm_weather: Percentage of annual heating consumed in warm weather
@@ -137,7 +137,7 @@ en:
           school: School
           school_day_closed: School Day Closed
           school_day_open: School Day Open
-          size_kwp: 'Size: kWp'
+          size_kwp: 'Capacity (kWp)'
           solar_export: Export (kWh)
           solar_generation: Generation (kWh)
           solar_mains_consume: Mains consumption (kWh)

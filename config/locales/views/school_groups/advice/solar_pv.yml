@@ -20,6 +20,22 @@ en:
                 </p>
             title: School comparison
           potential_savings:
+            summary_html: |-
+              <p>
+                The table below summarises the potential benefits of installing solar at schools which don't already
+                have solar installed.
+              </p>
+              <p>
+                Our analysis combines the latest 12 months of half-hourly electricity data for each school with
+                data on local half-hourly solar generation data to estimate the potential benefits of installing solar panels.
+              </p>
+              <p>
+                Panel capacity is based on floor area data for each school. Actual available roof space may vary.
+              </p>
+              <p>
+                Cost savings and payback periods are calculated using the latest electricity tariff data available for
+                each school, and our internal estimates of solar installation costs per kWp.
+              </p>
             title: Potential savings
           summary: This page provides an overview of how schools are benefitting from installed solar panels and estimates of potential benefits of installing solar at additional schools.
         insights:
@@ -34,6 +50,16 @@ en:
               the solar generation with the mains consumption at each school.
               </p>
             title: Current benefits
+          potential_benefits:
+            summary_html: |-
+              <p>
+              The table below summarises the potential benefits of installing solar at schools which don't already
+              have solar installed.
+              </p>
+              <p>
+              A <a href="%{link}">more detailed table</a> with more notes on our analysis is also available.
+              </p>
+            title: Potential benefits
           summary_html: |-
             <p>Solar panels work well for schools as they produce most energy around midday which is when a school typically uses most energy.</p>
             <p>The panels reduce both the school's electricity consumption from the national grid and its carbon emissions. Electricity produced from solar panels produces very little carbon.</p>

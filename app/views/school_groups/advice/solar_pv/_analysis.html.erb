@@ -14,6 +14,20 @@
            section_id: 'comparison',
            section_title: t('school_groups.advice_pages.solar_pv.analysis.potential_savings.title') %>
 
+<%= t('school_groups.advice_pages.solar_pv.analysis.potential_savings.summary_html') %>
+
+<%= render 'comparisons/solar_pv_benefit_estimate/table',
+           results: @benefit_report_results,
+           report: @benefit_report,
+           advice_page: @advice_page,
+           table_name: :table,
+           index_params: index_params,
+           headers: @benefit_table_headers,
+           colgroups: [],
+           advice_page_tab: :analysis,
+           table_classes: comparison_table_class(@benefit_report_results),
+           table_number: 0 %>
+
 <%= render 'schools/advice/section_title',
            section_id: 'comparison',
            section_title: t('school_groups.advice_pages.solar_pv.analysis.comparisons.title') %>
@@ -39,6 +53,6 @@
            index_params: index_params,
            headers: @solar_generation_summary_headers,
            colgroups: [],
-           advice_page_tab: @advice_page_tab,
+           advice_page_tab: :analysis,
            table_classes: comparison_table_class(@results),
            table_number: 0 %>
