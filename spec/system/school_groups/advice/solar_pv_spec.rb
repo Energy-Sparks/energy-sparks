@@ -115,7 +115,9 @@ describe 'School group solar pv page' do
       end
 
       context 'with potential benefits section' do
-        it { expect(page).to have_text(I18n.t('school_groups.advice_pages.solar_pv.analysis.potential_savings.title')) }
+        it {
+          expect(page).to have_text(I18n.t('school_groups.advice_pages.solar_pv.analysis.potential_benefits.title'))
+        }
 
         it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { potential_benefit_report }
