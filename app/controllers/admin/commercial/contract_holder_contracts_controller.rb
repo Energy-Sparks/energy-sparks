@@ -13,6 +13,9 @@ module Admin
           @school_group = @contract_holder
           breadcrumbs
           render :index, layout: 'group_settings'
+        elsif @contract_holder.is_a?(School)
+          @school = @contract_holder
+          render :index
         else
           render :index
         end
