@@ -476,7 +476,7 @@ describe 'manage licences' do
       click_on 'Unlicensed schools'
     end
 
-    it { expect(page).to have_css('div.commercial-unlicensed-schools') }
+    it { expect(page).to have_css('div.commercial-unlicensed-schools-component') }
     it { expect(page).to have_text(school.name) }
   end
 end
