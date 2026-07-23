@@ -24,7 +24,7 @@ RSpec.describe Commercial::UnlicensedSchoolsComponent, type: :component do
     let(:expected_header) do
       [
         ['School Group', 'School', 'Visible?', 'Data visible?', 'Expired Licence?',
-         'Licenced for Current Academic Year?', 'Licenced for Next Academic Year?', '']
+         'Licensed for Current Academic Year?', 'Licensed for Next Academic Year?', '']
       ]
     end
     let(:expected_rows) do
