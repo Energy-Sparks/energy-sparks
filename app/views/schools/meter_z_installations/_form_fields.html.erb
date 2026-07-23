@@ -52,4 +52,4 @@
   <%= render 'existing',
              options: MeterZInstallation.all.map { |installation| [installation.api_key, installation.id] } %>
 <% end %>
-<%= form.input :api_key, as: :string, label: 'API Key' %>
+<%= form.input :api_key, as: :string %>

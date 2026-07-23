@@ -75,18 +75,18 @@ module Schools
 
     def find_or_create_installation
       if params[:existing].present?
-        @installation = self.class::MODEL.find(params.expect(:existing))
-        flash[:existing] = 'Using existing installation.' # rubocop:disable Rails/I18nLocaleTexts
+        existing_installation(self.class::MODEL.find(params.expect(:existing)), 'Using existing installation.')
+      elsif (existing = find_existing_by_api_details)
+        existing_installation(existing, 'Found existing installation with same API details')
       else
-        existing = find_existing_by_api_details
-        if existing
-          @installation = existing
-          flash[:existing] = 'Found existing installation with same API details' # rubocop:disable Rails/I18nLocaleTexts
-        else
-          @installation.amr_data_feed_config = AmrDataFeedConfig.find_by!(identifier: self.class::ID_PREFIX)
-          @installation.save
-        end
+        @installation.amr_data_feed_config = AmrDataFeedConfig.find_by!(identifier: self.class::ID_PREFIX)
+        @installation.save
       end
+    end
+
+    def existing_installation(installation, message)
+      @installation = installation
+      flash[:existing] = message # rubocop:disable Rails/ActionControllerFlashBeforeRender
     end
 
     def unassign_meter

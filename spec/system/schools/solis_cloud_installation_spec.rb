@@ -26,7 +26,7 @@ describe 'SolisCloud installation management' do
 
     def create_new_installation
       fill_in('API ID', with: 'api_id')
-      fill_in('API Secret', with: 'api_secret')
+      fill_in('API secret', with: 'api_secret')
     end
 
     def check_installation

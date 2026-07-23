@@ -21,6 +21,8 @@ en:
         summary: Summary
       intervention_type_todos:
         task: Action
+      meter_z_installation:
+        api_key: API key
       school:
         activation_date: Activation date
         address: Address
