@@ -48,6 +48,8 @@ module Commercial
     include Commercial::HasContractHolder
     include Deletable
 
+    DEFAULT_ACCOUNT_CODE = 29
+
     self.table_name = 'commercial_contracts'
 
     scope :by_name, -> { order(name: :asc) }
@@ -208,7 +210,7 @@ module Commercial
       defaults = {
         start_date: Time.zone.today,
         end_date: Time.zone.today.next_year - 1.day,
-        xero_account_code: ::Commercial::XeroAccountCode.find_by(code: 29)
+        xero_account_code: ::Commercial::XeroAccountCode.find_by(code: DEFAULT_ACCOUNT_CODE)
       }.merge(attributes)
       new(defaults)
     end
