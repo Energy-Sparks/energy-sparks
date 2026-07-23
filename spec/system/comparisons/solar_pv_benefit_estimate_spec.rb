@@ -68,8 +68,7 @@ describe 'solar_pv_benefit_estimate' do
            '£1,000'],
           ["Notes\n" \
            '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
-           'tariff but other £ values are calculated using the relevant tariff at the time' \
-           "\nIn school comparisons 'last year' is defined as this year to date."]
+           'tariff but other £ values are calculated using the relevant tariff at the time']
         ]
       end
       let(:expected_csv) do

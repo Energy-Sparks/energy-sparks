@@ -5,20 +5,22 @@ require 'rails_helper'
 RSpec.describe Dashboards::GroupAdvicePageListComponent, :include_application_helper, :include_url_helpers,
                type: :component do
   let!(:school_group) { create(:school_group) }
-  let(:fuel_types) { %i[electricity gas storage_heaters] }
+  let(:fuel_types) { %i[electricity gas storage_heaters solar_pv] }
   let!(:school) { create(:school, school_group:) }
 
   context 'when advice pages exist' do
     before do
       create(:advice_page, key: :baseload, fuel_type: :electricity)
       create(:advice_page, key: :gas_long_term, fuel_type: :gas)
+      create(:advice_page, key: :solar_pv, fuel_type: :solar_pv)
+
       render_inline(described_class.new(school_group:, schools: school_group.schools, fuel_types:))
     end
 
     it { expect(page).to have_css('div.dashboards-group-advice-page-list-component') }
 
     it 'includes section titles for the group fuel types with group advice pages' do
-      %i[electricity gas].each do |fuel_type|
+      %i[electricity gas solar_pv].each do |fuel_type|
         expect(page).to have_text(I18n.t(fuel_type, scope: 'advice_pages.nav.sections'))
       end
     end

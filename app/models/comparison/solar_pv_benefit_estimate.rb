@@ -17,5 +17,15 @@
 #
 class Comparison::SolarPvBenefitEstimate < Comparison::View
   scope :with_data, -> { where.not(optimum_kwp: nil) }
-  scope :sort_default, -> { order(optimum_kwp: :desc) }
+  scope :sort_default, -> { order(optimum_mains_reduction_percent: :desc) }
+
+  def self.report_headers
+    [
+      I18n.t('analytics.benchmarking.configuration.column_headings.school'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.size_kwp'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.payback_years'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.reduction_in_mains_consumption_pct'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.saving_optimal_panels')
+    ]
+  end
 end

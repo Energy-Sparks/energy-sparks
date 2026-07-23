@@ -1,0 +1,58 @@
+<p><%= t('school_groups.advice_pages.solar_pv.analysis.summary') %></p>
+
+<ul>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.solar_pv.analysis.potential_benefits.title'),
+                '#potential-benefits') %>
+  </li>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.solar_pv.analysis.comparisons.title'), '#comparison') %>
+  </li>
+</ul>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t('school_groups.advice_pages.solar_pv.analysis.potential_benefits.title') %>
+
+<%= t('school_groups.advice_pages.solar_pv.analysis.potential_benefits.summary_html') %>
+
+<%= render 'comparisons/solar_pv_benefit_estimate/table',
+           results: @benefit_report_results,
+           report: @benefit_report,
+           advice_page: @advice_page,
+           table_name: :table,
+           index_params: index_params,
+           headers: @benefit_table_headers,
+           colgroups: [],
+           advice_page_tab: :analysis,
+           table_classes: comparison_table_class(@benefit_report_results),
+           table_number: 0 %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t('school_groups.advice_pages.solar_pv.analysis.comparisons.title') %>
+
+<%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
+                                                     report: @report,
+                                                     classes: 'mb-4') do |c| %>
+  <% c.with_title { I18n.t('school_groups.advice_pages.solar_pv.analysis.comparisons.chart.title') } %>
+  <% c.with_subtitle { I18n.t('school_groups.advice_pages.solar_pv.analysis.comparisons.chart.subtitle') } %>
+  <% c.with_header { I18n.t('school_groups.advice_pages.solar_pv.analysis.comparisons.chart.header') } %>
+  <% c.with_footer do %>
+    <%= render 'school_groups/advice/shared/analysis_footnotes_link' %>
+  <% end %>
+<% end %>
+
+<%= t('school_groups.advice_pages.solar_pv.analysis.comparisons.table.header_html') %>
+
+<%= render 'comparisons/solar_generation_summary/table',
+           results: @results,
+           report: @report,
+           advice_page: @advice_page,
+           table_name: :table,
+           index_params: index_params,
+           headers: @solar_generation_summary_headers,
+           colgroups: [],
+           advice_page_tab: :analysis,
+           table_classes: comparison_table_class(@results),
+           table_number: 0 %>
