@@ -1,0 +1,46 @@
+<%= tag.div id: id, class: classes do %>
+  <table id="unlicensed-schools" class="table table-sorted table-sm advice-table">
+      <thead>
+      <tr>
+          <th>School Group</th>
+          <th>School</th>
+          <th class="text-end">Visible?</th>
+          <th class="text-end">Data visible?</th>
+          <th class="text-end">Expired Licence?</th>
+          <th class="text-end">Licensed for Current Academic Year?</th>
+          <th class="text-end">Licensed for Next Academic Year?</th>
+          <th class="text-end"></th>
+      </tr>
+      </thead>
+      <tbody>
+          <% @schools.each do |school| %>
+              <tr>
+                  <td>
+                      <%= link_to school.organisation_group.name, school_group_path(school.organisation_group) %>
+                  </td>
+                  <td>
+                      <%= link_to school.name, school_path(school) %>
+                  </td>
+                  <td class="text-end">
+                      <%= checkmark(school.visible?) %>
+                  </td>
+                  <td class="text-end">
+                      <%= checkmark(school.data_visible?) %>
+                  </td>
+                  <td class="text-end">
+                      <%= checkmark(school.licences.expired.any?) %>
+                  </td>
+                  <td class="text-end">
+                      <%= render(badge(school)) %>
+                  </td>
+                  <td class="text-end">
+                      <%= render(badge(school, @academic_year.next_year)) %>
+                  </td>
+                  <td class="text-end">
+                      <%= link_to 'Licences', admin_school_licences_path(school), class: 'btn btn-sm' %>
+                  </td>
+              </tr>
+          <% end %>
+      </tbody>
+  </table>
+<% end %>

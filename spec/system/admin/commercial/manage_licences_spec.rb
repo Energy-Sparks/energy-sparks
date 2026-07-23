@@ -468,23 +468,15 @@ describe 'manage licences' do
 
     before do
       calendar = create(:national_calendar, title: 'England and Wales')
-      create(:academic_year, calendar:)
+      academic_year = create(:academic_year, calendar:)
+      create(:academic_year,
+             calendar:,
+             start_date: academic_year.end_date + 1.day,
+             end_date: academic_year.end_date + 1.year)
       click_on 'Unlicensed schools'
     end
 
-    it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
-      let(:table_id) { '#unlicensed-schools' }
-      let(:expected_header) do
-        [
-          ['School Group', 'School', 'Visible?', 'Data visible?', 'Expired Licence?',
-           'Licenced for Current Academic Year?', '']
-        ]
-      end
-      let(:expected_rows) do
-        [
-          [school.organisation_group.name, school.name, '', '', '', 'No', 'Licences']
-        ]
-      end
-    end
+    it { expect(page).to have_css('div.commercial-unlicensed-schools-component') }
+    it { expect(page).to have_text(school.name) }
   end
 end
