@@ -30,6 +30,13 @@ module SolarPhotovoltaics
       )
     end
 
+    def calculate_optimum_scenario
+      optimum_kwp = round_optimum_kwp(calculate_optimum_kwp(@asof_date))
+      kwh_data = calculate_solar_pv_benefit(@asof_date, optimum_kwp)
+      cost_data = calculate_economic_benefit(kwh_data)
+      kwh_data.merge(cost_data)
+    end
+
     def enough_data?
       meter_data_checker.one_years_data?
     end
@@ -114,6 +121,7 @@ module SolarPhotovoltaics
         existing_annual_£: £,
         new_mains_consumption_kwh: kwh_totals[:new_mains_consumption],
         new_mains_consumption_£: kwh_totals[:new_mains_consumption_£],
+        reduction_in_mains_kwh: (kwh - kwh_totals[:new_mains_consumption]),
         reduction_in_mains_percent: (kwh - kwh_totals[:new_mains_consumption]) / kwh,
         solar_consumed_onsite_kwh: kwh_totals[:solar_consumed_onsite],
         exported_kwh: kwh_totals[:exported],
