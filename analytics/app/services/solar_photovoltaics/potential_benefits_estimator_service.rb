@@ -117,8 +117,7 @@ module SolarPhotovoltaics
     end
 
     def calculate_solar_pv_benefit(date, kwp)
-      # NOTE: this code was originally copied from existing code in AlertSolarPVBenefitEstimator and needs refactoring (see rubocop comment)
-      start_date = date - 365
+      start_date = date - 365 # FIXME: becomes 366 days as using an inclusive range
       kwh_totals = estimate_consumption(start_date, date, kwp)
 
       kwh = existing_annual_kwh(start_date, date)
@@ -150,7 +149,8 @@ module SolarPhotovoltaics
     end
 
     def estimate_consumption(start_date, date, kwp)
-      pv_panels.annual_predicted_pv_totals_fast(aggregated_electricity_meters.amr_data, @meter_collection, start_date, date, kwp)
+      pv_panels.annual_predicted_pv_totals_fast(aggregated_electricity_meters.amr_data, @meter_collection, start_date,
+                                                date, kwp)
     end
 
     def pv_panels
@@ -162,19 +162,13 @@ module SolarPhotovoltaics
     end
 
     def calculate_economic_benefit(kwh_data)
-      new_mains_cost = kwh_data[:new_mains_consumption_£]
-      old_mains_cost = kwh_data[:existing_annual_£]
-      export_income  = kwh_data[:exported_kwh] * BenchmarkMetrics.pricing.solar_export_price
-
-      mains_savings   = old_mains_cost - new_mains_cost
+      export_income = kwh_data[:exported_kwh] * BenchmarkMetrics.pricing.solar_export_price
+      mains_savings   = kwh_data[:existing_annual_£] - kwh_data[:new_mains_consumption_£]
       saving          = mains_savings + export_income
-
       capital_cost    = capital_costs(kwh_data[:kwp])
       payback         = capital_cost / saving
 
       {
-        old_mains_cost_£: old_mains_cost,
-        new_mains_cost_£: new_mains_cost,
         export_income_£: export_income,
         mains_savings_£: mains_savings,
         total_annual_saving_£: saving,
@@ -187,7 +181,7 @@ module SolarPhotovoltaics
     # Costs formula for price per kWp was producing using range of data provided by Egni, BWCE, Ebay
     # See internal analysis spreadsheet. Updated 2023-06-09
     def capital_costs(kwp)
-      kwp == 0.0 ? 0.0 : (1584 * kwp**0.854)
+      kwp == 0.0 ? 0.0 : (1584 * (kwp**0.854))
     end
 
     # Calculate number of panels for a target system size

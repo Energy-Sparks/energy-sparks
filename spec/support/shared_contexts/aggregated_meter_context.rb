@@ -14,7 +14,7 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
   let(:flat_rate)         { 0.10 }
 
   let(:daily_usage)       { 48.0 * usage_per_hh }
-
+  let(:days_solar_pv_yield) { Array.new(48) { Random.new.rand.round(2) } }
   let(:amr_start_date)  { Date.new(2023, 12, 1) }
   let(:amr_end_date)    { Date.new(2023, 12, 31) }
 
@@ -72,9 +72,16 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
     )
   end
 
-  # TODO: add holidays, temperatures, solar
+  let(:solar_pv) do
+    build(:solar_pv, :with_days, start_date: amr_start_date, end_date: amr_end_date, data_x48: days_solar_pv_yield)
+  end
+
+  # TODO: add temperatures
   let(:meter_collection) do
-    build(:meter_collection, school: build(:analytics_school, school_times:, community_use_times:), holidays:)
+    build(:meter_collection,
+          school: build(:analytics_school, school_times:, community_use_times:),
+          holidays:,
+          solar_pv:)
   end
 
   # Configure objects as if we've run the aggregation process

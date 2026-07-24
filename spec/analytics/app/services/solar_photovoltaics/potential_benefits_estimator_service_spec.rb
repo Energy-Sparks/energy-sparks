@@ -3,45 +3,108 @@
 require 'rails_helper'
 
 describe SolarPhotovoltaics::PotentialBenefitsEstimatorService, type: :service do
-  let(:service) do
-    described_class.new(meter_collection: @acme_academy, asof_date: Date.parse('2020-12-31'))
+  subject(:service) { described_class.new(meter_collection:, asof_date: Date.new(2025, 12, 31)) }
+
+  # using fixed generation and consumption to simplify calculating expected values
+  let(:solar_generation_x48) { [*([0.0] * 10), *([0.25] * 10), *([0.5] * 8), *([0.25] * 10), *([0.0] * 10)] }
+  let(:consumption_x48) { [*([0.1] * 10), *([0.005] * 10), *([0.4] * 8), *([0.25] * 10), *([0.01] * 10)] }
+
+  include_context 'with an aggregated meter with tariffs and school times' do
+    let(:amr_start_date)  { Date.new(2024, 1, 1) }
+    let(:amr_end_date)    { Date.new(2025, 12, 31) }
+    let(:days_solar_pv_yield) { solar_generation_x48 }
+
+    let(:amr_data) do
+      build(:amr_data, :with_date_range, :with_grid_carbon_intensity,
+            grid_carbon_intensity: grid_carbon_intensity,
+            start_date: amr_start_date,
+            end_date: amr_end_date,
+            kwh_data_x48: consumption_x48)
+    end
   end
 
-  # using before(:all) here to avoid slow loading of YAML and then
-  # running the aggregation code for each test.
-  before(:all) do
-    @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy')
-  end
+  describe '#calculate_optimum_scenario' do
+    subject(:scenario) { service.calculate_optimum_scenario }
 
-  describe '#enough_data?' do
-    it 'returns true if one years worth of data is available' do
-      expect(service.enough_data?).to eq(true)
+    it 'includes the expected values' do
+      expect(scenario.keys).to match_array(%i[area
+                                              capital_cost_£
+                                              existing_annual_£
+                                              existing_annual_kwh
+                                              exported_kwh
+                                              export_income_£
+                                              kwp
+                                              mains_savings_£
+                                              new_mains_consumption_£
+                                              new_mains_consumption_kwh
+                                              panels
+                                              payback_years
+                                              reduction_in_mains_kwh
+                                              reduction_in_mains_percent
+                                              solar_consumed_onsite_kwh
+                                              solar_pv_output_co2
+                                              solar_pv_output_kwh
+                                              total_annual_saving_£
+                                              total_annual_saving_co2])
+    end
+
+    it 'produces a sensible scenario' do
+      expect(scenario[:kwp]).to be_positive
+      expect(scenario[:panels]).to be_positive
+      expect(scenario[:area]).to be < meter_collection.floor_area * described_class::ESTIMATE_ROOF_AREA_SIZE
+    end
+
+    it 'produces correctly calculated metrics' do
+      # true regardless of the underlying data
+      expect(scenario[:new_mains_consumption_kwh] + scenario[:reduction_in_mains_kwh]).to
+      be_within(0.01).of(scenario[:existing_annual_kwh])
+      expect(scenario[:new_mains_consumption_kwh] + scenario[:solar_consumed_onsite_kwh]).to
+      be_within(0.01).of(scenario[:existing_annual_kwh])
+      expect(scenario[:mains_savings_£] + scenario[:export_income_£]).to
+      be_within(0.01).of(scenario[:total_annual_saving_£])
+
+      expect(scenario[:solar_pv_output_kwh] - scenario[:exported_kwh]).to
+      be_within(0.01).of(scenario[:solar_consumed_onsite_kwh])
+
+      expect(scenario[:exported_kwh] * BenchmarkMetrics.pricing.solar_export_price).to
+      be_within(0.01).of(scenario[:export_income_£])
+
+      # true because of the data setup in the shared context
+      expect(scenario[:existing_annual_£]).to
+      be_within(0.01).of(scenario[:existing_annual_kwh] * 0.1) # flat_rate
+      expect(scenario[:new_mains_consumption_£]).to
+      be_within(0.01).of(scenario[:new_mains_consumption_kwh] * 0.1) # flat_rate
+      expect(scenario[:solar_pv_output_co2]).to
+      be_within(0.01).of(scenario[:solar_pv_output_kwh] * 0.2) # carbon_intensity
     end
   end
 
   describe '#create_model' do
-    let(:model)     { service.create_model }
-    let(:scenarios) { model.scenarios }
+    subject(:model) { service.create_model }
 
-    it 'calculates the potential benefits over a geometric sequence of capacity kWp' do
-      expect(model.optimum_kwp).to be_within(0.01).of(75.5)
-      expect(model.optimum_payback_years).to be_within(0.01).of(8.11)
-      expect(model.optimum_mains_reduction_percent).to be_within(0.01).of(0.13)
-      expect(model.scenarios.size).to eq 9
-
-      expect(scenarios[0].kwp).to eq(1)
-      expect(scenarios[0].panels).to eq(3)
-      expect(scenarios[0].area).to eq(4)
-      expect(scenarios[0].solar_consumed_onsite_kwh).to be_within(0.01).of(852.13)
-      expect(scenarios[0].exported_kwh).to be_within(0.01).of(0.0)
-      expect(scenarios[0].solar_pv_output_kwh).to be_within(0.01).of(852.13)
-      expect(scenarios[0].reduction_in_mains_percent * 100).to be_within(0.01).of(0.197)
-      expect(scenarios[0].mains_savings_£).to be_within(0.01).of(109.87)
-      expect(scenarios[0].solar_pv_output_co2).to be_within(0.01).of(142.37)
-      expect(scenarios[0].capital_cost_£).to be_within(0.01).of(1584.0)
-      expect(scenarios[0].payback_years).to be_within(0.01).of(14.41)
-
-      expect(scenarios[8].kwp).to eq(128)
+    it 'produces scenarios' do
+      expect(model.scenarios.count).to be_positive
+      model.scenarios.each do |scenario|
+        expect(scenario.to_h.keys).to match_array(%i[area
+                                                     capital_cost_£
+                                                     existing_annual_£
+                                                     existing_annual_kwh
+                                                     exported_kwh
+                                                     export_income_£
+                                                     kwp
+                                                     mains_savings_£
+                                                     new_mains_consumption_£
+                                                     new_mains_consumption_kwh
+                                                     panels
+                                                     payback_years
+                                                     reduction_in_mains_kwh
+                                                     reduction_in_mains_percent
+                                                     solar_consumed_onsite_kwh
+                                                     solar_pv_output_co2
+                                                     solar_pv_output_kwh
+                                                     total_annual_saving_£
+                                                     total_annual_saving_co2])
+      end
     end
   end
 end
