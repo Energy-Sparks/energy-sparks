@@ -1,0 +1,9 @@
+---
+cy:
+  pagy:
+    info_tag:
+      multiple_pages: Wrthi'n arddangos %{item_name} <b>%{from}-%{to}</b> o <b>%{count}</b> i gyd
+      no_items: Heb ganfod %{item_name}
+      single_page: Wrthi'n arddangos <b>%{count}</b> %{item_name}
+    limit_tag_js: "Dangos %{limit_input} %{item_name} fesul tudalen"
+    input_nav_js: "Tudalen %{page_input} o %{pages}"

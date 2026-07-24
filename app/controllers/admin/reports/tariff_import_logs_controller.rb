@@ -1,7 +1,7 @@
 module Admin
   module Reports
     class TariffImportLogsController < AdminController
-      include Pagy::Backend
+      include Pagy::Method
 
       def index
         @errored_logs = TariffImportLog.errored.by_import_time

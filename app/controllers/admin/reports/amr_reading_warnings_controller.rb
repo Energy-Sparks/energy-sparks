@@ -1,7 +1,7 @@
 module Admin
   module Reports
     class AmrReadingWarningsController < AdminController
-      include Pagy::Backend
+      include Pagy::Method
 
       def index
         @pagy_warnings, @warnings = pagy(AmrReadingWarning.order(created_at: :desc))

@@ -44,7 +44,7 @@ describe 'intervention types', type: :system do
         expect(page).to have_text(intervention_type_1.name)
         expect(page).to have_no_text(intervention_type_2.name)
 
-        click_on 'Next'
+        click_on '>'
 
         expect(page).to have_no_text(intervention_type_1.name)
         expect(page).to have_text(intervention_type_2.name)

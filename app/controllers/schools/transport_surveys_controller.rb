@@ -1,6 +1,6 @@
 module Schools
   class TransportSurveysController < ApplicationController
-    include Pagy::Backend
+    include Pagy::Method
     skip_before_action :authenticate_user!, only: [:index, :show]
 
     load_and_authorize_resource :school

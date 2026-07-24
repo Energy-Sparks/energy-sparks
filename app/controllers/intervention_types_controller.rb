@@ -1,5 +1,5 @@
 class InterventionTypesController < ApplicationController
-  include Pagy::Backend
+  include Pagy::Method
 
   layout 'task', only: [:show]
 

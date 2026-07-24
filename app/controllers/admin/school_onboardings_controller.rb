@@ -1,7 +1,7 @@
 require 'securerandom'
 module Admin
   class SchoolOnboardingsController < AdminController
-    include Pagy::Backend
+    include Pagy::Method
     load_and_authorize_resource find_by: :uuid
 
     INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = 'incomplete-onboarding-schools.csv'.freeze

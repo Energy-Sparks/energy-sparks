@@ -3,7 +3,7 @@
 module Admin
   module Reports
     class ActivitiesController < AdminController
-      include Pagy::Backend
+      include Pagy::Method
       include RecordingFilterable
 
       def index
