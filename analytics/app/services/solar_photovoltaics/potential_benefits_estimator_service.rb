@@ -117,7 +117,7 @@ module SolarPhotovoltaics
     end
 
     def calculate_solar_pv_benefit(date, kwp) # rubocop:todo Metrics/AbcSize
-      start_date = date - 365 # FIXME: becomes 366 days as using an inclusive range
+      start_date = date - 364 # use last year of data
       kwh_totals = estimate_consumption(start_date, date, kwp)
 
       kwh = existing_annual_kwh(start_date, date)

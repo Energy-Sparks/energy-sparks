@@ -58,6 +58,15 @@ describe SolarPhotovoltaics::PotentialBenefitsEstimatorService, type: :service d
       expect(scenario[:area]).to be < meter_collection.floor_area * described_class::ESTIMATE_ROOF_AREA_SIZE
     end
 
+    it 'calculates basic figures correctly' do
+      expect(scenario[:existing_annual_kwh]).to be_within(0.001).of(consumption_x48.sum * 365)
+      expect(scenario[:existing_annual_cost]).to be_within(0.001).of(consumption_x48.sum * flat_rate * 365)
+
+      days_solar_output = solar_generation_x48.sum * scenario[:kwp] / 2.0
+      expect(scenario[:solar_pv_output_kwh]).to be_within(0.001).of(days_solar_output * 365)
+      expect(scenario[:solar_pv_output_co2]).to be_within(0.001).of(days_solar_output * carbon_intensity * 365)
+    end
+
     it 'correctly calculates kwh metrics' do
       # true regardless of the underlying data
       expect_to_match(scenario[:new_mains_consumption_kwh] + scenario[:reduction_in_mains_kwh],
@@ -72,9 +81,9 @@ describe SolarPhotovoltaics::PotentialBenefitsEstimatorService, type: :service d
       expect_to_match(scenario[:mains_savings_£] + scenario[:export_income_£], scenario[:total_annual_saving_£])
 
       # true because of the data setup in the shared context
-      expect_to_match(scenario[:new_mains_consumption_kwh] * 0.1, # flat_rate
+      expect_to_match(scenario[:new_mains_consumption_kwh] * flat_rate,
                       scenario[:new_mains_consumption_£])
-      expect_to_match(scenario[:solar_pv_output_kwh] * 0.2, # carbon_intensity
+      expect_to_match(scenario[:solar_pv_output_kwh] * carbon_intensity,
                       scenario[:solar_pv_output_co2])
     end
   end
