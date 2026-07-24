@@ -20,16 +20,20 @@ module Commercial
     end
 
     def self.base_price_description(line_item)
-      "Energy Sparks service fee for #{line_item.school.name} " \
+      "Energy Sparks energy management portal account for #{line_item.school.name}: " \
         "#{line_item.licence.start_date.to_fs(:es_short)}-#{line_item.licence.end_date.to_fs(:es_short)}"
     end
 
     def self.metering_fee_description(line_item)
-      "Analysis of data for #{line_item.number_of_meters} meters for #{line_item.school.name}"
+      "Additional meter charge for #{meter_count(line_item)} meters for #{line_item.school.name}"
     end
 
     def self.private_account_fee_description(line_item)
       "Private account fee for #{line_item.school.name}"
+    end
+
+    private_class_method def self.meter_count(line_item)
+      line_item.number_of_meters - PriceCalculator::METER_LIMIT
     end
 
     private

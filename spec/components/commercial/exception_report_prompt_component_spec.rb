@@ -50,7 +50,7 @@ RSpec.describe Commercial::ExceptionReportPromptComponent, :include_url_helpers,
     end
 
     it {
-      expect(page).to have_text('There are currently 1 contracts with pending invoices')
+      expect(page).to have_text('There are 1 current contracts with pending invoices')
     }
   end
 end
