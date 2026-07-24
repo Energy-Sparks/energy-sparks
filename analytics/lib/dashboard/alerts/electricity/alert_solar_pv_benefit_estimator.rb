@@ -25,23 +25,19 @@ class AlertSolarPVBenefitEstimator < AlertElectricityOnlyBase
   TEMPLATE_VARIABLES = {
     optimum_kwp: {
       description: 'Optimum PV capacity for school (kWp)',
-      units:  :kwp,
-      benchmark_code: 'opvk'
+      units:  :kwp
     },
     optimum_payback_years: {
       description: 'Payback period of optimum number of panels',
-      units:  :years,
-      benchmark_code: 'opvy'
+      units:  :years
     },
     optimum_mains_reduction_percent: {
       description: 'Optimum: percent redcution in mains consumption',
-      units:  :percent,
-      benchmark_code: 'opvp'
+      units:  :percent
     },
     one_year_saving_£current: {
       description: 'Saving at latest tariffs for optimum scenario',
-      units:  :£current,
-      benchmark_code: 'opv€'
+      units:  :£current
     }
   }
 

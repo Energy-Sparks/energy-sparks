@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SolarPhotovoltaics
-  class PotentialBenefitsEstimatorService
+  class PotentialBenefitsEstimatorService # rubocop:disable Metrics/ClassLength
     PANEL_CAPACITY = 0.300 # originally 300 Wp per panel.
     STANDARD_PANEL_SIZE = 1.6 * 0.9 # Standard solar panels are roughly 1.6m x 0.9m
     ESTIMATE_ROOF_AREA_SIZE = 0.25 # Conservative estimate of roof area as % of floor area.
@@ -17,7 +17,7 @@ module SolarPhotovoltaics
 
     attr_reader :scenarios, :optimum_kwp, :optimum_payback_years, :optimum_mains_reduction_percent
 
-    def initialize(meter_collection:, asof_date: Date.today)
+    def initialize(meter_collection:, asof_date: Time.zone.today)
       @meter_collection = meter_collection
       raise if @meter_collection.solar_pv_panels?
 
@@ -31,9 +31,9 @@ module SolarPhotovoltaics
       # sets @scenarios
       calculate_scenarios(@asof_date, optimum_kwp)
       # sets @optimum_kwp, @optimum_payback_years, @optimum_mains_reduction_percent
-      set_optimum_values(optimum_kwp)
+      assign_optimum_values(optimum_kwp)
 
-      OpenStruct.new(
+      OpenStruct.new( # rubocop:todo Style/OpenStructUse
         optimum_kwp: @optimum_kwp,
         optimum_payback_years: @optimum_payback_years,
         optimum_mains_reduction_percent: @optimum_mains_reduction_percent,
@@ -67,7 +67,7 @@ module SolarPhotovoltaics
       @aggregated_electricity_meters ||= @meter_collection.aggregated_electricity_meters
     end
 
-    def set_optimum_values(optimum_kwp)
+    def assign_optimum_values(optimum_kwp)
       optimum_scenario = find_optimum_kwp(@scenarios, round_optimum_kwp(optimum_kwp))
       @optimum_kwp = optimum_scenario[:kwp]
       @optimum_payback_years = optimum_scenario[:payback_years]
@@ -81,7 +81,7 @@ module SolarPhotovoltaics
         solar_pv_benefit_results = calculate_solar_pv_benefit(date, kwp)
         economic_benefit_results = calculate_economic_benefit(solar_pv_benefit_results)
 
-        @scenarios << OpenStruct.new(
+        @scenarios << OpenStruct.new( # rubocop:todo Style/OpenStructUse
           solar_pv_benefit_results.merge(economic_benefit_results)
         )
       end
@@ -116,19 +116,20 @@ module SolarPhotovoltaics
       calculate_economic_benefit(kwh_data)[:payback_years]
     end
 
-    def calculate_solar_pv_benefit(date, kwp)
+    def calculate_solar_pv_benefit(date, kwp) # rubocop:todo Metrics/AbcSize
       start_date = date - 365 # FIXME: becomes 366 days as using an inclusive range
       kwh_totals = estimate_consumption(start_date, date, kwp)
 
       kwh = existing_annual_kwh(start_date, date)
-      £ = existing_annual_£(start_date, date)
+      existing_annual_cost = existing_annual_cost(start_date, date)
 
+      # FIXME: do we need all of these?
       {
         kwp: kwp,
         panels: number_of_panels(kwp),
         area: panel_area_m2(number_of_panels(kwp)),
         existing_annual_kwh: kwh,
-        existing_annual_£: £,
+        existing_annual_cost: existing_annual_cost,
         new_mains_consumption_kwh: kwh_totals[:new_mains_consumption],
         new_mains_consumption_£: kwh_totals[:new_mains_consumption_£],
         reduction_in_mains_kwh: (kwh - kwh_totals[:new_mains_consumption]),
@@ -144,17 +145,16 @@ module SolarPhotovoltaics
       aggregated_electricity_meters.amr_data.kwh_date_range(start_date, end_date)
     end
 
-    def existing_annual_£(start_date, end_date)
+    def existing_annual_cost(start_date, end_date)
       aggregated_electricity_meters.amr_data.kwh_date_range(start_date, end_date, :£current)
     end
 
     def estimate_consumption(start_date, date, kwp)
-      pv_panels.annual_predicted_pv_totals_fast(aggregated_electricity_meters.amr_data, @meter_collection, start_date,
-                                                date, kwp)
-    end
-
-    def pv_panels
-      ConsumptionEstimator.new
+      ConsumptionEstimator.new.annual_predicted_pv_totals_fast(aggregated_electricity_meters.amr_data,
+                                                               @meter_collection,
+                                                               start_date,
+                                                               date,
+                                                               kwp)
     end
 
     def blended_co2_per_kwh
@@ -163,7 +163,7 @@ module SolarPhotovoltaics
 
     def calculate_economic_benefit(kwh_data)
       export_income = kwh_data[:exported_kwh] * BenchmarkMetrics.pricing.solar_export_price
-      mains_savings   = kwh_data[:existing_annual_£] - kwh_data[:new_mains_consumption_£]
+      mains_savings   = kwh_data[:existing_annual_cost] - kwh_data[:new_mains_consumption_£]
       saving          = mains_savings + export_income
       capital_cost    = capital_costs(kwh_data[:kwp])
       payback         = capital_cost / saving

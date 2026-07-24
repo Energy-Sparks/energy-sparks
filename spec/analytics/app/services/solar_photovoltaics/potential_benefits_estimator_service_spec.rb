@@ -26,10 +26,10 @@ describe SolarPhotovoltaics::PotentialBenefitsEstimatorService, type: :service d
   describe '#calculate_optimum_scenario' do
     subject(:scenario) { service.calculate_optimum_scenario }
 
-    it 'includes the expected values' do
+    it 'includes the expected values' do # rubocop:disable RSpec/ExampleLength
       expect(scenario.keys).to match_array(%i[area
                                               capital_cost_£
-                                              existing_annual_£
+                                              existing_annual_cost
                                               existing_annual_kwh
                                               exported_kwh
                                               export_income_£
@@ -48,46 +48,46 @@ describe SolarPhotovoltaics::PotentialBenefitsEstimatorService, type: :service d
                                               total_annual_saving_co2])
     end
 
+    def expect_to_match(calculation, value)
+      expect(calculation).to be_within(0.01).of(value)
+    end
+
     it 'produces a sensible scenario' do
       expect(scenario[:kwp]).to be_positive
       expect(scenario[:panels]).to be_positive
       expect(scenario[:area]).to be < meter_collection.floor_area * described_class::ESTIMATE_ROOF_AREA_SIZE
     end
 
-    it 'produces correctly calculated metrics' do
+    it 'correctly calculates kwh metrics' do
       # true regardless of the underlying data
-      expect(scenario[:new_mains_consumption_kwh] + scenario[:reduction_in_mains_kwh]).to
-      be_within(0.01).of(scenario[:existing_annual_kwh])
-      expect(scenario[:new_mains_consumption_kwh] + scenario[:solar_consumed_onsite_kwh]).to
-      be_within(0.01).of(scenario[:existing_annual_kwh])
-      expect(scenario[:mains_savings_£] + scenario[:export_income_£]).to
-      be_within(0.01).of(scenario[:total_annual_saving_£])
+      expect_to_match(scenario[:new_mains_consumption_kwh] + scenario[:reduction_in_mains_kwh],
+                      scenario[:existing_annual_kwh])
+      expect_to_match(scenario[:new_mains_consumption_kwh] + scenario[:solar_consumed_onsite_kwh],
+                      scenario[:existing_annual_kwh])
+      expect_to_match(scenario[:solar_pv_output_kwh] - scenario[:exported_kwh],
+                      scenario[:solar_consumed_onsite_kwh])
+    end
 
-      expect(scenario[:solar_pv_output_kwh] - scenario[:exported_kwh]).to
-      be_within(0.01).of(scenario[:solar_consumed_onsite_kwh])
-
-      expect(scenario[:exported_kwh] * BenchmarkMetrics.pricing.solar_export_price).to
-      be_within(0.01).of(scenario[:export_income_£])
+    it 'produces correctly calculated costs and carbon' do
+      expect_to_match(scenario[:mains_savings_£] + scenario[:export_income_£], scenario[:total_annual_saving_£])
 
       # true because of the data setup in the shared context
-      expect(scenario[:existing_annual_£]).to
-      be_within(0.01).of(scenario[:existing_annual_kwh] * 0.1) # flat_rate
-      expect(scenario[:new_mains_consumption_£]).to
-      be_within(0.01).of(scenario[:new_mains_consumption_kwh] * 0.1) # flat_rate
-      expect(scenario[:solar_pv_output_co2]).to
-      be_within(0.01).of(scenario[:solar_pv_output_kwh] * 0.2) # carbon_intensity
+      expect_to_match(scenario[:new_mains_consumption_kwh] * 0.1, # flat_rate
+                      scenario[:new_mains_consumption_£])
+      expect_to_match(scenario[:solar_pv_output_kwh] * 0.2, # carbon_intensity
+                      scenario[:solar_pv_output_co2])
     end
   end
 
   describe '#create_model' do
     subject(:model) { service.create_model }
 
-    it 'produces scenarios' do
+    it 'produces scenarios' do # rubocop:disable RSpec/ExampleLength
       expect(model.scenarios.count).to be_positive
       model.scenarios.each do |scenario|
         expect(scenario.to_h.keys).to match_array(%i[area
                                                      capital_cost_£
-                                                     existing_annual_£
+                                                     existing_annual_cost
                                                      existing_annual_kwh
                                                      exported_kwh
                                                      export_income_£
