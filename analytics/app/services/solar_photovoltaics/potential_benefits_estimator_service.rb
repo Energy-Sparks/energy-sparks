@@ -2,6 +2,17 @@
 
 module SolarPhotovoltaics
   class PotentialBenefitsEstimatorService
+    PANEL_CAPACITY = 0.300 # originally 300 Wp per panel.
+    STANDARD_PANEL_SIZE = 1.6 * 0.9 # Standard solar panels are roughly 1.6m x 0.9m
+    ESTIMATE_ROOF_AREA_SIZE = 0.25 # Conservative estimate of roof area as % of floor area.
+
+    # Originally 6m2 panels/kWp
+    # Seems to have been based on:
+    # 1 x 300 Wp panel is around 1.6m square (estimated slightly larger than above standard size)
+    # 1 kWp capacity array is around 3.3 x 300 Wp panels
+    # 1.6 * 3.3 = 5.28 then rounded up to 6.0
+    SQUARE_METERS_PER_KWP = 6.0
+
     include AnalysableMixin
 
     attr_reader :scenarios, :optimum_kwp, :optimum_payback_years, :optimum_mains_reduction_percent
@@ -106,7 +117,7 @@ module SolarPhotovoltaics
     end
 
     def calculate_solar_pv_benefit(date, kwp)
-      # NOTE: this code is copied from existing code in AlertSolarPVBenefitEstimator and needs refactoring (see rubocop comment)
+      # NOTE: this code was originally copied from existing code in AlertSolarPVBenefitEstimator and needs refactoring (see rubocop comment)
       start_date = date - 365
       kwh_totals = estimate_consumption(start_date, date, kwp)
 
@@ -173,24 +184,25 @@ module SolarPhotovoltaics
       }
     end
 
+    # Costs formula for price per kWp was producing using range of data provided by Egni, BWCE, Ebay
+    # See internal analysis spreadsheet. Updated 2023-06-09
     def capital_costs(kwp)
-      # Costs estimated using range of data provided by Egni, BWCE, Ebay
-      # See internal analysis spreadsheet. Updated 2023-06-09
       kwp == 0.0 ? 0.0 : (1584 * kwp**0.854)
     end
 
+    # Calculate number of panels for a target system size
     def number_of_panels(kwp)
-      # assume 300 Wp per panel
-      (kwp / 0.300).round(0).to_i
+      (kwp / PANEL_CAPACITY).round(0).to_i
     end
 
+    # Calculate total area for number of panels
     def panel_area_m2(panels)
-      (panels * 1.6 * 0.9).round(0)
+      (panels * STANDARD_PANEL_SIZE).round(0)
     end
 
     def max_possible_kwp
       # 25% of floor area, 6m2 panels/kWp
-      @max_possible_kwp ||= (@meter_collection.floor_area * 0.25) / 6.0
+      @max_possible_kwp ||= (@meter_collection.floor_area * ESTIMATE_ROOF_AREA_SIZE) / SQUARE_METERS_PER_KWP
     end
   end
 end
