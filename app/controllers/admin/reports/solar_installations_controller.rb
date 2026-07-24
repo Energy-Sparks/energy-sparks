@@ -6,7 +6,8 @@ module Admin
       TYPES = { 'SolarEdge' => SolarEdgeInstallation,
                 'Rtone' => LowCarbonHubInstallation,
                 'Rtone Variant' => RtoneVariantInstallation,
-                'SolisCloud' => SolisCloudInstallation }.freeze
+                'SolisCloud' => SolisCloudInstallation,
+                'MeterZ' => MeterZInstallation }.freeze
 
       private
 
@@ -58,6 +59,7 @@ module Admin
                              .joins(join_count(LowCarbonHubInstallation))
                              .joins(join_count(RtoneVariantInstallation))
                              .joins(join_count(solis_cloud_installation))
+                             .joins(join_count(meter_z_installation))
                              .select('schools.*', *select_active_inactive)
                              .where(where_any_solar_installations)
                              .includes(school_group: %i[default_issues_admin_user]))
@@ -75,8 +77,12 @@ module Admin
 
       def solis_cloud_installation
         SolisCloudInstallation.joins(:solis_cloud_installation_schools)
-                              .select('solis_cloud_installations.active',
-                                      'solis_cloud_installation_schools.school_id')
+                              .select('solis_cloud_installations.active', 'solis_cloud_installation_schools.school_id')
+      end
+
+      def meter_z_installation
+        MeterZInstallation.joins(:meters)
+                          .select('meter_z_installations.active', 'meters.school_id')
       end
 
       def join_alias(model) = "#{model.table_name}_counts"
