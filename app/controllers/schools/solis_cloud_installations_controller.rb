@@ -8,10 +8,6 @@ module Schools
     JOB_CLASS = Solar::SolisCloudLoaderJob
 
     def destroy
-      # solis_cloud_installation_id
-      # @school.solis_cloud_installations.where(solis_cloud_installation: @installation).destroy_all
-      # SolisCloudInstallationSchool.where(school: @school, solis_cloud_installation: @installation).destroy_all
-      # debugger
       @installation.schools.destroy(@school)
       @installation.schools.reload
       super

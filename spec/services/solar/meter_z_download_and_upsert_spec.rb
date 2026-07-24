@@ -10,9 +10,7 @@ describe Solar::MeterZDownloadAndUpsert do
 
   def every_half_hour(count)
     time = DateTime.new(2025)
-    [time] + Array.new(count).map do
-      time += 30.minutes
-    end
+    [time] + Array.new(count).map { time += 30.minutes }
   end
 
   describe '#perform' do

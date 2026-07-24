@@ -35,7 +35,7 @@ module Solar
     end
 
     def convert_to_readings_by_day(readings)
-      readings_by_day = Hash.new { |hash, key| hash[key] = Array.new(48, nil) }
+      readings_by_day = Hash.new { |hash, key| hash[key] = Array.new(49, nil) }
       readings.each do |reading|
         date, accumulated, index = parse_reading(reading)
         readings_by_day[date][index] = accumulated
