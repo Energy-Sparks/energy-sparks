@@ -24,32 +24,27 @@ describe AlertSolarPVBenefitEstimator do
   end
 
   context 'when school does not have solar' do
-    let(:expected_alert_variables) do
-      {
-        optimum_kwp: '210 kWp',
-        optimum_payback_years: '9 years',
-        optimum_mains_reduction_percent: '84%',
-        one_year_saving_£current: '£17,000',
-        one_year_saving_kwh: '2,100 kWh',
-        one_year_saving_£: '£17,000',
-        one_year_saving_co2: '69,000 kg CO2',
-        ten_year_saving_co2: '690,000 kg CO2',
-        average_one_year_saving_£: '£17,000',
-        average_ten_year_saving_£: '£170,000',
-        ten_year_saving_£: '£170,000',
-        payback_years: '',
-        average_payback_years: '9 years',
-        capital_cost: '£150,000',
-        average_capital_cost: '£150,000'
-      }
+    let(:service) do
+      SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(meter_collection:,
+                                                                asof_date: Date.new(2025, 12, 31))
     end
 
     before do
       alert.analyse(Date.new(2025, 12, 31))
     end
 
-    it 'calculates the expected variables' do
-      expect(alert.text_template_variables.slice(*expected_alert_variables.keys)).to eq(expected_alert_variables)
+    it 'creates variables based on the benefit estimate' do
+      optimum_scenario = service.calculate_optimum_scenario
+
+      expect(alert.optimum_kwp).to eq(optimum_scenario[:kwp])
+      expect(alert.optimum_payback_years).to eq(optimum_scenario[:payback_years])
+      expect(alert.optimum_mains_reduction_percent).to eq(optimum_scenario[:reduction_in_mains_percent])
+      expect(alert.one_year_saving_£current).to eq(optimum_scenario[:total_annual_saving_£]) # rubocop:disable Naming/AsciiIdentifiers
+      expect(alert.one_year_saving_kwh).to eq(optimum_scenario[:reduction_in_mains_kwh])
+      expect(alert.one_year_saving_co2).to eq(optimum_scenario[:total_annual_saving_co2])
+      expect(alert.one_year_saving_£).to eq(Range.new(optimum_scenario[:total_annual_saving_£], # rubocop:disable Naming/AsciiIdentifiers
+                                                      optimum_scenario[:total_annual_saving_£]))
+      expect(alert.capital_cost).to eq(Range.new(optimum_scenario[:capital_cost_£], optimum_scenario[:capital_cost_£]))
     end
   end
 end

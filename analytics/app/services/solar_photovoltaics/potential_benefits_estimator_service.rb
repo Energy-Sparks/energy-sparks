@@ -123,7 +123,6 @@ module SolarPhotovoltaics
       kwh = existing_annual_kwh(start_date, date)
       existing_annual_cost = existing_annual_cost(start_date, date)
 
-      # FIXME: do we need all of these?
       {
         kwp: kwp,
         panels: number_of_panels(kwp),
