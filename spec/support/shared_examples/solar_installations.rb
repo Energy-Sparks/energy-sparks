@@ -25,7 +25,7 @@ shared_examples 'solar installation management' do
         create_new_installation
         uncheck('Active')
         expect { click_on 'Submit' }.to change(installation_model, :count).by(1)
-        check_installation
+        expect(installation_model.last).to have_attributes(expected_new_installation_attributes.merge(active: false))
         expect(page).to have_text("#{installation_type} API feed was verified")
       end
     end

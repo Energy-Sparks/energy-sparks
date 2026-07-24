@@ -29,9 +29,7 @@ describe 'SolisCloud installation management' do
       fill_in('API secret', with: 'api_secret')
     end
 
-    def check_installation
-      expect(SolisCloudInstallation.last).to have_attributes(api_id: 'api_id', api_secret: 'api_secret', active: false)
-    end
+    def expected_new_installation_attributes = { api_id: 'api_id', api_secret: 'api_secret' }
 
     def installation_key = installation.api_id
 

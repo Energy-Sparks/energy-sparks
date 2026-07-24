@@ -28,9 +28,7 @@ describe 'MeterZ installation management' do
 
     def create_new_installation = fill_in('API key', with: 'api_key')
 
-    def check_installation
-      expect(MeterZInstallation.last).to have_attributes(api_key: 'api_key', active: false, meters_list:)
-    end
+    def expected_new_installation_attributes = { api_key: 'api_key', meters_list: }
 
     def installation_key = installation.api_key
 
