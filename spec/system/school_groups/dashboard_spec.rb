@@ -4,12 +4,12 @@ describe 'School group dashboard page', :school_groups do
   shared_examples 'a group dashboard' do
     it 'shows the page header' do
       within('div.layout-cards-page-header-component') do
-        expect(page).to have_content(I18n.t('common.labels.welcome'))
+        expect(page).to have_text(I18n.t('common.labels.welcome'))
       end
 
       within('div.layout-cards-page-header-component-callout-component') do
-        expect(page).to have_content(I18n.t('school_count', count: school_group.assigned_schools.count))
-        expect(page).to have_content(I18n.t(school_group.group_type, scope: 'school_groups.clusters.group_type'))
+        expect(page).to have_text(I18n.t('school_count', count: school_group.assigned_schools.count))
+        expect(page).to have_text(I18n.t(school_group.group_type, scope: 'school_groups.clusters.group_type'))
         expect(page).to have_link(href: map_school_group_path(school_group))
       end
     end
@@ -31,6 +31,19 @@ describe 'School group dashboard page', :school_groups do
           [[
             school.name, '1 Jan 2024', '31 Dec 2024', '-16%', '-16%', '-16%'
           ]]
+        end
+      end
+
+      context 'when downloading the CSV' do
+        before do
+          within '#electricity-overview' do
+            click_on 'Download as CSV'
+          end
+        end
+
+        it 'downloads a CSV' do
+          header = page.response_headers['Content-Disposition']
+          expect(header).to match(/#{school_group.slug}-recent-usage-#{Time.zone.today.iso8601}/)
         end
       end
 
@@ -62,12 +75,24 @@ describe 'School group dashboard page', :school_groups do
 
     context 'when displaying school and advice links' do
       it 'shows select school section' do
-        expect(page).to have_content I18n.t('components.dashboards.group_learn_more.schools.title')
+        expect(page).to have_text I18n.t('components.dashboards.group_learn_more.schools.title')
       end
 
       it 'shows learn more section' do
-        expect(page).to have_content I18n.t('components.dashboards.group_learn_more.advice.title')
+        expect(page).to have_text I18n.t('components.dashboards.group_learn_more.advice.title')
         expect(page).to have_link(href: school_group_advice_path(school_group))
+      end
+    end
+
+    context 'when displaying impact prompt component', with_feature: :impact_reporting do
+      include_context 'with impact report'
+
+      before do
+        visit school_group_path(school_group)
+      end
+
+      it 'shows impact report component' do
+        expect(page).to have_text 'Latest impact report'
       end
     end
 
@@ -85,7 +110,7 @@ describe 'School group dashboard page', :school_groups do
 
     context 'when showing school activity' do
       it 'displays the scoreboard summary' do
-        expect(page).to have_content(I18n.t('components.scoreboards.group_summary.timeline.title'))
+        expect(page).to have_text(I18n.t('components.scoreboards.group_summary.timeline.title'))
       end
     end
 

@@ -11,7 +11,7 @@ module Dashboards
                fuel_types: school_group.fuel_types,
                metric:,
                show_clusters:
-      ))
+             ))
     end
 
     private

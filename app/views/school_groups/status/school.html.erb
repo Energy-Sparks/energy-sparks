@@ -24,8 +24,8 @@
         </dt>
         <dd class="col-7"><%= @school.full_location_to_s %></dd>
         <dt class="col-5"><%= t('school_groups.status.number_of_users') %></dt>
-        <dd class="col-7"><%= @school.active_adult_users.count %>
-          <% if @school.active_adult_users.any? %>
+        <dd class="col-7"><%= @school.all_adult_school_users.active.count %>
+          <% if @school.all_adult_school_users.active.any? %>
             <%= t('school_groups.status.receiving_alerts', count: @school.active_alert_contacts.count) %>
           <% end %>
         </dd>

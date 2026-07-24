@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe AlertConfigurablePeriodElectricityComparison do
   subject(:alert) do
-    meter_collection = build(:meter_collection, :with_fuel_and_aggregate_meters,
+    meter_collection = build(:meter_collection, :with_aggregated_aggregate_meter,
                              start_date: Date.new(2022, 11, 1), end_date: Date.new(2023, 11, 30))
     alert = described_class.new(meter_collection)
     alert.comparison_configuration = configuration

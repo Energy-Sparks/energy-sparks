@@ -6,7 +6,7 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
   subject(:component) { described_class.new(**params) }
 
   let(:school) { create(:school) }
-  let(:user) { create(:school_admin, school: school)}
+  let(:user) { create(:school_admin, school: school) }
 
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
@@ -21,20 +21,20 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
   end
 
   shared_context 'with equivalences' do
-    let(:equivalence_type) { create(:equivalence_type, time_period: :last_week) }
+    let(:equivalence_type) { create(:equivalence_type, time_period: :last_week, meter_type: :electricity) }
     let(:equivalence_type_content) do
       create(:equivalence_type_content_version,
-               equivalence_type: equivalence_type,
-               equivalence_en: 'Your school spent {{gbp}} on electricity last year!',
-               equivalence_cy: 'Gwariodd eich ysgol {{gbp}} ar drydan y llynedd!')
+             equivalence_type: equivalence_type,
+             equivalence_en: 'Your school spent {{gbp}} on electricity last year!',
+             equivalence_cy: 'Gwariodd eich ysgol {{gbp}} ar drydan y llynedd!')
     end
-    let!(:equivalence) do
+    before do
       create(:equivalence,
-              school: school,
-              content_version: equivalence_type_content,
-              data: { 'gbp' => { 'formatted_equivalence' => '£2.00' } },
-              data_cy: { 'gbp' => { 'formatted_equivalence' => '£9.00' } },
-              to_date: Time.zone.today)
+             school: school,
+             content_version: equivalence_type_content,
+             data: { 'gbp' => { 'formatted_equivalence' => '£2.00' } },
+             data_cy: { 'gbp' => { 'formatted_equivalence' => '£9.00' } },
+             to_date: Time.zone.today)
     end
   end
 
@@ -82,14 +82,14 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
       let(:school) { create(:school, data_enabled: false) }
 
       it 'shows default equivalences' do
-        expect(html).to have_content('the average school')
-        expect(html).to have_content('How will your school compare?')
+        expect(html).to have_text('the average school')
+        expect(html).to have_text('How will your school compare?')
       end
 
-      it { expect(html).not_to have_content('Your school spent £2.00 on electricity last year!') }
+      it { expect(html).to have_no_text('Your school spent £2.00 on electricity last year!') }
 
       it {
-        expect(html).not_to have_link(I18n.t('pupils.schools.show.find_how_much_energy_used'))
+        expect(html).to have_no_link(I18n.t('pupils.schools.show.find_how_much_energy_used'))
       }
 
       it_behaves_like 'an application component' do
@@ -101,14 +101,14 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
     context 'with equivalences' do
       include_context 'with equivalences'
 
-      it { expect(html).to have_content('Your school spent £2.00 on electricity last year!') }
+      it { expect(html).to have_text('Your school spent £2.00 on electricity last year!') }
 
       it {
-        expect(html).to have_link(I18n.t('pupils.schools.show.find_how_much_energy_used'),
-                                     href: pupils_school_analysis_path(school,
-                                                                       category: equivalence_type.meter_type))
+        expect(html).to have_link(I18n.t('pupils.analysis.explore_energy_data_html',
+                                         fuel_type: I18n.t('common.electricity').downcase),
+                                  href: pupils_school_analysis_path(school,
+                                                                    category: equivalence_type.meter_type))
       }
-
 
       it_behaves_like 'an application component' do
         let(:expected_classes) { classes }
@@ -116,25 +116,24 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
       end
 
       it 'does not have the navigation' do
-        expect(html).not_to have_css('a.carousel-control-prev')
-        expect(html).not_to have_css('a.carousel-control-next')
+        expect(html).to have_no_button(class: 'carousel-control-prev')
+        expect(html).to have_no_button(class: 'carousel-control-next')
       end
 
       context 'with multiple equivalences' do
         include_context 'with equivalences'
-
-        let!(:equivalence_2) do
+        before do
           create(:equivalence,
-                  school: school,
-                  content_version: equivalence_type_content,
-                  data: { 'gbp' => { 'formatted_equivalence' => '£2.00' } },
-                  data_cy: { 'gbp' => { 'formatted_equivalence' => '£9.00' } },
-                  to_date: Time.zone.today)
+                 school: school,
+                 content_version: equivalence_type_content,
+                 data: { 'gbp' => { 'formatted_equivalence' => '£2.00' } },
+                 data_cy: { 'gbp' => { 'formatted_equivalence' => '£9.00' } },
+                 to_date: Time.zone.today)
         end
 
         it 'adds the navigation' do
-          expect(html).to have_css('a.carousel-control-prev')
-          expect(html).to have_css('a.carousel-control-next')
+          expect(html).to have_button(class: 'carousel-control-prev')
+          expect(html).to have_button(class: 'carousel-control-next')
         end
       end
     end

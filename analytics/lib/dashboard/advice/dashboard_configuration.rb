@@ -192,8 +192,6 @@ class DashboardConfiguration
         test:                 {
                                 name: 'Useful Charts for Testing',
                                 charts: %i[
-                                  targeting_and_tracking_monthly_electricity
-                                  targeting_and_tracking_monthly_electricity_experimental
                                   electricity_by_month_year_0_1
                                   group_by_week_gas_meter_breakdown
                                   group_by_week_electricity_meter_breakdown

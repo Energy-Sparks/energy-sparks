@@ -58,52 +58,6 @@
       "note": ""
     },
     {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "2e1954d6865dbd3a28c9b27bf760ebc1f800e138e4b5ba7b93ae9c4590e6a4ea",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/data_sources_controller.rb",
-      "line": 24,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => \"Data source was successfully updated.\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::DataSourcesController",
-        "method": "update"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
-      "fingerprint": "36e0fbf4927660db93a8c25a75a26c216cb325ddf8d5b2387a678d5e37a0a3cc",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/controllers/admin/alert_types/ratings/preview_controller.rb",
-      "line": 13,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => template_path(params[:template]), { :layout => nil })",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::AlertTypes::Ratings::PreviewController",
-        "method": "create"
-      },
-      "user_input": "params[:template]",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
-    },
-    {
       "warning_type": "SQL Injection",
       "warning_code": 0,
       "fingerprint": "43cf96088c6bfa6a597275fa5934d96169413ee60d19e8c7b99f506c0a931ef8",
@@ -125,52 +79,6 @@
         89
       ],
       "note": "ignore_prefix is not user input"
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "468b1f5d7e0c483cafe243903549520ad177011e2655a1039b8e6c0c0405d1a7",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/procurement_routes_controller.rb",
-      "line": 7,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => \"Procurement route was successfully created.\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::ProcurementRoutesController",
-        "method": "create"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Mass Assignment",
-      "warning_code": 105,
-      "fingerprint": "4933407d9c06e0623f89d7b3a28741f6b0b984362a6d9ea451b3a0b5f15c7c6f",
-      "check_name": "PermitAttributes",
-      "message": "Potentially dangerous key allowed for mass assignment",
-      "file": "app/controllers/schools/users_controller.rb",
-      "line": 143,
-      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
-      "code": "params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Schools::UsersController",
-        "method": "user_params"
-      },
-      "user_input": ":role",
-      "confidence": "Medium",
-      "cwe_id": [
-        915
-      ],
-      "note": ""
     },
     {
       "warning_type": "SQL Injection",
@@ -196,117 +104,25 @@
       "note": "table names only come from code so isn't really an issue"
     },
     {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "53ca41f97ce098f0458d8efc29553838cf2a49de9f8dc7317a735d2923aaba32",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/data_sources_controller.rb",
-      "line": 16,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => \"Data source was successfully created.\")",
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "64623040e1e88dad285dc03858b37d0f850aeb4e1cc3462a04261099466c1425",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/commercial/contract.rb",
+      "line": 169,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "current.joins(contract_holder_joins).left_joins(:licences).joins(\"LEFT JOIN schools AS licence_schools ON licence_schools.id = commercial_licences.school_id\").left_joins(:school_onboardings).select(\"commercial_contracts.contract_holder_type\", \"commercial_contracts.contract_holder_id\", \"#{contract_holder_name_sql} AS contract_holder_name\", count_case(\"licence_schools.visible = TRUE AND licence_schools.data_enabled = FALSE\", \"visible_not_data_enabled_count\"), count_case(\"licence_schools.visible = TRUE AND licence_schools.data_enabled = TRUE\", \"visible_data_enabled_count\"), count_case(\"school_onboardings.school_id IS NULL\", \"onboarding_count\", :id => \"school_onboardings.id\"))",
       "render_path": null,
       "location": {
         "type": "method",
-        "class": "Admin::DataSourcesController",
-        "method": "create"
+        "class": "Commercial::Contract",
+        "method": "current_contract_holders_with_counts"
       },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "5b405296a6a090d6597918a05c3df4daca6efc2c4b78a5bb427ec089b238e6ed",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/procurement_routes_controller.rb",
-      "line": 15,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => \"Procurement route was successfully updated.\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::ProcurementRoutesController",
-        "method": "update"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "6875b4a807a2d988126d5685fd4a7e65a0fefaf99fa6e709c3661cf855c491f3",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/dashboard_messages_controller.rb",
-      "line": 23,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to((params[:redirect_back] or request.referer), :notice => (\"#{@messageable.model_name.human} dashboard message removed\"))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::DashboardMessagesController",
-        "method": "destroy"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "6e7e23ef41df61bd70dd594fd315b2bcbb65531d2c477d89f83993a477767472",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/issues_controller.rb",
-      "line": 46,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully created\"))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::IssuesController",
-        "method": "create"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Mass Assignment",
-      "warning_code": 105,
-      "fingerprint": "72f136fe8dd07e8b2c352becf102c591c7202541e5f418ba73fa6f159435918d",
-      "check_name": "PermitAttributes",
-      "message": "Potentially dangerous key allowed for mass assignment",
-      "file": "app/controllers/admin/users_controller.rb",
-      "line": 114,
-      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
-      "code": "params.require(:user).permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :cluster_school_ids => ([]))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::UsersController",
-        "method": "user_params"
-      },
-      "user_input": ":role",
+      "user_input": "contract_holder_name_sql",
       "confidence": "Medium",
       "cwe_id": [
-        915
+        89
       ],
       "note": ""
     },
@@ -345,25 +161,25 @@
       "note": ""
     },
     {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "84e539f57439626893ab67bbb77050b64a2e1128edc4deee013ca8ad7ccdc44d",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/issues_controller.rb",
-      "line": 54,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully updated\"))",
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "861336d5a0af771537d6865e3971c9585ec70433e0d9eced2d65180f81627da5",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/concerns/temporal_range.rb",
+      "line": 52,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "joins(\"INNER JOIN #{table_name} AS t2\\n  ON #{temporal_group_keys.map do\n \"t2.#{key} = #{table_name}.#{key}\"\n end.join(\" AND \")}\\n AND t2.id <> #{table_name}.id\\n AND t2.start_date <= #{table_name}.end_date\\n AND t2.end_date >= #{table_name}.start_date\\n\".squish)",
       "render_path": null,
       "location": {
         "type": "method",
-        "class": "Admin::IssuesController",
-        "method": "update"
+        "class": "TemporalRange",
+        "method": null
       },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
+      "user_input": "temporal_group_keys.map do\n \"t2.#{key} = #{table_name}.#{key}\"\n end.join(\" AND \")",
+      "confidence": "Medium",
       "cwe_id": [
-        601
+        89
       ],
       "note": ""
     },
@@ -436,29 +252,6 @@
       "note": ""
     },
     {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "d1ad8d6151f9b10bd4088bb3a67cb2477cadd4db822e7bd0e22c695c71d6e175",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/dashboard_messages_controller.rb",
-      "line": 14,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => (\"#{@messageable.model_name.human} dashboard message saved\"))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::DashboardMessagesController",
-        "method": "update"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
       "fingerprint": "d254097bc77d17497dcdf7949ef0120acd632de593dad5afd6068641648dc69b",
@@ -516,6 +309,29 @@
       "note": ""
     },
     {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "e1d2addc6107c25df66fae464b0c4885ed87e06e83a9ac3aa38c2b2cc13df9aa",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/schools/users_controller.rb",
+      "line": 140,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale, :climate_action_lead)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Schools::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "intentional for user controller"
+    },
+    {
       "warning_type": "Remote Code Execution",
       "warning_code": 25,
       "fingerprint": "e6e8650219ff5834b805228ae5d5f4620c6dcaaf0fd80f14f6343d55a656c93d",
@@ -539,5 +355,5 @@
       "note": ""
     }
   ],
-  "brakeman_version": "7.1.1"
+  "brakeman_version": "8.0.5"
 }

@@ -29,8 +29,8 @@ RSpec.describe Layout::Cards::SectionHeaderComponent, :include_application_helpe
       let(:expected_theme) { theme }
     end
 
-    it { expect(html).to have_content('Header') }
-    it { expect(html).to have_content('Description') }
+    it { expect(html).to have_text('Header') }
+    it { expect(html).to have_text('Description') }
     it { expect(html).to have_link('button 1', href: 'link_to_button_1') }
     it { expect(html).to have_link('button 2', href: 'link_to_button_2') }
   end

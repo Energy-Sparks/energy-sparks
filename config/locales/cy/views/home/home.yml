@@ -1,9 +1,77 @@
 cy:
   case_studies:
+    feature:
+      description_html: |-
+        Darllenwch ein hastudiaethau achos am enghreifftiau o sut mae ysgolion ac Ymddiriedolaethau Aml-Academi wedi defnyddio Sbarcynni i gyflawni arbedion ynni a charbon anhygoel.
+        <br><br>
+        O fynd i'r afael â defnydd ynni y tu allan i oriau ysgol i ganfod problemau gyda boeleri a rhewgelloedd i adeiladu ymdrech gymunedol o amgylch gweithredu ar yr hinsawdd - paratowch i gael eich ysbrydoli.
+      title: Dewch o hyd i ysbrydoliaeth gyda'n hastudiaethau achos
     title: Astudiaethau Achos
   home:
+    blog:
+      description: Cymerwch olwg ar ein blog am y diweddariadau a'r mewnwelediadau diweddaraf gan ein harbenigwyr. Gallwch hefyd gofrestru ar gyfer ein cylchlythyrau i gael syniadau ac ysbrydoliaeth yn syth i'ch blwch derbyn.
+      header: Diweddariadau diweddaraf o'n blog
     buttons:
       find_out_more: Dysgu rhagor
+      get_quote: Cael dyfynbris
+      newsletter_signup: Cofrestru i'n cylchlythyr
+      our_tool: Ein hofferyn rheoli ynni
+      read_case_studies: Darllen astudiaethau achos
+      view_blog: Edrych ar ein blog
+      watch_a_demo: Gwyliwch demo
+    feature:
+      description_html: Gallwch arbed hyd at 40% ar filiau ynni gyda'n hofferyn rheoli ynni a'n rhaglen addysg unigryw sy'n benodol i ysgolion.
+      header: Helpu ysgolion i dorri costau ynni a brwydro yn erbyn newid hinsawdd
+    features:
+      cards:
+        - badge: Mewnwelediadau pwerus
+          statement: Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd
+        - badge: Datrys problemau
+          statement: Darganfod a yw ynni'n cael ei wastraffu y tu allan i oriau ysgol
+        - badge: Cyngor pwrpasol
+          statement: Cael cyngor arbed ynni wedi'i deilwra'n arbennig ar gyfer eich ysgol
+        - badge: Rhybuddion amserol
+          statement: Derbyniwch rybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid
+        - badge: Gweithgareddau dysgu
+          statement: Archwilio gweithgareddau tîm eco ac ystafell ddosbarth ar gyfer disgyblion
+        - badge: Cymuned hinsawdd
+          statement: Rhannwch syniadau arbed ynni a chystadlwch yn erbyn ysgolion eraill
+      description: Mae Sbarcynni yn darparu data ynni bron mewn amser real a mewnwelediadau penodol i'r ysgol i'ch helpu i dorri costau a charbon, yn ogystal ag amrywiaeth o adnoddau a gweithgareddau a gynlluniwyd i ysbrydoli eich disgyblion.
+      header: Offer sy'n cael eu gyrru gan ddata a fydd yn newid eich ysgol
+    general:
+      description_html: Dim ond y cam cyntaf yw cofrestru gyda Sbarcynni. Rydym yn cefnogi ein rhwydwaith o <strong>%{count}</strong> o ysgolion ar eu taith arbed ynni - o'u helpu i sefydlu, i ddarparu ystod o hyfforddiant am ddim a chymorth 1:1. Rydym hefyd yn cynnig gweithdai addysgol ac archwiliadau ynni ar y safle.
+      title: Gyda chi ar eich taith
+    organisations:
+      cards:
+        local_authority:
+          description: Gall Sbarcynni weithio gydag Awdurdodau Lleol i gefnogi ysgolion yn eu hardal.
+          title: Ar gyfer Awdurdodau Lleol
+        multi_academy:
+          description: Darganfyddwch sut mae Sbarcynni yn cefnogi Ymddiriedolaethau Aml-Academi
+          title: Ar gyfer Ymddiriedolaethau Aml-Academi
+        school:
+          description: Darganfyddwch sut y gall Sbarcynni gefnogi eich ysgol
+          title: I Ysgolion
+      description: Rydym yn gweithio gydag ysgolion cynradd, uwchradd, arbennig ac annibynnol i'w helpu i leihau eu defnydd o ynni, torri costau a lleihau eu heffaith ar yr amgylchedd
+      header: Gweithio gydag ysgolion o bob math a maint
+    stats:
+      card_1:
+        figure: 10%
+        header: Arbed ynni
+        subtext: Arbedion ynni a charbon nodweddiadol a welwyd gan ysgolion yn eu blwyddyn gyntaf gyda Sbarcynni
+      card_2:
+        figure: "£5,000"
+        header: Ysgolion cynradd
+        subtext: ac arbediad cyfartalog o 7 tunnell o CO₂ - yn 2023/24
+      card_3:
+        figure: "£21,000"
+        header: Ysgolion uwchradd
+        subtext: ac arbediad cyfartalog o 26 tunnell o CO₂ - yn 2023/24
+      card_4:
+        header: Grymuso disgyblion
+        subtext: Gweithgareddau arbed ynni sy'n gysylltiedig â'r tîm eco a'r cwricwlwm sy'n gysylltiedig â data defnydd ynni i gael yr effaith fwyaf
+      description: Rydym yn darparu mewnwelediadau data, awgrymiadau gweithredu ac adnoddau addysgol i helpu ysgolion i ddatblygu eu cynlluniau gweithredu hinsawdd, gwneud arbedion ynni a charbon mawr, a datblygu sgiliau cynaliadwyedd disgyblion.
+      header: Ydych chi am dorri biliau ynni a chymryd camau gweithredu ar newid hinsawdd?
   mailchimp:
     example: 'ee: hello@example.com'
     latest_news_title: Cael y newyddion diweddaraf gan Sbarcynni yn eich mewnflwch
@@ -12,13 +80,24 @@ cy:
     title_html: Cadw yn gyfoes&hellip;
   newsletters:
     title: Cylchlythyrau
+    view_newsletter: Gweld cylchlythyr
+  redirects:
+    choose_school:
+      intro: Rydych chi wedi dilyn dolen benodol i'r ysgol. Dewiswch un o'ch ysgolion i barhau.
+      title: Dewiswch ysgol i barhau
   school_count:
     one: 1 ysgol
     two: '%{count} ysgol'
     many: '%{count} ysgol'
     other: '%{count} ysgol'
   training:
+    feature:
+      description: Mae'r dudalen hon yn rhestru ein holl sesiynau hyfforddi sydd i ddod. Dilynwch y dolenni i’n tudalen Eventbrite i archebu eich tocynnau.
+      title: Hyfforddiant
     intro: Mae'r dudalen hon yn rhestru ein holl sesiynau hyfforddi sydd i ddod. Dilynwch y dolenni i’n tudalen Eventbrite i archebu eich tocynnau.
+    no_events:
+      description: Mae digwyddiadau newydd yn cael eu hychwanegu'n rheolaidd, felly gwiriwch eto cyn bo hir
+      title: Nid oes unrhyw ddigwyddiadau wedi'u trefnu ar hyn o bryd
     sold_out: Wedi gwerthu allan
     spaces_available: Lleoedd ar gael
     title: Hyfforddiant

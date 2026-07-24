@@ -1,4 +1,3 @@
 class PromptListComponentPreview < ViewComponent::Preview
-  def examples
-  end
+  def examples; end
 end

@@ -28,7 +28,7 @@ describe ApplicationHelper do
     end
 
     context 'with sanitize set to true (default)' do
-      it { expect(helper.up_downify('10.1&percnt;')).to eq('10.1&amp;percnt; ') } # we don't want this!
+      it { expect(helper.up_downify('10.1&percnt;')).to eq('10.1% ') }
       it { expect(helper.up_downify('10.1%')).to eq('10.1% ') }
     end
 
@@ -45,7 +45,8 @@ describe ApplicationHelper do
 
     it 'shows the last time as user signed in' do
       last_sign_in_at = DateTime.new(2001, 2, 3, 4, 5, 6)
-      expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq last_sign_in_at.strftime('%d/%m/%Y %H:%M')
+      expect(display_last_signed_in_as(build(:user,
+                                             last_sign_in_at: last_sign_in_at))).to eq last_sign_in_at.strftime('%d/%m/%Y %H:%M')
     end
   end
 
@@ -96,34 +97,6 @@ describe ApplicationHelper do
 
     it 'handles divide by zero' do
       expect(helper.progress_as_percent(10, 0)).to eq(nil)
-    end
-  end
-
-  describe 'add_or_remove' do
-    it 'adds item when empty' do
-      expect(helper.add_or_remove(nil, 'KS1')).to eq('KS1')
-    end
-
-    it 'adds item to list' do
-      expect(helper.add_or_remove('KS1,KS2', 'KS3')).to eq('KS1,KS2,KS3')
-    end
-
-    it 'handles whitespace' do
-      expect(helper.add_or_remove(' KS1   , KS2', 'KS3')).to eq('KS1,KS2,KS3')
-    end
-
-    it 'removes item from list' do
-      expect(helper.add_or_remove('KS1,KS2,KS3', 'KS2')).to eq('KS1,KS3')
-    end
-  end
-
-  describe 'activity_types_badge_class' do
-    it 'has the non-selected class' do
-      expect(helper.activity_types_badge_class('KS1, KS2', 'KS3', 'info')).to include('badge-light')
-    end
-
-    it 'has the selected class' do
-      expect(helper.activity_types_badge_class('KS1, KS2', 'KS1', 'info')).to include('badge-info')
     end
   end
 
@@ -181,8 +154,14 @@ describe ApplicationHelper do
       end
     end
 
+    context 'when short_dates is true' do
+      subject { nice_date_times(utc_date_time, short_date: true) }
+
+      it { expect(subject).to eql("#{short_dates(utc_date_time)} #{nice_times_only(utc_date_time)}") }
+    end
+
     context 'when date is nil' do
-      subject {nice_date_times(nil)}
+      subject { nice_date_times(nil) }
 
       it { expect(nice_date_times(nil)).to be_blank }
     end
@@ -264,7 +243,8 @@ describe ApplicationHelper do
       times = (start_of_the_day..end_of_the_day).step(30.minutes)
       times = times.map { |time| helper.nice_times_only(Time.zone.at(time)) }
       expect(times).to eq(
-        ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
+        ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30',
+         '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
       )
     end
   end
@@ -343,6 +323,58 @@ describe ApplicationHelper do
 
     it 'returns role' do
       expect(helper.user_school_role(user_without_staff_role)).to eq('Group admin')
+    end
+  end
+
+  describe '#bootstrap_path' do
+    context 'when bs5 is true' do
+      before { allow(Current).to receive(:bs5).and_return(true) }
+
+      it 'does not change path' do
+        expect(helper.bootstrap_path('application')).to eq('application')
+      end
+    end
+
+    context 'when bs5 is false' do
+      before { allow(Current).to receive(:bs5).and_return(false) }
+
+      it 'prepends bootstrap4/' do
+        expect(helper.bootstrap_path('application')).to eq('bootstrap4/application')
+      end
+    end
+  end
+
+  describe '#format_price' do
+    it 'handles missing prices correctly' do
+      expect(helper.format_price(nil)).to eq('£0.00')
+      expect(helper.format_price('')).to eq('£0.00')
+    end
+
+    it 'formats floats correctly' do
+      expect(helper.format_price(123.0)).to eq('£123.00')
+      expect(helper.format_price(1234.0)).to eq('£1,234.00')
+      expect(helper.format_price(1234.50)).to eq('£1,234.50')
+      expect(helper.format_price(1234.567)).to eq('£1,234.57')
+      expect(helper.format_price(1234.5678)).to eq('£1,234.57')
+      expect(helper.format_price(123.44)).to eq('£123.44')
+      expect(helper.format_price(123.45)).to eq('£123.45')
+      expect(helper.format_price(123.456)).to eq('£123.46')
+      expect(helper.format_price(0.0)).to eq('£0.00')
+    end
+
+    it 'formats integers correctly' do
+      expect(helper.format_price(1234)).to eq('£1,234.00')
+    end
+
+    it 'formats BigDecimals correctly' do
+      expect(helper.format_price(BigDecimal(123.0))).to eq('£123.00')
+    end
+
+    it 'formats floats correctly excluding decimals' do
+      expect(helper.format_price(123.0, decimals: false)).to eq('£123')
+      expect(helper.format_price(1234.0, decimals: false)).to eq('£1,234')
+      expect(helper.format_price(1234.50, decimals: false)).to eq('£1,234')
+      expect(helper.format_price(1234.567, decimals: false)).to eq('£1,234')
     end
   end
 end

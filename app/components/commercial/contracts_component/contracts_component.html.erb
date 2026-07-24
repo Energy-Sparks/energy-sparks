@@ -1,0 +1,66 @@
+<%= tag.div id: id, class: classes do %>
+  <% if header? %>
+    <%= header %>
+  <% end %>
+  <table id="contracts-table" class="table table-paged table-sm">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <% if @show_contract_holder %>
+          <th>Contract Holder</th>
+        <% end %>
+        <th>Product</th>
+        <th class="text-end">Period</th>
+        <th class="text-end">Terms</th>
+        <th class="text-end">Start Date</th>
+        <th class="text-end">End Date</th>
+        <th class="text-end">Number of Schools</th>
+        <th class="text-end">Licensed Schools</th>
+        <th class="text-end">Status</th>
+        <% if @show_actions %>
+          <th class="text-end no-sort">Actions</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @contracts.each do |contract| %>
+        <tr>
+          <td class="col-2"><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
+          <% if @show_contract_holder %>
+            <td class="col-2"><%= contract.contract_holder.name %></td>
+          <% end %>
+          <td class="col-2"><%= link_to contract.product.name, admin_commercial_product_path(contract.product) %></td>
+          <td><%= contract.licence_period.humanize %></td>
+          <td><%= contract.invoice_terms.humanize %></td>
+          <td data-order="<%= contract.start_date.iso8601 %>" class="text-end"><%= contract.start_date.to_fs(:es_short) %></td>
+          <td data-order="<%= contract.end_date.iso8601 %>" class="text-end"><%= contract.end_date.to_fs(:es_short) %></td>
+          <td class="text-end col-1"><%= contract.number_of_schools %></td>
+          <td class="text-end col-1"><%= contract.licences.count %></td>
+          <td class="text-end">
+            <%= render(Elements::BadgeComponent.new(
+                         contract.status.humanize,
+                         colour: contract.status_colour
+                       )) %>
+          </td>
+          <% if @show_actions %>
+          <td class="text-end">
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_admin_commercial_contract_path(contract),
+                          class: 'btn btn-secondary btn-sm' %>
+              <%= unless contract.future?
+                    link_to 'Renew', renew_admin_commercial_contracts_path(original_contract_id: contract.id),
+                            class: 'btn btn-secondary btn-sm'
+                  end %>
+              <% unless contract.confirmed? %>
+                <%= button_to 'Confirm', confirm_admin_commercial_contract_path(contract),
+                              class: 'btn btn-secondary btn-sm' %>
+              <% end %>
+              <%= render(Forms::DeleteButtonComponent.new(admin_commercial_contract_path(contract), resource: contract)) %>
+            </div>
+          </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

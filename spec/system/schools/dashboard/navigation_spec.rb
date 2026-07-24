@@ -20,8 +20,8 @@ RSpec.shared_examples 'navigation' do
     end
 
     it 'does not show data-enabled links' do
-      expect(html).not_to have_link(I18n.t('common.explore_energy_data'),
-                                    href: school_advice_path(school))
+      expect(html).to have_no_link(I18n.t('common.explore_energy_data'),
+                                   href: school_advice_path(school))
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.shared_examples 'navigation' do
   context 'when school has partners' do
     let(:partner)             { create(:partner, name: 'School Sponsor', url: 'http://example.org') }
     let(:other_partner)       { create(:partner, name: 'Big Tech Co', url: 'https://example.com') }
-    let(:school_group)        { create(:school_group, name: 'School Group')}
+    let(:school_group)        { create(:school_group, name: 'School Group') }
 
     before do
       test_school.update!({ school_group: school_group })
@@ -64,7 +64,7 @@ end
 RSpec.describe 'adult dashboard navigation', type: :system do
   let(:school) { create(:school) }
 
-  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true) }
 
   before do
     # Update the configuration rather than creating one, as the school factory builds one
@@ -88,8 +88,8 @@ RSpec.describe 'adult dashboard navigation', type: :system do
 
     it 'shows login form' do
       visit school_path(school)
-      expect(page).to have_content('Log in with your email address and password')
-      expect(page).to have_content('Log in with your pupil password')
+      expect(page).to have_text('Log in with your email address and password')
+      expect(page).to have_text('Log in with your pupil password')
     end
   end
 
@@ -153,7 +153,7 @@ RSpec.describe 'adult dashboard navigation', type: :system do
       it 'links to advice pages from review energy analysis' do
         visit school_path(school)
         click_on 'Explore energy data'
-        expect(page).to have_content(I18n.t('advice_pages.index.title'))
+        expect(page).to have_text(I18n.t('advice_pages.index.title'))
       end
 
       it 'links to advice pages from my school menu' do
@@ -161,7 +161,7 @@ RSpec.describe 'adult dashboard navigation', type: :system do
         within '#my-school-menu' do
           click_on 'Energy analysis'
         end
-        expect(page).to have_content(I18n.t('advice_pages.index.title'))
+        expect(page).to have_text(I18n.t('advice_pages.index.title'))
       end
     end
   end

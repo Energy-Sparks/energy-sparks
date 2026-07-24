@@ -3,25 +3,11 @@
 require 'rails_helper'
 
 describe 'change_in_electricity_since_last_year' do
-  let(:variables) do
-    {
-      previous_year_electricity_kwh: 1000.0,
-      current_year_electricity_kwh: 500.0,
-      previous_year_electricity_co2: 800.0,
-      current_year_electricity_co2: 400.0,
-      previous_year_electricity_gbp: 2000.0,
-      current_year_electricity_gbp: 1200.0,
-      solar_type: 'synthetic'
-    }
-  end
-
   let!(:school) { create(:school) }
   let!(:report) { create(:report, key: :change_in_electricity_since_last_year) }
 
   let!(:alerts) do
-    alert_run = create(:alert_generation_run, school: school)
-    alert = create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert, variables: variables)
+    create(:alert, :with_run, :energy_annual_versus_benchmark, school:)
   end
 
   before do

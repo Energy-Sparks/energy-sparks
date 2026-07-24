@@ -10,6 +10,9 @@ module Admin
         @meter_reviews = @school.meter_reviews.order(:created_at)
       end
 
+      def show
+      end
+
       def new
         @meter_review = MeterReview.new
         @consent_grant = @school.consent_grants.by_date.first
@@ -21,12 +24,16 @@ module Admin
         consent_documents = @school.consent_documents.where(id: params[:meter_review]['consent_document_ids'])
         service = MeterReviewService.new(@school, current_user)
         review = service.complete_review!(meters, consent_documents)
-        redirect_to admin_school_meter_review_path(@school, review), notice: 'Review was successfully recorded. Meters will shortly be activated.'
-      rescue => e
+        redirect_to admin_school_meter_review_path(@school, review),
+                    notice: 'Review was successfully recorded. Meters will shortly be activated.'
+      rescue StandardError => e
         redirect_to new_admin_school_meter_review_path(@school), alert: e.message
       end
 
-      def show
+      def update
+        @meter_review.update(disabled: !@meter_review.disabled)
+        redirect_to admin_school_meter_review_path(@school, @meter_review),
+                    notice: "Review #{@meter_review.disabled ? :disabled : :enabled}."
       end
 
       private

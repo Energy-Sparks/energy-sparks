@@ -1,0 +1,11 @@
+<% if task.programme_types_todo.active.any? %>
+  <%= render Layout::Cards::FeatureComponent.new(size: :sm, classes: 'mb-4') do |feature| %>
+    <%= feature.with_header(
+          title: "#{render(Elements::IconComponent.new(name: 'tasks'))} " \
+                  "#{t('tasks.related_programmes')}".html_safe
+        ) %>
+    <% task.programme_types_todo.active.each do |programme_type| %>
+      <%= feature.with_link(href: programme_type_path(programme_type)) { programme_type.title } %>
+    <% end %>
+  <% end %>
+<% end %>

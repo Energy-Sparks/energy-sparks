@@ -5,7 +5,7 @@ module Dashboards
 
     attr_reader :school_group, :schools, :fuel_types, :metric
 
-    def initialize(school_group:, schools:, fuel_types:, metric: :change, show_clusters: false, **kwargs)
+    def initialize(school_group:, schools:, fuel_types:, metric: :change, show_clusters: false, show_status_note: false, **kwargs)
       super
       @school_group = school_group
       @schools = schools
@@ -13,10 +13,15 @@ module Dashboards
       @fuel_types = fuel_types.sort
       @metric = metric&.to_sym
       @show_clusters = show_clusters
+      @show_status_note = show_status_note
     end
 
     def show_clusters?
       @show_clusters
+    end
+
+    def show_status_note?
+      @show_status_note
     end
 
     def render?

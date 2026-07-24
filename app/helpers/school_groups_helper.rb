@@ -61,7 +61,7 @@ module SchoolGroupsHelper
   end
 
   def include_clusters?(school_group)
-    school_group.organisation? && can?(:update_settings, school_group)
+    school_group.organisation? && can?(:view_clusters, school_group)
   end
 
   def admin_form_label(school_group)

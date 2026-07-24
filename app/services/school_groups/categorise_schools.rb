@@ -33,7 +33,7 @@ module SchoolGroups
     end
 
     def query
-      <<-SQL.squish
+      <<~SQL.squish
         SELECT
         advice_pages.key AS advice_page_key,
         advice_pages.fuel_type AS fuel_type,
@@ -46,7 +46,7 @@ module SchoolGroups
         INNER JOIN advice_pages ON advice_pages.id = advice_page_school_benchmarks.advice_page_id
         INNER JOIN schools ON schools.id = advice_page_school_benchmarks.school_id
         LEFT JOIN school_group_clusters ON school_group_clusters.id = schools.school_group_cluster_id
-        WHERE schools.id IN (#{@schools.pluck(:id).join(',')})
+        WHERE schools.id IN (#{@schools.pluck(:id).presence&.join(',') || 'NULL'})
         AND schools.active = true
         AND schools.visible = true
         ORDER BY advice_pages.key, schools.name;

@@ -14,33 +14,33 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     end
 
     it 'shows intro text' do
-      expect(page).to have_content 'A cluster is a set of schools that are grouped together within your Multi-Academy Trust'
+      expect(page).to have_text 'A cluster is a set of schools that are grouped together within your Multi-Academy Trust'
     end
 
     it 'shows school group clusters index page' do
       expect(page).to have_current_path "/school_groups/#{school_group.slug}/clusters", ignore_query: true
-      expect(page).to have_content "#{school_group.name} Clusters"
+      expect(page).to have_text "#{school_group.name} Clusters"
       expect(page).to have_link 'Create new cluster'
     end
 
     it 'displays cluster', if: name do
-      expect(page).to have_content(name)
-      expect(page).to have_content("#{count} #{'school'.pluralize(count)}")
+      expect(page).to have_text(name)
+      expect(page).to have_text("#{count} #{'school'.pluralize(count)}")
       expect(page).to have_link('Edit', href: /clusters/)
       expect(page).to have_link('Delete')
       expect(page).to have_button('Unassign selected', disabled: count < 1)
     end
 
     it "doesn't display cluster", unless: name do
-      expect(page).not_to have_link('Edit', href: /clusters/)
+      expect(page).to have_no_link('Edit', href: /clusters/)
     end
 
-    it_behaves_like 'a page displaying the school group settings nav'
+    it_behaves_like 'a page with the school group settings nav'
   end
 
   shared_examples 'school group cluster form' do |name: ''|
     it 'shows breadcrumbs' do
-      expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters', (name.blank? ? 'New' : name)])
+      expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters', name.presence || 'New'])
     end
 
     it 'displays cluster form' do
@@ -86,19 +86,17 @@ describe 'school group clusters', :school_group_clusters, type: :system do
       it_behaves_like 'redirects to school group page'
     end
 
-    [:admin, :group_admin].each do |user_type|
+    %i[admin group_admin].each do |user_type|
       context "as #{user_type}" do
         let!(:user) { create(user_type, school_group: school_group) }
 
         before do
-          visit school_group_url(school_group)
-          within('#manage-school-group-menu') do
-            click_on 'Manage clusters'
-          end
+          visit settings_school_group_url(school_group)
+          click_on 'Clusters'
         end
 
         it_behaves_like 'school group clusters index page'
-        it { expect(page).to have_content 'No clusters' }
+        it { expect(page).to have_text 'No clusters' }
 
         describe 'Cluster management' do
           before { click_on 'Create new cluster' }
@@ -121,7 +119,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
             end
 
             it_behaves_like 'school group clusters index page', name: 'My Cluster', count: 0
-            it { expect(page).to have_content('Cluster created')}
+            it { expect(page).to have_text('Cluster created') }
 
             context 'Editing cluster' do
               before do
@@ -136,7 +134,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
                   click_button 'Save'
                 end
 
-                it { expect(page).to have_content('Cluster updated') }
+                it { expect(page).to have_text('Cluster updated') }
 
                 it_behaves_like 'school group clusters index page', name: 'My Updated Cluster', count: 0
               end
@@ -149,8 +147,8 @@ describe 'school group clusters', :school_group_clusters, type: :system do
 
               it_behaves_like 'school group clusters index page'
               it 'removes cluster' do
-                expect(page).to have_content('Cluster deleted')
-                expect(page).not_to have_content('My Cluster')
+                expect(page).to have_text('Cluster deleted')
+                expect(page).to have_no_text('My Cluster')
               end
             end
           end
@@ -159,9 +157,9 @@ describe 'school group clusters', :school_group_clusters, type: :system do
         describe 'Cluster schools management' do
           it 'displays unassigned schools in cluster' do
             within '#cluster-unassigned' do
-              expect(page).to have_content('School 1')
-              expect(page).to have_content('School 2')
-              expect(page).to have_content('School 3')
+              expect(page).to have_text('School 1')
+              expect(page).to have_text('School 2')
+              expect(page).to have_text('School 3')
             end
           end
 
@@ -184,22 +182,22 @@ describe 'school group clusters', :school_group_clusters, type: :system do
 
               let(:cluster) { school_group.clusters.find_by(name: 'My Cluster') }
 
-              it { expect(page).to have_content('2 schools assigned to My Cluster') }
+              it { expect(page).to have_text('2 schools assigned to My Cluster') }
 
               it_behaves_like 'school group clusters index page', name: 'My Cluster', count: 2
 
               it 'adds schools to cluster' do
                 within "#cluster-#{cluster.id}" do
-                  expect(page).to have_content('School 1')
-                  expect(page).to have_content('School 2')
+                  expect(page).to have_text('School 1')
+                  expect(page).to have_text('School 2')
                 end
               end
 
               it 'school removed from unassigned' do
                 within '#cluster-unassigned' do
-                  expect(page).not_to have_content('School 1')
-                  expect(page).not_to have_content('School 2')
-                  expect(page).to have_content('School 3')
+                  expect(page).to have_no_text('School 1')
+                  expect(page).to have_no_text('School 2')
+                  expect(page).to have_text('School 3')
                 end
               end
 
@@ -211,13 +209,13 @@ describe 'school group clusters', :school_group_clusters, type: :system do
                   click_on 'Unassign selected'
                 end
 
-                it { expect(page).to have_content '1 school unassigned from My Cluster' }
+                it { expect(page).to have_text '1 school unassigned from My Cluster' }
 
                 it_behaves_like 'school group clusters index page', name: 'My Cluster', count: 1
 
                 it 'removes school from cluster' do
                   within "#cluster-#{cluster.id}" do
-                    expect(page).not_to have_content('School 1')
+                    expect(page).to have_no_text('School 1')
                   end
                 end
               end
@@ -229,9 +227,9 @@ describe 'school group clusters', :school_group_clusters, type: :system do
 
                 it 'schools go back to unassigned' do
                   within '#cluster-unassigned' do
-                    expect(page).to have_content('School 1')
-                    expect(page).to have_content('School 2')
-                    expect(page).to have_content('School 3')
+                    expect(page).to have_text('School 1')
+                    expect(page).to have_text('School 2')
+                    expect(page).to have_text('School 3')
                   end
                 end
               end
@@ -242,7 +240,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
                 click_on 'Move'
               end
 
-              it { expect(page).to have_content 'Please select a cluster' }
+              it { expect(page).to have_text 'Please select a cluster' }
             end
           end
         end

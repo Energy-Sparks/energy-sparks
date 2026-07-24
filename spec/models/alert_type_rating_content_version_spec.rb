@@ -5,7 +5,7 @@ describe AlertTypeRatingContentVersion do
     it 'validates that the end_date is on or after the start_date' do
       content_version = AlertTypeRatingContentVersion.new(
         find_out_more_start_date: Date.new(2019, 0o1, 20),
-        find_out_more_end_date: Date.new(2019, 0o1, 19),
+        find_out_more_end_date: Date.new(2019, 0o1, 19)
       )
       content_version.timings_are_correct(:find_out_more)
       expect(content_version.errors[:find_out_more_end_date]).to include('must be on or after start date')
@@ -14,7 +14,7 @@ describe AlertTypeRatingContentVersion do
     it 'allows the end date to be the same as the start date' do
       content_version = AlertTypeRatingContentVersion.new(
         find_out_more_start_date: Date.new(2019, 0o1, 20),
-        find_out_more_end_date: Date.new(2019, 0o1, 20),
+        find_out_more_end_date: Date.new(2019, 0o1, 20)
       )
       content_version.timings_are_correct(:find_out_more)
       expect(content_version.errors[:find_out_more_end_date]).to be_empty
@@ -152,7 +152,7 @@ describe AlertTypeRatingContentVersion do
 
     context 'when fetching records for sync' do
       it 'includes records with pupil, management dashboard alert, sms and email active' do
-        expect(AlertTypeRatingContentVersion.tx_resources).to match_array([content_version_pupil, content_version_management, content_version_all, content_version_management_title, content_version_sms, content_version_email])
+        expect(AlertTypeRatingContentVersion.tx_resources).to contain_exactly(content_version_pupil, content_version_management, content_version_all, content_version_management_title, content_version_sms, content_version_email)
       end
     end
 
@@ -160,15 +160,15 @@ describe AlertTypeRatingContentVersion do
       it 'only includes fields with active alerts' do
         data = content_version.tx_serialise
         key = data['en'].keys.first
-        expect(data['en'][key].keys).to match_array([])
+        expect(data['en'][key].keys).to be_empty
 
         data = content_version_pupil.tx_serialise
         key = data['en'].keys.first
-        expect(data['en'][key].keys).to match_array(['pupil_dashboard_title_html'])
+        expect(data['en'][key].keys).to contain_exactly('pupil_dashboard_title_html')
 
         data = content_version_management.tx_serialise
         key = data['en'].keys.first
-        expect(data['en'][key].keys).to match_array(['management_dashboard_title_html'])
+        expect(data['en'][key].keys).to contain_exactly('management_dashboard_title_html')
 
         data = content_version_all.tx_serialise
         key = data['en'].keys.first
@@ -176,7 +176,7 @@ describe AlertTypeRatingContentVersion do
 
         data = content_version_management_title.tx_serialise
         key = data['en'].keys.first
-        expect(data['en'][key].keys).to match_array(['management_priorities_title_html'])
+        expect(data['en'][key].keys).to contain_exactly('management_priorities_title_html')
 
         data = content_version_email.tx_serialise
         key = data['en'].keys.first
@@ -187,7 +187,7 @@ describe AlertTypeRatingContentVersion do
 
         data = content_version_sms.tx_serialise
         key = data['en'].keys.first
-        expect(data['en'][key].keys).to match_array(['sms_content'])
+        expect(data['en'][key].keys).to contain_exactly('sms_content')
         # check that we're serialsing as templated content
         expect(data['en'][key]['sms_content']).to eq 'sms content %{tx_var_content_variable}'
       end
@@ -214,14 +214,14 @@ describe AlertTypeRatingContentVersion do
 
       it 'maps all translated fields' do
         data = content_version.tx_serialise
-        expect(data['en']).not_to be nil
+        expect(data['en']).not_to be_nil
         key = "alert_type_rating_content_version_#{alert_type_rating.id}"
-        expect(data['en'][key]).not_to be nil
-        expect(data['en'][key].keys).to match_array(['pupil_dashboard_title_html'])
+        expect(data['en'][key]).not_to be_nil
+        expect(data['en'][key].keys).to contain_exactly('pupil_dashboard_title_html')
       end
 
       it 'created categories' do
-        expect(content_version.tx_categories).to match_array(['alert_rating'])
+        expect(content_version.tx_categories).to contain_exactly('alert_rating')
       end
 
       it 'overrides default name' do

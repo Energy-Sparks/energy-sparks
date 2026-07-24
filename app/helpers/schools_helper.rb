@@ -42,11 +42,11 @@ module SchoolsHelper
   def data_sharing_colour(school)
     case school.data_sharing.to_sym
     when :public
-      'badge-success'
+      'text-bg-success'
     when :private
-      'badge-danger'
+      'text-bg-danger'
     else
-      'badge-warning'
+      'text-bg-warning'
     end
   end
 end

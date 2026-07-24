@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'amr:stopped_data_feeds_email' do # rubocop:disable RSpec/DescribeClass
-  before { Rails.application.load_tasks unless Rake::Task.tasks.any? }
-
-  let(:task) do
-    task = Rake::Task[self.class.description]
-    task.reenable
-    task
-  end
+  include_context 'with a task'
 
   around do |example|
     ClimateControl.modify(SEND_AUTOMATED_EMAILS: 'true') { example.run }

@@ -14,8 +14,12 @@ describe ActivityCategory do
     let(:activity_category_1) { create(:activity_category, name: 'Learning') }
     let(:activity_category_2) { create(:activity_category, name: 'Environment') }
 
-    let!(:activity_type_1) { create(:activity_type, name: 'Other', activity_category: activity_category_1, custom: true) }
-    let!(:activity_type_2) { create(:activity_type, name: 'Check Temperatures', activity_category: activity_category_1, custom: false) }
+    let!(:activity_type_1) do
+      create(:activity_type, name: 'Other', activity_category: activity_category_1, custom: true)
+    end
+    let!(:activity_type_2) do
+      create(:activity_type, name: 'Check Temperatures', activity_category: activity_category_1, custom: false)
+    end
 
     let!(:activity_type_3) { create(:activity_type, name: 'Zoo visit', activity_category: activity_category_2) }
     let!(:activity_type_4) { create(:activity_type, name: 'Alphabet analysis', activity_category: activity_category_2) }
@@ -35,7 +39,7 @@ describe ActivityCategory do
     let!(:activity_category_2) { create(:activity_category, name: 'Environment') }
 
     it '#tx_resources' do
-      expect(ActivityCategory.tx_resources).to match_array([activity_category_1, activity_category_2])
+      expect(ActivityCategory.tx_resources).to contain_exactly(activity_category_1, activity_category_2)
     end
   end
 end

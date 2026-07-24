@@ -58,10 +58,6 @@ class AMRData < HalfHourlyData
     @accounting_tariff = tariff
   end
 
-  def set_carbon_schedule(co2)
-    @carbon_emissions = co2
-  end
-
   # Called from aggregation_mixin, SyntheticMeter and TargetMeter
   def set_carbon_emissions(meter_id_for_debug, flat_rate, grid_carbon)
     @carbon_emissions = CarbonEmissionsParameterised.create_carbon_emissions(meter_id_for_debug, self, flat_rate,
@@ -194,9 +190,9 @@ class AMRData < HalfHourlyData
   end
 
   def check_type(type)
-    unless %i[kwh £ economic_cost co2 £current current_economic_cost accounting_cost gbp].include?(type)
-      raise UnexpectedDataType, "Unexpected data type #{type}"
-    end
+    return if %i[kwh £ economic_cost co2 £current current_economic_cost accounting_cost gbp].include?(type)
+
+    raise UnexpectedDataType, "Unexpected data type #{type}"
   end
 
   def substitution_type(date)
@@ -260,10 +256,6 @@ class AMRData < HalfHourlyData
     a.map { |v| v * scalar }
   end
 
-  def set_days_kwh_x48(date, days_kwh_data_x48)
-    self[date].set_days_kwh_x48(days_kwh_data_x48)
-  end
-
   def scale_kwh(scale_factor, date1: start_date, date2: end_date)
     (date1..date2).each do |date|
       add(date, OneDayAMRReading.scale(self[date], scale_factor)) if date_exists?(date)
@@ -290,14 +282,6 @@ class AMRData < HalfHourlyData
 
   def kw(date, halfhour_index)
     kwh(date, halfhour_index) * 2.0
-  end
-
-  def set_kwh(date, halfhour_index, kwh)
-    self[date].set_kwh_halfhour(halfhour_index, kwh)
-  end
-
-  def add_to_kwh(date, halfhour_index, kwh)
-    self[date].set_kwh_halfhour(halfhour_index, kwh + kwh(date, halfhour_index))
   end
 
   def one_day_kwh(date, type = :kwh, community_use: nil)
@@ -473,15 +457,15 @@ class AMRData < HalfHourlyData
   def self.create_empty_dataset(type, start_date, end_date, reading_type = 'ORIG')
     data = AMRData.new(type)
     (start_date..end_date).each do |date|
-      data.add(date, OneDayAMRReading.new('Unknown', date, reading_type, nil, DateTime.now, one_day_zero_kwh_x48))
+      data.add(date, OneDayAMRReading.new(date, reading_type, nil, DateTime.now, one_day_zero_kwh_x48))
     end
     data
   end
 
-  def summarise_bad_data
+  def summarise_bad_data(meter_id)
     _, one_days_data = first
     logger.info '=' * 80
-    logger.info "Bad data for meter #{one_days_data.meter_id}"
+    logger.info "Bad data for meter #{meter_id}"
     logger.info "Valid data between #{start_date} and #{end_date}"
     key, _value = first
     logger.info "Ignored data between #{key} and #{start_date} - because of long gaps" if key < start_date
@@ -499,29 +483,6 @@ class AMRData < HalfHourlyData
     end
     bad_dates = dates_with_non_finite_values
     logger.info "bad non finite data on these dates: #{bad_dates.join(';')}" unless bad_dates.empty?
-  end
-
-  def summarise_bad_data_stdout
-    _, one_days_data = first
-    puts '=' * 80
-    puts "Bad data for meter #{one_days_data.meter_id}"
-    puts "Valid data between #{start_date} and #{end_date}"
-    key, _value = first
-    puts "Ignored data between #{key} and #{start_date} - because of long gaps" if key < start_date
-    bad_data_count
-    percent_bad = 100.0
-    percent_bad = (100.0 * (length - bad_data_count['ORIG'].length) / length).round(1) if bad_data_count.key?('ORIG')
-    puts "bad data summary: #{percent_bad}% substituted"
-    bad_data_count.each do |type, dates|
-      type_description = format('%-60.60s', OneDayAMRReading.amr_types[type][:name])
-      puts " #{type}: #{type_description} * #{dates.length}"
-      if type != 'ORIG'
-        cpdp = CompactDatePrint.new(dates)
-        cpdp.print
-      end
-    end
-    bad_dates = dates_with_non_finite_values
-    puts "bad non finite data on these dates: #{bad_dates.join(';')}" unless bad_dates.empty?
   end
 
   # take one set (dd_data) of half hourly data from self

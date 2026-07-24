@@ -29,7 +29,7 @@ describe DataFeeds::MeteoStatApi do
   context 'when response is http error' do
     it 'tries once only then raise error' do
       add_stub(404)
-      expect { api.find_station('xyz') }.to raise_error(DataFeeds::MeteoStatApi::HttpError)
+      expect { api.find_station('xyz') }.to raise_error(Faraday::Error)
     end
   end
 

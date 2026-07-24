@@ -28,22 +28,22 @@ RSpec.describe 'DCC consents', type: :system do
         stub_request(:get, 'https://n3rgy.test/?maxResults=100&startAt=0')
 
         click_on('DCC Consents')
-        expect(page).to have_content('DCC Consents')
-        expect(page).to have_content('1234567890123')
-        expect(page).to have_content('987654321')
-        expect(page).to have_content('Total schools with DCC consents: 1')
-        expect(page).to have_content('Total meters with DCC consents: 1')
-        expect(page).to have_content(school_group.name)
-        expect(page).to have_content(school_name)
-        expect(page).to have_no_content('MPANs in n3rgy list but not in our DCC records')
+        expect(page).to have_text('DCC Consents')
+        expect(page).to have_text('1234567890123')
+        expect(page).to have_text('987654321')
+        expect(page).to have_text('Total schools with DCC consents: 1')
+        expect(page).to have_text('Total meters with DCC consents: 1')
+        expect(page).to have_text(school_group.name)
+        expect(page).to have_text(school_name)
+        expect(page).to have_no_text('MPANs in n3rgy list but not in our DCC records')
       end
 
       it 'consents from API not in our records are shown' do
         allow(Meters::N3rgyMeteringService).to receive(:consented_meters).and_return(['998877'])
         # stub_request(:get, 'https://n3rgy.test/?maxResults=100&startAt=0').and_return
         click_on('DCC Consents')
-        expect(page).to have_content('MPANs in n3rgy list but not in our DCC records')
-        expect(page).to have_content('998877')
+        expect(page).to have_text('MPANs in n3rgy list but not in our DCC records')
+        expect(page).to have_text('998877')
       end
 
       context 'when granting consent' do
@@ -60,9 +60,9 @@ RSpec.describe 'DCC consents', type: :system do
           )
           click_on('DCC Consents')
           click_on('1234567890123')
-          expect(page).to have_content('1234567890123')
+          expect(page).to have_text('1234567890123')
           click_on('Grant consent')
-          expect(page).to have_content('Consent granted for 1234567890123')
+          expect(page).to have_text('Consent granted for 1234567890123')
           expect(meter_1.reload.consent_granted).to be_truthy
         end
       end
@@ -75,9 +75,9 @@ RSpec.describe 'DCC consents', type: :system do
           stub = stub_request(:delete, 'https://n3rgy.test/consents/withdraw-consent/987654321')
           click_on('DCC Consents')
           click_on('987654321')
-          expect(page).to have_content('987654321')
+          expect(page).to have_text('987654321')
           click_on('Withdraw consent')
-          expect(page).to have_content('Consent withdrawn for 987654321')
+          expect(page).to have_text('Consent withdrawn for 987654321')
           expect(meter_1.reload.consent_granted).to be_falsey
           expect(stub).to have_been_requested
         end
@@ -94,8 +94,8 @@ RSpec.describe 'DCC consents', type: :system do
       it 'the DCC consents counts are shown' do
         allow(Meters::N3rgyMeteringService).to receive(:consented_meters).and_return([''])
         click_on('DCC Consents')
-        expect(page).to have_content('Ungrouped')
-        expect(page).to have_content('1234567890123')
+        expect(page).to have_text('Ungrouped')
+        expect(page).to have_text('1234567890123')
       end
     end
   end

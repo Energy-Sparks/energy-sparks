@@ -1,18 +1,17 @@
 #================= Base Class for Gas Alerts including model usage=============
-require_relative 'alert_gas_only_base.rb'
-require_relative 'alert_model_cache_mixin.rb'
+require_relative 'alert_gas_only_base'
+require_relative 'alert_model_cache_mixin'
 
 class AlertGasModelBase < AlertGasOnlyBase
   include Logging
   include AlertModelCacheMixin
+
   MAX_CHANGE_IN_PERCENT = 0.15
 
-  attr_reader :enough_data
-
-  attr_reader :heating_model
+  attr_reader :enough_data, :heating_model
 
   def initialize(school, _report_type)
-    super(school, _report_type)
+    super
     @heating_model = nil
     @breakdown = nil
   end
@@ -30,18 +29,18 @@ class AlertGasModelBase < AlertGasOnlyBase
   end
 
   def self.template_variables
-    specific = {'Gas Model' => TEMPLATE_VARIABLES}
-    specific.merge(self.superclass.template_variables)
+    specific = { 'Gas Model' => TEMPLATE_VARIABLES }
+    specific.merge(superclass.template_variables)
   end
 
   TEMPLATE_VARIABLES = {
     enough_data: {
       description: 'Enough data for heating model calculation',
-      units:  TrueClass
+      units: TrueClass
     },
     a: {
       description: 'Average heating model regression parameter a',
-      units:  :kwh_per_day
+      units: :kwh_per_day
     },
     b: {
       description: 'Average heating model regression parameter b',
@@ -49,7 +48,7 @@ class AlertGasModelBase < AlertGasOnlyBase
     },
     school_days_heating: {
       description: 'Number of school days of heating in the last year',
-      units:  :days
+      units: :days
     },
     school_days_heating_adjective: {
       description: 'Number of school heating days adjective (above, below average etc.)',
@@ -65,7 +64,7 @@ class AlertGasModelBase < AlertGasOnlyBase
     },
     non_school_days_heating: {
       description: 'Number of weekend, holiday days of heating in the last year',
-      units:  :days
+      units: :days
     },
     non_school_days_heating_adjective: {
       description: 'Weekend, holiday heating days adjective (above, below average etc.)',
@@ -106,9 +105,7 @@ class AlertGasModelBase < AlertGasOnlyBase
     AnalyseHeatingAndHotWater::HeatingModel.school_day_heating_rating_out_of_10(school_days_heating)
   end
 
-  def average_school_heating_days
-    AnalyseHeatingAndHotWater::HeatingModel.average_school_heating_days
-  end
+  delegate :average_school_heating_days, to: :'AnalyseHeatingAndHotWater::HeatingModel'
 
   def non_school_days_heating
     @non_school_days_heating ||= @heating_model&.number_of_non_school_heating_days
@@ -122,9 +119,7 @@ class AlertGasModelBase < AlertGasOnlyBase
     AnalyseHeatingAndHotWater::HeatingModel.non_school_day_heating_rating_out_of_10(non_school_days_heating)
   end
 
-  def average_non_school_day_heating_days
-    AnalyseHeatingAndHotWater::HeatingModel.average_non_school_day_heating_days
-  end
+  delegate :average_non_school_day_heating_days, to: :'AnalyseHeatingAndHotWater::HeatingModel'
 
   protected def enough_data_for_model_fit(asof_date = @asof_date)
     # not sure caching is right here potentially for mismatch on asof_dates in analytics testing
@@ -135,11 +130,15 @@ class AlertGasModelBase < AlertGasOnlyBase
   end
 
   def time_of_year_relevance
-    set_time_of_year_relevance(@heating_on.nil? ? 5.0 : (@heating_on ? 7.5 : 2.5))
+    set_time_of_year_relevance(if @heating_on.nil?
+                                 5.0
+                               else
+                                 (@heating_on ? 7.5 : 2.5)
+                               end)
   end
 
   protected def calculate_model(asof_date)
-    @heating_model = model_cache(aggregate_meter, asof_date)
+    @heating_model = model_cache(asof_date)
     @heating_on = @heating_model.heating_on?(asof_date)
     @heating_model
   end

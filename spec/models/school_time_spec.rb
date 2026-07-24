@@ -20,9 +20,9 @@ describe 'SchoolTime' do
   end
 
   describe '#to_analytics' do
-    let!(:morning_time) { create(:school_time, school: school, day: :tuesday, usage_type: :community_use, opening_time: 700, closing_time: 830)}
+    let!(:morning_time) { create(:school_time, school: school, day: :tuesday, usage_type: :community_use, opening_time: 700, closing_time: 830) }
 
-    let!(:evening_time) { create(:school_time, school: school, day: :monday, usage_type: :community_use, opening_time: 1800, closing_time: 2030)}
+    let!(:evening_time) { create(:school_time, school: school, day: :monday, usage_type: :community_use, opening_time: 1800, closing_time: 2030) }
 
     it 'serialises mornings correctly' do
       result = morning_time.to_analytics
@@ -63,7 +63,7 @@ describe 'SchoolTime' do
   end
 
   it 'requires that a school day is a named day' do
-    [:weekdays, :weekends, :everyday].each do |range|
+    %i[weekdays weekends everyday].each do |range|
       expect(school.school_times.create(day: range)).not_to be_valid
     end
   end
@@ -71,7 +71,7 @@ describe 'SchoolTime' do
   it 'requires that a school day is term time only' do
     school.school_times.destroy_all
     expect(school.school_times.create(usage_type: :school_day, day: :monday, calendar_period: :term_times)).to be_valid
-    [:only_holidays, :all_year].each do |period|
+    %i[only_holidays all_year].each do |period|
       school.school_times.destroy_all
       expect(school.school_times.create(usage_type: :school_day, day: :monday, calendar_period: period)).not_to be_valid
     end
@@ -106,7 +106,7 @@ describe 'SchoolTime' do
 
       let!(:time) do
         school.school_times.create(day: day, usage_type: usage_type,
-        calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)
+                                   calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)
       end
 
       context 'with other community use periods' do

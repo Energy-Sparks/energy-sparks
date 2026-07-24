@@ -1,0 +1,46 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(id: 'overview-cards',
+                                       cols: cols,
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% grid.with_stats_card(if: display?(:visible_schools)) do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.schools.title') %>
+      <%= card.with_figure number_with_delimiter(overview(:visible_schools).value) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.schools.subtext',
+                     count: overview(:data_visible_schools).value)
+          end %>
+    <% end %>
+
+    <% grid.with_stats_card(if: display?(:users)) do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.users.title') %>
+      <%= card.with_figure number_with_delimiter(overview(:users).value) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.users.subtext',
+                     count: overview(:active_users).value)
+          end %>
+    <% end %>
+
+    <% grid.with_stats_card(if: display?(:pupils)) do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.pupils.title') %>
+      <%= card.with_figure number_with_delimiter(overview(:pupils).value) %>
+      <%= card.with_subtext { impact_t('overview.cards.pupils.subtext') } %>
+    <% end %>
+
+    <% grid.with_stats_card(if: display?(:enrolling_schools)) do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.enrolling_schools.title') %>
+      <%= card.with_figure number_with_delimiter(overview(:enrolling_schools).value) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.enrolling_schools.subtext')
+          end %>
+    <% end %>
+
+    <% grid.with_stats_card(if: display?(:enrolled_schools)) do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.enrolled_schools.title') %>
+      <%= card.with_figure number_with_delimiter(overview(:enrolled_schools).value) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.enrolled_schools.subtext')
+          end %>
+    <% end %>
+  <% end %>
+<% end %>

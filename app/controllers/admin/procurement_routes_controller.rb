@@ -4,7 +4,7 @@ module Admin
 
     def create
       if @procurement_route.save
-        redirect_to params[:redirect_back], notice: 'Procurement route was successfully created.'
+        redirect_to admin_procurement_routes_path, notice: 'Procurement route was successfully created.'
       else
         render :new
       end
@@ -12,7 +12,7 @@ module Admin
 
     def update
       if @procurement_route.update(procurement_route_params)
-        redirect_to params[:redirect_back], notice: 'Procurement route was successfully updated.'
+        redirect_to admin_procurement_route_path(@procurement_route), notice: 'Procurement route was successfully updated.'
       else
         render :edit
       end

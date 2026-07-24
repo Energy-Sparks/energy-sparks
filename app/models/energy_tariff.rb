@@ -2,24 +2,24 @@
 #
 # Table name: energy_tariffs
 #
+#  id                 :bigint(8)        not null, primary key
 #  applies_to         :integer          default("both")
 #  ccl                :boolean          default(FALSE)
-#  created_at         :datetime         not null
-#  created_by_id      :bigint(8)
 #  enabled            :boolean          default(TRUE)
 #  end_date           :date
-#  id                 :bigint(8)        not null, primary key
 #  meter_type         :integer          default("electricity"), not null
 #  name               :text             not null
 #  source             :integer          default("manually_entered"), not null
 #  start_date         :date
-#  tariff_holder_id   :bigint(8)
 #  tariff_holder_type :string
 #  tariff_type        :integer          default("flat_rate"), not null
 #  tnuos              :boolean          default(FALSE)
-#  updated_at         :datetime         not null
-#  updated_by_id      :bigint(8)
 #  vat_rate           :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  created_by_id      :bigint(8)
+#  tariff_holder_id   :bigint(8)
+#  updated_by_id      :bigint(8)
 #
 # Indexes
 #
@@ -80,24 +80,42 @@ class EnergyTariff < ApplicationRecord
   scope :by_name,       -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
 
+  scope :electricity, -> { where(meter_type: :electricity) }
+  scope :gas,         -> { where(meter_type: :gas) }
+
+  scope :current, lambda {
+    where(start_date: ..Date.current, end_date: Date.current..)
+      .or(where(start_date: ..Date.current, end_date: nil))
+  }
+
   # Sorts with null start date first, then start date, then end date
   scope :by_start_and_end, lambda {
     order(Arel.sql('(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) ASC, start_date asc, end_date asc'))
   }
 
-  scope :count_by_school_group, -> { enabled.joins(:school_group).group(:slug).count(:id) }
-
-  scope :for_schools_in_group, lambda { |school_group, source = :manually_entered|
-    enabled.where(source:).joins(:school).where({ schools: { active: true, school_group: } })
+  scope :count_by_active_school_group, lambda {
+    enabled.joins(:school_group).merge(SchoolGroup.with_active_schools).group('school_groups.slug').count(:id)
   }
 
-  scope :count_schools_with_tariff_by_group, lambda { |school_group, source = :manually_entered|
-    for_schools_in_group(school_group, source).select(:tariff_holder_id).distinct.count
+  scope :for_schools_in_group, lambda { |school_group, meter_type = :electricity|
+    enabled.where(meter_type:).joins(:school).where({ schools: { active: true, school_group: } })
+  }
+
+  scope :count_schools_with_tariff_by_group, lambda { |school_group, meter_type = :electricity|
+    for_schools_in_group(school_group, meter_type).select(:tariff_holder_id).distinct.count
   }
 
   scope :latest_with_fixed_end_date, lambda { |meter_type, source = :manually_entered|
     where(meter_type:, source:).where.not(end_date: nil).order(end_date: :desc)
   }
+
+  def display_start_date
+    start_date ? start_date&.to_fs(:es_compact) : 'No start date'
+  end
+
+  def display_end_date
+    end_date ? end_date&.to_fs(:es_compact) : 'No end date'
+  end
 
   def applies_to_is_set_to_both
     return if electricity?

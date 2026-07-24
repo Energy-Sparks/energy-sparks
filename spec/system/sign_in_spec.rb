@@ -3,14 +3,14 @@ require 'rails_helper'
 shared_examples 'a logged in user' do
   it 'is logged in' do
     expect(page).to have_link('Sign Out')
-    expect(page).not_to have_link('Sign In')
+    expect(page).to have_no_link('Sign In')
   end
 end
 
 shared_examples 'a logged out user' do
   it 'is logged out' do
     expect(page).to have_link('Sign In')
-    expect(page).not_to have_link('Sign Out')
+    expect(page).to have_no_link('Sign Out')
   end
 end
 
@@ -152,7 +152,7 @@ RSpec.describe 'sign in', type: :system do
       context 'with blank password' do
         let(:password) { '' }
 
-        it { expect(page).to have_content('Please enter a password') }
+        it { expect(page).to have_text('Please enter a password') }
 
         it_behaves_like 'a logged out user'
         it_behaves_like 'a user with unmodified last_sign_in_at'
@@ -161,7 +161,7 @@ RSpec.describe 'sign in', type: :system do
       context 'with incorrect password' do
         let(:password) { 'incorrectpassword' }
 
-        it { expect(page).to have_content("Sorry, that password doesn't work") }
+        it { expect(page).to have_text("Sorry, that password doesn't work") }
 
         it_behaves_like 'a logged out user'
         it_behaves_like 'a user with unmodified last_sign_in_at'
@@ -170,7 +170,7 @@ RSpec.describe 'sign in', type: :system do
       context 'with correct password' do
         let(:password) { 'correctpassword' }
 
-        it { expect(page).to have_content('Signed in successfully') }
+        it { expect(page).to have_text('Signed in successfully') }
         it { expect(page).to have_current_path(pupils_school_path(school), ignore_query: true) }
 
         it_behaves_like 'a logged in user'
@@ -192,7 +192,7 @@ RSpec.describe 'sign in', type: :system do
         let(:select_school) { '' }
         let(:password) { 'correctpassword' }
 
-        it { expect(page).to have_content('Please select a school') }
+        it { expect(page).to have_text('Please select a school') }
 
         it_behaves_like 'a user with unmodified last_sign_in_at'
         it_behaves_like 'a logged out user'
@@ -202,7 +202,7 @@ RSpec.describe 'sign in', type: :system do
         let(:select_school) { "#{school.name} (#{school.school_group.name})" }
         let(:password) { 'incorrectpassword' }
 
-        it { expect(page).to have_content("Sorry, that password doesn't work") }
+        it { expect(page).to have_text("Sorry, that password doesn't work") }
 
         it_behaves_like 'a user with unmodified last_sign_in_at'
         it_behaves_like 'a logged out user'
@@ -212,7 +212,7 @@ RSpec.describe 'sign in', type: :system do
         let(:select_school) { "#{school.name} (#{school.school_group.name})" }
         let(:password) { 'correctpassword' }
 
-        it { expect(page).to have_content('Signed in successfully') }
+        it { expect(page).to have_text('Signed in successfully') }
         it { expect(page).to have_current_path(pupils_school_path(school), ignore_query: true) }
 
         it_behaves_like 'a logged in user'

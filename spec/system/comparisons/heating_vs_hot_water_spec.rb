@@ -58,9 +58,9 @@ describe 'heating_vs_hot_water' do
     it 'has a custom unlisted message' do
       Comparison::HeatingVsHotWater.refresh
       visit "/comparisons/#{report.key}"
-      expect(page).to have_content('2 schools could not be shown in this report as they do not have enough data to ' \
-                                   'be analysed, or have swimming pools so their hot water usage cannot be ' \
-                                   'accurately estimated.')
+      expect(page).to have_text('2 schools could not be shown in this report as they do not have enough data to ' \
+                                'be analysed, or have swimming pools so their hot water usage cannot be ' \
+                                'accurately estimated.')
     end
   end
 end

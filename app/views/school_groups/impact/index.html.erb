@@ -1,0 +1,121 @@
+<%= content_for :page_title, impact_t('feature.title', school_group: @school_group.name) %>
+<% cache_unless current_user&.admin?,
+                [@school_group, @run, @config, I18n.locale],
+                expires_in: 6.hours do %>
+  <% content_for :header do %>
+    <%= render Layout::GridComponent.new(cols: 2, classes: 'pb-4', id: 'header-section') do |grid| %>
+      <%= grid.with_image rounded: false, fit: false, width: '350px', classes: 'd-block mx-auto',
+                          src: 'actions/podium.png' %>
+      <% grid.with_feature_card size: :xl do |feature| %>
+        <%= feature.with_header title: impact_t('feature.title', school_group: @school_group.name) %>
+        <%= feature.with_description do %>
+          <%= impact_t('feature.description_html',
+                       count: @run.overview(:visible_schools).value,
+                       group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type')) %>
+        <% end %>
+        <%= feature.with_block do %>
+          <%= t('common.last_updated_on_html',
+                date: @run.run_date.to_fs(:es_long)) %>
+        <% end %>
+        <%= feature.with_block(classes: 'pt-2') do %>
+          <%= impact_t('feature.read_more_html', href: '#notes') %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <div id='overview'>
+    <%= render Layout::Cards::SectionHeaderComponent.new(
+          id: 'overview-header'
+        ) do |section_header| %>
+      <%= section_header.with_header title: impact_t('overview.title') %>
+      <%= section_header.with_description { impact_t('overview.description') } %>
+    <% end %>
+    <%= render ImpactReports::Overview::MetricsComponent.new(run: @run, classes: 'mb-4') %>
+    <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
+                                             show_markers: false,
+                                             theme: :accent,
+                                             classes: 'rounded-3 p-4 mb-4',
+                                             show_arrows: :side) do |carousel| %>
+      <% CaseStudy.for_school_group(@school_group).published.order(:position).each do |case_study| %>
+        <% if case_study.testimonials.active.none? %>
+          <%= carousel.with_case_study_card(case_study: case_study, landscape: false) %>
+        <% end %>
+        <% case_study.testimonials.active.each do |testimonial| %>
+          <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+        <% end %>
+      <% end %>
+      <%= if current_user&.admin? && CaseStudy.for_school_group(@school_group).published.none?
+            carousel.with_placeholder(
+              'Please edit case studies and assign a school group or ' \
+              'school to each one, then relevant ones will display here. Add more testimonials too if possible please.',
+              label: 'Admin todo'
+            )
+          end %>
+    <% end %>
+  </div>
+  <% energy_efficiency_metrics = ImpactReports::EnergyEfficiency::MetricsComponent.new(run: @run, classes: 'mb-4') %>
+  <% if @config&.show_energy_efficiency != false && energy_efficiency_metrics.displayable? %>
+    <div id='energy-efficiency'>
+      <%= render Layout::Cards::SectionHeaderComponent.new(id: 'energy-efficiency-header') do |section_header| %>
+        <%= section_header.with_header title: impact_t('energy_efficiency.title') %>
+        <%= section_header.with_description { impact_t('energy_efficiency.description') } %>
+      <% end %>
+      <%= render energy_efficiency_metrics %>
+      <%= render ImpactReports::EnergyEfficiency::FeaturedSchoolComponent.new(school_group: @school_group) %>
+      <%= render Layout::Cards::SectionHeaderComponent.new(
+            id: 'energy-efficiency-buttons',
+            classes: 'pb-2 text-center'
+          ) do |section_header| %>
+        <%= section_header.with_header level: 4, title: impact_t('energy_efficiency.analysis') %>
+        <%= section_header.with_button(
+              t('common.view_dashboard'),
+              school_group_path(@school_group), style: :primary, classes: 'mb-2 me-2'
+            ) %>
+        <%= section_header.with_button(
+              t('common.view_analysis'),
+              school_group_advice_path(@school_group), style: :secondary, classes: 'mb-2'
+            ) %>
+      <% end %>
+    </div>
+  <% end %>
+  <% engagement_metrics = ImpactReports::Engagement::MetricsComponent.new(run: @run, classes: 'mb-4') %>
+  <% if @config&.show_engagement != false && engagement_metrics.displayable? %>
+    <div id="engagement">
+      <%= render Layout::Cards::SectionHeaderComponent.new(id: 'engagement-header') do |section_header| %>
+        <%= section_header.with_header title: impact_t('engagement.title') %>
+        <%= section_header.with_description { impact_t('engagement.description') } %>
+      <% end %>
+      <%= render engagement_metrics %>
+      <%= render ImpactReports::Engagement::FeaturedSchoolComponent.new(school_group: @school_group) %>
+      <%= render Layout::Cards::SectionHeaderComponent.new(id: 'engagement-buttons') do |section_header| %>
+        <%= section_header.with_header level: 4, title: impact_t('engagement.looking_for_more_detail') %>
+        <%= section_header.with_button(t('common.view_timeline'),
+                                       school_group_timeline_path(@school_group), style: :primary, classes: 'mb-2 me-2') %>
+        <%= section_header.with_button(t('common.view_scoreboard'), scores_school_group_advice_path(@school_group),
+                                       style: :secondary, classes: 'mb-2') %>
+      <% end %>
+    </div>
+  <% end %>
+  <% potential_savings_metrics = ImpactReports::PotentialSavings::MetricsComponent.new(run: @run, classes: 'mb-4') %>
+  <% if potential_savings_metrics.displayable? %>
+    <div id='potential-savings'>
+      <%= render Layout::Cards::SectionHeaderComponent.new(
+            id: 'potential-savings-header'
+          ) do |section_header| %>
+        <%= section_header.with_header title: impact_t('potential_savings.title') %>
+        <%= section_header.with_description { impact_t('potential_savings.description') } %>
+      <% end %>
+      <%= render potential_savings_metrics %>
+      <%= render Elements::ButtonComponent.new(
+            t('common.view_all_potential_savings'),
+            priorities_school_group_advice_path(@school_group),
+            style: :primary,
+            id: 'potential-savings-button',
+            classes: 'mb-2 d-table mx-auto'
+          ) %>
+    </div>
+  <% end %>
+  <% content_for :footer do %>
+    <%= render 'notes', run: @run %>
+  <% end %>
+<% end %>

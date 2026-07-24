@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Observation do
-  let(:school_name) { 'Active school'}
+  let(:school_name) { 'Active school' }
   let!(:school)     { create(:school, name: school_name) }
 
   before { SiteSettings.current.update(photo_bonus_points: 0) }
@@ -27,11 +27,14 @@ describe Observation do
   describe '#pupil_count' do
     it 'is valid when present for interventions only' do
       expect(build(:observation, observation_type: :temperature, pupil_count: 12)).to be_invalid
-      expect(build(:observation, observation_type: :activity, activity: create(:activity), pupil_count: 12)).to be_invalid
+      expect(build(:observation, observation_type: :activity, activity: create(:activity),
+                                 pupil_count: 12)).to be_invalid
       expect(build(:observation, observation_type: :audit, audit: create(:audit), pupil_count: 12)).to be_invalid
-      expect(build(:observation, observation_type: :school_target, school_target: create(:school_target), pupil_count: 12)).to be_invalid
+      expect(build(:observation, observation_type: :school_target, school_target: create(:school_target),
+                                 pupil_count: 12)).to be_invalid
 
-      expect(build(:observation, observation_type: :intervention, intervention_type: create(:intervention_type), pupil_count: 12)).to be_valid
+      expect(build(:observation, observation_type: :intervention, intervention_type: create(:intervention_type),
+                                 pupil_count: 12)).to be_valid
     end
   end
 
@@ -47,7 +50,7 @@ describe Observation do
     end
 
     it 'excludes older observations' do
-      expect(Observation.recorded_in_last_week).to match_array([observation_last_week_1, observation_last_week_2])
+      expect(Observation.recorded_in_last_week).to contain_exactly(observation_last_week_1, observation_last_week_2)
     end
   end
 
@@ -92,8 +95,8 @@ describe Observation do
       context 'when observation "at" is nil' do
         let!(:observation) { build(:observation, :activity, at: nil, school:) }
 
-        it { expect(observation.academic_year_was).to be_nil}
-        it { expect(observation.academic_year).to be_nil}
+        it { expect(observation.academic_year_was).to be_nil }
+        it { expect(observation.academic_year).to be_nil }
         it { expect(observation.academic_year_changed?).to be(false) }
 
         context 'when observation "at" is changed' do
@@ -112,7 +115,7 @@ describe Observation do
         let!(:observation) { create(:observation, :activity, at:, school:) }
 
         it { expect(observation.academic_year_was).to eq(current_academic_year) }
-        it { expect(observation.academic_year).to eq(current_academic_year)}
+        it { expect(observation.academic_year).to eq(current_academic_year) }
         it { expect(observation.academic_year_changed?).to be(false) }
 
         context 'when observation "at" is changed to a different academic year' do
@@ -231,7 +234,7 @@ describe Observation do
       SiteSettings.current.update(photo_bonus_points: 5)
     end
 
-    [:activity, :intervention].each do |type|
+    %i[activity intervention].each do |type|
       context "for a #{type} observation" do
         let(:observation) { build(:observation, type) }
 
@@ -244,7 +247,7 @@ describe Observation do
         end
 
         context 'when description has images' do
-          before { observation.description = '<div><figure><img src="image1.jpg"/></figure></div>' }
+          before { observation.description = content_with_attachment }
 
           it 'returns the photo bonus points' do
             expect(observation.available_bonus_points).to eq(5)
@@ -254,13 +257,11 @@ describe Observation do
     end
   end
 
-
-
   describe 'setting defaults on create' do
     context 'when the associated object is set using observable' do
-      let(:transport_survey) { create(:transport_survey, school: school) }
-
       subject(:observation) { Observation.create(observable: transport_survey) }
+
+      let(:transport_survey) { create(:transport_survey, school: school) }
 
       it 'sets observation_type' do
         expect(observation.observation_type).to eq('transport_survey')
@@ -272,9 +273,9 @@ describe Observation do
     end
 
     context 'when the associated object is not set with observable' do
-      let(:activity) { create(:activity) }
-
       subject(:observation) { Observation.create(activity: activity) }
+
+      let(:activity) { create(:activity) }
 
       it 'does not set observation_type' do
         expect(observation.observation_type).to be_nil

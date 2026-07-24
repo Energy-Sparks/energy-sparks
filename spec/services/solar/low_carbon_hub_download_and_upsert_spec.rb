@@ -4,9 +4,12 @@ module Solar
   describe LowCarbonHubDownloadAndUpsert do
     let!(:school)               { create(:school) }
     let(:rbee_meter_id)         { '216057958' }
-    let(:meter)         { create(:electricity_meter, low_carbon_hub_installation: installation, mpan_mprn: 90000000123085, pseudo: true, name: 'Test', school: school) }
+    let(:meter) do
+      create(:electricity_meter, low_carbon_hub_installation: installation, mpan_mprn: 90_000_000_123_085, pseudo: true,
+                                 name: 'Test', school: school)
+    end
 
-    let(:installation)  { create(:low_carbon_hub_installation, rbee_meter_id: rbee_meter_id, school: school)}
+    let(:installation) { create(:low_carbon_hub_installation, rbee_meter_id: rbee_meter_id, school: school) }
 
     let(:start_date)            { Date.parse('02/08/2016') }
     let(:end_date)              { start_date + 1.day }
@@ -14,26 +17,26 @@ module Solar
     let(:readings)              do
       {
         solar_pv: {
-          mpan_mprn: 70000000123085,
+          mpan_mprn: 70_000_000_123_085,
           readings: {
-            start_date => OneDayAMRReading.new(70000000123085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(70000000123085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
         },
         electricity: {
-          mpan_mprn: 90000000123085,
+          mpan_mprn: 90_000_000_123_085,
           readings: {
-            start_date => OneDayAMRReading.new(90000000123085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(90000000123085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
         },
         exported_solar_pv: {
-          mpan_mprn: 60000000123085,
+          mpan_mprn: 60_000_000_123_085,
           readings: {
-            start_date => OneDayAMRReading.new(60000000123085, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
-            end_date => OneDayAMRReading.new(60000000123085, end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
+            start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)),
+            end_date => OneDayAMRReading.new(end_date, 'ORIG', nil, end_date, Array.new(48, 0.5))
           }
-        },
+        }
       }
     end
 
@@ -42,10 +45,11 @@ module Solar
     let(:requested_start_date) { nil }
     let(:requested_end_date) { nil }
 
-    let(:upserter) { Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
+    let(:upserter) { Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date) }
 
     before do
-      expect(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(installation.username, installation.password).and_return(api)
+      expect(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(installation.username,
+                                                                         installation.password).and_return(api)
     end
 
     it 'handles and log exceptions' do
@@ -61,7 +65,7 @@ module Solar
 
       before do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
-          installation.school.urn, requested_start_date, requested_end_date).and_return(readings)
+                                               installation.school.urn, requested_start_date, requested_end_date).and_return(readings)
       end
 
       it 'uses that' do
@@ -78,12 +82,12 @@ module Solar
     context 'when there are existing readings' do
       let!(:reading) do
         create(:amr_data_feed_reading, reading_date: reading_date,
-        meter: meter)
+                                       meter: meter)
       end
 
       before do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
-          installation.school.urn, expected_start, expected_end).and_return(readings)
+                                               installation.school.urn, expected_start, expected_end).and_return(readings)
       end
 
       context 'and they are old' do
@@ -119,7 +123,7 @@ module Solar
 
       it 'loads all data' do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
-          installation.school.urn, expected_start, expected_end).and_return(readings)
+                                               installation.school.urn, expected_start, expected_end).and_return(readings)
         upserter.perform
       end
     end

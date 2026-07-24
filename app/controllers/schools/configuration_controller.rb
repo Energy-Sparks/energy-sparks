@@ -15,28 +15,27 @@ module Schools
         @school.school_group_id = grouping_attrs[:school_group_id]
       end
 
-      [:area_school_grouping_attributes, :diocese_school_grouping_attributes].each do |attributes|
-        if params[:school][attributes]
-          attrs = params[:school][attributes]
+      %i[area_school_grouping_attributes diocese_school_grouping_attributes].each do |attributes|
+        next unless params[:school][attributes]
 
-          if attrs[:school_group_id].blank?
-            case attributes
-            when :diocese_school_grouping_attributes
-              @school.diocese_school_grouping&.destroy
-            else
-              @school.area_school_grouping&.destroy
-            end
+        attrs = params[:school][attributes]
 
-            params[:school].delete(attributes)
-          end
+        next if attrs[:school_group_id].present?
+
+        case attributes
+        when :diocese_school_grouping_attributes
+          @school.diocese_school_grouping&.destroy
+        else
+          @school.area_school_grouping&.destroy
         end
-      end
 
+        params[:school].delete(attributes)
+      end
       @school.update!(school_params)
       redirect_to school_path(@school)
     end
 
-  private
+    private
 
     def set_school
       @school = School.friendly.find(params[:school_id])
@@ -45,16 +44,16 @@ module Schools
 
     def school_params
       params.require(:school).permit(
-        :template_calendar_id,
-        :solar_pv_tuos_area_id,
-        :dark_sky_area_id,
-        :scoreboard_id,
-        :weather_station_id,
-        :funder_id,
-        :region,
-        :local_authority_area_id,
         :country,
+        :dark_sky_area_id,
         :data_sharing,
+        :full_school,
+        :local_authority_area_id,
+        :region,
+        :scoreboard_id,
+        :solar_pv_tuos_area_id,
+        :template_calendar_id,
+        :weather_station_id,
         organisation_school_grouping_attributes: [:school_group_id],
         diocese_school_grouping_attributes: [:school_group_id],
         area_school_grouping_attributes: [:school_group_id],

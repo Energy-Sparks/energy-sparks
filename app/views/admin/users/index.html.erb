@@ -7,7 +7,7 @@
 
 <div class="row mb-2">
   <div class="col">
-    <%= link_to 'Download list of school users as CSV', admin_users_path(format: :csv), class: 'btn btn-sm' %>
+    <%= render Forms::EmailReportButtonComponent.new(deliver_admin_users_path, 'Email list of school users as CSV') %>
   </div>
 </div>
 

@@ -3,10 +3,10 @@ require 'rails_helper'
 describe 'compare pages', :compare, type: :system do
   shared_examples 'an index page' do |tab:, show_your_group_tab: true|
     it 'has standard header information' do
-      expect(page).to have_content 'School Comparison Tool'
-      expect(page).to have_content 'Identify examples of best practice'
-      expect(page).to have_content 'View how schools within the same MAT'
-      expect(page).to have_content 'Use options below to compare 3 schools against 1 benchmarks'
+      expect(page).to have_text 'School Comparison Tool'
+      expect(page).to have_text 'Identify examples of best practice'
+      expect(page).to have_text 'View how schools within the same MAT'
+      expect(page).to have_text 'Use options below to compare 3 schools against 1 benchmarks'
     end
 
     it 'has standard tabs' do
@@ -20,17 +20,17 @@ describe 'compare pages', :compare, type: :system do
     end
 
     it "doesn't have 'Your group' tab", unless: show_your_group_tab do
-      expect(page).not_to have_link('Your group', href: '#group')
+      expect(page).to have_no_link('Your group', href: '#group')
     end
 
-    it "#{tab} tab is selected", js: true do
+    it "#{tab} tab is selected", :js do
       expect(page).to have_css('a.nav-link.active', text: tab)
     end
   end
 
   shared_examples 'a benchmark list page' do |edit: false|
-    it { expect(page).to have_content('Benchmark group name') }
-    it { expect(page).to have_content('Benchmark description') }
+    it { expect(page).to have_text('Benchmark group name') }
+    it { expect(page).to have_text('Benchmark description') }
 
     it "#{edit ? 'allows' : 'does not allow'} report group to be edited" do
       expect(first('div.compare').has_link?('Edit')).to be edit
@@ -43,8 +43,8 @@ describe 'compare pages', :compare, type: :system do
   end
 
   shared_examples 'a results page' do |edit: false|
-    it { expect(page).to have_selector('h1', text: 'Baseload per pupil') }
-    it { expect(page).to have_content('intro html') }
+    it { expect(page).to have_css('h1', text: 'Baseload per pupil') }
+    it { expect(page).to have_text('intro html') }
 
     it 'allows report introduction to be edited', if: edit do
       within('#intro') do
@@ -54,20 +54,20 @@ describe 'compare pages', :compare, type: :system do
 
     it 'does not allow report introduction to be edited', unless: edit do
       within('#intro') do
-        expect(page).not_to have_link('Edit')
+        expect(page).to have_no_link('Edit')
       end
     end
 
     it 'includes tabular data' do
       within '#tables' do
         expect(page).to have_selector(:table_row, {
-          'School' => "#{school.name} [5]",
-          'Baseload per pupil (W)' => '3,000',
-          'Last year cost of baseload' => '£2',
-          'Average baseload kW' => '1',
-          'Baseload as a percent of total usage' => '400&percnt;',
-          'Potential savings' => '£5'
-        })
+                                        'School' => "#{school.name} [5]",
+                                        'Baseload per pupil (W)' => '3,000',
+                                        'Last year cost of baseload' => '£2',
+                                        'Average baseload kW' => '1',
+                                        'Baseload as a percent of total usage' => '400&percnt;',
+                                        'Potential savings' => '£5'
+                                      })
       end
     end
 
@@ -83,7 +83,7 @@ describe 'compare pages', :compare, type: :system do
   shared_examples 'an unlisted schools modal' do
     it "doesn't display included schools" do
       within '.modal-body' do
-        expect(page).not_to have_link school.name
+        expect(page).to have_no_link school.name
       end
     end
 
@@ -98,17 +98,17 @@ describe 'compare pages', :compare, type: :system do
 
   shared_examples 'a results page with unlisted schools' do |unlisted_count: 0|
     context 'with no excluded schools', if: unlisted_count == 0 do
-      it { expect(page).not_to have_content 'school could not be shown in this report' }
+      it { expect(page).to have_no_text 'school could not be shown in this report' }
     end
 
     context 'with multiple excluded schools', if: unlisted_count > 1 do
-      it { expect(page).to have_content("#{unlisted_count} schools could not be shown in this report as they do not have enough data to be analysed") }
+      it { expect(page).to have_text("#{unlisted_count} schools could not be shown in this report as they do not have enough data to be analysed") }
       it { expect(page).to have_link('View list of schools') }
     end
 
     context 'with a single excluded school', if: unlisted_count == 1 do
-      it { expect(page).to have_content('1 school could not be shown in this report as it does not have enough data to be analysed') }
-      it {expect(page).to have_link('View school') }
+      it { expect(page).to have_text('1 school could not be shown in this report as it does not have enough data to be analysed') }
+      it { expect(page).to have_link('View school') }
     end
   end
 
@@ -162,41 +162,41 @@ describe 'compare pages', :compare, type: :system do
 
     it 'displays school types', if: school_types do
       school_types.each do |school_type|
-        expect(page).to have_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).to have_text(I18n.t("common.school_types.#{school_type}"))
       end
       all_school_types.excluding(school_types).each do |school_type|
-        expect(page).not_to have_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).to have_no_text(I18n.t("common.school_types.#{school_type}"))
       end
     end
 
     it 'displays school types', if: school_types_excluding do
       all_school_types.excluding(school_types_excluding).each do |school_type|
-        expect(page).to have_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).to have_text(I18n.t("common.school_types.#{school_type}"))
       end
       school_types_excluding.each do |school_type|
-        expect(page).not_to have_content(I18n.t("common.school_types.#{school_type}"))
+        expect(page).to have_no_text(I18n.t("common.school_types.#{school_type}"))
       end
     end
 
     it 'displays country', if: country do
-      expect(page).to have_content country
+      expect(page).to have_text country
     end
 
     it 'displays groups', if: school_groups do
       school_groups.each do |group|
-        expect(page).to have_content(group)
+        expect(page).to have_text(group)
       end
     end
 
     it 'displays funder', if: funder do
-      expect(page).to have_content funder
+      expect(page).to have_text funder
     end
 
-    it { expect(page).to have_link('Change options')}
+    it { expect(page).to have_link('Change options') }
   end
 
   shared_examples 'an empty filter notice' do
-    it { expect(page).to have_content('There are no schools to report using this filter') }
+    it { expect(page).to have_text('There are no schools to report using this filter') }
   end
 
   ## contexts ##
@@ -224,19 +224,19 @@ describe 'compare pages', :compare, type: :system do
 
       alert_run = create(:alert_generation_run, school: school)
       create(:alert, alert_generation_run: alert_run, school: school,
-        alert_type: create(:alert_type, class_name: 'AlertElectricityBaseloadVersusBenchmark'),
-          variables: {
-            average_baseload_last_year_kw: 1.0,
-            average_baseload_last_year_gbp: 2.0,
-            one_year_baseload_per_pupil_kw: 3.0,
-            annual_baseload_percent: 4.0,
-            one_year_saving_versus_exemplar_gbp: 5.0
-          })
+                     alert_type: create(:alert_type, class_name: 'AlertElectricityBaseloadVersusBenchmark'),
+                     variables: {
+                       average_baseload_last_year_kw: 1.0,
+                       average_baseload_last_year_gbp: 2.0,
+                       one_year_baseload_per_pupil_kw: 3.0,
+                       annual_baseload_percent: 4.0,
+                       one_year_saving_versus_exemplar_gbp: 5.0
+                     })
       create(:alert, alert_generation_run: alert_run, school: school,
-        alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
-          variables: {
-            electricity_economic_tariff_changed_this_year: true
-          })
+                     alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+                     variables: {
+                       electricity_economic_tariff_changed_this_year: true
+                     })
       Comparison::BaseloadPerPupil.refresh
     end
   end
@@ -250,19 +250,22 @@ describe 'compare pages', :compare, type: :system do
     # the stubbed out geocoder stamps on the country if the postcode is defaulted
     let!(:school_group)    { create(:school_group, name: 'Group 1') }
     let!(:school_group_2)  { create(:school_group, name: 'Group 2') }
-    let!(:school)          { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group, funder: funder)}
-    let!(:school_2)        { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group_2)}
+    let!(:school) do
+      school = create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group)
+      create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder: funder))
+      school
+    end
+    let!(:school_2)        { create(:school, country: :scotland, postcode: 'EH99 1SP', school_group: school_group_2) }
     let!(:school_3)        { create(:school, country: :scotland, school_group: create(:school_group, name: 'Not Public', public: false)) }
 
     let(:benchmark_groups) { [{ name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { baseload_per_pupil: 'Baseload per pupil' } }] }
 
-    before do
-      sign_in(user) if user
-    end
-
     include_context 'index page context'
 
-    before { visit compare_index_path }
+    before do
+      sign_in(user) if user
+      visit compare_index_path
+    end
 
     context 'when the logged in user has a school group' do
       let(:user) { create(:group_admin, school_group: school_group) }
@@ -274,7 +277,7 @@ describe 'compare pages', :compare, type: :system do
 
         it_behaves_like 'an index page', tab: 'Your group'
 
-        it { expect(page).to have_content "Compare all schools within #{user.school_group_name}" }
+        it { expect(page).to have_text "Compare all schools within #{user.school_group_name}" }
         it_behaves_like 'a form filter', id: '#group', school_types_excluding: [] # show all
 
         context 'Benchmark page' do
@@ -319,7 +322,7 @@ describe 'compare pages', :compare, type: :system do
         before { click_on 'Choose country' }
 
         it_behaves_like 'an index page', tab: 'Choose country'
-        it { expect(page).to have_content 'Compare schools by country' }
+        it { expect(page).to have_text 'Compare schools by country' }
 
         it_behaves_like 'a form filter', id: '#country', country: 'All countries'
 
@@ -366,7 +369,7 @@ describe 'compare pages', :compare, type: :system do
         before { click_on 'Choose type' }
 
         it_behaves_like 'an index page', tab: 'Choose type'
-        it { expect(page).to have_content 'Compare schools by type' }
+        it { expect(page).to have_text 'Compare schools by type' }
 
         it_behaves_like 'a form filter', id: '#type', school_type: []
 
@@ -412,7 +415,7 @@ describe 'compare pages', :compare, type: :system do
         before { click_on 'Choose groups' }
 
         it_behaves_like 'an index page', tab: 'Choose groups'
-        it { expect(page).to have_content 'Compare schools in groups' }
+        it { expect(page).to have_text 'Compare schools in groups' }
         it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2'], school_groups: [], school_types_excluding: [] # show all
 
         context 'Benchmark page' do
@@ -483,8 +486,8 @@ describe 'compare pages', :compare, type: :system do
         before { click_on 'Choose country' }
 
         it_behaves_like 'an index page', tab: 'Choose country', show_your_group_tab: false
-        it { expect(page).to have_content 'Compare schools by country' }
-        it { expect(page).to have_content 'Limit to funder (admin only option)'}
+        it { expect(page).to have_text 'Compare schools by country' }
+        it { expect(page).to have_text 'Limit to funder (admin only option)' }
 
         it_behaves_like 'a form filter', id: '#country', country: 'All countries'
         it_behaves_like 'a form filter', id: '#groups', school_group_list: ['Group 1', 'Group 2', 'Not Public']
@@ -544,14 +547,14 @@ describe 'compare pages', :compare, type: :system do
     let(:excluded_1) { create(:school, name: 'Excluded 1') }
     let(:excluded_2) { create(:school, name: 'Excluded 2') }
 
-    let!(:unlisted_schools) { }
+    let!(:unlisted_schools) {}
 
     include_context 'index page context'
     include_context 'results page context'
 
     before { visit comparisons_baseload_per_pupil_index_path }
 
-    context 'when there are several excluded schools', js: true do
+    context 'when there are several excluded schools', :js do
       let!(:unlisted_schools) { [excluded_1, excluded_2] }
 
       it_behaves_like 'a results page with unlisted schools', unlisted_count: 2
@@ -563,7 +566,7 @@ describe 'compare pages', :compare, type: :system do
       end
     end
 
-    context 'when there is one excluded school', js: true do
+    context 'when there is one excluded school', :js do
       let(:unlisted_schools) { [excluded_1] }
 
       it_behaves_like 'a results page with unlisted schools', unlisted_count: 1
@@ -577,6 +580,20 @@ describe 'compare pages', :compare, type: :system do
 
     context 'when there are no unlisted schools' do
       it_behaves_like 'a results page with unlisted schools', unlisted_count: 0
+    end
+  end
+
+  describe 'when directly requesting the unlisted schools list' do
+    let!(:school) { create(:school, name: 'Included school') }
+    let!(:unlisted_schools) { [create(:school, name: 'Excluded 1')] }
+
+    include_context 'index page context'
+    include_context 'results page context'
+
+    before { visit unlisted_comparisons_baseload_per_pupil_index_path(format: :html) }
+
+    it 'returns a Not Acceptable response' do
+      expect(page).to have_http_status(:not_acceptable)
     end
   end
 

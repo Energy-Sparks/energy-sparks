@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Administering users' do
   include ActiveJob::TestHelper
+  include EmailHelpers
 
   let!(:admin) { create(:admin) }
 
@@ -38,31 +39,48 @@ describe 'Administering users' do
         context 'when there is an exact match' do
           let(:search) { 'testing@example.com' }
 
-          it { expect(page.first('div#found-users')).to have_content('testing@example.com') }
-          it { expect(page.first('div#search_results')).to have_no_content('No users found') }
+          it { expect(page.first('div#found-users')).to have_text('testing@example.com') }
+          it { expect(page.first('div#search_results')).to have_no_text('No users found') }
         end
 
         context 'when there is no match' do
           let(:search) { 'test@example.com' }
 
           it { expect(page).to have_no_css('div#found-users') }
-          it { expect(page.first('div#search_results')).to have_content('No users found') }
+          it { expect(page.first('div#search_results')).to have_text('No users found') }
         end
 
         context 'when there is a case-insensitive match' do
           let(:search) { 'TESTING@example.com' }
 
-          it { expect(page.first('div#found-users')).to have_content('testing@example.com') }
-          it { expect(page.first('div#search_results')).to have_no_content('No users found') }
+          it { expect(page.first('div#found-users')).to have_text('testing@example.com') }
+          it { expect(page.first('div#search_results')).to have_no_text('No users found') }
         end
 
         context 'when there is a match based on domain' do
           let(:search) { 'Example.com' }
 
-          it { expect(page.first('div#found-users')).to have_content('testing@example.com') }
-          it { expect(page.first('div#search_results')).to have_no_content('No users found') }
+          it { expect(page.first('div#found-users')).to have_text('testing@example.com') }
+          it { expect(page.first('div#search_results')).to have_no_text('No users found') }
         end
       end
+    end
+  end
+
+  describe 'when exporting users' do
+    subject(:email) { last_email }
+
+    before do
+      visit admin_users_path
+      click_on 'Email list of school users as CSV'
+    end
+
+    it 'sends the email' do
+      expect(page).to have_text("User export report has been sent to #{admin.email}")
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.length).to eq(1)
+      expect(email.subject).to match('User export')
+      expect(email.attachments.first.filename).to eq('users.csv')
     end
   end
 
@@ -118,13 +136,13 @@ describe 'Administering users' do
         it { expect(page).to have_select('Staff role', visible: :hidden) }
 
         it 'shows the organisation group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{school_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('false')
         end
 
         it 'does not show the project group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{project_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('true')
         end
@@ -139,15 +157,25 @@ describe 'Administering users' do
         it { expect(page).to have_select('Staff role', visible: :hidden) }
 
         it 'does not show the organisation group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{school_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('true')
         end
 
         it 'shows the project group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{project_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('false')
+        end
+      end
+
+      context 'when selecting an Admin user', :js do
+        before do
+          select 'Admin', from: 'user_role'
+        end
+
+        it 'shows the operations option' do
+          expect(page).to have_unchecked_field('Member of ops team?', visible: :visible)
         end
       end
 
@@ -160,11 +188,35 @@ describe 'Administering users' do
           fill_in 'Name', with: 'Random User'
           fill_in 'Email', with: email
           select 'Admin', from: 'Role'
-          click_on 'Create User'
         end
 
-        it { expect(user.role).to eq('admin') }
-        it { expect(user.created_by).to eq(admin) }
+        context 'with basic information' do
+          before do
+            click_on 'Create User'
+          end
+
+          it { expect(user.role).to eq('admin') }
+          it { expect(user.created_by).to eq(admin) }
+          it { expect(user.climate_action_lead).to be false }
+        end
+
+        context 'with member of ops team' do
+          before do
+            check 'Member of ops team?'
+            click_on 'Create User'
+          end
+
+          it { expect(user.operations).to be(true) }
+        end
+
+        context 'with a climate action lead' do
+          before do
+            check 'Climate action lead'
+            click_on 'Create User'
+          end
+
+          it { expect(user.climate_action_lead).to be true }
+        end
       end
     end
 
@@ -177,7 +229,7 @@ describe 'Administering users' do
       end
 
       it 'says the user is deleted' do
-        expect(page).to have_content('User was successfully destroyed')
+        expect(page).to have_text('User was successfully destroyed')
       end
 
       it 'deletes the user' do
@@ -189,7 +241,7 @@ describe 'Administering users' do
         let!(:user)             { create(:user, consent_grants: [consent_grant]) }
 
         it 'says the user is deleted' do
-          expect(page).to have_content('User was successfully destroyed')
+          expect(page).to have_text('User was successfully destroyed')
         end
 
         it 'deletes the user' do
@@ -198,6 +250,23 @@ describe 'Administering users' do
 
         it 'does not delete the ConsentGrant' do
           expect(ConsentGrant).to exist(consent_grant.id)
+        end
+      end
+
+      context 'when user has created activities' do
+        let!(:user) { activity.created_by }
+        let!(:activity) { create(:activity, created_by: create(:user)) }
+
+        it 'says the user is deleted' do
+          expect(page).to have_text('User was successfully destroyed')
+        end
+
+        it 'deletes the user' do
+          expect(User).not_to exist(user.id)
+        end
+
+        it 'does not delete the Activity' do
+          expect(Activity).to exist(activity.id)
         end
       end
     end
@@ -264,7 +333,7 @@ describe 'Administering users' do
         end
 
         it 'saves the changes' do
-          expect(user.reload.cluster_schools).to eq([user.school, other_school])
+          expect(user.reload.cluster_schools).to contain_exactly(user.school, other_school)
         end
 
         it 'does send an email' do

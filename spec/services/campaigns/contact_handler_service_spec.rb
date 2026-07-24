@@ -110,7 +110,7 @@ describe Campaigns::ContactHandlerService do
     end
 
     context 'when sending emails' do
-      let(:request_type) { }
+      let(:request_type) {}
       let(:deliveries) { ActionMailer::Base.deliveries }
 
       before do
@@ -179,24 +179,24 @@ describe Campaigns::ContactHandlerService do
 
     it 'creates expected format for CapsuleCRM' do
       expect(capsule_data).to eq({
-        party: {
-          type: :person,
-          firstName: 'Jane',
-          lastName: 'Smith',
-          jobTitle: 'CFO',
-          organisation: { name: 'Fake Academies' },
-          emailAddresses: [{ address: 'jane@example.org' }],
-          phoneNumbers: [{ number: '01225 444444' }],
-          tags: [
-            { name: 'Campaign' },
-            { name: 'School demo' },
-            { name: 'Primary' }
-          ],
-          fields: [
-            { definition: { id: described_class::MARKETING_CONSENT_FIELD_ID }, value: true }
-          ]
-        }
-      })
+                                   party: {
+                                     type: :person,
+                                     firstName: 'Jane',
+                                     lastName: 'Smith',
+                                     jobTitle: 'CFO',
+                                     organisation: { name: 'Fake Academies' },
+                                     emailAddresses: [{ address: 'jane@example.org' }],
+                                     phoneNumbers: [{ number: '01225 444444' }],
+                                     tags: [
+                                       { name: 'Campaign' },
+                                       { name: 'School demo' },
+                                       { name: 'Primary' }
+                                     ],
+                                     fields: [
+                                       { definition: { id: described_class::MARKETING_CONSENT_FIELD_ID }, value: true }
+                                     ]
+                                   }
+                                 })
     end
   end
 
@@ -208,24 +208,24 @@ describe Campaigns::ContactHandlerService do
     let(:party) do
       {
         'party' => {
-          'id' => 12345
+          'id' => 12_345
         }
       }
     end
 
     it 'creates expected hash' do
       expect(capsule_data).to eq({
-        opportunity: {
-          party: { id: 12345 },
-          name: 'Fake Academies',
-          description: 'Auto-generated opportunity from campaign contact form',
-          milestone: { id: described_class::NEW_MILESTONE_ID },
-          tags: [
-            { name: 'Campaign' },
-            { name: 'School demo' }
-          ]
-        }
-      })
+                                   opportunity: {
+                                     party: { id: 12_345 },
+                                     name: 'Fake Academies',
+                                     description: 'Auto-generated opportunity from campaign contact form',
+                                     milestone: { id: described_class::NEW_MILESTONE_ID },
+                                     tags: [
+                                       { name: 'Campaign' },
+                                       { name: 'School demo' }
+                                     ]
+                                   }
+                                 })
     end
   end
 

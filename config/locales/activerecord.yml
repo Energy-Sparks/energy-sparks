@@ -31,6 +31,7 @@ en:
         enable_targets_feature: Enable targets feature
         floor_area: Floor area in square metres
         funding_status: Funding status
+        has_battery: Our school has battery storage
         has_swimming_pool: Our school has its own swimming pool
         heating_air_source_heat_pump: Our school has an air source heat pump
         heating_biomass: Our school has a biomass boiler
@@ -89,6 +90,7 @@ en:
         image: Image
         name: Name
       user:
+        climate_action_lead: Climate action lead
         email: Email
         password: Password
         password_confirmation: Password confirmation

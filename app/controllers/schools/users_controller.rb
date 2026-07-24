@@ -10,8 +10,8 @@ module Schools
 
     def index
       authorize! :manage_users, @school
-      @users = @school.users
-      @school_admins = @school.all_school_admins.uniq
+      @users = @school.users.order(:name)
+      @school_admins = @school.all_school_admins.order(:name).uniq
       @staff = @users.staff
       @students = @users.student
       @pupils = @users.pupil
@@ -64,7 +64,7 @@ module Schools
       else
         @user.destroy
       end
-      redirect_back fallback_location: school_users_path(@school)
+      redirect_back_or_to(school_users_path(@school))
     end
 
     def make_school_admin
@@ -112,12 +112,10 @@ module Schools
             existing_user.role = :school_admin
             @user = existing_user
             redirect = @user.save
-            if redirect
-              notice = 'Added user as a school admin'
-              send_welcome_email if @user.school != @school
-            else
-              raise ActiveRecord::Rollback
-            end
+            raise ActiveRecord::Rollback unless redirect
+
+            notice = 'Added user as a school admin'
+            send_welcome_email if @user.school != @school
           end
         else
           @user.errors.clear
@@ -130,10 +128,8 @@ module Schools
     end
 
     def send_welcome_email
-      if OnboardingMailer2025.enabled?
-        OnboardingMailer2025.with(user: @user, school: @school, locale: @user.preferred_locale)
-                            .welcome_existing.deliver_later
-      end
+      OnboardingMailer.with(user: @user, school: @school, locale: @user.preferred_locale)
+                      .welcome_existing.deliver_later
     end
 
     def set_breadcrumbs
@@ -141,7 +137,7 @@ module Schools
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)
+      params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale, :climate_action_lead)
     end
   end
 end

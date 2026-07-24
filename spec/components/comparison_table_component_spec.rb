@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: true do
+RSpec.describe ComparisonTableComponent, :include_url_helpers, type: :component do
   subject(:html) { render_inline(described_class.new(**params)) }
 
   # need to use key present in the routes
@@ -38,7 +38,7 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
 
   it 'inserts the headers' do
     headers.each do |header|
-      expect(html).to have_selector('th', text: header)
+      expect(html).to have_css('th', text: header)
     end
   end
 
@@ -49,17 +49,12 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
 
     it 'adds the column groups' do
       colgroups.each do |group|
-        expect(html).to have_selector("th[colspan=#{group[:colspan]}]", text: group[:label])
+        expect(html).to have_css("th[colspan=#{group[:colspan]}]", text: group[:label])
       end
     end
   end
 
   context 'with notes' do
-    let(:note_1) { 'This is note 1' }
-    let(:note_2) { 'This is note 2' }
-    let(:note_3) { 'This is note 3' }
-    let(:condition) { true }
-
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|
         c.with_note note: note_1
@@ -72,19 +67,24 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
       end
     end
 
+    let(:note_1) { 'This is note 1' }
+    let(:note_2) { 'This is note 2' }
+    let(:note_3) { 'This is note 3' }
+    let(:condition) { true }
+
     it 'adds the notes' do
-      within('table tfoot') do
-        expect(html).to have_content(note_1)
-        expect(html).to have_content(note_2)
-        expect(html).to have_content(note_3)
-      end
+      html
+      tfoot = page.find('table tfoot')
+      expect(tfoot).to have_text(note_1)
+      expect(tfoot).to have_text(note_2)
+      expect(tfoot).to have_text(note_3)
     end
 
     context 'when conditon is false' do
       let(:condition) { false }
 
       it 'does not add note' do
-        expect(html).not_to have_content(note_3)
+        expect(html).to have_no_text(note_3)
       end
     end
   end
@@ -113,11 +113,11 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     shared_examples 'a td element with a data-order' do
-      it { expect(html).to have_selector("td[data-order='#{expected_order}']")}
+      it { expect(html).to have_css("td[data-order='#{expected_order}']") }
     end
 
     shared_examples 'a td element without a data-order' do
-      it { expect(html).not_to have_selector('td[data-order]')}
+      it { expect(html).to have_no_css('td[data-order]') }
     end
 
     context 'with school' do
@@ -153,17 +153,6 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     context 'with reference' do
-      let(:reference_params_1) {}
-      let(:reference_params_2) {}
-      let(:reference_params_3) {}
-      let(:content) {}
-      let(:current_user) { }
-
-      before do
-        # This allows us to set the current user during rendering
-        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
-      end
-
       subject(:html) do
         with_controller_class ApplicationController do
           render_inline(described_class.new(**params)) do |c|
@@ -178,6 +167,17 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         end
       end
 
+      let(:reference_params_1) {}
+      let(:reference_params_2) {}
+      let(:reference_params_3) {}
+      let(:content) {}
+      let(:current_user) {}
+
+      before do
+        # This allows us to set the current user during rendering
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
+      end
+
       context 'with a label, description and params' do
         let(:reference_params_1) { { label: 't', description: 'my reference with %{sub}', sub: 'parameters' } }
 
@@ -186,7 +186,7 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         end
 
         it 'adds the footnote' do
-          expect(html).to have_content('[t] my reference with parameters')
+          expect(html).to have_text('[t] my reference with parameters')
         end
 
         context 'with missing params' do
@@ -201,13 +201,13 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
           let(:current_user) { create(:admin) }
 
           it 'does not have edit link' do
-            expect(html).not_to have_link('Edit')
+            expect(html).to have_no_link('Edit')
           end
         end
       end
 
       context 'with a footnote key and params' do
-        let!(:footnote) { create(:footnote, key: 'footnote_one', label: 't', description: 'my reference with %{sub}')}
+        let!(:footnote) { create(:footnote, key: 'footnote_one', label: 't', description: 'my reference with %{sub}') }
         let(:reference_params_1) { { key: 'footnote_one', sub: 'parameters' } }
 
         it 'has the reference' do
@@ -215,7 +215,7 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         end
 
         it 'has the footnote' do
-          expect(html).to have_content('[t] my reference with parameters')
+          expect(html).to have_text('[t] my reference with parameters')
         end
 
         context 'with missing params' do
@@ -235,11 +235,11 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
           end
 
           it 'has the footnote' do
-            expect(html).to have_content('[a] footnote two')
+            expect(html).to have_text('[a] footnote two')
           end
 
           it 'orders the footnotes' do
-            expect(html).to have_content(/\[a\] footnote two\s+\[t\] my reference with parameters/)
+            expect(html).to have_text(/\[a\] footnote two\s+\[t\] my reference with parameters/)
           end
         end
 
@@ -247,15 +247,15 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
           let(:reference_params_3) { { key: 'footnote_one', sub: 'parameters' } }
 
           it 'shows the footnote once' do
-            expect(html).to have_content('[t] my reference with parameters').once
+            expect(html).to have_text('[t] my reference with parameters').once
           end
         end
 
         context 'when current user is not admin' do
-          let(:current_user) { }
+          let(:current_user) {}
 
           it 'does not show edit link' do
-            expect(html).not_to have_link('Edit')
+            expect(html).to have_no_link('Edit')
           end
         end
 
@@ -270,9 +270,6 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     context 'with var as a block' do
-      let(:value) { 'Data' }
-      let(:data_order) { nil }
-
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
           c.with_row do |r|
@@ -283,8 +280,11 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         end
       end
 
+      let(:value) { 'Data' }
+      let(:data_order) { nil }
+
       it 'adds the variable' do
-        expect(html).to have_content(value)
+        expect(html).to have_text(value)
       end
 
       it_behaves_like 'a customisable td element'
@@ -300,10 +300,6 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     context 'with var to be formatted' do
-      let(:value) { 100 }
-      let(:unit) { :£ }
-      let(:data_order) { nil }
-
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
           c.with_row do |r|
@@ -312,11 +308,15 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         end
       end
 
+      let(:value) { 100 }
+      let(:unit) { :£ }
+      let(:data_order) { nil }
+
       context 'with money' do
         let(:unit)  { :£ }
 
         it 'adds the formatted value' do
-          expect(html).to have_content('£100')
+          expect(html).to have_text('£100')
         end
 
         it_behaves_like 'a td element with a data-order' do
@@ -329,7 +329,7 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         let(:unit)  { :date }
 
         it 'adds the formatted value' do
-          expect(html).to have_content('Monday  1 Jan 2024')
+          expect(html).to have_text('Monday  1 Jan 2024')
         end
 
         it_behaves_like 'a td element with a data-order' do
@@ -349,9 +349,6 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
     end
 
     context 'with var to be formatted as a change' do
-      let(:value) { 0.5 }
-      let(:data_order) { nil }
-
       subject(:html) do
         render_inline(described_class.new(**params)) do |c|
           c.with_row do |r|
@@ -360,8 +357,11 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
         end
       end
 
+      let(:value) { 0.5 }
+      let(:data_order) { nil }
+
       it 'adds the formatted value' do
-        expect(html).to have_content('+50%')
+        expect(html).to have_text('+50%')
         expect(html).to have_css('i.fa-arrow-circle-up')
       end
 

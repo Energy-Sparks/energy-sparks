@@ -2,30 +2,31 @@
 #
 # Table name: meters
 #
+#  id                             :bigint(8)        not null, primary key
 #  active                         :boolean          default(TRUE)
-#  admin_meter_statuses_id        :bigint(8)
 #  consent_granted                :boolean          default(FALSE)
-#  created_at                     :datetime         not null
-#  data_source_id                 :bigint(8)
 #  dcc_checked_at                 :datetime
 #  dcc_meter                      :enum             default("no"), not null
 #  gas_unit                       :enum
-#  id                             :bigint(8)        not null, primary key
-#  low_carbon_hub_installation_id :bigint(8)
 #  manual_reads                   :boolean          default(FALSE), not null
-#  meter_review_id                :bigint(8)
 #  meter_serial_number            :text
 #  meter_system                   :integer          default("nhh_amr")
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
 #  perse_api                      :enum
-#  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  admin_meter_statuses_id        :bigint(8)
+#  data_source_id                 :bigint(8)
+#  low_carbon_hub_installation_id :bigint(8)
+#  meter_review_id                :bigint(8)
+#  procurement_route_id           :bigint(8)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
 #  solis_cloud_installation_id    :bigint(8)
-#  updated_at                     :datetime         not null
+#  supplier_id                    :bigint(8)
 #
 # Indexes
 #
@@ -38,6 +39,7 @@
 #  index_meters_on_school_id                       (school_id)
 #  index_meters_on_solar_edge_installation_id      (solar_edge_installation_id)
 #  index_meters_on_solis_cloud_installation_id     (solis_cloud_installation_id)
+#  index_meters_on_supplier_id                     (supplier_id)
 #
 # Foreign Keys
 #
@@ -55,6 +57,7 @@ class Meter < ApplicationRecord
   belongs_to :solis_cloud_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
+  belongs_to :supplier, optional: true
   belongs_to :procurement_route, optional: true
   belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
@@ -84,9 +87,11 @@ class Meter < ApplicationRecord
     left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil })
   }
 
-  scope :unreviewed_dcc_meter, -> { dcc.where(consent_granted: false, meter_review_id: nil) }
-  scope :reviewed_dcc_meter, -> { dcc.where.not(meter_review_id: nil) }
-  scope :awaiting_trusted_consent, -> { dcc.where(consent_granted: false).where.not(meter_review: nil) }
+  scope :unreviewed_dcc_meter, lambda {
+    dcc.where(consent_granted: false).left_joins(:meter_review).where(meter_reviews: { disabled: [true, nil] })
+  }
+  scope :reviewed_dcc_meter, -> { dcc.joins(:meter_review).where(meter_reviews: { disabled: false }) }
+  scope :awaiting_trusted_consent, -> { reviewed_dcc_meter.where(consent_granted: false) }
   scope :not_dcc, -> { where(dcc_meter: :no) }
   scope :dcc, -> { where(dcc_meter: %i[smets2 other]) }
   scope :consented, -> { dcc.where(consent_granted: true) }
@@ -96,6 +101,7 @@ class Meter < ApplicationRecord
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
   scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
+  scope :active_for_active_schools, -> { active.from_active_schools }
 
   scope :with_zero_reading_days_and_dates, lambda {
     left_outer_joins(:amr_validated_readings)
@@ -108,8 +114,23 @@ class Meter < ApplicationRecord
       )
   }
 
-  scope :with_active_meter_attributes, ->(attribute_types) {
-    joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: attribute_types } })
+  scope :with_stale_readings, lambda {
+    left_outer_joins(:data_source)
+      .merge(Meter.active_for_active_schools)
+      .joins(<<~SQL.squish)
+        JOIN LATERAL (
+          SELECT id, reading_date
+          FROM amr_validated_readings
+          WHERE amr_validated_readings.meter_id = meters.id
+          ORDER BY reading_date DESC
+          LIMIT 1
+        ) AS max_reading ON true
+      SQL
+      .where("reading_date < CURRENT_DATE - (data_sources.import_warning_days * INTERVAL '1 day')")
+  }
+
+  scope :with_active_meter_attributes, lambda { |attribute_type|
+    joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: } })
   }
 
   scope :with_school_and_group, -> { includes(:school, school: :school_group) }
@@ -117,6 +138,8 @@ class Meter < ApplicationRecord
   scope :for_school_group, ->(school_group) { where(school: { school_group: school_group }) }
 
   scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
+
+  scope :main_meter_counts_by_school, -> { main_meter.active.group(:school_id) }
 
   # If adding a new meter_type, add to the amr_validated_reading case statement for downloading data
   enum :meter_type, { electricity: 0, gas: 1, solar_pv: 2, exported_solar_pv: 3 }
@@ -287,7 +310,7 @@ class Meter < ApplicationRecord
   end
 
   def can_grant_consent?
-    meter_review.present? && !consent_granted
+    meter_review&.disabled == false && !consent_granted
   end
 
   def can_withdraw_consent?

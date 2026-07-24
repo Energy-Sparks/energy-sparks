@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: low_carbon_hub_installations
 #
-#  amr_data_feed_config_id :bigint(8)        not null
-#  created_at              :datetime         not null
 #  id                      :bigint(8)        not null, primary key
+#  active                  :boolean          default(TRUE), not null
 #  information             :json
 #  password                :string
+#  username                :string
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  amr_data_feed_config_id :bigint(8)        not null
 #  rbee_meter_id           :text
 #  school_id               :bigint(8)        not null
-#  updated_at              :datetime         not null
-#  username                :string
 #
 # Indexes
 #
@@ -29,7 +32,9 @@ class LowCarbonHubInstallation < ApplicationRecord
 
   has_many :meters
 
-  validates_presence_of :rbee_meter_id
+  validates :rbee_meter_id, presence: true
+
+  scope :active, -> { where(active: true) }
 
   def display_name
     rbee_meter_id
@@ -44,8 +49,8 @@ class LowCarbonHubInstallation < ApplicationRecord
   end
 
   def latest_electricity_reading
-    if electricity_meter && electricity_meter.amr_data_feed_readings.any?
-      Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
-    end
+    return unless electricity_meter&.amr_data_feed_readings&.any?
+
+    Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
   end
 end

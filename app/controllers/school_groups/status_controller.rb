@@ -6,10 +6,11 @@ module SchoolGroups
 
     layout 'group_settings'
 
-    before_action :load_schools, only: [:index, :meters]
+    before_action :load_schools, only: %i[index meters]
     before_action :load_onboardings, only: [:index]
     before_action :redirect_unless_authorised
-    before_action :breadcrumbs, only: [:index, :school]
+    before_action :load_school, only: [:school]
+    before_action :breadcrumbs, only: %i[index school]
 
     def index
       respond_to do |format|
@@ -17,18 +18,15 @@ module SchoolGroups
           render :index
         end
         format.csv do
-          send_data SchoolGroups::SchoolStatusCsvGenerator.new(
-            school_group: @school_group,
-            schools: @schools,
-            include_cluster: false).export,
-            filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-status")
+          send_data SchoolGroups::SchoolStatusCsvGenerator.new(school_group: @school_group,
+                                                               schools: @schools,
+                                                               include_cluster: false).export,
+                    filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-status")
         end
       end
     end
 
     def school
-      @school = filtered_schools.find(params[:school_id])
-
       respond_to do |format|
         format.html { render :school }
         format.csv { meter_csv }
@@ -41,12 +39,15 @@ module SchoolGroups
 
     private
 
+    def load_school
+      @school = filtered_schools.find(params[:school_id])
+    end
+
     def meter_csv
-      send_data SchoolGroups::SchoolMeterStatusCsvGenerator.new(
-        school_group: @school_group,
-        schools: @schools || [@school],
-        include_cluster: false).export,
-        filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-meter-status")
+      send_data SchoolGroups::SchoolMeterStatusCsvGenerator.new(school_group: @school_group,
+                                                                schools: @schools || [@school],
+                                                                include_cluster: false).export,
+                filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-meter-status")
     end
 
     def load_onboardings
@@ -54,20 +55,19 @@ module SchoolGroups
     end
 
     def redirect_unless_authorised
-      redirect_to school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
-      redirect_to school_group_path(@school_group) and return if cannot?(:update_settings, @school_group)
+      redirect_to school_group_path(@school_group) and return if cannot?(:view_school_status, @school_group)
 
       # modified filtering of schools, because we have onboardings to consider too
-      if @schools && @schools.empty? && @onboardings && @onboardings.empty?
-        redirect_to map_school_group_path(@school_group) and return
-      end
+      return unless @schools && @schools.empty? && @onboardings && @onboardings.empty?
+
+      redirect_to map_school_group_path(@school_group) and return
     end
 
     def breadcrumbs
       if @school
-        @breadcrumbs = [name: I18n.t('school_groups.titles.school_status')]
+        @breadcrumbs = [{ name: I18n.t('school_groups.titles.school_status') }]
       else
-        build_breadcrumbs([name: I18n.t('school_groups.titles.school_status')])
+        build_breadcrumbs([{ name: I18n.t('school_groups.titles.school_status') }])
       end
     end
   end

@@ -1,0 +1,19 @@
+<% form = CustomSimpleForm::FormBuilder.new(:commercial_contract, @contract, self, {}) %>
+<% nested = render(
+    Forms::Commercial::BulkLicenceEditorComponent.licence_row(
+      form:, licence: @licence, exclude_fields: [:invoice_reference]
+    )
+  ) %>
+
+const html = "<%= j nested %>";
+
+// Add in new content
+const container = document.getElementById("licence-rows");
+container.insertAdjacentHTML("afterbegin", html);
+
+const newMainRow = document.getElementById("licence-<%= @licence.id %>-main-row");
+
+initTempusDominus(newMainRow);
+
+// Remove the row in the additional school table
+document.getElementById("additional-school-<%= @school.id %>").remove()

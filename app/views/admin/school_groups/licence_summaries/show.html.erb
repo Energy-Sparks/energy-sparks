@@ -1,0 +1,74 @@
+<% content_for :header_title, "#{@school_group.name} Licence Summaries" %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      This page provides a summary of the licensing situation for this group for the current and next academic
+      years.
+    </p>
+    <p>
+      The table below lists all schools in this group along with an indication of whether:
+    </p>
+    <ul>
+      <li>For the current academic year
+          (<%= short_dates(@current_year.start_date) %> - <%= short_dates(@current_year.end_date) %>).
+          <ul>
+            <li>Whether they are licensed for that period</li>
+            <li>The contract holder(s) for those licences that cover that period</li>
+            <li>The start and end dates for the first licence the school holds for that period (there may be several)</li>
+          </ul>
+      </li>
+      <li>For the next academic year
+          (<%= short_dates(@next_year.start_date) %> - <%= short_dates(@next_year.end_date) %>).
+          <ul>
+            <li>Whether they are licensed for that period</li>
+            <li>The contract holder(s) for those licences that cover that period</li>
+            <li>The start and end dates for the first licence the school holds for that period (there may be several)</li>
+          </ul>
+      </li>
+      <li>A link to the full licence history for the school</li>
+    </ul>
+
+    <p>
+      "Full" indicates that their licences cover the entire year, "Partial" means that they are only funded
+      for part of that year.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <%= render Commercial::RangeFundingSummaryComponent.new(
+          school_group: @school_group,
+          range: @next_year.start_date..@next_year.end_date,
+          range_label: 'the next academic year'
+        ) %>
+    <%= link_to 'Emailable summary',
+                admin_school_group_licence_summaries_path(@school_group, format: :text),
+                class: 'btn btn-sm' %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <%= render Commercial::LicensingSummaryComponent.new(
+          first_range: @current_year.start_date..@current_year.end_date,
+          second_range: @next_year.start_date..@next_year.end_date,
+          labels: { first: @current_year.title, second: @next_year.title }
+        ) do |c| %>
+      <% @school_group.assigned_schools.by_name.each do |school| %>
+        <% c.with_row school: school do |r| %>
+          <% r.with_button do %>
+            <%= link_to 'Licences', admin_school_licences_path(school), class: 'btn btn-sm btn-primary' %>
+          <% end %>
+          <% r.with_button do %>
+            <%= link_to 'Issues',
+                        admin_school_issues_path(school),
+                        target: '_new',
+                        class: 'btn btn-sm' %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

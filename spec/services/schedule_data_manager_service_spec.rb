@@ -1,32 +1,34 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ScheduleDataManagerService do
   include_context 'calendar data'
 
   describe '#calendar_cache_key' do
-    let!(:school) { create(:school, calendar: calendar) }
+    before { create(:school, calendar:) }
 
     it 'generates a key' do
-      expect(ScheduleDataManagerService.calendar_cache_key(calendar)).to include(calendar.id.to_s)
+      expect(described_class.calendar_cache_key(calendar)).to include(calendar.id.to_s)
     end
   end
 
   describe '#invalidate_cached_calendar' do
-    let!(:school) { create(:school, calendar: calendar) }
+    before { create(:school, calendar: calendar) }
 
     it 'invalidates cache' do
       expect(Rails.cache).to receive(:delete)
-      ScheduleDataManagerService.invalidate_cached_calendar(calendar)
+      described_class.invalidate_cached_calendar(calendar)
     end
   end
 
   describe '#holidays' do
-    let!(:school)                                    { create(:school, calendar: calendar) }
+    let!(:school)                                    { create(:school, calendar:) }
     let(:date_version_of_holiday_date_from_calendar) { Date.parse(random_before_holiday_start_date) }
-    let!(:service)                                   { ScheduleDataManagerService.new(school) }
+    let!(:service)                                   { described_class.new(school) }
 
     it 'assigns school date periods for the analytics code' do
-      results = ScheduleDataManagerService.new(school).holidays
+      results = service.holidays
       school_date_period = results.find_holiday(date_version_of_holiday_date_from_calendar)
       expect(school_date_period.start_date).to eq date_version_of_holiday_date_from_calendar
       expect(school_date_period.type).not_to be_nil
@@ -34,19 +36,22 @@ describe ScheduleDataManagerService do
     end
 
     it 'loads holiday data' do
-      results = service.holidays
-      expect(results.holidays.map { |holiday| [holiday.start_date, holiday.end_date].sort }).to eq([
-                                                                                                     [Date.parse('01-01-2017'), Date.parse('01-02-2017')],
-                                                                                                     [Date.parse('21-10-2017'), Date.parse('29-10-2017')],
-                                                                                                     [Date.parse('16-12-2017'), Date.parse('20-12-2017')]
-                                                                                                   ])
-      expect(results.class).to eq(Holidays)
+      holidays = service.holidays
+      expect(holidays.holidays.map { |holiday| [holiday.start_date, holiday.end_date].sort }).to \
+        eq([[Date.parse('01-01-2017'), Date.parse('01-02-2017')],
+            [Date.parse('21-10-2017'), Date.parse('29-10-2017')],
+            [Date.parse('16-12-2017'), Date.parse('20-12-2017')]])
+      expect(holidays.class).to eq(Holidays)
+    end
+
+    it 'has bank holidays' do
+      bank_holidays.pluck(:start_date).each { |date| expect(service.holidays.holiday?(date)).to be true }
     end
   end
 
   describe '#uk_grid_carbon_intensity' do
     let!(:school)           { create(:school, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
-    let!(:service)          { ScheduleDataManagerService.new(school) }
+    let!(:service)          { described_class.new(school) }
 
     it 'loads the uk grid carbon intensity data' do
       create(:carbon_intensity_reading, reading_date: Date.parse('2019-01-01'))
@@ -74,7 +79,7 @@ describe ScheduleDataManagerService do
 
   describe '#solar_pv' do
     let!(:school)           { create(:school, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
-    let!(:service)          { ScheduleDataManagerService.new(school) }
+    let!(:service)          { described_class.new(school) }
 
     it 'loads the solar pv data' do
       reading_1 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-01-01')
@@ -104,7 +109,7 @@ describe ScheduleDataManagerService do
     let!(:station)          { create(:weather_station) }
     let!(:school)           { create(:school, dark_sky_area: area, weather_station: station) }
 
-    let!(:service)          { ScheduleDataManagerService.new(school) }
+    let!(:service)          { described_class.new(school) }
 
     before { allow(school).to receive(:minimum_reading_date).and_return(nil) }
 

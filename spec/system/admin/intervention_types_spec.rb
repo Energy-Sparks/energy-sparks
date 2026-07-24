@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe 'Intervention Types', type: :system do
-  let!(:admin)                    { create(:admin)}
-  let!(:intervention_type_group)  { create(:intervention_type_group)}
+  let!(:admin)                    { create(:admin) }
+  let!(:intervention_type_group)  { create(:intervention_type_group) }
 
   describe 'when not logged in' do
     it 'does not authorise viewing' do
       visit admin_intervention_types_path
-      expect(page).to have_content('You need to sign in or sign up before continuing.')
+      expect(page).to have_text('You need to sign in or sign up before continuing.')
     end
   end
 
@@ -58,9 +58,9 @@ describe 'Intervention Types', type: :system do
 
       click_on title
       expect(page).to have_css("img[src*='placeholder.png']")
-      expect(page).to have_content(download_links)
-      expect(page).to have_content(summary)
-      expect(page).to have_content(description)
+      expect(page).to have_text(download_links)
+      expect(page).to have_text(summary)
+      expect(page).to have_text(description)
     end
 
     it 'does not crash if you forget the score' do
@@ -109,8 +109,8 @@ describe 'Intervention Types', type: :system do
       intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group, score: 99)
       refresh
       click_on intervention_type.name
-      expect(page).to have_content('Overview')
-      expect(page).to have_content('99 points for this action')
+      expect(page).to have_text('Overview')
+      expect(page).to have_text('99 points')
     end
 
     it 'can add and remove suggested next actions' do
@@ -125,7 +125,7 @@ describe 'Intervention Types', type: :system do
       click_on('Update Intervention type')
       expect(page.has_content?('Intervention type was successfully updated.')).to be true
       intervention_type.reload
-      expect(intervention_type.suggested_types).to match_array([intervention_type])
+      expect(intervention_type.suggested_types).to contain_exactly(intervention_type)
 
       click_on 'Edit'
       within('.intervention_type_suggestions') do
@@ -158,13 +158,13 @@ describe 'Intervention Types', type: :system do
       click_on('Update Intervention type')
 
       visit intervention_type_path(intervention_type)
-      expect(page).to have_content('some english summary')
-      expect(page).to have_content('some english description')
+      expect(page).to have_text('some english summary')
+      expect(page).to have_text('some english description')
       expect(page).to have_link('Edit')
 
       visit intervention_type_path(intervention_type, locale: :cy)
-      expect(page).to have_content('some welsh summary')
-      expect(page).to have_content('some welsh description')
+      expect(page).to have_text('some welsh summary')
+      expect(page).to have_text('some welsh description')
     end
   end
 end

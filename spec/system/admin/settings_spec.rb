@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'site-wide settings' do
-  let!(:admin) { create(:admin)}
+  let!(:admin) { create(:admin) }
 
   before do
     sign_in(admin)
@@ -30,18 +30,20 @@ describe 'site-wide settings' do
         click_on 'Update settings'
         expect(SiteSettings.count).to eq 1
         expect(SiteSettings.current.message_for_no_contacts).to eq(false)
-        expect(SiteSettings.current.temperature_recording_month_numbers).to match_array([11, 12, 1, 2, 3, 4, 5])
+        expect(SiteSettings.current.temperature_recording_month_numbers).to contain_exactly(11, 12, 1, 2, 3, 4, 5)
         expect(SiteSettings.current.electricity_price).to eq(0.99)
         expect(SiteSettings.current.solar_export_price).to eq(0.98)
         expect(SiteSettings.current.gas_price).to eq(0.97)
         expect(BenchmarkMetrics.pricing).not_to eq(BenchmarkMetrics.default_prices)
-        expect(BenchmarkMetrics.pricing).to eq(OpenStruct.new(gas_price: 0.97, electricity_price: 0.99, solar_export_price: 0.98))
+        expect(BenchmarkMetrics.pricing).to eq(OpenStruct.new(gas_price: 0.97, electricity_price: 0.99,
+                                                              solar_export_price: 0.98))
       end
     end
 
     context 'with site settings' do
       before do
-        SiteSettings.create!(message_for_no_contacts: false, electricity_price: 1.2, gas_price: 0.2, solar_export_price: 0.1, temperature_recording_months: [1, 2, 3, 4, 5])
+        SiteSettings.create!(message_for_no_contacts: false, electricity_price: 1.2, gas_price: 0.2,
+                             solar_export_price: 0.1, temperature_recording_months: [1, 2, 3, 4, 5])
       end
 
       it 'updates price' do
@@ -56,11 +58,11 @@ describe 'site-wide settings' do
         expect(SiteSettings.current.solar_export_price).to eq(0.98)
         expect(SiteSettings.current.gas_price).to eq(0.97)
         expect(SiteSettings.current.message_for_no_contacts).to eq(true)
-        expect(SiteSettings.current.temperature_recording_month_numbers).to match_array([1, 2, 3, 4, 5])
+        expect(SiteSettings.current.temperature_recording_month_numbers).to contain_exactly(1, 2, 3, 4, 5)
       end
 
       context 'that have tariffs' do
-        let!(:tariff) { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current)}
+        let!(:tariff) { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current) }
 
         it 'updates price' do
           click_on 'Site Settings'
@@ -88,13 +90,13 @@ describe 'site-wide settings' do
       uncheck 'Message for no contacts'
       uncheck 'October'
       check 'May'
-      expect(page).not_to have_content('Electricity price')
-      expect(page).not_to have_content('Solar export price')
-      expect(page).not_to have_content('Gas price')
+      expect(page).to have_no_text('Electricity price')
+      expect(page).to have_no_text('Solar export price')
+      expect(page).to have_no_text('Gas price')
       expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
       click_on 'Update settings'
       expect(SiteSettings.current.message_for_no_contacts).to eq(false)
-      expect(SiteSettings.current.temperature_recording_month_numbers).to match_array([11, 12, 1, 2, 3, 4, 5])
+      expect(SiteSettings.current.temperature_recording_month_numbers).to contain_exactly(11, 12, 1, 2, 3, 4, 5)
       expect(SiteSettings.current.electricity_price).to eq(nil)
       expect(SiteSettings.current.solar_export_price).to eq(nil)
       expect(SiteSettings.current.gas_price).to eq(nil)

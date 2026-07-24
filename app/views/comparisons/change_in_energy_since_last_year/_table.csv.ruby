@@ -24,7 +24,7 @@ CSV.generate do |csv|
       fields << format_unit(
               result.total_previous_period(unit: unit), Float, true, :benchmark)
       fields << format_unit( result.total_current_period(unit: unit), Float, true, :benchmark)
-      fields << format_unit( result.total_percentage_change(unit: unit) * 100, Float, true, :benchmark)
+      fields << format_unit( result.total_percentage_change(unit: unit)&.*(100), Float, true, :benchmark)
     end
 
     csv << fields

@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: secr_co2_equivalences
 #
-#  created_at                     :datetime         not null
+#  id                             :bigint(8)        not null, primary key
 #  electricity_co2e               :float
 #  electricity_co2e_co2           :float
-#  id                             :bigint(8)        not null, primary key
 #  natural_gas_co2e               :float
 #  natural_gas_co2e_co2           :float
 #  transmission_distribution_co2e :float
-#  updated_at                     :datetime         not null
 #  year                           :integer
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
 #
 # Indexes
 #
@@ -35,7 +37,8 @@ class SecrCo2Equivalence < ApplicationRecord
     find_by(year:)&.public_send(type)
   end
 
-  def self.emissions(year, type, consumption)
-    (factor(year, type) * consumption).round(2)
+  def self.co2e_co2(year)
+    equivalence = find_by!(year:)
+    { electricity: equivalence.electricity_co2e_co2, gas: equivalence.natural_gas_co2e_co2 }
   end
 end

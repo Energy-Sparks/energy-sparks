@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.shared_examples 'a more info page' do
   it 'shows the hero' do
-    expect(page).to have_content(I18n.t('campaigns.school_info.title'))
-    expect(page).to have_content(I18n.t('campaigns.school_info.intro'))
+    expect(page).to have_text(I18n.t('campaigns.school_info.title'))
+    expect(page).to have_text(I18n.t('campaigns.school_info.intro'))
   end
 
   it 'includes the stats section' do
@@ -11,9 +11,9 @@ RSpec.shared_examples 'a more info page' do
       expect(page).to have_link(href: impact_report_campaigns_path)
     end
     within('#stats') do
-      expect(page).to have_content(I18n.t('campaigns.school_info.stats.card_1.subtext'))
-      expect(page).to have_content(I18n.t('home.stats.card_2.subtext'))
-      expect(page).to have_content(I18n.t('home.stats.card_3.subtext'))
+      expect(page).to have_text(I18n.t('campaigns.school_info.stats.card_1.subtext'))
+      expect(page).to have_text(I18n.t('home.stats.card_2.subtext'))
+      expect(page).to have_text(I18n.t('home.stats.card_3.subtext'))
     end
   end
 end
@@ -23,7 +23,7 @@ RSpec.shared_examples 'a group info page' do
 
   it 'includes the tool section' do
     within('#tool') do
-      expect(page).to have_content(I18n.t('campaigns.school_info.tool.title'))
+      expect(page).to have_text(I18n.t('campaigns.school_info.tool.title'))
       expect(page).to have_link(href: introductory_video_campaigns_path)
       expect(page).to have_link(href: energy_efficiency_report_campaigns_path)
     end
@@ -31,7 +31,7 @@ RSpec.shared_examples 'a group info page' do
 
   it 'includes the closer look section' do
     within('#closer-look') do
-      expect(page).to have_content(I18n.t('campaigns.school_info.closer_look.title'))
+      expect(page).to have_text(I18n.t('campaigns.school_info.closer_look.title'))
       expect(page).to have_link(href: example_mat_dashboard_campaigns_path)
       expect(page).to have_link(href: schools_path(scope: :school_groups))
       expect(page).to have_link(href: product_path)
@@ -40,7 +40,7 @@ RSpec.shared_examples 'a group info page' do
 
   it 'includes the next steps section' do
     within('#next-steps') do
-      expect(page).to have_content(I18n.t('campaigns.school_info.next_steps.title'))
+      expect(page).to have_text(I18n.t('campaigns.school_info.next_steps.title'))
       expect(page).to have_link(href: enrol_our_multi_academy_trust_path)
       expect(page).to have_link(href: watch_demo_campaigns_path)
       expect(page).to have_link(href: new_mailchimp_signup_path)
@@ -49,7 +49,7 @@ RSpec.shared_examples 'a group info page' do
 
   it 'includes the testimonials' do
     within('#testimonials') do
-      expect(page).to have_content(group_testimonial.title_en)
+      expect(page).to have_text(group_testimonial.title_en)
     end
   end
 end
@@ -59,7 +59,7 @@ RSpec.shared_examples 'a school info page' do
 
   it 'includes the tool section' do
     within('#tool') do
-      expect(page).to have_content(I18n.t('campaigns.school_info.tool.title'))
+      expect(page).to have_text(I18n.t('campaigns.school_info.tool.title'))
       expect(page).to have_link(href: introductory_video_campaigns_path)
       expect(page).to have_link(href: energy_efficiency_report_campaigns_path)
     end
@@ -67,7 +67,7 @@ RSpec.shared_examples 'a school info page' do
 
   it 'includes the closer look section' do
     within('#closer-look') do
-      expect(page).to have_content(I18n.t('campaigns.school_info.closer_look.title'))
+      expect(page).to have_text(I18n.t('campaigns.school_info.closer_look.title'))
       expect(page).to have_link(href: short_demo_video_campaigns_path)
       expect(page).to have_link(href: long_demo_video_campaigns_path)
       expect(page).to have_link(href: product_path)
@@ -77,7 +77,7 @@ RSpec.shared_examples 'a school info page' do
 
   it 'includes the next steps section' do
     within('#next-steps') do
-      expect(page).to have_content(I18n.t('campaigns.school_info.next_steps.title'))
+      expect(page).to have_text(I18n.t('campaigns.school_info.next_steps.title'))
       expect(page).to have_link(href: short_demo_video_campaigns_path)
       expect(page).to have_link(href: introductory_video_campaigns_path)
       expect(page).to have_link(href: impact_report_campaigns_path)
@@ -88,7 +88,7 @@ RSpec.shared_examples 'a school info page' do
 
   it 'includes the testimonials' do
     within('#testimonials') do
-      expect(page).to have_content(school_testimonial.title_en)
+      expect(page).to have_text(school_testimonial.title_en)
     end
   end
 end
@@ -102,7 +102,7 @@ describe 'landing pages', type: :system do
   let(:organisation) { 'Fake Academies' }
   # https://fakenumber.org/united-kingdom
   let(:tel) { '01632 960241' }
-  let(:expected_org_type) {'multi_academy_trust' }
+  let(:expected_org_type) { 'multi_academy_trust' }
 
   let(:expected_contact) do
     {
@@ -135,12 +135,13 @@ describe 'landing pages', type: :system do
     let(:expected_utm_params) { {} }
 
     before do
+      create(:commercial_product, default_product: true)
       visit product_path(expected_utm_params)
-      click_link('Request more information', :match => :first)
+      click_link('Request more information', match: :first)
     end
 
     it 'shows more information page' do
-      expect(page).to have_content(I18n.t('campaigns.more_information.title'))
+      expect(page).to have_text(I18n.t('campaigns.more_information.title'))
     end
 
     context 'when filling in the form' do
@@ -179,7 +180,7 @@ describe 'landing pages', type: :system do
         end
 
         it 'handles form submission correctly' do
-          expect(page).to have_content(I18n.t('campaigns.school_info.title'))
+          expect(page).to have_text(I18n.t('campaigns.school_info.title'))
         end
 
         it 'passes params to final page' do
@@ -194,12 +195,13 @@ describe 'landing pages', type: :system do
     let(:expected_utm_params) { {} }
 
     before do
+      create(:commercial_product, default_product: true)
       visit product_path(expected_utm_params)
-      click_link('Watch a demo', :match => :first)
+      click_link('Watch a demo', match: :first)
     end
 
     it 'shows watch demo page' do
-      expect(page).to have_content(I18n.t('campaigns.watch_demo.title'))
+      expect(page).to have_text(I18n.t('campaigns.watch_demo.title'))
     end
 
     context 'when filling in the form' do
@@ -214,7 +216,7 @@ describe 'landing pages', type: :system do
           it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:group_demo, expected_contact) }
 
           it 'shows the group demo page' do
-            expect(page).to have_content(I18n.t('campaigns.group_demo.title'))
+            expect(page).to have_text(I18n.t('campaigns.group_demo.title'))
             expect(page).to have_css('.calendly-inline-widget')
             widget = find('.calendly-inline-widget')
             expect(widget['data-url']).to match('https://calendly.com/energy-sparks/mat-demo')
@@ -228,7 +230,7 @@ describe 'landing pages', type: :system do
           it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:school_demo, expected_contact) }
 
           it 'shows the school demo page' do
-            expect(page).to have_content(I18n.t('campaigns.school_demo.title'))
+            expect(page).to have_text(I18n.t('campaigns.school_demo.title'))
           end
         end
       end
@@ -245,7 +247,7 @@ describe 'landing pages', type: :system do
         it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:group_demo, expected_contact) }
 
         it 'passes params to final page' do
-          expect(page).to have_content(I18n.t('campaigns.group_demo.title'))
+          expect(page).to have_text(I18n.t('campaigns.group_demo.title'))
           params = Rack::Utils.parse_nested_query(URI.parse(page.current_url).query).symbolize_keys!
           expect(params).to include(expected_utm_params)
         end
@@ -254,8 +256,8 @@ describe 'landing pages', type: :system do
   end
 
   context 'when following redirects from emails' do
-    let!(:mat_school_group) { create(:school_group, :with_active_schools, group_type: :multi_academy_trust)}
-    let!(:la_school_group) { create(:school_group, group_type: :local_authority)}
+    let!(:mat_school_group) { create(:school_group, :with_active_schools, group_type: :multi_academy_trust) }
+    let!(:la_school_group) { create(:school_group, group_type: :local_authority) }
 
     it 'redirects to MAT dashboard' do
       visit example_mat_dashboard_campaigns_path

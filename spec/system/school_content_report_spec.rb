@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'school content report', type: :system do
   let!(:school) { create(:school) }
-  let!(:user) { create(:admin)}
+  let!(:user) { create(:admin) }
   let(:description) { 'all about this alert type' }
   let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :termly, description: description) }
   let(:gas_date) { Date.parse('2019-01-01') }
-  let!(:gas_meter) { create :gas_meter_with_reading, school_id: school.id }
+  let!(:gas_meter) { create(:gas_meter_with_reading, school_id: school.id) }
 
   before do
     sign_in(user)
@@ -21,7 +21,7 @@ RSpec.describe 'school content report', type: :system do
         rating_to: 10,
         find_out_more_active: true,
         management_dashboard_alert_active: true,
-        pupil_dashboard_alert_active: true,
+        pupil_dashboard_alert_active: true
       )
     end
     let!(:alert_type_rating_content_version) do
@@ -35,13 +35,12 @@ RSpec.describe 'school content report', type: :system do
     let(:alert_summary) { 'Summary of the alert' }
     let!(:alert) do
       create(:alert, :with_run,
-        alert_type: gas_fuel_alert_type,
-        run_on: gas_date, school: school,
-        rating: 9.0,
-        table_data: {
-          dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]
-        }
-      )
+             alert_type: gas_fuel_alert_type,
+             run_on: gas_date, school: school,
+             rating: 9.0,
+             table_data: {
+               dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]
+             })
     end
 
     before do
@@ -54,9 +53,8 @@ RSpec.describe 'school content report', type: :system do
       click_on('Content reports')
       click_on 'View'
 
-
-      expect(page).to have_content('Your heating is on!')
-      expect(page).to have_content('It is too warm')
+      expect(page).to have_text('Your heating is on!')
+      expect(page).to have_text('It is too warm')
     end
   end
 end

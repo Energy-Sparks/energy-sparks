@@ -1,15 +1,19 @@
 <%= tag.div id: id, class: class_names(classes, 'mb-2') do %>
   <%# Padding added to create space within div %>
   <div class="row py-3">
-    <% if render_icon? %>
-      <%# Icon is hidden on smallest size, visible from sm and above as single column %>
-      <div class="d-none d-sm-block col-1">
-        <%= render Elements::IconComponent.new fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
+    <% if media? %>
+      <%# Media is hidden on smallest size, visible from sm and above as single column %>
+      <div class="d-none d-sm-block <%= media_cols %>">
+        <% if icon? %>
+          <%= render Elements::IconComponent.new fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
+        <% elsif image? %>
+          <%= render Elements::ImageComponent.new src: image %>
+        <% end %>
       </div>
     <% end %>
-    <%# if no icon then use full width row %>
+    <%# if no image or icon then use full width row %>
     <%# Below md use full width, so text column wraps below icon. from md above use 2 cols %>
-    <div class="<%= render_icon? ? 'col-12 col-md-11' : 'col-12' %>">
+    <div class="<%= "col-12 #{main_cols}" %>">
       <% if title? || pill? %>
         <div class="row">
           <div class="col">
@@ -25,7 +29,7 @@
       <div class="row">
         <% if style == :compact %>
           <div class="col-12 col-md-10">
-            <%= content %>
+            <%= content_action || content %>
           </div>
           <% if link %>
             <div class="col col-md-2">
@@ -34,12 +38,10 @@
           <% end %>
         <% else %>
           <div class="col">
-            <%= content %>
-            <p>
+            <%= content_action || content %>
             <% if link %>
               <%= link %>
             <% end %>
-            </p>
           </div>
         <% end %>
       </div>

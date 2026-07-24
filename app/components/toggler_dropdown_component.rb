@@ -3,8 +3,9 @@ class TogglerDropdownComponent < ApplicationComponent
 
   attr_reader :title, :hide
 
-  def initialize(title: nil, hide: true, id: nil, classes: '')
-    super(id: id, classes: classes)
+  def initialize(title: nil, hide: true, bg: 'light', **) # rubocop:disable Naming/MethodParameterName
+    super(**)
+    add_classes("bg-#{bg}")
     @title = title
     @hide = hide
   end

@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+module Commercial
+  module ContractHolder
+    extend ActiveSupport::Concern
+
+    included do
+      has_many :contracts,
+               as: :contract_holder,
+               class_name: 'Commercial::Contract',
+               dependent: :restrict_with_error
+
+      has_many :contract_contacts,
+               as: :contract_holder,
+               class_name: 'Commercial::ContractContact',
+               dependent: :restrict_with_error
+
+      has_many :invoices, through: :contracts
+
+      scope :with_current_contracts, lambda {
+        joins(:contracts)
+          .merge(Commercial::Contract.current)
+          .distinct
+      }
+    end
+  end
+end

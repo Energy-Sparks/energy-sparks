@@ -5,31 +5,31 @@ describe Ability do
   shared_examples 'a user with permissions common to all' do
     context 'with activities and actions content' do
       [ActivityCategory, InterventionTypeGroup].each do |model|
-        [:index, :show, :recommended].freeze.each do |permission|
+        %i[index show recommended].freeze.each do |permission|
           it { is_expected.to be_able_to(permission, model.new) }
         end
       end
 
       [ActivityType, InterventionType].each do |model|
-        [:index, :show, :search, :for_school].freeze.each do |permission|
+        %i[index show search for_school].freeze.each do |permission|
           it { is_expected.to be_able_to(permission, model.new) }
         end
       end
 
-      [:index, :show].freeze.each do |permission|
+      %i[index show].freeze.each do |permission|
         it { is_expected.to be_able_to(permission, create(:programme_type)) }
       end
     end
 
     context 'with support page content' do
-      it { is_expected.to be_able_to(:show, create(:category, published: true))}
-      it { is_expected.to be_able_to(:show, create(:page, published: true))}
+      it { is_expected.to be_able_to(:show, create(:category, published: true)) }
+      it { is_expected.to be_able_to(:show, create(:page, published: true)) }
     end
 
     context 'with Schools' do
       it { is_expected.to be_able_to(:index, School) }
 
-      [:show, :show_pupils_dash].freeze.each do |permission|
+      %i[show show_pupils_dash].freeze.each do |permission|
         it { is_expected.to be_able_to(permission, create(:school, visible: true, data_sharing: :public)) }
       end
     end
@@ -40,21 +40,19 @@ describe Ability do
     end
 
     context 'with School Groups' do
-      [:show, :compare].freeze.each do |permission|
-        it { is_expected.to be_able_to(permission, create(:school_group, public: true)) }
-      end
+      it { is_expected.to be_able_to(:show, create(:school_group, public: true)) }
     end
   end
 
   shared_examples 'a user without super user permissions' do
-    %w(ActivityType ActivityCategory SchoolTarget).each do |thing|
+    %w[ActivityType ActivityCategory SchoolTarget].each do |thing|
       it { is_expected.not_to be_able_to(:manage, thing.constantize.new) }
     end
   end
 
   shared_examples 'they can access the school dashboard and data' do
     it { is_expected.to be_able_to(:show, school) }
-    it { is_expected.to be_able_to(:show_pupils_dash, school)}
+    it { is_expected.to be_able_to(:show_pupils_dash, school) }
     it { is_expected.to be_able_to(:download_school_data, school) }
     it { is_expected.to be_able_to(:show_management_dash, school) }
   end
@@ -80,7 +78,8 @@ describe Ability do
     it { is_expected.not_to be_able_to(:show_management_dash, create(:school)) }
     it { is_expected.not_to be_able_to(:read_restricted_analysis, create(:school)) }
     it { is_expected.not_to be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
-    it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
+    it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group)) }
+    it { is_expected.not_to be_able_to(:start, create(:transport_survey, school: create(:school))) }
   end
 
   shared_examples 'they can manage correct types of tariffs' do |school_tariffs: false, group_tariffs: false, site_tariffs: false|
@@ -205,9 +204,9 @@ describe Ability do
       it { is_expected.to be_able_to(:manage, create(:school_onboarding)) }
 
       context 'with school groups' do
-        it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
-        it { is_expected.not_to be_able_to(:update_settings, create(:school_group))}
-        it { is_expected.not_to be_able_to(:compare, create(:school_group, public: false))}
+        it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group)) }
+        it { is_expected.not_to be_able_to(:manage_settings, create(:school_group)) }
+        it { is_expected.not_to be_able_to(:show, create(:school_group, public: false)) }
       end
 
       context 'with schools' do
@@ -225,7 +224,7 @@ describe Ability do
         context 'when data sharing is within_group' do
           let(:data_sharing) { :within_group }
 
-          [:show, :show_pupils_dash, :show_management_dash, :read_restricted_advice, :read_restricted_analysis, :download_school_data].each do |permission|
+          %i[show show_pupils_dash show_management_dash read_restricted_advice read_restricted_analysis download_school_data].each do |permission|
             it { is_expected.not_to be_able_to(permission, school) }
           end
         end
@@ -233,7 +232,7 @@ describe Ability do
         context 'when data sharing is private' do
           let(:data_sharing) { :private }
 
-          [:show, :show_pupils_dash, :show_management_dash, :read_restricted_advice, :read_restricted_analysis, :download_school_data].each do |permission|
+          %i[show show_pupils_dash show_management_dash read_restricted_advice read_restricted_analysis download_school_data].each do |permission|
             it { is_expected.not_to be_able_to(permission, school) }
           end
         end
@@ -255,12 +254,12 @@ describe Ability do
 
       it_behaves_like 'a user with permissions common to all'
 
-      %w(Activity ActivityType ActivityCategory Calendar CalendarEvent School User SchoolTarget).each do |thing|
+      %w[Activity ActivityType ActivityCategory Calendar CalendarEvent School User SchoolTarget].each do |thing|
         it { is_expected.to be_able_to(:manage, thing.constantize.new) }
       end
 
       context 'with all schools' do
-        [:show, :show_pupils_dash, :show_management_dash, :read_restricted_analysis].freeze.each do |permission|
+        %i[show show_pupils_dash show_management_dash read_restricted_analysis].freeze.each do |permission|
           [true, false].freeze.each do |visibility|
             School.data_sharings.each_key do |data_sharing|
               it { is_expected.to be_able_to(permission, create(:school, visible: visibility, data_sharing: data_sharing)) }
@@ -271,8 +270,7 @@ describe Ability do
 
       context 'with all school groups' do
         [true, false].each do |public|
-          it { is_expected.to be_able_to(:show_management_dash, create(:school_group, public: public))}
-          it { is_expected.to be_able_to(:update_settings, create(:school_group, public: public))}
+          it { is_expected.to be_able_to(:show_management_dash, create(:school_group, public: public)) }
         end
       end
 
@@ -293,12 +291,12 @@ describe Ability do
 
         context 'with their school group' do
           it 'they can view the group' do
-            expect(ability).to be_able_to(:compare, school_group)
+            expect(ability).to be_able_to(:show, school_group)
             expect(ability).to be_able_to(:show_management_dash, school_group)
           end
 
           it 'they cannot manage the group' do
-            expect(ability).not_to be_able_to(:update_settings, school_group)
+            expect(ability).not_to be_able_to(:manage_settings, school_group)
           end
         end
 
@@ -312,7 +310,7 @@ describe Ability do
           end
 
           it { is_expected.not_to be_able_to(:show, school) }
-          it { is_expected.not_to be_able_to(:show_pupils_dash, school)}
+          it { is_expected.not_to be_able_to(:show_pupils_dash, school) }
           it { is_expected.not_to be_able_to(:download_school_data, school) }
           it { is_expected.not_to be_able_to(:show_management_dash, school) }
           it { is_expected.not_to be_able_to(:read_restricted_analysis, school) }
@@ -322,6 +320,10 @@ describe Ability do
 
         it 'allows activities to be recorded and managed' do
           expect(ability).to be_able_to(:manage, Activity.new(school: school))
+        end
+
+        it 'allows transport surveys to be started' do
+          expect(ability).to be_able_to(:start, create(:transport_survey, school: school))
         end
 
         it 'allows access to restricted advice' do
@@ -409,8 +411,8 @@ describe Ability do
       shared_examples 'a user with common group permissions' do
         it_behaves_like 'a user with permissions common to all'
 
-        it { is_expected.to be_able_to(:compare, school_group) }
-        it { is_expected.to be_able_to(:show_management_dash, school_group)}
+        it { is_expected.to be_able_to(:show, school_group) }
+        it { is_expected.to be_able_to(:show_management_dash, school_group) }
 
         context 'with schools outside group' do
           it { is_expected.not_to be_able_to(:download_school_data, create(:school)) }
@@ -419,15 +421,15 @@ describe Ability do
         context 'with other public groups' do
           let(:other_school_group) { create(:school_group) }
 
-          it { is_expected.to be_able_to(:compare, other_school_group) }
-          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+          it { is_expected.to be_able_to(:show, other_school_group) }
+          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group) }
         end
 
         context 'with other private groups' do
           let(:other_school_group) { create(:school_group, public: false) }
 
-          it { is_expected.not_to be_able_to(:compare, other_school_group) }
-          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+          it { is_expected.not_to be_able_to(:show, other_school_group) }
+          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group) }
         end
 
         context 'with contributed content' do
@@ -444,7 +446,7 @@ describe Ability do
       end
 
       context 'when user is a group admin' do
-        let(:user) { create(:user, role: :group_admin, school_group: school_group)}
+        let(:user) { create(:user, role: :group_admin, school_group: school_group) }
 
         it_behaves_like 'a user with common group permissions'
 
@@ -464,7 +466,21 @@ describe Ability do
             end
           end
 
-          it { is_expected.to be_able_to(:update_settings, school_group)}
+          context 'with other schools' do
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school))) }
+          end
+
+          it { is_expected.to be_able_to(:show, school_group) }
+          it { is_expected.to be_able_to(:show_management_dash, school_group) }
+          it { is_expected.to be_able_to(:manage_settings, school_group) }
+          it { is_expected.to be_able_to(:view_engagement_report, school_group) }
+          it { is_expected.to be_able_to(:view_school_status, school_group) }
+
+          it { is_expected.to be_able_to(:view_clusters, school_group) }
+          it { is_expected.to be_able_to(:manage_clusters, school_group) }
+          it { is_expected.to be_able_to(:manage_chart_defaults, school_group) }
+          it { is_expected.to be_able_to(:view_secr_report, school_group) }
+          it { is_expected.to be_able_to(:view_digital_signage, school_group) }
 
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
             let(:school) { create(:school, school_group: school_group) }
@@ -488,21 +504,21 @@ describe Ability do
         context 'when completing onboarding' do
           context 'with an onboarding that has not started' do
             context 'when it is their group' do
-              let(:school_onboarding) { create(:school_onboarding, school_group: school_group)}
+              let(:school_onboarding) { create(:school_onboarding, school_group: school_group) }
 
-              it { is_expected.to be_able_to(:manage, school_onboarding)}
+              it { is_expected.to be_able_to(:manage, school_onboarding) }
             end
 
             context 'when it is not their group' do
-              it { is_expected.not_to be_able_to(:manage, create(:school_onboarding, school_group: create(:school_group)))}
+              it { is_expected.not_to be_able_to(:manage, create(:school_onboarding, school_group: create(:school_group))) }
             end
           end
 
           context 'with an onboarding that has started' do
-            let(:school_onboarding) { create(:school_onboarding, school_group: school_group, school: create(:school, school_group: school_group))}
+            let(:school_onboarding) { create(:school_onboarding, school_group: school_group, school: create(:school, school_group: school_group)) }
 
             context 'with a school in their group' do
-              it { is_expected.to be_able_to(:manage, school_onboarding)}
+              it { is_expected.to be_able_to(:manage, school_onboarding) }
             end
 
             context 'with a school in another group' do
@@ -513,20 +529,29 @@ describe Ability do
             end
           end
         end
+
+        context 'with transport surveys' do
+          it { is_expected.to be_able_to(:start, create(:transport_survey, school: create(:school, school_group:))) }
+          it { is_expected.not_to be_able_to(:start, create(:transport_survey, school: create(:school))) }
+        end
       end
 
       context 'when users is a group manager' do
         let(:school_group) { create(:school_group, group_type: :project, public: is_public) }
-        let(:user) { create(:user, role: :group_manager, school_group: school_group)}
+        let(:user) { create(:user, role: :group_manager, school_group: school_group) }
 
         it_behaves_like 'a user with common group permissions'
 
         shared_examples 'they have group manager rights' do
           context 'with schools in the group' do
-            let(:school) { create(:school, school_group: school_group) }
+            let(:school) { create(:school, :with_school_group, :with_project, group: school_group) }
 
-            it 'does not allow activities to be recorded and managed' do
-              expect(ability).not_to be_able_to(:manage, Activity.new(school: school))
+            context 'with transport surveys' do
+              it { is_expected.to be_able_to(:start, create(:transport_survey, school:)) }
+            end
+
+            it 'allows activities to be recorded and managed' do
+              expect(ability).to be_able_to(:manage, Activity.new(school: school))
             end
 
             it 'does not allow access to restricted advice' do
@@ -535,17 +560,33 @@ describe Ability do
             end
 
             it { is_expected.to be_able_to(:show, school) }
-            it { is_expected.to be_able_to(:show_pupils_dash, school)}
+            it { is_expected.to be_able_to(:show_pupils_dash, school) }
 
             it { is_expected.not_to be_able_to(:download_school_data, school) }
             it { is_expected.not_to be_able_to(:show_management_dash, school) }
           end
 
-          it { is_expected.not_to be_able_to(:update_settings, school_group)}
+          context 'with other schools' do
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school))) }
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school, :with_school_group))) }
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school, :with_project))) }
+          end
 
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
             let(:school) { create(:school, school_group: school_group) }
           end
+
+          it { is_expected.to be_able_to(:show, school_group) }
+          it { is_expected.to be_able_to(:show_management_dash, school_group) }
+          it { is_expected.to be_able_to(:manage_settings, school_group) }
+          it { is_expected.to be_able_to(:view_engagement_report, school_group) }
+          it { is_expected.to be_able_to(:view_school_status, school_group) }
+
+          it { is_expected.not_to be_able_to(:view_clusters, school_group) }
+          it { is_expected.not_to be_able_to(:manage_clusters, school_group) }
+          it { is_expected.not_to be_able_to(:manage_chart_defaults, school_group) }
+          it { is_expected.not_to be_able_to(:view_secr_report, school_group) }
+          it { is_expected.not_to be_able_to(:view_digital_signage, school_group) }
         end
 
         it_behaves_like 'their access to school dashboards is limited by data sharing settings', group_manager: true do

@@ -1,0 +1,109 @@
+<% all_licences_path = if local_assigns[:contract].present?
+                         admin_commercial_contract_path(contract)
+                       else
+                         admin_commercial_licences_path
+                       end %>
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'All licences', all_licences_path %>
+<% end %>
+
+<% if local_assigns[:contract].present? && licence.new_record? %>
+  <div class="row">
+    <div class="col">
+      <p>Create a new licence under the <strong><%= contract.name %></strong> contract.</p>
+    </div>
+  </div>
+<% elsif licence.invoiced? %>
+    <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
+      <p>
+        This licence has been invoiced. Only limited changes can now be made
+      </p>
+    <% end %>
+<% elsif licence.persisted? %>
+  <div class="row">
+    <div class="col">
+      <p>Update the licence for <strong><%= licence.school.name %></strong> under the <strong><%= contract.name %></strong> contract.</p>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <% url = if licence.new_record?
+               admin_commercial_licences_path
+             else
+               admin_commercial_licence_path(licence)
+             end %>
+    <%= simple_form_for(licence, as: :licence, url: url) do |f| %>
+      <%= render 'shared/errors', subject: licence, subject_name: 'licence' %>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Basic information</h3>
+        <% if licence.new_record? %>
+          <%= f.input :school_id,
+                      collection: @schools,
+                      include_blank: false,
+                      input_html: { class: 'select2' } %>
+        <% else %>
+          <%= f.input :school_id, as: :hidden %>
+        <% end %>
+
+        <%= f.input :comments %>
+      </div>
+
+      <% unless licence.invoiced? %>
+        <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+          <h3>Commercial information</h3>
+          <% if local_assigns[:contract].present? %>
+            <%= f.input :contract_id, as: :hidden %>
+          <% else %>
+            <%= f.input :contract_id,
+                        collection: Commercial::Contract.all.by_name,
+                        include_blank: false,
+                        input_html: { class: 'select2' } %>
+          <% end %>
+          <%= f.input :school_specific_price,
+                      hint: 'Override contract price. Set annual price for this specific school, in £. ' \
+                            'Set to zero to make free and waive all additional fees' %>
+          <%= f.input :status, collection: collection_from_enum(Commercial::Licence.statuses), include_blank: false %>
+        </div>
+
+        <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+          <h3>Licence dates</h3>
+            <% if local_assigns[:contract].present? && licence.new_record? %>
+              <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
+                <p>
+                  Leave the following fields blank to automatically populate the licence according to the terms of
+                  the <%= contract.name %> contract.
+                </p>
+              <% end %>
+            <% elsif licence.dates_will_automatically_change? %>
+              <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
+                <p>
+                  The following dates will be automatically revised by the system once the school becomes data
+                  visible to run for <%= licence.contract.licence_years %> years from that day.
+                  Any changes made here will then be overwritten.
+                </p>
+              <% end %>
+            <% elsif licence.new_record? %>
+              <p>
+                Leave the following fields blank to automatically populate the licence for the period defined in the contract.
+              </p>
+            <% end %>
+
+            <%= f.input :start_date, as: :tempus_dominus_date %>
+            <%= f.input :end_date, as: :tempus_dominus_date %>
+        </div>
+      <% end %>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Invoicing information</h3>
+        <%= f.input :invoice_reference %>
+      </div>
+
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', admin_commercial_licences_path, class: 'btn' %>
+    <% end %>
+  </div>
+</div>

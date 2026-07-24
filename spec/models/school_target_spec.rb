@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe SchoolTarget, type: :model do
   let(:school)          { create(:school) }
-  let(:start_date)      { Time.zone.today.beginning_of_month}
-  let(:target_date)     { Time.zone.today.beginning_of_month.next_year}
+  let(:start_date)      { Time.zone.today.beginning_of_month }
+  let(:target_date)     { Time.zone.today.beginning_of_month.next_year }
 
   context 'when saving' do
     before do
@@ -66,7 +66,8 @@ RSpec.describe SchoolTarget, type: :model do
       target = SchoolTarget.new({ school: school, start_date: start_date, target_date: target_date, gas: 10 })
       expect(target.valid?).to be true
 
-      target = SchoolTarget.new({ school: school, start_date: start_date, target_date: target_date, storage_heaters: 10 })
+      target = SchoolTarget.new({ school: school, start_date: start_date, target_date: target_date,
+                                  storage_heaters: 10 })
       expect(target.valid?).to be true
     end
   end
@@ -76,10 +77,12 @@ RSpec.describe SchoolTarget, type: :model do
       target = SchoolTarget.new({ school: school, electricity: 10, start_date: start_date, target_date: target_date })
       expect(target.current?).to be true
 
-      target = SchoolTarget.new({ school: school, electricity: 10, start_date: start_date, target_date: Time.zone.today.last_year })
+      target = SchoolTarget.new({ school: school, electricity: 10, start_date: start_date,
+                                  target_date: Time.zone.today.last_year })
       expect(target.current?).to be false
 
-      target = SchoolTarget.new({ school: school, electricity: 10, start_date: Date.tomorrow, target_date: target_date })
+      target = SchoolTarget.new({ school: school, electricity: 10, start_date: Date.tomorrow,
+                                  target_date: target_date })
       expect(target.current?).to be false
     end
   end
@@ -111,63 +114,6 @@ RSpec.describe SchoolTarget, type: :model do
       expect(attributes[:aggregated_electricity]).not_to be_empty
       expect(attributes[:aggregated_gas]).not_to be_empty
       expect(attributes[:storage_heater_aggregated]).not_to be_empty
-    end
-  end
-
-  describe '#saved_progress_report_for' do
-    let(:january)                   { Date.new(Time.zone.today.year, 1, 1) }
-    let(:february)                  { Date.new(Time.zone.today.year, 2, 1) }
-    let(:months)                    { [january, february] }
-    let(:fuel_type)                 { :electricity }
-
-    let(:monthly_usage_kwh)         { [10, 20] }
-    let(:monthly_targets_kwh)       { [8, 15] }
-    let(:monthly_performance)       { [-0.25, 0.35] }
-
-    let(:cumulative_usage_kwh)      { [10, 30] }
-    let(:cumulative_targets_kwh)    { [8, 25] }
-    let(:cumulative_performance)    { [-0.99, 0.99] }
-
-    let(:partial_months)            { [false, true] }
-    let(:percentage_synthetic)      { [0.0, 0.5]}
-
-    let(:progress) do
-      TargetsProgress.new(
-        fuel_type: fuel_type,
-        months: months,
-        monthly_targets_kwh: monthly_targets_kwh,
-        monthly_usage_kwh: monthly_usage_kwh,
-        monthly_performance: monthly_performance,
-        cumulative_targets_kwh: cumulative_targets_kwh,
-        cumulative_usage_kwh: cumulative_usage_kwh,
-        cumulative_performance: cumulative_performance,
-        cumulative_performance_versus_synthetic_last_year: [],
-        monthly_performance_versus_synthetic_last_year: [],
-        partial_months: partial_months,
-        percentage_synthetic: percentage_synthetic
-      )
-    end
-
-    before do
-      school.school_targets.create!(start_date: start_date, target_date: target_date, electricity: 10, electricity_report: progress)
-    end
-
-    it 'returns nil if no there is no saved report' do
-      expect(SchoolTarget.first.saved_progress_report_for(:gas)).to be_nil
-    end
-
-    it 'returns a progress report' do
-      report = SchoolTarget.first.saved_progress_report_for(:electricity)
-      expect(report.fuel_type).to eql(progress.fuel_type)
-      expect(report.months).to eql(progress.months)
-      expect(report.monthly_targets_kwh).to eql(progress.monthly_targets_kwh)
-      expect(report.monthly_usage_kwh).to eql(progress.monthly_usage_kwh)
-      expect(report.monthly_performance).to eql(progress.monthly_performance)
-      expect(report.cumulative_targets_kwh).to eql(progress.cumulative_targets_kwh)
-      expect(report.cumulative_usage_kwh).to eql(progress.cumulative_usage_kwh)
-      expect(report.cumulative_performance).to eql(progress.cumulative_performance)
-      expect(report.partial_months).to eql(progress.partial_months)
-      expect(report.percentage_synthetic).to eql(progress.percentage_synthetic)
     end
   end
 end

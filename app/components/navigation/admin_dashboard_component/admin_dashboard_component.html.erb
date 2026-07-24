@@ -1,0 +1,32 @@
+<%= render PageNavComponent.new name: 'Dashboard Home',
+                                classes: classes,
+                                icon: nil,
+                                href: admin_dashboard_path(current_user),
+                                options: { user: current_user, match_controller: true, list_inline: true } do |c| %>
+  <% classes = 'medium' %>
+  <% nav_sections.each do |section| %>
+    <% c.with_section options: { match_controller: false } do |s| %>
+      <% s.with_item name: section[:name],
+                     href: section[:path],
+                     match_on_param: section[:match_on_param] %>
+    <% end %>
+  <% end %>
+
+  <% c.with_section name: 'My Schools',
+                    options: { match_controller: false } do |s| %>
+    <% my_schools_section.each do |item| %>
+      <% s.with_item(name: item[:name],
+                     classes: item[:classes],
+                     href: item[:path]) %>
+    <% end %>
+  <% end %>
+
+  <% c.with_section name: 'My Meters',
+                    options: { match_controller: false } do |s| %>
+    <% my_meters_section.each do |item| %>
+      <% s.with_item(name: item[:name],
+                     classes: item[:classes],
+                     href: item[:path]) %>
+    <% end %>
+  <% end %>
+<% end %>

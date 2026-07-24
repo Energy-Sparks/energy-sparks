@@ -5,7 +5,6 @@ module Pupils
     include DashboardAlerts
     include DashboardTimeline
     include NonPublicSchools
-    include SchoolProgress
 
     load_resource
 
@@ -20,7 +19,6 @@ module Pupils
       authorize! :show_pupils_dash, @school
       @audience = :pupil
       @observations = setup_timeline(@school.observations)
-      @progress_summary = progress_service.progress_summary if @school.data_enabled?
       render :show, layout: 'dashboards'
     end
 

@@ -20,7 +20,6 @@
 //= require highcharts-modules/bullet
 //= require highcharts-modules/solid-gauge
 
-// This is used (handlebars) but slight overkill I think
 //= require handlebars
 //= require_tree ./templates
 
@@ -74,3 +73,5 @@
 //= require delete_association
 //= require section_nav
 //= require match_row_height
+//= require ensure_one_checked
+//= require preserve_tab_link

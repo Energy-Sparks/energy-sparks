@@ -22,9 +22,8 @@ RSpec.describe SchoolComparisonComponent, type: :component do
       )
     end
     let(:component) { SchoolComparisonComponent.new(**params) }
-    let(:html) do
-      render_inline(component)
-    end
+
+    before { render_inline(component) }
 
     it 'still renders' do
       expect(component.render?).to eq true
@@ -37,9 +36,7 @@ RSpec.describe SchoolComparisonComponent, type: :component do
 
     it 'classifies the school as other_school' do
       expect(component.category).to eq 'other_school'
-      within '.school-comparison-component-callout-box .body' do
-        expect(html).to have_content('>15 kW')
-      end
+      expect(page.find('.school-comparison-component .callout-box .body')).to have_text('150 kW')
     end
   end
 
@@ -70,29 +67,25 @@ RSpec.describe SchoolComparisonComponent, type: :component do
   end
 
   context 'with benchmark school' do
-    let(:html) do
-      render_inline(SchoolComparisonComponent.new(**params))
-    end
+    let!(:html) { render_inline(described_class.new(**params)) }
 
     it 'has the right id' do
       expect(html).to have_css('#spec-id')
     end
 
     it 'includes the values' do
-      expect(html).to have_content('10 kW')
-      expect(html).to have_content('15 kW')
-      expect(html).to have_content('20 kW')
+      expect(html).to have_text('10 kW')
+      expect(html).to have_text('15 kW')
+      expect(html).to have_text('20 kW')
     end
 
     it 'classifies the school' do
-      within '.school-comparison-component-callout-box .body' do
-        expect(html).to have_content('15 kW')
-      end
+      expect(page.find('.school-comparison-component .callout-box .body')).to have_text('15 kW')
     end
 
     it 'adds responsive classes to other categories' do
       expect(html).to have_css('div.exemplar_school.d-none')
-      expect(html).not_to have_css('div.benchmark_school.d-none')
+      expect(html).to have_no_css('div.benchmark_school.d-none')
       expect(html).to have_css('div.other_school.d-none')
     end
   end
@@ -106,34 +99,28 @@ RSpec.describe SchoolComparisonComponent, type: :component do
         unit: :kw
       )
     end
-    let(:html) do
-      render_inline(SchoolComparisonComponent.new(**params))
-    end
+    let!(:html) { render_inline(described_class.new(**params)) }
 
     it 'classifies the school' do
-      within '.school-comparison-component-callout-box .body' do
-        expect(html).to have_content('150 kW')
-      end
+      expect(page.find('.school-comparison-component .callout-box .body')).to have_text('150 kW')
     end
 
     it 'adds responsive classes to other categories' do
       expect(html).to have_css('div.exemplar_school.d-none')
       expect(html).to have_css('div.benchmark_school.d-none')
-      expect(html).not_to have_css('div.other_school.d-none')
+      expect(html).to have_no_css('div.other_school.d-none')
     end
   end
 
   context 'with callout footer' do
-    let(:html) do
+    before do
       render_inline(SchoolComparisonComponent.new(**params)) do |c|
         c.with_footer { 'Custom footer' }
       end
     end
 
     it 'adds the callout footer' do
-      within '.school-comparison-component-callout-box .footer' do
-        expect(html).to have_content('Custom footer')
-      end
+      expect(page.find('.school-comparison-component .callout-box .footer')).to have_text('Custom footer')
     end
   end
 end

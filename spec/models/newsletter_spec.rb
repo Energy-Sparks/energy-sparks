@@ -11,7 +11,9 @@ RSpec.describe Newsletter, type: :model do
     end
 
     context 'when some newsletters do not have images attached' do
-      let!(:newsletter_with_image) { create(:newsletter, image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
+      let!(:newsletter_with_image) do
+        create(:newsletter, image: fixture_file_upload('spec/fixtures/images/laptop.jpg'))
+      end
       let!(:newsletter_without_image) { build(:newsletter, image: nil).tap { |n| n.save(validate: false) } }
 
       it 'returns only newsletters without images' do

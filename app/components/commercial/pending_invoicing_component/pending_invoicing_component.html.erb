@@ -1,0 +1,43 @@
+<%= tag.div id: id, class: classes do %>
+  <table id="pending-invoicing-table" class="table table-paged table-sm">
+    <thead>
+      <tr>
+        <th colspan="3"></th>
+        <th class="text-center" colspan="3">Schools</th>
+        <th colspan="2"></th>
+      </tr>
+      <tr>
+        <th>Name</th>
+        <th>Contract Holder</th>
+        <th>Start Date</th>
+        <th class="text-end">To be invoiced</th>
+        <th class="text-end">Invoiced</th>
+        <th class="text-end">Licensed</th>
+        <th class="text-end">Invoices</th>
+        <th class="text-end no-sort">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @contracts.each do |contract| %>
+        <tr>
+          <td class="col-2"><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
+          <td class="col-2"><%= contract.contract_holder.name %></td>
+          <td class="text-end col-2" data-order="<%= contract.start_date.iso8601 %>">
+            <%= contract.start_date.to_fs(:es_short) %>
+          </td>
+          <td class="text-end col-1"><%= contract.licences.pending_invoice.count %></td>
+          <td class="text-end col-1"><%= contract.licences.invoiced.count %></td>
+          <td class="text-end col-1"><%= contract.licences.count %></td>
+          <td class="text-end col-1"><%= contract.invoices.count %></td>
+          <td class="text-end">
+            <div class="btn-group">
+              <%= link_to 'Raise invoice',
+                          raise_invoice_admin_commercial_contract_invoices_path(contract),
+                          class: 'btn btn-sm btn-primary' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

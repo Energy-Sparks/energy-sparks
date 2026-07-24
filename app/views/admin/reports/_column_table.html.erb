@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <% columns.each do |column| %>
-        <%= content_tag(:th, column.name, data: column.html_data) %>
+        <%= content_tag(:th, column.display_name, data: column.html_data) %>
       <% end %>
     </tr>
   </thead>

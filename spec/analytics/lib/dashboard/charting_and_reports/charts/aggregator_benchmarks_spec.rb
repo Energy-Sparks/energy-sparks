@@ -55,7 +55,7 @@ describe AggregatorBenchmarks do
 
       context 'with an electricity series' do
         let(:meter_collection) do
-          build(:meter_collection, :with_fuel_and_aggregate_meters, fuel_type: :electricity, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
+          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :electricity, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
         end
         before { aggregator.inject_benchmarks }
 
@@ -66,7 +66,7 @@ describe AggregatorBenchmarks do
 
       context 'with a gas series' do
         let(:meter_collection) do
-          build(:meter_collection, :with_fuel_and_aggregate_meters, fuel_type: :gas, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
+          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :gas, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31))
         end
         before { aggregator.inject_benchmarks }
 
@@ -77,7 +77,7 @@ describe AggregatorBenchmarks do
 
       context 'with a storage heater series' do
         let(:meter_collection) do
-          build(:meter_collection, :with_fuel_and_aggregate_meters, fuel_type: :electricity, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31), storage_heaters: true)
+          build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :electricity, start_date: Date.new(2023, 1, 1), end_date: Date.new(2023, 12, 31), storage_heaters: true)
         end
         let(:series_name) { 'storage heaters' }
 

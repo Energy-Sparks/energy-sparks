@@ -2,6 +2,6 @@ cy:
   page:
     audience:
       anyone: Unrhyw un
-      group_admins: Gweinyddwyr grwpiau ysgol
-      school_admins: Gweinyddwyr ysgol a grŵp
+      group_admins: Gweinyddwyr grŵp
+      school_admins: Gweinyddwyr Ysgol a Grŵp
       school_users: Defnyddwyr ysgol

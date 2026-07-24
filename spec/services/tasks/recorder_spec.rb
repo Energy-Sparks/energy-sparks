@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe Tasks::Recorder do
-  let(:user) { create :user }
+  subject(:task_recorder) { Tasks::Recorder.new(recording, user) }
+
+  let(:user) { create(:user) }
   let(:recording) {}
 
   before { SiteSettings.current.update(photo_bonus_points: 0) }
-
-  subject(:task_recorder) { Tasks::Recorder.new(recording, user) }
 
   describe '.new' do
     context 'with a unsupported recording' do
@@ -34,14 +34,14 @@ describe Tasks::Recorder do
     before { SiteSettings.current.update(photo_bonus_points: 10) }
 
     context 'with an Activity' do
-      let(:activity_category) { create(:activity_category)}
+      subject!(:processed) { task_recorder.process }
+
+      let(:activity_category) { create(:activity_category) }
       let(:activity_type) { create(:activity_type, score: 26, activity_category:) }
       let(:description) { '<div></div>' }
       let(:activity) { build(:activity, activity_type:, description:) }
       let(:recording) { activity }
       let(:observation) { Observation.find_by!(activity_id: recording.id) }
-
-      subject!(:processed) { task_recorder.process }
 
       it 'saves activity' do
         expect(recording).to be_persisted
@@ -73,7 +73,7 @@ describe Tasks::Recorder do
       end
 
       context 'with an image' do
-        let(:description) { '<div><figure></figure></div>' }
+        let(:description) { content_with_attachment }
 
         it 'sets the points to the activity score plus bonus' do
           expect(observation.points).to eq(36)
@@ -90,14 +90,14 @@ describe Tasks::Recorder do
     end
 
     context 'with an Observation' do
+      subject!(:processed) { task_recorder.process }
+
       let(:school) { create(:school) }
       let(:intervention_type) { create(:intervention_type, score: 26) }
       let(:at) { Time.zone.today }
       let(:description) { '<div></div>' }
       let(:observation) { school.observations.intervention.new(intervention_type:, description:, at:) }
       let(:recording) { observation }
-
-      subject!(:processed) { task_recorder.process }
 
       it 'saves observation' do
         expect(observation).to be_persisted
@@ -117,7 +117,7 @@ describe Tasks::Recorder do
       end
 
       context 'with an image' do
-        let(:description) { '<div><figure></figure></div>' }
+        let(:description) { content_with_attachment }
 
         it 'sets the points to the activity score plus bonus' do
           expect(observation.points).to eq(36)
@@ -135,8 +135,9 @@ describe Tasks::Recorder do
   end
 
   shared_examples 'a completable when recording progress' do
-    let(:user) { create :user }
     subject(:task_recorder) { Tasks::Recorder.new(recording, user) }
+
+    let(:user) { create(:user) }
 
     let!(:is_completable) { true }
 
@@ -149,7 +150,7 @@ describe Tasks::Recorder do
     end
 
     context 'when recording a task that is not the last remaining task' do
-      let!(:todo) { create(:todo, assignable: assignable, task:)}
+      let!(:todo) { create(:todo, assignable: assignable, task:) }
 
       before { task_recorder.process }
 
@@ -170,7 +171,7 @@ describe Tasks::Recorder do
     end
 
     context 'when all other tasks are complete' do
-      let!(:todo) { create(:todo, assignable: assignable, task:)}
+      let!(:todo) { create(:todo, assignable: assignable, task:) }
 
       before do
         assignable.activity_type_todos.each do |a_todo|
@@ -193,7 +194,7 @@ describe Tasks::Recorder do
 
     context 'when assignable is not available for processing' do
       let(:is_completable) { false }
-      let!(:todo) { create(:todo, assignable: assignable, task:)}
+      let!(:todo) { create(:todo, assignable: assignable, task:) }
 
       before { task_recorder.process }
 
@@ -203,7 +204,7 @@ describe Tasks::Recorder do
     end
 
     context 'when recording a task that is in a different assignable' do
-      let!(:todo) { create(:todo, assignable: other_assignable, task:)}
+      let!(:todo) { create(:todo, assignable: other_assignable, task:) }
 
       before { task_recorder.process }
 
@@ -235,7 +236,9 @@ describe Tasks::Recorder do
     let(:task_recorder) { Tasks::Recorder.new(recording, user) }
 
     context 'when completable is a programme' do
-      let!(:assignable) { create(:programme_type, active: is_completable, activity_type_tasks:, intervention_type_tasks:) }
+      let!(:assignable) do
+        create(:programme_type, active: is_completable, activity_type_tasks:, intervention_type_tasks:)
+      end
       let!(:completable) { create(:programme, school:, programme_type: assignable) }
       let(:other_assignable) { create(:programme_type) }
       let(:observation_type) { :programme }
@@ -258,7 +261,9 @@ describe Tasks::Recorder do
     end
 
     context 'when completable is an audit' do
-      let!(:assignable) { create(:audit, school:, published: is_completable, activity_type_tasks:, intervention_type_tasks:) }
+      let!(:assignable) do
+        create(:audit, school:, published: is_completable, activity_type_tasks:, intervention_type_tasks:)
+      end
       let!(:completable) { assignable }
       let(:other_assignable) { create(:audit) }
       let(:observation_type) { :audit_activities_completed }

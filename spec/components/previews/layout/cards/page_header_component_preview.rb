@@ -13,7 +13,8 @@ module Layout
       # @param subtitle "Subtitle" text
       # @param callout_title "Callout Title" text
       # @param callout_background "Callout Background Class" select { choices: [bg-white, bg-grey-pale]}
-      def callout(theme: :pale, title: 'Page title', subtitle: 'Page subtitle', callout_title: 'Callout', callout_background: 'bg-white')
+      def callout(theme: :pale, title: 'Page title', subtitle: 'Page subtitle', callout_title: 'Callout',
+                  callout_background: 'bg-white')
         render(Layout::Cards::PageHeaderComponent.new(theme:, title:, subtitle:)) do |card|
           card.with_callout(title: callout_title, classes: callout_background) do |callout|
             callout.with_row do

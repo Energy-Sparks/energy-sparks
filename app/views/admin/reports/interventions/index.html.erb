@@ -1,18 +1,32 @@
-<% content_for :page_title, 'Latest activities' %>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "Interventions for #{@dashboard_user.display_name}" %>
+  <% end %>
+  <%= render Elements::ButtonComponent.new('View full report',
+                                           admin_reports_interventions_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+  <p>
+    All energy saving actions recorded by <%= @dashboard_user.display_name %>'s schools in the
+    last 12 months (since <%= nice_dates(1.year.ago) %>).
+  </p>
+<% else %>
+  <% content_for :page_title, 'Latest interventions' %>
 
-<div class="d-flex justify-content-between align-items-center">
-  <h1>Recently recorded interventions</h1>
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Recently recorded interventions</h1>
 
-  <div>
-    <%= link_to 'Intervention type overview', admin_reports_intervention_types_path, class: 'btn btn-default' %>
-    <%= link_to 'All reports', admin_reports_path, class: 'btn btn-default' %>
+    <div>
+      <%= link_to 'Intervention type overview', admin_reports_intervention_types_path, class: 'btn btn-default' %>
+      <%= link_to 'All reports', admin_reports_path, class: 'btn btn-default' %>
+    </div>
   </div>
-</div>
 
-<p>
-  The following is a list of all energy saving actions recorded by school in the
-  last 12 months (since <%= nice_dates(1.year.ago) %>).
-</p>
+  <p>
+    The following is a list of all energy saving actions recorded by schools in the
+    last 12 months (since <%= nice_dates(1.year.ago) %>).
+  </p>
+<% end %>
 
 <p>
   Interventions with a <span class="text-success">Green link</span> are those where the school has
@@ -20,8 +34,10 @@
 <p>
 
 <p>
- The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the activity includes
+ The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the intervention includes
  images provided by the user
 </p>
 
+<%= render 'admin/reports/shared/recording_filters' %>
 <%= render 'shared/observations', observations: @observations %>
+<%= render 'shared/pagy_footer' %>

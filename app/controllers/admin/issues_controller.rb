@@ -3,47 +3,65 @@
 module Admin
   class IssuesController < AdminController
     include Pagy::Method
-    load_and_authorize_resource :school, instance_name: 'issueable'
-    load_and_authorize_resource :school_group, instance_name: 'issueable'
-    load_and_authorize_resource :data_source, instance_name: 'issueable'
-    load_and_authorize_resource :school_onboarding, instance_name: 'issueable', find_by: :uuid
+    include SchoolGroupBreadcrumbs
+
+    load_and_authorize_resource :school
+    load_and_authorize_resource :school_group
+    load_and_authorize_resource :data_source
+    load_and_authorize_resource :supplier
+    load_and_authorize_resource :school_onboarding, find_by: :uuid
+    before_action :issueable
+
+    before_action :enable_bootstrap5
+
+    helper_method :path_helper
+
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
-    load_and_authorize_resource :school # For school context menu if school available
 
     def index
       params[:issue_types] ||= Issue.issue_types.keys
       params[:statuses] ||= Issue.statuses.keys
 
-      @issues = @issues.for_issue_types(params[:issue_types])
-      @issues = @issues.for_statuses(params[:statuses])
-      @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
-      @issues = @issues.search(params[:search]) if params[:search].present?
-      if params[:review_date]
-        @issues = @issues.where(review_date: nil) if params[:review_date] == 'review_unset'
-        @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now, 7.days.from_now) if params[:review_date] == 'review_next_week'
-        @issues = @issues.where('review_date <= ?', Time.zone.now) if params[:review_date] == 'review_overdue'
+      if @issueable.is_a?(SchoolGroup) && params[:all]
+        # School group admin csv download
+        # Includes all school group and school issues
+        @issues = @issueable.all_issues.active if @issueable.is_a?(SchoolGroup)
+      else
+        # Only show issues for archived schools in a school context
+        @issues = @issues.active unless @issueable.is_a?(School)
+        @issues = @issues.for_issue_types(params[:issue_types])
+        @issues = @issues.for_statuses(params[:statuses])
+        @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
+        @issues = @issues.search(params[:search]) if params[:search].present?
+        @issues = @issues.for_issue_tag(params[:issue_tag]) if params[:issue_tag].present?
+
+        if params[:review_date]
+          @issues = @issues.where(review_date: nil) if params[:review_date] == 'review_unset'
+          if params[:review_date] == 'review_next_week'
+            @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now,
+                                    7.days.from_now)
+          end
+          @issues = @issues.where('review_date <= ?', Time.zone.now) if params[:review_date] == 'review_overdue'
+        end
       end
 
-      respond_to do |format|
-        format.html do
-          @pagy, @issues = pagy(@issues.by_priority_order)
-        end
-        format.csv do
-          @issues = @issueable.all_issues if @issueable.is_a?(SchoolGroup)
-          send_data @issues.by_review_date.by_updated_at.to_csv,
-                    filename: "#{"#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize}.csv"
-        end
-      end
+      @issues = @issues.includes(:issueable, :owned_by, :created_by, :updated_by)
+
+      dashboard_issues if @dashboard_user
+
+      format
     end
 
     def new
       @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable, meter_ids: params[:meter_ids])
     end
 
+    def edit; end
+
     def create
       @issue.attributes = { created_by: current_user, updated_by: current_user }
       if @issue.save
-        redirect_to params[:redirect_back], notice: issueable_notice('was successfully created')
+        redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully created')
       else
         render :new
       end
@@ -51,10 +69,24 @@ module Admin
 
     def update
       if @issue.update(issue_params.merge(updated_by: current_user))
-        redirect_to params[:redirect_back], notice: issueable_notice('was successfully updated')
+        redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully updated')
       else
         render :edit
       end
+    end
+
+    def bulk_update
+      updated_count = Issues::BulkUpdate.new(
+        issueable: @issueable,
+        user_from: params[:user_from],
+        user_to: params[:user_to],
+        updated_by: current_user.id
+      ).perform
+
+      redirect_to url_from(params[:redirect_back]), notice: "#{helpers.pluralize(updated_count, 'issue')} updated"
+    rescue Issues::BulkError => e
+      flash.now[:alert] = helpers.safe_join(e.messages, helpers.tag.br)
+      render :bulk_edit
     end
 
     def destroy
@@ -63,9 +95,8 @@ module Admin
     end
 
     def resolve
-      notice = 'was successfully resolved'
-      notice = 'Can only resolve issues (and not notes).' unless @issue.resolve!(updated_by: current_user)
-      redirect_back_or_index notice:
+      @issue.resolve!(updated_by: current_user)
+      redirect_back_or_index notice: 'was successfully resolved'
     end
 
     def meter_issues
@@ -75,25 +106,64 @@ module Admin
 
     private
 
+    def format
+      respond_to do |format|
+        format.html do
+          @pagy, @issues = pagy(@issues.by_priority_order)
+          if @issueable.is_a?(SchoolGroup)
+            breadcrumbs
+            render :index, layout: 'group_settings'
+          end
+        end
+        format.csv do
+          issues = @issues.with_rich_text_description.includes(meters: %i[data_source admin_meter_status])
+
+          send_data issues.to_csv,
+                    filename: EnergySparks::Filenames.csv('issues')
+        end
+      end
+    end
+
+    def path_helper
+      if @dashboard_user
+        [:admin, :dashboard, Issue]
+      else
+        @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
+      end
+    end
+
+    def issueable
+      # For school context menu if school available
+      @issueable ||= @school || @school_group || @data_source || @supplier || @school_onboarding
+    end
+
     def redirect_index(notice:)
       redirect_to issueable_index_url, notice: issueable_notice(notice)
     end
 
     def redirect_back_or_index(notice:)
-      redirect_back fallback_location: issueable_index_url, notice: issueable_notice(notice)
+      redirect_back_or_to(issueable_index_url, notice: issueable_notice(notice))
     end
 
     def issueable_index_url
-      @issue.issueable ? polymorphic_url([:admin, @issue.issueable, Issue]) : polymorphic_url([:admin, Issue])
+      polymorphic_url([:admin, @issue&.issueable || @issueable, Issue].compact)
     end
 
     def issueable_notice(notice)
-      [@issue.issueable.try(:model_name).try(:human), @issue.issue_type, notice].compact.join(' ').capitalize
+      if @issue
+        [@issue&.issueable&.model_name&.human, @issue.issue_type, notice].compact.join(' ').capitalize
+      else
+        notice
+      end
     end
 
     def issue_params
-      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :review_date, :pinned,
-                                    meter_ids: [])
+      params.expect(issue: [:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :review_date, :pinned,
+                            { meter_ids: [] }, { issue_tag_ids: [] }])
+    end
+
+    def breadcrumbs
+      build_breadcrumbs([{ name: t('school_groups.titles.issues') }]) if @issueable.is_a?(SchoolGroup)
     end
   end
 end

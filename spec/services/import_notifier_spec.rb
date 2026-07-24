@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe ImportNotifier do
+  include EmailHelpers
+
   let(:amr_data_feed_config) { create(:amr_data_feed_config, description: 'Sheffield') }
   let(:amr_data_feed_import_log) do
     create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config, records_imported: 200,
@@ -12,12 +14,13 @@ describe ImportNotifier do
   let(:start_date)       { 20.days.ago }
   let(:end_date)         { 9.days.ago }
 
+  let(:supplier)         { create(:supplier) }
   let(:data_source)      { create(:data_source, import_warning_days: 5) }
   let(:school)           { create(:school, :with_school_group) }
 
   let!(:meter_1) do
     create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-           school: school, start_date: start_date, end_date: end_date, data_source: data_source)
+           school: school, start_date: start_date, end_date: end_date, supplier:, data_source:)
   end
 
   describe '#meters_running_behind' do
@@ -34,7 +37,7 @@ describe ImportNotifier do
     context 'and there is a meter running behind' do
       let!(:meter_2) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: school, start_date: start_date, end_date: 2.days.ago, data_source: data_source)
+               school: school, start_date: start_date, end_date: 2.days.ago, supplier:, data_source:)
       end
 
       it 'gets all the meters that have not had validated data for X days' do
@@ -46,12 +49,12 @@ describe ImportNotifier do
     context 'and there are inactive meters' do
       let!(:meter_2) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: school, start_date: start_date, end_date: 2.days.ago, data_source: data_source)
+               school: school, start_date: start_date, end_date: 2.days.ago, supplier:, data_source:)
       end
 
       let!(:inactive_meter) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               active: false, school: school, start_date: start_date, end_date: end_date, data_source: data_source)
+               active: false, school: school, start_date: start_date, end_date: end_date, supplier:, data_source:)
       end
 
       it 'ignores inactive meters when warning about meters running behind' do
@@ -64,7 +67,7 @@ describe ImportNotifier do
       let(:data_source)      { create(:data_source, import_warning_days: nil) }
       let!(:meter_2) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: school, start_date: start_date, end_date: 2.days.ago, data_source: data_source)
+               school: school, start_date: start_date, end_date: 2.days.ago, supplier:, data_source:)
       end
 
       it 'defaults to the site setting default when a meters data source does not have any import warning days' do
@@ -83,7 +86,7 @@ describe ImportNotifier do
       let(:data_source) { nil }
       let!(:meter_2) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: school, start_date: start_date, end_date: 2.days.ago, data_source: data_source)
+               school: school, start_date: start_date, end_date: 2.days.ago, supplier:, data_source:)
       end
 
       it 'defaults to the site setting default when a meters does not have a data source' do
@@ -101,7 +104,7 @@ describe ImportNotifier do
     context 'and there are up to date meters' do
       let!(:meter_2) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: school, start_date: start_date, end_date: 2.days.ago, data_source: data_source)
+               school: school, start_date: start_date, end_date: 2.days.ago, supplier:, data_source:)
       end
 
       it 'checks against the warning days' do
@@ -125,19 +128,19 @@ describe ImportNotifier do
 
       let!(:meter_1) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: meter_1_school, start_date: start_date, end_date: end_date, data_source: data_source)
+               school: meter_1_school, start_date: start_date, end_date: end_date, supplier:, data_source:)
       end
       let!(:meter_2) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: meter_2_school, start_date: start_date, end_date: end_date, data_source: data_source)
+               school: meter_2_school, start_date: start_date, end_date: end_date, supplier:, data_source:)
       end
       let!(:meter_3) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: meter_3_school, start_date: start_date, end_date: end_date, data_source: data_source)
+               school: meter_3_school, start_date: start_date, end_date: end_date, supplier:, data_source:)
       end
       let!(:meter_4) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               school: meter_4_school, start_date: start_date, end_date: end_date, data_source: data_source)
+               school: meter_4_school, start_date: start_date, end_date: end_date, supplier:, data_source:)
       end
 
       it 'sorts meters' do
@@ -153,13 +156,13 @@ describe ImportNotifier do
 
     let!(:meter_1)         do
       create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-             school: school, start_date: start_date, end_date: end_date, data_source: data_source,
+             school: school, start_date: start_date, end_date: end_date, supplier:, data_source:,
              config: amr_data_feed_config, log: amr_data_feed_import_log)
     end
 
     let!(:meter_2) do
       create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-             school: school, start_date: start_date, end_date: end_date, data_source: data_source,
+             school: school, start_date: start_date, end_date: end_date, supplier:, data_source:,
              config: amr_data_feed_config, log: amr_data_feed_import_log)
     end
 
@@ -189,13 +192,13 @@ describe ImportNotifier do
 
     let!(:meter_1) do
       create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-             school: school, start_date: start_date, end_date: end_date, data_source: data_source,
+             school: school, start_date: start_date, end_date: end_date, supplier:, data_source:,
              config: amr_data_feed_config, log: amr_data_feed_import_log)
     end
 
     let!(:meter_2) do
       create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-             school: school, start_date: start_date, end_date: end_date, data_source: data_source,
+             school: school, start_date: start_date, end_date: end_date, supplier:, data_source:,
              config: amr_data_feed_config, log: amr_data_feed_import_log)
     end
 
@@ -249,7 +252,7 @@ describe ImportNotifier do
                       school_group: create(:school_group, name: 'Bath', default_issues_admin_user:))
     end
     let(:description)               { nil }
-    let(:email)                     { ActionMailer::Base.deliveries.last }
+    let(:email)                     { last_email }
 
     it 'formats the email properly' do
       notify
@@ -270,31 +273,31 @@ describe ImportNotifier do
     context 'with meter data' do
       let!(:meter_1) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-               start_date: start_date, end_date: end_date, school: sheffield_school, data_source: data_source)
+               start_date: start_date, end_date: end_date, school: sheffield_school, supplier:, data_source:)
       end
       let!(:bath_meter) do
         create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
                start_date: start_date, end_date: end_date, school: bath_school,
-               data_source: create(:data_source, import_warning_days: 2))
+               supplier:, data_source: create(:data_source, import_warning_days: 2))
       end
 
-      it 'has an attachment' do
-        now = Time.current
-        travel_to(now)
+      before do
+        freeze_time
         notify
-        attachment = email.attachments[0]
-        expect(attachment.content_type).to include('text/csv')
-        expect(attachment.filename).to \
-          eq("energy-sparks-import-report-#{now.strftime('%Y-%m-%dT%H-%M-%S')}Z.csv")
-        expect(attachment.body.raw_source.split("\r\n")).to \
-          eq(['"",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,' \
-              'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
-              ['Meter with stale data', bath_school.school_group.name, bath_meter.meter_type.titleize,
-               bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR', bath_meter.data_source.name, '',
-               end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Bath Admin'].join(','),
-              ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
-               sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', meter_1.data_source.name, '',
-               end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Sheffield Admin'].join(',')])
+      end
+
+      it_behaves_like 'it has a csv attachment' do
+        let(:filename) { "energy-sparks-import-report-#{Time.current.strftime('%Y-%m-%dT%H-%M-%S')}Z.csv" }
+        let(:data) do
+          ['"",Area,Meter type,School,MPAN/MPRN,Meter system,Supplier,Data source,Procurement route,' \
+           'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
+           ['Meter with stale data', bath_school.school_group.name, bath_meter.meter_type.titleize,
+            bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR', bath_meter.supplier.name,
+            bath_meter.data_source.name, '', end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Bath Admin'].join(','),
+           ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
+            sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', meter_1.supplier.name, meter_1.data_source.name,
+            '', end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Sheffield Admin'].join(',')]
+        end
       end
     end
   end

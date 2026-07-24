@@ -52,6 +52,7 @@ FactoryBot.define do
       after(:create) do |school, evaluator|
         group = evaluator.group || create(:school_group, group_type: evaluator.group_type)
         create(:school_grouping, school:, school_group: group, role: evaluator.role)
+        school.reload
       end
     end
 

@@ -12,17 +12,15 @@ RSpec.describe 'calendars', :calendar do
     CSV
   end
 
-  let!(:england_and_wales_calendar) { create :national_calendar, title: 'England and Wales' }
-  let!(:bank_holiday)               { create :bank_holiday, calendar: england_and_wales_calendar, start_date: '2012-04-06', end_date: '2012-04-06' }
+  let!(:england_and_wales_calendar) { create(:national_calendar, title: 'England and Wales') }
+  let!(:bank_holiday)               do
+    create(:bank_holiday, calendar: england_and_wales_calendar, start_date: '2012-04-06', end_date: '2012-04-06')
+  end
 
   before do
     travel_to Time.zone.local(2023, 8, 24)
     create_all_calendar_events
     AcademicYearFactory.new(england_and_wales_calendar).create(start_year: 2014, end_year: 2016)
-  end
-
-  after do
-    travel_back
   end
 
   describe 'when logged in' do
@@ -37,14 +35,14 @@ RSpec.describe 'calendars', :calendar do
       click_on 'Calendars'
       click_on 'New regional calendar'
       click_on 'Create Calendar'
-      expect(page).to have_content("can't be blank")
+      expect(page).to have_text("can't be blank")
 
       fill_in 'Title', with: 'Trumptonshire'
       select 'England and Wales', from: 'Based on'
       fill_in 'Terms CSV', with: events
       click_on 'Create Calendar'
-      expect(page).to have_content('Calendar created')
-      expect(page).not_to have_content("can't be blank")
+      expect(page).to have_text('Calendar created')
+      expect(page).to have_no_text("can't be blank")
 
       calendar = Calendar.regional.first!
       expect(calendar.terms.count).to eq(1)
@@ -52,7 +50,7 @@ RSpec.describe 'calendars', :calendar do
       expect(calendar.based_on).to eq(england_and_wales_calendar)
 
       click_on 'Delete'
-      expect(page).to have_content('Calendar was successfully deleted.')
+      expect(page).to have_text('Calendar was successfully deleted.')
       expect(Calendar.regional.count).to eq 0
     end
 
@@ -70,7 +68,7 @@ RSpec.describe 'calendars', :calendar do
       fill_in 'Title', with: 'Updated..'
       select 'New regional calendar', from: 'Based on'
       click_on 'Update Calendar'
-      expect(page).to have_content('Calendar was successfully updated.')
+      expect(page).to have_text('Calendar was successfully updated.')
 
       calendar.reload
       expect(calendar.title).to eq('Updated..')
@@ -79,9 +77,11 @@ RSpec.describe 'calendars', :calendar do
 
     it 'allows calendar to be resynced to dependents' do
       regional_calendar = create(:regional_calendar, title: 'Regional calendar')
-      parent_event = create(:calendar_event_holiday, calendar: regional_calendar, description: 'Regional calendar event', start_date: '2021-01-01')
+      parent_event = create(:calendar_event_holiday, calendar: regional_calendar,
+                                                     description: 'Regional calendar event', start_date: '2021-01-01')
 
-      calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar', calendar_type: :school).create
+      calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar',
+                                     calendar_type: :school).create
       expect(calendar.calendar_events.count).to eq(1)
       expect(calendar.calendar_events.last.description).to eq('Regional calendar event')
       expect(calendar.calendar_events.last.start_date).to eq(Date.parse('2021-01-01'))
@@ -97,7 +97,7 @@ RSpec.describe 'calendars', :calendar do
       end
 
       click_on 'Update dependent schools'
-      expect(page).to have_content('Update job has been submitted. An email will be sent')
+      expect(page).to have_text('Update job has been submitted. An email will be sent')
 
       perform_enqueued_jobs
       mail = ActionMailer::Base.deliveries.last.to_s
@@ -112,19 +112,21 @@ RSpec.describe 'calendars', :calendar do
 
     it 'shows status of calendar events and resets parent to nil after edit' do
       regional_calendar = create(:regional_calendar, title: 'Regional calendar')
-      parent_event = create(:calendar_event_holiday, calendar: regional_calendar, description: 'Regional calendar event')
-      calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar', calendar_type: :school).create
+      parent_event = create(:calendar_event_holiday, calendar: regional_calendar,
+                                                     description: 'Regional calendar event')
+      calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar',
+                                     calendar_type: :school).create
 
       expect(calendar.calendar_events.first.based_on).to eq(parent_event)
 
       visit calendar_path(calendar)
-      expect(page).to have_content('inherited')
+      expect(page).to have_text('inherited')
       click_on 'Edit'
       fill_in 'Start Date', with: parent_event.start_date - 1.day
       click_on 'Update Calendar event'
 
-      expect(page).to have_content('Event was successfully updated.')
-      expect(page).not_to have_content('inherited')
+      expect(page).to have_text('Event was successfully updated.')
+      expect(page).to have_no_text('inherited')
 
       expect(calendar.calendar_events.first.reload.based_on).to be_nil
     end

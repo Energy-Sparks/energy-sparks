@@ -1,0 +1,26 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(
+        id: 'energy-efficiency-cards',
+        cols: 2,
+        cell_classes: 'mb-4',
+        component_classes: 'theme theme-dark'
+      ) do |grid| %>
+    <% displayable.each do |metric| %>
+      <% grid.with_stats_card do |card| %>
+        <% key = metric.unit.nil? ? metric.metric_type : "#{metric.metric_type}.#{metric.unit}" %>
+        <%= card.with_header title: impact_t("energy_efficiency.metric_types.#{key}.title",
+                                             fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}")).capitalize %>
+        <%= card.with_figure(
+              metric.unit ? format_unit(metric.value, metric.unit.to_sym, false) : number_with_delimiter(metric.value)
+            ) %>
+
+        <% subtext_key = metric.metric_type == 'annual_saving' && metric.unit == 'co2' ? ".#{metric.fuel_type}" : '' %>
+        <%= card.with_subtext do
+              impact_t("energy_efficiency.metric_types.#{key}.subtext#{subtext_key}",
+                       count: metric.number_of_schools,
+                       fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}"))
+            end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

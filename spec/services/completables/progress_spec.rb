@@ -31,16 +31,16 @@ describe Completables::Progress, type: :service do
 
       context 'when no tasks have been completed' do
         describe '#notification' do
-          let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 3 }
+          let(:expected_score) { (activity_type_factory_score * 3) + (intervention_type_factory_score * 3) }
 
           it 'returns the message' do
             expect(service.message).to eq("You haven't yet completed any of the tasks " \
-                                    'in the <strong>Programme Type title</strong> programme')
+                                          'in the <strong>Programme Type title</strong> programme')
           end
 
           it 'shows full summary' do
-            expect(service.summary).to eq("If you complete them, you will score <strong>#{expected_score}</strong> points "\
-                                    'and <strong>12</strong> bonus points for completing the programme')
+            expect(service.summary).to eq("If you complete them, you will score <strong>#{expected_score}</strong> points " \
+                                          'and <strong>12</strong> bonus points for completing the programme')
           end
 
           context 'with no bonus points available' do
@@ -60,7 +60,7 @@ describe Completables::Progress, type: :service do
           build(:activity, school:, activity_type: assignable.activity_type_tasks.first, happened_on: Date.yesterday)
         end
 
-        let(:expected_score) { activity_type_factory_score * 2 + intervention_type_factory_score * 3 }
+        let(:expected_score) { (activity_type_factory_score * 2) + (intervention_type_factory_score * 3) }
 
         before do
           Tasks::Recorder.new(recording, nil).process
@@ -72,7 +72,7 @@ describe Completables::Progress, type: :service do
         end
 
         it 'returns the summary' do
-          expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points "\
+          expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points " \
                                 'and <strong>12</strong> bonus points for completing the programme')
         end
 
@@ -91,12 +91,11 @@ describe Completables::Progress, type: :service do
         let(:recording) do
           build(:observation, :intervention, school:, intervention_type: assignable.intervention_type_tasks.first, at: Date.yesterday)
         end
-        let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 2 }
+        let(:expected_score) { (activity_type_factory_score * 3) + (intervention_type_factory_score * 2) }
 
         before do
           Tasks::Recorder.new(recording, nil).process
         end
-
 
         it 'returns the message' do
           expect(message).to eq('You have completed <strong>1/6</strong> of the tasks ' \
@@ -104,7 +103,7 @@ describe Completables::Progress, type: :service do
         end
 
         it 'returns the summary' do
-          expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points "\
+          expect(summary).to eq("Complete the final <strong>5</strong> tasks now to score <strong>#{expected_score}</strong> points " \
                                 'and <strong>12</strong> bonus points for completing the programme')
         end
 
@@ -128,19 +127,19 @@ describe Completables::Progress, type: :service do
           assignable.intervention_type_tasks.each do |intervention_type|
             recordings << build(:observation, :intervention, school:, intervention_type:, at: Date.yesterday)
           end
-          recordings.each {|recording| Tasks::Recorder.new(recording, nil).process }
+          recordings.each { |recording| Tasks::Recorder.new(recording, nil).process }
         end
 
-        let(:expected_score) { activity_type_factory_score * 1}
+        let(:expected_score) { activity_type_factory_score }
 
         it 'returns the message' do
           expect(service.message).to eq('You have completed <strong>5/6</strong> of the tasks ' \
-                                'in the <strong>Programme Type title</strong> programme')
+                                        'in the <strong>Programme Type title</strong> programme')
         end
 
         it 'returns the summary' do
-          expect(service.summary).to eq("Complete the final task now to score <strong>#{expected_score}</strong> points "\
-                                'and <strong>12</strong> bonus points for completing the programme')
+          expect(service.summary).to eq("Complete the final task now to score <strong>#{expected_score}</strong> points " \
+                                        'and <strong>12</strong> bonus points for completing the programme')
         end
 
         context 'with no bonus points available' do
@@ -170,7 +169,7 @@ describe Completables::Progress, type: :service do
     end
 
     context 'when no tasks have been completed' do
-      let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 3 }
+      let(:expected_score) { (activity_type_factory_score * 3) + (intervention_type_factory_score * 3) }
 
       it 'shows message' do
         expect(service.message).to eq("You haven't yet completed any of the tasks recommended in your recent energy audit")
@@ -178,7 +177,7 @@ describe Completables::Progress, type: :service do
 
       it 'shows summary' do
         expect(service.summary).to eq("If you complete them, you will score <strong>#{expected_score}</strong> points " \
-                                'and <strong>50</strong> bonus points for completing all audit tasks')
+                                      'and <strong>50</strong> bonus points for completing all audit tasks')
       end
     end
 
@@ -211,10 +210,10 @@ describe Completables::Progress, type: :service do
       describe '#summary' do
         subject(:summary) { service.summary }
 
-        let(:expected_score) { activity_type_factory_score * 2 + intervention_type_factory_score * 3 }
+        let(:expected_score) { (activity_type_factory_score * 2) + (intervention_type_factory_score * 3) }
 
         it 'returns the summary' do
-          expect(summary).to eq("Complete the others to score <strong>#{expected_score}</strong> points "\
+          expect(summary).to eq("Complete the others to score <strong>#{expected_score}</strong> points " \
                                 'and <strong>50</strong> bonus points for completing all audit tasks')
         end
       end
@@ -241,10 +240,10 @@ describe Completables::Progress, type: :service do
       describe '#summary' do
         subject(:summary) { service.summary }
 
-        let(:expected_score) { activity_type_factory_score * 3 + intervention_type_factory_score * 2 }
+        let(:expected_score) { (activity_type_factory_score * 3) + (intervention_type_factory_score * 2) }
 
         it 'returns the summary' do
-          expect(summary).to eq("Complete the others to score <strong>#{expected_score}</strong> points "\
+          expect(summary).to eq("Complete the others to score <strong>#{expected_score}</strong> points " \
                                 'and <strong>50</strong> bonus points for completing all audit tasks')
         end
       end
@@ -259,18 +258,18 @@ describe Completables::Progress, type: :service do
         assignable.intervention_type_tasks.each do |intervention_type|
           recordings << build(:observation, :intervention, school:, intervention_type:, at: Date.yesterday)
         end
-        recordings.each {|recording| Tasks::Recorder.new(recording, nil).process }
+        recordings.each { |recording| Tasks::Recorder.new(recording, nil).process }
       end
 
-      let(:expected_score) { activity_type_factory_score * 1}
+      let(:expected_score) { activity_type_factory_score }
 
       it 'returns the message' do
         expect(service.message).to eq('You have completed <strong>5/6</strong> of the tasks ' \
-                              'from your recent energy audit')
+                                      'from your recent energy audit')
       end
 
       it 'returns the summary' do
-        expect(service.summary).to eq("Complete the final task now to score <strong>#{expected_score}</strong> points "\
+        expect(service.summary).to eq("Complete the final task now to score <strong>#{expected_score}</strong> points " \
                                       'and <strong>50</strong> bonus points for completing all audit tasks')
       end
     end

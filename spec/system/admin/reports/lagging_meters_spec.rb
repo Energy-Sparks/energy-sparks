@@ -9,7 +9,8 @@ describe 'Lagging Meters Report', :include_application_helper do
            school: create(:school, :with_school_group),
            start_date: 20.days.ago,
            end_date: latest_reading_date,
-           data_source: create(:data_source, import_warning_days: 5))
+           data_source: create(:data_source, import_warning_days: 5),
+           supplier: create(:supplier))
   end
 
   let(:page_title) { 'Stale data' }
@@ -26,7 +27,7 @@ describe 'Lagging Meters Report', :include_application_helper do
   end
 
   it_behaves_like 'an admin meter import report' do
-    let(:meter) { gas_meter}
-    let(:end_date) { latest_reading_date}
+    let(:meter) { gas_meter }
+    let(:end_date) { latest_reading_date }
   end
 end

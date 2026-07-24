@@ -21,7 +21,7 @@ module Admin
       private
 
       def find_jobs_per_queue_and_job_class
-        query = <<-SQL.squish
+        query = <<~SQL.squish
           select
           queue_name,
           serialized_params->>'job_class' as job_class,
@@ -38,7 +38,7 @@ module Admin
       end
 
       def find_slowest_jobs_per_queue_and_job_class
-        query = <<-SQL.squish
+        query = <<~SQL.squish
           select * from (
             select
             row_number() over (partition BY queue_name, serialized_params->>'job_class' ORDER BY (finished_at - performed_at) desc) AS row,
@@ -58,7 +58,7 @@ module Admin
       end
 
       def build_queue_and_job_class_statistics
-        query = <<-SQL.squish
+        query = <<~SQL.squish
           select
           date_trunc('day', created_at) as date,
           queue_name,

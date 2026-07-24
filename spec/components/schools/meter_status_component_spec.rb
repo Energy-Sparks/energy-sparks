@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Schools::MeterStatusComponent, :include_url_helpers, type: :component do
+  subject(:html) do
+    render_inline(described_class.new(**params))
+  end
+
   around do |example|
     travel_to Date.new(2025, 9, 26)
     ClimateControl.modify AWESOMEPRINT: 'off' do
       example.run
     end
-  end
-
-  subject(:html) do
-    render_inline(described_class.new(**params))
   end
 
   let(:base_params) { { id: 'custom-id', classes: 'extra-classes', school: school } }
@@ -27,15 +27,15 @@ RSpec.describe Schools::MeterStatusComponent, :include_url_helpers, type: :compo
     let(:meter) { school.meters.first }
 
     it 'has table headers' do
-      expect(html).to have_content(/Fuel\s+Meter\s+Name\s+Start date\s+End date/)
+      expect(html).to have_text(/Fuel\s+Meter\s+Name\s+Start date\s+End date/)
     end
 
-    it { expect(html).to have_selector('td i.fa-bolt') }
-    it { expect(html).to have_selector('tbody tr td', text: 'Electricity')}
-    it { expect(html).to have_selector('tbody tr td', text: meter.mpan_mprn)}
-    it { expect(html).to have_selector('tbody tr td', text: meter.name)}
-    it { expect(html).to have_selector('tbody tr td', text: '26 Sep 2024')}
-    it { expect(html).to have_selector('tbody tr td', text: '26 Sep 2025')}
+    it { expect(html).to have_css('td i.fa-bolt') }
+    it { expect(html).to have_css('tbody tr td', text: 'Electricity') }
+    it { expect(html).to have_css('tbody tr td', text: meter.mpan_mprn) }
+    it { expect(html).to have_css('tbody tr td', text: meter.name) }
+    it { expect(html).to have_css('tbody tr td', text: '26 Sep 2024') }
+    it { expect(html).to have_css('tbody tr td', text: '26 Sep 2025') }
 
     context 'when meter is inactive' do
       before do
@@ -43,14 +43,14 @@ RSpec.describe Schools::MeterStatusComponent, :include_url_helpers, type: :compo
       end
 
       it 'is not displayed' do
-        expect(html).not_to have_selector('tbody tr td', text: meter.mpan_mprn)
+        expect(html).to have_no_css('tbody tr td', text: meter.mpan_mprn)
       end
     end
 
     context 'when table_small is true' do
-      let(:params) { base_params.merge(table_small: true)}
+      let(:params) { base_params.merge(table_small: true) }
 
-      it { expect(html).to have_selector('table.table-sm') }
+      it { expect(html).to have_css('table.table-sm') }
     end
   end
 end

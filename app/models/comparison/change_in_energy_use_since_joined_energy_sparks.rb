@@ -2,6 +2,7 @@
 #
 # Table name: comparison_change_in_energy_use_since_joined_energy_sparks
 #
+#  id                                 :bigint(8)
 #  activation_date                    :date
 #  activationyear_electricity_note    :text
 #  activationyear_gas_note            :text
@@ -18,8 +19,6 @@
 #  gas_previous_period_co2            :float
 #  gas_previous_period_gbp            :float
 #  gas_previous_period_kwh            :float
-#  id                                 :bigint(8)
-#  school_id                          :bigint(8)
 #  solar_type                         :text
 #  storage_heater_current_period_co2  :float
 #  storage_heater_current_period_gbp  :float
@@ -27,6 +26,7 @@
 #  storage_heater_previous_period_co2 :float
 #  storage_heater_previous_period_gbp :float
 #  storage_heater_previous_period_kwh :float
+#  school_id                          :bigint(8)
 #
 # Indexes
 #

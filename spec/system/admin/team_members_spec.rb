@@ -20,24 +20,24 @@ describe 'Team members', type: :system do
       fill_in 'Position', with: '1'
       click_on 'Create Team member'
 
-      expect(page).to have_content('blank')
+      expect(page).to have_text('blank')
       fill_in 'Name', with: title
       # for some reason, this is filling the profile field
       # fill_in_trix with: profile
 
       attach_file('Image', Rails.root + 'spec/fixtures/images/banes.png')
       click_on 'Create Team member'
-      expect(page).to have_content 'Team member was successfully created'
-      expect(page).to have_content title
+      expect(page).to have_text 'Team member was successfully created'
+      expect(page).to have_text title
 
       click_on 'Edit'
       fill_in 'Name', with: new_title
       click_on 'Update Team member'
 
-      expect(page).to have_content new_title
+      expect(page).to have_text new_title
 
       click_on 'Delete'
-      expect(page).to have_content('Team member was successfully destroyed.')
+      expect(page).to have_text('Team member was successfully destroyed.')
     end
   end
 end

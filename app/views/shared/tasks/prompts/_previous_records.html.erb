@@ -1,0 +1,23 @@
+<%# i18n-tasks-use t('tasks.activity.sign_in_html') %>
+<%# i18n-tasks-use t('tasks.action.sign_in_html') %>
+<%# i18n-tasks-use t('tasks.activity.record_this') %>
+<%# i18n-tasks-use t('tasks.action.record_this') %>
+
+<% label_key = resource_type == :intervention ? :action : :activity %>
+<% path_helper = "school_#{resource_type}_path" %>
+<% recordings = recordings.by_date(:asc) %>
+
+<%= render PromptComponent.new(icon: 'circle-check', status: :none, classes: 'mb-4') do |prompt| %>
+  <%= t('tasks.previous_records.previously_completed', label: t("common.labels.#{label_key}")) %>
+  <strong>
+    <%= link_to human_counts(recordings).to_s, school_timeline_path(school) %>
+  </strong>
+  <% if recordings.count > 1 %>
+    <%= t('tasks.previous_records.completed_most_recently_on') %>
+  <% else %>
+    <%= t('tasks.previous_records.completed_on') %>
+  <% end %>
+  <strong>
+    <%= link_to nice_dates(recordings.last.happened_on).to_s, public_send(path_helper, school, recordings.last) %>
+  </strong>
+<% end %>

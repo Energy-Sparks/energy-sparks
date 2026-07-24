@@ -66,7 +66,7 @@ describe 'configurable_period' do
     end
   end
 
-  self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration -- shouldn't leak because of self?
+  self::COL_GROUPS = [ # -- shouldn't leak because of self?
     '',
     I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
     I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
@@ -118,7 +118,7 @@ describe 'configurable_period' do
         let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: true, unadjusted: false) }
         let(:expected_table) do
-          footnotes = \
+          footnotes =
             "[#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}] [#{gas_change_rows[:label]}]"
           [
             colgroups,

@@ -1,17 +1,31 @@
-<% content_for :page_title, 'Recently recorded activities' %>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "Activities for #{@dashboard_user.display_name}" %>
+  <% end %>
+  <%= render Elements::ButtonComponent.new('View full report',
+                                           admin_reports_activities_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+  <p>
+    A list of all activities by <%= @dashboard_user.display_name %>'s schools in the last 12 months
+    (since <%= nice_dates(1.year.ago) %>).
+  </p>
+<% else %>
+  <% content_for :page_title, 'Recently recorded activities' %>
 
 <div class="d-flex justify-content-between align-items-center">
   <h1>Recently recorded activities</h1>
 
   <div>
-    <%= link_to "Activity type overview", admin_reports_activity_types_path, class: "btn btn-default" %>
-    <%= link_to "All reports", admin_reports_path, class: "btn btn-default" %>
+    <%= link_to 'Activity type overview', admin_reports_activity_types_path, class: 'btn btn-default' %>
+    <%= link_to 'All reports', admin_reports_path, class: 'btn btn-default' %>
   </div>
 </div>
 
 <p>
   The following is a list of all activities by schools in the last 12 months (since <%= nice_dates(1.year.ago) %>).
 </p>
+<% end %>
 
 <p>Activities with a <span class="text-success">Green link</span> are those where the school has
   provided a custom title. Others are shown as a <span class="text-muted">grey link</span> </p>
@@ -22,4 +36,6 @@ The <%= fa_icon('check-circle text-success') %> icon in the images column indica
 images provided by the user
 </p>
 
+<%= render 'admin/reports/shared/recording_filters' %>
 <%= render 'shared/activities', activities: @activities %>
+<%= render 'shared/pagy_footer' %>

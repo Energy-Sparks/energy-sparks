@@ -5,13 +5,13 @@ require 'rails_helper'
 describe Periods::AcademicYears do
   def period(start_date, end_date, timescale_year)
     holidays = Holidays.new(
-      HolidayData.new(
-        [build(:holiday, name: 'Summer', start_date: Date.new(2023, 7, 21), end_date: Date.new(2023, 8, 31)),
-         build(:holiday, name: 'Summer', start_date: Date.new(2022, 7, 22), end_date: Date.new(2022, 8, 31)),
-         build(:holiday, name: 'Summer', start_date: Date.new(2021, 7, 23), end_date: Date.new(2021, 8, 31))]
-      ), nil
+      [build(:holiday, name: 'Summer', start_date: Date.new(2023, 7, 21), end_date: Date.new(2023, 8, 31)),
+       build(:holiday, name: 'Summer', start_date: Date.new(2022, 7, 22), end_date: Date.new(2022, 8, 31)),
+       build(:holiday, name: 'Summer', start_date: Date.new(2021, 7, 23), end_date: Date.new(2021, 8, 31))],
+      nil
     )
-    meter_collection = build(:meter_collection, :with_aggregate_meter, fuel_type: :electricity, holidays:, start_date:, end_date:)
+    meter_collection = build(:meter_collection, :with_aggregate_meter, fuel_type: :electricity, holidays:, start_date:,
+                                                                       end_date:)
     chart_config = { timescale: { academicyear: timescale_year } }
     described_class.new(chart_config, meter_collection, start_date, end_date, chart_config[:timescale])
   end

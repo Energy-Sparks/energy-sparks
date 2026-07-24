@@ -10,7 +10,7 @@ RSpec.describe 'Heating Types Reports' do
   end
 
   it 'displays a list of heating types' do
-    expect(page).to have_content('Heating Types')
+    expect(page).to have_text('Heating Types')
     expect(page).to have_table('heating-types')
     expect(page).to have_table('school-heating-types')
   end

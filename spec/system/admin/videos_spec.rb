@@ -22,20 +22,20 @@ describe 'Videos', type: :system do
       click_on 'New Video'
       fill_in 'Title', with: title
       click_on 'Create Video'
-      expect(page).to have_content('blank')
+      expect(page).to have_text('blank')
       fill_in 'Youtube', with: '12345'
 
       click_on 'Create Video'
-      expect(page).to have_content title
+      expect(page).to have_text title
 
       click_on 'Edit'
       fill_in 'Title', with: new_title
       click_on 'Update Video'
 
-      expect(page).to have_content new_title
+      expect(page).to have_text new_title
 
       click_on 'Delete'
-      expect(page).to have_content('Video was successfully deleted.')
+      expect(page).to have_text('Video was successfully deleted.')
       expect(Video.count).to eq(0)
     end
   end

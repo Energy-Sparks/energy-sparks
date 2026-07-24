@@ -132,7 +132,7 @@ RSpec.describe 'manage school' do
         click_on 'Update configuration'
 
         within '#data-sharing-status' do
-          expect(page).to have_content('Within Group')
+          expect(page).to have_text('Within Group')
         end
 
         school.reload
@@ -155,7 +155,7 @@ RSpec.describe 'manage school' do
         visit school_path(school)
         expect(page).to have_no_link(href: school_batch_runs_path(school))
         click_on('Process data')
-        expect(page).to have_content "#{school.name} will now process data"
+        expect(page).to have_text "#{school.name} will now process data"
         expect(page).to have_link(href: school_batch_runs_path(school))
         school.reload
         expect(school.process_data).to be(true)
@@ -168,7 +168,7 @@ RSpec.describe 'manage school' do
         school.update(process_data: false)
         visit school_path(school)
         click_on('Process data')
-        expect(page).to have_content "#{school.name} cannot process data as it has no meter readings"
+        expect(page).to have_text "#{school.name} cannot process data as it has no meter readings"
         school.reload
         expect(school.process_data).to be(false)
       end
@@ -184,7 +184,7 @@ RSpec.describe 'manage school' do
         school.reload
         expect(school).not_to be_data_enabled
 
-        expect(page).to have_content('School setup review')
+        expect(page).to have_text('School setup review')
         within('#review-buttons') do
           click_on 'Data visible' # actually enable the school
         end

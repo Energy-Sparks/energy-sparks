@@ -14,6 +14,7 @@ cy:
         title: Tueddiadau hirdymor
       recent_trend:
         title: Tueddiad diweddar
+    authorisation_failed: Dim ond gweinyddwr neu ddefnyddiwr staff yr ysgol hon all gael mynediad at y cynnwys hwn
     benchmarks:
       benchmark_school: Dan reolaeth dda
       exemplar_school: Enghraifft
@@ -62,9 +63,10 @@ cy:
           type: Math
       school_comparisons: Cymhariaethau ysgol
       school_comparisons_introduction_html: |-
-        <p>Mae cymhariaethau ysgol yn seilied ar feincnodi eich ysgol ag ysgolion tebyg ar sail y nodweddion a amlinellir isod.</p>
-        <p>Mae ysgolion "<strong>enghreifftiol</strong>" yn cynyrchioli'r 17.5% uchaf o ysgolion Sbarcynni</p>
-        <p>Mae ysgolion "<strong>a reolir yn dda</strong>" yn cynrychioli'r 30% uchaf o ysgolion Sbarcynni</p>
+        <p>Mae cymariaethau'n seiliedig ar feincnodi ysgol yn erbyn ysgol gymharol yn seiliedig ar y nodweddion a amlinellir uchod.</p>
+        <p>Mae ysgolion "<strong>Enghreifftiol</strong>" yn cynrychioli'r 17.5% gorau o ysgolion Sbarcynni.</p>
+        <p>Mae ysgolion "<strong>a Reolir yn dda</strong>" yn cynrychioli'r 30% gorau o ysgolion Sbarcynni.</p>
+        <p>Mae arbedion posibl yn seiliedig ar ysgol yn lleihau ei defnydd i gyd-fynd â defnydd ysgol Enghreifftiol â nodweddion tebyg.</p>
       total_energy_use_table:
         columns:
           aggregated_meter_date_range: Ystod dyddiad mesurydd
@@ -77,6 +79,7 @@ cy:
         title: Beth ddylech chi wneud nesaf?
     loading_data: Wrthi'n llwytho data...
     nav:
+      manage_targets: Rheoli targed
       overview: Trosolwg
       pages:
         baseload: Llwyth sylfaenol
@@ -86,14 +89,17 @@ cy:
         electricity_meter_breakdown: Cymariaethau mesurydd
         electricity_out_of_hours: Tu allan i oriau ysgol
         electricity_recent_changes: Newidiadau diweddar
+        electricity_target: Targed
         gas_costs: Tariffau a chostau
         gas_long_term: Newidiadau hirdymor
         gas_meter_breakdown: Cymariaethau mesurydd
         gas_out_of_hours: Tu allan i oriau ysgol
         gas_recent_changes: Newidiadau diweddar
+        gas_target: Targed
         heating_control: Rheoli gwresogi
         hot_water: Dŵr poeth
         solar_pv: Solar ffotofoltaig
+        storage_heater_target: Targed
         storage_heaters: Stôr-wresogyddion
         thermostatic_control: Rheolaeth thermostatig
       sections:

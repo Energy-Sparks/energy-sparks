@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AmrDataFeedConfig do
+describe AmrDataFeedConfig, :include_application_helper do
   let!(:admin)              { create(:admin) }
   let!(:config)             { create(:amr_data_feed_config, owned_by: admin) }
   let!(:disabled_config)    { create(:amr_data_feed_config, description: 'Disabled', enabled: false) }
@@ -14,6 +14,10 @@ describe AmrDataFeedConfig do
   end
 
   context 'when viewing list of amr data feed configurations' do
+    let!(:reading) do
+      create(:amr_data_feed_reading, amr_data_feed_config: config, reading_date: 12.days.ago, updated_at: 12.days.ago)
+    end
+
     before do
       click_on 'Manage'
       click_on 'Admin'
@@ -21,26 +25,28 @@ describe AmrDataFeedConfig do
     end
 
     it 'displays only enabled non-api configurations' do
-      expect(page).to have_content(config.description)
-      expect(page).to have_no_content(disabled_config.description)
-      expect(page).to have_no_content(api_config.description)
+      expect(page).to have_text(config.description)
+      expect(page).to have_no_text(disabled_config.description)
+      expect(page).to have_no_text(api_config.description)
     end
 
     it 'allows navigation to view the configuration' do
       within '#configuration-overview' do
         click_on config.description
       end
-      expect(page).to have_content(config.description)
-      expect(page).to have_content(config.owned_by.name)
+      expect(page).to have_text(config.description)
+      expect(page).to have_text(config.owned_by.name)
     end
 
     it 'includes a limited view in the overview table' do
       expect(page).to have_css('#configuration-overview')
       within '#configuration-overview' do
-        expect(page).to have_content(config.description)
-        expect(page).to have_content(config.identifier)
-        expect(page).to have_content(config.notes.to_plain_text)
-        expect(page).to have_content(config.owned_by.name)
+        expect(page).to have_text(config.description)
+        expect(page).to have_text(config.identifier)
+        expect(page).to have_text(config.notes.to_plain_text)
+        expect(page).to have_text(config.owned_by.name)
+        expect(page).to have_text(nice_date_times(reading.updated_at))
+        expect(page).to have_text('Out of Date')
         expect(page).to have_link('Upload')
         expect(page).to have_link('Edit')
       end
@@ -49,10 +55,10 @@ describe AmrDataFeedConfig do
     it 'includes more detail in the detail table' do
       expect(page).to have_css('#configuration-detail')
       within '#configuration-detail' do
-        expect(page).to have_content(config.number_of_header_rows)
-        expect(page).to have_content(config.mpan_mprn_field)
-        expect(page).to have_content(config.reading_date_field)
-        expect(page).to have_content(config.date_format)
+        expect(page).to have_text(config.number_of_header_rows)
+        expect(page).to have_text(config.mpan_mprn_field)
+        expect(page).to have_text(config.reading_date_field)
+        expect(page).to have_text(config.date_format)
       end
     end
   end
@@ -69,7 +75,6 @@ describe AmrDataFeedConfig do
         click_on 'Edit'
       end
       fill_in 'Description', with: 'New title'
-      fill_in 'Import warning days', with: 21
       within('.amr_data_feed_config_notes') do
         fill_in_trix with: 'My notes'
       end
@@ -78,7 +83,6 @@ describe AmrDataFeedConfig do
       select admin.name, from: 'Owned by'
       click_on 'Update'
       config.reload
-      expect(config.import_warning_days).to eq(21)
       expect(config.description).to eq('New title')
       expect(config.notes.to_plain_text).to eq('My notes')
       expect(config.missing_reading_window).to eq(2)

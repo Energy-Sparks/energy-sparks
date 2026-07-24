@@ -13,7 +13,10 @@ RSpec.describe Admin::ActivityTypePreviewsController, type: :controller do
       end
 
       it 'uses locale specific field if specified' do
-        post :create, params: { locale: 'cy', activity_type: { school_specific_description_en: 'some english description', school_specific_description_cy: 'some welsh description' } }
+        post :create,
+             params: { locale: 'cy',
+                       activity_type: { school_specific_description_en: 'some english description',
+                                        school_specific_description_cy: 'some welsh description' } }
         expect(assigns(:activity_type_content)).to include('some welsh description')
       end
     end

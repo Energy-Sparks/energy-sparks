@@ -1,0 +1,65 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Choose Renewed Contract Type' %>
+  <% header_nav.with_button 'Contracts & Licensing', admin_commercial_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <h3>Renew as Standard Contract</h3>
+    <div id="standard" class="p-4 bg-grey-pale rounded">
+      <% unless @original.custom? %>
+        <p>
+          <strong>Keep the same type as the original contract</strong>
+        </p>
+      <% end %>
+      <p>
+         Renew as a standard contract. By default the contract will be renewed for pro rata invoicing, but this
+         can be changed on the following page.
+      </p>
+      <p>
+        With pro rata invoicing any schools added to the contract after invoicing has begun will
+        have their licence begin on that day (e.g. day of onboarding). The licences will end on the contract end
+        date.
+      </p>
+      <p>
+        This allows contract holders to be charged for just the part of the contract period for those schools that
+        join late in the contract.
+      </p>
+      <%= link_to 'Renew contract',
+                  new_admin_commercial_contract_path(params: @chosen_params.merge(chosen_type: :pro_rata)),
+                  class: 'btn btn-sm' %>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col">
+    <h3>Renew as Custom Contract</h3>
+    <div id="custom" class="mt-4 p-4 bg-grey-pale rounded">
+      <% if @original.custom? %>
+        <p>
+          <strong>Keep the same type as the original contract</strong>
+        </p>
+      <% end %>
+      <p>
+        All licences for this contract type will have their own start and end dates.
+      </p>
+      <p>
+        Licences will start from when a school is added to the contract and run for a number of "licence years".
+      </p>
+      <p>
+        Licences will have their own date ranges and may extend beyond the date of the contract.
+      </p>
+      <p>
+        Licence years can be any length (e.g. 1, 2, 3 years) and may be fractional (e.g. 1.2, 1.5 years).
+      </p>
+      <p>
+        The system will scale the annual prices defined in the contract (and its product), as needed for the
+        length of the licensed period.
+      </p>
+      <%= link_to 'Renew contract',
+                  new_admin_commercial_contract_path(params: @chosen_params.merge(chosen_type: :custom)),
+                  class: 'btn btn-sm' %>
+    </div>
+  </div>
+</div>

@@ -14,7 +14,7 @@ FactoryBot.define do
       end
 
       initialize_with do
-        data = HolidayData.new
+        data = []
         data.push(
           build(:holiday, name: 'Spring half term', start_date: Date.new(year, 2, 17), end_date: Date.new(year, 2, 19))
         )

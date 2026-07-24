@@ -2,9 +2,8 @@
 #
 # Table name: comparison_annual_electricity_costs_per_pupils
 #
-#  alert_generation_run_id                       :bigint(8)
-#  electricity_economic_tariff_changed_this_year :boolean
 #  id                                            :bigint(8)
+#  electricity_economic_tariff_changed_this_year :boolean
 #  last_year_co2                                 :float
 #  last_year_gbp                                 :float
 #  last_year_kwh                                 :float
@@ -12,6 +11,7 @@
 #  one_year_electricity_per_pupil_gbp            :float
 #  one_year_electricity_per_pupil_kwh            :float
 #  one_year_saving_versus_exemplar_gbpcurrent    :float
+#  alert_generation_run_id                       :bigint(8)
 #  school_id                                     :bigint(8)
 #
 # Indexes

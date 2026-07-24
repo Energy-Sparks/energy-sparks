@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Report::GasAnomaly do
-  subject(:anomaly) { described_class.first }
+  subject(:anomaly) { described_class.order(:id).first }
 
   let(:meter) do
     school = create(:school, :with_school_group, :with_calendar,
-               weather_station: create(:weather_station))
+                    weather_station: create(:weather_station))
     create(:gas_meter, school: school)
   end
 

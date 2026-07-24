@@ -38,14 +38,11 @@ module Admin
       before_school_ids = school_ids.call
       @user.assign_attributes(user_params)
       if @user.save(context: :form_update)
-        if OnboardingMailer2025.enabled?
-          (school_ids.call - before_school_ids).each do |school_id|
-            school = School.find(school_id)
-            next unless school.data_visible?
+        (school_ids.call - before_school_ids).each do |school_id|
+          school = School.find(school_id)
+          next unless school.data_visible?
 
-            OnboardingMailer2025.with(user: @user, school:, locale: @user.preferred_locale)
-                                .welcome_existing.deliver_later
-          end
+          OnboardingMailer.with(user: @user, school:, locale: @user.preferred_locale).welcome_existing.deliver_later
         end
         redirect_to admin_users_path, notice: 'User was successfully updated.'
       else
@@ -94,6 +91,12 @@ module Admin
       end
     end
 
+    def deliver
+      Admin::UserExportReportJob.perform_later(to: current_user.email)
+      redirect_back fallback_location: admin_users_path,
+                    notice: "User export report has been sent to #{current_user.email}"
+    end
+
     private
 
     def find_users
@@ -110,8 +113,8 @@ module Admin
     end
 
     def user_params
-      params.require(:user)
-            .permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
+      params.expect(user: [:name, :active, :email, :role, :operations, :school_id, :school_group_id, :staff_role_id,
+                           :climate_action_lead, { cluster_school_ids: [] }])
     end
 
     def set_schools_options

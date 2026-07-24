@@ -18,8 +18,8 @@ RSpec.describe 'live data', type: :system do
     end
 
     it 'does not let me view live data' do
-      expect(page).to have_content(school.name)
-      expect(page).not_to have_content('live data')
+      expect(page).to have_text(school.name)
+      expect(page).to have_no_text('live data')
     end
   end
 
@@ -57,8 +57,8 @@ RSpec.describe 'live data', type: :system do
       end
 
       it 'lets me view live data' do
-        expect(page).to have_content('Your live electricity data')
-        expect(page).to have_content('Understanding your energy consumption')
+        expect(page).to have_text('Your live electricity data')
+        expect(page).to have_text('Understanding your energy consumption')
       end
 
       it 'has help page' do
@@ -68,9 +68,9 @@ RSpec.describe 'live data', type: :system do
       end
 
       it 'has links to suggestions actions etc' do
-        expect(page).to have_content('Work with the pupils')
-        expect(page).to have_content('Take action around the school')
-        expect(page).to have_content('Explore your data')
+        expect(page).to have_text('Work with the pupils')
+        expect(page).to have_text('Take action around the school')
+        expect(page).to have_text('Explore your data')
         expect(page).to have_link('Choose another activity', href: activity_category_path(activity_category))
         expect(page).to have_link('Record an energy saving action')
         expect(page).to have_link('View pupil dashboard')
@@ -83,10 +83,10 @@ RSpec.describe 'live data', type: :system do
       it 'links from pupil analysis page' do
         visit pupils_school_analysis_path(school)
         within '#live-data-link' do
-          expect(page).to have_content('Live energy data')
+          expect(page).to have_text('Live energy data')
           click_link 'Live energy data'
         end
-        expect(page).to have_content('Your live electricity data')
+        expect(page).to have_text('Your live electricity data')
       end
 
       it 'returns html with reading' do
@@ -94,8 +94,8 @@ RSpec.describe 'live data', type: :system do
 
         visit school_cad_live_data_path(school, school.cads.last)
 
-        expect(page).to have_content('Live')
-        expect(page).to have_content('api is broken')
+        expect(page).to have_text('Live')
+        expect(page).to have_text('api is broken')
       end
 
       it 'returns html with error' do
@@ -103,8 +103,8 @@ RSpec.describe 'live data', type: :system do
 
         visit school_cad_live_data_path(school, school.cads.last)
 
-        expect(page).to have_content('Live')
-        expect(page).to have_content('123')
+        expect(page).to have_text('Live')
+        expect(page).to have_text('123')
       end
 
       it 'returns json data payload' do

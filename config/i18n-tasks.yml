@@ -132,7 +132,7 @@ ignore_unused:
   - 'co2'
   - '£'
   - 'date.*'
-  - 'devise.mailer.confirmation_instructions.subject'
+  - 'devise.*'
   - 'common.storage_heater'
   - 'chart_configuration.*'
   - 'aggregation_service_solar_pv.*'
@@ -173,6 +173,8 @@ ignore_unused:
   - '{schools,school_groups}.timeline.activity_in_*'
   - 'school_groups.advice.comparison_reports.links.*'
   - 'school_groups.advice_pages.show.page_summary.*'
+  - 'school_groups.impact.potential_savings.{titles,keys}.*'
+  - 'school_groups.impact.energy_efficiency.metric_types.*'
   - 'schools.status.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
@@ -209,4 +211,8 @@ ignore_unused:
  <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
        patterns: [
          ['\badvice_t[( ]\s*%{key}', 'advice_pages.%{key}']
+       ] %>
+ <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
+       patterns: [
+         ['\bimpact_t[( ]\s*%{key}', 'school_groups.impact.%{key}']
        ] %>

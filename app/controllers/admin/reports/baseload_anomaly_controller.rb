@@ -21,7 +21,17 @@ module Admin
           Column.new(:chart,
                      ->(row) { analysis_school_advice_baseload_url(row.meter.school) },
                      ->(row) { link_to('Chart', analysis_school_advice_baseload_path(row.meter.school))},
-                     html_data: { sortable: false })
+                     html_data: { sortable: false }),
+          Column.new(:'issues_&_notes',
+                     nil,
+                     ->(row) { render_to_string(partial: 'admin/issues/modal', locals: { meter: row.meter }) },
+                     display: :html),
+          Column.new(:issues,
+                     ->(row) { row.meter.issues.issue.count },
+                     display: :csv),
+          Column.new(:notes,
+                     ->(row) { row.meter.issues.note.count },
+                     display: :csv)
         ]
       end
 

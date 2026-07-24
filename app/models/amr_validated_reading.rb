@@ -1,15 +1,23 @@
+# Postgres autovacuum specific settings:
+# See: https://www.postgresql.org/docs/current/runtime-config-autovacuum.html
+# Applied using: ALTER TABLE amr_validated_readings SET (X = n)
+# autovacuum_vacuum_cost_delay = 0
+# autovacuum_analyze_scale_factor = 0
+# autovacuum_analyze_threshold = 10000
+# autovacuum_vacuum_scale_factor = 0
+# autovacuum_vacuum_threshold = 50000
 # == Schema Information
 #
 # Table name: amr_validated_readings
 #
 #  id              :bigint(8)        not null, primary key
 #  kwh_data_x48    :decimal(, )      not null, is an Array
-#  meter_id        :bigint(8)        not null
 #  one_day_kwh     :decimal(, )      not null
 #  reading_date    :date             not null
 #  status          :text             not null
 #  substitute_date :date
 #  upload_datetime :datetime
+#  meter_id        :bigint(8)        not null
 #
 # Indexes
 #
@@ -22,14 +30,6 @@
 #  fk_rails_...  (meter_id => meters.id) ON DELETE => cascade
 #
 
-# Postgres autovacuum specific settings:
-# See: https://www.postgresql.org/docs/current/runtime-config-autovacuum.html
-# Applied using: ALTER TABLE amr_validated_readings SET (X = n)
-# autovacuum_vacuum_cost_delay = 0
-# autovacuum_analyze_scale_factor = 0
-# autovacuum_analyze_threshold = 10000
-# autovacuum_vacuum_scale_factor = 0
-# autovacuum_vacuum_threshold = 50000
 class AmrValidatedReading < ApplicationRecord
   belongs_to :meter, inverse_of: :amr_validated_readings
 

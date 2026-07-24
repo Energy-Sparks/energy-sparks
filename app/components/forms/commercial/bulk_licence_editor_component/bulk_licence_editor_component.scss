@@ -1,0 +1,41 @@
+.forms-commercial-bulk-licence-editor-component {
+  /* adds an internal scroll-bar, rather than require page scrolling */
+  .licence-editor-table-wrapper {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .licence-editor-table-wrapper form.button_to {
+    display: inline-block !important;
+    white-space: nowrap;
+  }
+
+  .licence-editor-table > thead > tr > th {
+    background-color: $header-dark !important;
+    border-bottom: 0;
+    border-top: 0;
+    color: $white !important;
+
+    /* create sticky header */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  /* Remove borders from main row */
+  .licence-editor-table tr.main-row > td {
+    border-top: none !important;
+    border-bottom: none !important;
+  }
+
+  /* Remove top border on comments row */
+  .licence-editor-table tr.comments-row > td {
+    border-top: none !important;
+    border-bottom: 2px solid $gray-200;
+  }
+
+  .pending-delete {
+    opacity: 0.4;
+    text-decoration: line-through;
+  }
+}

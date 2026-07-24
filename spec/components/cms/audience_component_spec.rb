@@ -25,11 +25,11 @@ RSpec.describe Cms::AudienceComponent, :include_application_helper, :include_url
       let(:expected_id) { params[:id] }
     end
 
-    it { expect(html).to have_content(I18n.t('components.cms.audience.title')) }
+    it { expect(html).to have_text(I18n.t('components.cms.audience.title')) }
 
     context 'when audience is anyone' do
       it 'summarises the audience' do
-        expect(html).to have_content('This page provides help for anyone using the Energy Sparks website')
+        expect(html).to have_text('This page provides help for anyone using the Energy Sparks website')
       end
     end
 
@@ -37,11 +37,11 @@ RSpec.describe Cms::AudienceComponent, :include_application_helper, :include_url
       let(:audience) { :school_users }
 
       it 'summarises the audience' do
-        expect(html).to have_content('This page provides help for all registered school users')
+        expect(html).to have_text('This page provides help for all registered school users')
       end
 
       it 'confirms the user' do
-        expect(html).to have_content('You are currently signed in as a School admin')
+        expect(html).to have_text('You are currently signed in as a School admin')
       end
 
       context 'with no user' do
@@ -57,14 +57,14 @@ RSpec.describe Cms::AudienceComponent, :include_application_helper, :include_url
       let(:audience) { :school_admins }
 
       it 'summarises the audience' do
-        expect(html).to have_content('This page provides help for School and Group admins')
+        expect(html).to have_text('This page provides help for School and Group admins')
       end
 
       context 'with only staff user' do
         let(:current_user) { create(:staff) }
 
         it 'says they wont have permission' do
-          expect(html).to have_content('This page provides help for School and Group admins')
+          expect(html).to have_text('This page provides help for School and Group admins')
         end
       end
     end
@@ -73,7 +73,7 @@ RSpec.describe Cms::AudienceComponent, :include_application_helper, :include_url
       let(:audience) { :group_admins }
 
       it 'summarises the audience' do
-        expect(html).to have_content('This page provides help for Group admins')
+        expect(html).to have_text('This page provides help for Group admins')
       end
     end
   end

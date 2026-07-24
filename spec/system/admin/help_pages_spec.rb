@@ -18,11 +18,11 @@ describe 'managing help pages', type: :system do
       fill_in :help_page_title_en, with: ''
 
       click_on 'Create'
-      expect(page).to have_content("can't be blank")
+      expect(page).to have_text("can't be blank")
       fill_in :help_page_title_en, with: 'Page title'
 
       click_on 'Create'
-      expect(page).to have_content('Page title')
+      expect(page).to have_text('Page title')
       expect(page).to have_css('.text-danger')
 
       click_on 'Edit'
@@ -35,7 +35,7 @@ describe 'managing help pages', type: :system do
       check 'Publish'
       click_on 'Update'
 
-      expect(page).to have_content('New title')
+      expect(page).to have_text('New title')
       expect(page).to have_css('.text-success')
     end
 
@@ -44,7 +44,7 @@ describe 'managing help pages', type: :system do
 
       it 'lets me publish and unpublish help pages' do
         refresh
-        expect(page).to have_content(help_page.title)
+        expect(page).to have_text(help_page.title)
         expect(page).to have_link('Publish')
 
         click_on 'Publish'

@@ -31,21 +31,21 @@ module Amr
     # avoids having to declare a custom function
     #
     # For all the other columns we just take the values from the incoming data.
-    ON_DUPLICATE_UPDATE_CLAUSE = <<-SQL.squish
-     readings = (
-         SELECT array_agg(
-           CASE
-             WHEN (amr_data_feed_readings.readings)[s.i] IS NOT NULL AND (excluded.readings)[s.i] IS NULL
-                  THEN (amr_data_feed_readings.readings)[s.i]
-             ELSE (excluded.readings)[s.i]
-           END)
-         FROM generate_series(1, 48) AS s(i)
-     ),
-     amr_data_feed_config_id = excluded.amr_data_feed_config_id,
-     meter_id = excluded.meter_id,
-     amr_data_feed_import_log_id = excluded.amr_data_feed_import_log_id,
-     created_at = excluded.created_at,
-     updated_at = excluded.updated_at
+    ON_DUPLICATE_UPDATE_CLAUSE = <<~SQL.squish
+      readings = (
+          SELECT array_agg(
+            CASE
+              WHEN (amr_data_feed_readings.readings)[s.i] IS NOT NULL AND (excluded.readings)[s.i] IS NULL
+                   THEN (amr_data_feed_readings.readings)[s.i]
+              ELSE (excluded.readings)[s.i]
+            END)
+          FROM generate_series(1, 48) AS s(i)
+      ),
+      amr_data_feed_config_id = excluded.amr_data_feed_config_id,
+      meter_id = excluded.meter_id,
+      amr_data_feed_import_log_id = excluded.amr_data_feed_import_log_id,
+      created_at = excluded.created_at,
+      updated_at = excluded.updated_at
     SQL
 
     def initialize(amr_data_feed_config, amr_data_feed_import_log, array_of_data_feed_reading_hashes)
@@ -72,7 +72,7 @@ module Amr
 
     def do_upsert
       on_duplicate = @amr_data_feed_config.allow_merging ? Arel.sql(ON_DUPLICATE_UPDATE_CLAUSE) : :update
-      @array_of_data_feed_reading_hashes.each_slice(100).sum do |batch|
+      @array_of_data_feed_reading_hashes.each_slice(500).sum do |batch|
         result = AmrDataFeedReading.upsert_all(batch, unique_by: %i[mpan_mprn reading_date], on_duplicate:)
         result.rows.flatten.size
       end

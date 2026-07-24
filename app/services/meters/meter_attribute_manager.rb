@@ -39,5 +39,12 @@ module Meters
       broadcast(:meter_attribute_deleted, attribute)
       attribute
     end
+
+    def restore!(attribute_id)
+      attribute = MeterAttribute.find(attribute_id)
+      attribute.deleted_by = nil
+      attribute.save(validate: false)
+      attribute
+    end
   end
 end

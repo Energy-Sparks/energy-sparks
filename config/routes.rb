@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   get 'energy-audits', to: 'home#energy_audits'
   get 'education-workshops', to: 'home#education_workshops'
   get 'product', to: 'home#product'
+  get 'our-impact', to: 'home#our_impact'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show',
                                                            as: :data_feeds_dark_sky_temperature_readings
@@ -56,8 +57,7 @@ Rails.application.routes.draw do
   get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
 
   get '/r/school(/*path)', to: 'redirects#school_page_redirect', as: :school_page_redirect, constraints: { path: /.*/ }
-  # Add the following route once group page redirects are implemented:
-  # get '/r/group(/*path)', to: 'redirects#group_page_redirect', as: :group_page_redirect, constraints: { path: /.*/ }
+  get '/r/group(/*path)', to: 'redirects#group_page_redirect', as: :group_page_redirect, constraints: { path: /.*/ }
 
   direct :cdn_link do |model, options|
     expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
@@ -277,6 +277,7 @@ Rails.application.routes.draw do
           get :charts
         end
       end
+
       resources :clusters do
         member do
           post :unassign
@@ -285,6 +286,17 @@ Rails.application.routes.draw do
           post :assign
         end
       end
+
+      resources :impact, only: [:index]
+      namespace :impact, path: 'impact' do
+        resource :configuration, only: %i[show edit update]
+        resources :runs, only: %i[index show] do
+          collection do
+            get :latest
+          end
+        end
+      end
+
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
       resources :status, only: [:index] do
@@ -424,27 +436,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :progress, controller: :progress, only: [:index] do
-        collection do
-          get :electricity
-          get :gas
-          get :storage_heater
-        end
-      end
-
-      resources :school_targets do
-        scope module: :school_targets do
-          resources :progress do
-            collection do
-              get :electricity
-              get :gas
-              get :storage_heater
-            end
-          end
-        end
-      end
-
-      resources :estimated_annual_consumptions, except: [:show]
+      resources :school_targets
 
       resources :programmes, only: [:create]
 
@@ -510,7 +502,7 @@ Rails.application.routes.draw do
 
       resource :meter_readings_validation, only: [:create]
 
-      resource :configuration, controller: :configuration, only: [:edit, :update]
+      resource :configuration, controller: :configuration, only: %i[edit update]
       resource :times, only: %i[edit update]
       resource :your_school_estate, only: %i[edit update]
 
@@ -568,9 +560,13 @@ Rails.application.routes.draw do
 
   resource :email_unsubscription, only: %i[new create show], controller: :email_unsubscription
 
-  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
 
   devise_for :users, skip: :sessions
+
+  devise_scope :user do
+    post 'confirmation/confirm', to: 'confirmations#confirm', as: :user_confirmation_confirm
+  end
 
   get '/admin', to: 'admin#index'
 
@@ -579,27 +575,69 @@ Rails.application.routes.draw do
       member do
         post :resolve
       end
+      collection do
+        get :bulk_edit
+        post :bulk_update
+      end
     end
   end
   concern :messageable do
     resource :dashboard_message, only: %i[update edit destroy], controller: '/admin/dashboard_messages'
   end
+  concern :contract_holder do
+    resources :contracts, only: %i[index], controller: '/admin/commercial/contract_holder_contracts'
+  end
 
   namespace :admin do
+    resources :dashboards, only: %i[show index] do
+      resources :school_groups, module: :dashboard
+      resources :engaged_groups, module: :dashboard
+      resources :activations, module: :dashboard
+      resources :impact_reports, module: :dashboard
+      resources :data_sources, module: :dashboard
+      resources :suppliers, module: :dashboard
+      resources :amr_data_feed_configs, module: :dashboard
+      resources :issues, module: :dashboard
+      resources :school_onboardings, path: 'school_setup', module: :dashboard do
+        collection do
+          get 'completed'
+        end
+      end
+      resources :missing_alert_contacts, module: :dashboard
+      resources :limited_users, module: :dashboard
+      resources :activities, module: :dashboard
+      resources :interventions, module: :dashboard
+      resources :energy_tariffs, module: :dashboard
+
+      resources :amr_data_feed_import_logs, module: :dashboard
+      resources :blank_readings, :lagging_meters, :zero_readings, module: :dashboard
+      resources :new_data_inactive_meter_report, module: :dashboard
+      resources :admin_user_meter_report, module: :dashboard
+      resources :baseload_anomaly, module: :dashboard
+      resources :manual_reads, module: :dashboard
+      resources :pupil_number_updates, module: :dashboard
+    end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
 
     get 'chart-preview', to: 'chart_previews#show'
 
+    resources :issue_tags
+
     concerns :issueable
-    resources :funders
+    resources :funders do
+      scope module: :funders do
+        concerns :contract_holder
+      end
+    end
     resources :users, except: [:show] do
       get 'lock', to: 'users#lock'
       get 'unlock', to: 'users#unlock'
       get 'disable', to: 'users#disable'
       get 'enable', to: 'users#enable'
       get 'mailchimp_redirect', to: 'users#mailchimp_redirect'
+      post 'deliver', on: :collection
 
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
@@ -611,6 +649,56 @@ Rails.application.routes.draw do
         resource :intervention_types, only: %i[show update]
       end
     end
+
+    namespace :commercial do
+      resources :contracts do
+        post :confirm, on: :member
+
+        get :contract_holder_options, on: :collection
+        get :choose, on: :collection
+        get :renew, on: :collection
+        resources :invoices, controller: 'contracts/invoices', only: %i[new create] do
+          get :raise_invoice, on: :collection
+        end
+        resources :licences, controller: 'contracts/licences' do
+          collection do
+            get :edit
+            put :update
+            post :create_licence
+          end
+        end
+        collection do
+          get :current
+          get :expired
+          get :expiring
+          get :future
+          get :over_licensed
+          get :overlapping
+          get :pending_invoicing
+          get :provisional
+          get :recent
+        end
+      end
+      resources :contract_holders, only: [:index]
+      resources :invoices, only: [:index, :show] do
+        get :export, on: :collection
+      end
+      resources :licences do
+        collection do
+          get :current
+          get :expired
+          get :expiring
+          get :overlapping
+          get :recent
+          get :unlicensed
+        end
+      end
+      resources :products
+      resources :xero_account_codes, except: [:show]
+
+      get 'pricing', to: 'pricing#show'
+    end
+    resource :commercial, only: [:show], controller: :commercial
 
     namespace :comparisons do
       resources :footnotes, except: [:show]
@@ -631,6 +719,7 @@ Rails.application.routes.draw do
       resources :sections, except: [:show], concerns: [:publishable]
     end
 
+    resources :impact_reports, only: %i[index]
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
@@ -638,7 +727,8 @@ Rails.application.routes.draw do
     resources :consent_grants, only: %i[index show]
     resources :find_school_by_mpxn, only: :index
     resources :find_school_by_urn, only: :index
-    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues'
+    resources :find_school_by_name, only: :index
+    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues', as: :meter_issues
 
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
@@ -669,8 +759,11 @@ Rails.application.routes.draw do
         resource :meter_report, only: [:show] do
           post :deliver, on: :member
         end
+        resource :licence_summaries, only: :show
+
         concerns :messageable
         concerns :issueable
+        concerns :contract_holder
       end
     end
 
@@ -697,6 +790,7 @@ Rails.application.routes.draw do
       get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
       scope module: :schools do
         concerns :messageable
+        concerns :contract_holder
       end
     end
 
@@ -751,6 +845,12 @@ Rails.application.routes.draw do
         concerns :issueable
       end
     end
+    resources :suppliers do
+      post :deliver, on: :member
+      scope module: :suppliers do
+        concerns :issueable
+      end
+    end
     resources :testimonials
 
     resource :content_generation_run, controller: :content_generation_run
@@ -792,10 +892,11 @@ Rails.application.routes.draw do
       resources :community_use, only: [:index]
       resources :data_loads, only: :index
       resources :dcc_status, only: [:index]
+      resources :images, only: :index
 
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
 
-      resources :engaged_groups, only: [:index]
+      match 'engaged_groups', to: 'engaged_groups#index', via: %i[get post]
       match 'engaged_schools', to: 'engaged_schools#index', via: %i[get post]
 
       resource :funder_allocations, only: [:show] do
@@ -814,12 +915,12 @@ Rails.application.routes.draw do
       resources :meter_loading_reports, only: :index
       resources :meter_reports, only: :index
       resources :missing_alert_contacts, only: [:index]
+      resources :limited_users, only: [:index]
       resources :new_data_inactive_meter_report, only: [:index]
       resources :perse_meter, only: [:index]
       resources :recent_audits, only: [:index]
       resources :school_scenarios, only: [:index]
       resources :school_targets, only: :index
-      resources :solar_panels, only: [:index]
       get 'tariffs', to: 'tariffs#index', as: :tariffs
       get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
       resources :tariff_import_logs, only: [:index]
@@ -828,6 +929,10 @@ Rails.application.routes.draw do
       resources :user_logins, only: [:index]
       resources :work_allocation, only: [:index]
       resources :zero_readings, only: [:index]
+      resources :pupil_number_updates, only: :index
+      resources :metered_solar, only: :index
+      resources :modelled_solar, only: :index
+      resources :solar_installations, only: :index
     end
 
     resource :settings, only: %i[show update]
@@ -839,6 +944,7 @@ Rails.application.routes.draw do
       namespace :search do
         resources :find_school_by_mpxn, only: :index
         resources :find_school_by_urn, only: :index
+        resources :find_school_by_name, only: :index
       end
     end
 
@@ -857,7 +963,7 @@ Rails.application.routes.draw do
             post :clear
           end
         end
-        resource :target_data, only: :show
+        resources :licences, only: :index
       end
       member do
         post :archive
@@ -883,6 +989,9 @@ Rails.application.routes.draw do
 
     resources :local_distribution_zones, except: [:destroy]
     resources :secr_co2_equivalences, except: %i[destroy show]
+    resources :organisation_statements do
+      post :make_current, on: :member
+    end
   end
 
   get 'admin/mailer_previews/*path' => 'rails/mailers#preview', as: :admin_mailer_preview
@@ -937,6 +1046,18 @@ Rails.application.routes.draw do
   end
   get '/campaigns/find-out-more', to: redirect(path: '/product')
   get '/campaigns/book-demo', to: redirect(path: '/watch-demo')
+
+  # old school target progress paths
+  get '/schools/:name/progress', to: redirect('/schools/%{name}/school_targets')
+  get '/schools/:name/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
+  get '/schools/:name/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
+  get '/schools/:name/progress/storage_heater', to: redirect('/schools/%{name}/advice/storage_heater_target')
+  get '/schools/:name/school_targets/:id/progress/electricity',
+      to: redirect('/schools/%{name}/advice/electricity_target')
+  get '/schools/:name/school_targets/:id/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
+  get '/schools/:name/school_targets/:id/progress/storage_heater',
+      to: redirect('/schools/%{name}/advice/storage_heater_target')
+  get '/schools/:name/estimated_annual_consumptions', to: redirect('/schools/%{name}')
 
   match '/:code', to: 'errors#show', via: :all, constraints: {
     code: /#{ErrorsController::CODES.join('|')}/

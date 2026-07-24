@@ -1,7 +1,7 @@
 "use strict";
 
 function setupSchoolGroupAndClusterControls() {
-  document.querySelectorAll(".user_school_id, .user_school_group_id, .user_cluster_schools, .user_staff_role_id")
+  document.querySelectorAll(".user_school_id, .user_school_group_id, .user_cluster_schools, .user_staff_role_id, .user_operations")
     .forEach(el => el.style.display = "none");
 
   const roleSelect = document.getElementById("user_role");
@@ -29,6 +29,9 @@ function setupSchoolGroupAndClusterControls() {
     case "group_manager":
       document.querySelectorAll(".user_school_group_id")
         .forEach(el => el.style.display = "");
+      break;
+    case "admin":
+      document.querySelectorAll(".user_operations").forEach(e1 => e1.style.display = "");
       break;
   }
 

@@ -4,7 +4,7 @@ module AlphabeticalScopes
   class_methods do
     def alphabetical_scope_sql(ignore_prefix)
       name = remove_prefix_from_name(ignore_prefix)
-      <<-SQL.squish
+      <<~SQL.squish
         CASE
           WHEN substr(#{name}, 1, 1) ~ '^[0-9]' THEN '#'
           ELSE substr(upper(#{name}), 1, 1)

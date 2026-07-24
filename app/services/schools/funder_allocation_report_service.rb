@@ -5,12 +5,15 @@ module Schools
         [
           'School group',
           'School name',
+          'URN',
           'School type',
           'Archived?',
           'Data visible?',
+          'Data sharing',
           'Onboarding date',
           'Date enabled date', # (see “Recently onboarded” report)
-          'Funder',
+          'Current Contract Holder',
+          'Future Contract Holder',
           'Funding status',
           'Postcode',
           'Country',
@@ -40,7 +43,13 @@ module Schools
           'Solar Data Source 3',
           'Solar Procurement Route 1',
           'Solar Procurement Route 2',
-          'Solar Procurement Route 3'
+          'Solar Procurement Route 3',
+          'Current Contract Holder',
+          'Current Contract Start Date',
+          'Current Contract End Date',
+          'Licence Start Date',
+          'Licence End Date',
+          'Product'
         ]
       end
     end
@@ -56,21 +65,27 @@ module Schools
         active_and_archived_schools.each do |school|
           electricity_data_sources = school.all_data_sources(:electricity)
           gas_data_sources = school.all_data_sources(:gas)
-          solar_data_sources = school.all_data_sources([:solar_pv, :exported_solar_pv])
+          solar_data_sources = school.all_data_sources(%i[solar_pv exported_solar_pv])
 
           electricity_routes = school.all_procurement_routes(:electricity)
           gas_routes = school.all_procurement_routes(:gas)
-          solar_routes = school.all_procurement_routes([:solar_pv, :exported_solar_pv])
+          solar_routes = school.all_procurement_routes(%i[solar_pv exported_solar_pv])
+
+          current_licence = school.licences.current.by_start_date.first
+          current_contract = school.licences.current.by_start_date.first&.contract
 
           csv << [
             school.school_group.name,
             school.name,
+            school.urn,
             school.school_type.humanize,
             school.archived?,
             school.data_enabled,
+            school.data_sharing.humanize,
             onboarding_completed(school),
             first_made_data_enabled(school),
-            school&.funder&.name,
+            school.summarised_current_contract_holder_name,
+            school.summarised_future_contract_holder_name,
             school.funding_status.humanize,
             school.postcode,
             country(school),
@@ -100,7 +115,13 @@ module Schools
             solar_data_sources[2],
             solar_routes[0],
             solar_routes[1],
-            solar_routes[2]
+            solar_routes[2],
+            current_contract&.contract_holder&.name,
+            current_contract&.start_date,
+            current_contract&.end_date,
+            current_licence&.start_date,
+            current_licence&.end_date,
+            current_contract&.product&.name
           ]
         end
       end
@@ -113,15 +134,15 @@ module Schools
     private
 
     def country(school)
-      school.country.present? ? school.country.humanize : nil
+      school.country.presence&.humanize
     end
 
     def region(school)
-      school.region.present? ? school.region.humanize : nil
+      school.region.presence&.humanize
     end
 
     def local_authority_area(school)
-      school.local_authority_area_group.present? ? school.local_authority_area_group.name : nil
+      school.local_authority_area_group.presence&.name
     end
 
     def onboarding_completed(school)
@@ -139,12 +160,14 @@ module Schools
     def activities_this_academic_year(school)
       academic_year = academic_year(school)
       return 0 unless academic_year.present?
+
       school.activities.between(academic_year.start_date, academic_year.end_date).count
     end
 
     def actions_this_academic_year(school)
       academic_year = academic_year(school)
       return 0 unless academic_year.present?
+
       school.observations.intervention.between(academic_year.start_date, academic_year.end_date).count
     end
 
@@ -153,7 +176,7 @@ module Schools
     end
 
     def format_time(date)
-      date.present? ? date.iso8601 : nil
+      date.presence&.iso8601
     end
   end
 end

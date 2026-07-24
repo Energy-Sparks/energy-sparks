@@ -10,7 +10,7 @@ describe SchoolCreator, :schools, type: :service do
   let(:school_group) { create(:school_group, name: 'BANES') }
   let(:scoreboard) { create(:scoreboard, name: 'BANES scoreboard') }
   let(:weather_station) { create(:weather_station, title: 'BANES weather') }
-  let(:funder) { create(:funder) }
+  let(:contract) { create(:commercial_contract) }
 
   describe '#onboard_school!' do
     let(:school)                    { build(:school) }
@@ -26,7 +26,7 @@ describe SchoolCreator, :schools, type: :service do
                           weather_station:,
                           school_will_be_public: true,
                           data_sharing: :within_group,
-                          funder:)
+                          contract:)
       onboarding.issues.create!(created_by: onboarding_user, updated_by: onboarding_user,
                                 title: 'onboarding issue', description: 'description')
       onboarding
@@ -52,7 +52,6 @@ describe SchoolCreator, :schools, type: :service do
         expect(school.scoreboard).to eq(scoreboard)
         expect(school.configuration).not_to be_nil
         expect(school.weather_station).not_to be_nil
-        expect(school.funder).to eq(funder)
       end
 
       it { expect(school.project_groups).to be_empty }
@@ -118,6 +117,18 @@ describe SchoolCreator, :schools, type: :service do
       end
 
       it { expect(school_onboarding.school.public).to be_falsey }
+    end
+
+    context 'when the school is being onboarded to a contract' do
+      let(:contract) { create(:commercial_contract) }
+
+      before do
+        school_onboarding.update(contract:)
+      end
+
+      it 'triggers licence creation' do
+        expect { service.onboard_school!(school_onboarding) }.to change(Commercial::Licence, :count).from(0).to(1)
+      end
     end
 
     context 'when onboarding user already has a school' do
@@ -210,17 +221,28 @@ describe SchoolCreator, :schools, type: :service do
         let(:school) { create(:school, :with_consent, school_group:, data_enabled: false, visible:) }
 
         it 'touches the group' do
-          expect { service.make_data_enabled! }.to(change {school_group.reload.updated_at })
+          expect { service.make_data_enabled! }.to(change { school_group.reload.updated_at })
         end
       end
 
       context 'when there is an activation date' do
-        let(:school) { create(:school, :with_consent, data_enabled: false, visible:, activation_date: Time.zone.today - 1) }
+        let(:school) do
+          create(:school, :with_consent, data_enabled: false, visible:, activation_date: Time.zone.today - 1)
+        end
 
         it 'does not change the activation date' do
           service.make_data_enabled!
           school.reload
           expect(school.activation_date).to eq(Time.zone.today - 1)
+        end
+      end
+
+      context 'when the school has a licence' do
+        let!(:licence) { create(:commercial_licence, status: :confirmed, school:) }
+
+        it 'updates the licence' do
+          service.make_data_enabled!
+          expect(licence.reload.status).to eq('pending_invoice')
         end
       end
 
@@ -259,7 +281,7 @@ describe SchoolCreator, :schools, type: :service do
       let(:school) { create(:school, school_group:, visible: false) }
 
       it 'touches the group' do
-        expect { service.make_visible! }.to(change {school_group.reload.updated_at })
+        expect { service.make_visible! }.to(change { school_group.reload.updated_at })
       end
     end
 

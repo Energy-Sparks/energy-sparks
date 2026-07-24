@@ -36,7 +36,7 @@ RSpec.describe Layout::Cards::AdminButtonPanelComponent, :include_application_he
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_content('Warning') }
+    it { expect(html).to have_text('Warning') }
     it { expect(html).to have_link('button 1', href: 'link_to_button_1') }
     it { expect(html).to have_link('button 2', href: 'link_to_button_2') }
   end

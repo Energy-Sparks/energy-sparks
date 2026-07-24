@@ -30,12 +30,12 @@ describe DataFeeds::N3rgy::DataApiClient do
     context 'with a successful request' do
       let(:response) do
         {
-          "resource": '/',
-          "responseTimestamp": '2020-11-10T17:07:01.580Z',
-          "startAt": 0,
-          "maxResults": 100,
-          "total": 1,
-          "entries": [
+          resource: '/',
+          responseTimestamp: '2020-11-10T17:07:01.580Z',
+          startAt: 0,
+          maxResults: 100,
+          total: 1,
+          entries: [
             '1230267891094'
           ]
         }
@@ -65,17 +65,17 @@ describe DataFeeds::N3rgy::DataApiClient do
   describe '#find_mpxn' do
     let(:response) do
       {
-        "resource": '/find-mpxn/1234567891002',
-        "responseTimestamp": '2024-02-23T11:03:23.040Z',
-        "mpxn": '1234567891002',
-        "deviceType": 'ESME',
-        "deviceId": '02-00-00-00-00-00-02-01',
-        "deviceStatus": 'COMMISSIONED',
-        "deviceManufacturer": '123E',
-        "deviceModel": 'Model-XYZ',
-        "propertyFilter": {
-          "postCode": 'C2A 2EE',
-          "addressIdentifier": '22A, SOMEWHERE'
+        resource: '/find-mpxn/1234567891002',
+        responseTimestamp: '2024-02-23T11:03:23.040Z',
+        mpxn: '1234567891002',
+        deviceType: 'ESME',
+        deviceId: '02-00-00-00-00-00-02-01',
+        deviceStatus: 'COMMISSIONED',
+        deviceManufacturer: '123E',
+        deviceModel: 'Model-XYZ',
+        propertyFilter: {
+          postCode: 'C2A 2EE',
+          addressIdentifier: '22A, SOMEWHERE'
         }
       }
     end
@@ -93,9 +93,9 @@ describe DataFeeds::N3rgy::DataApiClient do
   describe '#utilities' do
     let(:response) do
       {
-        "resource": '/mpxn/1234567891012',
-        "responseTimestamp": '2022-04-10T17:07:01.580Z',
-        "entries": "['electricity', 'gas']"
+        resource: '/mpxn/1234567891012',
+        responseTimestamp: '2022-04-10T17:07:01.580Z',
+        entries: "['electricity', 'gas']"
       }
     end
 
@@ -112,12 +112,12 @@ describe DataFeeds::N3rgy::DataApiClient do
   describe '#reading_types' do
     let(:response) do
       {
-        "resource": '/mpxn/1234567891002/utility/electricity',
-        "responseTimestamp": '2024-02-23T12:36:47.056Z',
-        "devices": [
+        resource: '/mpxn/1234567891002/utility/electricity',
+        responseTimestamp: '2024-02-23T12:36:47.056Z',
+        devices: [
           {
-            "deviceId": '02-00-00-00-00-00-02-01',
-            "availableDataTypes": %w[
+            deviceId: '02-00-00-00-00-00-02-01',
+            availableDataTypes: %w[
               consumption
               tariff
             ]
@@ -152,7 +152,7 @@ describe DataFeeds::N3rgy::DataApiClient do
       context 'with date parameters' do
         it 'queries the right url' do
           url = '/mpxn/1234567891000/utility/electricity/readingtype/consumption'
-          url = url + '?granularity=halfhour&outputFormat=json&start=202401010000&end=202401020000'
+          url += '?granularity=halfhour&outputFormat=json&start=202401010000&end=202401020000'
           stubs.get(url) do |_env|
             [200, {}, response.to_json]
           end
@@ -167,9 +167,9 @@ describe DataFeeds::N3rgy::DataApiClient do
     let(:uri) { 'https://read-inventory.data.n3rgy.com/files/767c1f42-9d52-43c1-8909-f61c78aa1916.json' }
     let(:response) do
       {
-        "status": 200,
-        "uuid": '767c1f42-9d52-43c1-8909-f61c78aa1916',
-        "uri": uri
+        status: 200,
+        uuid: '767c1f42-9d52-43c1-8909-f61c78aa1916',
+        uri: uri
       }
     end
 
@@ -188,7 +188,7 @@ describe DataFeeds::N3rgy::DataApiClient do
 
   describe '#fetch_with_retry' do
     context 'with auth failure' do
-      let(:response) { { "message": 'Unauthorized' } }
+      let(:response) { { message: 'Unauthorized' } }
 
       it 'raises error' do
         stubs.get('some-inventory-file') do |_env|

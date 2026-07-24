@@ -1,0 +1,6 @@
+<%= render 'filter',
+           field: :admin_meter_status,
+           options: options_from_collection_for_select(
+             AdminMeterStatus.include_in_inactive_meter_report.by_label, :id, :label, params[:admin_meter_status]
+           ),
+           blank: 'Any Meter Status' %>

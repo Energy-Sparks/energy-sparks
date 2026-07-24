@@ -113,7 +113,31 @@ resource "aws_cloudwatch_metric_alarm" "production_postgres_freeable_memory" {
   period              = 300
   evaluation_periods  = 1
   datapoints_to_alarm = 1
-  threshold           = 214748365 # 10% of 2GB
+  threshold           = 858993459 # 10% of 8GB
   comparison_operator = "LessThanOrEqualToThreshold"
+  treat_missing_data  = "missing"
+}
+
+resource "aws_cloudwatch_metric_alarm" "goodjob_regeneration_running" {
+  alarm_name                = "GoodJob regeneration long running"
+  actions_enabled           = true
+  alarm_actions             = ["arn:aws:sns:eu-west-2:110304303563:notifications"]
+  ok_actions                = []
+  insufficient_data_actions = []
+
+  metric_name = "running"
+  namespace   = "GoodJob"
+  statistic   = "Average"
+
+  dimensions = {
+    InstanceId = data.aws_instances.production.ids[0]
+    QueueName = "regeneration"
+  }
+
+  period              = 3600
+  evaluation_periods  = 8
+  datapoints_to_alarm = 8
+  threshold           = 1
+  comparison_operator = "GreaterThanThreshold"
   treat_missing_data  = "missing"
 }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class AnalyticsMeterCollectionFactory
     def initialize(active_record_school, meter_collection_class = MeterCollectionFactory)
@@ -10,8 +12,8 @@ module Amr
     end
 
     def unvalidated_data
-      heat_meters = @active_record_school.meters_with_readings(:gas)
-      electricity_meters = @active_record_school.meters_with_readings(Meter.non_gas_meter_types)
+      heat_meters = @active_record_school.meters_with_readings(:gas).includes(:meter_attributes)
+      electricity_meters = @active_record_school.meters_with_readings(Meter.non_gas_meter_types).includes(:meter_attributes)
       data(AnalyticsUnvalidatedAmrDataFactory, heat_meters, electricity_meters)
     end
 
@@ -20,8 +22,9 @@ module Amr
     end
 
     def validated_data
-      heat_meters = @active_record_school.meters_with_validated_readings(:gas)
-      electricity_meters = @active_record_school.meters_with_validated_readings([:electricity, :solar_pv, :exported_solar_pv])
+      heat_meters = @active_record_school.meters_with_validated_readings(:gas).includes(:meter_attributes)
+      electricity_meters = @active_record_school.meters_with_validated_readings(%i[electricity solar_pv
+                                                                                   exported_solar_pv]).includes(:meter_attributes)
       data(AnalyticsValidatedAmrDataFactory, heat_meters, electricity_meters)
     end
 

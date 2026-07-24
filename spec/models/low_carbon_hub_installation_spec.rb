@@ -40,7 +40,7 @@ describe LowCarbonHubInstallation do
 
     context 'when there is an electricity meter' do
       context 'with no readings' do
-        let!(:electricity_meter) { create(:electricity_meter, mpan_mprn: 60000000000000 + low_carbon_hub_installation.rbee_meter_id.to_i, pseudo: true, low_carbon_hub_installation: low_carbon_hub_installation) }
+        let!(:electricity_meter) { create(:electricity_meter, mpan_mprn: 60_000_000_000_000 + low_carbon_hub_installation.rbee_meter_id.to_i, pseudo: true, low_carbon_hub_installation: low_carbon_hub_installation) }
 
         it 'returns nil' do
           expect(latest_electricity_reading).to be_nil
@@ -48,7 +48,7 @@ describe LowCarbonHubInstallation do
       end
 
       context 'with readings' do
-        let!(:electricity_meter) { create(:electricity_meter_with_reading, mpan_mprn: 60000000000000 + low_carbon_hub_installation.rbee_meter_id.to_i, pseudo: true, low_carbon_hub_installation: low_carbon_hub_installation) }
+        let!(:electricity_meter) { create(:electricity_meter_with_reading, mpan_mprn: 60_000_000_000_000 + low_carbon_hub_installation.rbee_meter_id.to_i, pseudo: true, low_carbon_hub_installation: low_carbon_hub_installation) }
 
         it 'returns the latest date' do
           expect(latest_electricity_reading).to eq(Date.parse(AmrDataFeedReading.first.reading_date))

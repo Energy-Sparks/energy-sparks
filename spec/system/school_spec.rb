@@ -2,11 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'school adult dashboard', type: :system do
   let(:school_name)         { 'Oldfield Park Infants' }
-  let!(:school_group)       { create(:school_group, name: 'School Group')}
-  let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
+  let!(:school_group)       { create(:school_group, name: 'School Group') }
+  let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142) }
 
   context 'with invisible school' do
-    let!(:school_invisible)       { create(:school, name: 'Invisible School', visible: false, school_group: school_group)}
+    let!(:school_invisible)       do
+      create(:school, name: 'Invisible School', visible: false, school_group: school_group)
+    end
 
     context 'as guest user' do
       it 'prompts user to login when viewing' do
@@ -24,7 +26,7 @@ RSpec.describe 'school adult dashboard', type: :system do
     end
 
     context 'as admin' do
-      let!(:admin) { create(:admin)}
+      let!(:admin) { create(:admin) }
 
       before do
         sign_in(admin)
@@ -43,7 +45,9 @@ RSpec.describe 'school adult dashboard', type: :system do
   end
 
   context 'school with non-public data' do
-    let!(:non_public_school) { create(:school, name: 'Non-public School', visible: true, data_sharing: :within_group, school_group: school_group)}
+    let!(:non_public_school) do
+      create(:school, name: 'Non-public School', visible: true, data_sharing: :within_group, school_group: school_group)
+    end
 
     context 'as a guest user' do
       it 'is listed on school page' do
@@ -66,20 +70,22 @@ RSpec.describe 'school adult dashboard', type: :system do
 
       it 'displays the school page' do
         visit school_path(non_public_school)
-        expect(page).to have_content(non_public_school.name)
+        expect(page).to have_text(non_public_school.name)
         expect(page).to have_link('Compare schools')
       end
 
       it 'redirects away user from the /private page' do
         visit school_private_path(non_public_school)
-        expect(page).to have_content(non_public_school.name)
+        expect(page).to have_text(non_public_school.name)
         expect(page).to have_link('Compare schools')
       end
     end
 
     context 'as a user in the same school group' do
-      let!(:school_in_same_group)   { create(:school, name: 'Same Group School', visible: true, school_group: school_group)}
-      let!(:other_admin)            { create(:school_admin, school: school_in_same_group) }
+      let!(:school_in_same_group)   do
+        create(:school, name: 'Same Group School', visible: true, school_group: school_group)
+      end
+      let!(:other_admin) { create(:school_admin, school: school_in_same_group) }
 
       before do
         sign_in(other_admin)
@@ -87,7 +93,7 @@ RSpec.describe 'school adult dashboard', type: :system do
 
       it 'displays the school page' do
         visit school_path(non_public_school)
-        expect(page).to have_content(non_public_school.name)
+        expect(page).to have_text(non_public_school.name)
         expect(page).to have_link('Compare schools')
       end
     end

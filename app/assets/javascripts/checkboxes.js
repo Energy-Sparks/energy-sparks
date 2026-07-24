@@ -21,19 +21,31 @@ $(document).ready(function() {
     $(this).prop('disabled', false);
     $(this).next('.disabled-label').toggle();
   });
-
-  $(document).on('change','.ensure-one-checked input',function(){
-    let checked = $(this).closest('.ensure-one-checked');
-    if (checked.find('input[type=checkbox]:checked').length > 0) {
-      $('[data-toggle="tooltip"]').tooltip('dispose');
-    } else {
-      $(this).next().tooltip('show');
-      $(this).prop("checked", true );
-    }
-  });
-
-  $(document).on('mouseover','.ensure-one-checked',function(){
-    $('[data-toggle="tooltip"]').tooltip('dispose');
-  });
-
 });
+
+function updateSubmitState(form) {
+  const anyChecked = form.querySelector('input[type="checkbox"]:checked') !== null;
+
+  form.querySelectorAll('input[type="submit"]').forEach(btn => {
+    btn.disabled = !anyChecked;
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target.matches('.check-all-form')) {
+    const form = e.target.closest('form');
+    if (form) {
+      form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.checked = e.target.checked;
+      });
+      updateSubmitState(form);
+    }
+    return;
+  }
+
+  if (e.target.matches('input.allow-submit')) {
+    const form = e.target.closest('form');
+    if (form) updateSubmitState(form);
+  }
+});
+

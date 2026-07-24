@@ -22,6 +22,8 @@
         <%= render 'admin/schools/school_attributes/meter_attribute', meter_attribute: meter_attribute do %>
           <div class="btn-group">
             <%= link_to 'History', admin_global_meter_attribute_path(meter_attribute), class: 'btn btn-sm' %>
+            <%= link_to 'Restore', admin_global_meter_attribute_path(meter_attribute, restore: true),
+                        method: :put, class: 'btn btn-sm' %>
           </div>
         <% end %>
       <% end %>

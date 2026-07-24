@@ -2,8 +2,8 @@
 #
 # Table name: comparison_configurable_periods
 #
+#  id                                            :bigint(8)
 #  activation_date                               :date
-#  comparison_report_id                          :bigint(8)
 #  electricity_current_period_co2                :float
 #  electricity_current_period_gbp                :float
 #  electricity_current_period_kwh                :float
@@ -20,9 +20,7 @@
 #  gas_previous_period_kwh                       :float
 #  gas_previous_period_kwh_unadjusted            :float
 #  gas_tariff_has_changed                        :boolean
-#  id                                            :bigint(8)
 #  pupils_changed                                :boolean
-#  school_id                                     :bigint(8)
 #  solar_type                                    :text
 #  storage_heater_current_period_co2             :float
 #  storage_heater_current_period_gbp             :float
@@ -32,6 +30,8 @@
 #  storage_heater_previous_period_kwh            :float
 #  storage_heater_previous_period_kwh_unadjusted :float
 #  storage_heater_tariff_has_changed             :boolean
+#  comparison_report_id                          :bigint(8)
+#  school_id                                     :bigint(8)
 #
 # Indexes
 #

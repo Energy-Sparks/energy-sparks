@@ -4,7 +4,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator,
   let(:advice_page) { create(:advice_page, key: :electricity_out_of_hours, fuel_type: :electricity) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service) { Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school) }
 
   describe '#benchmark_school' do
     let(:enough_data) { true }
@@ -12,9 +12,9 @@ RSpec.describe Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator,
     before do
       allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:enough_data?).and_return(enough_data)
       allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:annual_out_of_hours_kwh).and_return({
-          out_of_hours: 12,
-          total_annual: 40
-        })
+                                                                                                                  out_of_hours: 12,
+                                                                                                                  total_annual: 40
+                                                                                                                })
     end
 
     context 'not enough data' do

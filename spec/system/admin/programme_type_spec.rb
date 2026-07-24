@@ -7,7 +7,7 @@ describe 'programme type management', :include_application_helper, type: :system
   context with_feature: :todos_parallel do
     let!(:programme_type) do
       create(:programme_type, title: 'Test Programme',
-        activity_types: create_list(:activity_type, 3)) # old way
+                              activity_types: create_list(:activity_type, 3)) # old way
     end
 
     # new way
@@ -39,8 +39,8 @@ describe 'programme type management', :include_application_helper, type: :system
           click_on 'Edit activities'
         end
 
-        it { expect(page).not_to have_css('#activity-type-todos') }
-        it { expect(page).not_to have_css('#intervention-type-todos') }
+        it { expect(page).to have_no_css('#activity-type-todos') }
+        it { expect(page).to have_no_css('#intervention-type-todos') }
       end
 
       it 'has a button to edit actions (new way)' do
@@ -52,7 +52,7 @@ describe 'programme type management', :include_application_helper, type: :system
           click_on 'Edit actions'
         end
 
-        it { expect(page).not_to have_css('#activity-type-todos') }
+        it { expect(page).to have_no_css('#activity-type-todos') }
         it { expect(page).to have_css('#intervention-type-todos') }
       end
     end
@@ -96,7 +96,7 @@ describe 'programme type management', :include_application_helper, type: :system
           click_on 'Edit activities & actions'
         end
 
-        it { expect(page).to have_content('Update the activities and actions') }
+        it { expect(page).to have_text('Update the activities and actions') }
       end
     end
 
@@ -111,16 +111,16 @@ describe 'programme type management', :include_application_helper, type: :system
 
         displayed_activity_types = all('#activity-type-todos .nested-fields')
         activity_type_todos.each_with_index do |todo, idx|
-          expect(displayed_activity_types[idx]).to have_content(todo.task.name)
-          expect(displayed_activity_types[idx]).not_to have_content(todo.notes)
+          expect(displayed_activity_types[idx]).to have_text(todo.task.name)
+          expect(displayed_activity_types[idx]).to have_no_text(todo.notes)
         end
 
         expect(page).to have_css('#intervention-type-todos .nested-fields', count: 3)
 
         displayed_intervention_types = all('#intervention-type-todos .nested-fields')
         intervention_type_todos.each_with_index do |todo, idx|
-          expect(displayed_intervention_types[idx]).to have_content(todo.task.name)
-          expect(displayed_intervention_types[idx]).not_to have_content(todo.notes)
+          expect(displayed_intervention_types[idx]).to have_text(todo.task.name)
+          expect(displayed_intervention_types[idx]).to have_no_text(todo.notes)
         end
       end
 
@@ -137,8 +137,8 @@ describe 'programme type management', :include_application_helper, type: :system
           end
 
           it 'displays errors for fields' do
-            expect(page).to have_content('Activity must exist')
-            expect(page).to have_content('Action must exist')
+            expect(page).to have_text('Activity must exist')
+            expect(page).to have_text('Action must exist')
           end
         end
 
@@ -154,13 +154,13 @@ describe 'programme type management', :include_application_helper, type: :system
           it 'saves new activity type' do
             displayed_tasks = page.all('#activity-type-tasks li').map(&:text)
 
-            expect(displayed_tasks.last).to have_content(activity_type.name)
+            expect(displayed_tasks.last).to have_text(activity_type.name)
           end
 
           it 'saves new intervention type' do
             displayed_tasks = page.all('#intervention-type-tasks li').map(&:text)
 
-            expect(displayed_tasks.last).to have_content(intervention_type.name)
+            expect(displayed_tasks.last).to have_text(intervention_type.name)
           end
         end
       end
@@ -176,9 +176,9 @@ describe 'programme type management', :include_application_helper, type: :system
           it 'changes activity order to THREE, ONE, TWO' do
             displayed_todos = all('#activity-type-todos .nested-fields')
 
-            expect(displayed_todos[0]).to have_content(activity_type_todos[2].task.name)
-            expect(displayed_todos[1]).to have_content(activity_type_todos[0].task.name)
-            expect(displayed_todos[2]).to have_content(activity_type_todos[1].task.name)
+            expect(displayed_todos[0]).to have_text(activity_type_todos[2].task.name)
+            expect(displayed_todos[1]).to have_text(activity_type_todos[0].task.name)
+            expect(displayed_todos[2]).to have_text(activity_type_todos[1].task.name)
           end
 
           context 'when saving' do
@@ -191,9 +191,9 @@ describe 'programme type management', :include_application_helper, type: :system
             it 'saves new order' do
               displayed_tasks = page.all('#activity-type-tasks li').map(&:text)
 
-              expect(displayed_tasks[0]).to have_content(activity_type_todos[2].task.name)
-              expect(displayed_tasks[1]).to have_content(activity_type_todos[0].task.name)
-              expect(displayed_tasks[2]).to have_content(activity_type_todos[1].task.name)
+              expect(displayed_tasks[0]).to have_text(activity_type_todos[2].task.name)
+              expect(displayed_tasks[1]).to have_text(activity_type_todos[0].task.name)
+              expect(displayed_tasks[2]).to have_text(activity_type_todos[1].task.name)
             end
           end
         end
@@ -208,9 +208,9 @@ describe 'programme type management', :include_application_helper, type: :system
           it 'changes action order to THREE, ONE, TWO' do
             displayed_todos = all('#intervention-type-todos .nested-fields')
 
-            expect(displayed_todos[0]).to have_content(intervention_type_todos[2].task.name)
-            expect(displayed_todos[1]).to have_content(intervention_type_todos[0].task.name)
-            expect(displayed_todos[2]).to have_content(intervention_type_todos[1].task.name)
+            expect(displayed_todos[0]).to have_text(intervention_type_todos[2].task.name)
+            expect(displayed_todos[1]).to have_text(intervention_type_todos[0].task.name)
+            expect(displayed_todos[2]).to have_text(intervention_type_todos[1].task.name)
           end
 
           context 'when saving' do
@@ -223,9 +223,9 @@ describe 'programme type management', :include_application_helper, type: :system
             it 'saves new order' do
               displayed_tasks = page.all('#intervention-type-tasks li').map(&:text)
 
-              expect(displayed_tasks[0]).to have_content(intervention_type_todos[2].task.name)
-              expect(displayed_tasks[1]).to have_content(intervention_type_todos[0].task.name)
-              expect(displayed_tasks[2]).to have_content(intervention_type_todos[1].task.name)
+              expect(displayed_tasks[0]).to have_text(intervention_type_todos[2].task.name)
+              expect(displayed_tasks[1]).to have_text(intervention_type_todos[0].task.name)
+              expect(displayed_tasks[2]).to have_text(intervention_type_todos[1].task.name)
             end
           end
         end
@@ -252,10 +252,10 @@ describe 'programme type management', :include_application_helper, type: :system
       attach_file(:programme_type_image_en, Rails.root + 'spec/fixtures/images/placeholder.png')
 
       click_on 'Save'
-      expect(page).to have_content('Programme Types')
-      expect(page).to have_content(old_title)
+      expect(page).to have_text('Programme Types')
+      expect(page).to have_text(old_title)
       expect(page).to have_css('.text-danger')
-      expect(page).to have_content('No')
+      expect(page).to have_text('No')
 
       expect(ProgrammeType.last.image_en.filename).to eq('placeholder.png')
 
@@ -266,26 +266,32 @@ describe 'programme type management', :include_application_helper, type: :system
       check('Default', allow_label_click: true)
 
       click_on 'Save'
-      expect(page).to have_content('Programme Types')
-      expect(page).to have_content(new_title)
+      expect(page).to have_text('Programme Types')
+      expect(page).to have_text(new_title)
       expect(page).to have_css('.text-success')
-      expect(page).to have_content('Yes')
+      expect(page).to have_text('Yes')
 
       click_on new_title
-      expect(page).to have_content(description)
-      expect(page).to have_content(bonus_score)
+      expect(page).to have_text(description)
+      expect(page).to have_text(bonus_score)
       click_on 'All programme types'
 
       click_on 'Delete'
-      expect(page).to have_content('There are no programme types')
+      expect(page).to have_text('There are no programme types')
     end
 
     context 'when todos feature is switched off' do
       context 'manages order' do
-        let!(:activity_category)  { create(:activity_category)}
-        let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
-        let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
-        let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
+        let!(:activity_category)  { create(:activity_category) }
+        let!(:activity_type_1)    do
+          create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)
+        end
+        let!(:activity_type_2) do
+          create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)
+        end
+        let!(:activity_type_3) do
+          create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category)
+        end
 
         it 'assigns activity types to programme types via a text box position' do
           description = 'SPN1'
@@ -306,7 +312,7 @@ describe 'programme type management', :include_application_helper, type: :system
           click_on 'Update associated activity type', match: :first
           click_on old_title
 
-          expect(programme_type.activity_types).to match_array([activity_type_2, activity_type_1])
+          expect(programme_type.activity_types).to contain_exactly(activity_type_2, activity_type_1)
           expect(programme_type.programme_type_activity_types.first.position).to eq(1)
           expect(programme_type.programme_type_activity_types.second.position).to eq(2)
 
@@ -319,9 +325,17 @@ describe 'programme type management', :include_application_helper, type: :system
       let!(:activity_type_1)    { create(:activity_type) }
       let!(:activity_type_2)    { create(:activity_type) }
       let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
-      let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Time.zone.today) }
-      let!(:activity_1)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.yesterday) }
-      let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Time.zone.today) }
+      let!(:programme)          do
+        create(:programme, school: school, programme_type: programme_type, started_on: Time.zone.today)
+      end
+      let!(:activity_1) do
+        create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now',
+                          happened_on: Date.yesterday)
+      end
+      let!(:activity_2) do
+        create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark',
+                          happened_on: Time.zone.today)
+      end
 
       before do
         # enrolment only enabled if targets enabled...
@@ -330,14 +344,14 @@ describe 'programme type management', :include_application_helper, type: :system
 
       it 'shows links to programmes and progress' do
         visit admin_programme_types_path
-        expect(page).to have_content(programme_type.title)
+        expect(page).to have_text(programme_type.title)
         click_on 'Enrol schools'
-        expect(page).to have_content(programme_type.title)
-        expect(page).to have_content('Total activities: 2')
-        expect(page).to have_content(school.name)
-        expect(page).to have_content('started')
-        expect(page).to have_content(nice_dates(programme.started_on))
-        expect(page).to have_content('50 %')
+        expect(page).to have_text(programme_type.title)
+        expect(page).to have_text('Total activities: 2')
+        expect(page).to have_text(school.name)
+        expect(page).to have_text('started')
+        expect(page).to have_text(nice_dates(programme.started_on))
+        expect(page).to have_text('50 %')
       end
 
       it 'allows schools to be enrolled if not in the programme already' do
@@ -345,11 +359,11 @@ describe 'programme type management', :include_application_helper, type: :system
         visit admin_programme_type_programmes_path(programme_type)
 
         # check school already enrolled isn't in dropdown
-        expect(page).not_to have_select('programme_school_id', with_options: [school.name])
+        expect(page).to have_no_select('programme_school_id', with_options: [school.name])
 
         select another_school.name, from: :programme_school_id
         click_button 'Enrol'
-        expect(page).to have_content("Enrolled #{another_school.name} in #{programme_type.title}")
+        expect(page).to have_text("Enrolled #{another_school.name} in #{programme_type.title}")
         expect(another_school.programmes.last.programme_type).to eq(programme_type)
       end
     end

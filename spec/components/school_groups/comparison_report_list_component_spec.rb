@@ -14,18 +14,18 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
   let!(:school_group) { create(:school_group) }
 
   def expected_compare_path(school_group, benchmark)
-    compare_path(group: true, benchmark: benchmark, school_group_ids: [school_group.id])
+    comparisons_configurable_period_path(group: true, key: benchmark, school_group_ids: [school_group.id])
   end
 
   context 'with a simple list' do
-    let(:fuel_type) { nil }
-    let!(:report) { create(:report, key: :annual_energy_use, public: true) }
-
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|
         c.with_link 'Link', fuel_type: fuel_type, report: report.key
       end
     end
+
+    let(:fuel_type) { nil }
+    let!(:report) { create(:report, key: :annual_energy_use, public: true) }
 
     it 'links to report' do
       expect(html).to have_link('Link', href: expected_compare_path(school_group, report.key))
@@ -43,7 +43,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
       let(:fuel_type) { :gas }
 
       it 'does not link to report' do
-        expect(html).not_to have_link('Link', href: expected_compare_path(school_group, report.key))
+        expect(html).to have_no_link('Link', href: expected_compare_path(school_group, report.key))
       end
     end
 
@@ -51,25 +51,25 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
       let!(:report) { create(:report, key: :annual_energy_use, public: false) }
 
       it 'does not link to report' do
-        expect(html).not_to have_link('Link', href: expected_compare_path(school_group, report.key))
+        expect(html).to have_no_link('Link', href: expected_compare_path(school_group, report.key))
       end
     end
   end
 
   context 'with a named list' do
-    let(:fuel_type) { nil }
-    let!(:report) { create(:report, key: :seasonal_baseload_variation, public: true) }
-
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|
         c.with_named 'Baseload variation', fuel_type: fuel_type, reports: {
-          :seasonal_baseload_variation => 'Seasonal'
+          seasonal_baseload_variation: 'Seasonal'
         }
       end
     end
 
+    let(:fuel_type) { nil }
+    let!(:report) { create(:report, key: :seasonal_baseload_variation, public: true) }
+
     it 'renders sublist heading' do
-      expect(html).to have_content('Baseload variation')
+      expect(html).to have_text('Baseload variation')
     end
 
     it 'links to report' do
@@ -88,11 +88,12 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
       let(:fuel_type) { :gas }
 
       it 'does not render sublist heading' do
-        expect(html).not_to have_content('Baseload variation')
+        expect(html).to have_no_text('Baseload variation')
       end
 
       it 'does not link to report' do
-        expect(html).not_to have_link('Seasonal', href: expected_compare_path(school_group, :seasonal_baseload_variation))
+        expect(html).to have_no_link('Seasonal',
+                                     href: expected_compare_path(school_group, :seasonal_baseload_variation))
       end
     end
 
@@ -100,23 +101,17 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
       let!(:report) { create(:report, key: :seasonal_baseload_variation, public: false) }
 
       it 'does not render sublist heading' do
-        expect(html).not_to have_content('Baseload variation')
+        expect(html).to have_no_text('Baseload variation')
       end
 
       it 'does not link to report' do
-        expect(html).not_to have_link('Seasonal', href: expected_compare_path(school_group, :seasonal_baseload_variation))
+        expect(html).to have_no_link('Seasonal',
+                                     href: expected_compare_path(school_group, :seasonal_baseload_variation))
       end
     end
   end
 
   context 'with a fuel type list' do
-    let(:public) { true }
-
-    before do
-      create(:report, key: :change_in_electricity_since_last_year, public:)
-      create(:report, key: :change_in_gas_since_last_year, public:)
-    end
-
     subject(:html) do
       render_inline(described_class.new(**params)) do |c|
         c.with_fuel_types 'Annual change in use', reports: {
@@ -126,8 +121,15 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
       end
     end
 
+    let(:public) { true }
+
+    before do
+      create(:report, key: :change_in_electricity_since_last_year, public:)
+      create(:report, key: :change_in_gas_since_last_year, public:)
+    end
+
     it 'renders sublist heading' do
-      expect(html).to have_content('Annual change in use')
+      expect(html).to have_text('Annual change in use')
     end
 
     it 'links to electricity report' do
@@ -136,20 +138,20 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
     end
 
     it 'does not link to gas report' do
-      expect(html).not_to have_link(I18n.t('common.gas'),
-                                  href: expected_compare_path(school_group, :change_in_gas_since_last_year))
+      expect(html).to have_no_link(I18n.t('common.gas'),
+                                   href: expected_compare_path(school_group, :change_in_gas_since_last_year))
     end
 
     context 'with no fuel types' do
       let(:fuel_types) { [] }
 
       it 'does not render' do
-        expect(html).not_to have_content('Annual change in use')
+        expect(html).to have_no_text('Annual change in use')
       end
     end
 
     context 'with additional fuel types' do
-      let(:fuel_types) { [:electricity, :gas] }
+      let(:fuel_types) { %i[electricity gas] }
 
       it 'links to electricity report' do
         expect(html).to have_link(I18n.t('common.electricity'),
@@ -166,24 +168,24 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
       let(:public) { false }
 
       it 'does not render' do
-        expect(html).not_to have_content('Annual change in use')
+        expect(html).to have_no_text('Annual change in use')
       end
     end
 
     context 'with one private report' do
-      let(:fuel_types) { [:electricity, :gas] }
+      let(:fuel_types) { %i[electricity gas] }
 
       before do
         Comparison::Report.find_by_key(:change_in_gas_since_last_year).update!(public: false)
       end
 
       it 'renders sublist heading' do
-        expect(html).to have_content('Annual change in use')
+        expect(html).to have_text('Annual change in use')
       end
 
       it 'does not link to the private report' do
-        expect(html).not_to have_link(I18n.t('common.gas'),
-                                  href: expected_compare_path(school_group, :change_in_gas_since_last_year))
+        expect(html).to have_no_link(I18n.t('common.gas'),
+                                     href: expected_compare_path(school_group, :change_in_gas_since_last_year))
       end
     end
 
@@ -198,7 +200,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
       end
 
       it 'renders sublist heading' do
-        expect(html).to have_content('Annual change in use')
+        expect(html).to have_text('Annual change in use')
       end
 
       it 'links to electricity report' do
@@ -207,12 +209,12 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
       end
 
       it 'does not link to gas report' do
-        expect(html).not_to have_link('The gas',
-                                    href: expected_compare_path(school_group, :change_in_gas_since_last_year))
+        expect(html).to have_no_link('The gas',
+                                     href: expected_compare_path(school_group, :change_in_gas_since_last_year))
       end
 
       context 'with additional fuel types' do
-        let(:fuel_types) { [:electricity, :gas] }
+        let(:fuel_types) { %i[electricity gas] }
 
         it 'links to electricity report' do
           expect(html).to have_link('Leccy',
@@ -229,7 +231,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
         let(:public) { false }
 
         it 'does not render' do
-          expect(html).not_to have_content('Annual change in use')
+          expect(html).to have_no_text('Annual change in use')
         end
       end
     end

@@ -14,6 +14,7 @@ module Schools
     end
 
     def create
+      @installation.amr_data_feed_config = AmrDataFeedConfig.rtone_variant_api.first
       if @installation.save
         redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'New Rtone Variant API feed created.'
       else
@@ -38,9 +39,8 @@ module Schools
     end
 
     def resource_params
-      params.require(:rtone_variant_installation).permit(
-        :amr_data_feed_config_id, :meter_id, :rtone_meter_id, :rtone_component_type, :username, :password
-      )
+      params.expect(rtone_variant_installation: %i[meter_id rtone_meter_id rtone_component_type username password
+                                                   active])
     end
   end
 end

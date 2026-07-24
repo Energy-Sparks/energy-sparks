@@ -1,24 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe 'Schools page' do
-  let!(:a_school_group) { create(:school_group, name: 'A Group Trust')}
-  let!(:b_school_group) { create(:school_group, name: 'B Group Academy')}
+  let!(:a_school_group) { create(:school_group, name: 'A Group Trust') }
+  let!(:b_school_group) { create(:school_group, name: 'B Group Academy') }
 
-  let!(:a_school) { create(:school, active: true, visible: true, name: 'A School Academy', school_group: a_school_group) }
-  let!(:b_school) { create(:school, active: true, visible: true, name: 'B School Primary', school_group: b_school_group) }
+  let!(:a_school) do
+    create(:school, active: true, visible: true, name: 'A School Academy', school_group: a_school_group)
+  end
+  let!(:b_school) do
+    create(:school, active: true, visible: true, name: 'B School Primary', school_group: b_school_group)
+  end
 
   shared_examples 'a letter browse view' do
     it 'shows the right page state', :js do
       expect(page).to have_css('li.letter.active', text: 'B')
-      expect(page).not_to have_css('li.letter.active', text: 'A')
-      expect(page).not_to have_content(I18n.t('components.search_results.keyword.title'))
+      expect(page).to have_no_css('li.letter.active', text: 'A')
+      expect(page).to have_no_text(I18n.t('components.search_results.keyword.title'))
     end
   end
 
   shared_examples 'a keyword search view' do
     it 'shows the right page state', :js do
-      expect(page).not_to have_css('li.letter.active', text: 'A')
-      expect(page).to have_content(I18n.t('components.search_results.keyword.title'))
+      expect(page).to have_no_css('li.letter.active', text: 'A')
+      expect(page).to have_text(I18n.t('components.search_results.keyword.title'))
     end
   end
 
@@ -26,11 +30,11 @@ RSpec.describe 'Schools page' do
     it_behaves_like 'a letter browse view'
 
     it 'shows the right results', :js do
-      expect(page).to have_content('1 school')
+      expect(page).to have_text('1 school')
       expect(page).to have_link(b_school.name, href: school_path(b_school))
-      expect(page).not_to have_link(a_school.name, href: school_path(a_school))
-      expect(page).not_to have_link(a_school_group.name, href: school_group_path(a_school))
-      expect(page).not_to have_link(b_school_group.name, href: school_group_path(b_school))
+      expect(page).to have_no_link(a_school.name, href: school_path(a_school))
+      expect(page).to have_no_link(a_school_group.name, href: school_group_path(a_school))
+      expect(page).to have_no_link(b_school_group.name, href: school_group_path(b_school))
     end
   end
 
@@ -38,12 +42,12 @@ RSpec.describe 'Schools page' do
     it_behaves_like 'a letter browse view'
 
     it 'shows the right results', :js do
-      expect(page).to have_content('1 school group')
+      expect(page).to have_text('1 school group')
 
       expect(page).to have_link(b_school_group.name, href: school_group_path(b_school_group))
-      expect(page).not_to have_link(a_school_group.name, href: school_group_path(a_school_group))
-      expect(page).not_to have_link(a_school.name, href: school_path(a_school))
-      expect(page).not_to have_link(b_school.name, href: school_path(b_school))
+      expect(page).to have_no_link(a_school_group.name, href: school_group_path(a_school_group))
+      expect(page).to have_no_link(a_school.name, href: school_path(a_school))
+      expect(page).to have_no_link(b_school.name, href: school_path(b_school))
     end
   end
 
@@ -51,12 +55,12 @@ RSpec.describe 'Schools page' do
     it_behaves_like 'a keyword search view'
 
     it 'shows the right results', :js do
-      expect(page).to have_content('1 school')
+      expect(page).to have_text('1 school')
       expect(page).to have_link(b_school.name, href: school_path(b_school))
 
-      expect(page).not_to have_link(a_school.name, href: school_path(a_school))
-      expect(page).not_to have_link(a_school_group.name, href: school_group_path(a_school_group))
-      expect(page).not_to have_link(b_school_group.name, href: school_group_path(b_school_group))
+      expect(page).to have_no_link(a_school.name, href: school_path(a_school))
+      expect(page).to have_no_link(a_school_group.name, href: school_group_path(a_school_group))
+      expect(page).to have_no_link(b_school_group.name, href: school_group_path(b_school_group))
     end
   end
 
@@ -64,12 +68,12 @@ RSpec.describe 'Schools page' do
     it_behaves_like 'a keyword search view'
 
     it 'shows the right results', :js do
-      expect(page).to have_content('1 school group')
+      expect(page).to have_text('1 school group')
       expect(page).to have_link(b_school_group.name, href: school_group_path(b_school_group))
 
-      expect(page).not_to have_link(a_school_group.name, href: school_group_path(a_school_group))
-      expect(page).not_to have_link(a_school.name, href: school_path(a_school))
-      expect(page).not_to have_link(b_school.name, href: school_path(b_school))
+      expect(page).to have_no_link(a_school_group.name, href: school_group_path(a_school_group))
+      expect(page).to have_no_link(a_school.name, href: school_path(a_school))
+      expect(page).to have_no_link(b_school.name, href: school_path(b_school))
     end
   end
 
@@ -79,12 +83,12 @@ RSpec.describe 'Schools page' do
     end
 
     it { expect(page).to have_title(I18n.t('schools.index.title')) }
-    it { expect(page).to have_content(I18n.t('schools.index.title')) }
+    it { expect(page).to have_text(I18n.t('schools.index.title')) }
     it { expect(page).to have_css('div#geo-json-map') }
     it { expect(page).to have_css('div.school-search-component') }
     it { expect(page).to have_link(I18n.t('schools.index.case_studies'), href: case_studies_path) }
-    it { expect(page).to have_content('We have 2 schools') }
-    it { expect(page).to have_content(I18n.t('components.school_search.schools.total', count: 2)) }
+    it { expect(page).to have_text('We have 2 schools') }
+    it { expect(page).to have_text(I18n.t('components.school_search.schools.total', count: 2)) }
   end
 
   context 'with the schools tab' do
@@ -99,9 +103,9 @@ RSpec.describe 'Schools page' do
 
     it 'shows letter A schools by default' do
       expect(page).to have_link(a_school.name, href: school_path(a_school))
-      expect(page).not_to have_link(b_school.name, href: school_path(b_school))
-      expect(page).not_to have_link(a_school_group.name, href: school_group_path(a_school))
-      expect(page).not_to have_link(b_school_group.name, href: school_group_path(b_school))
+      expect(page).to have_no_link(b_school.name, href: school_path(b_school))
+      expect(page).to have_no_link(a_school_group.name, href: school_group_path(a_school))
+      expect(page).to have_no_link(b_school_group.name, href: school_group_path(b_school))
     end
 
     context 'when there are active, non-visible schools' do
@@ -115,7 +119,7 @@ RSpec.describe 'Schools page' do
         end
 
         it 'only shows visible schools' do
-          expect(page).not_to have_link(invisible_school.name, href: school_path(invisible_school))
+          expect(page).to have_no_link(invisible_school.name, href: school_path(invisible_school))
         end
       end
 
@@ -126,7 +130,7 @@ RSpec.describe 'Schools page' do
         end
 
         it 'updates label for school count' do
-          expect(page).to have_content(I18n.t('components.school_search.schools.total_for_admins', count: 3))
+          expect(page).to have_text(I18n.t('components.school_search.schools.total_for_admins', count: 3))
         end
 
         it 'shows visible schools' do
@@ -146,7 +150,7 @@ RSpec.describe 'Schools page' do
     context 'when searching by keyword' do
       before do
         fill_in('schools-keyword', with: 'Primary')
-        find('#schools-search-submit').click
+        find_by_id('schools-search-submit').click
       end
 
       it_behaves_like 'school keyword search results'
@@ -178,14 +182,14 @@ RSpec.describe 'Schools page' do
     it 'shows letter A school groups by default', :js do
       expect(page).to have_link(a_school_group.name, href: school_group_path(a_school_group))
 
-      expect(page).not_to have_link(b_school_group.name, href: school_group_path(b_school_group))
-      expect(page).not_to have_link(a_school.name, href: school_path(a_school))
-      expect(page).not_to have_link(b_school.name, href: school_path(b_school))
+      expect(page).to have_no_link(b_school_group.name, href: school_group_path(b_school_group))
+      expect(page).to have_no_link(a_school.name, href: school_path(a_school))
+      expect(page).to have_no_link(b_school.name, href: school_path(b_school))
     end
 
     context 'when browsing by letter' do
       before do
-        within('#school-groups-content') do
+        within('#school-groups') do
           click_on('B')
         end
       end
@@ -196,7 +200,7 @@ RSpec.describe 'Schools page' do
     context 'when searching by keyword' do
       before do
         fill_in('school-groups-keyword', with: 'Academy')
-        find('#school-groups-search-submit').click
+        find_by_id('school-groups-search-submit').click
       end
 
       it_behaves_like 'school group keyword search results'

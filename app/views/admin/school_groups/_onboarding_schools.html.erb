@@ -1,11 +1,12 @@
 <%= simple_form_for school_group, html: { class: 'form-group', method: 'post' } do |f| %>
-  <table class="table table-sorted" style="width:100%">
+  <table class="table table-sm" style="width:100%">
     <thead>
       <tr>
-        <th class="no-sort"><%= check_box_tag "check-all-#{school_group.id}", false, false, { class: 'check-all' } %></th>
+        <th><%= check_box_tag "check-all-#{school_group.id}", false, false, { class: 'check-all' } %></th>
         <th>School</th>
-        <th>Funder</th>
+        <th>Contract</th>
         <th>Contact email</th>
+        <th>Invite sent</th>
         <th>Last event</th>
         <th class="no-sort"></th>
       </tr>
@@ -16,23 +17,29 @@
           <td>
             <%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %>
           </td>
-          <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
-          <td><%= onboarding&.school&.funder&.name || onboarding&.funder&.name %></td>
-          <td class="wrap">
-            <%= onboarding.contact_email %>
+          <td class="col-2"><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
+          <td class="col-1">
+            <% if onboarding.contract %>
+              <%= link_to onboarding.contract.name, admin_commercial_contract_path(onboarding.contract) %>
+            <% end %>
+          </td>
+          <td class="col-2">
+            <%= email_with_wbr(onboarding.contact_email) %>
             <%= if onboarding.has_only_sent_email_or_reminder?
                   link_to fa_icon('edit'),
                           edit_admin_school_onboarding_email_path(onboarding), class: '', title: 'Change email address'
                 end %>
           </td>
-          <td class="nowrap" data-order="<%= onboarding.events.maximum(:created_at) %>">
-            <%= nice_date_times(onboarding.events.maximum(:created_at)) %><br>
-            <span class="badge badge-secondary">
+          <td class="col-2">
+            <%= nice_date_times(onboarding.started_on, short_date: true) %>
+          </td>
+          <td class="col-2">
+            <%= nice_date_times(onboarding.events.maximum(:created_at), short_date: true) %><br>
+            <span class="badge text-bg-secondary">
               <%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %>
             </span>
           </td>
-          <td class="nowrap text-right">
-
+          <td class="nowrap text-end">
             <% if onboarding.school
                  issues_path = admin_school_issues_path(onboarding.school)
                  issues = onboarding.school.issues
@@ -40,11 +47,15 @@
                  issues_path = admin_school_onboarding_issues_path(onboarding)
                  issues = onboarding.issues
                end %>
-            <%= link_to issue_type_icons(issues, label: 'Issues'), issues_path, class: 'btn btn-sm' %>
-            <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding),
-                        class: 'btn btn-sm', method: :post %>
+            <%= link_to issue_type_icons(issues, label: 'Issues'), issues_path, class: 'btn btn-default btn-sm' %>
+            <%= link_to 'Send reminder', admin_school_onboarding_reminder_path(onboarding),
+                        class: 'btn btn-default btn-sm', method: :post %>
+            <br>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>
-              <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
+              <%= link_to 'Make visible',
+                          school_visibility_path(onboarding.school),
+                          class: 'btn btn-default btn-sm',
+                          method: :post %>
             <% else %>
               <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-primary btn-sm' %>
             <% end %>
@@ -59,8 +70,10 @@
   <%= hidden_field_tag :anchor, anchor %>
   <%= f.button :submit, 'Make selected visible',
                data: { confirm: 'Are you sure?' },
+               class: 'btn btn-sm',
                formaction: make_visible_admin_school_group_school_onboardings_path(school_group) %>
   <%= f.button :submit, 'Send reminders to selected',
                data: { confirm: 'Are you sure?' },
+               class: 'btn btn-sm',
                formaction: reminders_admin_school_group_school_onboardings_url(school_group) %>
 <% end %>

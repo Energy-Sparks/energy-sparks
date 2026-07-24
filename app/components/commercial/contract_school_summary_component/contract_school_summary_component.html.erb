@@ -1,0 +1,67 @@
+<%= tag.div id: id, class: classes do %>
+  <table id='<%= @table_id %>' class="table table-sm">
+    <% if @contract.contract_holder.is_a?(Funder) %>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Licensed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Visible</td>
+          <td class='<%= class_names('text-danger' => over_licensed?) %>'>
+            <%= @contract.schools.visible.count %>
+          </td>
+        </tr>
+        <tr>
+          <td>Data Visible</td>
+          <td class='<%= class_names('text-danger' => over_licensed?) %>'>
+            <%= @contract.schools.data_visible.count %>
+          </td>
+        </tr>
+        <tr>
+          <td>Onboarding</td>
+          <td class='<%= class_names('text-danger' => over_licensed?) %>'>
+            <%= @contract.school_onboardings.incomplete.count %>
+          </td>
+        </tr>
+      </tbody>
+    <% else %>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Licensed</th>
+          <th>In Group</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Visible</td>
+          <td class='<%= class_names('text-danger' => over_licensed?) %>'>
+            <%= @contract.schools.where(id: @contract.contract_holder.assigned_schools.visible).count %>
+            </td>
+          <td>
+            <%= @contract.contract_holder.assigned_schools.visible.count %>
+          </td>
+        </tr>
+        <tr>
+          <td>Data Visible</td>
+          <td class='<%= class_names('text-danger' => over_licensed?) %>'>
+            <%= @contract.schools.where(id: @contract.contract_holder.assigned_schools.data_visible).count %>
+          </td>
+          <td><%= @contract.contract_holder.assigned_schools.data_visible.count %></td>
+        </tr>
+        <tr>
+          <td>Onboarding</td>
+          <td class='<%= class_names('text-danger' => over_licensed?) %>'>
+            <%= @contract.school_onboardings.incomplete.count %>
+          </td>
+          <td>
+            <%= @contract.contract_holder.onboardings_for_group.incomplete.count %>
+          </td>
+        </tr>
+      </tbody>
+    <% end %>
+  </table>
+<% end %>

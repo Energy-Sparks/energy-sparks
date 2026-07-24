@@ -4,8 +4,8 @@ require 'rails_helper'
 
 describe Aggregation::ValidateAmrData, type: :service do
   def create_validator(meter, max_days_missing_data: 50)
-    described_class.new(meter, max_days_missing_data, meter.meter_collection.holidays,
-                        meter.meter_collection.temperatures)
+    described_class.new(meter, meter.meter_collection.holidays, meter.meter_collection.temperatures,
+                        max_days_missing_data:)
   end
 
   def create_meter(**kwargs)
@@ -21,8 +21,7 @@ describe Aggregation::ValidateAmrData, type: :service do
       meter = load_unvalidated_meter_collection(school: 'acme-academy', validate_and_aggregate: false)
               .meter?(1_591_058_886_735)
       validator = create_validator(meter)
-      validator.validate
-      expect(validator.data_problems).to be_empty
+      expect { validator.validate }.not_to raise_exception
     end
   end
 
@@ -36,16 +35,14 @@ describe Aggregation::ValidateAmrData, type: :service do
 
   it 'replaces missing night time solar readings with 0' do
     meter = create_meter(type: :solar_pv)
-    reading, validator = modify_arbitrary_reading_and_validate(meter) { |_reading, date| meter.amr_data.delete(date) }
-    expect(validator.data_problems).to be_empty
+    reading, = modify_arbitrary_reading_and_validate(meter) { |_reading, date| meter.amr_data.delete(date) }
     expect(reading.kwh_data_x48[0..3]).to eq([0.0] * 4)
     expect(reading.type).to eq('PROB')
   end
 
   context 'with override_night_to_zero' do
     let(:meter) do
-      meter = create_meter
-      meter.meter_correction_rules << { override_night_to_zero: nil }
+      meter = create_meter(meter_attributes: { meter_corrections: [{ override_night_to_zero: nil }] })
       meter
     end
 
@@ -59,11 +56,21 @@ describe Aggregation::ValidateAmrData, type: :service do
       expect(meter.amr_data.first[1].type).to eq('SOLN')
     end
 
-    it 'replace night time readings with a rule with dates' do
-      meter.meter_correction_rules[-1] = { override_night_to_zero: { start_date: meter.amr_data.start_date + 1.day,
-                                                                     end_date: meter.amr_data.start_date + 2.days } }
-      create_validator(meter).validate(debug_analysis: true)
-      expect(arbitrary_night_readings(meter)).to eq([0.44, 0.0, 0.0, 0.44, 0.44, 0.44, 0.44, 0.44])
+    context 'with dates' do
+      let(:meter) do
+        meter = create_meter(meter_attributes: {
+                               meter_corrections: [{ override_night_to_zero: {
+                                 start_date: Date.new(2025, 5, 3) - 7.days,
+                                 end_date: Date.new(2025, 5, 3) - 6.days
+                               } }]
+                             })
+        meter
+      end
+
+      it 'replace night time readings with a rule with dates' do
+        create_validator(meter).validate
+        expect(arbitrary_night_readings(meter)).to eq([0.44, 0.0, 0.0, 0.44, 0.44, 0.44, 0.44, 0.44])
+      end
     end
 
     it 'has with missing data' do
@@ -200,7 +207,7 @@ describe Aggregation::ValidateAmrData, type: :service do
           allow(model_cache).to receive(:create_and_fit_model).and_return(heating_model)
           allow(heating_model).to receive_messages(
             heat_on_missing_data?: true,
-            regression_model_parameters: regression_model_parameters,
+            regression_model_parameters: regression_model_parameters
           )
           allow(heating_model).to receive(:predicted_kwh).and_return(missing_day_prediction, substitute_day_prediction)
 
@@ -208,14 +215,14 @@ describe Aggregation::ValidateAmrData, type: :service do
           validator.validate
         end
 
-        context 'when there are predicted differences in consumption' do
+        context 'when there are predicted differences in consumption' do # rubocop:disable RSpec/NestedGroups
           it 'applies a temperature compensation' do
             expect(substituted.type).to eq('GSS1')
             expect(substituted.one_day_kwh).to eq(meter.amr_data[substituted.substitute_date].one_day_kwh / 2)
           end
         end
 
-        context 'when there is no predicted usage' do
+        context 'when there is no predicted usage' do # rubocop:disable RSpec/NestedGroups
           let(:missing_day_prediction) { 0.0 }
           let(:substitute_day_prediction) { 0.0 }
 
@@ -225,7 +232,7 @@ describe Aggregation::ValidateAmrData, type: :service do
           end
         end
 
-        context 'when there is a negative prediction' do
+        context 'when there is a negative prediction' do # rubocop:disable RSpec/NestedGroups
           let(:substitute_day_prediction) { -0.5 }
 
           it 'uses original readings' do
@@ -234,12 +241,80 @@ describe Aggregation::ValidateAmrData, type: :service do
           end
         end
 
-        context 'when temperatures are above base temperature' do
+        context 'when temperatures are above base temperature' do # rubocop:disable RSpec/NestedGroups
           let(:regression_model_parameters) { { base_temperature: 0.0 } }
 
           it 'uses original readings' do
             expect(substituted.type).to eq('GSS1')
             expect(substituted.kwh_data_x48).to eq(meter.amr_data[substituted.substitute_date].kwh_data_x48)
+          end
+        end
+      end
+    end
+  end
+
+  context 'when checking for long gaps' do
+    let(:amr_data) do
+      build(:amr_data, :with_date_range, start_date: Date.new(2025, 1, 1), end_date: Date.new(2025, 3, 31))
+    end
+
+    let(:meter) { build(:meter, type: :electricity, amr_data:, meter_collection: build(:meter_collection)) }
+
+    before { travel_to Date.new(2025, 12, 31) }
+
+    context 'with no gaps' do
+      before { create_validator(meter).validate }
+
+      it 'does not truncate the meter' do
+        (amr_data.start_date..amr_data.end_date).each do |date|
+          expect(amr_data.days_amr_data(date).type).to eq('ORIG')
+        end
+      end
+    end
+
+    context 'with a gap' do
+      let(:amr_data) do
+        amr_data = super()
+        amr_data.add(after_gap_date, OneDayAMRReading.zero_reading(after_gap_date, 'ORIG'))
+        amr_data
+      end
+
+      context 'when gap is 49 days' do
+        let(:after_gap_date) { Date.new(2025, 5, 19) }
+
+        it 'does not truncate the meter' do
+          expect(amr_data.start_date).to eq(Date.new(2025, 1, 1))
+          expect(amr_data.days_amr_data(after_gap_date).type).to eq('ORIG')
+        end
+      end
+
+      context 'when gap is 50 days' do
+        let(:after_gap_date) { Date.new(2025, 12, 31) }
+
+        context 'with electricity meter' do # rubocop:disable RSpec/NestedGroups
+          before { create_validator(meter).validate }
+
+          it 'truncates the meter' do
+            expect(amr_data.start_date).to eq(after_gap_date)
+            expect(amr_data.days_amr_data(after_gap_date).type).to eq('LGAP')
+          end
+        end
+
+        context 'with gas meter' do # rubocop:disable RSpec/NestedGroups
+          let(:meter) do
+            temperatures = build(:temperatures, :with_days, start_date: Date.new(2025, 1, 1),
+                                                            end_date: Date.new(2025, 12, 31))
+            build(:meter,
+                  type: :gas,
+                  amr_data:,
+                  meter_collection: build(:meter_collection, temperatures:))
+          end
+
+          before { create_validator(meter).validate }
+
+          it 'truncates the meter' do
+            expect(amr_data.start_date).to eq(after_gap_date)
+            expect(amr_data.days_amr_data(after_gap_date).type).to eq('LGAP')
           end
         end
       end

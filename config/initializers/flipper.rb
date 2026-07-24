@@ -9,7 +9,8 @@ Flipper.configure do |config|
     Flipper::Adapters::ActiveSupportCacheStore.new(
       Flipper::Adapters::ActiveRecord.new,
       Rails.cache,
-      5.minutes
+      5.minutes,
+      race_condition_ttl: 10
     )
   end
 end

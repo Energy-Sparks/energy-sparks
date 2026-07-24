@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe BlogService, type: :service do
+describe BlogService, type: :service do
+  subject(:blog) { described_class.new }
+
   include_context 'with cache'
 
   let(:fixture_path) { File.expand_path('spec/fixtures/files/blog-feed.xml', Dir.pwd) }
   let(:blog_xml) { File.read(fixture_path) }
-
-  let(:blog) { BlogService.new }
 
   let(:basic_item) do
     {
@@ -18,32 +20,15 @@ RSpec.describe BlogService, type: :service do
       categories: ['Category'],
       author: 'Author',
       author_link: 'https://example.com/author'
-  }
+    }
   end
 
-  let(:response_success) do
-    instance_double(Faraday::Response, body: blog_xml, status: 200).tap do |r|
-      allow(r).to receive(:success?).and_return(true)
-    end
-  end
+  let!(:response) { response_success } # rubocop:disable RSpec/LetSetup
 
-  let(:response_success_empty) do
-    instance_double(Faraday::Response, body: '', status: 200).tap do |r|
-      allow(r).to receive(:success?).and_return(true)
-    end
-  end
-
-  let(:response_error) do
-    instance_double(Faraday::Response, body: 'Error 500', status: 500).tap do |r|
-      allow(r).to receive(:success?).and_return(false)
-    end
-  end
-
-  let(:response) { response_success }
-
-  before do
-    allow(blog.instance_variable_get(:@connection)).to receive(:get).and_return(response)
-  end
+  def stub_blog = stub_request(:get, 'https://blog.energysparks.uk/feed/')
+  def response_success = stub_blog.to_return(body: blog_xml)
+  def response_success_empty = stub_blog.to_return(body: '')
+  def response_error = stub_blog.to_return(status: 500, body: 'Error 500')
 
   shared_examples 'a cache without the key' do
     it { expect(Rails.cache.exist?(blog.key)).to be false }
@@ -202,7 +187,7 @@ RSpec.describe BlogService, type: :service do
 
     before do
       allow(Faraday).to receive(:new).with(url: custom_url).and_yield(faraday_connection)
-      BlogService.new(retries: max_retries, url: custom_url)
+      described_class.new(retries: max_retries, url: custom_url)
     end
 
     it 'sets retry options' do

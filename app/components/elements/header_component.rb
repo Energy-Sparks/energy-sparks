@@ -2,7 +2,7 @@ module Elements
   class HeaderComponent < ApplicationComponent
     attr_reader :title
 
-    def initialize(title:, level: 1, url: nil, **_kwargs)
+    def initialize(title: nil, level: 1, url: nil, **_kwargs)
       super
       @title = title
       @level = level
@@ -11,7 +11,9 @@ module Elements
     end
 
     def call
-      h = tag.send("h#{@level}", id: @id, class: @classes) { @title }
+      h = tag.send("h#{@level}", id: @id, class: @classes) do
+        content || @title
+      end
       @url ? tag.a(href: @url, class: 'text-decoration-none') { h } : h
     end
 

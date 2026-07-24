@@ -1,46 +1,16 @@
 <%= render 'admin/reports/title', title: 'Funder allocation report' %>
 
-<h2>Funded schools</h2>
-
 <p>
-  This table summarises the number of visible and data enabled schools for each funder, along with a count of
-  schools which have no funder assigned.
-</p>
-<p>
-  Visible schools have finished onboarding, but do not yet have their data enabled. Funders are either directly linked
-  to schools or via their school group.
-</p>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Funder</th>
-      <th scope="col">Visible not data enabled</th>
-      <th scope="col">Visible and data enabled</th>
-      <th scope="col">Onboarding</th>
-      <th scope="col">Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @funders_visible.each do |funder, school_count| %>
-      <tr>
-        <td><%= funder %></td>
-        <td><%= school_count %></td>
-        <td><%= @funders_visible_and_enabled[funder] %></td>
-        <td><%= @onboarding[funder] %>
-        <td><%= school_count + @funders_visible_and_enabled[funder] + @onboarding[funder] %></td>
-      </tr>
+  <%= render PromptComponent.new(icon: 'circle-info', status: :neutral) do |prompt| %>
+    <p>
+      For a summary of the number of schools supported by current contract holders, including Funders, then
+      please view the contract holder report.
+    </p>
+    <% prompt.with_link do %>
+        <%= link_to 'Contract Holders', admin_commercial_contract_holders_path %>
     <% end %>
-    <tr>
-      <td>No funder</td>
-      <td><%= @unfunded_visible %></td>
-      <td><%= @unfunded_visible_and_enabled %></td>
-      <td><%= @unfunded_onboarding %></td>
-      <td><%= @unfunded_visible + @unfunded_visible_and_enabled + @unfunded_onboarding %></td>
-    </tr>
-  </tbody>
-<table>
-
-<h1>Funder allocation report</h1>
+  <% end %>
+</p>
 
 <p>
   Generates a report designed to support allocating schools across potential funders. The report includes all
@@ -52,11 +22,7 @@
   So this report will include more schools than are shown in the above table.
 </p>
 
-<%= form_tag deliver_admin_reports_funder_allocations_path, method: :post do %>
-  <%= button_tag(type: 'submit', class: 'btn btn-sm') do %>
-    <%= fa_icon('envelope') %> Email funder report
-  <% end %>
-<% end %>
+<%= render Forms::EmailReportButtonComponent.new(deliver_admin_reports_funder_allocations_path, 'Email funder report') %>
 
 <p>
   Summary of column headings:
@@ -65,11 +31,14 @@
 <ul>
   <li>School group</li>
   <li>School name</li>
+  <li>URN</li>
   <li>School type</li>
   <li>Data visible? - true or false depending on whether school is data visible</li>
+  <li>Data sharing - whether the school data is Public, Private, or Within group</li>
   <li>Onboarding date - date school onboarding was completed. Will be empty for some older schools, or any created manually</li>
   <li>Date enabled date - date school was first made data enabled. Consistent with the "recently onboarded" report. Will be empty if school not yet visible</li>
-  <li>Funder - the funder either directly linked to the school or to its school group</li>
+  <li>Current Contract holder - the contract holder for the school's current licence. Will be the name of a Funder, or "School self funding" or "MAT funding" (if contract is held by their School Group)</li>
+  <li>Future Contract holder - the contract holder for the school's first licence for the next academic year (Sept-Aug). Values as above.</li>
   <li>Funding status</li>
   <li>Postcode</li>
   <li>Country</li>
@@ -99,4 +68,10 @@
   <li>Solar Procurement Route 1 - Procurement routes for active solar pv or exported solar pv meters. Route names have been sorted alphabetically for consistency. This will be the first</li>
   <li>Solar Procurement Route 2 - Optional</li>
   <li>Solar Procurement Route 3 - Optional</li>
+  <li>Current Contract Holder - who is currently funding their use of energy sparks?</li>
+  <li>Contract Start Date - start of current licensed period</li>
+  <li>Contract End Date - end of current licensed period</li>
+  <li>Licence Start Date - start of current licensed period</li>
+  <li>Licence End Date - end of current licensed period</li>
+  <li>Product - Which product are they contracted/licensed to use?</li>
 </ul>

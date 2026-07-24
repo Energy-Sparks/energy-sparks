@@ -1,17 +1,20 @@
+# Postgres autovacuum specific settings:
+# See: https://www.postgresql.org/docs/current/runtime-config-autovacuum.html
+# Applied using: ALTER TABLE amr_data_feed_readings SET (X = n)
+# autovacuum_vacuum_cost_delay = 0
+# autovacuum_analyze_scale_factor = 0
+# autovacuum_analyze_threshold = 10000
+# autovacuum_vacuum_scale_factor = 0
+# autovacuum_vacuum_threshold = 50000
 # == Schema Information
 #
 # Table name: amr_data_feed_readings
 #
-#  amr_data_feed_config_id     :bigint(8)        not null
-#  amr_data_feed_import_log_id :bigint(8)        not null
-#  created_at                  :datetime         not null
-#  description                 :text
 #  id                          :bigint(8)        not null, primary key
-#  meter_id                    :bigint(8)
+#  description                 :text
 #  meter_serial_number         :text
 #  mpan_mprn                   :text             not null
 #  postcode                    :text
-#  provider_record_id          :text
 #  reading_date                :text             not null
 #  reading_time                :text
 #  readings                    :text             not null, is an Array
@@ -19,11 +22,17 @@
 #  total                       :text
 #  type                        :text
 #  units                       :text
+#  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  amr_data_feed_config_id     :bigint(8)        not null
+#  amr_data_feed_import_log_id :bigint(8)        not null
+#  meter_id                    :bigint(8)
+#  provider_record_id          :text
 #
 # Indexes
 #
 #  adfr_meter_id_config_id                                      (meter_id,amr_data_feed_config_id)
+#  idx_readings_config_id_updated_at                            (amr_data_feed_config_id,updated_at)
 #  index_amr_data_feed_readings_on_amr_data_feed_config_id      (amr_data_feed_config_id)
 #  index_amr_data_feed_readings_on_amr_data_feed_import_log_id  (amr_data_feed_import_log_id)
 #  index_amr_data_feed_readings_on_created_at_and_meter_id      (created_at,meter_id)
@@ -38,14 +47,6 @@
 #  fk_rails_...  (meter_id => meters.id) ON DELETE => nullify
 #
 
-# Postgres autovacuum specific settings:
-# See: https://www.postgresql.org/docs/current/runtime-config-autovacuum.html
-# Applied using: ALTER TABLE amr_data_feed_readings SET (X = n)
-# autovacuum_vacuum_cost_delay = 0
-# autovacuum_analyze_scale_factor = 0
-# autovacuum_analyze_threshold = 10000
-# autovacuum_vacuum_scale_factor = 0
-# autovacuum_vacuum_threshold = 50000
 class AmrDataFeedReading < ApplicationRecord
   belongs_to :meter, optional: true
   belongs_to :amr_data_feed_import_log
@@ -67,9 +68,10 @@ class AmrDataFeedReading < ApplicationRecord
     WHEN date_format='%d/%m/%Y' THEN to_date(reading_date, 'DD/MM/YYYY')
     WHEN date_format='%d/%m/%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d/%m/%y' THEN to_date(reading_date, 'DD/MM/YY')
+    WHEN date_format='%Y-%m-%d ' AND reading_date~'\\d{4}-\\d{2}-\\d{2}\s*$' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%Y-%m-%d' AND reading_date~'\\d{2}/\\d{2}/\\d{4}' THEN to_date(reading_date, 'DD/MM/YYYY')
     WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD')
-    WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD ')
+    WHEN date_format='%y-%m-%d' AND reading_date~'\\d{2}/\\d{2}/\\d{4}' THEN to_date(reading_date, 'DD/MM/YYYY')
     WHEN date_format='%y-%m-%d' THEN to_date(reading_date, 'YY-MM-DD ')
     WHEN date_format='"%d-%m-%Y"' THEN to_date(reading_date, '"DD-MM-YYYY"')
     WHEN date_format='%d/%m/%Y %H:%M:%S' THEN to_date(reading_date, 'DD/MM/YYYY HH24:MI::SS')
@@ -142,8 +144,8 @@ class AmrDataFeedReading < ApplicationRecord
     amr_data_feed_config_ids = amr_data_feed_config_ids.reject { |id| id.blank? || id.zero? }
     amr_data_feed_config_ids = AmrDataFeedConfig.all.pluck(:id) if amr_data_feed_config_ids.empty?
 
-    list_of_mpans = mpans.map {|m| "'#{m}'"}.join(',')
-    list_of_amr_data_feed_config_ids = amr_data_feed_config_ids.map {|m| "'#{m}'"}.join(',')
+    list_of_mpans = mpans.map { |m| "'#{m}'" }.join(',')
+    list_of_amr_data_feed_config_ids = amr_data_feed_config_ids.map { |m| "'#{m}'" }.join(',')
 
     <<~QUERY
       SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
@@ -173,7 +175,8 @@ class AmrDataFeedReading < ApplicationRecord
         rows_for_mpan.each { |row_for_mpan| rows << row_for_mpan }
       else
         # Add an empty row for for any MPAN/MPRN not found
-        rows << { 'mpan_mprn' => mpan, 'meter_id' => '-', 'identifier' => '-', 'description' => '-', 'earliest_reading' => '-', 'latest_reading' => '-' }
+        rows << { 'mpan_mprn' => mpan, 'meter_id' => '-', 'identifier' => '-', 'description' => '-',
+                  'earliest_reading' => '-', 'latest_reading' => '-' }
       end
     end
   end

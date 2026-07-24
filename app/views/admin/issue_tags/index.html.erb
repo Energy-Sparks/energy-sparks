@@ -1,0 +1,35 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Issue Tags</h1>
+</div>
+
+<%= link_to 'New issue_tag', new_admin_issue_tag_path, class: 'btn btn-primary mb-2' %>
+
+<div id='issue-tags-list'>
+  <% if @issue_tags.any? %>
+    <table class="table table-sorted">
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>System id</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @issue_tags.by_label.each do |issue_tag| %>
+          <tr>
+            <td><%= issue_tag.label %></td>
+            <td><%= issue_tag.system_id %></td>
+            <td class="fit nowrap text-end">
+              <%= link_to 'View issues with this tag', admin_issues_path(issue_tag:),
+                          class: 'btn btn-secondary btn-sm edit' %>
+              <%= link_to 'Edit', edit_admin_issue_tag_path(issue_tag), class: 'btn btn-secondary btn-sm edit' %>
+              <%= render(Forms::DeleteButtonComponent.new(admin_issue_tag_path(issue_tag), resource: issue_tag)) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No issue tags to display.</p>
+  <% end %>
+</div>

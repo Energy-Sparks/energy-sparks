@@ -2,16 +2,16 @@
 #
 # Table name: comparison_reports
 #
-#  created_at       :datetime         not null
-#  custom_period_id :bigint(8)
+#  id               :bigint(8)        not null, primary key
 #  disabled         :boolean          default(FALSE), not null
 #  fuel_type        :integer
-#  id               :bigint(8)        not null, primary key
 #  key              :string           not null
 #  public           :boolean          default(FALSE)
-#  report_group_id  :bigint(8)
 #  reporting_period :integer
+#  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  custom_period_id :bigint(8)
+#  report_group_id  :bigint(8)
 #
 # Indexes
 #

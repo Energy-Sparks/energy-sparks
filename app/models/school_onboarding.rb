@@ -2,38 +2,38 @@
 #
 # Table name: school_onboardings
 #
+#  id                       :bigint(8)        not null, primary key
 #  contact_email            :string           not null
 #  country                  :integer          default("england"), not null
+#  data_sharing             :enum             default("public"), not null
+#  default_chart_preference :integer          default("default"), not null
+#  full_school              :boolean          default(TRUE)
+#  notes                    :text
+#  school_name              :string           not null
+#  school_will_be_public    :boolean          default(TRUE)
+#  urn                      :integer
+#  uuid                     :string           not null
 #  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  contract_id              :bigint(8)
 #  created_by_id            :bigint(8)
 #  created_user_id          :bigint(8)
 #  dark_sky_area_id         :bigint(8)
-#  data_sharing             :enum             default("public"), not null
-#  default_chart_preference :integer          default("default"), not null
 #  diocese_id               :bigint(8)
-#  full_school              :boolean          default(TRUE)
-#  funder_id                :bigint(8)
-#  id                       :bigint(8)        not null, primary key
 #  local_authority_area_id  :bigint(8)
-#  notes                    :text
 #  project_group_id         :bigint(8)
 #  school_group_id          :bigint(8)
 #  school_id                :bigint(8)
-#  school_name              :string           not null
-#  school_will_be_public    :boolean          default(TRUE)
 #  scoreboard_id            :bigint(8)
 #  template_calendar_id     :bigint(8)
-#  updated_at               :datetime         not null
-#  urn                      :integer
-#  uuid                     :string           not null
 #  weather_station_id       :bigint(8)
 #
 # Indexes
 #
+#  index_school_onboardings_on_contract_id              (contract_id)
 #  index_school_onboardings_on_created_by_id            (created_by_id)
 #  index_school_onboardings_on_created_user_id          (created_user_id)
 #  index_school_onboardings_on_diocese_id               (diocese_id)
-#  index_school_onboardings_on_funder_id                (funder_id)
 #  index_school_onboardings_on_local_authority_area_id  (local_authority_area_id)
 #  index_school_onboardings_on_project_group_id         (project_group_id)
 #  index_school_onboardings_on_school_group_id          (school_group_id)
@@ -44,6 +44,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (contract_id => commercial_contracts.id)
 #  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (created_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (diocese_id => school_groups.id)
@@ -58,6 +59,12 @@
 class SchoolOnboarding < ApplicationRecord
   include Enums::DataSharing
   include RestrictsSchoolGroupTypes
+  include PgSearch::Model
+
+  pg_search_scope :search_by_school_name, against: :school_name,
+                                          using: {
+                                            tsearch: { prefix: true }
+                                          }
 
   validates :school_name, presence: true
   validates :contact_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -73,7 +80,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :scoreboard, optional: true
   belongs_to :created_user, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User', optional: true
-  belongs_to :funder, optional: true
+  belongs_to :contract, class_name: 'Commercial::Contract', optional: true
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
   has_many :issues, as: :issueable, dependent: :destroy
@@ -82,6 +89,15 @@ class SchoolOnboarding < ApplicationRecord
   scope :complete, lambda {
     joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] })
   }
+  scope :completed_in_last_x_days, ->(x) do # rubocop:disable Style/Lambda
+    joins(:events).where(
+      school_onboarding_events: {
+        event: SchoolOnboardingEvent.events[:onboarding_complete],
+        created_at: x.days.ago..
+      }
+    )
+  end
+
   scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.onboardings_for_group.complete : complete) }
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: }) }
 
@@ -133,6 +149,10 @@ class SchoolOnboarding < ApplicationRecord
 
   def started?
     !has_only_sent_email_or_reminder?
+  end
+
+  def started_on
+    events.email_sent.order(:created_at).first&.created_at
   end
 
   def onboarding_user_created?
@@ -197,5 +217,13 @@ class SchoolOnboarding < ApplicationRecord
     establishment = Lists::Establishment.current_establishment_from_urn(urn)
     return nil unless establishment && establishment&.public_send(code_attr)
     SchoolGroup.find_by(group_type:, dfe_code: establishment.public_send(code_attr))
+  end
+
+  def status_display
+    return { title: 'Completed', classes: 'ms-1 badge rounded-pill text-bg-success' } if complete?
+
+    return { title: 'Not Yet Started', classes: 'ms-1 badge rounded-pill text-bg-danger' } unless started?
+
+    { title: 'In Progress', classes: 'ms-1 badge rounded-pill text-bg-warning' }
   end
 end

@@ -1,9 +1,9 @@
 require 'energy_sparks/points_display_normaliser'
 
 describe EnergySparks::PointsDisplayNormaliser do
-  let(:points) {}
-
   subject(:normalised_points) { EnergySparks::PointsDisplayNormaliser.normalise(points) }
+
+  let(:points) {}
 
   context 'when points is empty' do
     let(:points) { [] }

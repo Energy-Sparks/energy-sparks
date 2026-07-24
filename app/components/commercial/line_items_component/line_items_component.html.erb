@@ -1,0 +1,43 @@
+<%= tag.div id: id, class: classes do %>
+  <table id="invoice-<%= @invoice.id %>-line-items-table" class="table table-paged table-sm">
+    <thead>
+      <tr>
+        <th colspan="4">School</th>
+        <th class="text-center" colspan="2">Licence</th>
+        <th class="text-center" colspan="4">Fees</th>
+      </tr>
+      <tr>
+        <th>School Group</th>
+        <th>School</th>
+        <th>Private Account?</th>
+        <th>Number of Meters</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Base price</th>
+        <th>Metering fee</th>
+        <th>Private account fee</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoice.line_items.each do |line_item| %>
+        <tr>
+          <td class="col-2"><%= line_item.school&.school_group&.name %></td>
+          <td class="col-2"><%= line_item.school.name %></td>
+          <td class="col-1"><%= helpers.y_n line_item.private_account %></td>
+          <td class="col-1"><%= line_item.number_of_meters %></td>
+          <td class="col-1" data-order="<%= line_item.licence.start_date.iso8601 %>">
+            <%= line_item.licence.start_date.to_fs(:es_short) %>
+          </td>
+          <td class="col-1" data-order="<%= line_item.licence.end_date.iso8601 %>">
+            <%= line_item.licence.end_date.to_fs(:es_short) %>
+          </td>
+          <td class="col-1"><%= helpers.format_price line_item.value.base_price %></td>
+          <td class="col-1"><%= helpers.format_price line_item.value.metering_fee %></td>
+          <td class="col-1"><%= helpers.format_price line_item.value.private_account_fee %></td>
+          <td class="col-1"><%= helpers.format_price line_item.value.total %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

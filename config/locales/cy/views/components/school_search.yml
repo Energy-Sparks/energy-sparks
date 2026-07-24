@@ -1,6 +1,12 @@
 cy:
   components:
     school_search:
+      areas:
+        pagination: Llywio A-Z Awdurdodau Lleol
+        tab: Dod o hyd i Awdurdodau Lleol
+      diocese:
+        pagination: Llywio Esgobaethau A-Z
+        tab: Dod o hyd i Esgobaeth
       school_groups:
         pagination: Llywio A-Z grŵp ysgol
         tab: Dod o hyd i Grwpiau Ysgol

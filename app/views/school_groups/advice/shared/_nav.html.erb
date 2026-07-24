@@ -39,7 +39,7 @@
     <% s.with_item(name: t('school_groups.titles.secr'),
                    href: school_group_secr_index_path(school_group),
                    classes: 'small',
-                   visible: school_group.organisation? && can?(:update_settings, school_group)) %>
+                   visible: school_group.organisation? && can?(:view_secr_report, school_group)) %>
   <% end %>
   <% c.with_section(name: t('advice_pages.nav.sections.electricity'),
                     icon: fuel_type_icon(:electricity), classes: 'electric-section',

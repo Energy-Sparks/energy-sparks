@@ -19,6 +19,8 @@
     <% end %>
   <% end %>
 
+  <%= render ImpactReports::PromptComponent.new(school_group: @school_group) %>
+
   <%= render Dashboards::GroupAdvicePageListComponent.new(
         id: 'detailed-analysis',
         school_group: @school_group,

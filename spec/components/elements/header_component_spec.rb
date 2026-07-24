@@ -21,7 +21,7 @@ RSpec.describe Elements::HeaderComponent, :include_application_helper, type: :co
     end
 
     it { expect(html).to have_css('h1') }
-    it { expect(html).to have_content('Title') }
+    it { expect(html).to have_text('Title') }
   end
 
   (1..6).each do |level|
@@ -29,7 +29,7 @@ RSpec.describe Elements::HeaderComponent, :include_application_helper, type: :co
       let(:params) { { level: level, title: title } }
 
       it { expect(html).to have_css("h#{level}") }
-      it { expect(html).to have_content('Title') }
+      it { expect(html).to have_text('Title') }
     end
   end
 
@@ -44,5 +44,15 @@ RSpec.describe Elements::HeaderComponent, :include_application_helper, type: :co
     let(:params) { { level: 7, title: title } }
 
     it { expect { html }.to raise_error(ArgumentError, 'Header level must be between 1 and 6') }
+  end
+
+  context 'with block' do
+    let(:html) do
+      render_inline(Elements::HeaderComponent.new(url: 'https://example.org')) { 'Block text' }
+    end
+
+    it { expect(html).to have_css('h1') }
+    it { expect(html).to have_link(href: 'https://example.org') }
+    it { expect(html).to have_text('Block text') }
   end
 end

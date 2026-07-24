@@ -3,7 +3,13 @@
 module Admin
   module SchoolGroups
     class MeterUpdatesController < AdminController
+      include SchoolGroupBreadcrumbs
+
       load_and_authorize_resource :school_group
+
+      before_action :breadcrumbs
+
+      layout 'group_settings'
 
       def index; end
 
@@ -40,6 +46,10 @@ module Admin
       def meter_update_params
         params.permit(electricity: {}, gas: {}, solar_pv: {})[params[:meter_update_fuel_type]]
               .permit(:data_source_id, :procurement_route_id)
+      end
+
+      def breadcrumbs
+        build_breadcrumbs([{ name: t('school_groups.titles.meter_updates') }])
       end
     end
   end

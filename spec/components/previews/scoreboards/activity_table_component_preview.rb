@@ -17,7 +17,7 @@ module Scoreboards
         Observation.find_by(observation_type: :audit),
         Observation.find_by(observation_type: :transport_survey),
         Observation.find_by(observation_type: :programme),
-        Observation.find_by(observation_type: :school_target),
+        Observation.find_by(observation_type: :school_target)
       ].compact.sort_by(&:at).reverse
 
       render(Scoreboards::ActivityTableComponent.new(observations:,

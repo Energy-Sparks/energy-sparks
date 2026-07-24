@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'admin comparisons footnotes', type: :system, include_application_helper: true do
+describe 'admin comparisons footnotes', :include_application_helper, type: :system do
   let!(:admin)  { create(:admin) }
   let!(:footnote) { create(:footnote) }
 
@@ -11,7 +11,7 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -21,7 +21,7 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
   end
@@ -38,7 +38,9 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
 
       it 'lists footnote' do
         within('table') do
-          expect(page).to have_selector(:table_row, { 'Label' => footnote.label, 'Key' => footnote.key, 'Description' => footnote.description })
+          expect(page).to have_selector(:table_row,
+                                        { 'Label' => footnote.label, 'Key' => footnote.key,
+                                          'Description' => footnote.description })
         end
       end
 
@@ -59,9 +61,9 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
             click_on 'Save'
           end
 
-          it { expect(page).to have_content("Label *\ncan't be blank") }
-          it { expect(page).to have_content("Key *\ncan't be blank") }
-          it { expect(page).to have_content("Description en\ncan't be blank") }
+          it { expect(page).to have_text("Label *\ncan't be blank") }
+          it { expect(page).to have_text("Key *\ncan't be blank") }
+          it { expect(page).to have_text("Description en\ncan't be blank") }
         end
 
         context 'with valid attributes' do
@@ -72,8 +74,13 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
             click_on 'Save'
           end
 
-          it { expect(page).to have_content('Footnote was successfully updated') }
-          it { expect(page).to have_selector(:table_row, { 'Label' => 'Updated label', 'Key' => 'Updated key', 'Description' => 'Updated description' }) }
+          it { expect(page).to have_text('Footnote was successfully updated') }
+
+          it {
+            expect(page).to have_selector(:table_row,
+                                          { 'Label' => 'Updated label', 'Key' => 'Updated key',
+                                            'Description' => 'Updated description' })
+          }
         end
       end
 
@@ -94,9 +101,9 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
             click_on 'Save'
           end
 
-          it { expect(page).to have_content("Key *\ncan't be blank") }
-          it { expect(page).to have_content("Label *\ncan't be blank") }
-          it { expect(page).to have_content("Description en\ncan't be blank") }
+          it { expect(page).to have_text("Key *\ncan't be blank") }
+          it { expect(page).to have_text("Label *\ncan't be blank") }
+          it { expect(page).to have_text("Description en\ncan't be blank") }
         end
 
         context 'with valid attributes' do
@@ -107,8 +114,13 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
             click_on 'Save'
           end
 
-          it { expect(page).to have_content('Footnote was successfully created') }
-          it { expect(page).to have_selector(:table_row, { 'Label' => 'New label', 'Key' => 'New key', 'Description' => 'New description' }) }
+          it { expect(page).to have_text('Footnote was successfully created') }
+
+          it {
+            expect(page).to have_selector(:table_row,
+                                          { 'Label' => 'New label', 'Key' => 'New key',
+                                            'Description' => 'New description' })
+          }
         end
       end
 
@@ -123,7 +135,8 @@ describe 'admin comparisons footnotes', type: :system, include_application_helpe
 
         it 'no longer lists footnote' do
           within('table') do
-            expect(page).not_to have_selector(:table_row, { 'Key' => footnote.key, 'Description' => footnote.description })
+            expect(page).to have_no_selector(:table_row,
+                                             { 'Key' => footnote.key, 'Description' => footnote.description })
           end
         end
       end

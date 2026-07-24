@@ -42,7 +42,7 @@ class TimelineController < ApplicationController
   end
 
   def set_breadcrumbs
-    breadcrumbs = [name: I18n.t('timeline.view_all_events')]
+    breadcrumbs = [{ name: I18n.t('timeline.view_all_events') }]
     if @timelineable.is_a?(School)
       @breadcrumbs = breadcrumbs
     else

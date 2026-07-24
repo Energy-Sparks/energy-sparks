@@ -26,11 +26,13 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
 
   let(:management_data) do
     Tables::SummaryTableData.new({
-      electricity: {
-        year: { kwh: 1000, gbp: 2000, co2: 500, savings_gbp: 330, :percent_change => 0.11050 },
-        workweek: { kwh: 100, gbp: 200, co2: 50, savings_gbp: 33, :percent_change => -0.0923132131 }
-      }
-    })
+                                   electricity: {
+                                     year: { kwh: 1000, gbp: 2000, co2: 500, savings_gbp: 330,
+                                             percent_change: 0.11050 },
+                                     workweek: { kwh: 100, gbp: 200, co2: 50, savings_gbp: 33,
+                                                 percent_change: -0.0923132131 }
+                                   }
+                                 })
   end
 
   before do
@@ -45,7 +47,7 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
 
   context 'when school is data enabled' do
     it 'renders the table title' do
-      expect(html).to have_content(I18n.t('schools.show.recent_energy_usage'))
+      expect(html).to have_text(I18n.t('schools.show.recent_energy_usage'))
     end
 
     it 'renders the table' do
@@ -90,7 +92,7 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
     end
 
     it 'renders the table footer' do
-      expect(html).to have_content(I18n.t('advice_pages.how_have_we_analysed_your_data.link_title'))
+      expect(html).to have_text(I18n.t('advice_pages.how_have_we_analysed_your_data.link_title'))
       expect(html).to have_link(href: help_path(help_page))
     end
 
@@ -139,7 +141,7 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
       end
 
       it 'does not show the title' do
-        expect(html).not_to have_content(I18n.t('schools.show.recent_energy_usage'))
+        expect(html).to have_no_text(I18n.t('schools.show.recent_energy_usage'))
       end
     end
   end
@@ -154,8 +156,8 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
     end
 
     it 'renders the custom footer' do
-      expect(html).not_to have_content('More information')
-      expect(html).not_to have_content('My custom footer')
+      expect(html).to have_no_text('More information')
+      expect(html).to have_no_text('My custom footer')
     end
   end
 
@@ -163,7 +165,7 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
     let(:school) { create(:school, data_enabled: false) }
 
     it 'does not render' do
-      expect(html).not_to have_css('#custom-id')
+      expect(html).to have_no_css('#custom-id')
     end
 
     context 'with an admin' do

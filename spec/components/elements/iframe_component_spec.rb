@@ -32,10 +32,10 @@ RSpec.describe Elements::IframeComponent, :include_application_helper, type: :co
     let(:params) { super().merge(type: :generic) }
 
     it { expect(html).to have_css('iframe') }
-    it { expect(html).not_to have_css('iframe[style*="object-fit: cover"]') }
-    it { expect(html).not_to have_css('iframe[frameborder]') }
-    it { expect(html).not_to have_css('iframe[allowfullscreen]') }
-    it { expect(html).not_to have_css('iframe.h-100.w-100') }
+    it { expect(html).to have_no_css('iframe[style*="object-fit: cover"]') }
+    it { expect(html).to have_no_css('iframe[frameborder]') }
+    it { expect(html).to have_no_css('iframe[allowfullscreen]') }
+    it { expect(html).to have_no_css('iframe.h-100.w-100') }
   end
 
   context 'with custom iframe_classes' do

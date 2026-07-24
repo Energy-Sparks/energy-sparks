@@ -30,7 +30,7 @@ describe 'School group SECR' do
         visit school_group_secr_index_path(school_group)
       end
 
-      it { expect(page).to have_content('You need to sign in or sign up before continuing') }
+      it { expect(page).to have_text('You need to sign in or sign up before continuing') }
     end
 
     context 'when signed in as a different group admin' do
@@ -39,7 +39,7 @@ describe 'School group SECR' do
         visit school_group_secr_index_path(school_group)
       end
 
-      it { expect(page).to have_content('You are not authorized to access this page.') }
+      it { expect(page).to have_current_path(school_group_path(school_group)) }
     end
 
     context 'when signed in as a group admin in the same group' do
@@ -50,7 +50,7 @@ describe 'School group SECR' do
 
       it 'displays title' do
         expect(page).to have_title('SECR Reporting Data')
-        expect(page).to have_content('SECR Reporting Data')
+        expect(page).to have_text('SECR Reporting Data')
       end
 
       it 'displays the table' do

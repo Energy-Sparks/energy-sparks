@@ -5,5 +5,5 @@
   <% if @user.confirmed? %>
     <%= render 'schools/users/auto_create_alert_contact', f: f, school: @school, user: @user, checked: Schools::ContactFinder.new(@school).contact_for(@user).present? %>
   <% end %>
-  <%= f.submit t('schools.users.edit.update_account'), class: 'btn btn-rounded'%>
+  <%= f.submit t('schools.users.edit.update_account'), class: 'btn btn-primary' %>
 <% end %>

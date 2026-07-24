@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 describe 'Missing Alert Contacts' do
-  let!(:school) do
-    create(:school, :with_school_group, active: true, funder: create(:funder))
-  end
+  let!(:funder) { create(:funder) }
+  let!(:school) { create(:school, :with_school_group, active: true) }
 
   before do
+    create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder: funder))
+
     sign_in(create(:admin))
     visit root_path
     click_on 'Manage'
@@ -20,7 +21,8 @@ describe 'Missing Alert Contacts' do
     expect(page).to have_selector(:table_row, {
                                     'School Group' => school.school_group.name,
                                     'School' => school.name,
-                                    'Funder' => school.funder.name,
+                                    'Admin' => school.school_group.default_issues_admin_user.name,
+                                    'Funder' => funder.name,
                                     'Country' => school.country.humanize,
                                     'Onboarding completed' => 'N/A',
                                     'Data enabled?' => '',

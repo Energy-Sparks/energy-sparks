@@ -7,7 +7,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
     described_class.new(**params)
   end
 
-  let(:id) { 'custom-id'}
+  let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:user) { create(:admin) }
   let(:school) { create(:school) }
@@ -34,7 +34,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       end
 
       context 'with school admin' do
-        let(:user) { create(:school_admin, school: school)}
+        let(:user) { create(:school_admin, school: school) }
 
         it { expect(component.prompt_for_bill?).to be(true) }
       end
@@ -63,13 +63,13 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
 
       context 'with school admin' do
         context 'when recently confirmed' do
-          let!(:user) { create(:school_admin, confirmed_at: Time.zone.now, school: school)}
+          let!(:user) { create(:school_admin, confirmed_at: Time.zone.now, school: school) }
 
           it { expect(component.prompt_for_training?).to be(true) }
         end
 
         context 'when confirmed some time ago' do
-          let!(:user) { create(:school_admin, confirmed_at: 1.year.ago, school: school)}
+          let!(:user) { create(:school_admin, confirmed_at: 1.year.ago, school: school) }
 
           it { expect(component.prompt_for_training?).to be(false) }
         end
@@ -116,14 +116,14 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       end
 
       context 'with school admin' do
-        let!(:user) { create(:school_admin, school: school)}
+        let!(:user) { create(:school_admin, school: school) }
 
         it { expect(component.prompt_for_contacts?).to be(false) }
       end
     end
 
     context 'with school admin' do
-      let!(:user) { create(:school_admin, school: school)}
+      let!(:user) { create(:school_admin, school: school) }
 
       it { expect(component.prompt_for_contacts?).to be(true) }
     end
@@ -156,14 +156,14 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       end
 
       context 'with school admin' do
-        let!(:user) { create(:school_admin, school: school)}
+        let!(:user) { create(:school_admin, school: school) }
 
         it { expect(component.prompt_for_pupils?).to be(false) }
       end
     end
 
     context 'with school admin' do
-      let!(:user) { create(:school_admin, school: school)}
+      let!(:user) { create(:school_admin, school: school) }
 
       it { expect(component.prompt_for_pupils?).to be(true) }
     end
@@ -187,7 +187,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
     end
 
     context 'with school admin' do
-      let!(:user) { create(:school_admin, school: school)}
+      let!(:user) { create(:school_admin, school: school) }
 
       it { expect(component.send(:prompt_for_target?)).to be(true) }
     end
@@ -212,7 +212,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       end
 
       context 'with school admin' do
-        let!(:user) { create(:school_admin, school: school)}
+        let!(:user) { create(:school_admin, school: school) }
 
         it { expect(component.send(:prompt_to_review_target?)).to be_nil }
       end
@@ -243,7 +243,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       end
 
       context 'with school admin' do
-        let!(:user) { create(:school_admin, school: school)}
+        let!(:user) { create(:school_admin, school: school) }
 
         it { expect(component.send(:prompt_to_review_target?)).to be(true) }
       end
@@ -269,7 +269,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       end
 
       context 'with school admin' do
-        let!(:user) { create(:school_admin, school: school)}
+        let!(:user) { create(:school_admin, school: school) }
 
         it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
@@ -297,7 +297,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       end
 
       context 'with school admin' do
-        let!(:user) { create(:school_admin, school: school)}
+        let!(:user) { create(:school_admin, school: school) }
 
         it { expect(component.send(:prompt_to_set_new_target?)).to be(false) }
       end
@@ -325,7 +325,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       end
 
       context 'with school admin' do
-        let!(:user) { create(:school_admin, school: school)}
+        let!(:user) { create(:school_admin, school: school) }
 
         it { expect(component.send(:prompt_to_set_new_target?)).to be(true) }
       end
@@ -353,76 +353,75 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
       SiteSettings.create!(message_for_no_pupil_accounts: true, message_for_no_contacts: true)
     end
 
-    it { expect(html).to have_content(I18n.t('schools.prompts.programme.choose_a_new_programme_message')) }
+    it { expect(html).to have_text(I18n.t('schools.prompts.programme.choose_a_new_programme_message')) }
 
     it {
       expect(html).to have_link(I18n.t('schools.prompts.programme.start_a_new_programme'),
-                                   href: programme_types_path)
+                                href: programme_types_path)
     }
 
     context 'when school has an active programme' do
       let!(:programme) { create(:programme, school: school) }
 
-      it { expect(html).to have_content('You have completed') }
+      it { expect(html).to have_text('You haven\'t yet completed any of the tasks') }
 
       it {
         expect(html).to have_link(I18n.t('common.labels.view_now'),
-                                     href: programme_type_path(programme.programme_type))
+                                  href: programme_type_path(programme.programme_type))
       }
 
-      it { expect(html).not_to have_selector('#new_programme') }
+      it { expect(html).to have_no_css('#new_programme') }
     end
 
-
-    it { expect(html).to have_content(I18n.t('schools.show.setup_pupil_account')) }
+    it { expect(html).to have_text(I18n.t('schools.show.setup_pupil_account')) }
 
     it {
       expect(html).to have_link(I18n.t('schools.show.create_pupil_account'),
-                                   href: new_school_pupil_path(school))
+                                href: new_school_pupil_path(school))
     }
 
-    it { expect(html).to have_content(I18n.t('schools.show.setup_alert_contacts')) }
+    it { expect(html).to have_text(I18n.t('schools.show.setup_alert_contacts')) }
 
     it {
       expect(html).to have_link(I18n.t('schools.show.add_alert_contacts'),
-                                   href: school_contacts_path(school))
+                                href: school_contacts_path(school))
     }
 
-    it { expect(html).to have_content(I18n.t('schools.show.set_targets')) }
+    it { expect(html).to have_text(I18n.t('schools.show.set_targets')) }
 
     it {
       expect(html).to have_link(I18n.t('schools.show.set_target'),
-                                   href: school_school_targets_path(school))
+                                href: school_school_targets_path(school))
     }
 
     context 'when bill requested' do
       let(:school) { create(:school, bill_requested: true) }
 
-      it { expect(html).to have_content(I18n.t('schools.show.set_targets')) }
+      it { expect(html).to have_text(I18n.t('schools.show.set_targets')) }
 
       it {
         expect(html).to have_link(I18n.t('schools.show.upload_energy_bill'),
-                                     href: school_consent_documents_path(school))
+                                  href: school_consent_documents_path(school))
       }
     end
 
     context 'when user should be prompted for training' do
-      let!(:user) { create(:school_admin, confirmed_at: Time.zone.now, school: school)}
+      let!(:user) { create(:school_admin, confirmed_at: Time.zone.now, school: school) }
 
-      it { expect(html).to have_content(I18n.t('schools.show.online_training_signup')) }
+      it { expect(html).to have_text(I18n.t('schools.show.online_training_signup')) }
 
       it {
         expect(html).to have_link(I18n.t('schools.show.find_training'),
-                                     href: training_path)
+                                  href: training_path)
       }
     end
 
     context 'when there has been an audit with unfinished tasks' do
-      let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
+      let!(:audit) { create(:audit, :with_todos, school: school) }
 
       it {
         expect(html).to have_link(I18n.t('common.labels.view_now'),
-                                     href: school_audit_path(school, audit))
+                                  href: school_audit_path(school, audit))
       }
     end
 
@@ -434,11 +433,11 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
         allow(Targets::SchoolTargetService).to receive(:new).and_return(service)
       end
 
-      it { expect(html).to have_content(I18n.t('schools.show.revisit_targets')) }
+      it { expect(html).to have_text(I18n.t('schools.show.revisit_targets')) }
 
       it {
         expect(html).to have_link(I18n.t('schools.show.review_target'),
-                                     href: school_school_targets_path(school))
+                                  href: school_school_targets_path(school))
       }
     end
 
@@ -447,20 +446,20 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
         create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
       end
 
-      it { expect(html).to have_content('Your school set a target to reduce its energy usage') }
+      it { expect(html).to have_text('Your school set a target to reduce its energy usage') }
 
       it {
         expect(html).to have_link(I18n.t('schools.show.review_progress'),
-                                     href: school_school_targets_path(school))
+                                  href: school_school_targets_path(school))
       }
     end
 
     it 'displays the default prompts' do
-      within('#custom-id') do
-        expect(html).to have_css('#add_pupils')
-        expect(html).to have_css('#add_contacts')
-        expect(html).to have_css('#set_target')
-      end
+      html
+      custom_id = page.find_by_id('custom-id')
+      expect(custom_id).to have_css('#add_pupils')
+      expect(custom_id).to have_css('#add_contacts')
+      expect(custom_id).to have_css('#set_target')
     end
   end
 end

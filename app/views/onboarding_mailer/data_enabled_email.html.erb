@@ -1,58 +1,46 @@
-<h1 class="mb-3">
-  <%= t('onboarding_mailer.data_enabled_email.title', school_name: @school.name) %>
-</h1>
 
-<p>
-  <%= t('onboarding_mailer.data_enabled_email.paragraph_1_html', school_url: school_url(@school)) %>
-</p>
-
-<div class="s-3"></div>
-
-<p>
-  <%= t('onboarding_mailer.data_enabled_email.paragraph_2') %>
-</p>
-
-<%= link_to t('onboarding_mailer.data_enabled_email.explore_data'), school_url(@school), class: 'btn btn-primary mt-3 mb-3 ax-right' %>
-
-<div class="s-3"></div>
-
-<p>
-  <%= t('onboarding_mailer.data_enabled_email.paragraph_3_html', activity_categories_url: activity_categories_url) %>
-</p>
-
-<div class="s-3"></div>
-
-<% if @target_prompt %>
-  <div class="s-3"></div>
-
-  <h5 class="mb-3"><%= t('onboarding_mailer.data_enabled_email.set_your_first_targets') %></h5>
-
-  <%= render 'shared/mailer/first_target_prompt', tracking_params: targets_utm_parameters(source: "activation") %>
-
-  <div class="s-3"></div>
-
-<% end %>
-
-<h5 class="mb-3"><%= t('onboarding_mailer.data_enabled_email.need_some_help') %></h5>
-
-<p>
-  <%= t('onboarding_mailer.data_enabled_email.paragraph_4_html', user_guide_videos_url: user_guide_youtube_url, training_url: training_url) %>
-</p>
-
-<%= link_to t('onboarding_mailer.data_enabled_email.join_a_webinar'), training_url, class: 'btn btn-primary mt-3 mb-3 ax-right' %>
-
-<div class="s-3"></div>
-
-<h5 class="mb-3"><%= t('onboarding_mailer.data_enabled_email.thanks_for_joining') %></h5>
-
-<p>
-  <%= t('onboarding_mailer.data_enabled_email.paragraph_5') %>
-</p>
-
-<div class="s-3"></div>
-<p>
-  <%= t('onboarding_mailer.data_enabled_email.get_in_touch_html', contact_url: contact_url) %>
-</p>
-
-<div class="s-3"></div>
-<span class="float-right">-- <%= t('onboarding_mailer.data_enabled_email.the_energy_sparks_team') %></span>
+<div class="space-y-4 mb-4">
+  <div><%= t('onboarding_mailer.data_enabled_email.we_are_pleased_html', url: school_url(@school)) %>
+  </div>
+  <% if message = @school.dashboard_message&.message %>
+    <div>
+      <% if message.downcase.start_with?('please note ') %>
+        <%= message %>
+      <% else %>
+        <%= t('onboarding_mailer.welcome_existing.dashboard_message', message:) %>
+      <% end %>
+    </div>
+  <% end %>
+  <% if @top_priority %>
+    <div>
+      <%= t('onboarding_mailer.welcome_existing.we_estimated_that_html',
+            opportunity: @top_priority.management_priorities_title.to_plain_text.delete("\u00A0").downcase,
+            gbp_saving: format_unit(@top_priority.alert.variables['average_one_year_saving_gbp'], :£),
+            co2_saving: format_unit(@top_priority.alert.variables['one_year_saving_co2'], :co2)) %>
+    </div>
+  <% end %>
+  <% if @staff %>
+    <div><%= t('onboarding_mailer.set_up_with_a_staff_account') %></div>
+  <% end %>
+  <div>
+    <div><%= t('onboarding_mailer.here_is_our_quick_guide') %></div>
+    <ol>
+      <li><%= t('onboarding_mailer.familiarise_yourself_html', root_url:) %></li>
+      <li><%= t('onboarding_mailer.find_your_biggest_html', url: priorities_school_advice_url(@school)) %></li>
+      <li><%= t('onboarding_mailer.build_an_energy_saving_team_html', root_url:) %></li>
+      <li><%= t('onboarding_mailer.set_up_a_holiday_switch_off_routine_html', root_url:) %></li>
+      <li><%= t('onboarding_mailer.sign_up_to_energy_saving_alerts_html', root_url:) %></li>
+    </ol>
+  </div>
+  <%= t('onboarding_mailer.data_enabled_email.below_are_a_few_common_html', root_url:) %>
+  <% unless @staff %>
+    <%= t('onboarding_mailer.data_enabled_email.below_are_a_few_admin_html',
+          root_url:,
+          users_url: school_users_url(@school),
+          opening_time: format_school_time(@school.school_times.school_day.minimum(:opening_time)),
+          closing_time: format_school_time(@school.school_times.school_day.maximum(:closing_time)),
+          times_url: edit_school_times_url(@school)) %>
+  <% end %>
+  <%= t('onboarding_mailer.data_enabled_email.below_are_a_few_final_html', root_url:) %>
+</div>
+<%= render 'closing' %>

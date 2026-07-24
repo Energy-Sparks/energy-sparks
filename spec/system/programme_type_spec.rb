@@ -18,11 +18,11 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
     end
 
     it 'prompts to start' do
-      expect(page).to have_content('You can enrol your school in this programme')
+      expect(page).to have_text('You can enrol your school in this programme')
     end
 
     it 'does not prompt to login' do
-      expect(page).to have_no_content('Are you an Energy Sparks user?')
+      expect(page).to have_no_text('Are you an Energy Sparks user?')
       expect(page).to have_no_link('Sign in now')
     end
 
@@ -30,30 +30,30 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       expect do
         click_link 'Start'
       end.to change(Programme, :count).from(0).to(1)
-      expect(page).to have_content('You started this programme')
+      expect(page).to have_text('You started this programme')
       expect(school.reload.programmes).not_to be_empty
     end
   end
 
   shared_examples 'a todo list when user is not enrolled' do
     it 'shows activities header' do
-      expect(page).to have_selector('h3', text: 'activities')
+      expect(page).to have_css('h3', text: 'activities')
     end
 
     it 'lists all the activities' do
       assignable.activity_type_tasks.each do |activity_type|
-        expect(page).to have_content(activity_type.name)
+        expect(page).to have_text(activity_type.name)
         expect(page).to have_link('View activity', href: activity_type_path(activity_type))
       end
     end
 
     it 'shows the actions header' do
-      expect(page).to have_selector('h3', text: 'actions')
+      expect(page).to have_css('h3', text: 'actions')
     end
 
     it 'lists all the actions' do
       assignable.intervention_type_tasks.each do |intervention_type|
-        expect(page).to have_content(intervention_type.name)
+        expect(page).to have_text(intervention_type.name)
         expect(page).to have_link('View action', href: intervention_type_path(intervention_type))
       end
     end
@@ -65,11 +65,11 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it 'shows activities header' do
-        expect(page).to have_selector('h3', text: 'activities')
+        expect(page).to have_css('h3', text: 'activities')
       end
 
       it 'does not show actions header' do
-        expect(page).not_to have_selector('h3', text: 'actions')
+        expect(page).to have_no_css('h3', text: 'actions')
       end
     end
 
@@ -87,7 +87,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         click_on programme_type.title
       end
 
-      it { expect(page).to have_content('You can enrol your school in this programme') }
+      it { expect(page).to have_text('You can enrol your school in this programme') }
       it { expect(page).to have_link('Start') }
     end
 
@@ -98,7 +98,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_content("You've recently completed an activity that is part of this programme. Do you want to enrol in the programme?")
+        expect(page).to have_text("You've recently completed an activity that is part of this programme. Do you want to enrol in the programme?")
       }
 
       it { expect(page).to have_link('Start') }
@@ -112,7 +112,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_content("You've recently completed 2 activities that are part of this programme. Do you want to enrol in the programme?")
+        expect(page).to have_text("You've recently completed 2 activities that are part of this programme. Do you want to enrol in the programme?")
       }
 
       it { expect(page).to have_link('Start') }
@@ -128,7 +128,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_content("You've completed all the activities in this programme. Mark it done to score 10 bonus points?")
+        expect(page).to have_text("You've completed all the activities in this programme. Mark it done to score 10 bonus points?")
       }
 
       it { expect(page).to have_link('Complete') }
@@ -137,7 +137,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         let(:bonus_points) { 0 }
 
         it {
-          expect(page).to have_content("You've completed all the activities in this programme. Mark it as complete?")
+          expect(page).to have_text("You've completed all the activities in this programme. Mark it as complete?")
         }
 
         it { expect(page).to have_link('Complete') }
@@ -153,7 +153,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         click_on programme_type.title
       end
 
-      it { expect(page).to have_content('You can enrol your school in this programme') }
+      it { expect(page).to have_text('You can enrol your school in this programme') }
       it { expect(page).to have_link('Start') }
     end
 
@@ -164,7 +164,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_content("You've recently completed a task that is part of this programme. Do you want to enrol in the programme?")
+        expect(page).to have_text("You've recently completed a task that is part of this programme. Do you want to enrol in the programme?")
       }
 
       it { expect(page).to have_link('Start') }
@@ -177,7 +177,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_content("You've recently completed a task that is part of this programme. Do you want to enrol in the programme?")
+        expect(page).to have_text("You've recently completed a task that is part of this programme. Do you want to enrol in the programme?")
       }
 
       it { expect(page).to have_link('Start') }
@@ -191,7 +191,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_content("You've recently completed 2 tasks that are part of this programme. Do you want to enrol in the programme?")
+        expect(page).to have_text("You've recently completed 2 tasks that are part of this programme. Do you want to enrol in the programme?")
       }
 
       it { expect(page).to have_link('Start') }
@@ -210,7 +210,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_content("You've completed all tasks in this programme. Mark it done to score 10 bonus points?")
+        expect(page).to have_text("You've completed all tasks in this programme. Mark it done to score 10 bonus points?")
       }
 
       it { expect(page).to have_link('Complete') }
@@ -219,7 +219,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         let(:bonus_points) { 0 }
 
         it {
-          expect(page).to have_content("You've completed all tasks in this programme. Mark it as complete?")
+          expect(page).to have_text("You've completed all tasks in this programme. Mark it as complete?")
         }
 
         it { expect(page).to have_link('Complete') }
@@ -238,9 +238,9 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
     end
 
     it 'says I have started' do
-      expect(page).to have_content('You started this programme')
-      expect(page).to have_content('Current Progress')
-      expect(page).to have_content(nice_dates(school.programmes.first.started_on))
+      expect(page).to have_text('You started this programme')
+      expect(page).to have_text('Current Progress')
+      expect(page).to have_text(nice_dates(school.programmes.first.started_on))
     end
 
     it 'indicates I have not completed some activities' do
@@ -249,11 +249,11 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
 
     it 'indicates I have completed an activity' do
       expect(page).to have_css('i.fa-check-circle.text-success')
-      expect(page).to have_content(nice_dates(activity.happened_on))
+      expect(page).to have_text(nice_dates(activity.happened_on))
     end
 
     it 'doesnt link to activities that are completed' do
-      expect(page).to have_content(activity_type.name)
+      expect(page).to have_text(activity_type.name)
       expect(page).to have_no_link(href: activity_type_path(activity_type))
       expect(page).to have_link(href: activity_type_path(programme_type_1.activity_types.last))
     end
@@ -277,7 +277,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it 'indicates I am enrolled on list of programmes' do
-        expect(page).to have_content('You have already started this programme')
+        expect(page).to have_text('You have already started this programme')
         expect(page).to have_link('Continue', href: programme_type_path(programme_type_1))
         expect(page).to have_link('View', href: programme_type_path(programme_type_3))
       end
@@ -294,7 +294,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         end
 
         it 'shows a completion message' do
-          expect(page).to have_content('You have already completed this programme')
+          expect(page).to have_text('You have already completed this programme')
           expect(page).to have_link('View', href: programme_type_path(programme_type_1))
         end
 
@@ -305,7 +305,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         before { visit programme_type_path(programme_type_1) }
 
         it 'shows the programme completed' do
-          expect(page).to have_content('You completed this programme on')
+          expect(page).to have_text('You completed this programme on')
           expect(page).to have_no_selector(:link_or_button, 'Repeat')
         end
 
@@ -323,7 +323,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
               eq %w[completed started]
           end
 
-          it { expect(page).to have_content('You started this programme') }
+          it { expect(page).to have_text('You started this programme') }
         end
       end
     end
@@ -339,8 +339,8 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
     end
 
     it 'says I have started' do
-      expect(page).to have_content('You started this programme')
-      expect(page).to have_content(nice_dates(school.programmes.first.started_on))
+      expect(page).to have_text('You started this programme')
+      expect(page).to have_text(nice_dates(school.programmes.first.started_on))
     end
 
     it_behaves_like 'a todo list when there is a completable' do
@@ -366,7 +366,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it 'indicates I am enrolled on list of programmes' do
-        expect(page).to have_content('You have already started this programme')
+        expect(page).to have_text('You have already started this programme')
         expect(page).to have_link('Continue', href: programme_type_path(programme_type_1))
         expect(page).to have_link('View', href: programme_type_path(programme_type_3))
       end
@@ -383,7 +383,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         end
 
         it 'shows a completion message' do
-          expect(page).to have_content('You have already completed this programme')
+          expect(page).to have_text('You have already completed this programme')
           expect(page).to have_link('View', href: programme_type_path(programme_type_1))
         end
 
@@ -394,7 +394,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         before { visit programme_type_path(programme_type_1) }
 
         it 'shows the programme completed' do
-          expect(page).to have_content('You completed this programme on')
+          expect(page).to have_text('You completed this programme on')
           expect(page).to have_no_selector(:link_or_button, 'Repeat')
         end
 
@@ -412,7 +412,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
               eq %w[completed started]
           end
 
-          it { expect(page).to have_content('You started this programme') }
+          it { expect(page).to have_text('You started this programme') }
         end
       end
     end
@@ -432,14 +432,14 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it 'displays summary of programmes' do
-        expect(page).to have_content(programme_type_1.title)
-        expect(page).to have_content(programme_type_1.short_description)
+        expect(page).to have_text(programme_type_1.title)
+        expect(page).to have_text(programme_type_1.short_description)
       end
 
       it 'shows only active programme types' do
-        expect(page).to have_content(programme_type_1.title)
-        expect(page).to have_content(programme_type_3.title)
-        expect(page).to have_no_content(programme_type_2.title)
+        expect(page).to have_text(programme_type_1.title)
+        expect(page).to have_text(programme_type_3.title)
+        expect(page).to have_no_text(programme_type_2.title)
       end
 
       context 'viewing a programme type' do
@@ -448,9 +448,9 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         end
 
         it 'displays the programme overview' do
-          expect(page).to have_content(programme_type_1.title)
-          expect(page).to have_content(programme_type_1.short_description)
-          expect(page).to have_content(programme_type_1.description.body.to_plain_text)
+          expect(page).to have_text(programme_type_1.title)
+          expect(page).to have_text(programme_type_1.short_description)
+          expect(page).to have_text(programme_type_1.description.body.to_plain_text)
           expect(page).to have_link(href: programme_type_1.document_link)
         end
 
@@ -466,11 +466,11 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         end
 
         it 'does not prompt to start' do
-          expect(page).to have_no_content('You can enrol your school in this programme')
+          expect(page).to have_no_text('You can enrol your school in this programme')
         end
 
         it 'prompts to login' do
-          expect(page).to have_content('Are you an Energy Sparks user?')
+          expect(page).to have_text('Are you an Energy Sparks user?')
           expect(page).to have_link('Sign in now')
         end
 
@@ -484,8 +484,8 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
             within '#staff' do
               click_on 'Sign in'
             end
-            expect(page).to have_content(programme_type_1.title)
-            expect(page).to have_content('You can enrol your school in this programme')
+            expect(page).to have_text(programme_type_1.title)
+            expect(page).to have_text('You can enrol your school in this programme')
           end
         end
 
@@ -494,7 +494,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
             visit programme_type_path(programme_type_2)
           end
 
-          it { expect(page).to have_content('Page not found') }
+          it { expect(page).to have_text('Page not found') }
         end
       end
     end
@@ -553,18 +553,18 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       end
 
       it 'displays summary of programmes' do
-        expect(page).to have_content(programme_type_1.title)
-        expect(page).to have_content(programme_type_1.short_description)
+        expect(page).to have_text(programme_type_1.title)
+        expect(page).to have_text(programme_type_1.short_description)
       end
 
       it 'shows only active programme types' do
-        expect(page).to have_content(programme_type_1.title)
-        expect(page).to have_content(programme_type_3.title)
-        expect(page).to have_no_content(programme_type_2.title)
+        expect(page).to have_text(programme_type_1.title)
+        expect(page).to have_text(programme_type_3.title)
+        expect(page).to have_no_text(programme_type_2.title)
       end
 
       it 'does not show programme types without todos' do
-        expect(page).to have_no_content(programme_type_empty.title)
+        expect(page).to have_no_text(programme_type_empty.title)
       end
 
       context 'viewing activity only programme type' do
@@ -572,7 +572,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
           click_on programme_type_activities.title
         end
 
-        it { expect(page).to have_content('This programme is intended for pupils')}
+        it { expect(page).to have_text('This programme is intended for pupils') }
       end
 
       context 'viewing action only programme type' do
@@ -580,7 +580,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
           click_on programme_type_actions.title
         end
 
-        it { expect(page).to have_content('This programme is intended for adults')}
+        it { expect(page).to have_text('This programme is intended for adults') }
       end
 
       context 'viewing a programme type' do
@@ -589,11 +589,11 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         end
 
         it 'displays the programme overview' do
-          expect(page).to have_content(programme_type_1.title)
-          expect(page).to have_content(programme_type_1.short_description)
-          expect(page).to have_content(programme_type_1.description.body.to_plain_text)
+          expect(page).to have_text(programme_type_1.title)
+          expect(page).to have_text(programme_type_1.short_description)
+          expect(page).to have_text(programme_type_1.description.body.to_plain_text)
           expect(page).to have_link(href: programme_type_1.document_link)
-          expect(page).to have_content('This programme is intended for the whole school')
+          expect(page).to have_text('This programme is intended for the whole school')
         end
 
         it_behaves_like 'a todo list when user is not enrolled' do
@@ -601,11 +601,11 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
         end
 
         it 'does not prompt to start' do
-          expect(page).to have_no_content('You can enrol your school in this programme')
+          expect(page).to have_no_text('You can enrol your school in this programme')
         end
 
         it 'prompts to login' do
-          expect(page).to have_content('Are you an Energy Sparks user?')
+          expect(page).to have_text('Are you an Energy Sparks user?')
           expect(page).to have_link('Sign in now')
         end
 
@@ -619,8 +619,8 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
             within '#staff' do
               click_on 'Sign in'
             end
-            expect(page).to have_content(programme_type_1.title)
-            expect(page).to have_content('You can enrol your school in this programme')
+            expect(page).to have_text(programme_type_1.title)
+            expect(page).to have_text('You can enrol your school in this programme')
           end
         end
 
@@ -629,7 +629,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
             visit programme_type_path(programme_type_2)
           end
 
-          it { expect(page).to have_content('Page not found') }
+          it { expect(page).to have_text('Page not found') }
         end
       end
     end

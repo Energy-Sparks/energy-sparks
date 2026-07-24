@@ -14,8 +14,8 @@ describe 'Community Use Report', type: :system do
   it 'displays a report' do
     click_on 'Community use'
     expect(page).to have_link(community_use.school.name, href: school_path(community_use.school))
-    expect(page).to have_content('Monday')
-    expect(page).to have_content('Term Times')
+    expect(page).to have_text('Monday')
+    expect(page).to have_text('Term Times')
     expect(page).to have_link('View', href: edit_school_times_path(community_use.school, id: 'community-use-section'))
   end
 end

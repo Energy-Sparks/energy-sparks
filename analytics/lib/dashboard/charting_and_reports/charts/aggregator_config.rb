@@ -170,10 +170,6 @@ class AggregatorConfig < OpenStruct
     dig(:sort_by)
   end
 
-  def show_only_target_school?
-    dig(:target, :show_target_only) == true
-  end
-
   def timescale?
     !timescale.nil?
   end

@@ -1,0 +1,57 @@
+cy:
+  advice_pages:
+    target:
+      analysis:
+        cumulative_progress:
+          text_html: Mae'r tabl hwn yn crynhoi eich cynnydd cyffredinol tuag at leihau eich defnydd o %{fuel_type} gan %{percent}. Mae pob cofnod yn y tabl yn dangos y targed cronnus a'r defnydd ar gyfer pob mis yn y cyfnod targed. Mae'r tabl hwn yn eich helpu i fonitro a ydych chi ar y trywydd iawn i gyflawni'r targed erbyn %{target_date}.
+          title: Cynnydd cronnus
+        historical_progress:
+          intro: Mae'r tabl canlynol yn dangos eich cynnydd blaenorol tuag at leihau eich defnydd o %{fuel_type}
+          previous_year: Y flwyddyn flaenorol (kWh)
+          target: Targed
+          target_date: Dyddiad targed
+          target_year: Blwyddyn darged (kWh)
+          title: Cynnydd hanesyddol
+        monthly_progress:
+          last_year: Y llynedd (kWh)
+          manual_readings_html: "<sup>m</sup> - darlleniadau pwrpasol a ddefnyddir"
+          on_target: Ar darged?
+          partial: Dangosir misoedd rhannol mewn coch.
+          percentage_change: "Newid %"
+          target: Targed (kWh)
+          text_html: Mae'r tabl hwn yn crynhoi eich cynnydd i leihau eich defnydd o %{fuel_type} gan %{percent} o fis i fis. Mae pob cofnod yn y tabl yn dangos y defnydd targed a'r defnydd gwirioneddol ar gyfer pob mis yn y cyfnod targed. Gall y tabl hwn fod o gymorth wrth nodi pa fisoedd rydych chi wedi gwneud yr arbedion mwyaf neu ble mae eich defnydd o ynni wedi bod yn uwch na'r targed.
+          this_year: Eleni (kWh)
+          title: Cynnydd misol
+        sections: Mae'r adrannau canlynol yn darparu dadansoddiad mwy manwl o darged %{fuel_type} eich ysgol drwy gydol y cyfnod targed.
+        title: Adroddiad cynnydd
+      expired:
+        complete: Rydych chi wedi cyrraedd eich dyddiad targed ac mae wedi'i gwblhau.
+        complete_set_new_html: Gallwch chi osod <a href="%{path}">targed newydd nawr</a>.
+        waiting: Rydych chi wedi cyrraedd eich dyddiad targed ond rydym yn dal i aros am fwy o ddata i gwblhau eich adroddiad cynnydd terfynol.
+        waiting_set_new_html: Gallwch osod <a href="%{path}">targed newydd nawr</a> neu aros i'ch adroddiad cynnydd gael ei gwblhau.
+      future_target_date: Mae'r dyddiad targed yn y dyfodol felly nid oes unrhyw ddefnydd wedi'i gofnodi eto.
+      insights:
+        title: Beth yw eich targed?
+        what_is_your_target:
+          revise_html: Gallwch <a href="%{path}">adolygu eich targed</a>.
+          text_html: |-
+            <p>Mae gosod targed i leihau eich defnydd o %{fuel_type} yn rhoi nod i chi weithio tuag ato. Gall dilyn ein cyngor a'n hargymhellion eich helpu i gyflawni eich targed.</p>
+            <p>Mae eich ysgol wedi gosod targed i leihau ei defnydd o %{fuel_type} gan %{percent} cyn %{target_date}.</p>
+        your_current_progress:
+          cumulative_consumption: Defnydd cronnus (kWh)
+          target_consumption: Defnydd targed (kWh)
+          text_html: <p>Gweld <a href="%{analysis_path}">eich adroddiad cynnydd manwl</a> neu <a href="%{comparison_path}">gymharu cynnydd ag ysgolion eraill yn eich grŵp</a>.</p>
+          text_no_comparison_html: <p>Gweld <a href="%{analysis_path}">eich adroddiad cynnydd manwl</a>.<p>
+          title: Eich cynnydd presennol
+      limited_data:
+        automatically_available: Os gallwn gael mynediad at ddata hanesyddol ar gyfer eich ysgol, yna bydd adroddiad ar gael yn awtomatig.
+        limited_data: Mae gennym ddata hanesyddol cyfyngedig ar gyfer eich ysgol felly ni allwn gyfrifo adroddiad cynnydd i'ch helpu i olrhain cynnydd tuag at gyflawni eich targed.
+        long_term_advice_html: Gallwch hefyd fonitro eich defnydd gan ddefnyddio'r tablau a'r siartiau ar y <a href="%{path}">dudalen cyngor defnydd tymor hir %{fuel_type}</a>.
+        manual_reading_html: Gallwch <a href="%{path}">ychwanegu darlleniadau misol yn bwrpasol</a> o'ch bil neu borth cyflenwyr i gael mynediad at y nodwedd hon. Neu, os ydym yn gallu cael mynediad at ddata hanesyddol ar gyfer eich ysgol, yna bydd adroddiad ar gael yn awtomatig.
+        manually_add: Ychwanegwch ddarlleniadau mesurydd misol yn bwrpasol i gael mynediad at y nodwedd hon
+        title: Data hanesyddol cyfyngedig
+      missing_previous_year_html: Mae data o'r flwyddyn flaenorol ar goll felly ni allwn gyfrifo eich defnydd targed. Gweler <a href="%{path}">yma</a> am ragor o wybodaeth am eich defnydd.
+      no_target:
+        login_html: Mae angen i chi <a href="%{path}">fewngofnodi</a> i osod targed.
+        text: Nid yw eich ysgol wedi gosod targed ar gyfer defnydd o %{fuel_type} felly ni allwn gynhyrchu adroddiad cynnydd.
+        title: Dim targed wedi'i osod

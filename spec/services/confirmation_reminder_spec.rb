@@ -52,7 +52,10 @@ describe ConfirmationReminder do
         it_behaves_like 'it correctly sends emails'
 
         context 'with an account created a while ago' do
-          let!(:user) { create(role, created_at: 2.months.ago, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: 2.months.ago) }
+          let!(:user) do
+            create(role, created_at: 2.months.ago, confirmed_at: nil, confirmation_token: 'token',
+                         confirmation_sent_at: 2.months.ago)
+          end
 
           it_behaves_like 'it ignores sending emails'
         end
@@ -60,14 +63,18 @@ describe ConfirmationReminder do
 
       context 'when school is archived' do
         let!(:school) { create(:school, :archived) }
-        let!(:user) { create(role, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now, school: school) }
+        let!(:user) do
+          create(role, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now, school: school)
+        end
 
         it_behaves_like 'it ignores sending emails'
       end
 
       context 'when school is deleted' do
         let!(:school) { create(:school, :deleted) }
-        let!(:user) { create(role, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now, school: school) }
+        let!(:user) do
+          create(role, confirmed_at: nil, confirmation_token: 'token', confirmation_sent_at: now, school: school)
+        end
 
         it_behaves_like 'it ignores sending emails'
       end
@@ -96,7 +103,7 @@ describe ConfirmationReminder do
     end
   end
 
-  [:staff, :school_admin].each do |role|
+  %i[staff school_admin].each do |role|
     context "with #{role} school user role" do
       it_behaves_like 'a confirmable user role' do
         let(:role) { role }
@@ -106,7 +113,7 @@ describe ConfirmationReminder do
 
   # pupils have no email address, are auto confirmed at creation
   # school_onboarding users become school admins when school is created during onboarding, auto confirmed before that
-  [:pupil, :onboarding_user].each do |role|
+  %i[pupil onboarding_user].each do |role|
     context "with #{role}" do
       let!(:user) { create(role, confirmed_at: now) }
 

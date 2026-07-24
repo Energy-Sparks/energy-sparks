@@ -21,6 +21,7 @@ cy:
             time_of_use: Amser defnydd
             total: Cyfanswm
           table_introduction: Mae'r tabl isod yn dangos faint o nwy a ddefnyddiwyd pan mae'r ysgol ar agor neu ar gau ar ddiwrnod ysgol yn ogystal ag ar benwythnosau a gwyliau.
+          table_title: Crynodeb ysgol gyfan
           title: 12 mis diwethaf
         summary: Mae'r adran hon yn rhoi dadansoddiad manylach o ddefnydd nwy eich ysgol y tu allan i oriau ysgol a rhai pethau i gadw llygad amdanynt. Er mwyn rheoli ynni'n dda, rydych am i'r rhan fwyaf o'ch defnydd ynni fod pan fydd yr ysgol ar agor.
         title: Dadansoddiad
@@ -31,17 +32,17 @@ cy:
           gas_by_day_of_week_tolerant_chart:
             footer_html: |-
               <p>Ar gyfer y rhan fwyaf o ysgolion, ni ddylai fod unrhyw ddefnydd o nwy ar benwythnosau. Yr unig reswm y gellid defnyddio nwy yw i amddiffyn rhag rhew mewn tywydd oer iawn, ac ar gyfartaledd ar draws y flwyddyn gyfan dylai hyn fod yn gyfran fach iawn o ddefnydd wythnosol.</p>
-              I rai ysgolion, mae mwy o ddefnydd o nwy ar ddydd Llun a dydd Mawrth na dydd Mercher, dydd Iau a dydd Gwener, gan fod angen ynni ychwanegol i gynhesu ysgol ar ôl i'r gwres gael ei ddiffodd ar benwythnosau. Mae'r egni hwn yn cael ei amsugno i'r gwaith maen.
+              <p>I rai ysgolion, mae mwy o ddefnydd o nwy ar ddydd Llun a dydd Mawrth na dydd Mercher, dydd Iau a dydd Gwener, gan fod angen ynni ychwanegol i gynhesu ysgol ar ôl i'r gwres gael ei ddiffodd ar benwythnosau. Mae'r ynni hwn yn cael ei amsugno i'r gwaith maen.</p>.
               <p>Mae 'màs thermol' yn disgrifio gallu deunydd i amsugno, storio a rhyddhau gwres. Er enghraifft, mae gan goncrit gynhwysedd uchel i storio gwres a chyfeirir ato fel deunydd 'màs thermol uchel'. Mewn cyferbyniad, ychydig iawn o gapasiti storio gwres sydd gan ewyn inswleiddio a chyfeirir ato fel un sydd â 'màs thermol isel'.</p>
-              Mae'n dal yn llawer mwy effeithlon diffodd y gwres dros y penwythnos, a defnyddio ychydig mwy o ynni ar ddydd Llun a dydd Mawrth nag ydyw i adael y gwres ymlaen drwy'r penwythnos.
-              <p>Os yw'r graff yn dangos defnydd uchel o nwy ar benwythnosau, gofynnwch i'ch gofalwr neu reolwr eich adeilad wirio rheolaethau eich system wresogi. Efallai bod gennych chi:</p>
+              <p>Mae'n dal i fod yn llawer mwy effeithlon diffodd y gwres dros y penwythnos, a defnyddio ychydig mwy o ynni ar ddydd Llun a dydd Mawrth nag ydyw i adael y gwres ymlaen drwy'r penwythnos.</p>
+              Os yw'r graff yn dangos defnydd uchel o nwy ar benwythnosau, gofynnwch i'ch gofalwr neu reolwr eich adeilad wirio rheolaethau eich system wresogi. Efallai bod gennych chi:<p>
 
-                <li>amddiffyniad rhew anghywir neu ddiffygiol</li>
-                <li>dim amserydd 7 diwrnod felly nid yw'n bosibl diffodd y gwres ar benwythnosau</li>
-                <li>gosodiadau boeler anghywir</li>
-            footer_savings_html:
-              <p>Trwy ddileu'r defnydd o nwy ar y penwythnos yn eich ysgol gallech arbed hyd at %{savings_gbp} (%{savings_kwh}kWh) y flwyddyn.</p>
-            subtitle_html: Mae'r siart hwn yn dangos cyfanswm y nwy a ddefnyddwyd gan eich ysgol rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>, wedi'i dadansoddi yn ôl diwrnod yr wythnos ac amser defnyddio
+                <li>Amddiffyniad rhew anghywir neu ddiffygiol</li>
+                <li>Diffyg amserydd 7 diwrnod felly nid yw'n bosibl diffodd y gwres ar benwythnosau</li>
+                <li>Gosodiadau boeler anghywir</li>
+              <ul>
+            footer_savings_html: "<p>Drwy ddileu'r defnydd o nwy ar benwythnosau yn eich ysgol, gallech arbed hyd at %{savings_gbp} (%{savings_kwh}kWh) y flwyddyn.</p>"
+            subtitle_html: Mae'r siart hwn yn dangos cyfanswm y nwy a ddefnyddir gan <span class="meter">%{meter}</span> rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>, wedi'i dorri i lawr yn ôl diwrnod yr wythnos ac amser defnyddio
             title: Defnydd nwy yn ôl diwrnod yr wythnos
           subtitle: Er mwyn deall pam mae eich ysgol yn defnyddio gormod o nwy y tu allan i oriau ysgol, edrychwch yn gyntaf ar ddefnydd nwy yn ôl diwrnod yr wythnos.
           title: Defnydd fesul diwrnod yr wythnos

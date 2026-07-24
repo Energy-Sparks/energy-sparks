@@ -6,9 +6,6 @@
                             hint: 'Admin contact for the configuration' %>
   <%= f.input :notes, as: :rich_text_area, label: 'Notes',
                       hint: 'Provide additional notes about when the configuration is used' %>
-  <%= f.input :import_warning_days,
-              hint: 'This is the number of days after which meter data using this configuration will be considered ' \
-                    'to be running behind. Used to drive admin import notification emails' %>
   <% hint = if @configuration.allow_merging
               'This format supports partial readings so this field just configures a warning threshold for admins. ' \
               'Partial days will still be inserted.'

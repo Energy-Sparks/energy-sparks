@@ -1,0 +1,379 @@
+#  frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :include_url_helpers, type: :component do
+  let!(:user) { create(:admin) }
+
+  describe 'overdue issues prompt' do
+    context 'when there are no overdue issues' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue issues prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
+    context 'when there are only closed issues' do
+      before do
+        create_list(:issue, 2, status: 'closed', owned_by: user, review_date: Date.current - 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue issues prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
+    context 'when there are overdue issues for archived schools' do
+      before do
+        create_list(:issue, 2, school: create(:school, active: false), owned_by: user,
+                               review_date: Date.current - 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue issues prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
+    context 'when there are overdue issues' do
+      before do
+        create_list(:issue, 2, owned_by: user, review_date: Date.current - 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the overdue issues prompt' do
+        expect(page).to have_text('You have 2 overdue issues')
+        expect(page).to have_link('View Issues',
+                                  href: admin_dashboard_issues_path(dashboard_id: user,
+                                                                    user: user.id,
+                                                                    review_date: 'review_overdue'))
+      end
+    end
+  end
+
+  describe 'weekly issues prompt' do
+    context 'when there are no issues due in the coming week' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the weekly issues prompt' do
+        expect(page).to have_no_text('review in the next week')
+      end
+    end
+
+    context 'when there are only closed issues' do
+      before do
+        create_list(:issue, 2, status: 'closed', owned_by: user, review_date: Date.current + 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the weekly issues prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
+    context 'when there are weekly issues for archived schools' do
+      before do
+        create_list(:issue, 2, school: create(:school, active: false), owned_by: user,
+                               review_date: Date.current + 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue issues prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
+    context 'when there are issues due in the coming week' do
+      before do
+        create_list(:issue, 2, owned_by: user, review_date: Date.current + 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the weekly issues prompt' do
+        expect(page).to have_text('You have 2 issues due for review in the next week')
+        expect(page).to have_link('View Issues',
+                                  href: admin_dashboard_issues_path(dashboard_id: user,
+                                                                    user: user.id,
+                                                                    review_date: 'review_next_week'))
+      end
+    end
+  end
+
+  describe 'overdue group reviews prompt' do
+    context 'when there are no overdue group reviews' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue group reviews prompt' do
+        expect(page).to have_no_text('overdue group reviews')
+      end
+    end
+
+    context 'when there are only closed issues' do
+      before do
+        create(:issue, :with_group_review, status: 'closed', owned_by: user, review_date: Date.current - 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the overdue group reviews prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
+    context 'when there are overdue group reviews' do
+      let(:group_review_tag) { IssueTag.where(system_id: :group_review).first }
+
+      before do
+        create(:issue, :with_group_review, owned_by: user, review_date: Date.current - 2)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the overdue group reviews prompt' do
+        expect(page).to have_text('You have 1 overdue group reviews')
+        expect(page).to have_link('View Group Reviews',
+                                  href: admin_dashboard_issues_path(dashboard_id: user,
+                                                                    user: user.id,
+                                                                    review_date: 'review_overdue',
+                                                                    issue_tag: group_review_tag))
+      end
+    end
+  end
+
+  describe 'monthly group reviews prompt' do
+    context 'when there are no overdue group reviews' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the monthly group reviews prompt' do
+        expect(page).to have_no_text('group reviews due in the next 30 days')
+      end
+    end
+
+    context 'when there are only closed issues' do
+      before do
+        create(:issue, :with_group_review, status: 'closed', owned_by: user, review_date: Date.current + 5)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the monthly group reviews prompt' do
+        expect(page).to have_no_text('issues overdue')
+      end
+    end
+
+    context 'when there are monthly group reviews' do
+      let(:group_review_tag) { IssueTag.where(system_id: :group_review).first }
+
+      before do
+        create(:issue, :with_group_review, owned_by: user, review_date: Date.current + 5)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the monthly group reviews prompt' do
+        expect(page).to have_text('You have 1 group reviews due in the next 30 day')
+        expect(page).to have_link('View Group Reviews',
+                                  href: admin_dashboard_issues_path(dashboard_id: user,
+                                                                    user: user.id,
+                                                                    issue_tag: group_review_tag))
+      end
+    end
+  end
+
+  describe 'school activation prompt' do
+    context 'when no schools are awaiting activation' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the school activation prompt' do
+        expect(page).to have_no_text('schools awaiting activation')
+      end
+    end
+
+    context 'when there are schools awaiting activation' do
+      before do
+        create(:school, school_group: create(:school_group, default_issues_admin_user: user), active: true,
+                        visible: false, data_enabled: false)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the school activation prompt' do
+        expect(page).to have_text('You have 1 schools awaiting activation')
+        expect(page).to have_link('Activations', href: admin_dashboard_activations_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'lagging data source prompt' do
+    context 'when there are no lagging data sources' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the lagging data sources prompt' do
+        expect(page).to have_no_text('lagging data sources')
+      end
+    end
+
+    context 'when there are lagging data sources' do
+      before do
+        create(:gas_meter_with_validated_reading_dates, end_date: 11.days.ago,
+                                                        data_source: create(:data_source, owned_by: user))
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the lagging data sources prompt' do
+        expect(page).to have_text('You have 1 lagging data sources')
+        expect(page).to have_link('View Data Sources', href: admin_dashboard_data_sources_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'missing data feeds prompt' do
+    context 'when there are no data feeds with missing data' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the missing data feeds prompt' do
+        expect(page).to have_no_text('configurations with missing data')
+      end
+    end
+
+    context 'when there are data feeds with missing data' do
+      let(:config) { create(:amr_data_feed_config, owned_by: user, missing_reading_window: 2) }
+
+      before do
+        create(
+          :amr_data_feed_reading,
+          amr_data_feed_config: config,
+          reading_date: 4.days.ago,
+          updated_at: 4.days.ago
+        )
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the missing data feeds prompt' do
+        expect(page).to have_text('You have 1 amr data feed configurations with missing data')
+        expect(page).to have_link('View AMR Data Feed Configurations',
+                                  href: admin_dashboard_amr_data_feed_configs_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'school onboarding prompt' do
+    context 'when there are no schools onboarding' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the school onboarding prompt' do
+        expect(page).to have_no_text('schools that have not yet completed onboarding')
+      end
+    end
+
+    context 'when there are schools onboarding' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school_onboarding,
+               :with_events,
+               event_names: %i[email_sent],
+               school_group_id: school_group.id)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the school onboarding prompt' do
+        expect(page).to have_text('You have 1 schools that have not yet completed onboarding')
+        expect(page).to have_link('View Onboardings', href: admin_dashboard_school_onboardings_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'low engagement prompt' do
+    context 'when there are no groups with low engagement' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the low engagement prompt' do
+        expect(page).to have_no_text('groups with engagement below 50%')
+      end
+    end
+
+    context 'when there are groups with low engagement' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school, :with_points, school_group:)
+        create_list(:school, 2, school_group:)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the low engagement prompt' do
+        expect(page).to have_text('You have 1 groups with engagement below 50%')
+        expect(page).to have_link('View Engaged Groups', href: admin_dashboard_engaged_groups_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'limited users prompt' do
+    context 'when there are no schools with limited users' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the limited users prompt' do
+        expect(page).to have_no_text('schools with less than 3 adult users')
+      end
+    end
+
+    context 'when there are groups with low engagement' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+      let(:school) { create(:school, school_group:) }
+
+      before do
+        create_list(:staff, 2, school:)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the low engagement prompt' do
+        expect(page).to have_text('You have 1 schools with less than 3 adult users')
+        expect(page).to have_link('View Limited Users', href: admin_dashboard_limited_users_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'missing alert contacts prompt' do
+    context 'when there are no schools missing alert contacts' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the missing alert contacts prompt' do
+        expect(page).to have_no_text('schools that are missing alert contacts')
+      end
+    end
+
+    context 'when there are schools missing alert contacts' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school, school_group:, active: true)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the missing alert contacts prompt' do
+        expect(page).to have_text('You have 1 schools that are missing alert contacts')
+        expect(page).to have_link('View Schools', href: admin_dashboard_missing_alert_contacts_path(dashboard_id: user))
+      end
+    end
+  end
+end

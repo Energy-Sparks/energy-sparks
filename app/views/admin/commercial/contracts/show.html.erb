@@ -1,0 +1,308 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @contract.name %>
+  <% header_nav.with_button 'Contract holder contracts',
+                            polymorphic_path([:admin, @contract.contract_holder, :contracts]) %>
+  <% header_nav.with_button 'All contracts', admin_commercial_contracts_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'Edit',
+                  edit_admin_commercial_contract_path(@contract),
+                  class: 'btn btn-primary btn-sm' %>
+      <%= unless @contract.confirmed?
+            link_to 'Confirm', confirm_admin_commercial_contract_path(@contract),
+                    method: :post,
+                    class: 'btn btn-warning btn-sm'
+          end %>
+      <%= unless @contract.contract_holder.is_a?(School)
+            link_to 'Manage All Licences',
+                    edit_admin_commercial_contract_licences_path(@contract),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
+
+      <%= unless @contract.future?
+            link_to 'Renew', renew_admin_commercial_contracts_path(original_contract_id: @contract.id),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
+      <%= if @contract.licences.pending_invoice.any?
+            link_to 'Raise invoice',
+                    raise_invoice_admin_commercial_contract_invoices_path(@contract),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
+      <%= unless @contract.contract_holder.is_a?(School)
+            link_to 'Add New Licence',
+                    new_admin_commercial_licence_path(contract_id: @contract.id),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
+      <%= unless @contract.contract_holder.is_a?(School)
+            link_to 'Calculate Price',
+                    admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
+                    class: 'btn btn-secondary btn-sm'
+          end %>
+      <%= render(Forms::DeleteButtonComponent.new(admin_commercial_contract_path(@contract), resource: @contract)) %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Layout::GridComponent.new(classes: 'mb-4',
+                                         component_classes: 'd-flex flex-column flex-fill',
+                                         cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
+      <%= grid.with_block do %>
+        <h3>Terms</h3>
+        <div id="pricing" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+          <dl class="row">
+            <dt class="col-5">
+              Contract holder
+            </dt>
+            <dd class="col-7">
+              <%= link_to @contract.contract_holder.name,
+                          polymorphic_path([:admin, @contract.contract_holder, :contracts]) %>
+            </dd>
+            <dt class="col-5">
+              Contract holder type
+            </dt>
+            <dd class="col-7">
+              <%= @contract.contract_holder_type %>
+            </dd>
+            <dt class="col-5">
+              Product
+            </dt>
+            <dd class="col-7">
+              <%= link_to @contract.product.name, admin_commercial_product_path(@contract.product) %>
+            </dd>
+            <dt class="col-5">
+              Start date
+            </dt>
+            <dd class="col-7">
+              <%= @contract.start_date.to_fs(:es_short) %>
+            </dd>
+            <dt class="col-5">
+              End date
+            </dt>
+            <dd class="col-7">
+              <%= @contract.end_date.to_fs(:es_short) %>
+            </dd>
+            <dt class="col-5">
+              Status
+            </dt>
+            <dd class="col-7">
+              <%= render(Elements::BadgeComponent.new(
+                           @contract.status.humanize,
+                           colour: @contract.status == 'provisional' ? :warning : :success
+                         )) %>
+            </dd>
+            <dt class="col-5">
+              Invoice terms
+            </dt>
+            <dd class="col-7">
+              <%= @contract.invoice_terms.humanize %>
+            </dd>
+            <dt class="col-5">
+              Licence period
+            </dt>
+            <dd class="col-7">
+              <%= @contract.licence_period.humanize %>
+            </dd>
+            <dt class="col-5">
+              Licence years
+            </dt>
+            <dd class="col-7">
+              <%= @contract.licence_years %>
+            </dd>
+            <dt class="col-5">
+              Number of schools
+            </dt>
+            <dd class="col-7">
+              <%= @contract.number_of_schools %>
+            </dd>
+            <dt class="col-5">
+              Agreed School Price
+            </dt>
+            <dd class="col-7">
+              <%= format_price(@contract.agreed_school_price) %>
+            </dd>
+            <dt class="col-5">
+              Purchase order number
+            </dt>
+            <dd class="col-7">
+              <%= @contract.purchase_order_number %>
+            </dd>
+            <dt class="col-5">
+              Account code
+            </dt>
+            <dd class="col-7">
+              <%= @contract.xero_account_code&.display_label %>
+            </dd>
+            <dt class="col-5">
+              Comments
+            </dt>
+            <dd class="col-7">
+              <%= @contract.comments %>
+            </dd>
+          </dl>
+        </div>
+        <h3>Financial Summary</h3>
+        <div id="financial-summary" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+          <p>For per-school revenue see below.</p>
+          <table id="total-contract-value" class="table table-sm">
+            <thead>
+              <tr>
+                <th>Charge</th>
+                <th>Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Base price</td>
+                <td><%= format_price(@pricing.totals.base_price) %></td>
+              </tr>
+              <tr>
+                <td>Metering fees</td>
+                <td><%= format_price(@pricing.totals.metering_fee) %></td>
+              </tr>
+              <tr>
+                <td>Private account fees</td>
+                <td><%= format_price(@pricing.totals.private_account_fee) %></td>
+              </tr>
+              <tr>
+                <td><strong>Total</strong></td>
+                <td><strong><%= format_price(@pricing.totals.total) %></strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+      <%= grid.with_block do %>
+        <% unless @contract.contract_holder.is_a?(School) %>
+          <h3>School Summary</h3>
+          <div id="contract-holder-schools" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+            <%= render Commercial::ContractSchoolSummaryComponent.new(contract: @contract) %>
+          </div>
+        <% end %>
+        <h3>Licence Summary</h3>
+        <div id="licence-summary" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+          <table id='licence-summary-table' class="table table-sm">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% %i[current future expired].each do |period| %>
+                <% %i[provisional confirmed pending_invoice invoiced].each_with_index do |status, index| %>
+                  <tr>
+                    <td><strong><%= period.to_s.humanize if index.zero? %></strong></td>
+                    <td><%= status.to_s.humanize %></td>
+                    <td><%= @contract.licences.public_send(period).public_send(status).count %></td>
+                  </tr>
+                <% end %>
+                  <tr>
+                    <td></td>
+                    <td>All</td>
+                    <td><%= @contract.licences.public_send(period).count %></td>
+                  </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h3>All Licences</h3>
+    <p>
+      The following table includes all licences for this contract sorted by start date.
+    </p>
+    <% if @overlapping_licences.any? %>
+      <%= render PromptComponent.new(id: 'overlapping-licences', status: :negative, icon: 'calendar-xmark') do |p| %>
+        <% p.with_link { link_to 'Overlapping licences', overlapping_admin_commercial_licences_path } %>
+        <%= "#{@overlapping_licences.count} of these licences overlap with licences from other contracts" %>
+      <% end %>
+    <% end %>
+    <%= render Commercial::LicencesComponent.new(id: 'licences',
+                                                 licences: @contract.licences.by_start_date,
+                                                 show_contract: false,
+                                                 show_actions: true) %>
+
+  </div>
+</div>
+
+<div class="mt-4 row">
+  <div class="col-12">
+    <h3>Contract Value</h3>
+    <p>
+      The following table itemises the per-school fees that make up the total value of this contract.
+    </p>
+    <table id="per-school-fees" class="table table-sm table-paged">
+      <thead>
+        <tr>
+          <th>School Group</th>
+          <th>School</th>
+          <th>Base price</th>
+          <th>Metering fee</th>
+          <th>Private account fee</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @pricing.per_school.each do |id, pricing| %>
+          <% school = @contract.schools.where(id:).first %>
+          <tr>
+            <td>
+              <% if school.organisation_group %>
+                <%= link_to school.organisation_group.name, school_group_path(school.organisation_group) %>
+              <% end %>
+            </td>
+            <td><%= link_to school.name, school_path(school) %></td>
+            <td data-sort="<%= pricing[:price].base_price %>">
+              <%= format_price(pricing[:price].base_price) %>
+            </td>
+            <td data-sort="<%= pricing[:price].metering_fee %>">
+              <%= format_price(pricing[:price].metering_fee) %>
+            </td>
+            <td data-sort="<%= pricing[:price].private_account_fee %>">
+              <%= format_price(pricing[:price].private_account_fee) %>
+            </td>
+            <td data-sort="<%= pricing[:price].total %>">
+              <%= format_price(pricing[:price].total) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><strong><%= format_price(@pricing.totals.base_price) %></strong></td>
+          <td><strong><%= format_price(@pricing.totals.metering_fee) %></strong></td>
+          <td><strong><%= format_price(@pricing.totals.private_account_fee) %></strong></td>
+          <td><strong><%= format_price(@pricing.totals.total) %></strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<% if @contract.invoices.any? %>
+  <div class="mt-4 row">
+    <div class="col-12">
+      <h3>Invoices</h3>
+      <%= render Commercial::InvoicesComponent.new(invoices: @contract.invoices.by_date, show_contract: false) %>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Admin::RecordComponent.new(@contract, id: 'metadata', current_user:) %>
+  </div>
+</div>

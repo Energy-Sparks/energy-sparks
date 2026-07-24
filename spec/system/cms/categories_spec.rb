@@ -17,7 +17,7 @@ describe 'view categories' do
     end
 
     it 'has no visible pages', unless: pages do
-      expect(page).not_to have_css('.cms-page-summary-component')
+      expect(page).to have_no_css('.cms-page-summary-component')
     end
   end
 
@@ -50,9 +50,9 @@ describe 'view categories' do
 
       it 'shows all categories' do
         expect(page).to have_link(category.title, href: category_path(category))
-        expect(page).to have_content(category.description)
+        expect(page).to have_text(category.description)
         expect(page).to have_link(unpublished.title, href: category_path(unpublished))
-        expect(page).to have_content(unpublished.description)
+        expect(page).to have_text(unpublished.description)
       end
     end
 
@@ -63,9 +63,9 @@ describe 'view categories' do
 
       it 'shows only published categories' do
         expect(page).to have_link(category.title, href: category_path(category))
-        expect(page).to have_content(category.description)
-        expect(page).not_to have_link(unpublished.title, href: category_path(unpublished))
-        expect(page).not_to have_content(unpublished.description)
+        expect(page).to have_text(category.description)
+        expect(page).to have_no_link(unpublished.title, href: category_path(unpublished))
+        expect(page).to have_no_text(unpublished.description)
       end
     end
   end
@@ -88,7 +88,7 @@ describe 'view categories' do
 
         it 'has category admin buttons' do
           within("#category-#{category.id}-admin-buttons") do
-            expect(page).to have_content('Published')
+            expect(page).to have_text('Published')
             expect(page).to have_link(href: edit_admin_cms_category_path(category))
             expect(page).to have_link(href: new_admin_cms_page_path(category_id: category.id))
           end
@@ -97,7 +97,7 @@ describe 'view categories' do
         it 'has page admin buttons' do
           cms_page = category.pages.first
           within("#page-#{cms_page.id}-admin-buttons") do
-            expect(page).to have_content('Published')
+            expect(page).to have_text('Published')
             expect(page).to have_link(href: edit_admin_cms_page_path(cms_page))
             expect(page).to have_link(href: new_admin_cms_section_path(page_id: cms_page.id))
           end
@@ -130,11 +130,11 @@ describe 'view categories' do
         end
 
         it 'does not show admin buttons' do
-          expect(page).not_to have_link(href: edit_admin_cms_category_path(category))
-          expect(page).not_to have_link(href: new_admin_cms_page_path(category_id: category.id))
+          expect(page).to have_no_link(href: edit_admin_cms_category_path(category))
+          expect(page).to have_no_link(href: new_admin_cms_page_path(category_id: category.id))
           cms_page = category.pages.first
-          expect(page).not_to have_link(href: edit_admin_cms_page_path(cms_page))
-          expect(page).not_to have_link(href: new_admin_cms_section_path(page_id: cms_page.id))
+          expect(page).to have_no_link(href: edit_admin_cms_page_path(cms_page))
+          expect(page).to have_no_link(href: new_admin_cms_section_path(page_id: cms_page.id))
         end
 
         context 'when there are unpublished pages' do

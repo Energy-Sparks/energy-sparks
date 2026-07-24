@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'jobs', :include_application_helper do
   context 'when a job exists' do
     let!(:job)         { create(:job, closing_date: Time.zone.today, title: 'Closes today') }
-    let!(:old_job)     { create(:job, closing_date: '2010-01-01', title: 'Old job')}
+    let!(:old_job)     { create(:job, closing_date: '2010-01-01', title: 'Old job') }
     let!(:voluntary)   { create(:job, voluntary: true, title: 'Voluntary') }
     let!(:open_role)   { create(:job, closing_date: nil, title: 'Open role') }
 
@@ -12,20 +12,20 @@ RSpec.describe 'jobs', :include_application_helper do
     end
 
     it 'shows me the jobs page' do
-      expect(page).to have_content('Jobs')
+      expect(page).to have_text('Jobs')
     end
 
     it 'shows me current jobs' do
-      expect(page).to have_content(job.title)
-      expect(page).to have_content(voluntary.title)
+      expect(page).to have_text(job.title)
+      expect(page).to have_text(voluntary.title)
     end
 
     it 'shows roles with no closing date' do
-      expect(page).to have_content(open_role.title)
+      expect(page).to have_text(open_role.title)
     end
 
     it 'hides older jobs' do
-      expect(page).not_to have_content(old_job.title)
+      expect(page).to have_no_text(old_job.title)
     end
 
     it 'shows expected download links' do

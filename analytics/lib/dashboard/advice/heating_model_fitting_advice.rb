@@ -2,56 +2,55 @@ require 'erb'
 
 # extension of DashboardEnergyAdvice for heating regression model fitting
 class DashboardEnergyAdvice
-
   def self.heating_model_advice_factory(chart_type, school, chart_definition, chart_data, chart_symbol)
     case chart_type
-    when :group_by_week_gas_model_fitting_one_year #expert analysis
+    when :group_by_week_gas_model_fitting_one_year # expert analysis
       ModelFittingIntroductionAndOneYearWeeklyGas.new(school, chart_definition, chart_data, chart_symbol)
-    when :group_by_week_gas_model_fitting_unlimited #expert analysis
+    when :group_by_week_gas_model_fitting_unlimited # expert analysis
       ModelFittingOneWeekUnlimitedGas.new(school, chart_definition, chart_data, chart_symbol)
-    when :gas_by_day_of_week_model_fitting #expert analysis
+    when :gas_by_day_of_week_model_fitting # expert analysis
       ModelFittingGasByDayOfWeek.new(school, chart_definition, chart_data, chart_symbol)
-    when :gas_longterm_trend_model_fitting #expert analysis
+    when :gas_longterm_trend_model_fitting # expert analysis
       ModelFittingAnnualGasConsumptionTrends.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_regression_simple_school_day_non_heating_regression_covid_tolerant #expert analysis
+    when :thermostatic_regression_simple_school_day_non_heating_regression_covid_tolerant # expert analysis
       HeatingNonHeatingSeparationIntroAndCovidModel.new(school, chart_definition, chart_data, chart_symbol)
-    when :seasonal_simple_school_day_non_heating_regression_covid_tolerant #expert analysis
+    when :seasonal_simple_school_day_non_heating_regression_covid_tolerant # expert analysis
       SeasonalHeatingNonHeatingSeparationCovidModel.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_regression_simple_school_day_non_heating_regression #expert analysis
+    when :thermostatic_regression_simple_school_day_non_heating_regression # expert analysis
       HeatingNonHeatingSeparationRegressionModel.new(school, chart_definition, chart_data, chart_symbol)
-    when :seasonal_simple_school_day_non_heating_regression #expert analysis
+    when :seasonal_simple_school_day_non_heating_regression # expert analysis
       SeasonalHeatingNonHeatingSeparationRegressionModel.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_regression_simple_school_day_non_heating_non_regression #expert analysis
+    when :thermostatic_regression_simple_school_day_non_heating_non_regression # expert analysis
       HeatingNonHeatingSeparationNonRegressionModel.new(school, chart_definition, chart_data, chart_symbol)
-    when :seasonal_simple_school_day_non_heating_non_regression #expert analysis
+    when :seasonal_simple_school_day_non_heating_non_regression # expert analysis
       SeasonalHeatingNonHeatingSeparationNonRegressionModel.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_regression_simple_school_day #expert analysis
+    when :thermostatic_regression_simple_school_day # expert analysis
       ModelFittingIntroductionAndCategorisation.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_regression_simple_all #expert analysis
+    when :thermostatic_regression_simple_all # expert analysis
       ModelFittingSimpleAllCategorisations.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_regression_thermally_massive_school_day #expert analysis
+    when :thermostatic_regression_thermally_massive_school_day # expert analysis
       ModelFittingThermallMassiveModelSchoolDay.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_regression_thermally_massive_all #expert analysis
+    when :thermostatic_regression_thermally_massive_all # expert analysis
       ModelFittingThermallMassiveModelAllCategorisations.new(school, chart_definition, chart_data, chart_symbol)
-    when :cusum_weekly_best_model #expert analysis
+    when :cusum_weekly_best_model # expert analysis
       ModelFittingModellingDecision.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_winter_holiday_best #expert analysis
+    when :thermostatic_winter_holiday_best # expert analysis
       ModelFittingWinterHolidayHeating.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_winter_weekend_best #expert analysis
+    when :thermostatic_winter_weekend_best # expert analysis
       ModelFittingWinterWeekendHeating.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_summer_school_day_holiday_best #expert analysis
+    when :thermostatic_summer_school_day_holiday_best # expert analysis
       ModelFittingSummerSchoolDayAndHoliday.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_summer_weekend_best #expert analysis
+    when :thermostatic_summer_weekend_best # expert analysis
       ModelFittingSummerWeekend.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_non_best #expert analysis
+    when :thermostatic_non_best # expert analysis
       ModelFittingMinimalDailyConsumption.new(school, chart_definition, chart_data, chart_symbol)
-    when :cusum_simple #expert analysis
+    when :cusum_simple # expert analysis
       ModelFittingCUSUMAnalysisSimpleModel.new(school, chart_definition, chart_data, chart_symbol)
-    when :cusum_thermal_mass #expert analysis
+    when :cusum_thermal_mass # expert analysis
       ModelFittingCUSUMAnalysisThermallMassiveModel.new(school, chart_definition, chart_data, chart_symbol)
-    when :heating_on_off_by_week #expert analysis
+    when :heating_on_off_by_week # expert analysis
       ModelFittingSplittingHeatingAndNonHeating.new(school, chart_definition, chart_data, chart_symbol)
-    when :thermostatic_model_categories_pie_chart #expert analysis
+    when :thermostatic_model_categories_pie_chart # expert analysis
       ModelFittingSplittingIntoCategoriesPieChart.new(school, chart_definition, chart_data, chart_symbol)
     else
       nil
@@ -69,13 +68,13 @@ class DashboardEnergyAdvice
       if advice_valid?
         generate_valid_advice
       else
-        header_template = %{
+        header_template = %(
           <%= @body_start %>
             <p>
               <strong>This chart and advice are not relevent for this meter whose function is <%= meter_function_description %></strong>
             </p>
           <%= @body_end %>
-        }.gsub(/^  /, '')
+        ).gsub(/^  /, '')
 
         @header_advice = generate_html(header_template, binding)
 
@@ -97,7 +96,9 @@ class DashboardEnergyAdvice
         raise EnergySparksUnexpectedStateException.new('Not expecting aggregate electricity meter for model fitting dashboard advice')
       else
         @heat_meter = @school.meter?(meter_definition)
-        raise EnergySparksUnexpectedStateException.new("No meter for model fitting dashboard advice #{meter_definition}") if @heat_meter.nil?
+        if @heat_meter.nil?
+          raise EnergySparksUnexpectedStateException.new("No meter for model fitting dashboard advice #{meter_definition}")
+        end
         unless @heat_meter.heat_meter?
           raise EnergySparksUnexpectedStateException.new("Not expecting non heat meter for model fitting dashboard advice #{meter_definition}")
         end
@@ -105,10 +106,12 @@ class DashboardEnergyAdvice
     end
 
     def meter_function_description
-      @heat_meter.non_heating_only? ? 'non heating only' : (@heat_meter.heating_only? ? 'heating only' : 'heating and non heating')
+      if @heat_meter.non_heating_only?
+        'non heating only'
+      else
+        (@heat_meter.heating_only? ? 'heating only' : 'heating and non heating')
+      end
     end
-
-
 
     def generate_valid_advice
       EnergySparksAbstractBaseClass.new('Call to heating model fitting advice base class not expected')
@@ -125,12 +128,8 @@ class DashboardEnergyAdvice
       end
     end
 
-    def heating_model(model_type)
-      @heating_model = @school.model_cache.create_and_fit_model(model_type, current_year)
-    end
-
-    def heat_amr;               heat_meter.amr_data end
-    def heat_meter;             @heat_meter end
+    def heat_amr = heat_meter.amr_data
+    attr_reader :heat_meter
 
     def annual_gas_kwh_£
       kwh = heat_amr.kwh_period(current_year)
@@ -148,16 +147,19 @@ class DashboardEnergyAdvice
       heat_amr.end_date - heat_amr.start_date
     end
 
-    def school_name;            @school.name end
-    def floor_area;             @school.floor_area end
-    def pupils;                 @school.number_of_pupils end
+    def school_name = @school.name
+    def floor_area = @school.floor_area
+    def pupils = @school.number_of_pupils
 
     def current_year(min_days = 200)
       end_date = heat_amr.end_date
       start_date = [end_date - 364, heat_amr.start_date].max
       days = end_date - start_date
-      raise EnergySparksNotEnoughDataException.new("Not enough data to fit model and provide advice, only #{days} days") if days < min_days
-      SchoolDatePeriod.new(:alert, 'Current Year', start_date, end_date)
+      if days < min_days
+        raise EnergySparksNotEnoughDataException.new("Not enough data to fit model and provide advice, only #{days} days")
+      end
+
+      SchoolDatePeriod.new(:analysis, 'Current Year', start_date, end_date)
     end
 
     def best_model
@@ -209,7 +211,8 @@ class DashboardEnergyAdvice
     end
 
     def model_standard_devation_table_html
-      header = ['Model', 'Standard Deviation kWh', 'Standard Deviation (%)', 'Average R2', 'Average base temperature', 'Calculation time(ms)']
+      header = ['Model', 'Standard Deviation kWh', 'Standard Deviation (%)', 'Average R2', 'Average base temperature',
+                'Calculation time(ms)']
       rows = []
       rows.push(formatted_model_deviation_information(simple_model))
       rows.push(formatted_model_deviation_information(thermally_massive_model))
@@ -231,7 +234,8 @@ class DashboardEnergyAdvice
     def regression_parameters_html_table(model)
       sorted_models = best_model.sorted_model_keys(model.models)
 
-      header = ['Name', 'A kWh/day', 'B kWh/day/C', 'R2', 'Base Temperature(C)','Samples', 'Example prediction kWh/day']
+      header = ['Name', 'A kWh/day', 'B kWh/day/C', 'R2', 'Base Temperature(C)', 'Samples',
+                'Example prediction kWh/day']
       rows = []
       sorted_models.each do |name, results|
         rows.push(
@@ -256,12 +260,16 @@ class DashboardEnergyAdvice
     end
 
     def round_nan(value, dp)
-      value.nil? ? '' :  value.nan? ? 'NaN' : value.round(dp)
+      if value.nil?
+        ''
+      else
+        value.nan? ? 'NaN' : value.round(dp)
+      end
     end
 
     # copied from heating_regression_model_fitter.rb TODO(PH,17Feb2019) - merge
     def html_table(header, rows)
-      template = %{
+      template = %(
         <p>
           <table class="table table-striped table-sm">
             <thead>
@@ -282,7 +290,7 @@ class DashboardEnergyAdvice
             </tbody>
           </table>
         </p>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       generate_html(template, binding)
     end
@@ -292,25 +300,25 @@ class DashboardEnergyAdvice
     include Logging
 
     def non_tariff_meter_attributes
-      heat_meter.all_attributes.select { |k, _v| !k.to_s.include?('tariff')}
+      heat_meter.all_attributes.select { |k, _v| !k.to_s.include?('tariff') }
     end
 
     # amazing print requires rails to do ap html
     # formatting, so do manually
     def non_tariff_attributes_html
       text = if Object.const_defined?('Rails')
-                %{
+               %{
                   <pre>
                     <%= non_tariff_meter_attributes.awesome_inspect({ html: true }) %>
                   </pre>
                 }
-              else
-                %{
+             else
+               %(
                   <pre>
                     <%= non_tariff_meter_attributes.pretty_inspect %>
                   </pre>
-                }
-              end
+                )
+             end
 
       ERB.new(text).result(binding)
     end
@@ -481,7 +489,7 @@ class DashboardEnergyAdvice
     end
 
     def regression_modelling_1_html
-      %{
+      %(
         <h2>
             Regression Modelling
         </h2>
@@ -502,7 +510,7 @@ class DashboardEnergyAdvice
         <h3>
             Weekly gas consumption versus how cold it is over the last year
         </h3>
-      }
+      )
     end
 
     def generate_valid_advice
@@ -510,10 +518,10 @@ class DashboardEnergyAdvice
       name = meter.nil? || meter.name.empty? ? '' : "(#{meter.name})"
       html_components = [
         '<h1>Heating Regression Model Fitting</h1>',
-         school_summary_html,
-         modelling_background_html,
-         modelling_process_explanation_html,
-         regression_modelling_1_html
+        school_summary_html,
+        modelling_background_html,
+        modelling_process_explanation_html,
+        regression_modelling_1_html
       ]
 
       @header_advice = generate_html_from_array_adding_body_tags(html_components, binding)
@@ -545,7 +553,7 @@ class DashboardEnergyAdvice
           <%= @body_end %>
         }.gsub(/^  /, '')
 
-        @footer_advice = generate_html(footer_template, binding)
+      @footer_advice = generate_html(footer_template, binding)
     end
   end
 
@@ -553,7 +561,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h3>
             Weekly gas consumption versus how cold it is over the period for which we
@@ -565,16 +573,16 @@ class DashboardEnergyAdvice
             whether there has been a change in usage patterns over the last few years.
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        footer_template = %{
+      footer_template = %(
           <%= @body_start %>
           <%= @body_end %>
-        }.gsub(/^  /, '')
+        ).gsub(/^  /, '')
 
-        @footer_advice = generate_html(footer_template, binding)
+      @footer_advice = generate_html(footer_template, binding)
     end
   end
 
@@ -582,7 +590,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h3>
             Heating by day of the week
@@ -591,11 +599,11 @@ class DashboardEnergyAdvice
             This aggregates the heating usage by day of the week over the last year:
           </p
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        footer_template = %{
+      footer_template = %(
           <%= @body_start %>
             <p>
                 This provides a feel for whether the school building is 'thermally massive'
@@ -605,9 +613,9 @@ class DashboardEnergyAdvice
                 consumption patterns.
             </p>
           <%= @body_end %>
-        }.gsub(/^  /, '')
+        ).gsub(/^  /, '')
 
-        @footer_advice = generate_html(footer_template, binding)
+      @footer_advice = generate_html(footer_template, binding)
     end
   end
 
@@ -615,7 +623,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h3>
             Annual gas consumption over the last few years
@@ -625,16 +633,16 @@ class DashboardEnergyAdvice
               which might help uin spotting overall trends:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        @footer_advice = nil_advice
+      @footer_advice = nil_advice
     end
   end
 
   class HeatingNonHeatingSeparationAdviceBase < ModelFittingAdviceBase
-    def model_type; nil end
+    def model_type = nil
 
     def model
       @model ||= @heat_meter.heating_model(period, :simple_regression_temperature_no_overrides, model_type)
@@ -656,7 +664,7 @@ class DashboardEnergyAdvice
   end
 
   class HeatingNonHeatingSeparationIntroAndCovidModel < HeatingNonHeatingSeparationAdviceBase
-    def model_type; :temperature_sensitive_regression_model_covid_tolerant end
+    def model_type = :temperature_sensitive_regression_model_covid_tolerant
 
     def separating_heating_and_non_heating_days_explanation_html
       %{
@@ -713,7 +721,7 @@ class DashboardEnergyAdvice
     end
 
     def type_of_heating_model_html
-      %{
+      %(
         <h2>Chosen Non Heating Separation Model Type</h2>
         <blockquote>
             The model currently chosen for this meter is the
@@ -727,11 +735,11 @@ class DashboardEnergyAdvice
             <li>heating_non_heating_day_separation_model_override</li>
           </ul>
         </p>
-      }
+      )
     end
 
     def heating_non_heating_separation_subsequent_3_chart_introduction_html
-      %{
+      %(
         <p>
             The next 3 pairs of 2 charts show 3 different models used for separating
             heating and non heating data, in order of their effectiveness:
@@ -742,22 +750,22 @@ class DashboardEnergyAdvice
             </ol>
             Each pair of charts consists of a thermostatic scatter chart and a seasonal heating chart for each of the models.
         </p>
-      }
+      )
     end
 
     def heating_non_heating_separation_covid_model_chart_introduction_html
-      %{
+      %(
         <h3>regression model ignoring COVID lockdown periods</h3>
         <p>
             This first chart uses a model which samples school day consumption
             in June, July and August avoiding the COVID lockdown in 2020 if
             data is available:
         </p>
-      }
+      )
     end
 
     def default_model_explanation_html
-      %{
+      %(
         <p>
           This is the default model unless manually overwridden with meter attributes.
         <p>
@@ -766,16 +774,16 @@ class DashboardEnergyAdvice
           separated heating from non heating days? If not you will need to apply
           meter attributes.
         </p>
-      }
+      )
     end
 
     def generate_valid_advice
       html_components = [
-         separating_heating_and_non_heating_days_explanation_html,
-         type_of_heating_model_html,
-         heating_non_heating_separation_subsequent_3_chart_introduction_html,
-         heating_non_heating_separation_covid_model_chart_introduction_html,
-         model_results_html
+        separating_heating_and_non_heating_days_explanation_html,
+        type_of_heating_model_html,
+        heating_non_heating_separation_subsequent_3_chart_introduction_html,
+        heating_non_heating_separation_covid_model_chart_introduction_html,
+        model_results_html
       ]
 
       @header_advice = generate_html_from_array_adding_body_tags(html_components, binding)
@@ -792,17 +800,17 @@ class DashboardEnergyAdvice
   end
 
   class HeatingNonHeatingSeparationRegressionModel < HeatingNonHeatingSeparationAdviceBase
-    def model_type; :temperature_sensitive_regression_model end
+    def model_type = :temperature_sensitive_regression_model
 
     def vanilla_regression_model_chart_explanation_html
-      %{
+      %(
         <p>
           This chart uses the same model as that of the &apos;COVID model&apos; above
           but does&apos;nt skip COVID lockdown periods. If there is not enough meter
           reading history for the COVID model to go back a year then the 2 charts and
           the model results will be identical.
         </p>
-      }
+      )
     end
 
     def generate_valid_advice
@@ -825,15 +833,16 @@ class DashboardEnergyAdvice
   end
 
   class HeatingNonHeatingSeparationNonRegressionModel < HeatingNonHeatingSeparationAdviceBase
-    def model_type; :fixed_single_value_temperature_sensitive_regression_model end
+    def model_type = :fixed_single_value_temperature_sensitive_regression_model
+
     def vanilla_regression_model_chart_explanation_html
-      %{
+      %(
         <p>
           Unlike the previous 2 models assume the summer hot water has some correlation
           with outside temperatures, this one does not. Sometimes it achieves better
           separation than the other two models.
         </p>
-      }
+      )
     end
 
     def generate_valid_advice
@@ -850,7 +859,7 @@ class DashboardEnergyAdvice
 
   class SeasonalHeatingNonHeatingSeparationNonRegressionModel < HeatingNonHeatingSeparationAdviceBase
     def choosing_model_decision_html
-      %{
+      %(
         <p>
           You need to review all 3 pairs of charts and work out which model is working best.
           If the first model which takes COVID into account is working well then you don&apos;t
@@ -872,7 +881,7 @@ class DashboardEnergyAdvice
             <li></li>
           </ul>
         </p>
-      }
+      )
     end
 
     def generate_valid_advice
@@ -886,7 +895,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h2>
             Modelling Process
@@ -902,11 +911,11 @@ class DashboardEnergyAdvice
               consumption over the last year:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        footer_template = %{
+      footer_template = %{
           <%= @body_start %>
             <p>
               Into heating and non-heating days using the simplest regression model. The
@@ -936,7 +945,7 @@ class DashboardEnergyAdvice
           <%= @body_end %>
         }.gsub(/^  /, '')
 
-        @footer_advice = generate_html(footer_template, binding)
+      @footer_advice = generate_html(footer_template, binding)
     end
   end
 
@@ -944,7 +953,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h3>
             Simple Categorisation - all categories
@@ -955,27 +964,27 @@ class DashboardEnergyAdvice
               more difficult to read and interpret.
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       @header_advice = generate_html(header_template, binding)
 
-      footer_template1 = %{
+      footer_template1 = %(
         <%= @body_start %>
           <p>
             The table below presents the regression models for each category:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       footer_template2 = regression_parameters_html_table(simple_model)
 
-      footer_template3 = %{
+      footer_template3 = %(
           <p>
               The example prediction is calculated as follows kWh = A + B * the outside
               temperature.
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       @footer_advice  = generate_html(footer_template1, binding)
       @footer_advice += footer_template2
@@ -987,7 +996,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h3>
               Thermally massive model - winter versus summer school day gas consumption
@@ -999,7 +1008,7 @@ class DashboardEnergyAdvice
               heating at the start of the week than the end of the week:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       @header_advice = generate_html(header_template, binding)
 
@@ -1011,7 +1020,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h3>
               Thermally massive model - all categories
@@ -1020,17 +1029,17 @@ class DashboardEnergyAdvice
             This is the same model as the chart above, but includes weekends and holidays
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       @header_advice = generate_html(header_template, binding)
 
-      footer_template1 = %{
+      footer_template1 = %(
         <%= @body_start %>
           <p>
               The modelled parameters are as follows:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       footer_template2 = regression_parameters_html_table(thermally_massive_model)
 
@@ -1044,9 +1053,9 @@ class DashboardEnergyAdvice
 
     def generate_valid_advice
       min_simple_model_samples = AnalyseHeatingAndHotWater::MINIMUM_SAMPLES_FOR_SIMPLE_MODEL_TO_RUN_WELL
-      min_massive_model_samples =  AnalyseHeatingAndHotWater::MINIMUM_SAMPLES_FOR_THERMALLY_MASSIVE_MODEL_TO_RUN_WELL
+      min_massive_model_samples = AnalyseHeatingAndHotWater::MINIMUM_SAMPLES_FOR_THERMALLY_MASSIVE_MODEL_TO_RUN_WELL
 
-      header_template1 = %{
+      header_template1 = %(
         <%= @body_start %>
           <h2>
             Modelling decision
@@ -1062,7 +1071,7 @@ class DashboardEnergyAdvice
             For this school, the two models produced the following:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       header_template3 = %{
         <%= @body_start %>
@@ -1110,7 +1119,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h3>
               Categorised modelling - more detail
@@ -1129,11 +1138,11 @@ class DashboardEnergyAdvice
               consumption:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        @footer_advice = nil_advice
+      @footer_advice = nil_advice
     end
   end
 
@@ -1141,7 +1150,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <p>
               <strong>Winter weekend heating</strong>
@@ -1159,7 +1168,7 @@ class DashboardEnergyAdvice
               20C.
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       @header_advice = generate_html(header_template, binding)
 
@@ -1171,7 +1180,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <p>
             <strong>Summer holiday and school day hot water and kitchen</strong>
@@ -1183,11 +1192,11 @@ class DashboardEnergyAdvice
             holiday days on this chart:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        footer_template = %{
+      footer_template = %(
           <%= @body_start %>
             <p>
                 Points to note:
@@ -1210,9 +1219,9 @@ class DashboardEnergyAdvice
               </li>
             </ul>
           <%= @body_end %>
-        }.gsub(/^  /, '')
+        ).gsub(/^  /, '')
 
-        @footer_advice = generate_html(footer_template, binding)
+      @footer_advice = generate_html(footer_template, binding)
     end
   end
 
@@ -1220,7 +1229,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <p>
             <strong>Summer weekend hot water</strong>
@@ -1230,7 +1239,7 @@ class DashboardEnergyAdvice
             points on this chart.
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       @header_advice = generate_html(header_template, binding)
 
@@ -1242,7 +1251,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <p>
             <strong>Days of very low consumption</strong>
@@ -1253,7 +1262,7 @@ class DashboardEnergyAdvice
             in this chart:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       @header_advice = generate_html(header_template, binding)
 
@@ -1318,7 +1327,7 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <h3>
               CUSUM Analysis - thermal mass model
@@ -1329,22 +1338,22 @@ class DashboardEnergyAdvice
               zero than the simple model.
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        footer_template1 = %{
+      footer_template1 = %(
           <%= @body_start %>
             <p>
                 This divergence is represented both as an absolute standard deviation and a
                 percentage deviation:
             </p>
           <%= @body_end %>
-        }.gsub(/^  /, '')
+        ).gsub(/^  /, '')
 
-        footer_template2 = model_standard_devation_table_html
+      footer_template2 = model_standard_devation_table_html
 
-        @footer_advice = generate_html(footer_template1, binding) + footer_template2
+      @footer_advice = generate_html(footer_template1, binding) + footer_template2
     end
   end
 
@@ -1365,9 +1374,9 @@ class DashboardEnergyAdvice
         <%= @body_end %>
       }.gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        footer_template = %{
+      footer_template = %{
           <%= @body_start %>
             <p>
               Schools are able to reduce their heating consumption by reducing the length of the
@@ -1391,7 +1400,7 @@ class DashboardEnergyAdvice
           <%= @body_end %>
         }.gsub(/^  /, '')
 
-        @footer_advice = generate_html(footer_template, binding)
+      @footer_advice = generate_html(footer_template, binding)
     end
   end
 
@@ -1399,13 +1408,13 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <p>
             This chart splits the last year into categories used for modelling:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
       @header_advice = generate_html(header_template, binding)
 
@@ -1417,25 +1426,25 @@ class DashboardEnergyAdvice
     include Logging
 
     def generate_valid_advice
-      header_template = %{
+      header_template = %(
         <%= @body_start %>
           <p>
             This chart splits the last year into categories used for modelling:
           </p>
         <%= @body_end %>
-      }.gsub(/^  /, '')
+      ).gsub(/^  /, '')
 
-        @header_advice = generate_html(header_template, binding)
+      @header_advice = generate_html(header_template, binding)
 
-        footer_template = %{
+      footer_template = %(
           <%= @body_start %>
             <p>
               This table shows the energy used for the last year in each of these groupings
             </p>
           <%= @body_end %>
-        }.gsub(/^  /, '')
+        ).gsub(/^  /, '')
 
-        @footer_advice = generate_html(footer_template, binding)
+      @footer_advice = generate_html(footer_template, binding)
     end
   end
 

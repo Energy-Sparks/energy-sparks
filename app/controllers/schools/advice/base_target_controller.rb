@@ -26,10 +26,8 @@ module Schools
       end
 
       def set_consumption
-        @consumption = @target.monthly_consumption_status(@fuel_type)
-        if @consumption.consumption.nil? || @consumption.consumption.any? { |month| month[:previous_missing] }
-          render 'limited_data'
-        end
+        @consumption = Targets::MonthlyConsumptionService.new(@target, @fuel_type)
+        render 'limited_data' if @consumption.any_missing?
       end
 
       def advice_page_key
@@ -47,24 +45,15 @@ module Schools
       end
       helper_method :formatted_target_date
 
-      def percent_change(current_consumption, previous_consumption)
-        (current_consumption - previous_consumption) / previous_consumption.to_f
-      end
-
       def formatted_target_change(current_consumption, previous_consumption)
         if @data_warning || current_consumption.nil? || previous_consumption.nil? || previous_consumption.zero?
           return '-'
         end
 
-        change = percent_change(current_consumption, previous_consumption)
+        change = EnergySparks::Calculator.percent_change(previous_consumption.to_f, current_consumption)
         up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
       end
       helper_method :formatted_target_change
-
-      def t_fuel_type
-        t("advice_pages.fuel_type.#{@fuel_type}")
-      end
-      helper_method :t_fuel_type
     end
   end
 end

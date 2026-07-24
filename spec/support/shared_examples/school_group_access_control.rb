@@ -1,4 +1,4 @@
-RSpec.shared_examples 'an access controlled group page' do
+RSpec.shared_examples 'an access controlled group page' do |with_schools_check: true|
   let(:expected_redirect) { "/school_groups/#{school_group.slug}/map" }
   let(:group_role) { :group_admin }
 
@@ -58,7 +58,7 @@ RSpec.shared_examples 'an access controlled group page' do
     end
   end
 
-  context 'when the group is public but there are no active schools' do
+  context 'when the group is public but there are no active schools', if: with_schools_check do
     before do
       school_group.assigned_schools.update_all(active: false)
       sign_in(user) if user

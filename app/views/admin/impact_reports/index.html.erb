@@ -1,0 +1,121 @@
+<% if @dashboard_user %>
+  <% content_for :title do %>
+      <%= "#{@dashboard_user.display_name}'s Impact Reports" %>
+  <% end %>
+  <%= render Elements::ButtonComponent.new('View all impact reports',
+                                           admin_impact_reports_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+<% else %>
+  <% content_for :page_title, 'Impact Reports' %>
+  <h1>Impact Reports</h1>
+
+  <p>Reports will only be available for groups where visible is set to true, and where there is enough data available (2 or more visible schools) in the latest run. Currently unavailable reports are displayed with a grey background.</p>
+
+  <div class="bg-light p-2 my-2 border rounded-2">
+    <%= form_tag admin_impact_reports_path, method: :get do %>
+      <div class="d-flex align-items-center gap-2">
+        <%= select_tag :user,
+                       options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
+                       include_blank: 'Any admin user',
+                       class: 'form-control' %>
+        <%= submit_tag 'Filter',
+                       class: 'btn btn-secondary btn-sm' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<table class="table table-paged">
+  <thead>
+    <tr class="bg-light border-top border-bottom">
+      <th colspan="4">&nbsp;</th>
+      <th class="text-center bg-light border-start">Overview</th>
+      <th colspan="2" class="text-center bg-light border-start border-end">Energy efficiency</th>
+      <th colspan="2" class="text-center bg-light border-end">Engagement</th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>Visible</th>
+      <th>Enough data</th>
+      <th>Report for group</th>
+      <th>Admin</th>
+      <th class='text-center border-start'>Case studies</th>
+      <th class='text-center border-start'>Visible</th>
+      <th>Feature?</th>
+      <th class='text-center border-start'>Visible</th>
+      <th class='text-center border-end'>Override podium</th>
+      <th class="no-sort"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_groups.each do |school_group| %>
+      <% config = school_group.impact_report_configuration %>
+      <% run = school_group.latest_impact_report_run %>
+      <tr class="<%= 'text-muted bg-light' unless config&.visible && run&.enough_data? %>">
+        <td class="text-center" data-sort="<%= config&.visible %>">
+          <span data-bs-toggle="tooltip" title="<%= config&.visible ? 'Visible' : 'Not visible' %>">
+            <%= checkmark(config&.visible, off_class: 'text-muted') %>
+          </span>
+        </td>
+        <td class="text-center" data-sort="<%= run&.enough_data? %>">
+          <% title = run&.enough_data? ? "#{run&.visible_schools} visible schools in latest run" : 'Not enough data' %>
+          <span data-bs-toggle="tooltip" title="<%= title %>">
+            <% if run %>
+            <%= link_to checkmark(run&.enough_data?, off_class: 'text-muted'),
+                        school_group_impact_run_path(school_group, run) %>
+            <% else %>
+              <%= checkmark(run&.enough_data?, off_class: 'text-muted') %>
+            <% end %>
+          </span>
+        </td>
+        <td>
+          <%= link_to school_group.name, school_group_impact_index_path(school_group) %>
+        </td>
+        <td>
+          <% if school_group&.default_issues_admin_user %>
+            <span class="badge border text-dark fw-normal border-primary rounded-pill">
+              <%= school_group&.default_issues_admin_user&.display_name %>
+            </span>
+          <% end %>
+        </td>
+        <td class="text-center border-start">
+          <% case_studies_count = CaseStudy.for_school_group(school_group).published.count %>
+          <% title = if case_studies_count.positive?
+                       "#{pluralize(case_studies_count,
+                                    'case study')} available for school group"
+                     else
+                       'No case studies'
+                     end %>
+          <span data-bs-toggle="tooltip" title="<%= title %>" data-sort="<%= case_studies_count.positive? %>">
+            <%= link_to checkmark(case_studies_count.positive?, off_class: 'text-muted'), admin_case_studies_path %>
+          </span>
+        </td>
+        <td class="text-center border-start" data-sort="<%= !config || config.show_energy_efficiency %>">
+          <%= checkmark(!config || config.show_energy_efficiency, off_class: 'text-muted') %>
+        </td>
+        <td class="text-center border-end" data-sort="<%= config&.feature_visible_for?(:energy_efficiency) %>">
+          <%= checkmark(config&.feature_visible_for?(:energy_efficiency), off_class: 'text-muted') %>
+          <% if config&.feature_expired_for?(:energy_efficiency) %>
+            <br>
+            <div class="badge text-bg-light">Expired</div>
+          <% end %>
+        </td>
+        <td class="text-center" data-sort="<%= !config || config.show_engagement %>">
+          <%= checkmark(!config || config.show_engagement, off_class: 'text-muted') %>
+        </td>
+        <td class="text-center border-end" data-sort="<%= config&.feature_visible_for?(:engagement) %>">
+          <%= checkmark(config&.feature_visible_for?(:engagement), off_class: 'text-muted') %>
+          <% if config&.feature_expired_for?(:engagement) %>
+            <br>
+            <div class="badge text-bg-light">Expired</div>
+          <% end %>
+        </td>
+        <td class='text-center'>
+          <%= link_to 'Edit', edit_school_group_impact_configuration_path(school_group),
+                      class: 'btn btn-secondary btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -2,8 +2,7 @@
   <% text, status = if @target.start_date > Date.current
                       [t('advice_pages.target.future_target_date'), :positive]
                     elsif !@consumption.meeting_target.nil?
-                      [t("schools.show.#{@consumption.meeting_target ? :making_progress : :not_meeting_target}",
-                         fuels: t_fuel_type),
+                      [meeting_target_text(@consumption.meeting_target, @fuel_type),
                        @consumption.meeting_target ? :positive : :negative]
                     end %>
   <% if text %>

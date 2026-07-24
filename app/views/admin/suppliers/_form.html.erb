@@ -1,0 +1,15 @@
+<div class="row p-2">
+  <div class="col-md-12 border rounded bg-light pb-2">
+    <%= render 'header', title: title do %>
+      <%= header_nav_link 'All suppliers', admin_suppliers_url %>
+    <% end %>
+    <%= simple_form_for [:admin, supplier] do |f| %>
+      <%= f.input :name, label: 'Name' %>
+      <%= f.input :owned_by_id, collection: User.admin.operations.order(:name), label_method: :display_name %>
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <% if supplier.persisted? %>
+        <%= render(Forms::DeleteButtonComponent.new(admin_supplier_path(supplier), resource: supplier)) %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

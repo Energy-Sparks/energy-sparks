@@ -8,7 +8,7 @@ module CsvDownloader
       s.puts csv_header
       conn.copy_data "COPY (#{sql_query}) TO STDOUT WITH CSV;" do
         while (row = conn.get_copy_data)
-          s.puts row.tr('"', '').tr('{', '').tr('}', '').chomp.to_s
+          s.puts row.gsub(/"\{([^}]*)\}"/, '\1').chomp.to_s
         end
       end
       s.string

@@ -24,7 +24,7 @@ describe 'Partners', type: :system do
 
       expect(page).to have_xpath("//img[contains(@src,'sheffield.png')]")
       expect(page).to have_link(href: 'https://example.com')
-      expect(page).to have_content('Sheffield')
+      expect(page).to have_text('Sheffield')
     end
 
     context 'an existing partner' do
@@ -36,7 +36,7 @@ describe 'Partners', type: :system do
 
       it 'allows user to view the partner' do
         click_on 'Show'
-        expect(page).to have_content(partner.name)
+        expect(page).to have_text(partner.name)
       end
 
       it 'allows the user to edit a partner' do
@@ -44,19 +44,19 @@ describe 'Partners', type: :system do
         fill_in 'Position', with: ''
 
         click_on 'Update Partner'
-        expect(page).to have_content('blank')
+        expect(page).to have_text('blank')
         fill_in 'Position', with: '1'
         attach_file('Image', Rails.root + 'spec/fixtures/images/banes.png')
         fill_in 'Name', with: 'Bath'
         click_on 'Update Partner'
 
         expect(page).to have_xpath("//img[contains(@src,'banes.png')]")
-        expect(page).to have_content('Bath')
+        expect(page).to have_text('Bath')
       end
 
       it 'allows the user to delete a partner' do
         expect { click_on 'Delete' }.to change(Partner, :count).by(-1)
-        expect(page).to have_content('Partner was successfully destroyed.')
+        expect(page).to have_text('Partner was successfully destroyed.')
       end
     end
 
@@ -72,11 +72,11 @@ describe 'Partners', type: :system do
       end
 
       it 'lists the groups on partner page' do
-        expect(page).to have_content('Local School Group')
+        expect(page).to have_text('Local School Group')
       end
 
       it 'lists the schools on the partner page' do
-        expect(page).to have_content('Partnered School')
+        expect(page).to have_text('Partnered School')
       end
     end
   end

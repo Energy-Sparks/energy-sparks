@@ -5,12 +5,14 @@ require 'rails_helper'
 describe 'Gas anomaly report' do
   let(:meter) do
     school = create(:school, :with_calendar,
-               school_group: create(:school_group, default_issues_admin_user: create(:admin)),
-               weather_station: create(:weather_station))
-    create(:gas_meter, school: school)
+                    school_group: create(:school_group, default_issues_admin_user: create(:admin)),
+                    weather_station: create(:weather_station))
+    data_source = create(:data_source)
+    supplier = create(:supplier)
+    create(:gas_meter, data_source:, supplier:, school:)
   end
 
-  let(:anomaly) { Report::GasAnomaly.first }
+  let(:anomaly) { Report::GasAnomaly.order(:id).first }
 
   before do
     current_day = Date.yesterday
@@ -56,19 +58,19 @@ describe 'Gas anomaly report' do
     prev_temp = FormatUnit.format(:temperature, anomaly.previous_temperature.to_f, :html, false, true, :benchmark)
 
     expect(rows).to eq([
-                         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Reading Date', 'Kwh', 'Previous Kwh', 'Temperature', 'Previous Temperature', 'Period', 'Chart'],
-                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, anomaly.reading_date.iso8601, '500', '1', today_temp, prev_temp, 'Term', 'Chart']
+                         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter System', 'Supplier', 'Data Source', 'Reading Date', 'Kwh', 'Previous Kwh', 'Temperature', 'Previous Temperature', 'Period', 'Chart'],
+                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, meter.t_meter_system, meter.supplier.name, meter.data_source.name, anomaly.reading_date.iso8601, '500', '1', today_temp, prev_temp, 'Term', 'Chart']
                        ])
   end
 
   it 'allows csv download' do
     click_on 'CSV'
-    today_temp = FormatUnit.format(:temperature, Report::GasAnomaly.first.today_temperature.to_f, :html, false, true, :benchmark)
-    prev_temp = FormatUnit.format(:temperature, Report::GasAnomaly.first.previous_temperature.to_f, :html, false, true, :benchmark)
+    today_temp = FormatUnit.format(:temperature, anomaly.today_temperature.to_f, :html, false, true, :benchmark)
+    prev_temp = FormatUnit.format(:temperature, anomaly.previous_temperature.to_f, :html, false, true, :benchmark)
 
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
-      eq("School Group,Admin,School,Meter,Meter Name,Reading Date,Kwh,Previous Kwh,Temperature,Previous Temperature,Period\n" \
-         "#{meter.school_group.name},#{meter.school_group&.default_issues_admin_user&.name},#{meter.school.name},#{meter.mpan_mprn},#{meter.name},#{anomaly.reading_date.iso8601},500,1,#{today_temp},#{prev_temp},Term\n")
+      eq("School Group,Admin,School,Meter,Meter Name,Meter System,Supplier,Data Source,Reading Date,Kwh,Previous Kwh,Temperature,Previous Temperature,Period\n" \
+         "#{meter.school_group.name},#{meter.school_group&.default_issues_admin_user&.name},#{meter.school.name},#{meter.mpan_mprn},#{meter.name},#{meter.t_meter_system},#{meter.supplier.name},#{meter.data_source.name},#{anomaly.reading_date.iso8601},500,1,#{today_temp},#{prev_temp},Term\n")
   end
 end

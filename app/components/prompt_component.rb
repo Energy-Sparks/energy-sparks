@@ -18,36 +18,52 @@ class PromptComponent < ApplicationComponent
   renders_one :link
   renders_one :title
   renders_one :pill
+  renders_one :content_action, ->(**kwargs) { Layout::Cards::ContentAction.new(**kwargs) }
 
-  attr_reader :icon, :style, :fuel_type
+  STATUSES = %i[none positive negative neutral].freeze
+  private_constant :STATUSES
 
-  def initialize(id: nil, icon: nil, fuel_type: nil, status: nil, style: :full, classes: '', always_render: false)
-    super(id: id, classes: "#{status} #{classes}")
+  attr_reader :icon, :image, :style, :fuel_type
+
+  def initialize(icon: nil, image: nil, fuel_type: nil, status: nil, style: :full, always_render: false, **_kwargs)
+    super
+    validate_inclusion(status:, in: STATUSES) if status
+    add_classes(status)
     @icon = icon
+    @image = image
     @fuel_type = fuel_type
     @status = status
     @style = style
     @always_render = always_render
-    validate
-  end
-
-  def render_icon?
-    @fuel_type || @icon
   end
 
   def render?
-    content || @always_render
-  end
-
-  def validate
-    raise ArgumentError.new(self.class.status_error) unless @status.nil? || self.class.statuses.include?(@status.to_sym)
+    content || content_action || @always_render
   end
 
   def self.statuses
-    [:none, :positive, :negative, :neutral]
+    STATUSES
   end
 
-  def self.status_error
-    'Status must be: ' + self.statuses.to_sentence(last_word_connector: ' or ')
+  private
+
+  def image?
+    !!@image
+  end
+
+  def icon?
+    @fuel_type || @icon
+  end
+
+  def media?
+    icon? || image?
+  end
+
+  def media_cols
+    'col-1' if media?
+  end
+
+  def main_cols
+    'col-md-11' if media?
   end
 end

@@ -4,12 +4,12 @@
 #
 # Table name: local_distribution_zone_readings
 #
-#  calorific_value            :float            not null
-#  created_at                 :datetime         not null
-#  date                       :date             not null
 #  id                         :bigint(8)        not null, primary key
-#  local_distribution_zone_id :bigint(8)
+#  calorific_value            :float            not null
+#  date                       :date             not null
+#  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
+#  local_distribution_zone_id :bigint(8)
 #
 # Indexes
 #

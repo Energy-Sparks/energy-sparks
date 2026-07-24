@@ -13,7 +13,7 @@ describe 'cookie banner' do
     it 'includes expected content and links' do
       expect(page).to have_css('#cookie-banner')
       within('#cookie-banner') do
-        expect(page).to have_content(I18n.t('cookie_banner.notice'))
+        expect(page).to have_text(I18n.t('cookie_banner.notice'))
         expect(page).to have_link(I18n.t('cookie_banner.learn_more'), href: cookies_path)
         expect(page).to have_button(I18n.t('cookie_banner.accept'))
         expect(page).to have_button(I18n.t('cookie_banner.reject'))
@@ -28,15 +28,15 @@ describe 'cookie banner' do
       end
 
       it 'displays the cookies page' do
-        expect(page).to have_content(I18n.t('cookies.title'))
-        expect(page).to have_content(I18n.t('cookies.essential.title'))
-        expect(page).to have_content(I18n.t('cookies.essential.session.purpose'))
-        expect(page).to have_content(I18n.t('cookies.essential.preference.purpose'))
+        expect(page).to have_text(I18n.t('cookies.title'))
+        expect(page).to have_text(I18n.t('cookies.essential.title'))
+        expect(page).to have_text(I18n.t('cookies.essential.session.purpose'))
+        expect(page).to have_text(I18n.t('cookies.essential.preference.purpose'))
 
-        expect(page).to have_content(I18n.t('cookies.analytics.title'))
-        expect(page).to have_content(I18n.t('cookies.analytics.ga.purpose'))
-        expect(page).to have_content(I18n.t('cookies.analytics.gid.purpose'))
-        expect(page).to have_content(I18n.t('cookies.analytics.question'))
+        expect(page).to have_text(I18n.t('cookies.analytics.title'))
+        expect(page).to have_text(I18n.t('cookies.analytics.ga.purpose'))
+        expect(page).to have_text(I18n.t('cookies.analytics.gid.purpose'))
+        expect(page).to have_text(I18n.t('cookies.analytics.question'))
         expect(page).to have_button(I18n.t('cookie_banner.accept'))
         expect(page).to have_button(I18n.t('cookie_banner.reject'))
       end
@@ -111,9 +111,9 @@ describe 'cookie banner' do
     end
 
     it 'displays the basic content' do
-      expect(page).to have_content(I18n.t('cookies.title'))
-      expect(page).to have_content(I18n.t('cookies.essential.title'))
-      expect(page).to have_content(I18n.t('cookies.analytics.title'))
+      expect(page).to have_text(I18n.t('cookies.title'))
+      expect(page).to have_text(I18n.t('cookies.essential.title'))
+      expect(page).to have_text(I18n.t('cookies.analytics.title'))
     end
 
     it 'displays both preference buttons when there is no existing preference' do

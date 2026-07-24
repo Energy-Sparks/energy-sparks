@@ -1,18 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe 'equivalence type management', type: :system do
-  let!(:school)   { create(:school)}
-  let!(:admin)    { create(:admin)}
+  let!(:school)   { create(:school) }
+  let!(:admin)    { create(:admin) }
 
   let!(:kwh_value)          { '2,600 kWh' }
-  let!(:equivalence_calc)   { double(from_date: Date.parse('20200101'), to_date: Date.parse('20210101'), formatted_variables: { kwh: kwh_value }, :hide_preview? => false) }
+  let!(:equivalence_calc)   { double(from_date: Date.parse('20200101'), to_date: Date.parse('20210101'), formatted_variables: { kwh: kwh_value }, hide_preview?: false) }
 
   before do
     sign_in(admin)
     visit root_path
   end
 
-  it 'allows the creation and editing of equivalences', js: true do
+  it 'allows the creation and editing of equivalences', :js do
     allow_any_instance_of(Equivalences::Calculator).to receive(:perform).and_return(equivalence_calc)
 
     click_on 'Manage'
@@ -46,7 +46,7 @@ RSpec.describe 'equivalence type management', type: :system do
 
     fill_in_trix with: 'You used {{kwh}} of electricity'
     click_on 'Preview (English)'
-    expect(page).to have_content("You used #{kwh_value} of electricity")
+    expect(page).to have_text("You used #{kwh_value} of electricity")
 
     click_on 'Update equivalence type'
 
@@ -73,7 +73,7 @@ RSpec.describe 'equivalence type management', type: :system do
       click_on 'Admin'
       click_on 'Equivalence Types'
 
-      expect(page).to have_content equivalence_text
+      expect(page).to have_text equivalence_text
     end
 
     it 'only' do

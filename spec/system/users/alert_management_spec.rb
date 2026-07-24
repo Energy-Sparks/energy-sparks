@@ -13,7 +13,7 @@ RSpec.describe 'User alert management', :include_application_helper do
       cluster = create(:school_group_cluster)
       schools.first.update!(school_group_cluster: cluster)
       refresh
-      expect(page).to have_content(cluster.name)
+      expect(page).to have_text(cluster.name)
     end
 
     context 'when user has an alert', :js do
@@ -32,7 +32,7 @@ RSpec.describe 'User alert management', :include_application_helper do
         accept_confirm do
           find_link(I18n.t('common.labels.unsubscribe'), match: :first).click
         end
-        expect(page).to have_content(I18n.t('users.contacts.create.unsubscribed'))
+        expect(page).to have_text(I18n.t('users.contacts.create.unsubscribed'))
         expect(user.contacts).to be_empty
       end
     end
@@ -42,7 +42,7 @@ RSpec.describe 'User alert management', :include_application_helper do
         accept_confirm do
           find_link(I18n.t('common.labels.subscribe'), match: :first).click
         end
-        expect(page).to have_content(I18n.t('users.contacts.create.subscribed'))
+        expect(page).to have_text(I18n.t('users.contacts.create.subscribed'))
         expect(user.contacts).not_to be_empty
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe 'User alert management', :include_application_helper do
 
         it 'displays the extra school' do
           refresh
-          expect(page).to have_content(contact.school.name)
+          expect(page).to have_text(contact.school.name)
         end
       end
     end
@@ -129,7 +129,7 @@ RSpec.describe 'User alert management', :include_application_helper do
       it_behaves_like 'an account page with navigation', admin: true
 
       it 'does not show link to my alerts' do
-        expect(page).not_to have_link(I18n.t('users.show.manage_alerts'), href: user_contacts_path(user))
+        expect(page).to have_no_link(I18n.t('users.show.manage_alerts'), href: user_contacts_path(user))
       end
 
       context 'when viewing another user' do
@@ -143,7 +143,7 @@ RSpec.describe 'User alert management', :include_application_helper do
         end
 
         it_behaves_like 'an account page with navigation' do
-          let(:user) { school_admin}
+          let(:user) { school_admin }
         end
 
         it_behaves_like 'an alert management page' do

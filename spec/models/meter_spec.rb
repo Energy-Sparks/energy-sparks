@@ -110,6 +110,7 @@ describe 'Meter', :meters do
       end
       let(:electricity_meters_not_reviewed) do
         [create(:electricity_meter, dcc_meter: :smets2, meter_review_id: nil, consent_granted: false),
+         create(:electricity_meter, dcc_meter: :smets2, meter_review: create(:meter_review, disabled: true)),
          create(:electricity_meter, dcc_meter: :other, meter_review_id: nil, consent_granted: false)]
       end
 
@@ -144,6 +145,29 @@ describe 'Meter', :meters do
       it 'does not check meters for archived schools' do
         create(:electricity_meter, dcc_meter: :no, school: create(:school, active: false, removal_date: 1.month.ago))
         expect(Meter.meters_to_check_against_dcc).to eq([])
+      end
+    end
+
+    context 'when finding meters for schools' do
+      before do
+        [create(:electricity_meter, school: create(:school, active: false, removal_date: 1.month.ago)),
+         create(:electricity_meter, active: false, school: create(:school, active: false, removal_date: 1.month.ago)),
+         create(:electricity_meter, active: false, school: create(:school))]
+      end
+
+      it 'returns active meters from active schools' do
+        active_meter = create(:electricity_meter, school: create(:school))
+        expect(Meter.active_for_active_schools).to contain_exactly(active_meter)
+      end
+    end
+
+    context 'when finding meters with stale readings' do
+      it 'returns only active meters with stale readings' do
+        data_source = create(:data_source)
+        create(:gas_meter_with_validated_reading_dates, active: false, data_source:, school: create(:school, active: true))
+        stale_meter = create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, data_source:, school: create(:school, active: true))
+        create(:gas_meter_with_validated_reading_dates, end_date: 2.days.ago, data_source:, school: create(:school, active: true))
+        expect(Meter.with_stale_readings).to contain_exactly(stale_meter)
       end
     end
   end

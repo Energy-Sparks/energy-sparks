@@ -5,6 +5,7 @@ cy:
       exclusions: Gwaharddiadau rhybudd
       history: Hanes
       metering: Mesurydd
+      settings: Gosodiadau
       temperatures: Tymhereddau
       transport_surveys: Arolygon trafnidiaeth
       users: Defnyddwyr

@@ -129,26 +129,14 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
   end
 
   def schools_list
-    schools = chart_config.include_target? ? target_schools : [school]
-
+    schools = [school]
     schools += benchmark_exemplar_schools_list if chart_config.include_benchmark?
-
     schools
   end
 
   def benchmark_exemplar_schools_list
     chart_config.benchmark_calculation_types.map do |calculation_type|
       school.benchmark_school(calculation_type)
-    end
-  end
-
-  def target_schools
-    target_school = school.target_school(chart_config.target_calculation_type)
-
-    if chart_config.show_only_target_school?
-      [target_school]
-    else
-      [school, target_school]
     end
   end
 

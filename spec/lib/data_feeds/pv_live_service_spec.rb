@@ -38,8 +38,8 @@ describe DataFeeds::PvLiveService, type: :service do
     end
 
     it 'returns reformatted data' do
-      solar_pv_data, _missing_date_times, _whole_day_substitutes = service.historic_solar_pv_data(0, latitude,
-                                                                                                  longitude, start_date, end_date)
+      solar_pv_data, _missing_date_times, _whole_day_substitutes =
+        service.historic_solar_pv_data(0, latitude, longitude, start_date, end_date)
 
       expect(solar_pv_data[start_date].length).to eq 48
       # 2021-01-01T09:00:00Z, 43.0 / 13080.0

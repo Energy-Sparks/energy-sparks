@@ -2,7 +2,6 @@ module Admin
   class ActivityTypesController < AdminController
     include LocaleHelper
     load_and_authorize_resource
-
     before_action :load_filters, only: [:new, :edit, :create, :update]
     before_action :load_chart_list, except: :index
 
@@ -106,7 +105,7 @@ module Admin
       @key_stages = KeyStage.order(:name)
       @subjects = Subject.order(:name)
       @topics = Topic.order(:name)
-      @impacts = Impact.order(:name)
+      @impacts = ::Impact.order(:name)
       @activity_timings = ActivityTiming.order(:position)
     end
 

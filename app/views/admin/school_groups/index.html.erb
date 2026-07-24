@@ -1,20 +1,42 @@
-<h1>Manage <%= @organisation_group ? 'School' : @group_type.to_s.humanize %> Groups</h1>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "#{@dashboard_user.display_name}'s #{@organisation_group ? 'School' : @group_type.to_s.humanize} Groups" %>
+  <% end %>
+<% else %>
+  <h1>Manage <%= @organisation_group ? 'School' : @group_type.to_s.humanize %> Groups</h1>
+<% end %>
 
 <div class="row">
   <div class="col-12 d-flex justify-content-between">
-    <div>
-      <% if @organisation_group %>
-        <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-sm btn-primary' %>
-      <% elsif @group_type == 'project' %>
+    <% if @organisation_group %>
+      <div>
+          <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-sm btn-primary' %>
+      </div>
+      <% if @dashboard_user %>
+        <div>
+          <%= link_to 'View all groups',
+                      admin_school_groups_path,
+                      class: 'btn btn-secondary btn-sm' %>
+        </div>
+      <% end %>
+    <% elsif @group_type == 'project' %>
+      <div>
         <%= link_to "New #{t(@group_type, scope: 'school_groups.clusters.group_type')} group",
                     new_admin_school_group_path(group_type: @group_type),
                     class: 'btn btn-sm btn-primary' %>
+      </div>
+      <% if @dashboard_user %>
+        <div>
+          <%= link_to 'View all groups',
+                      admin_school_groups_path(group_type: @group_type),
+                      class: 'btn btn-secondary btn-sm' %>
+        </div>
       <% end %>
-    </div>
+    <% end %>
     <div>
       <%= link_to 'Download as CSV',
                   admin_school_groups_path(format: :csv, group_type: @organisation_group ? nil : @group_type.to_sym),
-                  class: 'btn btn-sm' %>
+                  class: 'btn btn-secondary btn-sm' %>
     </div>
   </div>
 </div>
@@ -26,16 +48,19 @@
         <thead>
           <tr>
             <th>Name</th>
-            <% if @organisation_group %>
-              <th title="Group type" class="nowrap">Type</th>
+            <% if @organisation_group || @group_type == 'project' %>
+              <% unless @group_type == 'project' %>
+                <th title="Group type" class="nowrap">Type</th>
+              <% end %>
               <th title="Issues admin" class="d-none d-md-table-cell nowrap">Admin</th>
             <% end %>
-            <th class="text-right" title="Schools onboarding">Onboarding</th>
-            <th class="text-right" title="Schools active (without data visible)">Active</th>
-            <th class="text-right" title="Schools active (with data visible)" class='nowrap'>Data visible</th>
-            <th class="text-right" title="Schools invisible">Invisible</th>
-            <th class="text-right" title="Schools removed">Removed</th>
-            <th class="text-right no-sort"></th>
+            <th class="text-end" title="Review date">Review date</th>
+            <th class="text-end" title="Schools onboarding">Onboarding</th>
+            <th class="text-end" title="Schools active (without data visible)">Active</th>
+            <th class="text-end" title="Schools active (with data visible)" class='nowrap'>Data visible</th>
+            <th class="text-end" title="Schools invisible">Invisible</th>
+            <th class="text-end" title="Schools removed">Removed</th>
+            <th class="text-end no-sort"></th>
           </tr>
         </thead>
 
@@ -46,13 +71,15 @@
                 <%= link_to(dashboard_message_icon(school_group),
                             edit_admin_school_group_dashboard_message_path(school_group)) %>
               </td>
-              <% if @organisation_group %>
-                <td>
-                  <span class="badge badge-pill badge-secondary"><%= school_group.group_type.humanize %></span>
-                </td>
+              <% if @organisation_group || @group_type == 'project' %>
+                <% unless @group_type == 'project' %>
+                  <td>
+                    <span class="badge rounded-pill text-bg-secondary"><%= school_group.group_type.humanize %></span>
+                  </td>
+                <% end %>
                 <td class="d-none d-sm-table-cell">
                   <% if school_group.default_issues_admin_user %>
-                    <span class="badge border badge-pill border-secondary font-weight-normal">
+                    <span class="badge border rounded-pill border-secondary fw-normal">
                       <%= link_to (if school_group.default_issues_admin_user == current_user
                                      'You'
                                    else
@@ -64,28 +91,45 @@
                   <% end %>
                 </td>
               <% end %>
-              <td class="text-right"><%= school_group.onboardings_for_group.incomplete.count %></td>
-              <td class="text-right"><%= school_group.assigned_schools.visible.count %></td>
-              <td class="text-right"><%= school_group.assigned_schools.visible.data_enabled.count %></td>
-              <td class="text-right"><%= school_group.assigned_schools.not_visible.count %></td>
-              <td class="text-right"><%= school_group.assigned_schools.inactive.count %></td>
-              <td class="text-right"><%= link_to 'Manage', admin_school_group_path(school_group), class: 'btn btn-sm',
-                                                                                                  id: school_group.slug %></td>
+              <td class="text-end">
+                <% if school_group.next_group_review %>
+                  <%= link_to review_date_badge(school_group.next_group_review, label: false),
+                              admin_issue_path(school_group.next_group_review) %>
+                <% end %>
+              <td class="text-end"><%= school_group.onboardings_for_group.incomplete.count %></td>
+              <td class="text-end"><%= school_group.assigned_schools.visible.count %></td>
+              <td class="text-end"><%= school_group.assigned_schools.visible.data_enabled.count %></td>
+              <td class="text-end"><%= school_group.assigned_schools.not_visible.count %></td>
+              <td class="text-end"><%= school_group.assigned_schools.inactive.count %></td>
+              <td class="text-end">
+                <% unless @dashboard_user %>
+                  <%= link_to 'Manage',
+                              admin_school_group_path(school_group),
+                              class: 'btn btn-secondary btn-sm',
+                              id: school_group.slug %>
+                <% else %>
+                  <%= link_to 'Manage',
+                              admin_dashboard_school_group_path(dashboard_id: @dashboard_user.id, id: school_group.id),
+                              class: 'btn btn-secondary btn-sm',
+                              id: school_group.slug %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>
         <% if @organisation_group %>
           <tfooter>
-            <tr class="font-weight-bold">
+            <tr class="fw-bold">
               <td>All Energy Sparks Schools</td>
               <td></td>
               <td></td>
-              <td class="text-right"><%= SchoolOnboarding.incomplete.count %></td>
-              <td class="text-right"><%= School.visible.count %></td>
-              <td class="text-right"><%= School.visible.data_enabled.count %></td>
-              <td class="text-right"><%= School.not_visible.count %></td>
-              <td class="text-right"><%= School.inactive.count %></td>
-              <td class="text-right"></td>
+              <td></td>
+              <td class="text-end"><%= SchoolOnboarding.incomplete.count %></td>
+              <td class="text-end"><%= School.visible.count %></td>
+              <td class="text-end"><%= School.visible.data_enabled.count %></td>
+              <td class="text-end"><%= School.not_visible.count %></td>
+              <td class="text-end"><%= School.inactive.count %></td>
+              <td class="text-end"></td>
             </tr>
           </tfooter>
         <% end %>

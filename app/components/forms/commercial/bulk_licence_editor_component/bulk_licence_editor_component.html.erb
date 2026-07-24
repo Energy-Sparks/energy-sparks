@@ -1,0 +1,94 @@
+<%= tag.div id: id, class: classes do %>
+  <div class="mb-4 licence-editor-table-wrapper">
+    <%= helpers.simple_form_for(@contract, url: form_path, method: :put) do |f| %>
+      <table id="contract-<%= @contract.id %>-licence-table" class="table table-sm align-middle licence-editor-table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>School</th>
+            <th>Data Visible</th>
+            <% if show_field?(:start_date) %>
+              <th>Start</th>
+            <% end %>
+            <% if show_field?(:end_date) %>
+              <th>End</th>
+            <% end %>
+            <% if show_field?(:status) %>
+              <th>Status</th>
+            <% end %>
+            <% if show_field?(:school_specific_price) %>
+              <th>Price</th>
+            <% end %>
+            <% if show_field?(:invoice_reference) %>
+              <th>Invoice Ref</th>
+            <% end %>
+            <th></th>
+          </tr>
+        </thead>
+          <tbody id="licence-rows" class="licence-rows">
+              <% licences.each do |licence| %>
+                <%= render(LicenceRowComponent.new(licence:, form: f, fields: @fields)) %>
+              <% end %>
+          </tbody>
+      </table>
+    <% end %>
+  </div>
+  <%= button_tag 'Save changes', form: "edit_commercial_contract_#{@contract.id}", class: 'btn btn-primary' %>
+  <%= link_to 'Cancel', admin_commercial_contract_path(@contract), class: 'btn btn-secondary' %>
+
+  <% if @additional_schools.any? %>
+    <h2>Add schools to contract</h2>
+    <p>
+      The following schools in this school group are not currently part of this contract.
+    </p>
+    <p>
+      The table identifies whether they are licensed for the current academic year and
+      the relevant contract holder(s) for the licence(s) for that period.
+    </p>
+    <p>
+      "Full" means they are already licensed. "Partial" means they have a licence that covers
+      part of this contracted period. "No" means there are no licences for that period.
+    </p>
+    <p>
+      The table also indicates whether the school already has a licence for the period defined by the
+      contract start and end dates. This is presented similarly to the above.
+    </p>
+    <p>
+      Use the "<strong>Add Licence</strong>" button to add a licence for the school under this contract.
+    </p>
+    <div class="mt-4 licence-editor-table-wrapper">
+      <%= render ::Commercial::LicensingSummaryComponent.new(
+            table_id: "contract-#{@contract.id}-additional-schools-table",
+            second_range: @contract.as_range,
+            show_data_visibility: true,
+            labels: { first: 'Current Academic Year', second: 'Contract Period' }
+          ) do |c| %>
+        <% @additional_schools.each do |school| %>
+          <% c.with_row id: "additional-school-#{school.id}", show_data_visibility: true, school: school do |r| %>
+            <% r.with_button do %>
+              <%= button_to 'Add licence',
+                            create_licence_admin_commercial_contract_licences_path(@contract),
+                            params: { school_id: school.id },
+                            method: :post,
+                            form: { method: :post, authenticity_token: true },
+                            remote: true,
+                            class: 'btn btn-sm btn-primary' %>
+            <% end %>
+            <% r.with_button do %>
+              <%= link_to 'Licences',
+                          admin_school_licences_path(school),
+                          target: '_new',
+                          class: 'btn btn-sm' %>
+            <% end %>
+            <% r.with_button do %>
+              <%= link_to 'Issues',
+                          admin_school_issues_path(school),
+                          target: '_new',
+                          class: 'btn btn-sm' %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

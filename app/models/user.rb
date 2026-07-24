@@ -2,18 +2,17 @@
 #
 # Table name: users
 #
+#  id                          :bigint(8)        not null, primary key
 #  active                      :boolean          default(TRUE), not null
+#  climate_action_lead         :boolean          default(FALSE), not null
 #  confirmation_sent_at        :datetime
 #  confirmation_token          :string
 #  confirmed_at                :datetime
-#  created_at                  :datetime         not null
-#  created_by_id               :bigint(8)
 #  current_sign_in_at          :datetime
 #  current_sign_in_ip          :inet
 #  email                       :string           default(""), not null
 #  encrypted_password          :string           default(""), not null
 #  failed_attempts             :integer          default(0), not null
-#  id                          :bigint(8)        not null, primary key
 #  last_sign_in_at             :datetime
 #  last_sign_in_ip             :inet
 #  locked_at                   :datetime
@@ -21,18 +20,22 @@
 #  mailchimp_status            :enum
 #  mailchimp_updated_at        :datetime
 #  name                        :string
+#  operations                  :boolean          default(FALSE), not null
 #  preferred_locale            :string           default("en"), not null
 #  pupil_password              :string
 #  remember_created_at         :datetime
 #  reset_password_sent_at      :datetime
 #  reset_password_token        :string
 #  role                        :integer          default("guest"), not null
+#  sign_in_count               :integer          default(0), not null
+#  terms_accepted              :boolean          default(FALSE)
+#  unlock_token                :string
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  created_by_id               :bigint(8)
 #  school_group_id             :bigint(8)
 #  school_id                   :bigint(8)
-#  sign_in_count               :integer          default(0), not null
 #  staff_role_id               :bigint(8)
-#  unlock_token                :string
-#  updated_at                  :datetime         not null
 #
 # Indexes
 #
@@ -54,6 +57,7 @@
 
 class User < ApplicationRecord
   include MailchimpUpdateable
+  include ActorAssociations
 
   watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id,
                          :active
@@ -73,19 +77,32 @@ class User < ApplicationRecord
   belongs_to :created_by, class_name: :User, optional: true
   has_many :contacts
   has_many :consent_grants, inverse_of: :user, dependent: :nullify
-  has_many :users_created, class_name: :User, inverse_of: :created_by, dependent: :nullify
-
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
   has_many :issues_admin_for, class_name: 'SchoolGroup', inverse_of: :default_issues_admin_user,
                               foreign_key: :default_issues_admin_user_id, dependent: :nullify
+  has_many :owned_issues, class_name: 'Issue', foreign_key: :owned_by_id, inverse_of: :owned_by
 
-  has_many :observations_created, class_name: 'Observation', inverse_of: :created_by, dependent: :nullify
-  has_many :observations_updated, class_name: 'Observation', inverse_of: :updated_by, dependent: :nullify
-  has_many :energy_tariffs_created, class_name: 'EnergyTariff', inverse_of: :created_by, dependent: :nullify
-  has_many :energy_tariffs_updated, class_name: 'EnergyTariff', inverse_of: :updated_by, dependent: :nullify
-  has_many :issues_created, class_name: 'Issue', inverse_of: :created_by, dependent: :nullify
-  has_many :issues_updated, class_name: 'Issue', inverse_of: :updated_by, dependent: :nullify
-  has_many :activities_updated, class_name: 'Activity', inverse_of: :updated_by, dependent: :nullify
+  actor_associations_for \
+    Activity: %i[created updated],
+    CaseStudy: %i[created updated],
+    'Commercial::Contract': %i[created updated],
+    'Commercial::ContractContact': %i[created updated],
+    'Commercial::Licence': %i[created updated],
+    'Commercial::Product': %i[created updated],
+    'Cms::Category': %i[created updated],
+    'Cms::Page': %i[created updated],
+    'Cms::Section': %i[created updated],
+    EnergyTariff: %i[created updated],
+    Issue: %i[created updated],
+    Newsletter: %i[created updated],
+    Observation: %i[created updated],
+    GlobalMeterAttribute: %i[created deleted],
+    MeterAttribute: %i[created deleted],
+    SchoolGroupMeterAttribute: %i[created deleted],
+    SchoolMeterAttribute: %i[created deleted],
+    SchoolAlertTypeExclusion: :created,
+    SchoolOnboarding: :created,
+    User: :created
 
   has_and_belongs_to_many :cluster_schools, class_name: 'School', join_table: :cluster_schools_users
 
@@ -100,8 +117,10 @@ class User < ApplicationRecord
   enum :mailchimp_status, %w[subscribed unsubscribed cleaned nonsubscribed archived].to_h { |v| [v, v] }, prefix: true
 
   scope :active, -> { where(active: true) }
-
+  scope :confirmed, -> { where.not(confirmed_at: nil) }
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
+
+  scope :operations, -> { where(operations: true) }
 
   scope :mailchimp_roles, lambda {
     where.not(role: %i[pupil student school_onboarding]).where.not(confirmed_at: nil)
@@ -110,7 +129,6 @@ class User < ApplicationRecord
   scope :mailchimp_update_required, lambda {
     joins('LEFT JOIN schools ON schools.id = users.school_id')
       .joins('LEFT JOIN school_groups ON school_groups.id = users.school_group_id')
-      .joins('LEFT JOIN funders ON funders.id = schools.funder_id')
       .joins('LEFT JOIN local_authority_areas ON local_authority_areas.id = schools.local_authority_area_id')
       .joins('LEFT JOIN scoreboards ON scoreboards.id = schools.scoreboard_id')
       .joins('LEFT JOIN staff_roles ON staff_roles.id = users.staff_role_id')
@@ -118,7 +136,7 @@ class User < ApplicationRecord
       # include any we've not pushed to mailchimp, or any that are out of date based on timestamps
       .where('mailchimp_updated_at IS NULL OR ' \
              'GREATEST(users.mailchimp_fields_changed_at, schools.mailchimp_fields_changed_at,  ' \
-             'school_groups.mailchimp_fields_changed_at, funders.mailchimp_fields_changed_at,  ' \
+             'school_groups.mailchimp_fields_changed_at,  ' \
              'local_authority_areas.mailchimp_fields_changed_at, scoreboards.mailchimp_fields_changed_at,  ' \
              'staff_roles.mailchimp_fields_changed_at) > mailchimp_updated_at')
   }
@@ -128,6 +146,14 @@ class User < ApplicationRecord
   }
 
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
+
+  scope :with_owned_issue_count, lambda { |issueable: nil|
+    users = left_joins(:owned_issues)
+    users = users.merge(Issue.for_issueable(issueable)) if issueable
+
+    users.group('id').select('users.*', 'COUNT(issues.id) AS issues_count')
+  }
+
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   validates :pupil_password, presence: true, if: :pupil?
@@ -226,11 +252,16 @@ class User < ApplicationRecord
     end
   end
 
-  def schools
-    return School.visible.by_name if admin?
-    return school_group.assigned_schools.visible.by_name if school_group
-
-    [school].compact
+  def schools(current_ability: nil, permission: :show)
+    if admin?
+      School.visible.by_name
+    elsif school_group && current_ability
+      school_group.assigned_schools.active.by_name.accessible_by(current_ability, permission)
+    elsif school_group
+      school_group.assigned_schools.visible.by_name
+    else
+      [school].compact
+    end
   end
 
   def school_name
@@ -292,14 +323,21 @@ class User < ApplicationRecord
     )
   end
 
-  def contact_for_school
+  def contact_for_school(school: nil)
+    school ||= self.school
     contacts.for_school(school).first
+  end
+
+  def alert_schools_count
+    school_group.assigned_schools.visible.count do |school|
+      contact_for_school(school:)
+    end
   end
 
   def after_confirmation
     return unless school&.visible
 
-    OnboardingMailer.mailer.with(user: self, school:, locale: preferred_locale).welcome_email.deliver_later
+    OnboardingMailer.with(user: self, school:, locale: preferred_locale).welcome_email.deliver_later
   end
 
   def self.admin_user_export_csv
@@ -310,7 +348,8 @@ class User < ApplicationRecord
         'School type',
         'School active',
         'School data enabled',
-        'Funder',
+        'Current Contract Holder',
+        'Future Contract Holder',
         'Region',
         'Name',
         'Email',
@@ -319,7 +358,7 @@ class User < ApplicationRecord
         'Confirmed',
         'Locked'
       ]
-      where.not(role: %i[pupil admin]).order(:email).each do |user|
+      where.not(role: %i[pupil admin]).includes(:school, school: :school_group).order(:email).each do |user|
         csv << [
           user.default_school_group_name || '',
           user.school&.name || '',
@@ -334,7 +373,16 @@ class User < ApplicationRecord
           else
             ''
           end,
-          user.school&.funder&.name || '',
+          if user.school && !user.has_other_schools?
+            user.school.summarised_current_contract_holder_name || ''
+          else
+            ''
+          end,
+          if user.school && !user.has_other_schools?
+            user.school.summarised_future_contract_holder_name || ''
+          else
+            ''
+          end,
           user.school&.region&.to_s&.titleize || '',
           user.name,
           user.email,

@@ -32,12 +32,11 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
                                      rating_to: 10.0))
   end
 
-
   shared_examples 'it links to advice pages' do
     context 'when the alert has an advice page' do
       context 'when there is no group advice page' do
         it 'does not link' do
-          expect(html).not_to have_link(I18n.t('schools.show.find_out_more'))
+          expect(html).to have_no_link(I18n.t('schools.show.find_out_more'))
         end
       end
 
@@ -45,7 +44,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
         let(:alert_type) { create(:alert_type, group: :benchmarking, advice_page: create(:advice_page)) }
 
         it 'does not link' do
-          expect(html).not_to have_link(I18n.t('schools.show.find_out_more'))
+          expect(html).to have_no_link(I18n.t('schools.show.find_out_more'))
         end
       end
 
@@ -70,10 +69,10 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
                alert_type: content_version.alert_type_rating.alert_type,
                rating: 6.0,
                variables: {
-                     one_year_saving_kwh: 1.0,
-                     average_one_year_saving_gbp: 2.0,
-                     one_year_saving_co2: 3.0,
-                     time_of_year_relevance: 5.0
+                 one_year_saving_kwh: 1.0,
+                 average_one_year_saving_gbp: 2.0,
+                 one_year_saving_co2: 3.0,
+                 time_of_year_relevance: 5.0
                })
       end
     end
@@ -83,19 +82,17 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       let(:expected_id) { 'custom-id' }
     end
 
-    it { expect(html).to have_content(I18n.t('advice_pages.index.alerts.title')) }
+    it { expect(html).to have_text(I18n.t('advice_pages.index.alerts.title')) }
     it { expect(html).to have_link('Test', href: home_page_path) }
 
     it 'produces the correct prompt' do
       expect(html).to have_css('div.prompt-component.negative')
-      expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
-      within('span.fa-stack') do
-        expect(html).to have_css('i.fa-bolt')
-      end
+      expect(html).to have_text(content_version.group_dashboard_title.to_plain_text)
+      expect(page.find('span.fa-stack')).to have_css('i.fa-fire')
     end
 
     it 'does not include group headings' do
-      expect(html).not_to have_css('#benchmarking-alerts')
+      expect(html).to have_no_css('#benchmarking-alerts')
     end
 
     it_behaves_like 'it links to advice pages'
@@ -115,8 +112,8 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       it_behaves_like 'it links to advice pages'
 
       it 'shows the group headings' do
-        expect(fragment).to have_content(content_version.group_dashboard_title.to_plain_text)
-        expect(fragment).to have_content(I18n.t('advice_pages.alerts.groups.benchmarking'))
+        expect(fragment).to have_text(content_version.group_dashboard_title.to_plain_text)
+        expect(fragment).to have_text(I18n.t('advice_pages.alerts.groups.benchmarking'))
       end
     end
 
@@ -126,32 +123,32 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       before do
         school = create(:school, school_group: school_group)
         version = create(:alert_type_rating_content_version,
-               colour: :positive,
-               group_dashboard_title: positive_message,
-               alert_type_rating: create(:alert_type_rating,
-                                         group_dashboard_alert_active: true,
-                                         alert_type: alert_type,
-                                         rating_from: 0.0,
-                                         rating_to: 4.0))
+                         colour: :positive,
+                         group_dashboard_title: positive_message,
+                         alert_type_rating: create(:alert_type_rating,
+                                                   group_dashboard_alert_active: true,
+                                                   alert_type: alert_type,
+                                                   rating_from: 0.0,
+                                                   rating_to: 4.0))
         create(:alert,
                school: school,
                alert_generation_run: create(:alert_generation_run, school: school),
                alert_type: version.alert_type_rating.alert_type,
                rating: 2.0,
                variables: {
-                     one_year_saving_kwh: 1.0,
-                     average_one_year_saving_gbp: 2.0,
-                     one_year_saving_co2: 3.0,
-                     time_of_year_relevance: 5.0
+                 one_year_saving_kwh: 1.0,
+                 average_one_year_saving_gbp: 2.0,
+                 one_year_saving_co2: 3.0,
+                 time_of_year_relevance: 5.0
                })
       end
 
       it 'shows the alert with most schools' do
         expect(html).to have_css('div.prompt-component.negative')
-        expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
+        expect(html).to have_text(content_version.group_dashboard_title.to_plain_text)
 
-        expect(html).not_to have_css('div.prompt-component.positive')
-        expect(html).not_to have_content(positive_message)
+        expect(html).to have_no_css('div.prompt-component.positive')
+        expect(html).to have_no_text(positive_message)
       end
     end
 
@@ -169,7 +166,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       end
 
       it 'interpolates correctly' do
-        expect(html).to have_content(' number: 2; schools: 2 schools; describe_schools: all schools; 2 kWh, £4, 6 kg CO2')
+        expect(html).to have_text(' number: 2; schools: 2 schools; describe_schools: all schools; 2 kWh, £4, 6 kg CO2')
       end
     end
 
@@ -191,7 +188,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       end
 
       it 'only includes the data enabled schools' do
-        expect(html).to have_content(' number: 1; schools: 1 school; describe_schools: all schools; 1 kWh, £2, 3 kg CO2')
+        expect(html).to have_text(' number: 1; schools: 1 school; describe_schools: all schools; 1 kWh, £2, 3 kg CO2')
       end
     end
 

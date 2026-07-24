@@ -213,7 +213,7 @@ class AdviceMeterBreakdownBase < AdviceBase
 
         if whole_meter_this_year && whole_meter_previous_year
           previous_year_kwh = meter.amr_data.kwh_date_range(previous_year_start_date, previous_year_end_date, :kwh)
-          pct = percent_change(this_year_kwh, previous_year_kwh)
+          pct = EnergySparks::Calculator.percent_change(previous_year_kwh, this_year_kwh)
           @annual_change = true unless pct.nil?
           return pct
         end
@@ -223,11 +223,6 @@ class AdviceMeterBreakdownBase < AdviceBase
 
     def whole_meter_in_range(meter, start_date, end_date)
       meter.amr_data.start_date <= start_date && meter.amr_data.end_date >= end_date
-    end
-
-    def percent_change(this_year_kwh, previous_year_kwh)
-      return nil if previous_year_kwh.zero?
-      (this_year_kwh - previous_year_kwh) / previous_year_kwh
     end
   end
 end

@@ -36,7 +36,7 @@ RSpec.configure do |config|
     options.add_argument('no-sandbox')
     options.add_argument('disable-gpu')
     options.add_argument('disable-dev-shm-usage')
-    options.add_argument('window-size=1400,10000')
+    options.add_argument('window-size=1400,2000')
     # Uncomment to make all console entries available via
     # page.driver.browser.logs.get(:browser) if needed for debugging.
     # options.add_option("goog:loggingPrefs", {browser: 'ALL'})
@@ -73,12 +73,12 @@ RSpec.configure do |config|
   def with_retry(exception_class = RSpec::Expectations::ExpectationNotMetError)
     retry_count = 0
     begin
-      puts 'running with retry'
+      puts 'running with retry' unless retry_count.zero?
       yield
     rescue exception_class => e
       puts "exception #{e} - #{e.message}"
       retry_count += 1
-      raise unless retry_count < 5
+      raise unless retry_count < 10
 
       sleep(retry_count)
       retry

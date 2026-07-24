@@ -24,7 +24,7 @@ shared_examples 'a report page with valid attributes' do |action:, key:|
     click_on 'Save'
   end
 
-  it { expect(page).to have_content("Report was successfully #{action}") }
+  it { expect(page).to have_text("Report was successfully #{action}") }
 
   it do
     expect(page).to have_selector(:table_row, { 'Key' => key,
@@ -46,15 +46,15 @@ shared_examples 'a report page with invalid attributes' do
     click_on 'Save'
   end
 
-  it { expect(page).to have_content("Title en\ncan't be blank") }
-  it { expect(page).to have_content("Current label *\ncan't be blank") }
-  it { expect(page).to have_content("Current start date *\ncan't be blank") }
-  it { expect(page).to have_content("Current end date *\ncan't be blank") }
-  it { expect(page).to have_content("Previous label *\ncan't be blank") }
-  it { expect(page).to have_content("Previous start date *\ncan't be blank") }
-  it { expect(page).to have_content("Previous end date *\ncan't be blank") }
-  it { expect(page).to have_no_content("Introduction en\ncan't be blank") }
-  it { expect(page).to have_no_content("Notes en\ncan't be blank") }
+  it { expect(page).to have_text("Title en\ncan't be blank") }
+  it { expect(page).to have_text("Current label *\ncan't be blank") }
+  it { expect(page).to have_text("Current start date *\ncan't be blank") }
+  it { expect(page).to have_text("Current end date *\ncan't be blank") }
+  it { expect(page).to have_text("Previous label *\ncan't be blank") }
+  it { expect(page).to have_text("Previous start date *\ncan't be blank") }
+  it { expect(page).to have_text("Previous end date *\ncan't be blank") }
+  it { expect(page).to have_no_text("Introduction en\ncan't be blank") }
+  it { expect(page).to have_no_text("Notes en\ncan't be blank") }
 end
 
 describe 'admin comparisons reports', :include_application_helper do
@@ -69,7 +69,7 @@ describe 'admin comparisons reports', :include_application_helper do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -79,7 +79,7 @@ describe 'admin comparisons reports', :include_application_helper do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
   end

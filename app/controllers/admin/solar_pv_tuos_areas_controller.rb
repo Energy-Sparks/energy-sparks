@@ -3,6 +3,7 @@ module Admin
     load_and_authorize_resource
 
     def index
+      @solar_pv_tuos_areas = SolarPvTuosArea.by_gsp_id
     end
 
     def new

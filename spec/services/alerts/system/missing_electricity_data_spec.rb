@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 describe Alerts::System::MissingElectricityData do
-  let(:school)  { create :school }
+  let(:school) { create(:school) }
+  let(:report) { Alerts::System::MissingElectricityData.new(school: school, aggregate_school: meter_collection, today: today, alert_type: nil).report }
   let(:today) { Time.zone.today }
 
   let(:electricity_amr_data)    { instance_double('electricity-amr-data') }
-  let(:electricity_aggregate_meter) { instance_double('electricity-aggregated-meter')}
+  let(:electricity_aggregate_meter) { instance_double('electricity-aggregated-meter') }
 
   let(:meter_collection) { instance_double('meter-collection') }
 
@@ -13,8 +14,6 @@ describe Alerts::System::MissingElectricityData do
     allow(electricity_amr_data).to receive(:end_date).and_return(electricity_end_date)
     allow(electricity_aggregate_meter).to receive(:amr_data).and_return(electricity_amr_data)
   end
-
-  let(:report) { Alerts::System::MissingElectricityData.new(school: school, aggregate_school: meter_collection, today: today, alert_type: nil).report }
 
   context 'where the school has only electricity data older than the last 2 weeks (late running meters)' do
     let(:electricity_end_date) { today - 21.days }

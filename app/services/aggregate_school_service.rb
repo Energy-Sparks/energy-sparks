@@ -75,10 +75,6 @@ class AggregateSchoolService
   private
 
   def cache_key
-    parts = [@active_record_school.id, @active_record_school.name.parameterize, 'aggregated_meter_collection']
-    unless Flipper.enabled?(:meter_collection_cache_delete_on_invalidate)
-      parts << @active_record_school.validation_cache_key
-    end
-    parts.join('-')
+    [@active_record_school.id, @active_record_school.name.parameterize, 'aggregated_meter_collection'].join('-')
   end
 end

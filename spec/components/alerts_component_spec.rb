@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
+RSpec.describe AlertsComponent, :include_url_helpers, type: :component do
   let(:school) { create(:school) }
   let(:show_links) { true }
   let(:advice_page) { create(:advice_page, key: :baseload) }
@@ -13,12 +13,12 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
 
   let(:alert_content) do
     double(management_dashboard_title: 'adult alert text',
-    pupil_dashboard_title: 'pupil alert text',
-    colour: :positive,
-    alert: alert,
-    alert_type: alert_type,
-    advice_page: advice_page,
-    find_out_more: true)
+           pupil_dashboard_title: 'pupil alert text',
+           colour: :positive,
+           alert: alert,
+           alert_type: alert_type,
+           advice_page: advice_page,
+           find_out_more: true)
   end
 
   let(:dashboard_alerts) { [alert_content] }
@@ -47,7 +47,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
     end
 
     it 'displays alert content' do
-      expect(html).to have_content('adult alert text')
+      expect(html).to have_text('adult alert text')
     end
 
     it 'displays links' do
@@ -58,7 +58,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
       let(:show_links) { false }
 
       it 'does not display links' do
-        expect(html).not_to have_link(I18n.t('schools.show.find_out_more'))
+        expect(html).to have_no_link(I18n.t('schools.show.find_out_more'))
       end
     end
 
@@ -82,8 +82,8 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
     end
 
     it 'displays alert content' do
-      expect(html).not_to have_content('adult alert text')
-      expect(html).to have_content('pupil alert text')
+      expect(html).to have_no_text('adult alert text')
+      expect(html).to have_text('pupil alert text')
     end
 
     it 'displays links' do
@@ -101,7 +101,7 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
     end
 
     it 'displays alert content' do
-      expect(html).to have_content('adult alert text')
+      expect(html).to have_text('adult alert text')
     end
 
     it 'displays links' do

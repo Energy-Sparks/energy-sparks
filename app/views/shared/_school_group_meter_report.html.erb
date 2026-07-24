@@ -4,6 +4,7 @@
       <tr>
         <th>School</th>
         <th>Supply</th>
+        <th>Supplier</th>
         <th>Number</th>
         <th>Half-Hourly</th>
         <th>Readings calendar</th>
@@ -24,6 +25,7 @@
         <tr>
           <td><%= link_to(meter.school.name, school_url(meter.school)) %></td>
           <td><%= local_assigns[:email] ? fuel_type_image(meter.meter_type) : fa_icon(fuel_type_icon(meter.meter_type)) %></td>
+          <td><%= link_to(meter.supplier.name, admin_supplier_url(meter.supplier)) if meter.supplier %></td>
           <td>
             <%= link_to(meter.mpan_mprn, school_meter_url(meter.school, meter)) %>
           </td>
@@ -33,7 +35,7 @@
                             admin_reports_amr_validated_reading_url(meter))
                   end %></td>
           <% if local_assigns[:all_meters] %>
-            <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
+            <td><%= meter.active ? 'Yes' : 'No' %></td>
           <% end %>
           <td><%= nice_dates(meter.first_validated_reading_date) %></td>
           <td class="<%= class_for_last_date(meter.last_validated_reading_date) %>">
@@ -47,10 +49,10 @@
             </span>
           </td>
           <% if local_assigns[:email] %>
-            <td>
+            <td class="issue-icon">
               <%= link_to issue_type_image(:issue), school_meter_url(meter.school, meter) if meter.issues.issue.any? %>
             </td>
-            <td>
+            <td class="issue-icon">
               <%= link_to issue_type_image(:note), school_meter_url(meter.school, meter) if meter.issues.note.any? %>
             </td>
           <% else %>

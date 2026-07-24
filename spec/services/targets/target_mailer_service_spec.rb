@@ -90,7 +90,9 @@ RSpec.describe Targets::TargetMailerService do
     end
 
     context 'when a school cant use feature because of data' do
-      let!(:event) { create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45) }
+      let!(:event) do
+        create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45)
+      end
 
       context 'because they lack data' do
         let(:enough_data) { false }
@@ -214,18 +216,21 @@ RSpec.describe Targets::TargetMailerService do
     it 'adds utm parameters' do
       service.invite_schools_to_set_first_target
       params = {
-        "utm_source": 'invite',
-        "utm_medium": 'email',
-        "utm_campaign": 'targets'
+        utm_source: 'invite',
+        utm_medium: 'email',
+        utm_campaign: 'targets'
       }
-      expect(matcher).to have_link('Set your first target', href: school_school_targets_url(school, params: params, host: 'localhost'))
+      expect(matcher).to have_link('Set your first target',
+                                   href: school_school_targets_url(school, params: params, host: 'localhost'))
     end
   end
 
   describe '#invite_schools_to_review_target' do
     let!(:school_admin)   { create(:school_admin, school: school) }
     let!(:staff)          { create(:staff, school: school) }
-    let!(:target)         { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)}
+    let!(:target)         do
+      create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday)
+    end
 
     let(:enough_data) { true }
 
@@ -264,11 +269,12 @@ RSpec.describe Targets::TargetMailerService do
     it 'adds utm parameters' do
       service.invite_schools_to_review_target
       params = {
-        "utm_source": 'review',
-        "utm_medium": 'email',
-        "utm_campaign": 'targets'
+        utm_source: 'review',
+        utm_medium: 'email',
+        utm_campaign: 'targets'
       }
-      expect(matcher).to have_link('Set a new target', href: school_school_targets_url(school, params: params, host: 'localhost'))
+      expect(matcher).to have_link('Set a new target',
+                                   href: school_school_targets_url(school, params: params, host: 'localhost'))
     end
   end
 
@@ -276,7 +282,9 @@ RSpec.describe Targets::TargetMailerService do
     let!(:school_admin)  { create(:school_admin, school: school) }
     let!(:staff)         { create(:staff, school: school) }
 
-    let!(:event) { create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45) }
+    let!(:event) do
+      create(:school_target_event, school: school, event: :first_target_sent, created_at: Time.zone.today - 45)
+    end
 
     let(:enough_data) { true }
 
@@ -315,11 +323,12 @@ RSpec.describe Targets::TargetMailerService do
     it 'adds utm parameters' do
       service.remind_schools_to_set_first_target
       params = {
-        "utm_source": 'invite',
-        "utm_medium": 'email',
-        "utm_campaign": 'targets'
+        utm_source: 'invite',
+        utm_medium: 'email',
+        utm_campaign: 'targets'
       }
-      expect(matcher).to have_link('Set your first target', href: school_school_targets_url(school, params: params, host: 'localhost'))
+      expect(matcher).to have_link('Set your first target',
+                                   href: school_school_targets_url(school, params: params, host: 'localhost'))
     end
   end
 end

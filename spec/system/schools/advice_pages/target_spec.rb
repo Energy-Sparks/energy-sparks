@@ -35,7 +35,7 @@ RSpec.shared_examples 'target advice page' do
   context 'with no target' do
     it 'redirects to the new target page' do
       visit_tab(nil)
-      expect(page).to have_current_path("/schools/#{school.slug}/school_targets/new")
+      expect(page).to have_current_path(school_school_targets_path(school))
     end
   end
 
@@ -52,18 +52,29 @@ RSpec.shared_examples 'target advice page' do
     find("##{fuel_type}_target-#{name.downcase}").text.gsub(/^How have we analysed your data?.*/m, '')
   end
 
-  def limited_data_content
+  def limited_data_we_have
+    'We have limited historical data for your school so are unable to calculate a progress report to help you track ' \
+      'progress towards completing your target.'
+  end
+
+  def limited_data_storage_heater_content
     <<~CONTENT.chomp
       Limited historical data
-      We have limited historical data for your school so are unable to calculate a progress report to help you track progress towards completing your target.
+      #{limited_data_we_have}
       If we are able to access historical data for your school then a report will automatically become available.
-      #{if fuel_type == :storage_heater
-          'In the meantime you can learn more about this topic.'
-        else
-          "Alternatively you can manually add monthly readings from your bill or supplier portal.\n" \
-          'In the meantime you can monitor your usage using the charts on the ' \
-            "long term #{fuel_type} usage advice page"
-        end}
+      In the meantime you can learn more about this topic.
+    CONTENT
+  end
+
+  def limited_data_content
+    return limited_data_storage_heater_content if fuel_type == :storage_heater
+
+    <<~CONTENT.chomp
+      Limited historical data
+      Manually add monthly meter readings to access this feature
+      #{limited_data_we_have}
+      You can manually add monthly readings from your bill or supplier portal to access this feature. Or, if we are able to access historical data for your school then a report will automatically become available.
+      You can also monitor your usage using the tables and charts on the long term #{fuel_type} usage advice page.
     CONTENT
   end
 
@@ -112,7 +123,7 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: 1.day.from_now)
       visit_tab(tab)
       expect(content(tab)).to \
-        have_content('Target date is in the future so no consumption has yet been recorded.')
+        have_text('Target date is in the future so no consumption has yet been recorded.')
     end
 
     it 'missing previous years data' do
@@ -216,7 +227,7 @@ RSpec.shared_examples 'target advice page' do
         October #{year} 1,020 1,000 1,010 -0.98&percnt; \
         November #{year} 1,020 1,000 1,010 -0.98&percnt; \
         December #{year} 1,020 1,000 1,010 -0.98&percnt;
-        Partial months are shown in red.[m] - manual readings used How did we calculate these figures?
+        Partial months are shown in red.m - manual readings used How did we calculate these figures?
         Cumulative progress
         Back to top
         This table summarises your overall progress towards reducing your #{fuel_string} use by 4&percnt;. Each entry in the table shows the cumulative target and consumption for each month in the target period. This table help you to monitor whether you are on track to achieve the target by January #{year + 1}.
@@ -233,7 +244,7 @@ RSpec.shared_examples 'target advice page' do
         October #{year} 10,200 10,000 10,100 -0.98&percnt; \
         November #{year} 11,220 11,000 11,110 -0.98&percnt; \
         December #{year} 12,240 12,000 12,120 -0.98&percnt;
-        Partial months are shown in red.[m] - manual readings used How did we calculate these figures?
+        Partial months are shown in red.m - manual readings used How did we calculate these figures?
       CONTENT
     end
 
@@ -266,7 +277,7 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: 1.day.from_now)
       visit_tab(tab)
       expect(content(tab)).to \
-        have_content('Target date is in the future so no consumption has yet been recorded.')
+        have_text('Target date is in the future so no consumption has yet been recorded.')
     end
 
     it 'missing previous years data' do
@@ -299,6 +310,26 @@ RSpec.shared_examples 'target advice page' do
                                       'May 2024 5,100 5,000 3,040 ' \
                                       'June 2024 6,120 6,000 ' \
                                       'July 2024 7,140 7,000 ')
+    end
+
+    context 'with manual readings' do
+      before do
+        create_target(current_consumption: [*[1010] * 11, nil],
+                      manual: [true] * 12, current_missing: [*[false] * 11, true])
+        visit_tab(tab)
+      end
+
+      it_behaves_like 'it contains the expected data table', aligned: false, sortable: false do
+        let(:table_id) { '#monthly-progress-table' }
+        let(:expected_header) do
+          [['Month', 'Last year (kWh)', 'Target (kWh)', 'This year (kWh)', '% change', 'On target?']]
+        end
+        let(:expected_rows) do
+          [*%w[January February March April May June July August September October
+               November].map { |month| ["#{month} 2024 m", '1,020', '1,000', '1,010', '-0.98&percnt;', ''] },
+           ['December 2024 m', '1,020', '1,000', '', '-', '']]
+        end
+      end
     end
   end
 end

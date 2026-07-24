@@ -1,7 +1,7 @@
 <%= tag.div id: id, class: classes do %>
   <%= render PromptListComponent.new do |list| %>
     <% if title? %>
-      <% list.with_title do %>
+      <% list.with_title(level: 2) do %>
         <%= title %>
       <% end %>
     <% end %>
@@ -37,6 +37,19 @@
                   path: school_group_energy_tariffs_path(school_group)) do %>
       <p>
         <%= t('components.dashboards.group_reminders.review_tariffs.note') %>
+      </p>
+    <% end %>
+
+    <%# i18n-tasks-use t('components.dashboards.group_reminders.onboarding.link') %>
+    <% add_prompt(id: :onboarding,
+                  check: prompt_for_onboarding?,
+                  list: list,
+                  status: :neutral,
+                  link: 'components.dashboards.group_reminders.onboarding.link',
+                  icon: 'address-card',
+                  path: school_group_status_index_path(school_group)) do %>
+      <p>
+        <%= t('components.dashboards.group_reminders.onboarding.note') %>
       </p>
     <% end %>
 

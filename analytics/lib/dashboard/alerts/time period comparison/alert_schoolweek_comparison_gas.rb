@@ -1,7 +1,7 @@
-require_relative './alert_period_comparison_base.rb'
-require_relative './alert_schoolweek_comparison_electricity.rb'
-require_relative './alert_period_comparison_temperature_adjustment_mixin.rb'
-require_relative './../gas/alert_model_cache_mixin.rb'
+require_relative 'alert_period_comparison_base'
+require_relative 'alert_schoolweek_comparison_electricity'
+require_relative 'alert_period_comparison_temperature_adjustment_mixin'
+require_relative '../gas/alert_model_cache_mixin'
 # Compares the last two SCHOOL weeks - i.e. when this school is occupied, i.e. skips holidays
 # Unlike the other week/short term comparison alerts, it works completly off chart data
 # and doesn't do the amr aggregation locally
@@ -14,13 +14,12 @@ require_relative './../gas/alert_model_cache_mixin.rb'
 class AlertSchoolWeekComparisonGas < AlertSchoolWeekComparisonElectricity
   include AlertModelCacheMixin
   include AlertPeriodComparisonTemperatureAdjustmentMixin
-  attr_reader :current_week_kwhs, :previous_week_kwhs_unadjusted, :previous_week_kwhs_adjusted
-  attr_reader :current_weeks_temperatures, :previous_weeks_temperatures
-  attr_reader :current_week_kwh_total, :previous_week_kwh_unadjusted_total,  :previous_week_kwh_total
-  attr_reader :current_weeks_average_temperature, :previous_weeks_average_temperature
+
+  attr_reader :current_week_kwhs, :previous_week_kwhs_unadjusted, :previous_week_kwhs_adjusted,
+              :current_weeks_temperatures, :previous_weeks_temperatures, :current_week_kwh_total, :previous_week_kwh_unadjusted_total, :previous_week_kwh_total, :current_weeks_average_temperature, :previous_weeks_average_temperature
 
   def initialize(school, type = :gaspreviousschoolweekcomparison)
-    super(school, type)
+    super
   end
 
   def self.template_variables
@@ -39,16 +38,21 @@ class AlertSchoolWeekComparisonGas < AlertSchoolWeekComparisonElectricity
 
   def self.schoolweek_adjusted_gas_variables
     {
-      current_week_kwhs:              { description: 'List of current school week kWh values', units:  String },
-      previous_week_kwhs_unadjusted:  { description: 'List of previous school week kWh values (unadjusted)', units:  String  },
-      previous_week_kwhs_adjusted:    { description: 'List of previous school week kWh values (adjusted)', units:  String  },
-      current_week_kwh_total:             { description: 'Current week total kWh',                units:  :kwh  },
-      previous_week_kwh_unadjusted_total: { description: 'Previous week total kWh (unadjusted)' , units:  :kwh, benchmark_code: 'najk'  },
-      previous_week_kwh_total:            { description: 'Previous week total kWh (from chart, adjusted, maybe slightly different from previous_period_kwh which uses better underlying alert compensation )',    units:  :kwh, benchmark_code: 'ajkw'  },
+      current_week_kwhs: { description: 'List of current school week kWh values', units: String },
+      previous_week_kwhs_unadjusted: { description: 'List of previous school week kWh values (unadjusted)',
+                                       units: String },
+      previous_week_kwhs_adjusted: { description: 'List of previous school week kWh values (adjusted)',
+                                     units: String },
+      current_week_kwh_total: { description: 'Current week total kWh', units: :kwh },
+      previous_week_kwh_unadjusted_total: { description: 'Previous week total kWh (unadjusted)', units:  :kwh,
+                                            benchmark_code: 'najk' },
+      previous_week_kwh_total: {
+        description: 'Previous week total kWh (from chart, adjusted, maybe slightly different from previous_period_kwh which uses better underlying alert compensation )', units: :kwh, benchmark_code: 'ajkw'
+      }
     }
   end
 
-  def fuel_type; :gas end
+  def fuel_type = :gas
 
   private def period_type
     'school week'
@@ -66,14 +70,14 @@ class AlertSchoolWeekComparisonGas < AlertSchoolWeekComparisonElectricity
     @model_asof_date = asof_date
     # this needs to be called first
     calculate_temperature_adjusted_and_unadjusted_gas_from_chart_data(asof_date)
-    super(asof_date)
+    super
 
     # this isn't ideal, the temperature compensation of the underlying
     # period comparison alert is subtely different from that of the
     # chart calculation, so use the chart's:
     # @previous_period_kwh = @previous_week_kwh_total
   end
-  alias_method :analyse_private, :calculate
+  alias analyse_private calculate
 
   protected def calculate_temperature_adjusted_and_unadjusted_gas_from_chart_data(asof_date)
     unadjusted_data = kwh_values_from_2_weekly_chart(unadjusted_temperature_comparison_chart, asof_date)
@@ -87,8 +91,10 @@ class AlertSchoolWeekComparisonGas < AlertSchoolWeekComparisonElectricity
     @previous_week_kwh_unadjusted_total = unadjusted_data.values[0].sum
     @previous_week_kwh_total            = adjusted_data.values[0].sum
 
-    @current_period  = SchoolDatePeriod.new(:schoolweek, 'Current school week',  unadjusted_data.keys[1].first, unadjusted_data.keys[1].last)
-    @previous_period = SchoolDatePeriod.new(:schoolweek, 'Previous school week', unadjusted_data.keys[0].first, unadjusted_data.keys[0].last)
+    @current_period  = SchoolDatePeriod.new(:analysis, 'Current school week',  unadjusted_data.keys[1].first,
+                                            unadjusted_data.keys[1].last)
+    @previous_period = SchoolDatePeriod.new(:analysis, 'Previous school week', unadjusted_data.keys[0].first,
+                                            unadjusted_data.keys[0].last)
   end
 
   protected def last_two_periods(_asof_date)
@@ -116,18 +122,17 @@ class AlertSchoolWeekComparisonGas < AlertSchoolWeekComparisonElectricity
   end
 
   private def convert_x_axis_date_key_to_dates(key)
-    key.match(/Energy[:](.*)[-](.*)/).captures.map { |date_str| Date.parse(date_str) }
+    key.match(/Energy:(.*)-(.*)/).captures.map { |date_str| Date.parse(date_str) }
   end
 
   private def fuel_time_of_year_priority(asof_date, current_period)
     heating_on_in_period(asof_date, current_period) ? 7.5 : 2.5
   end
 
-  private def heating_on_in_period(asof_date, period)
-    @heating_model ||= model_cache(aggregate_meter, asof_date)
-    school_days = (period.start_date..period.end_date).to_a.select{ |date| date.wday.between?(1,5) }
-    heating_on_days = school_days.count{ |school_day| @heating_model.heating_on?(school_day) }
-    heating_on_most_days = heating_on_days > (school_days.length / 2.0)
-    heating_on_most_days
+  private def heating_on_in_period(asof_date, period) # rubocop:todo Naming/PredicateMethod
+    @heating_model ||= model_cache(asof_date)
+    school_days = (period.start_date..period.end_date).to_a.select { |date| date.wday.between?(1, 5) }
+    heating_on_days = school_days.count { |school_day| @heating_model.heating_on?(school_day) }
+    heating_on_days > (school_days.length / 2.0)
   end
 end

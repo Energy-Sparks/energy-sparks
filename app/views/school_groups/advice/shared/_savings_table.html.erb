@@ -2,7 +2,7 @@
        class="table table-sm advice-table advice-priority-table <%= comparison_table_class(schools) %>">
   <thead>
     <tr>
-      <th colspan="<%= can?(:update_settings, school_group) ? '3' : '2' %>"></th>
+      <th colspan="<%= include_clusters?(school_group) ? '3' : '2' %>"></th>
       <th class="text-center" colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
       <th class="" colspan="1"></th>
     </tr>

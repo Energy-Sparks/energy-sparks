@@ -21,17 +21,18 @@ RSpec.describe 'SolisCloud installation management' do
 
       def create_new_installation_with_expectations
         click_on 'New SolisCloud API feed'
-        expect(page).to have_content('new SolisCloud API feed')
+        expect(page).to have_text('new SolisCloud API feed')
 
         fill_in('API ID', with: 'api_id')
         fill_in('API Secret', with: 'api_secret')
+        uncheck('Active')
 
         expect { click_on 'Submit' }.to change(SolisCloudInstallation, :count).by(1)
 
-        expect(page).to have_content('api_id')
+        expect(page).to have_text('api_id')
 
-        expect(SolisCloudInstallation.last.api_id).to eq('api_id')
-        expect(SolisCloudInstallation.last.api_secret).to eq('api_secret')
+        expect(SolisCloudInstallation.last).to have_attributes(api_id: 'api_id', api_secret: 'api_secret',
+                                                               active: false)
       end
 
       it 'allows an installation to be added' do
@@ -40,13 +41,13 @@ RSpec.describe 'SolisCloud installation management' do
                      body: { data: { records: [] } }.to_json)
         create_new_installation_with_expectations
         expect(SolisCloudInstallation.last.inverter_detail_list).not_to be_nil
-        expect(page).to have_content('SolisCloud API feed was successfully created')
+        expect(page).to have_text('SolisCloud API feed was successfully created')
       end
 
       it 'allows an installation to be added with incorrect credentials' do
         stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/inverterDetailList').to_return(status: 403)
         create_new_installation_with_expectations
-        expect(page).to have_content('SolisCloud API feed was created but did not verify')
+        expect(page).to have_text('SolisCloud API feed was created but did not verify')
       end
     end
 
@@ -60,16 +61,16 @@ RSpec.describe 'SolisCloud installation management' do
       before { visit school_solar_feeds_configuration_index_path(school) }
 
       it 'displays the feed config' do
-        expect(page).to have_content(installation.api_id)
+        expect(page).to have_text(installation.api_id)
       end
 
       it 'allows editing' do
         click_on('Edit')
-        expect(page).to have_content('Update SolisCloud API feed')
+        expect(page).to have_text('Update SolisCloud API feed')
         fill_in(:solis_cloud_installation_api_id, with: 'new_id')
         click_on 'Submit'
-        expect(page).to have_content('SolisCloud API feed was updated')
-        expect(page).to have_content('new_id')
+        expect(page).to have_text('SolisCloud API feed was updated')
+        expect(page).to have_text('new_id')
         expect(SolisCloudInstallation.last.api_id).to eq('new_id')
       end
 
@@ -106,7 +107,7 @@ RSpec.describe 'SolisCloud installation management' do
       end
 
       it 'displays the check button with a question mark by default' do
-        expect(page).to have_content('Check')
+        expect(page).to have_text('Check')
         expect_icon('fa-circle-question')
       end
 
@@ -130,8 +131,8 @@ RSpec.describe 'SolisCloud installation management' do
         it 'submits the job' do
           expect { click_on 'Run Loader' }.to \
             have_enqueued_job(Solar::SolisCloudLoaderJob).with(installation:, notify_email: admin.email)
-          expect(page).to have_content('Loading job has been submitted. ' \
-                                       "An email will be sent to #{admin.email} when complete.")
+          expect(page).to have_text('Loading job has been submitted. ' \
+                                    "An email will be sent to #{admin.email} when complete.")
         end
       end
     end

@@ -84,8 +84,12 @@ class SchoolSearchComponent < ApplicationComponent
     I18n.t("components.search_results.#{tab}.subtitle", count: count)
   end
 
-  def label(tab, suffix)
-    "#{tab.to_s.dasherize}-#{suffix}"
+  def label(tab, suffix = nil)
+    if suffix
+      "#{tab.to_s.dasherize}-#{suffix}"
+    else
+      tab.to_s.dasherize
+    end
   end
 
   def default_results_title(tab)

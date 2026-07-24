@@ -23,9 +23,9 @@ module Solar
       else
         latest_reading = meter&.amr_data_feed_readings&.maximum(:reading_date)
         if latest_reading
-          Date.parse(latest_reading) - 5.days
+          Time.zone.parse(latest_reading).to_date - 5.days
         elsif date_string
-          Date.parse(date_string)
+          Time.zone.parse(date_string).to_date
         else
           1.year.ago.to_date
         end
@@ -55,7 +55,7 @@ module Solar
     end
 
     def convert_invertor_day(data)
-      readings = data.pluck('timeStr', 'pac').to_h.transform_keys { |time| Time.parse(time).utc }
+      readings = data.pluck('timeStr', 'pac').to_h.transform_keys { |time| Time.zone.parse(time).utc }
       return Array.new(48, nil) if readings.length < 10
 
       nearest_neighbours =

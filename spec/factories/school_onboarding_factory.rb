@@ -17,6 +17,16 @@ FactoryBot.define do
       end
     end
 
+    trait :with_completed do
+      transient do
+        completed_on { Time.current }
+      end
+
+      after(:build) do |onboarding, evaluator|
+        onboarding.events.build(event: :onboarding_complete, created_at: evaluator.completed_on)
+      end
+    end
+
     trait :with_school do
       after(:build) do |onboarding, _evaluator|
         school = create(:school, name: onboarding.school_name)

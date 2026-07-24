@@ -15,11 +15,16 @@
             <div class="row">
               <div class="col-md-12">
                 <h5>
-                  <%= link_to section.page.title, category_page_path(section.page.category, section.page) %>
-                  -
-                  <%= link_to section.title, category_page_path(section.page.category,
-                                                                section.page,
-                                                                anchor: section.slug) %>
+                  <% if section.page %>
+                    <%= link_to section.page.title, category_page_path(section.page.category, section.page) %>
+                    -
+                    <%= link_to section.title, category_page_path(section.page.category,
+                                                                  section.page,
+                                                                  anchor: section.slug) %>
+                    <% else %>
+                      No page -
+                      <%= link_to section.title, edit_admin_cms_section_path(section.slug) %>
+                    <% end %>
                 </h5>
               </div>
             </div>
@@ -32,11 +37,13 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <span class="bg-blue-very-dark text-white text-uppercase mb-3 badge badge-primary">
-                  <%= link_to section.page.category.title, category_path(section.page.category) %>
-                </span>
+                <% if section.page %>
+                  <span class="bg-blue-very-dark text-white text-uppercase mb-3 badge">
+                    <%= link_to section.page.category.title, category_path(section.page.category) %>
+                  </span>
+                <% end %>
                 <% unless section.published %>
-                  <span class="text-uppercase mb-3 badge badge-warning">
+                  <span class="text-uppercase mb-3 badge text-bg-warning">
                     Unpublished
                   </span>
                 <% end %>

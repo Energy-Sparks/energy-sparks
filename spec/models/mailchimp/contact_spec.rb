@@ -305,7 +305,7 @@ describe Mailchimp::Contact do
 
     shared_examples 'it maps all the roles correctly' do
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Business manager'))}
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Business manager')) }
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -317,7 +317,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Building/site manager or caretaker'))}
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Building/site manager or caretaker')) }
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -329,7 +329,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Governor'))}
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Governor')) }
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -341,7 +341,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Teacher or teaching assistant'))}
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Teacher or teaching assistant')) }
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -353,7 +353,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Headteacher or Deputy Head'))}
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Headteacher or Deputy Head')) }
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -366,7 +366,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Council or MAT staff'))}
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Council or MAT staff')) }
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -378,7 +378,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Parent or volunteer'))}
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Parent or volunteer')) }
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -390,7 +390,7 @@ describe Mailchimp::Contact do
       end
 
       it_behaves_like 'interests have been selected' do
-        let(:user) { create(role, staff_role: create(:staff_role, title: 'Public'))}
+        let(:user) { create(role, staff_role: create(:staff_role, title: 'Public')) }
         let(:selected) do
           [
             described_class::GETTING_THE_MOST,
@@ -410,10 +410,10 @@ describe Mailchimp::Contact do
       end
     end
 
-    [:group_admin, :group_manager].each do |role|
+    %i[group_admin group_manager].each do |role|
       context "with #{role}" do
         it_behaves_like 'interests have been selected' do
-          let(:user) { create(role)}
+          let(:user) { create(role) }
           let(:selected) do
             [
               described_class::GETTING_THE_MOST,

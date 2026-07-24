@@ -29,7 +29,7 @@ RSpec.describe Admin::PartnersController, type: :controller do
     describe 'GET #index' do
       it 'lists the partners' do
         get :index, params: {}
-        expect(assigns(:partners)).to match_array([partner])
+        expect(assigns(:partners)).to contain_exactly(partner)
       end
     end
 

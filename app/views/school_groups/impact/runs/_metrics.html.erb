@@ -1,0 +1,48 @@
+<% show_fuel_type = metrics.any?(&:fuel_type) %>
+<% show_unit = metrics.any?(&:unit) %>
+<table class="table table-sm table-sorted">
+  <thead>
+    <tr>
+      <th class='no-sort'></th>
+      <% if show_fuel_type %>
+        <th>Fuel</th>
+      <% end %>
+      <th>Metric type</th>
+      <% if show_unit %>
+        <th>Unit</th>
+      <% end %>
+      <th>Schools</th>
+      <th>Value</th>
+      <th class='text-end'>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% metrics.each do |metric| %>
+      <tr class="<%= 'text-muted bg-light' unless metric.enough_data? %>">
+        <td>
+          <span data-bs-toggle="tooltip" title="<%= metric.enough_data? ? 'Enough data' : 'Not enough data' %>">
+            <%= checkmark(metric.enough_data?, off_class: 'text-muted') %>
+          </span>
+        </td>
+        <% if show_fuel_type %>
+          <td>
+            <%= fa_icon(fuel_type_icon(metric.fuel_type)) %>
+            <%= " #{metric.fuel_type&.capitalize || ''}" %>
+          </td>
+        <% end %>
+        <td><%= metric.metric_type %></td>
+        <% if show_unit %>
+          <td><%= metric.unit %></td>
+        <% end %>
+        <td><%= metric.number_of_schools %></td>
+        <td><%= metric.value %></td>
+        <td class='text-end'><%= metric.created_at.to_fs(:es_data) %></td>
+      </tr>
+    <% end %>
+</table>
+<% unless show_fuel_type && show_unit %>
+  Columns with no data:
+  <span class='text-muted'>
+    <%= [('fuel type' unless show_fuel_type), ('unit' unless show_unit)].compact.join(', ') %>
+    </span>
+<% end %>

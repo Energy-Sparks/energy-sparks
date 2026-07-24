@@ -1,6 +1,6 @@
 <% if can? :manage, DashboardMessage %>
   <div id='dashboard-message' class="alert alert-info clearfix mb-2 d-flex">
-    <div class="pl-2 pr-3 justify-content-start"><%= fa_icon(:info) %></div>
+    <div class="ps-2 pe-3 justify-content-start"><%= fa_icon(:info) %></div>
     <div class="flex-grow-1">
       <%= messageable.dashboard_message.try(:message) ||
             "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" %>

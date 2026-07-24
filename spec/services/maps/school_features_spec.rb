@@ -17,9 +17,9 @@ describe Maps::SchoolFeatures do
   #     }
   #   ]
   # }
-  let!(:school_1)             { create(:school, name: 'My School 1')}
-  let!(:school_2)             { create(:school, name: 'My School 2')}
-  let!(:school_3)             { create(:school, name: 'My School 3')}
+  let!(:school_1)             { create(:school, name: 'My School 1') }
+  let!(:school_2)             { create(:school, name: 'My School 2') }
+  let!(:school_3)             { create(:school, name: 'My School 3') }
 
   it 'provides JSON for all schools' do
     json = Maps::SchoolFeatures.new([school_1, school_2, school_3]).as_json

@@ -1,0 +1,34 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'Contracts & Licensing', admin_commercial_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+        <%= description %>
+    </p>
+  </div>
+</div>
+
+<% if local_assigns[:date_label] %>
+  <div class="row mb-4">
+    <div class="col">
+      <%= simple_form_for :filters, url: path, method: 'GET', html: { class: 'form-inline' } do |f| %>
+        <%= f.input :date,
+                    as: :tempus_dominus_date,
+                    default_date: @date,
+                    label: date_label,
+                    label_html: { class: 'd-block mr-2' },
+                    required: false %>
+        <%= f.submit 'Filter', class: 'btn btn-primary btn-sm ms-auto' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <%= render Commercial::ContractsComponent.new(contracts: contracts) %>
+  </div>
+</div>

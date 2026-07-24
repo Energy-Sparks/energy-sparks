@@ -1,27 +1,29 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: observations
 #
-#  _description         :text
-#  activity_id          :bigint(8)
-#  at                   :datetime         not null
-#  audit_id             :bigint(8)
-#  created_at           :datetime         not null
-#  created_by_id        :bigint(8)
 #  id                   :bigint(8)        not null, primary key
-#  intervention_type_id :bigint(8)
+#  _description         :text
+#  at                   :datetime         not null
 #  involved_pupils      :boolean          default(FALSE), not null
-#  observable_id        :bigint(8)
 #  observable_type      :string
 #  observation_type     :integer          not null
 #  points               :integer
-#  programme_id         :bigint(8)
 #  pupil_count          :integer
+#  visible              :boolean          default(TRUE)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  activity_id          :bigint(8)
+#  audit_id             :bigint(8)
+#  created_by_id        :bigint(8)
+#  intervention_type_id :bigint(8)
+#  observable_id        :bigint(8)
+#  programme_id         :bigint(8)
 #  school_id            :bigint(8)        not null
 #  school_target_id     :bigint(8)
-#  updated_at           :datetime         not null
 #  updated_by_id        :bigint(8)
-#  visible              :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -50,6 +52,9 @@
 class Observation < ApplicationRecord
   include Description
   include Todos::Recording
+  include CsvExportable
+  include RecordingScopes
+
   belongs_to :school
   has_many :temperature_recordings
   has_many :locations, through: :temperature_recordings
@@ -87,16 +92,14 @@ class Observation < ApplicationRecord
   scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
   scope :most_recent, -> { order(at: :desc, created_at: :desc) }
-
   scope :by_date, ->(order = :desc) { order(at: order) }
-  scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date&.end_of_day) }
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
   }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
+  scope :recorded_in_last_year, -> { where(observations: { created_at: 1.year.ago.. })  }
+  scope :recorded_in_last_week, -> { where(observations: { created_at: 1.week.ago.. })  }
   scope :recorded_since, ->(range) { where(created_at: range) }
   scope :not_including, ->(school) { where.not(school:).recorded_since(school.current_academic_year.start_date..) }
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
@@ -104,14 +107,14 @@ class Observation < ApplicationRecord
     where(observation_type: %i[temperature intervention activity audit school_target programme transport_survey])
   }
 
-  scope :with_academic_year, -> {
+  scope :with_academic_year, lambda {
     # Academic year start/end are dates, not datetimes.
     # In a comparison, a DATE is treated as the start of that day (midnight).
     # Without adding INTERVAL '1 day', any observations later on the end date day would be missed.
     joins('JOIN academic_years ON observations.at >= academic_years.start_date AND observations.at < academic_years.end_date + INTERVAL \'1 day\'')
   }
 
-  scope :counts_by_academic_year, -> {
+  scope :counts_by_academic_year, lambda {
     with_academic_year.group('academic_years.id').count
   }
 
@@ -147,9 +150,7 @@ class Observation < ApplicationRecord
     at < current_academic_year.start_date
   end
 
-  def academic_year
-    school.academic_year_for(at)
-  end
+  def academic_year = school.academic_year_for(at)
 
   def academic_year_was
     return nil if at_was.nil? # new record
@@ -170,6 +171,12 @@ class Observation < ApplicationRecord
     !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)
   end
 
+  def type_name = intervention_type&.name
+
+  def task
+    intervention_type if intervention?
+  end
+
   private
 
   def add_points_for_activities
@@ -180,9 +187,7 @@ class Observation < ApplicationRecord
     self.points = intervention_type.calculate_points(self) if update_points?
   end
 
-  def reject_temperature_recordings(attributes)
-    attributes['centigrade'].blank?
-  end
+  def reject_temperature_recordings(attributes) = attributes['centigrade'].blank?
 
   def set_defaults
     # set the observation type from the observable_type if not already set

@@ -1,0 +1,22 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Unlicensed schools' %>
+  <% header_nav.with_button 'Contracts & Licensing', admin_commercial_path %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <p>This page lists active schools that do not have a current licence</p>
+    <p>
+        The table indicates whether the school has any expired licences and whether it has any licences that cover the current and next academic years.
+    </p>
+    <p>
+        A school may have been licensed for the start of the year and their licence has expired. Or they may have a licence that has yet to start.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Commercial::UnlicensedSchoolsComponent.new(schools: @schools) %>
+  </div>
+</div>

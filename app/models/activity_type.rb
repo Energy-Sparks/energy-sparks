@@ -2,20 +2,20 @@
 #
 # Table name: activity_types
 #
+#  id                     :bigint(8)        not null, primary key
 #  active                 :boolean          default(TRUE)
-#  activity_category_id   :bigint(8)        not null
-#  created_at             :datetime         not null
 #  custom                 :boolean          default(FALSE)
 #  data_driven            :boolean          default(FALSE)
 #  deprecated_description :text
 #  fuel_type              :string           default([]), is an Array
-#  id                     :bigint(8)        not null, primary key
 #  maximum_frequency      :integer          default(10)
 #  name                   :string
 #  score                  :integer
 #  show_on_charts         :boolean          default(TRUE)
 #  summary                :string
+#  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  activity_category_id   :bigint(8)        not null
 #
 # Indexes
 #
@@ -33,7 +33,7 @@ class ActivityType < ApplicationRecord
   include Searchable
   include TranslatableAttachment
   include FuelTypeable
-  include Recordable
+  include Task
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
@@ -48,6 +48,7 @@ class ActivityType < ApplicationRecord
   TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
 
   belongs_to :activity_category
+  alias category activity_category
 
   t_has_one_attached :image
   has_and_belongs_to_many :key_stages, join_table: :activity_type_key_stages

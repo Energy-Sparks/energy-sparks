@@ -8,11 +8,14 @@ namespace :amr do
     now = Time.current
     missing = AmrDataFeedConfig.enabled
                                .where.not(source_type: :manual)
-                               .where.not(missing_reading_window: nil).filter_map do |config|
-      latest = config.amr_data_feed_readings.maximum(:updated_at)
-      since_latest = latest && (now - latest)
-      [config, since_latest] if latest && since_latest > config.missing_reading_window.days
-    end
+                               .where.not(missing_reading_window: nil)
+                               .stopped_feeds
+                               .filter_map do |config|
+                                 latest = config.amr_data_feed_readings.maximum(:updated_at)
+
+                                 [config, now - latest] if latest
+                               end
+
     AdminMailer.with(to: 'operations@energysparks.uk', missing:).stopped_data_feeds.deliver if missing.present?
   end
 end

@@ -1,9 +1,15 @@
-<% if can?(:manage, TransportSurvey::Response) %>
-<ul id="survey_nav" class="nav nav-tabs mb-3"<%= " style=display:none;" if (!@transport_survey.responses.any? && current_page?(start_school_transport_surveys_url(@school)))  %>>
-  <% if @transport_survey.today? %>
-    <%= nav_item t('schools.transport_surveys.tab_nav.survey_today'), start_school_transport_surveys_url(@school) if can?(:start, TransportSurvey) %>
-  <% end %>
-  <%= nav_item t('schools.transport_surveys.tab_nav.results'), school_transport_survey_url(@school, @transport_survey) %>
-  <%= nav_item t('schools.transport_surveys.tab_nav.manage_responses'), school_transport_survey_responses_url(@school, @transport_survey) if can?(:manage, TransportSurvey::Response) %>
-</ul>
+<% if can?(:read, @transport_survey) %>
+  <ul id="survey_nav" class="nav nav-tabs mb-3"
+    <%= if @transport_survey.responses.none? && current_page?(start_school_transport_surveys_url(@school))
+          ' style=display:none;'
+        end %>>
+    <% if @transport_survey.today? && can?(:start, TransportSurvey.new(school: @school)) %>
+      <%= nav_item t('schools.transport_surveys.tab_nav.survey_today'), start_school_transport_surveys_url(@school) %>
+    <% end %>
+    <%= nav_item t('schools.transport_surveys.tab_nav.results'), school_transport_survey_url(@school, @transport_survey) %>
+    <% if can?(:manage, TransportSurvey::Response.new(transport_survey: @transport_survey)) %>
+      <%= nav_item t('schools.transport_surveys.tab_nav.manage_responses'),
+                   school_transport_survey_responses_url(@school, @transport_survey) %>
+    <% end %>
+  </ul>
 <% end %>

@@ -1,0 +1,64 @@
+<%= form.simple_fields_for :licences, licence, child_index: licence.id do |lf| %>
+  <tr id="<%= "licence-#{licence.id}-main-row" %>" class="main-row">
+    <%= lf.hidden_field :id %>
+    <td><%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %></td>
+    <td><%= link_to licence.school.name, school_path(licence.school) %></td>
+    <td>
+      <% if licence.school.data_enabled? %>
+        <span class="badge rounded-pill text-bg-success">Yes</span>
+      <% else %>
+        <span class="badge rounded-pill text-bg-danger">No</span>
+      <% end %>
+    </td>
+    <% if show_field?(:start_date) %>
+      <td class="col-2">
+        <%= lf.input :start_date, as: :tempus_dominus_date, label: false, disabled: licence.invoiced? %>
+        </td>
+    <% end %>
+    <% if show_field?(:end_date) %>
+      <td class="col-2">
+        <%= lf.input :end_date, as: :tempus_dominus_date, label: false, disabled: licence.invoiced? %>
+      </td>
+    <% end %>
+    <% if show_field?(:status) %>
+      <td class="col-2">
+        <%= lf.input :status,
+                     collection: helpers.collection_from_enum(Commercial::Licence.statuses),
+                     include_blank: false,
+                     label: false,
+                     disabled: licence.invoiced? %>
+      </td>
+    <% end %>
+    <% if show_field?(:school_specific_price) %>
+      <td class="col-1">
+        <%= lf.input :school_specific_price,
+                     as: :decimal,
+                     input_html: { step: '0.01' },
+                     label: false, disabled: licence.invoiced? %>
+      </td>
+    <% end %>
+
+    <% if show_field?(:invoice_reference) %>
+      <td class="col-1"><%= lf.input :invoice_reference, label: false %></td>
+    <% end %>
+    <td>
+      <%= lf.hidden_field :_destroy, value: '0', class: 'destroy-flag' %>
+      <%= button_tag 'Delete',
+                     type: :button,
+                     data: { target: licence.id },
+                     class: 'btn btn-sm btn-danger licence-toggle-delete', disabled: licence.invoiced? %>
+    </td>
+  </tr>
+  <% if show_field?(:comments) %>
+    <tr id="<%= "licence-#{licence.id}-comments-row" %>" class="comments-row">
+      <td colspan="3"></td>
+      <td colspan="5">
+        <%= lf.input :comments,
+                     as: :text,
+                     input_html: { rows: 2 },
+                     label: false,
+                     placeholder: 'Comments' %>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

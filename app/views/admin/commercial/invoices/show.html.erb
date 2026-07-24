@@ -1,0 +1,105 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @invoice.invoice_number %>
+  <% header_nav.with_button 'Contract', admin_commercial_contract_path(@invoice.contract) %>
+  <% header_nav.with_button 'All Invoices', admin_commercial_invoices_path %>
+  <% header_nav.with_button 'Pending Invoices', pending_invoicing_admin_commercial_contracts_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <%= link_to 'Xero export',
+                export_admin_commercial_invoices_path(params: { invoices: @invoice.id }),
+                class: 'btn btn-sm' %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Layout::GridComponent.new(classes: 'mb-4',
+                                         component_classes: 'd-flex flex-column flex-fill',
+                                         cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
+      <%= grid.with_block do %>
+        <h3>Summary</h3>
+        <div id="summary" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+          <dl class="row">
+            <dt class="col-5">
+              Contract
+            </dt>
+            <dd class="col-7">
+              <%= link_to @invoice.contract.name, admin_commercial_contract_path(@invoice.contract) %>
+            </dd>
+            <dt class="col-5">
+              Contract holder
+            </dt>
+            <dd class="col-7">
+              <%= link_to @invoice.contract_holder.name,
+                          polymorphic_path([:admin, @invoice.contract_holder, :contracts]) %>
+            </dd>
+            <dt class="col-5">
+              Purchase Order Number
+            </dt>
+            <dd class="col-7">
+              <%= @invoice.purchase_order_number %>
+            </dd>
+            <dt class="col-5">
+              Date
+            </dt>
+            <dd class="col-7">
+              <%= @invoice.date.to_fs(:es_short) %>
+            </dd>
+            <dt class="col-5">
+              Created by
+            </dt>
+            <dd class="col-7">
+              <%= link_to email_with_wbr(@invoice.created_by.display_name), user_path(@invoice.created_by) %>
+            </dd>
+          </dl>
+        </div>
+      <% end %>
+      <%= grid.with_block do %>
+        <h3>Financial Summary</h3>
+        <div id="financial-summary" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+          <table id="total-invoice-value" class="table table-sm">
+            <thead>
+              <tr>
+                <th>Charge</th>
+                <th>Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Base price</td>
+                <td><%= format_price(@invoice.value.base_price) %></td>
+              </tr>
+              <tr>
+                <td>Metering fees</td>
+                <td><%= format_price(@invoice.value.metering_fee) %></td>
+              </tr>
+              <tr>
+                <td>Private account fees</td>
+                <td><%= format_price(@invoice.value.private_account_fee) %></td>
+              </tr>
+              <tr>
+                <td><strong>Total</strong></td>
+                <td><strong><%= format_price(@invoice.value.total) %></strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h3>Line Items</h3>
+    <%= render Commercial::LineItemsComponent.new(invoice: @invoice) %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Admin::RecordComponent.new(@invoice, id: 'metadata', current_user:) %>
+  </div>
+</div>

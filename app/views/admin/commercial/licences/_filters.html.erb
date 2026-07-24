@@ -1,0 +1,17 @@
+<%= simple_form_for :filters, url: path, method: 'GET', html: { class: 'form-inline' } do |f| %>
+<%= f.input :school_group_id,
+            collection: SchoolGroup.organisation_groups.with_active_schools.by_name,
+            value_method: :id,
+            label_method: :name,
+            selected: school_group_id,
+            include_blank: 'All school groups',
+            label_html: { class: 'd-block mr-2' },
+            required: false %>
+  <%= f.input :date,
+              as: :tempus_dominus_date,
+              default_date: date,
+              label: date_label,
+              label_html: { class: 'd-block ml-2 mr-2' },
+              required: false %>
+  <%= f.submit 'Filter', class: 'btn btn-primary btn-sm ms-auto' %>
+<% end %>

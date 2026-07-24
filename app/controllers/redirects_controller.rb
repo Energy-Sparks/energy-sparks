@@ -17,6 +17,17 @@ class RedirectsController < ApplicationController
     end
   end
 
+  def group_page_redirect
+    new_session and return if current_user.nil?
+
+    if current_user.admin?
+      redirect_to group_redirect_path(SchoolGroup.with_active_schools.sample, params[:path]),
+                    notice: 'Notice for admin users: you have followed a shortlink and have been redirected to a random group'
+    else
+      redirect_to group_redirect_path(current_user_default_school_group, params[:path])
+    end
+  end
+
   private
 
   def new_session
@@ -43,6 +54,15 @@ class RedirectsController < ApplicationController
       scoreboard_path(school.scoreboard)
     else
       "/schools/#{school.slug}/#{ActionController::Base.helpers.sanitize(path)}"
+    end
+  end
+
+  def group_redirect_path(school_group, path = nil)
+    case path
+    when 'dashboard'
+      school_group_path(school_group)
+    else
+      "/school_groups/#{school_group.slug}/#{ActionController::Base.helpers.sanitize(path)}"
     end
   end
 end

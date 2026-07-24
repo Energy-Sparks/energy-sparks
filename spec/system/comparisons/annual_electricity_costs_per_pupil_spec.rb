@@ -12,9 +12,9 @@ describe 'annual_electricity_costs_per_pupil' do
       one_year_electricity_per_pupil_gbp: 274.74452694610767,
       one_year_electricity_per_pupil_kwh: 874.1419161676646,
       one_year_electricity_per_pupil_co2: 119.51184730538925,
-      last_year_gbp: 45882.33599999998,
-      last_year_kwh: 145981.69999999998,
-      last_year_co2: 19958.478500000005,
+      last_year_gbp: 45_882.33599999998,
+      last_year_kwh: 145_981.69999999998,
+      last_year_co2: 19_958.478500000005,
       one_year_saving_versus_exemplar_gbpcurrent: 7724.021623024759
     }
   end

@@ -1,5 +1,5 @@
 require 'require_all'
-require_relative 'virtual_school.rb'
+require_relative 'virtual_school'
 # Given a list of 'average school's creates an average school
 # also generates an exemplar school
 #
@@ -35,14 +35,13 @@ class AverageSchoolAggregator < VirtualSchool
   end
 
   def self.simple_config(list_of_schools, name, urn, floor_area, pupils)
-    config = {
-      name:       name,
-      urn:        urn,
+    {
+      name: name,
+      urn: urn,
       floor_area: floor_area,
-      pupils:     pupils,
-      schools:    list_of_schools
+      pupils: pupils,
+      schools: list_of_schools
     }
-    config
   end
 
   def calculate
@@ -60,19 +59,19 @@ class AverageSchoolAggregator < VirtualSchool
   private
 
   def create_average_amr_data(schools)
-    bm = Benchmark.measure {
+    bm = Benchmark.measure do
       average_amr_data(school, schools, :electricity, number_of_pupils)
       average_amr_data(school, schools, :gas, floor_area)
       AggregateDataService.new(school).aggregate_heat_and_electricity_meters
-    }
-    logger.info("Created average school from #{schools.length} schools in #{bm.to_s}")
+    end
+    logger.info("Created average school from #{schools.length} schools in #{bm}")
   end
 
   def concatenate_name(schools)
     if @aggregation_definition.key?(:name) && !@aggregation_definition[:name].nil?
       @aggregation_definition[:name]
     else
-    'Average of: ' + schools.map{ |school| school.name}.join(',')
+      'Average of: ' + schools.map { |school| school.name }.join(',')
     end
   end
 
@@ -96,7 +95,10 @@ class AverageSchoolAggregator < VirtualSchool
       scaling_factor = fuel_type == :electricity ? (scale_up.to_f / number_of_pupils) : (scale_up.to_f / floor_area)
 
       (amr_data.start_date..amr_data.end_date).each do |date|
-        average_amr_data.add(date, OneDayAMRReading.zero_reading(0, date, 'AGGR')) unless average_amr_data.date_exists?(date)
+        unless average_amr_data.date_exists?(date)
+          average_amr_data.add(date,
+                               OneDayAMRReading.zero_reading(date, 'AGGR'))
+        end
         average_amr_data[date] += OneDayAMRReading.scale(amr_data[date], scaling_factor)
         amr_data_count[date] += 1
       end
@@ -104,7 +106,6 @@ class AverageSchoolAggregator < VirtualSchool
 
     (average_amr_data.start_date..average_amr_data.end_date).each do |date|
       one_days_data = OneDayAMRReading.scale(average_amr_data[date], 1.0 / amr_data_count[date])
-      one_days_data.set_meter_id(average_school_meter.mpan_mprn.to_s)
       average_amr_data.add(date, one_days_data)
     end
   end

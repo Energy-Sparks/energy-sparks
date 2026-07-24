@@ -1,0 +1,39 @@
+<%= render 'header', title: "#{@supplier.name} supplier" do %>
+  <%= header_nav_link 'All suppliers', admin_suppliers_url %>
+<% end %>
+
+<div class="bg-light border rounded py-2 mb-2">
+  <div class="col-12 clearfix">
+    <%= render 'admin/issues/issueable', issueable: @supplier %>
+    <span class='float-end pe-2'>
+      <%= render 'email_report_button', supplier: @supplier, class: 'btn btn-secondary btn-sm' %>
+      <%= link_to 'Edit', edit_admin_supplier_path(@supplier), class: 'btn btn-secondary btn-sm' %>
+      <%= link_to 'Delete', admin_supplier_path(@supplier), method: :delete, data: { confirm: 'Are you sure?' },
+                                                            class: 'btn btn-sm btn-danger' %>
+    </span>
+  </div>
+</div>
+
+<%= render TabsComponent.new(classes: 'preserve-tab-link') do |component| %>
+  <% component.with_tab(name: :issues,
+                        label: label_count('Issues', @supplier.issues.issue.status_open.count)) do %>
+    <% if @supplier.issues.any? %>
+      <%= render 'admin/issues/issues_list', issues: @supplier.issues.by_priority_order,
+                                             issueable_type: 'Supplier' %>
+    <% else %>
+      <div class="bg-light p-2">No issues for <%= @supplier.name %>.</div>
+    <% end %>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @supplier %></div>
+  <% end %>
+
+  <% component.with_tab(name: :meter_issues,
+                        label: label_count('Meter issues', @supplier.active_meter_issues.issue.status_open.count)) do %>
+    <% if @supplier.active_meter_issues.issue.any? %>
+      <%= render 'admin/issues/issues_list', issues: @supplier.active_meter_issues.issue.status_open.by_priority_order,
+                                             issueable_type: 'Supplier' %>
+    <% else %>
+      <div class="bg-light p-2">No meter issues for <%= @supplier.name %>.</div>
+    <% end %>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @supplier %></div>
+  <% end %>
+<% end %>

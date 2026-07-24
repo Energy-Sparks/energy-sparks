@@ -9,11 +9,11 @@ RSpec.describe PromptListComponent, :include_application_helper, type: :componen
   let(:params) { all_params }
   let(:title) { 'Title' }
   let(:prompt_text) { 'Prompt text' }
-  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning')}
+  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning') }
   let(:link) { ActionController::Base.helpers.link_to 'Link text', 'href' }
 
   context 'with all params' do
-    let(:html) do
+    let!(:html) do
       render_inline(described_class.new(**params)) do |c|
         c.with_title { title }
         c.with_link { link }
@@ -32,9 +32,8 @@ RSpec.describe PromptListComponent, :include_application_helper, type: :componen
     it { expect(html).to have_link('Link text', href: 'href') }
 
     it 'includes prompt' do
-      within('#prompt-id') do
-        expect(html).to have_text(prompt_text)
-      end
+      prompt = page.find_by_id('prompt-id')
+      expect(prompt).to have_text(prompt_text)
     end
   end
 
@@ -60,7 +59,7 @@ RSpec.describe PromptListComponent, :include_application_helper, type: :componen
     end
 
     it { expect(html).to have_text(title) }
-    it { expect(html).not_to have_link('Link text', href: 'href') }
+    it { expect(html).to have_no_link('Link text', href: 'href') }
   end
 
   context 'with no title' do
@@ -74,6 +73,6 @@ RSpec.describe PromptListComponent, :include_application_helper, type: :componen
     end
 
     it { expect(html).to have_link('Link text', href: 'href') }
-    it { expect(html).not_to have_text(title) }
+    it { expect(html).to have_no_text(title) }
   end
 end

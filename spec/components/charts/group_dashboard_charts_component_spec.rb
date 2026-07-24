@@ -69,12 +69,12 @@ RSpec.describe Charts::GroupDashboardChartsComponent, :include_url_helpers, type
       comparisons.each do |chart|
         expect(html).to have_css("#chart_wrapper_#{chart}")
         expect(html).to have_css("div.#{chart}-analysis-chart")
-        expect(html).to have_selector("div.#{chart}-analysis-chart") do |d|
+        expect(html).to have_css("div.#{chart}-analysis-chart") do |d|
           JSON.parse(d['data-chart-config'])['chart1_subtype'] == 'stacked'
         end
       end
 
-      expect(html).to have_selector('div.annual_energy_use-analysis-chart') do |d|
+      expect(html).to have_css('div.annual_energy_use-analysis-chart') do |d|
         url = JSON.parse(d['data-chart-config'])['jsonUrl']
         url == comparisons_annual_energy_use_index_path(params: { school_group_ids: [school_group.id] },
                                                         format: :json)
@@ -84,8 +84,8 @@ RSpec.describe Charts::GroupDashboardChartsComponent, :include_url_helpers, type
     it 'includes view detailed comparison' do
       expect(html).to have_link(I18n.t('school_groups.comparisons.view_detailed_comparison'),
                                 href: compare_path(group: true,
-                                             benchmark: comparisons.first,
-                                             school_group_ids: [school_group.id]))
+                                                   benchmark: comparisons.first,
+                                                   school_group_ids: [school_group.id]))
     end
   end
 end

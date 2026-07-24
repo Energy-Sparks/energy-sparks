@@ -2,11 +2,11 @@
 #
 # Table name: activity_type_suggestions
 #
-#  activity_type_id  :bigint(8)
-#  created_at        :datetime         not null
 #  id                :bigint(8)        not null, primary key
-#  suggested_type_id :bigint(8)        not null
+#  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  activity_type_id  :bigint(8)
+#  suggested_type_id :bigint(8)        not null
 #
 # Indexes
 #

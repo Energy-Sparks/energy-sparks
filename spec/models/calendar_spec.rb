@@ -22,13 +22,13 @@ describe Calendar do
 
   describe 'does lots of good calendar work' do
     it 'creates a calendar with academic years' do
-      expect(calendar.calendar_events.count).to be 6
+      expect(calendar.calendar_events.count).to be 7
       expect(calendar.holidays.count).to be 3
-      expect(calendar.bank_holidays.count).to be 1
+      expect(calendar.bank_holidays.count).to be 2
     end
 
     it 'creates a holiday between the terms' do
-      expect(calendar.calendar_events.count).to be 6
+      expect(calendar.calendar_events.count).to be 7
       does_holiday_fit_space_between_terms?(calendar)
     end
 

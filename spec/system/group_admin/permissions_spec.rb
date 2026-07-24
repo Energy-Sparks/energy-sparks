@@ -13,7 +13,7 @@ describe 'Group admin login and permissions' do
 
   it 'allows login and access to schools in the group' do
     visit root_path
-    expect(page).to have_content(school_group.name)
+    expect(page).to have_text(school_group.name)
 
     # click_on school.name
     first(:link, school.name).click
@@ -27,6 +27,6 @@ describe 'Group admin login and permissions' do
     expect(school.name).to eq('New school name')
 
     visit school_path(other_school)
-    expect(page).not_to have_content('Edit school details')
+    expect(page).to have_no_text('Edit school details')
   end
 end

@@ -6,11 +6,13 @@ module Dashboard
 
     # Extra fields - potentially a concern or mix-in
     attr_reader :fuel_type, :meter_collection, :meter_attributes
-    attr_reader :storage_heater_setup, :sub_meters, :meter_correction_rules, :model_cache, :partial_meter_coverage, :meter_tariffs, :community_opening_times, :constituent_meters
-    attr_accessor :amr_data, :floor_area, :number_of_pupils, :solar_pv_setup, :solar_pv_overrides, :id, :name, :external_meter_id
+    attr_reader :storage_heater_setup, :sub_meters, :model_cache, :partial_meter_coverage,
+                :meter_tariffs, :community_opening_times, :constituent_meters
+    attr_accessor :amr_data, :floor_area, :number_of_pupils, :solar_pv_setup, :solar_pv_overrides, :id, :name,
+                  :external_meter_id
 
     # Energy Sparks activerecord fields:
-    attr_reader :active, :created_at, :meter_type, :school, :updated_at, :mpan_mprn, :dcc_meter
+    attr_reader :active, :created_at, :meter_type, :updated_at, :mpan_mprn, :dcc_meter
 
     # enum meter_type: [:electricity, :gas]
 
@@ -30,7 +32,6 @@ module Dashboard
       @floor_area = floor_area
       @number_of_pupils = number_of_pupils
       @solar_pv_installation = solar_pv_installation
-      @meter_correction_rules = []
       @sub_meters = Dashboard::SubMeters.new
       @external_meter_id = external_meter_id
       @dcc_meter = dcc_meter
@@ -42,10 +43,6 @@ module Dashboard
 
     def mpxn
       mpan_mprn
-    end
-
-    def aggregate_meter?
-      false
     end
 
     def set_meter_attributes(meter_attributes)
@@ -88,10 +85,6 @@ module Dashboard
     def reset_targeting_and_tracking_for_testing
       puts "Resetting target meter for testing #{mpxn}"
       @annual_kwh_estimate = nil
-    end
-
-    def enough_amr_data_to_set_target?
-      TargetMeter.enough_amr_data_to_set_target?(self)
     end
 
     def target_attributes
@@ -157,7 +150,8 @@ module Dashboard
     end
 
     def inspect
-      "object_id: #{format('0x00%x', (object_id << 1))}, #{self.class.name}, mpan: #{@mpan_mprn}, fuel_type: #{@fuel_type}"
+      "object_id: #{format('0x00%x',
+                           object_id << 1)}, #{self.class.name}, mpan: #{@mpan_mprn}, fuel_type: #{@fuel_type}"
     end
 
     def to_s
@@ -175,7 +169,10 @@ module Dashboard
 
     def original_meter
       if solar_pv_panels? || storage_heater?
-        raise MissingOriginalMainsMeter, "Missing original mains meter for #{mpxn} only got #{sub_meters&.keys}" unless sub_meters.key?(:mains_consume) && !sub_meters[:mains_consume].nil?
+        unless sub_meters.key?(:mains_consume) && !sub_meters[:mains_consume].nil?
+          raise MissingOriginalMainsMeter,
+                "Missing original mains meter for #{mpxn} only got #{sub_meters&.keys}"
+        end
 
         sub_meters[:mains_consume]
       else
@@ -244,20 +241,14 @@ module Dashboard
 
     def up_to_one_year_model_period
       start_date = [amr_data.end_date - 364, amr_data.start_date].max
-      SchoolDatePeriod.new(:up_to_1_year_meter, 'Current Year', start_date, amr_data.end_date)
+      SchoolDatePeriod.new(:analysis, 'Current Year', start_date, amr_data.end_date)
     end
 
     def heating_model(period = up_to_one_year_model_period, model_type = :best, non_heating_model_type = nil)
       @model_cache.create_and_fit_model(model_type, period, false, non_heating_model_type)
     end
 
-    def meter_collection
-      school || @meter_collection
-    end
-
-    def solar_pv
-      meter_collection.solar_pv
-    end
+    delegate :solar_pv, to: :meter_collection
 
     def heat_meter?
       %i[gas storage_heater aggregated_heat].include?(fuel_type)
@@ -267,22 +258,18 @@ module Dashboard
       %i[electricity solar_pv aggregated_electricity].include?(fuel_type)
     end
 
-    def insert_correction_rules_first(rules)
-      @meter_correction_rules = rules + @meter_correction_rules
-    end
-
     # Matches ES AR version
     def display_name
       name.present? ? "#{mpan_mprn} - #{name}" : mpan_mprn.to_s
     end
 
     def name_or_mpan_mprn
-      name.present? ? name : mpan_mprn.to_s
+      name.presence || mpan_mprn.to_s
     end
 
     # Default series name for this meter when displayed on a chart
     def series_name
-      name.present? ? name : mpan_mprn.to_s
+      name.presence || mpan_mprn.to_s
     end
 
     # Used to create a qualified series name for charts, when 2 meters for
@@ -306,7 +293,10 @@ module Dashboard
       # TODO(PH, 14Sep2019) - Make 90000000000000 etc. masks constants
       aggregate = 90_000_000_000_000 & mpan_mprn > 0 || 80_000_000_000_000 & mpan_mprn > 0
       # TODO(PH, 10Aug2021) deprecate in favour of aggregate_meter2? if continues to work
-      raise StandardError, 'Unexpected inconsistency in aggregate meter logic see aggregate_meter2?' if aggregate != aggregate_meter2?
+      if aggregate != aggregate_meter2?
+        raise StandardError,
+              'Unexpected inconsistency in aggregate meter logic see aggregate_meter2?'
+      end
 
       aggregate
     end
@@ -319,9 +309,9 @@ module Dashboard
       elsif fuel_type == :storage_heater # suspect as same number as solar_pv; TODO(PH, 14Sep2019)
         70_000_000_000_000 + urn.to_i
       elsif fuel_type == :solar_pv
-        70_000_000_000_000 + urn.to_i + 1_000_000_000_000 * group_number
+        70_000_000_000_000 + urn.to_i + (1_000_000_000_000 * group_number)
       elsif fuel_type == :exported_solar_pv
-        60_000_000_000_000 + urn.to_i + 1_000_000_000_000 * group_number
+        60_000_000_000_000 + urn.to_i + (1_000_000_000_000 * group_number)
       else
         raise EnergySparksUnexpectedStateException.new, "Unexpected fuel_type #{fuel_type}"
       end
@@ -364,7 +354,8 @@ module Dashboard
     def set_current_economic_tariff
       logger.info "Creating current economic cost schedule for meter #{name}"
       if @meter_tariffs.economic_tariffs_change_over_time?
-        @amr_data.set_current_economic_tariff_schedule(CachingCurrentEconomicCosts.new(@meter_tariffs, @amr_data, fuel_type))
+        @amr_data.set_current_economic_tariff_schedule(CachingCurrentEconomicCosts.new(@meter_tariffs, @amr_data,
+                                                                                       fuel_type))
       else
         # there no computational benefit in doing this,
         # given the tariff for amr_data.end_date is always re-looked up rather than cached
@@ -379,16 +370,20 @@ module Dashboard
     end
 
     def process_meter_attributes
-      @storage_heater_setup     = StorageHeater.new(attributes(:storage_heaters)) if @meter_attributes.key?(:storage_heaters)
-      @solar_pv_setup           = Aggregation::SolarPvPanels.create(self, :solar_pv)
-      @solar_pv_overrides       = Aggregation::SolarPvPanels.create(self, :solar_pv_override)
+      if @meter_attributes.key?(:storage_heaters)
+        @storage_heater_setup = StorageHeater.new(attributes(:storage_heaters))
+      end
+      @solar_pv_setup           = Aggregation::SolarPvPanels.create(self, :solar_pv, true)
+      @solar_pv_overrides       = Aggregation::SolarPvPanels.create(self, :solar_pv_override, false)
       @solar_pv_real_metering   = true if @meter_attributes.key?(:solar_pv_mpan_meter_mapping)
       @partial_meter_coverage ||= PartialMeterCoverage.new(attributes(:partial_meter_coverage))
       @meter_tariffs = GenericTariffManager.new(self)
     end
 
     def check_fuel_type(fuel_type)
-      raise EnergySparksUnexpectedStateException.new("Unexpected fuel type #{fuel_type}") if %i[electricity gas].include?(fuel_type)
+      return unless %i[electricity gas].include?(fuel_type)
+
+      raise EnergySparksUnexpectedStateException, "Unexpected fuel type #{fuel_type}"
     end
 
     def function_includes?(*function_list)

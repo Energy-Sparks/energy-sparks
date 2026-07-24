@@ -73,23 +73,24 @@
       <% if current_user.admin? %>
         <th scope="col"><%= t('schools.meters.index.meter_system') %></th>
         <th scope="col"><%= t('schools.meters.index.data_source') %></th>
+        <th scope="col"><%= t('schools.meters.index.supplier') %></th>
         <th scope="col"><%= t('schools.meters.index.procurement_route') %></th>
         <th scope="col"><%= t('schools.meters.index.admin_meter_status') %></th>
       <% end %>
-      <th scope="col" class="text-right">
+      <th scope="col" class="text-end">
         <span title="<%= t('schools.meters.index.imported') %>">
           <%= current_user.admin? ? fa_icon(:database) : t('schools.meters.index.imported') %>
         <span>
       </th>
-      <th scope="col" class="text-right">
+      <th scope="col" class="text-end">
         <span title="<%= t('schools.meters.index.validated') %>">
           <%= current_user.admin? ? fa_icon('square-check') : t('schools.meters.index.validated') %>
         </span>
       </th>
       <th scope="col" class="text-center"><%= t('schools.meters.index.first') %>-<%= t('schools.meters.index.latest') %>
       </th>
-      <th scope="col" class="text-right"><%= t('schools.meters.index.zero_days') %></th>
-      <th scope="col" class="text-right"><%= t('schools.meters.index.large_gaps') %></th>
+      <th scope="col" class="text-end"><%= t('schools.meters.index.zero_days') %></th>
+      <th scope="col" class="text-end"><%= t('schools.meters.index.large_gaps') %></th>
       <th scope="col"></th>
     </tr>
   </thead>

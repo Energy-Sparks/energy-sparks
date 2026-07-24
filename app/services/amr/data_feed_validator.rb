@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class DataFeedValidator
     def initialize(config, array_of_rows)
@@ -14,15 +16,18 @@ module Amr
       array_of_rows
     end
 
-  private
+    private
 
     def filter_column_rows_for(array_of_rows)
       @config.column_row_filters.each do |column_name, filter_as_regex|
         column_index = headers_as_array.index(column_name)
         next unless column_index
+
         # if there's no value for the column we're trying to filter it's an incomplete row,
         # e.g. has fewer columns than expected so remove
-        array_of_rows = array_of_rows.reject { |row| row[column_index].nil? || row[column_index].match?(filter_as_regex) }
+        array_of_rows = array_of_rows.reject do |row|
+          row[column_index].nil? || row[column_index].match?(filter_as_regex)
+        end
       end
       array_of_rows
     end
@@ -34,14 +39,14 @@ module Amr
     def handle_header(array_of_rows)
       if array_of_rows.empty?
         array_of_rows
+      elsif @config.number_of_header_rows.positive?
+        if @config.number_of_header_rows > array_of_rows.length
+          raise DataFeedException,
+                "Expected #{@config.number_of_header_rows} header rows but file has only #{array_of_rows.length}."
+        end
+        array_of_rows[@config.number_of_header_rows, array_of_rows.length]
       elsif array_of_rows.first.join(',') == @config.header_example
         array_of_rows[1, array_of_rows.length]
-      elsif @config.number_of_header_rows
-        if @config.number_of_header_rows > array_of_rows.length
-          raise DataFeedException.new("Expected #{@config.number_of_header_rows} header rows but file has only #{array_of_rows.length}.")
-        else
-          array_of_rows[@config.number_of_header_rows, array_of_rows.length]
-        end
       else
         array_of_rows
       end
@@ -76,12 +81,13 @@ module Amr
 
     def invalid_row?(row)
       # Reject if row is empty or there are no commas to create fields
-      row.empty? || row.count == 1
+      row.empty? || row.one?
     end
 
     def partial_row?(row)
       # Reject if row has more than the allowed number of missing readings
       return true unless row.count > index_of_last_reading_field
+
       row[index_of_first_reading_field..index_of_last_reading_field].count(&:blank?) > @config.missing_readings_limit
     end
 
@@ -89,6 +95,7 @@ module Amr
     # That is done in SingleReadConverter for those configs
     def should_reject_rows?
       return false if @config.row_per_reading?
+
       @config.missing_readings_limit.present?
     end
   end

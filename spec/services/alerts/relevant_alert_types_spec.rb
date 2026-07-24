@@ -33,7 +33,8 @@ describe Alerts::RelevantAlertTypes do
   end
 
   it 'returns storage heater and electricity' do
-    fuel_configuration = Schools::FuelConfiguration.new(has_gas: false, has_electricity: true, has_storage_heaters: true)
+    fuel_configuration = Schools::FuelConfiguration.new(has_gas: false, has_electricity: true,
+                                                        has_storage_heaters: true)
     school.configuration.update(fuel_configuration: fuel_configuration)
 
     service = Alerts::RelevantAlertTypes.new(school)
@@ -50,11 +51,13 @@ describe Alerts::RelevantAlertTypes do
   end
 
   it 'returns storage heater and electricity and solar pv' do
-    fuel_configuration = Schools::FuelConfiguration.new(has_gas: false, has_electricity: true, has_storage_heaters: true, has_solar_pv: true)
+    fuel_configuration = Schools::FuelConfiguration.new(has_gas: false, has_electricity: true,
+                                                        has_storage_heaters: true, has_solar_pv: true)
     school.configuration.update(fuel_configuration: fuel_configuration)
 
     service = Alerts::RelevantAlertTypes.new(school)
-    expect(service.list).to include(no_fuel_alert_type, electricity_alert_type, storage_heater_alert_type, solar_pv_alert_type)
+    expect(service.list).to include(no_fuel_alert_type, electricity_alert_type, storage_heater_alert_type,
+                                    solar_pv_alert_type)
     expect(service.list).not_to include(
       gas_alert_type,
       disabled_no_fuel_alert_type,

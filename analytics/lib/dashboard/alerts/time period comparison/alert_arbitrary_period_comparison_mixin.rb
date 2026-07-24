@@ -3,12 +3,12 @@ module ArbitraryPeriodComparisonMixIn
   # mixing in instance methods in Ruby
   def current_period_config
     c = comparison_configuration[:current_period]
-    SchoolDatePeriod.new(:alert, 'Current period', c.first, c.last)
+    SchoolDatePeriod.new(:analysis, 'Current period', c.first, c.last)
   end
 
   def previous_period_config
     c = comparison_configuration[:previous_period]
-    SchoolDatePeriod.new(:alert, 'Previous period', c.first, c.last)
+    SchoolDatePeriod.new(:analysis, 'Previous period', c.first, c.last)
   end
 
   protected def max_days_out_of_date_while_still_relevant
@@ -72,7 +72,7 @@ module HolidayShutdownComparisonMixin
     holiday = @school.holidays.find_holiday(holiday_date)
     sunday, saturday, week_count = @school.holidays.nth_school_week(holiday.start_date, school_weeks)
     # reduce period by 1 day to avoid overlap
-    period = SchoolDatePeriod.new(:alert, 'Previous period', sunday, holiday.start_date - 1)
+    period = SchoolDatePeriod.new(:analysis, 'Previous period', sunday, holiday.start_date - 1)
     # need to call this method from AlertHolidayComparisonBase to truncate range as its
     # not called directly by AlertArbitraryPeriodComparisonBase
     #

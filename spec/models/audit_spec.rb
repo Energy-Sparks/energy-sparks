@@ -278,7 +278,8 @@ describe Audit do
       let(:audit_params) do
         {
           title: 'Test title',
-          file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'documents', 'fake-bill.pdf'), 'application/pdf'),
+          file: Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/documents/fake-bill.pdf'),
+                                             'application/pdf'),
           published: true,
           activity_type_todos_attributes: [
             { task_id: activity_type.id, task_type: 'ActivityType', position: 0, notes: 'Some notes' }

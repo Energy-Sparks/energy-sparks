@@ -412,30 +412,6 @@ describe School do
     end
   end
 
-  context 'with annual estimates' do
-    it 'there are no meter attributes without an estimate' do
-      expect(school.estimated_annual_consumption_meter_attributes).to eql({})
-      expect(school.all_pseudo_meter_attributes).to eql({ aggregated_electricity: [], aggregated_gas: [],
-                                                          solar_pv_consumed_sub_meter: [], solar_pv_exported_sub_meter: [] })
-    end
-
-    context 'when an estimate is given' do
-      let!(:estimate) do
-        create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0,
-                                              year: 2021)
-      end
-
-      before do
-        school.reload
-      end
-
-      it 'they are not passed to the analytics' do
-        expect(school.all_pseudo_meter_attributes).to eql({ aggregated_electricity: [], aggregated_gas: [],
-                                                            solar_pv_consumed_sub_meter: [], solar_pv_exported_sub_meter: [] })
-      end
-    end
-  end
-
   context 'with school targets' do
     it 'there is no target by default' do
       expect(school.has_target?).to be false
@@ -498,20 +474,6 @@ describe School do
         it 'stills produce meter attributes' do
           expect(school.all_pseudo_meter_attributes[:aggregated_electricity]).not_to be_empty
         end
-      end
-
-      describe '#has_expired_target_for_fuel_type?' do
-        before do
-          target.update!(electricity: 5)
-        end
-
-        let!(:expired_target) do
-          create(:school_target, :with_progress_report, start_date: Date.yesterday.prev_year, school: school,
-                                                        electricity: 5, gas: nil)
-        end
-
-        it { expect(school.has_expired_target_for_fuel_type?(:electricity)).to be true }
-        it { expect(school.has_expired_target_for_fuel_type?(:gas)).to be false }
       end
 
       describe '#previous_expired_target' do
@@ -673,10 +635,6 @@ describe School do
       let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
       let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
       let!(:target) { create(:school_target, start_date: Date.yesterday, school: school) }
-      let!(:estimate) do
-        create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0,
-                                              year: 2021)
-      end
 
       it 'maps them to the pseudo meters, targets, and estimates' do
         expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 4
@@ -1123,7 +1081,6 @@ describe School do
         {
           active: false,
           country: :scotland,
-          funder: create(:funder),
           local_authority_area: create(:local_authority_area),
           name: 'New name',
           percentage_free_school_meals: 15,
@@ -1322,7 +1279,7 @@ describe School do
         create(:establishment, id: 2)
         create(:establishment_link, establishment_id: 1, linked_establishment_id: 2)
         onb = create(:school_onboarding, urn: 1, school_name: 'onboarding name')
-        School.from_onboarding(onb)
+        described_class.from_onboarding(onb)
       end
 
       it 'uses new establishment instead' do
@@ -1337,9 +1294,10 @@ describe School do
     context 'with matched current establishment' do
       let(:sch) do
         create(:local_authority_area, code: 'a')
-        create(:establishment, district_administrative_code: 'a', id: 1, establishment_name: 'establishment name', phase_of_education_code: 2, gor_code: 'A')
+        create(:establishment, district_administrative_code: 'a', id: 1, establishment_name: 'establishment name',
+                               phase_of_education_code: 2, gor_code: 'A')
         onb = create(:school_onboarding, urn: 1, school_name: 'onboarding name')
-        School.from_onboarding(onb)
+        described_class.from_onboarding(onb)
       end
 
       it 'gets name from establishment instead of onboarding' do
@@ -1363,7 +1321,7 @@ describe School do
       let(:sch) do
         create(:local_authority_area, code: 'a')
         onb = create(:school_onboarding, school_name: 'onboarding name')
-        School.from_onboarding(onb)
+        described_class.from_onboarding(onb)
       end
 
       it 'defaults to name from onboarding' do
@@ -1374,7 +1332,7 @@ describe School do
 
   describe '.concatenate_address' do
     it 'skips empty elements' do
-      expect(School.concatenate_address(['', 'a', '', 'b', ''])).to eq('a, b')
+      expect(described_class.concatenate_address(['', 'a', '', 'b', ''])).to eq('a, b')
     end
   end
 
@@ -1440,6 +1398,274 @@ describe School do
       it 'removes the organisation grouping' do
         expect(SchoolGrouping.find_by(school_id: school.id, role: 'organisation')).to be_nil
       end
+    end
+  end
+
+  describe 'LicenceHolder' do
+    let(:school) { create(:school) }
+
+    def create_licence(start_date, end_date)
+      create(:commercial_licence, school:, start_date:, end_date:)
+    end
+
+    describe '#licenced_for?' do
+      it 'returns true when a licence covers the date' do
+        create_licence(Date.new(2024, 1, 1), Date.new(2024, 12, 31))
+        expect(school.licenced_for?(Date.new(2024, 6, 1))).to be true
+      end
+
+      it 'returns false when no licence covers the date' do
+        create_licence(Date.new(2024, 1, 1), Date.new(2024, 3, 1))
+        expect(school.licenced_for?(Date.new(2024, 6, 1))).to be false
+      end
+    end
+
+    describe '#currently_licenced?' do
+      it 'checks todays date' do
+        today = Time.zone.today
+        create_licence(today - 1.day, today + 1.day)
+        expect(school.currently_licenced?).to be true
+      end
+    end
+
+    describe '#licensed_for_period' do
+      let(:start_date) { Date.new(2024, 1, 1) }
+      let(:end_date)   { Date.new(2024, 1, 31) }
+
+      it 'returns :no when no licences overlap' do
+        create_licence(Date.new(2024, 3, 1), Date.new(2024, 3, 31))
+        expect(school.licensed_for_period(start_date..end_date)).to eq(:no)
+      end
+
+      it 'returns :partial when licences overlap but do not cover full period' do
+        create_licence(Date.new(2024, 1, 10), Date.new(2024, 1, 20))
+        expect(school.licensed_for_period(start_date..end_date)).to eq(:partial)
+      end
+
+      it 'returns :full when licences fully cover the period' do
+        create_licence(Date.new(2023, 12, 1), Date.new(2024, 1, 15))
+        create_licence(Date.new(2024, 1, 16), Date.new(2024, 2, 1))
+        expect(school.licensed_for_period(start_date..end_date)).to eq(:full)
+      end
+    end
+
+    describe '#with_current_licence_for_contract_holder' do
+      let!(:contract_holder) { create(:funder) }
+
+      context 'with no licence' do
+        it { expect(described_class.with_current_licence_for_contract_holder(contract_holder)).to be_empty }
+      end
+
+      context 'when there is a current contract for a Funder' do
+        before do
+          create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+        end
+
+        it { expect(described_class.with_current_licence_for_contract_holder(contract_holder)).to eq([school]) }
+      end
+
+      context 'when there is a current licence for a School Group' do
+        let!(:contract_holder) { create(:school_group) }
+
+        before do
+          create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+        end
+
+        it { expect(described_class.with_current_licence_for_contract_holder(contract_holder)).to be_empty }
+      end
+
+      context 'when there is an expired licence for a Funder' do
+        before do
+          create(:commercial_licence, :expired, school:, contract: create(:commercial_contract, contract_holder:))
+        end
+
+        it { expect(described_class.with_current_licence_for_contract_holder(contract_holder)).to be_empty }
+      end
+    end
+  end
+
+  describe '#summarised_current_contract_holder_name' do
+    subject(:name) { school.summarised_current_contract_holder_name }
+
+    let!(:school) { create(:school) }
+
+    context 'with no licence' do
+      it { expect(name).to be_nil }
+    end
+
+    context 'with no current licence' do
+      before do
+        create(:commercial_licence, :expired, school:)
+      end
+
+      it { expect(name).to be_nil }
+    end
+
+    context 'with funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+      end
+
+      it { expect(name).to eq(contract_holder.name) }
+    end
+
+    context 'with MAT licence' do
+      let(:school) { create(:school, :with_trust) }
+      let(:contract_holder) { school.organisation_group }
+
+      before do
+        create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+      end
+
+      it { expect(name).to eq('MAT funding') }
+    end
+
+    context 'with self-funded licence' do
+      let(:contract_holder) { school }
+
+      before do
+        create(:commercial_licence, school:, contract: create(:commercial_contract, contract_holder:))
+      end
+
+      it { expect(name).to eq('School self funding') }
+    end
+  end
+
+  describe '#summarised_future_contract_holder_name' do
+    subject(:name) { school.summarised_future_contract_holder_name }
+
+    let(:next_academic_year) do
+      calendar = create(:national_calendar, title: 'England and Wales')
+      academic_year = create(:academic_year, calendar:)
+      create(:academic_year,
+             calendar:,
+             start_date: academic_year.end_date + 1.day,
+             end_date: academic_year.end_date + 12.months)
+    end
+
+    let!(:school) { create(:school) }
+
+    context 'with no licence' do
+      it { expect(name).to be_nil }
+    end
+
+    context 'with no future licence' do
+      before do
+        create(:commercial_licence, school:)
+      end
+
+      it { expect(name).to be_nil }
+    end
+
+    context 'with confirmed funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :confirmed,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to eq(contract_holder.name) }
+    end
+
+    context 'with invoiced funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :invoiced,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to eq(contract_holder.name) }
+    end
+
+    context 'with unconfirmed funder licence' do
+      let(:contract_holder) { create(:funder) }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :provisional,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to be_nil }
+    end
+
+    context 'with MAT licence' do
+      let(:school) { create(:school, :with_trust) }
+      let(:contract_holder) { school.organisation_group }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :confirmed,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to eq('MAT funding') }
+    end
+
+    context 'with self-funded licence' do
+      let(:contract_holder) { school }
+
+      before do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:),
+               status: :confirmed,
+               start_date: next_academic_year.start_date,
+               end_date: next_academic_year.end_date)
+      end
+
+      it { expect(name).to eq('School self funding') }
+    end
+  end
+
+  describe 'status display' do
+    let(:data_visible_school) { create(:school, active: true, visible: true, data_enabled: true) }
+    let(:visible_school) { create(:school, active: true, visible: true, data_enabled: false) }
+    let(:active_school) { create(:school, active: true, visible: false, data_enabled: false) }
+    let(:archived_school) { create(:school, active: false) }
+    let(:deleted_school) { create(:school, active: false, removal_date: 2.days.ago) }
+
+    it do
+      expect(data_visible_school.status_display).to eq({ title: 'Data Visible',
+                                                         classes: 'ms-1 badge rounded-pill text-bg-success' })
+    end
+
+    it do
+      expect(visible_school.status_display).to eq({ title: 'Visible',
+                                                    classes: 'ms-1 badge rounded-pill text-bg-success' })
+    end
+
+    it do
+      expect(active_school.status_display).to eq({ title: 'Awaiting Activation',
+                                                   classes: 'ms-1 badge rounded-pill text-bg-danger' })
+    end
+
+    it do
+      expect(archived_school.status_display).to eq({ title: 'Archived',
+                                                     classes: 'ms-1 badge rounded-pill text-bg-dark border border-pale' })
+    end
+
+    it do
+      expect(deleted_school.status_display).to eq({ title: 'Deleted',
+                                                    classes: 'ms-1 badge rounded-pill text-bg-dark border border-pale' })
     end
   end
 end

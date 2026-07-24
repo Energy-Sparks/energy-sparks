@@ -1,14 +1,20 @@
-<div class="d-flex justify-content-between align-items-center">
-  <h1><%= @school_group.name %> Users</h1>
-  <div>
-    <%= header_nav_link 'Manage school group', admin_school_group_path(@school_group) %>
-    <%= header_nav_link 'All users', admin_users_path %>
-  </div>
-</div>
+<% content_for :header_title, "#{@school_group.name} Users" %>
 
 <div class="row mb-2">
   <div class="col">
-    <%= link_to 'Download as CSV', admin_school_group_users_path(@school_group, format: :csv), class: 'btn btn-sm' %>
+    <%= link_to 'Manage school group',
+                admin_school_group_path(@school_group),
+                class: 'btn btn-default btn-sm' %>
+  </div>
+  <div class="col">
+    <%= link_to 'All users',
+                admin_users_path,
+                class: 'btn btn-default btn-sm' %>
+  </div>
+  <div class="col">
+    <%= link_to 'Download as CSV',
+                admin_school_group_users_path(@school_group, format: :csv),
+                class: 'btn btn-default btn-sm' %>
   </div>
 </div>
 
@@ -18,8 +24,9 @@
       <h2>Group Admins</h2>
     </div>
     <div>
-      <%= link_to 'Lock all group users', lock_all_admin_school_group_users_path, class: 'btn btn-warning btn-sm',
-                                                                                  data: { confirm: 'Are you sure?' } %>
+      <%= link_to 'Lock all group users', lock_all_admin_school_group_users_path,
+                  class: 'btn btn-warning btn-sm',
+                  data: { confirm: 'Are you sure?' } %>
     </div>
   </div>
 

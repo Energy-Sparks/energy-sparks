@@ -1,0 +1,9 @@
+<%- CATEGORIES.each do |category| %>
+  <%- if categorised_schools[category]&.any? %>
+<%= category_description(category) %>
+<%- categorised_schools[category].sort_by(&:name).each do |school| %>
+<%= school.name %>
+<% end %>
+
+  <% end %>
+<% end %>

@@ -30,7 +30,7 @@ describe Targets::FuelTypeEventListener, type: :system do
           listener.meter_attribute_created(meter_attribute)
           school_target.reload
           expect(school_target.suggest_revision?).to be true
-          expect(school_target.revised_fuel_types).to match_array ['storage_heater']
+          expect(school_target.revised_fuel_types).to contain_exactly('storage_heater')
         end
 
         it 'flags fuel types only once' do
@@ -38,7 +38,7 @@ describe Targets::FuelTypeEventListener, type: :system do
           listener.meter_attribute_created(create(:storage_heaters_attribute, meter: meter))
           school_target.reload
           expect(school_target.suggest_revision?).to be true
-          expect(school_target.revised_fuel_types).to match_array ['storage_heater']
+          expect(school_target.revised_fuel_types).to contain_exactly('storage_heater')
         end
 
         it 'removes flag if the list is empty' do
@@ -63,14 +63,14 @@ describe Targets::FuelTypeEventListener, type: :system do
         listener.meter_activated(gas_meter)
         school_target.reload
         expect(school_target.suggest_revision?).to be true
-        expect(school_target.revised_fuel_types).to match_array ['gas']
+        expect(school_target.revised_fuel_types).to contain_exactly('gas')
       end
 
       it 'updates target when its the first electricity meter' do
         listener.meter_activated(meter)
         school_target.reload
         expect(school_target.suggest_revision?).to be true
-        expect(school_target.revised_fuel_types).to match_array ['electricity']
+        expect(school_target.revised_fuel_types).to contain_exactly('electricity')
       end
 
       it 'flags fuel types only once' do
@@ -78,7 +78,7 @@ describe Targets::FuelTypeEventListener, type: :system do
         other_meter = create(:gas_meter, school: school)
         listener.meter_activated(other_meter)
         school_target.reload
-        expect(school_target.revised_fuel_types).to match_array ['gas']
+        expect(school_target.revised_fuel_types).to contain_exactly('gas')
       end
 
       it 'removes flag is last meter of type' do

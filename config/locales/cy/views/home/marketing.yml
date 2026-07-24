@@ -1,11 +1,5 @@
 cy:
   campaigns:
-    group_demo:
-      intro: Diolch i chi am lenwi'r ffurflen ymholiad, dewiswch ddyddiad ac amser i gadarnhau eich demo Sbarcynni.
-      title: Dewiswch y dyddiad a'r amser ar gyfer eich demo
-    watch_demo:
-      intro: Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni.
-      title: Archebwch eich demo o Sbarcynni
     form:
       fields:
         consent: Cytunaf i dderbyn diweddariadau achlysurol am gynnyrch a gwasanaethau a gynigir gan Sbarcynni
@@ -24,8 +18,232 @@ cy:
         primary: Ysgol gynradd (gwladol)
         secondary: Ysgol uwchradd (gwladol)
         special: Ysgol arbennig (gwladol)
+    group_demo:
+      intro: Diolch i chi am lenwi'r ffurflen ymholiad, dewiswch ddyddiad ac amser i gadarnhau eich demo Sbarcynni.
+      title: Dewiswch y dyddiad a'r amser ar gyfer eich demo
+      watch_demo_html: Gallwch hefyd <a href="%{url}">wylio ein fideo demo</a> yn ogystal ag archebu demo preifat.
+    group_info:
+      closer_look:
+        description_html: |-
+          <ul>
+            <li><b><a href="%{example_path}">Archwiliwch ddangosfwrdd grŵp</a></b> - i weld sut mae Ymddiriedolaeth go iawn yn defnyddio'r offeryn Sbarcynni i reoli'r defnydd o ynni ar draws ei hysgolion.</li>
+            <li><b>Archwiliwch ein hysgolion</b> - gweld pa <a href="%{school_groups}">ymddiriedolaethau ac awdurdodau lleol eraill sydd eisoes yn defnyddio ein hofferyn</a>.</li>
+            <li><b>Cymerwch olwg ar ein <a href="%{product_path}">tudalen cynnyrch</a></b> - i weld ein prisiau a darganfod yn union beth gewch chi pan fyddwch yn cofrestru.</li>
+          </ul>
+      next_steps:
+        description_html: |-
+          <ul>
+            <li><b>Barod i gofrestru?</b> - Cymerwch olwg ar ein tudalen gymorth i ddysgu am ein gofynion mesur ac eraill, <a href="%{enrol_group}">yna cwblhewch ein ffurflen gofrestru</a>.</li>
+            <li><b><a href="%{watch_demo}">Archebwch ddemo</a></b> - Yn y sesiwn demo breifat hon, byddwch yn dysgu rhagor am ein hofferyn rheoli ynni ac yn darganfod sut y gall ysgolion, Ymddiriedolaethau ac Awdurdodau Lleol ei ddefnyddio i leihau gwastraff ynni ac allyriadau carbon. Mae croeso i chi rannu'r ddolen Google Meet gyda chydweithwyr fel y gallant ymuno â'r sesiwn hefyd.</li>
+            <li><b><a href="%{newsletter}">Cofrestrwch i'n cylchlythyr</a></b> - am fewnwelediadau rheolaidd i sut y gall Sbarcynni eich helpu chi. </li>
+            <li><b>Oes gennych chi gwestiynau o hyd?</b> - E-bostiwch ni yn <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></li>
+          </ul>
+      tool:
+        description_1_html: |-
+          <p>
+          Gall ein offeryn nodi arbedion posibl enfawr. Er enghraifft, arbedodd Ffederasiwn Harris £165,000 ar eu biliau ynni gyda diffodd TGCh awtomatig.
+          </p>
+        description_2_html: |-
+          <p>
+          Fe'u hysbrydolwyd i wneud hyn drwy edrych ar ddangosfwrdd eu grŵp Sbarcynni a oedd yn caniatáu iddynt weld ar unwaith:
+          </p>
+          <ul>
+          <li>Newidiadau tymor byr a hirdymor i ddefnydd ynni ym mhob un o'u hysgolion</li>
+          <li>Sut mae defnydd ynni eu hysgolion yn cymharu ag ysgolion Sbarcynni eraill o faint tebyg</li>
+          <li>Gweithredoedd blaenoriaethol (gan gynnwys arbedion posibl) ar gyfer ysgolion</li>
+          </ul>
     more_information:
       intro: |-
         Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni fel y gallwn roi
         rhagor o wybodaeth i chi am ein gwasanaethau.
       title: Gofynnwch am ragor o wybodaeth am Sbarcynni
+    school_demo:
+      alternative_answer_html: Beth am <a href='%{url}'>wylio ein demo byrrach</a> i gael trosolwg cyflym o'r offeryn Sbarcynni, gan gynnwys dangosfyrddau oedolion a disgyblion, siartiau defnydd ynni, cyngor a rhybuddion arbed ynni pwrpasol.
+      alternative_question: Dim ond pum munud sydd gennych chi?
+      description_html: Gwyliwch ein fideo demo i gael cipolwg manwl ar holl brif nodweddion ein hofferyn rheoli ynni, a darganfod sut y gallai Sbarcynni helpu eich ysgol i dorri costau ynni a charbon.
+      next_steps:
+        enrol:
+          answer_html: Cymerwch olwg ar ein tudalen gymorth i ddysgu am ein gofynion mesur ac eraill, yna <a href='%{url}'>cwblhewch ein ffurflen gofrestru</a>.
+          question: Barod i gofrestru eich ysgol?
+        information_pack:
+          answer_html: "<a href='%{url}'>Mae gennym becyn gwybodaeth gyda deunyddiau</a> a allai fod yn ddefnyddiol i chi."
+          question: Angen help i argyhoeddi gwneuthurwyr penderfyniadau eich ysgol?
+        learn_more:
+          answer_html: Mae gan y rhan fwyaf o'n <a href='%{schools_url}'>hysgolion ddata sydd ar gael i'r cyhoedd</a> – beth am edrych ar sut maen nhw'n defnyddio ein platfform? Mae gennym ni hefyd gyfoeth o wybodaeth ar ein tudalennau cymorth ac yn <a href='%{newsletters_url}'>ein cylchlythyrau</a>, neu gallwch gysylltu â ni yn <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
+          question: Eisiau dysgu rhagor?
+        title: Camau nesaf
+      title: Diolch am eich diddordeb yn Sbarcynni!
+    school_info:
+      closer_look:
+        description_html: |-
+          <ul>
+            <li><b>Gwyliwch ddemo</b> - cael <a href="%{long_demo}">trosolwg o brif nodweddion ein hofferyn rheoli ynni</a> a darganfod sut y gallai Sbarcynni helpu eich ysgol i dorri costau a charbon.<i>Dim ond pum munud sydd gennych chi?</i> Beth am <a href="%{short_demo}">wylio ein demo byrrach</a> am drosolwg cyflym yn lle hynny?</li>
+            <li><b>Archwiliwch ein hysgolion</b> - mae gan y rhan fwyaf o'r ysgolion sydd wedi cofrestru gyda Sbarcynni ddata sydd ar gael i'r cyhoedd. Beth am <a href="%{schools_path}">edrych ar sut maen nhw'n defnyddio ein hofferyn?</a>?</li>
+            <li><b>Rhowch gynnig ar rai o'n gweithgareddau a'n gweithredoedd</b> - mae'r rhain am ddim i bawb, a byddant yn rhoi cipolwg i chi ar sut rydym yn helpu ysgolion i arbed ynni. Rydym yn argymell yn arbennig <a href="/intervention_type_groups/3">edrych ar ffurfweddiad eich gwresogi</a>, a <a href="/intervention_types/71">chreu rhestr diffodd yn ystod gwyliau.</a>.</li>
+            <li><b>Cymerwch olwg ar ein <a href="%{product_path}">tudalen cynnyrch</a></b> - i weld ein prisiau a darganfod yn union beth gewch chi pan fyddwch yn cofrestru.</li>
+          </ul>
+        title: Oes gennych chi ddiddordeb? ​​Cymerwch olwg agosach
+      intro: Diolch am lenwi ein ffurflen ymholiad. Byddwn yn cysylltu â chi gyda gwybodaeth bellach.
+      next_steps:
+        description_html: |-
+          <ul>
+            <li><b>Barod i gofrestru eich ysgol?</b> - Cymerwch olwg ar ein tudalen gymorth i ddysgu am ein gofynion mesur ac eraill, yna <a href="%{enrol_path}">cwblhewch ein ffurflen gofrestru</a>.</li>
+            <li><b>Angen argyhoeddi eich cydweithwyr?</b> - Beth am rannu <a href="%{impact_report}">ein trosolwg effaith</a>, <a href="%{introductory_video}">fideo cyflwyniadol</a> a <a href="%{short_demo}">a demo byr</a> gyda nhw, i'w helpu i ddeall yr hyn rydym yn ei gynnig?</li>
+            <li><b><a href="%{newsletter}">Cofrestrwch i'n cylchlythyr</a></b> - am fewnwelediadau rheolaidd i sut y gall Sbarcynni eich helpu chi. </li>
+            <li><b>Oes gennych chi gwestiynau o hyd?</b> - E-bostiwch ni yn <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></li>
+          </ul>
+        title: Camau nesaf
+      stats:
+        card_1:
+          figure: 40%
+          subtext: Arbedion ynni a gyflawnwyd gan ein hysgolion sy'n perfformio orau yn 2023/24
+        description_html: Dysgwch ragor am sut rydym wedi cefnogi ysgolion yn 2023/24 yn <a href="%{impact_report}">ein trosolwg effaith</a>
+        header: Ein heffaith
+      title: Diolch am eich diddordeb yn Sbarcynni!
+      tool:
+        description_html: |-
+          <p>
+          <a href="%{product_path}">Mae ein hofferyn rheoli ynni</a> yn caniatáu i ysgolion weld eu defnydd o ynni bob hanner awr ochr yn ochr â dadansoddiad a mewnwelediadau wedi'u teilwra sy'n ei gwneud yn syml i reolwyr ysgolion ddeall pa gamau sydd angen eu cymryd.
+          </p>
+        read_report: Darllen yr adroddiad
+        report_description_html: |-
+          <p>
+          Gallwch hefyd ddarllen <a href="%{energy_efficiency_report}">ein Hadroddiad Effeithlonrwydd Ynni</a>, sy'n amlinellu sut rydym yn helpu ysgolion ac Ymddiriedolaethau Aml-Academi i dorri costau ynni, lleihau allyriadau carbon, ac ymgysylltu â disgyblion.
+          </p>
+        title: Offeryn rheoli ynni
+        video_description_html: <p>Yn <a href="%{introductory_video}">ein fideo cyflwyniadol byr</a> gallwch edrych ar rai o brif nodweddion ein hofferyn, gan gynnwys ein dangosfyrddau grŵp, rhybuddion a chystadlaethau.</p>
+    watch_demo:
+      intro: Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni. Yna byddwn naill ai'n eich gwahodd i archebu demo byw, neu i wylio demo wedi'i recordio ymlaen llaw.
+      title: Gwyliwch ddemo Sbarcynni
+  product:
+    additional_services:
+      desktop_audits:
+        price: "£390 + TAW"
+        title: Adolygiadau ynni bwrdd gwaith
+      on_site_audits:
+        price: "£950 i £2,250 + TAW"
+        title: Archwiliadau ar y safle
+      title: Ein gwasanaethau ychwanegol
+      workshops:
+        price: "£250 i £550 + TAW"
+        title: Gweithdai arbed ynni
+    call_to_action:
+      description_html: Cofrestrwch heddiw i ymuno â'n rhwydwaith cynyddol o <strong>%{count}</strong> ysgol. Oes gennych chi gwestiynau o hyd? Cysylltwch i ofyn am ragor o wybodaeth.
+      title: Barod i dorri costau ac ysbrydoli eich disgyblion i ddod yn hyrwyddwyr cynaliadwyedd?
+    feature:
+      description: Gallwch arbed hyd at 40% ar filiau ynni gyda'n hofferyn rheoli ynni a'n rhaglen addysg unigryw sy'n benodol i ysgolion
+      title: Torri costau a brwydro yn erbyn newid hinsawdd gyda'n hofferyn rheoli ynni
+    free_places:
+      description_html: |-
+        Mae cyllid gan ymddiriedolaethau a sefydliadau elusennol, cwmnïau ynni cymunedol a phartneriaid corfforaethol yn caniatáu i Sbarcynni ddarparu ei wasanaethau am ddim, neu ar gyfradd â chymhorthdal, i nifer cyfyngedig o ysgolion mewn rhai rhanbarthau yn y DU.
+        <br><br>
+        Mae Sbarcynni yn chwilio am arianwyr newydd i'n galluogi i gynnal ac ymestyn ein cynnig am ddim i fwy o ysgolion y wladwriaeth.
+        <br><br>
+        Byddwn yn rhoi gwybod i chi os ydych yn gymwys am le wedi’i ariannu pan fyddwch yn cofrestru eich ysgol, Ymddiriedolaeth neu Awdurdod Lleol.
+      title: Lleoedd am ddim
+    looking_for_info: Chwilio am ragor o wybodaeth?
+    per_school_per_year: Fesul ysgol fesul blwyddyn
+    prices:
+      large:
+        note: Gyda mwy na %{size_threshold} o ddisgyblion
+        price: "%{large_school_price} + TAW"
+        title: Ysgolion mawr
+      mat_and_la:
+        note: Isafswm o 5 ysgol ar yr un contract ynni
+        price: "%{mat_price} + TAW"
+        title: Ymddiriedolaeth Aml-Academi a chlystyrau Awdurdodau Lleol
+      small:
+        note: Gyda llai na %{size_threshold} o ddisgyblion
+        price: "%{small_school_price} + TAW"
+        title: Ysgolion bach
+    product_features:
+      categories:
+        - title: Addysg a chyngor
+          features:
+            - title_html: Mynediad at <a href="/activity_categories" target="_new">weithgareddau disgyblion</a> gydag adnoddau cefnogol i gynyddu llythrennedd ynni a charbon
+              starter: 140+
+              standard: 140+
+            - title_html: Canllawiau ar <a href="/intervention_type_groups" target="_new">weithredoedd arbed ynni</a> dan arweiniad oedolion, cost isel a dim cost
+              starter: 60+
+              standard: 60+
+            - title_html: <a href="/newsletters" target="_new">Cylchlythyrau</a> a <a href="https://blog.energysparks.uk" target="_new">phostiadau blog</a> rheolaidd gyda chyngor, syniadau ac awgrymiadau ar arbed ynni
+              starter_icon: circle-check
+              standard_icon: circle-check
+            - title_html: Cofnodwch weithgareddau a chamau arbed ynni i sgorio pwyntiau ar gyfer ein cystadlaethau ac adeiladu cofnod o ymyriadau
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Cymerwch ran yn ein cystadlaethau a'n digwyddiadau
+              starter_icon: xmark
+              standard_icon: circle-check
+        - title: Offeryn rheoli ynni
+          features:
+            - title_html: Cyfrifon defnyddwyr
+              starter_icon: xmark
+              standard: Diderfyn
+            - title_html: Mewnwelediadau a rhybuddion defnydd ynni a anfonir drwy e-bost
+              starter_icon: xmark
+              standard: Wythnosol
+            - title_html: Dadansoddiad ynni penodol i'r ysgol yn seiliedig ar ddata nwy, trydan a solar bob hanner awr
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Argymhellion arbed ynni wedi'u blaenoriaethu
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Dangosfwrdd oedolion gyda mewnwelediadau a rhybuddion allweddol
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Dangosfwrdd disgyblion gyda chymhariaethau defnydd ynni hawdd eu deall ac anogwyr i weithredu
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Siartiau defnydd ynni rhyngweithiol
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Dadansoddiad lefel mesurydd a siartiau
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Tracio cynnydd drwy osod targedau arbed ynni
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: <a href="/compare" target="_new">Cymharu'r defnydd</a> o ynni yn erbyn ysgolion tebyg
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Data integredig o'ch paneli solar
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Dangosfwrdd Ymddiriedolaeth Aml-Academi i ddarparu goruchwyliaeth rheoli ynni ar draws pob ysgol
+              starter_icon: xmark
+              standard_icon: circle-check
+        - title: Cofrestru a chefnogaeth
+          features:
+            - title_html: Rheolwr cyfrif ymroddedig
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Cymorth e-bost rheoli ynni
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Cefnogaeth e-bost addysg gynaliadwyedd
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: <a href="/training" target="_new">Hyfforddiant gweminar</a>
+              starter_icon: xmark
+              standard_icon: circle-check
+            - title_html: Cymorth gydag uwchraddio i fesuryddion bob hanner awr
+              starter_icon: xmark
+              standard: Ar gais
+        - title: Ffioedd ac opsiynau ychwanegol
+          features:
+            - title_html: Cyfrif preifat (mae cyfrifon safonol yn weladwy i'r cyhoedd i rymuso cymuned yr ysgol gyfan i ymgysylltu â'r mewnwelediadau data ynni)
+              starter_icon: xmark
+              standard_icon: sterling-sign
+              info: "%{private_account_fee} + TAW fesul ysgol y flwyddyn"
+            - title_html: Dadansoddi data ar gyfer mwy na 5 mesurydd
+              starter_icon: xmark
+              standard_icon: sterling-sign
+              info: "%{metering_fee}+ TAW fesul mesurydd"
+      standard:
+        description_html: Ar gael i ysgolion y DU sydd â chyfrif<br>Sbarcynni
+        title: Safonol
+      starter:
+        description_html: Ar gael i bob ysgol yn y DU heb<br>gyfrif Sbarcynni
+        title: Dechreuwr
+      title: Nodweddion cynnyrch

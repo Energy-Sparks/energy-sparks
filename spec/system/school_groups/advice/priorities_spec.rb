@@ -19,16 +19,16 @@ describe 'School group priorities page' do
 
     it 'has expected content in table' do
       within('#school-group-priorities') do
-        expect(page).to have_content('Spending too much money on heating')
-        expect(page).to have_content('£1,000')
-        expect(page).to have_content('1,100')
-        expect(page).to have_content('2,200')
+        expect(page).to have_text('Spending too much money on heating')
+        expect(page).to have_text('£1,000')
+        expect(page).to have_text('1,100')
+        expect(page).to have_text('2,200')
       end
     end
 
     it 'has expected priority count in the navbar' do
       within('#nav-section-priorities') do
-        expect(page).to have_content('(1)')
+        expect(page).to have_text('(1)')
       end
     end
 
@@ -41,8 +41,7 @@ describe 'School group priorities page' do
         let(:action_name) { I18n.t('school_groups.titles.priority_actions') }
         let(:expected_csv) do
           [['Fuel', 'Description', 'Schools', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)'],
-           ['Gas', 'Spending too much money on heating', '1', '2,200', '£1,000', '1,100']
-          ]
+           ['Gas', 'Spending too much money on heating', '1', '2,200', '£1,000', '1,100']]
         end
       end
     end
@@ -53,7 +52,7 @@ describe 'School group priorities page' do
       end
 
       it 'displays the expected explanation' do
-        expect(page).to have_content('This action has been identified as a priority for the following schools')
+        expect(page).to have_text('This action has been identified as a priority for the following schools')
       end
 
       it_behaves_like 'it contains the expected data table', sortable: false do
@@ -78,8 +77,7 @@ describe 'School group priorities page' do
           let(:action_name) { I18n.t('school_groups.titles.priority_actions') }
           let(:expected_csv) do
             [['Fuel', 'Description', 'School', 'Number of pupils', 'Floor area (m2)', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)'],
-             ['Gas', 'Spending too much money on heating', school.name, '10', '200.0', '2200', '£1000', '1100']
-            ]
+             ['Gas', 'Spending too much money on heating', school.name, '10', '200.0', '2200', '£1000', '1100']]
           end
         end
       end
@@ -159,8 +157,7 @@ describe 'School group priorities page' do
             let(:action_name) { I18n.t('school_groups.titles.priority_actions') }
             let(:expected_csv) do
               [['Fuel', 'Description', 'School', 'Cluster', 'Number of pupils', 'Floor area (m2)', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)'],
-               ['Gas', 'Spending too much money on heating', school.name, I18n.t('common.labels.not_set'), '10', '200.0', '2200', '£1000', '1100']
-              ]
+               ['Gas', 'Spending too much money on heating', school.name, I18n.t('common.labels.not_set'), '10', '200.0', '2200', '£1000', '1100']]
             end
           end
         end
@@ -236,8 +233,7 @@ describe 'School group priorities page' do
             let(:action_name) { I18n.t('school_groups.titles.priority_actions') }
             let(:expected_csv) do
               [['Fuel', 'Description', 'School', 'Number of pupils', 'Floor area (m2)', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)'],
-               ['Gas', 'Spending too much money on heating', school.name, '10', '200.0', '2200', '£1000', '1100']
-              ]
+               ['Gas', 'Spending too much money on heating', school.name, '10', '200.0', '2200', '£1000', '1100']]
             end
           end
         end

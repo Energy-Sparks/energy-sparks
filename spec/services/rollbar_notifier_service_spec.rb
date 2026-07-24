@@ -8,18 +8,19 @@ describe RollbarNotifierService do
     {
       'err' => 0,
       'result' => {
-        'job_id' => 95684744,
+        'job_id' => 95_684_744,
         'result' => {
-            'isSimpleSelect' => 'True',
-            'errors' => [],
-            'warnings' => ['No timestamp filter.'],
-            'executionTime' => 12.060364961624146,
-            'effectiveTimestamp' => 1613657827,
-            'rowcount' => 2,
-            'rows' => [[1607577513, 'Wimbledon High School', 564, 145051707090], [1607491119, 'Wimbledon High School', 564, 144931196345]],
-            'selectionColumns' => ['timestamp', 'body.trace.extra.school_name'],
-            'projectIds' => [293054, 293054],
-            'columns' => ['timestamp', 'body.trace.extra.school_name', 'item.counter', 'occurrence_id']
+          'isSimpleSelect' => 'True',
+          'errors' => [],
+          'warnings' => ['No timestamp filter.'],
+          'executionTime' => 12.060364961624146,
+          'effectiveTimestamp' => 1_613_657_827,
+          'rowcount' => 2,
+          'rows' => [[1_607_577_513, 'Wimbledon High School', 564, 145_051_707_090],
+                     [1_607_491_119, 'Wimbledon High School', 564, 144_931_196_345]],
+          'selectionColumns' => ['timestamp', 'body.trace.extra.school_name'],
+          'projectIds' => [293_054, 293_054],
+          'columns' => ['timestamp', 'body.trace.extra.school_name', 'item.counter', 'occurrence_id']
         }
       }
     }

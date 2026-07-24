@@ -28,12 +28,12 @@ RSpec.describe 'Dark sky areas', type: :system do
       end
 
       it 'can be viewed' do
-        expect(page).to have_content('Dark Sky Areas')
-        expect(page).to have_content title
-        expect(page).to have_content latitude
-        expect(page).to have_content longitude
-        expect(page).to have_content('Report')
-        expect(page).to have_content('CSV')
+        expect(page).to have_text('Dark Sky Areas')
+        expect(page).to have_text title
+        expect(page).to have_text latitude
+        expect(page).to have_text longitude
+        expect(page).to have_text('Report')
+        expect(page).to have_text('CSV')
       end
     end
   end

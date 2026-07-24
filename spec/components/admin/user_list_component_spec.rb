@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::UserListComponent, :include_url_helpers, type: :component do
+RSpec.describe Admin::UserListComponent, :include_application_helper, :include_url_helpers, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
@@ -51,7 +51,7 @@ RSpec.describe Admin::UserListComponent, :include_url_helpers, type: :component 
     let(:user) { create(:school_admin, :subscribed_to_alerts) }
     let(:users) { [user] }
 
-    let(:html) do
+    before do
       render_inline(component)
     end
 
@@ -60,13 +60,101 @@ RSpec.describe Admin::UserListComponent, :include_url_helpers, type: :component 
       let(:expected_id) { params[:id] }
     end
 
-    it 'shows expected columns' do
-      expect(html).to have_content(user.school.name)
-      expect(html).to have_link(user.name, href: user_path(user))
-      expect(html).to have_content(user.email)
-      expect(html).to have_content('School Admin')
-      expect(html).to have_content('Active')
-      expect(html).to have_content('English')
+    context 'without a group user' do
+      it_behaves_like 'it contains the expected data table', aligned: false do
+        let(:table_id) { '#user-list-table' }
+        let(:alerts) { nil }
+        let(:expected_header) do
+          [
+            ['Organisation', 'Name', 'Email', 'Role', 'Confirmed?', 'Last sign in', 'Alerts', 'Language', 'Status', '']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              user.school.name,
+              user.name,
+              user.email,
+              user.role.titleize,
+              y_n(user.confirmed?),
+              '-',
+              'Yes',
+              'English',
+              'Active',
+              'Edit Disable Delete'
+            ]
+          ]
+        end
+      end
+    end
+
+    context 'with a group user' do
+      let(:school_group) { create(:school_group) }
+
+      context 'with alerts on' do
+        let(:school) { create(:school, school_group:) }
+        let(:user) { create(:group_admin, :subscribed_to_alerts, school: school, school_group:) }
+
+        it_behaves_like 'it contains the expected data table', aligned: false do
+          let(:table_id) { '#user-list-table' }
+          let(:alerts) { nil }
+          let(:expected_header) do
+            [
+              ['Organisation', 'Name', 'Email', 'Role', 'Confirmed?', 'Last sign in', 'Alerts',
+               'Language', 'Status', '']
+            ]
+          end
+          let(:expected_rows) do
+            [
+              [
+                user.school_group.name,
+                user.name,
+                user.email,
+                user.role.titleize,
+                y_n(user.confirmed?),
+                '-',
+                'Yes (1)',
+                'English',
+                'Active',
+                'Edit Disable Delete'
+              ]
+            ]
+          end
+        end
+      end
+
+      context 'with alerts off' do
+        let(:school_group) { create(:school_group) }
+        let(:school) { create(:school, school_group:) }
+        let(:user) { create(:group_admin, school_group:) }
+
+        it_behaves_like 'it contains the expected data table', aligned: false do
+          let(:table_id) { '#user-list-table' }
+          let(:alerts) { nil }
+          let(:expected_header) do
+            [
+              ['Organisation', 'Name', 'Email', 'Role', 'Confirmed?', 'Last sign in', 'Alerts',
+               'Language', 'Status', '']
+            ]
+          end
+          let(:expected_rows) do
+            [
+              [
+                user.school_group.name,
+                user.name,
+                user.email,
+                user.role.titleize,
+                y_n(user.confirmed?),
+                '-',
+                'No',
+                'English',
+                'Active',
+                'Edit Disable Delete'
+              ]
+            ]
+          end
+        end
+      end
     end
   end
 end

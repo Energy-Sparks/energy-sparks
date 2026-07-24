@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Solar::RtoneVariantLoaderJob do
   include Rails.application.routes.url_helpers
+
   let!(:installation) { create(:solar_edge_installation) }
   let(:job)           { Solar::RtoneVariantLoaderJob.new }
 

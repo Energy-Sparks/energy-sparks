@@ -36,7 +36,7 @@ describe ChartDataValues do
 
   context 'with scatter chart' do
     let(:chart_type)  { :scatter }
-    let(:x_axis)      { [0.1, 0.2, 0.3]}
+    let(:x_axis)      { [0.1, 0.2, 0.3] }
 
     it 'doesnt translate series labels' do
       first_series = chart_data_values.series_data[0]
@@ -141,7 +141,7 @@ describe ChartDataValues do
   end
 
   context 'with limited y-axis choices' do
-    let(:y1_axis_choices) { [:kwh, :£] }
+    let(:y1_axis_choices) { %i[kwh £] }
     let(:chart_type) { :line }
     let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
 
@@ -182,8 +182,8 @@ describe ChartDataValues do
 
   describe '#label_point_and_max_for' do
     it 'returns the label, point format, and max value (if needed) for a given y2 data title' do
-      expect(chart_data_values.send(:label_point_and_max_for, Series::Temperature::TEMPERATURE)).to eq(['°C', '{point.y:.2f} °C',])
-      expect(chart_data_values.send(:label_point_and_max_for, 'Temperature')).to eq(['°C', '{point.y:.2f} °C',])
+      expect(chart_data_values.send(:label_point_and_max_for, Series::Temperature::TEMPERATURE)).to eq(['°C', '{point.y:.2f} °C'])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Temperature')).to eq(['°C', '{point.y:.2f} °C'])
       expect(chart_data_values.send(:label_point_and_max_for, Series::DegreeDays::DEGREEDAYS)).to eq(['<span>Degree<br />Days</span>', '{point.y:.2f} Degree Days'])
       expect(chart_data_values.send(:label_point_and_max_for, 'Degree Days')).to eq(['<span>Degree<br />Days</span>', '{point.y:.2f} Degree Days'])
       expect(chart_data_values.send(:label_point_and_max_for, Series::GridCarbon::GRIDCARBON)).to eq(['kg/kWh', '{point.y:.2f} kg/kWh', 0.5])
@@ -191,7 +191,7 @@ describe ChartDataValues do
       expect(chart_data_values.send(:label_point_and_max_for, Series::GasCarbon::GASCARBON)).to eq(['kg/kWh', '{point.y:.2f} kg/kWh', 0.5])
       expect(chart_data_values.send(:label_point_and_max_for, 'Carbon Intensity of Gas (kg/kWh)')).to eq(['kg/kWh', '{point.y:.2f} kg/kWh', 0.5])
       expect(chart_data_values.send(:label_point_and_max_for, 'Carbon Intensity')).to eq(['kg/kWh', '{point.y:.2f} kg/kWh', 0.5])
-      expect(chart_data_values.send(:label_point_and_max_for, 'Carbon')).to eq(['kWh', '{point.y:.2f} kWh',])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Carbon')).to eq(['kWh', '{point.y:.2f} kWh'])
       expect(chart_data_values.send(:label_point_and_max_for, chart_data_values.translated_series_item_for(Series::Irradiance::IRRADIANCE))).to eq(['<span>Brightness<br>of sunshine<br>W/m2</span>', '{point.y:.2f} W/m2'])
       expect(chart_data_values.send(:label_point_and_max_for, 'Solar Irradiance')).to eq(['<span>Brightness<br>of sunshine<br>W/m2</span>', '{point.y:.2f} W/m2'])
       expect(chart_data_values.send(:label_point_and_max_for, 'Solar')).to eq(['<span>Brightness<br>of sunshine<br>W/m2</span>', '{point.y:.2f} W/m2'])
@@ -228,9 +228,9 @@ describe ChartDataValues do
 
   describe '#trendline?' do
     it 'returns true if the data type starts with trendline' do
-      expect(chart_data_values.send(:trendline?, :"trendline_heating_occupied_all_days =-138.9T + 2684, r2 = 0.64, n=138")).to be_truthy
+      expect(chart_data_values.send(:trendline?, :'trendline_heating_occupied_all_days =-138.9T + 2684, r2 = 0.64, n=138')).to be_truthy
       expect(chart_data_values.send(:trendline?, 'trendline_heating_occupied_all_days =-138.9T + 2684, r2 = 0.64, n=138')).to be_truthy
-      expect(chart_data_values.send(:trendline?, :"Trendline heating occupied all days =-138.9T + 2684, r2 = 0.64, n=138")).to be_truthy
+      expect(chart_data_values.send(:trendline?, :'Trendline heating occupied all days =-138.9T + 2684, r2 = 0.64, n=138')).to be_truthy
       expect(chart_data_values.send(:trendline?, 'Trendline heating occupied all days =-138.9T + 2684, r2 = 0.64, n=138')).to be_truthy
       expect(chart_data_values.send(:trendline?, :not_a_trendline)).not_to be_truthy
       expect(chart_data_values.send(:trendline?, 'not a trendline either')).not_to be_truthy
@@ -311,8 +311,8 @@ describe ChartDataValues do
        ['Sat, 05 Feb 2022', 'Fri, 03 Feb 2023']]
     end
     let(:x_data) do
-      { 'electricity' => [77230.65592499996, 60319.60000000002, 32928.30656992425, 47040.43795703465],
-        'gas' => [21031.15421717688, 19455.429877914285, 15151.625158016384, 16335.345873486414] }
+      { 'electricity' => [77_230.65592499996, 60_319.60000000002, 32_928.30656992425, 47_040.43795703465],
+        'gas' => [21_031.15421717688, 19_455.429877914285, 15_151.625158016384, 16_335.345873486414] }
     end
     let(:config) do
       {
@@ -324,20 +324,20 @@ describe ChartDataValues do
         chart1_subtype: :stacked,
         y_axis_label: '£',
         config_name: :benchmark,
-        configuration: { :name => 'Annual Electricity and Gas Consumption Comparison',
-           :chart1_type => :bar,
-           :chart1_subtype => :stacked,
-           :meter_definition => :all,
-           :x_axis => :year,
-           :series_breakdown => :fuel,
-           :yaxis_units => :£,
-           :restrict_y1_axis => [:£, :co2],
-           :yaxis_scaling => :none,
-           :inject => :benchmark,
-           :y_axis_label => '£',
-           :min_combined_school_date => 'Sun, 13 Jan 2019',
-           :max_combined_school_date => 'Fri, 03 Feb 2023' },
-         name: :benchmark
+        configuration: { name: 'Annual Electricity and Gas Consumption Comparison',
+                         chart1_type: :bar,
+                         chart1_subtype: :stacked,
+                         meter_definition: :all,
+                         x_axis: :year,
+                         series_breakdown: :fuel,
+                         yaxis_units: :£,
+                         restrict_y1_axis: %i[£ co2],
+                         yaxis_scaling: :none,
+                         inject: :benchmark,
+                         y_axis_label: '£',
+                         min_combined_school_date: 'Sun, 13 Jan 2019',
+                         max_combined_school_date: 'Fri, 03 Feb 2023' },
+        name: :benchmark
       }
     end
     let(:transformations) { [] }
@@ -360,27 +360,27 @@ describe ChartDataValues do
 
     it 'overrides colours for benchmark and exemplar schools' do
       electricity_data = electricity_series[:data]
-      expect(electricity_data[0]).to be_within(0.1).of(77230.6)
-      expect(electricity_data[1]).to be_within(0.1).of(60319.6)
+      expect(electricity_data[0]).to be_within(0.1).of(77_230.6)
+      expect(electricity_data[1]).to be_within(0.1).of(60_319.6)
 
       exemplar = electricity_data[2]
-      expect(exemplar[:y]).to be_within(0.1).of(32928.3)
+      expect(exemplar[:y]).to be_within(0.1).of(32_928.3)
       expect(exemplar[:color]).to eq Colours.chart_electric_light
 
       benchmark = electricity_data[3]
-      expect(benchmark[:y]).to be_within(0.1).of(47040.4)
+      expect(benchmark[:y]).to be_within(0.1).of(47_040.4)
       expect(benchmark[:color]).to eq Colours.chart_electric_middle
 
       gas_data = gas_series[:data]
-      expect(gas_data[0]).to be_within(0.1).of(21031.1)
-      expect(gas_data[1]).to be_within(0.1).of(19455.4)
+      expect(gas_data[0]).to be_within(0.1).of(21_031.1)
+      expect(gas_data[1]).to be_within(0.1).of(19_455.4)
 
       exemplar = gas_data[2]
-      expect(exemplar[:y]).to be_within(0.1).of(15151.6)
+      expect(exemplar[:y]).to be_within(0.1).of(15_151.6)
       expect(exemplar[:color]).to eq Colours.chart_gas_light
 
       benchmark = gas_data[3]
-      expect(benchmark[:y]).to be_within(0.1).of(16335.3)
+      expect(benchmark[:y]).to be_within(0.1).of(16_335.3)
       expect(benchmark[:color]).to eq Colours.chart_gas_middle
     end
   end

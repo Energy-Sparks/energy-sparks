@@ -1,4 +1,4 @@
-require 'dashboard'
+# frozen_string_literal: true
 
 module Amr
   class ValidateAndPersistReadingsService

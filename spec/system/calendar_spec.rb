@@ -1,71 +1,104 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'calendar view', type: :system do
-  include_context 'calendar data'
+describe 'calendar view' do
+  context 'when an admin' do
+    before { sign_in(create(:admin)) }
 
-  context 'as an admin' do
-    let!(:admin) { create(:admin) }
+    context 'with the current events tab' do
+      include_context 'calendar data'
 
-    before do
-      create(:academic_year, calendar: calendar, start_date: Date.parse("01/01/#{Time.zone.today.year}"))
-      sign_in(admin)
-      visit calendar_path(calendar)
+      before do
+        visit current_events_calendar_path(calendar)
+        create(:academic_year, calendar: calendar, start_date: Date.parse("01/01/#{Time.zone.today.year}"))
+      end
+
+      it 'current events are rendered with just the events data table' do
+        expect(page).to have_text('Type')
+        expect(page).to have_text('Start Date')
+        expect(page).to have_text('End Date')
+        expect(page).to have_no_text(calendar.title)
+      end
     end
 
-    it 'current events are rendered with just the events data table' do
-      visit current_events_calendar_path(calendar)
-      expect(page).to have_content('Type')
-      expect(page).to have_content('Start Date')
-      expect(page).to have_content('End Date')
-      expect(page).not_to have_content(calendar.title)
-    end
+    describe 'using the calendar view', :js do
+      let(:term_start_date) { Date.new(Date.current.year) }
+      let(:inset_day_type) { create(:calendar_event_type, :inset_day_in_school) }
 
-    describe 'using the calendar view', js: true do
-      xit 'shows the calendar, allows an event to be added and deleted - flickering' do
-        click_on('Calendar view')
-        # wait for view to display
-        expect(page).to have_css('.calendar-legend')
+      before do
+        calendar
+        # need to do this after calendar so ID is greater in JSON generated as it shows those with higher
+        # IDs when multiple are present
+        inset_day_type
+        visit calendar_path(calendar)
+      end
 
-        # check title, etc
-        expect(page.has_content?(calendar.title)).to be true
-        expect(page.has_content?('January')).to be true
+      shared_examples_for 'it adds an event' do
+        let(:date) { Date.new(Date.current.year, 1, 15) }
 
-        # add an event on this day
-        fifteenth_jan = find('.calendar .day', text: '15', match: :first)
-        fifteenth_jan.click
+        def click_day
+          first('.calendar .day', text: date.day, wait: 10).click # flaking so added extra wait
+        end
 
-        expect(page).to have_content('New Calendar Event')
+        def wait_for_modal
+          expect(page).to have_css('#event-modal', visible: :hidden)
+        end
 
-        select 'Holiday - Holiday', from: 'calendar_event_calendar_event_type_id'
+        def new_calendar_event
+          calendar.calendar_events.where(start_date: date).first
+        end
 
-        # potential race condition here
-        expect { click_on('Save') }.to change { calendar.calendar_events.count }.by(1)
+        def create_event
+          click_day
+          expect(page).to have_text('New Calendar Event')
+          select('In school Inset Day - Training day in school', from: 'calendar_event_calendar_event_type_id')
+          click_on('Save Changes')
+          wait_for_modal
+          with_retry do
+            expect(new_calendar_event).to \
+              have_attributes(based_on_id: nil, end_date: date, calendar_event_type: inset_day_type)
+          end
+        end
 
-        # switch tab
-        click_on('Calendar view')
+        def delete_event
+          click_day
+          expect(page).to have_text('Edit Calendar Event')
+          click_on('Delete')
+          wait_for_modal
+          with_retry { expect(new_calendar_event).to be_nil }
+        end
 
-        # Wait until ajax call is back
-        assert_selector('td[style*="background-color"]')
+        it 'shows the calendar, allows an event to be added and deleted' do
+          click_on('Calendar view')
+          expect(page).to have_text(calendar.title)
+          expect(page).to have_text('January')
+          create_event
+          delete_event
+        end
+      end
 
-        fifteenth_jan.click
-        expect(page).to have_content('Edit Calendar Event')
-        click_on('Save')
+      context 'with a single calendar' do
+        let(:calendar) { create(:calendar, :with_terms_and_holidays, term_start_date:) }
 
-        # switch tab
-        click_on('Calendar view')
+        it_behaves_like 'it adds an event'
+      end
 
-        # Wait until ajax call is back
-        assert_selector('td[style*="background-color"]')
+      context 'with an inherited calendar' do
+        let(:calendar) do
+          calendar = create(:calendar, based_on: create(:calendar, :with_terms_and_holidays, term_start_date:))
+          CalendarResetService.new(calendar).reset
+          calendar
+        end
 
-        fifteenth_jan.click
-        expect(page).to have_content('Delete')
-
-        expect { click_on('Delete') }.to change { calendar.calendar_events.count }.by(-1)
+        it_behaves_like 'it adds an event'
       end
     end
   end
 
   describe 'a school admin can' do
+    include_context 'calendar data'
+
     let!(:school)           { create_active_school }
     let!(:school_admin)     { create(:school_admin, school: school) }
     let!(:school_calendar) do
@@ -93,7 +126,7 @@ RSpec.describe 'calendar view', type: :system do
       sign_in(school_admin)
       visit calendar_path(calendar)
 
-      expect(page).to have_content('You are not authorized')
+      expect(page).to have_text('You are not authorized')
     end
   end
 end

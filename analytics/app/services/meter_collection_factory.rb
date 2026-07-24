@@ -13,7 +13,8 @@ class MeterCollectionFactory
     @holidays = holidays
   end
 
-  def build(school_data:, amr_data: { electricity_meters: [], heat_meters: [] }, pseudo_meter_attributes: {}, meter_attributes_overrides: {})
+  def build(school_data:, amr_data: { electricity_meters: [], heat_meters: [] }, pseudo_meter_attributes: {},
+            meter_attributes_overrides: {})
     meter_collection = MeterCollection.new(Dashboard::School.new(school_data),
                                            temperatures: @temperatures,
                                            solar_pv: @solar_pv,
@@ -55,7 +56,7 @@ class MeterCollectionFactory
     attributes.merge!(meter_attributes_overrides[mpxn]) if meter_attributes_overrides.key?(mpxn)
     amr_data = AMRData.new(meter_data[:type])
     meter_data[:readings].each do |reading|
-      add_reading(meter_data[:identifier], amr_data, reading)
+      add_reading(amr_data, reading)
     end
     Dashboard::Meter.new(
       meter_collection: meter_collection,
@@ -69,11 +70,13 @@ class MeterCollectionFactory
     )
   end
 
-  def add_reading(meter_id, amr_data, reading)
+  def add_reading(amr_data, reading)
     if reading.is_a?(OneDayAMRReading)
       amr_data.add(reading.date, reading)
     else
-      amr_data.add(reading[:reading_date], OneDayAMRReading.new(meter_id, reading[:reading_date], reading[:type], reading[:substitute_date], reading[:upload_datetime], reading[:kwh_data_x48]))
+      amr_data.add(reading[:reading_date],
+                   OneDayAMRReading.new(reading[:reading_date], reading[:type], reading[:substitute_date], reading[:upload_datetime],
+                                        reading[:kwh_data_x48]))
     end
   end
 end

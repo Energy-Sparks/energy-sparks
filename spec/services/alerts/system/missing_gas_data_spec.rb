@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 describe Alerts::System::MissingGasData do
-  let(:school)  { create :school }
+  let(:school) { create(:school) }
+  let(:report) { Alerts::System::MissingGasData.new(school: school, aggregate_school: meter_collection, today: today, alert_type: nil).report }
   let(:today) { Time.zone.today }
 
   let(:gas_amr_data) { instance_double('gas-amr-data') }
-  let(:gas_aggregate_meter) { instance_double('gas-aggregated-meter')}
+  let(:gas_aggregate_meter) { instance_double('gas-aggregated-meter') }
 
   let(:meter_collection) { instance_double('meter-collection') }
 
@@ -13,8 +14,6 @@ describe Alerts::System::MissingGasData do
     allow(gas_amr_data).to receive(:end_date).and_return(gas_end_date)
     allow(gas_aggregate_meter).to receive(:amr_data).and_return(gas_amr_data)
   end
-
-  let(:report) { Alerts::System::MissingGasData.new(school: school, aggregate_school: meter_collection, today: today, alert_type: nil).report }
 
   context 'where the school has only gas data older than the last 2 weeks (late running meters)' do
     let(:gas_end_date) { today - 21.days }

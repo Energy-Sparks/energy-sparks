@@ -33,65 +33,79 @@ function loadCurrentEvents(dataUrl, currentEventsDiv) {
 }
 
 $(document).ready(function() {
-
   if ($("#calendar").length) {
+    const id = (id) => document.getElementById(id);
+    const q = (selector) => document.querySelector(selector);
 
     function editEvent(event) {
       const lastEvent =  event.events[event.events.length - 1];
-      const startDate = lastEvent.startDate;
-      const endDate = lastEvent.endDate;
-      const calendarId =  $('#event-modal').data('calendar');
-      $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events/' + lastEvent.id)
-      $('#event-modal input[name="_method"]').val('patch');
-
-      $("#calendar_event_calendar_event_type_id").val(lastEvent.calendarEventTypeId);
-
-      $('#event-modal input[name="calendar_event[start_date]"]').val(startDate.toLocaleDateString("en-GB"));
-      $('#event-modal input[name="calendar_event[end_date]"]').val(endDate.toLocaleDateString("en-GB"));
-
-      $('#delete_button').show();
-
-      $('#delete_button').on('click', function(event) {
-        event.preventDefault();
-
-        $('#event-modal input[name="_method"]').val('delete');
-        $('form#event_form').submit();
-      });
-      document.getElementById('event-model-new-title').style.display = 'none';
-      document.getElementById('event-model-edit-title').style.display = 'inherit';
-      document.getElementById('edit_button').style.display = 'none';
+      setupModal(lastEvent, lastEvent.startDate, lastEvent.endDate);
+      enableEdit(false, null);
       $('#event-modal').modal();
     }
 
     function newEvent(event) {
-      if (event.events.length) {
-          if (event.events.at(-1).basedOn) {
-            document.getElementById('edit_button').style.display = 'initial';
-            document.getElementById('edit_button').addEventListener('click', function(e) {
-              e.preventDefault();
-              editEvent(event);
-            });
-          } else {
-            return editEvent(event);
-          }
-      } else {
-        document.getElementById('edit_button').style.display = 'none';
+      switch (event.events.length) {
+        case 0:
+          enableEdit(false, null);
+          break
+        case 1:
+          enableEdit(true, event);
+          break;
+        default:
+          return editEvent(event);
       }
-
-      var calendarId =  $('#event-modal').data('calendar');
-      $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events')
-      $('#event-modal input[name="_method"]').val('post');
-
-      $("#calendar_event_calendar_event_type_id").val('');
-
-      $('#event-modal input[name="calendar_event[start_date]"]').val(event.date.toLocaleDateString("en-GB"));
-      $('#event-modal input[name="calendar_event[end_date]"]').val(event.date.toLocaleDateString("en-GB"));
-
-      $('#delete_button').hide();
-
-      document.getElementById('event-model-new-title').style.display = 'initial';
-      document.getElementById('event-model-edit-title').style.display = 'none';
+      setupModal(null, event.date, event.date);
       $('#event-modal').modal();
+    }
+
+    function setupModal(event, start_date, end_date) {
+      let method = 'post';
+      let action_suffix = '';
+      let event_type_id = '';
+      let new_title_display = 'initial';
+      let edit_title_display = 'none';
+      if (event) {
+        method = 'patch';
+        action_suffix = `/${event.id}`;
+        event_type_id = event.calendarEventTypeId;
+        new_title_display = 'none';
+        edit_title_display = 'initial';
+      }
+      const calendarId = id('event-modal').dataset.calendar;
+      id('event_form').setAttribute('action', `/calendars/${calendarId}/calendar_events${action_suffix}`);
+      setFormMethod(method)
+      id('calendar_event_calendar_event_type_id').value = event_type_id;
+      q('#event-modal input[name="calendar_event[start_date]"]').value = start_date.toLocaleDateString('en-GB');
+      q('#event-modal input[name="calendar_event[end_date]"]').value = end_date.toLocaleDateString('en-GB');
+      id('event-model-new-title').style.display = new_title_display;
+      id('event-model-edit-title').style.display = edit_title_display;
+      enableDelete(!!event);
+    }
+
+    function enableEdit(enable, event) {
+      const button = id('edit_button');
+      button.style.display = enable ? 'initial' : 'none';
+      if (enable) {
+        button.onclick = (e) => {
+          e.preventDefault();
+          editEvent(event);
+        };
+      }
+    }
+
+    function enableDelete(enable) {
+      const button = id('delete_button');
+      button.style.display = enable ? 'block' : 'none';
+      button.onclick = (e) => {
+        e.preventDefault();
+        setFormMethod('delete');
+        id('event_form').requestSubmit();
+      };
+    }
+
+    function setFormMethod(method) {
+      q('#event-modal input[name="_method"]').value = method;
     }
 
     $(function() {

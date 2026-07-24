@@ -12,7 +12,7 @@
         <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group) %>
       <% end %>
       <% callout.with_row do %>
-        <span class="badge badge-secondary">
+        <span class="badge text-bg-secondary">
           <%= t(@school_group.group_type, scope: 'school_groups.clusters.group_type') %>
         </span>
       <% end %>
@@ -34,6 +34,7 @@
           fuel_types: @fuel_types,
           metric: params[:metric],
           classes: 'mt-2',
+          show_status_note: can?(:view_school_status, @school_group),
           show_clusters: include_clusters?(@school_group)
         ) do |summary| %>
         <% summary.with_modal_link do %>
@@ -54,6 +55,10 @@
         school_group: @school_group,
         schools: @schools,
         classes: 'mt-4'
+      ) %>
+
+  <%= render ImpactReports::PromptComponent.new(
+        school_group: @school_group
       ) %>
 
   <%= render Dashboards::GroupSavingsPromptComponent.new(

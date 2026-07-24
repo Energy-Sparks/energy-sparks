@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   class DataSourcesController < AdminController
+    before_action :enable_bootstrap5
+
     load_and_authorize_resource
 
-    def show
-    end
+    def show; end
 
     def deliver
       @data_source = DataSource.find(params[:data_source_id])
@@ -13,7 +16,7 @@ module Admin
 
     def create
       if @data_source.save
-        redirect_to params[:redirect_back], notice: 'Data source was successfully created.'
+        redirect_to admin_data_sources_path, notice: 'Data source was successfully created.'
       else
         render :new
       end
@@ -21,7 +24,7 @@ module Admin
 
     def update
       if @data_source.update(data_source_params)
-        redirect_to params[:redirect_back], notice: 'Data source was successfully updated.'
+        redirect_to admin_data_source_path(@data_source), notice: 'Data source was successfully updated.'
       else
         render :edit
       end
@@ -32,10 +35,14 @@ module Admin
       redirect_to admin_data_sources_path, notice: 'Data source was successfully deleted.'
     end
 
+    def index
+      @data_sources = @data_sources.order(:name)
+    end
+
     private
 
     def data_source_params
-      params.require(:data_source).permit(:name, :organisation_type, :contact_name, :contact_email, :loa_contact_details, :data_prerequisites, :data_feed_type, :new_area_data_feed, :add_existing_data_feed, :data_issues_contact_details, :historic_data, :loa_expiry_procedure, :comments, :load_tariffs)
+      params.require(:data_source).permit(:name, :organisation_type, :owned_by_id, :contact_name, :contact_email, :loa_contact_details, :import_warning_days, :alerts_on, :alert_percentage_threshold, :data_prerequisites, :data_feed_type, :new_area_data_feed, :add_existing_data_feed, :data_issues_contact_details, :historic_data, :loa_expiry_procedure, :comments, :load_tariffs)
     end
   end
 end

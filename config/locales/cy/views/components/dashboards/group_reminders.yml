@@ -1,0 +1,13 @@
+cy:
+  components:
+    dashboards:
+      group_reminders:
+        clusters:
+          link: Rheoli clystyrau
+          note: Grwpiwch eich ysgolion yn glystyrau i gymharu ysgolion cysylltiedig yn haws
+        onboarding:
+          link: Gweld tudalen statws ysgol
+          note: Nid yw rhai o'r ysgolion yn eich grŵp wedi gorffen cofrestru eto
+        review_tariffs:
+          link: Rheoli tariffau
+          note: Adolygwch y tariffau ar gyfer eich grŵp fel y gallwn ddarparu amcangyfrifon cywir o arbedion posibl

@@ -1,35 +1,39 @@
+# frozen_string_literal: true
+
 module SchoolGroups
   class ComparisonReportListComponent < ViewComponent::Base
     renders_many :items, types: {
       link: {
-        renders: ->(*args, **kwargs, &block) do
-          SchoolGroups::ComparisonReportListComponent::Item.new(*args,
-                                                       **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group),
-                                                       &block)
+        renders: lambda do |*args, **kwargs, &block|
+          Item.new(*args,
+                   **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group, public: @public),
+                   &block)
         end,
         as: :link
       },
       named_sublist: {
-        renders: ->(*args, **kwargs, &block) do
-          SchoolGroups::ComparisonReportListComponent::NamedSubList.new(*args,
-                                                               **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group),
-                                                               &block)
+        renders: lambda do |*args, **kwargs, &block|
+          NamedSubList.new(*args,
+                           **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group),
+                           &block)
         end,
         as: :named
       },
       fuel_type_sublist: {
-        renders: ->(*args, **kwargs, &block) do
-          SchoolGroups::ComparisonReportListComponent::FuelSubList.new(*args,
-                                                              **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group),
-                                                              &block)
+        renders: lambda do |*args, **kwargs, &block|
+          FuelSubList.new(*args,
+                          **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group),
+                          &block)
         end,
         as: :fuel_types
       }
     }
 
-    def initialize(school_group:, fuel_types:, **_kwargs)
+    def initialize(school_group:, fuel_types:, public: true, **_kwargs)
+      super()
       @school_group = school_group
       @fuel_types = fuel_types
+      @public = public
     end
 
     erb_template <<-ERB
@@ -41,11 +45,13 @@ module SchoolGroups
     ERB
 
     class BaseItem < ViewComponent::Base
-      def initialize(link_text, fuel_types:, school_group:, fuel_type: nil, **_kwargs)
+      def initialize(link_text, fuel_types:, school_group:, fuel_type: nil, public: true)
+        super()
+        @link_text = link_text
         @fuel_types = fuel_types
         @school_group = school_group
-        @link_text = link_text
         @fuel_type = fuel_type
+        @public = public
       end
 
       # Only render if the item has no fuel type, or the expected fuel type is in the
@@ -55,17 +61,17 @@ module SchoolGroups
       end
 
       def report_exists?(report = @report)
-        Comparison::Report.exists?(key: report, public: true)
+        Comparison::Report.exists?(key: report, public: @public)
       end
 
       def report_path(report = @report)
-        helpers.compare_path(group: true, benchmark: report, school_group_ids: [@school_group.id])
+        helpers.comparisons_configurable_period_path(key: report, group: true, school_group_ids: [@school_group.id])
       end
     end
 
     class Item < BaseItem
-      def initialize(link_text, fuel_types:, school_group:, report:, fuel_type: nil)
-        super
+      def initialize(link_text, report:, **)
+        super(link_text, **)
         @report = report
       end
 
@@ -82,8 +88,8 @@ module SchoolGroups
     # Reports are keyed on report name, value is link text
     # e.g. { weekday_baseload_variation: 'Weekday variation' }
     class NamedSubList < BaseItem
-      def initialize(link_text, fuel_types:, school_group:, reports:, fuel_type: nil)
-        super
+      def initialize(link_text, reports:, **)
+        super(link_text, **)
         @reports = reports
       end
 
@@ -116,15 +122,16 @@ module SchoolGroups
     # OR, to allow overriding of labels:
     # e.g. { electricity: { report: :annual_electricity_use, label: 'Some label'} }
     class FuelSubList < BaseItem
-      def initialize(link_text, fuel_types:, school_group:, reports:)
-        super
+      def initialize(link_text, reports:, **)
+        super(link_text, **)
         @reports = reports
       end
 
       # Only render if fuel type matches and any of the reports are public
       # Has to check for both variations of the configuration
       def render?
-        return false unless (@fuel_types & @reports.keys).any?
+        return false unless @fuel_types.intersect?(@reports.keys)
+
         (@fuel_types & @reports.keys).filter_map do |fuel_type|
           config = @reports[fuel_type]
           if config.is_a?(Hash)

@@ -1,28 +1,30 @@
 require 'rails_helper'
 
 describe Charts::Annotate do
-  let(:school) { create :school }
+  subject(:subject_storage_heater) { Charts::Annotate.new(school: school, fuel_types: ['storage_heater']) }
 
-  let(:multi_fuel_intervention) { create :intervention_type, show_on_charts: true, fuel_type: FuelTypeable::VALID_FUEL_TYPES }
-  let(:gas_intervention) { create :intervention_type, show_on_charts: true, fuel_type: ['gas'] }
-  let(:electricity_intervention) { create :intervention_type, show_on_charts: true, fuel_type: ['electricity'] }
-  let(:solar_intervention) { create :intervention_type, show_on_charts: true, fuel_type: ['solar'] }
-  let(:storage_heater_intervention) { create :intervention_type, show_on_charts: true, fuel_type: ['storage_heater'] }
+  let(:school) { create(:school) }
 
-  let(:activity_category_multi_fuel) { create :activity_category }
-  let(:activity_type_multi_fuel) { create :activity_type, show_on_charts: true, fuel_type: FuelTypeable::VALID_FUEL_TYPES }
+  let(:multi_fuel_intervention) { create(:intervention_type, show_on_charts: true, fuel_type: FuelTypeable::VALID_FUEL_TYPES) }
+  let(:gas_intervention) { create(:intervention_type, show_on_charts: true, fuel_type: ['gas']) }
+  let(:electricity_intervention) { create(:intervention_type, show_on_charts: true, fuel_type: ['electricity']) }
+  let(:solar_intervention) { create(:intervention_type, show_on_charts: true, fuel_type: ['solar']) }
+  let(:storage_heater_intervention) { create(:intervention_type, show_on_charts: true, fuel_type: ['storage_heater']) }
+
+  let(:activity_category_multi_fuel) { create(:activity_category) }
+  let(:activity_type_multi_fuel) { create(:activity_type, show_on_charts: true, fuel_type: FuelTypeable::VALID_FUEL_TYPES) }
   let(:activity_multi_fuel) { create(:activity, activity_category: activity_category_multi_fuel, activity_type: activity_type_multi_fuel) }
-  let(:activity_category_gas) { create :activity_category }
-  let(:activity_type_gas) { create :activity_type, show_on_charts: true, fuel_type: ['gas'] }
+  let(:activity_category_gas) { create(:activity_category) }
+  let(:activity_type_gas) { create(:activity_type, show_on_charts: true, fuel_type: ['gas']) }
   let(:activity_gas) { create(:activity, activity_category: activity_category_gas, activity_type: activity_type_gas) }
-  let(:activity_category_electricity) { create :activity_category }
-  let(:activity_type_electricity) { create :activity_type, show_on_charts: true, fuel_type: ['electricity'] }
+  let(:activity_category_electricity) { create(:activity_category) }
+  let(:activity_type_electricity) { create(:activity_type, show_on_charts: true, fuel_type: ['electricity']) }
   let(:activity_electricity) { create(:activity, activity_category: activity_category_electricity, activity_type: activity_type_electricity) }
-  let(:activity_category_solar) { create :activity_category }
-  let(:activity_type_solar) { create :activity_type, show_on_charts: true, fuel_type: ['solar'] }
+  let(:activity_category_solar) { create(:activity_category) }
+  let(:activity_type_solar) { create(:activity_type, show_on_charts: true, fuel_type: ['solar']) }
   let(:activity_solar) { create(:activity, activity_category: activity_category_solar, activity_type: activity_type_solar) }
-  let(:activity_category_storage_heater) { create :activity_category }
-  let(:activity_type_storage_heater) { create :activity_type, show_on_charts: true, fuel_type: ['storage_heater'] }
+  let(:activity_category_storage_heater) { create(:activity_category) }
+  let(:activity_type_storage_heater) { create(:activity_type, show_on_charts: true, fuel_type: ['storage_heater']) }
   let(:activity_storage_heater) { create(:activity, activity_category: activity_category_storage_heater, activity_type: activity_type_storage_heater) }
 
   let(:subject_multi_fuel) { Charts::Annotate.new(school: school) }
@@ -32,8 +34,6 @@ describe Charts::Annotate do
   let(:subject_gas) { Charts::Annotate.new(school: school, fuel_types: ['gas']) }
 
   let(:subject_solar) { Charts::Annotate.new(school: school, fuel_types: ['solar']) }
-
-  subject(:subject_storage_heater) { Charts::Annotate.new(school: school, fuel_types: ['storage_heater']) }
 
   describe '#annotate_weekly' do
     let(:x_axis_categories) do
@@ -46,8 +46,8 @@ describe Charts::Annotate do
     end
 
     context 'with missing series' do
-      it { expect(subject_electricity.annotate_weekly([])).to be_nil}
-      it { expect(subject_electricity.annotate_weekly(nil)).to be_nil}
+      it { expect(subject_electricity.annotate_weekly([])).to be_nil }
+      it { expect(subject_electricity.annotate_weekly(nil)).to be_nil }
     end
 
     context 'with no intervention or activity observations' do
@@ -67,30 +67,25 @@ describe Charts::Annotate do
 
       context 'is set true' do
         it 'returns annotations that match the date ranges' do
-          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to match_array(
-            [
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              }
-            ]
-          )
+          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to contain_exactly({
+                                                                                             x_axis_category: '24 Jun 2018',
+                                                                                             event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                             id: intervention_observation_multi_fuel.id,
+                                                                                             date: Date.new(2018, 6, 24),
+                                                                                             icon: 'question-circle',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'intervention',
+                                                                                             url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '08 Jul 2018',
+                                                                                             event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                             id: activity_observation_multi_fuel.id,
+                                                                                             date: Date.new(2018, 7, 8),
+                                                                                             icon: 'clipboard-check',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'activity',
+                                                                                             url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                           })
         end
       end
 
@@ -121,306 +116,265 @@ describe Charts::Annotate do
 
       context 'for all fuel types' do
         it 'returns annotations that match the range' do
-          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to match_array(
-            [
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_gas.intervention_type.name,
-                id: intervention_observation_gas.id,
-                date: Date.new(2018, 6, 25),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_gas.id}"
-              },
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_electricity.intervention_type.name,
-                id: intervention_observation_electricity.id,
-                date: Date.new(2018, 6, 26),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
-              },
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_solar.intervention_type.name,
-                id: intervention_observation_solar.id,
-                date: Date.new(2018, 6, 27),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
-              },
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_storage_heater.intervention_type.name,
-                id: intervention_observation_storage_heater.id,
-                date: Date.new(2018, 6, 28),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_gas.activity.activity_category.name,
-                id: activity_observation_gas.id,
-                date: Date.new(2018, 7, 9),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_electricity.activity.activity_category.name,
-                id: activity_observation_electricity.id,
-                date: Date.new(2018, 7, 10),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_solar.activity.activity_category.name,
-                id: activity_observation_solar.id,
-                date: Date.new(2018, 7, 11),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_storage_heater.activity.activity_category.name,
-                id: activity_observation_storage_heater.id,
-                date: Date.new(2018, 7, 12),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
-              }
-            ]
-          )
+          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to contain_exactly({
+                                                                                             x_axis_category: '24 Jun 2018',
+                                                                                             event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                             id: intervention_observation_multi_fuel.id,
+                                                                                             date: Date.new(2018, 6, 24),
+                                                                                             icon: 'question-circle',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'intervention',
+                                                                                             url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '24 Jun 2018',
+                                                                                             event: intervention_observation_gas.intervention_type.name,
+                                                                                             id: intervention_observation_gas.id,
+                                                                                             date: Date.new(2018, 6, 25),
+                                                                                             icon: 'question-circle',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'intervention',
+                                                                                             url: "/schools/#{school.slug}/interventions/#{intervention_observation_gas.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '24 Jun 2018',
+                                                                                             event: intervention_observation_electricity.intervention_type.name,
+                                                                                             id: intervention_observation_electricity.id,
+                                                                                             date: Date.new(2018, 6, 26),
+                                                                                             icon: 'question-circle',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'intervention',
+                                                                                             url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '24 Jun 2018',
+                                                                                             event: intervention_observation_solar.intervention_type.name,
+                                                                                             id: intervention_observation_solar.id,
+                                                                                             date: Date.new(2018, 6, 27),
+                                                                                             icon: 'question-circle',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'intervention',
+                                                                                             url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '24 Jun 2018',
+                                                                                             event: intervention_observation_storage_heater.intervention_type.name,
+                                                                                             id: intervention_observation_storage_heater.id,
+                                                                                             date: Date.new(2018, 6, 28),
+                                                                                             icon: 'question-circle',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'intervention',
+                                                                                             url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '08 Jul 2018',
+                                                                                             event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                             id: activity_observation_multi_fuel.id,
+                                                                                             date: Date.new(2018, 7, 8),
+                                                                                             icon: 'clipboard-check',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'activity',
+                                                                                             url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '08 Jul 2018',
+                                                                                             event: activity_observation_gas.activity.activity_category.name,
+                                                                                             id: activity_observation_gas.id,
+                                                                                             date: Date.new(2018, 7, 9),
+                                                                                             icon: 'clipboard-check',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'activity',
+                                                                                             url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '08 Jul 2018',
+                                                                                             event: activity_observation_electricity.activity.activity_category.name,
+                                                                                             id: activity_observation_electricity.id,
+                                                                                             date: Date.new(2018, 7, 10),
+                                                                                             icon: 'clipboard-check',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'activity',
+                                                                                             url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '08 Jul 2018',
+                                                                                             event: activity_observation_solar.activity.activity_category.name,
+                                                                                             id: activity_observation_solar.id,
+                                                                                             date: Date.new(2018, 7, 11),
+                                                                                             icon: 'clipboard-check',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'activity',
+                                                                                             url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
+                                                                                           }, {
+                                                                                             x_axis_category: '08 Jul 2018',
+                                                                                             event: activity_observation_storage_heater.activity.activity_category.name,
+                                                                                             id: activity_observation_storage_heater.id,
+                                                                                             date: Date.new(2018, 7, 12),
+                                                                                             icon: 'clipboard-check',
+                                                                                             icon_color: '#FFFFFF',
+                                                                                             observation_type: 'activity',
+                                                                                             url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
+                                                                                           })
         end
       end
 
       context 'for a gas fuel type' do
         it 'returns annotations that match the range' do
-          expect(subject_gas.annotate_weekly(x_axis_categories)).to match_array(
-            [
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_gas.intervention_type.name,
-                id: intervention_observation_gas.id,
-                date: Date.new(2018, 6, 25),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_gas.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_gas.activity.activity_category.name,
-                id: activity_observation_gas.id,
-                date: Date.new(2018, 7, 9),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
-              }
-            ]
-          )
+          expect(subject_gas.annotate_weekly(x_axis_categories)).to contain_exactly({
+                                                                                      x_axis_category: '24 Jun 2018',
+                                                                                      event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                      id: intervention_observation_multi_fuel.id,
+                                                                                      date: Date.new(2018, 6, 24),
+                                                                                      icon: 'question-circle',
+                                                                                      icon_color: '#FFFFFF',
+                                                                                      observation_type: 'intervention',
+                                                                                      url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                    }, {
+                                                                                      x_axis_category: '24 Jun 2018',
+                                                                                      event: intervention_observation_gas.intervention_type.name,
+                                                                                      id: intervention_observation_gas.id,
+                                                                                      date: Date.new(2018, 6, 25),
+                                                                                      icon: 'question-circle',
+                                                                                      icon_color: '#FFFFFF',
+                                                                                      observation_type: 'intervention',
+                                                                                      url: "/schools/#{school.slug}/interventions/#{intervention_observation_gas.id}"
+                                                                                    }, {
+                                                                                      x_axis_category: '08 Jul 2018',
+                                                                                      event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                      id: activity_observation_multi_fuel.id,
+                                                                                      date: Date.new(2018, 7, 8),
+                                                                                      icon: 'clipboard-check',
+                                                                                      icon_color: '#FFFFFF',
+                                                                                      observation_type: 'activity',
+                                                                                      url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                    }, {
+                                                                                      x_axis_category: '08 Jul 2018',
+                                                                                      event: activity_observation_gas.activity.activity_category.name,
+                                                                                      id: activity_observation_gas.id,
+                                                                                      date: Date.new(2018, 7, 9),
+                                                                                      icon: 'clipboard-check',
+                                                                                      icon_color: '#FFFFFF',
+                                                                                      observation_type: 'activity',
+                                                                                      url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
+                                                                                    })
         end
       end
 
       context 'for an electricity fuel type' do
         it 'returns annotations that match the range' do
-          expect(subject_electricity.annotate_weekly(x_axis_categories)).to match_array(
-            [
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_electricity.intervention_type.name,
-                id: intervention_observation_electricity.id,
-                date: Date.new(2018, 6, 26),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_electricity.activity.activity_category.name,
-                id: activity_observation_electricity.id,
-                date: Date.new(2018, 7, 10),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
-              }
-            ]
-          )
+          expect(subject_electricity.annotate_weekly(x_axis_categories)).to contain_exactly({
+                                                                                              x_axis_category: '24 Jun 2018',
+                                                                                              event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                              id: intervention_observation_multi_fuel.id,
+                                                                                              date: Date.new(2018, 6, 24),
+                                                                                              icon: 'question-circle',
+                                                                                              icon_color: '#FFFFFF',
+                                                                                              observation_type: 'intervention',
+                                                                                              url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                            }, {
+                                                                                              x_axis_category: '24 Jun 2018',
+                                                                                              event: intervention_observation_electricity.intervention_type.name,
+                                                                                              id: intervention_observation_electricity.id,
+                                                                                              date: Date.new(2018, 6, 26),
+                                                                                              icon: 'question-circle',
+                                                                                              icon_color: '#FFFFFF',
+                                                                                              observation_type: 'intervention',
+                                                                                              url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
+                                                                                            }, {
+                                                                                              x_axis_category: '08 Jul 2018',
+                                                                                              event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                              id: activity_observation_multi_fuel.id,
+                                                                                              date: Date.new(2018, 7, 8),
+                                                                                              icon: 'clipboard-check',
+                                                                                              icon_color: '#FFFFFF',
+                                                                                              observation_type: 'activity',
+                                                                                              url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                            }, {
+                                                                                              x_axis_category: '08 Jul 2018',
+                                                                                              event: activity_observation_electricity.activity.activity_category.name,
+                                                                                              id: activity_observation_electricity.id,
+                                                                                              date: Date.new(2018, 7, 10),
+                                                                                              icon: 'clipboard-check',
+                                                                                              icon_color: '#FFFFFF',
+                                                                                              observation_type: 'activity',
+                                                                                              url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
+                                                                                            })
         end
       end
 
       context 'for a solar fuel type' do
         it 'returns annotations that match the range' do
-          expect(subject_solar.annotate_weekly(x_axis_categories)).to match_array(
-            [
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_solar.intervention_type.name,
-                id: intervention_observation_solar.id,
-                date: Date.new(2018, 6, 27),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_solar.activity.activity_category.name,
-                id: activity_observation_solar.id,
-                date: Date.new(2018, 7, 11),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
-              }
-            ]
-          )
+          expect(subject_solar.annotate_weekly(x_axis_categories)).to contain_exactly({
+                                                                                        x_axis_category: '24 Jun 2018',
+                                                                                        event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                        id: intervention_observation_multi_fuel.id,
+                                                                                        date: Date.new(2018, 6, 24),
+                                                                                        icon: 'question-circle',
+                                                                                        icon_color: '#FFFFFF',
+                                                                                        observation_type: 'intervention',
+                                                                                        url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                      }, {
+                                                                                        x_axis_category: '24 Jun 2018',
+                                                                                        event: intervention_observation_solar.intervention_type.name,
+                                                                                        id: intervention_observation_solar.id,
+                                                                                        date: Date.new(2018, 6, 27),
+                                                                                        icon: 'question-circle',
+                                                                                        icon_color: '#FFFFFF',
+                                                                                        observation_type: 'intervention',
+                                                                                        url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
+                                                                                      }, {
+                                                                                        x_axis_category: '08 Jul 2018',
+                                                                                        event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                        id: activity_observation_multi_fuel.id,
+                                                                                        date: Date.new(2018, 7, 8),
+                                                                                        icon: 'clipboard-check',
+                                                                                        icon_color: '#FFFFFF',
+                                                                                        observation_type: 'activity',
+                                                                                        url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                      }, {
+                                                                                        x_axis_category: '08 Jul 2018',
+                                                                                        event: activity_observation_solar.activity.activity_category.name,
+                                                                                        id: activity_observation_solar.id,
+                                                                                        date: Date.new(2018, 7, 11),
+                                                                                        icon: 'clipboard-check',
+                                                                                        icon_color: '#FFFFFF',
+                                                                                        observation_type: 'activity',
+                                                                                        url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
+                                                                                      })
         end
       end
 
       context 'for a storage heater fuel type' do
         it 'returns annotations that match the range' do
-          expect(subject_storage_heater.annotate_weekly(x_axis_categories)).to match_array(
-            [
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '24 Jun 2018',
-                event: intervention_observation_storage_heater.intervention_type.name,
-                id: intervention_observation_storage_heater.id,
-                date: Date.new(2018, 6, 28),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '08 Jul 2018',
-                event: activity_observation_storage_heater.activity.activity_category.name,
-                id: activity_observation_storage_heater.id,
-                date: Date.new(2018, 7, 12),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
-              }
-            ]
-          )
+          expect(subject_storage_heater.annotate_weekly(x_axis_categories)).to contain_exactly({
+                                                                                                 x_axis_category: '24 Jun 2018',
+                                                                                                 event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                                 id: intervention_observation_multi_fuel.id,
+                                                                                                 date: Date.new(2018, 6, 24),
+                                                                                                 icon: 'question-circle',
+                                                                                                 icon_color: '#FFFFFF',
+                                                                                                 observation_type: 'intervention',
+                                                                                                 url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                               }, {
+                                                                                                 x_axis_category: '24 Jun 2018',
+                                                                                                 event: intervention_observation_storage_heater.intervention_type.name,
+                                                                                                 id: intervention_observation_storage_heater.id,
+                                                                                                 date: Date.new(2018, 6, 28),
+                                                                                                 icon: 'question-circle',
+                                                                                                 icon_color: '#FFFFFF',
+                                                                                                 observation_type: 'intervention',
+                                                                                                 url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
+                                                                                               }, {
+                                                                                                 x_axis_category: '08 Jul 2018',
+                                                                                                 event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                                 id: activity_observation_multi_fuel.id,
+                                                                                                 date: Date.new(2018, 7, 8),
+                                                                                                 icon: 'clipboard-check',
+                                                                                                 icon_color: '#FFFFFF',
+                                                                                                 observation_type: 'activity',
+                                                                                                 url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                               }, {
+                                                                                                 x_axis_category: '08 Jul 2018',
+                                                                                                 event: activity_observation_storage_heater.activity.activity_category.name,
+                                                                                                 id: activity_observation_storage_heater.id,
+                                                                                                 date: Date.new(2018, 7, 12),
+                                                                                                 icon: 'clipboard-check',
+                                                                                                 icon_color: '#FFFFFF',
+                                                                                                 observation_type: 'activity',
+                                                                                                 url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
+                                                                                               })
         end
       end
     end
@@ -436,7 +390,7 @@ describe Charts::Annotate do
   end
 
   describe '#annotate_daily' do
-    subject { Charts::Annotate.new(school: school).annotate_daily(first_date, last_date)}
+    subject { Charts::Annotate.new(school: school).annotate_daily(first_date, last_date) }
 
     let(:first_date) { '24 Jun 2018' }
     let(:last_date) { '22 Jul 2018' }
@@ -454,30 +408,25 @@ describe Charts::Annotate do
       it 'is set true' do
         multi_fuel_intervention.update(show_on_charts: true)
         activity_type_multi_fuel.update(show_on_charts: true)
-        expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to match_array(
-          [
-            {
-              x_axis_category: '24-06-2018',
-              event: intervention_observation_multi_fuel.intervention_type.name,
-              id: intervention_observation_multi_fuel.id,
-              date: Date.new(2018, 6, 24),
-              icon: 'question-circle',
-              icon_color: '#FFFFFF',
-              observation_type: 'intervention',
-              url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-            },
-            {
-              x_axis_category: '08-07-2018',
-              event: activity_observation_multi_fuel.activity.activity_category.name,
-              id: activity_observation_multi_fuel.id,
-              date: Date.new(2018, 7, 8),
-              icon: 'clipboard-check',
-              icon_color: '#FFFFFF',
-              observation_type: 'activity',
-              url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-            }
-          ]
-        )
+        expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to contain_exactly({
+                                                                                              x_axis_category: '24-06-2018',
+                                                                                              event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                              id: intervention_observation_multi_fuel.id,
+                                                                                              date: Date.new(2018, 6, 24),
+                                                                                              icon: 'question-circle',
+                                                                                              icon_color: '#FFFFFF',
+                                                                                              observation_type: 'intervention',
+                                                                                              url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                            }, {
+                                                                                              x_axis_category: '08-07-2018',
+                                                                                              event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                              id: activity_observation_multi_fuel.id,
+                                                                                              date: Date.new(2018, 7, 8),
+                                                                                              icon: 'clipboard-check',
+                                                                                              icon_color: '#FFFFFF',
+                                                                                              observation_type: 'activity',
+                                                                                              url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                            })
       end
 
       it 'is set false' do
@@ -502,257 +451,223 @@ describe Charts::Annotate do
 
       context 'for all fuel types' do
         it 'returns annotations that match the range' do
-          expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to match_array(
-            [
-              {
-                x_axis_category: '24-06-2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '25-06-2018',
-                event: intervention_observation_gas.intervention_type.name,
-                id: intervention_observation_gas.id,
-                date: Date.new(2018, 6, 25),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_gas.id}"
-              },
-              {
-                x_axis_category: '26-06-2018',
-                event: intervention_observation_electricity.intervention_type.name,
-                id: intervention_observation_electricity.id,
-                date: Date.new(2018, 6, 26),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
-              },
-              {
-                x_axis_category: '27-06-2018',
-                event: intervention_observation_solar.intervention_type.name,
-                id: intervention_observation_solar.id,
-                date: Date.new(2018, 6, 27),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
-              },
-              {
-                x_axis_category: '28-06-2018',
-                event: intervention_observation_storage_heater.intervention_type.name,
-                id: intervention_observation_storage_heater.id,
-                date: Date.new(2018, 6, 28),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
-              },
-              {
-                x_axis_category: '08-07-2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '09-07-2018',
-                event: activity_observation_gas.activity.activity_category.name,
-                id: activity_observation_gas.id,
-                date: Date.new(2018, 7, 9),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
-              },
-              {
-                x_axis_category: '10-07-2018',
-                event: activity_observation_electricity.activity.activity_category.name,
-                id: activity_observation_electricity.id,
-                date: Date.new(2018, 7, 10),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
-              },
-              {
-                x_axis_category: '11-07-2018',
-                event: activity_observation_solar.activity.activity_category.name,
-                id: activity_observation_solar.id,
-                date: Date.new(2018, 7, 11),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
-              },
-              {
-                x_axis_category: '12-07-2018',
-                event: activity_observation_storage_heater.activity.activity_category.name,
-                id: activity_observation_storage_heater.id,
-                date: Date.new(2018, 7, 12),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
-              }
-            ]
-          )
+          expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to contain_exactly({
+                                                                                                x_axis_category: '24-06-2018',
+                                                                                                event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                                id: intervention_observation_multi_fuel.id,
+                                                                                                date: Date.new(2018, 6, 24),
+                                                                                                icon: 'question-circle',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'intervention',
+                                                                                                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '25-06-2018',
+                                                                                                event: intervention_observation_gas.intervention_type.name,
+                                                                                                id: intervention_observation_gas.id,
+                                                                                                date: Date.new(2018, 6, 25),
+                                                                                                icon: 'question-circle',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'intervention',
+                                                                                                url: "/schools/#{school.slug}/interventions/#{intervention_observation_gas.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '26-06-2018',
+                                                                                                event: intervention_observation_electricity.intervention_type.name,
+                                                                                                id: intervention_observation_electricity.id,
+                                                                                                date: Date.new(2018, 6, 26),
+                                                                                                icon: 'question-circle',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'intervention',
+                                                                                                url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '27-06-2018',
+                                                                                                event: intervention_observation_solar.intervention_type.name,
+                                                                                                id: intervention_observation_solar.id,
+                                                                                                date: Date.new(2018, 6, 27),
+                                                                                                icon: 'question-circle',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'intervention',
+                                                                                                url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '28-06-2018',
+                                                                                                event: intervention_observation_storage_heater.intervention_type.name,
+                                                                                                id: intervention_observation_storage_heater.id,
+                                                                                                date: Date.new(2018, 6, 28),
+                                                                                                icon: 'question-circle',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'intervention',
+                                                                                                url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '08-07-2018',
+                                                                                                event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                                id: activity_observation_multi_fuel.id,
+                                                                                                date: Date.new(2018, 7, 8),
+                                                                                                icon: 'clipboard-check',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'activity',
+                                                                                                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '09-07-2018',
+                                                                                                event: activity_observation_gas.activity.activity_category.name,
+                                                                                                id: activity_observation_gas.id,
+                                                                                                date: Date.new(2018, 7, 9),
+                                                                                                icon: 'clipboard-check',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'activity',
+                                                                                                url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '10-07-2018',
+                                                                                                event: activity_observation_electricity.activity.activity_category.name,
+                                                                                                id: activity_observation_electricity.id,
+                                                                                                date: Date.new(2018, 7, 10),
+                                                                                                icon: 'clipboard-check',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'activity',
+                                                                                                url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '11-07-2018',
+                                                                                                event: activity_observation_solar.activity.activity_category.name,
+                                                                                                id: activity_observation_solar.id,
+                                                                                                date: Date.new(2018, 7, 11),
+                                                                                                icon: 'clipboard-check',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'activity',
+                                                                                                url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
+                                                                                              }, {
+                                                                                                x_axis_category: '12-07-2018',
+                                                                                                event: activity_observation_storage_heater.activity.activity_category.name,
+                                                                                                id: activity_observation_storage_heater.id,
+                                                                                                date: Date.new(2018, 7, 12),
+                                                                                                icon: 'clipboard-check',
+                                                                                                icon_color: '#FFFFFF',
+                                                                                                observation_type: 'activity',
+                                                                                                url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
+                                                                                              })
         end
       end
 
       context 'electricity' do
         it 'returns annotations that match the range' do
-          expect(subject_electricity.annotate_daily(first_date, last_date)).to match_array(
-            [
-              {
-                x_axis_category: '24-06-2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '26-06-2018',
-                event: intervention_observation_electricity.intervention_type.name,
-                id: intervention_observation_electricity.id,
-                date: Date.new(2018, 6, 26),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
-              },
-              {
-                x_axis_category: '08-07-2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '10-07-2018',
-                event: activity_observation_electricity.activity.activity_category.name,
-                id: activity_observation_electricity.id,
-                date: Date.new(2018, 7, 10),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
-              }
-            ]
-          )
+          expect(subject_electricity.annotate_daily(first_date, last_date)).to contain_exactly({
+                                                                                                 x_axis_category: '24-06-2018',
+                                                                                                 event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                                 id: intervention_observation_multi_fuel.id,
+                                                                                                 date: Date.new(2018, 6, 24),
+                                                                                                 icon: 'question-circle',
+                                                                                                 icon_color: '#FFFFFF',
+                                                                                                 observation_type: 'intervention',
+                                                                                                 url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                               }, {
+                                                                                                 x_axis_category: '26-06-2018',
+                                                                                                 event: intervention_observation_electricity.intervention_type.name,
+                                                                                                 id: intervention_observation_electricity.id,
+                                                                                                 date: Date.new(2018, 6, 26),
+                                                                                                 icon: 'question-circle',
+                                                                                                 icon_color: '#FFFFFF',
+                                                                                                 observation_type: 'intervention',
+                                                                                                 url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
+                                                                                               }, {
+                                                                                                 x_axis_category: '08-07-2018',
+                                                                                                 event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                                 id: activity_observation_multi_fuel.id,
+                                                                                                 date: Date.new(2018, 7, 8),
+                                                                                                 icon: 'clipboard-check',
+                                                                                                 icon_color: '#FFFFFF',
+                                                                                                 observation_type: 'activity',
+                                                                                                 url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                               }, {
+                                                                                                 x_axis_category: '10-07-2018',
+                                                                                                 event: activity_observation_electricity.activity.activity_category.name,
+                                                                                                 id: activity_observation_electricity.id,
+                                                                                                 date: Date.new(2018, 7, 10),
+                                                                                                 icon: 'clipboard-check',
+                                                                                                 icon_color: '#FFFFFF',
+                                                                                                 observation_type: 'activity',
+                                                                                                 url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
+                                                                                               })
         end
       end
 
       context 'solar' do
         it 'returns annotations that match the range' do
-          expect(subject_solar.annotate_daily(first_date, last_date)).to match_array(
-            [
-              {
-                x_axis_category: '24-06-2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '27-06-2018',
-                event: intervention_observation_solar.intervention_type.name,
-                id: intervention_observation_solar.id,
-                date: Date.new(2018, 6, 27),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
-              },
-              {
-                x_axis_category: '08-07-2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '11-07-2018',
-                event: activity_observation_solar.activity.activity_category.name,
-                id: activity_observation_solar.id,
-                date: Date.new(2018, 7, 11),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
-              }
-            ]
-          )
+          expect(subject_solar.annotate_daily(first_date, last_date)).to contain_exactly({
+                                                                                           x_axis_category: '24-06-2018',
+                                                                                           event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                           id: intervention_observation_multi_fuel.id,
+                                                                                           date: Date.new(2018, 6, 24),
+                                                                                           icon: 'question-circle',
+                                                                                           icon_color: '#FFFFFF',
+                                                                                           observation_type: 'intervention',
+                                                                                           url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                         }, {
+                                                                                           x_axis_category: '27-06-2018',
+                                                                                           event: intervention_observation_solar.intervention_type.name,
+                                                                                           id: intervention_observation_solar.id,
+                                                                                           date: Date.new(2018, 6, 27),
+                                                                                           icon: 'question-circle',
+                                                                                           icon_color: '#FFFFFF',
+                                                                                           observation_type: 'intervention',
+                                                                                           url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
+                                                                                         }, {
+                                                                                           x_axis_category: '08-07-2018',
+                                                                                           event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                           id: activity_observation_multi_fuel.id,
+                                                                                           date: Date.new(2018, 7, 8),
+                                                                                           icon: 'clipboard-check',
+                                                                                           icon_color: '#FFFFFF',
+                                                                                           observation_type: 'activity',
+                                                                                           url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                         }, {
+                                                                                           x_axis_category: '11-07-2018',
+                                                                                           event: activity_observation_solar.activity.activity_category.name,
+                                                                                           id: activity_observation_solar.id,
+                                                                                           date: Date.new(2018, 7, 11),
+                                                                                           icon: 'clipboard-check',
+                                                                                           icon_color: '#FFFFFF',
+                                                                                           observation_type: 'activity',
+                                                                                           url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
+                                                                                         })
         end
       end
 
       context 'storage_heater' do
         it 'returns annotations that match the range' do
-          expect(subject_storage_heater.annotate_daily(first_date, last_date)).to match_array(
-            [
-              {
-                x_axis_category: '24-06-2018',
-                event: intervention_observation_multi_fuel.intervention_type.name,
-                id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 24),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
-              },
-              {
-                x_axis_category: '28-06-2018',
-                event: intervention_observation_storage_heater.intervention_type.name,
-                id: intervention_observation_storage_heater.id,
-                date: Date.new(2018, 6, 28),
-                icon: 'question-circle',
-                icon_color: '#FFFFFF',
-                observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
-              },
-              {
-                x_axis_category: '08-07-2018',
-                event: activity_observation_multi_fuel.activity.activity_category.name,
-                id: activity_observation_multi_fuel.id,
-                date: Date.new(2018, 7, 8),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
-              },
-              {
-                x_axis_category: '12-07-2018',
-                event: activity_observation_storage_heater.activity.activity_category.name,
-                id: activity_observation_storage_heater.id,
-                date: Date.new(2018, 7, 12),
-                icon: 'clipboard-check',
-                icon_color: '#FFFFFF',
-                observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
-              }
-            ]
-          )
+          expect(subject_storage_heater.annotate_daily(first_date, last_date)).to contain_exactly({
+                                                                                                    x_axis_category: '24-06-2018',
+                                                                                                    event: intervention_observation_multi_fuel.intervention_type.name,
+                                                                                                    id: intervention_observation_multi_fuel.id,
+                                                                                                    date: Date.new(2018, 6, 24),
+                                                                                                    icon: 'question-circle',
+                                                                                                    icon_color: '#FFFFFF',
+                                                                                                    observation_type: 'intervention',
+                                                                                                    url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+                                                                                                  }, {
+                                                                                                    x_axis_category: '28-06-2018',
+                                                                                                    event: intervention_observation_storage_heater.intervention_type.name,
+                                                                                                    id: intervention_observation_storage_heater.id,
+                                                                                                    date: Date.new(2018, 6, 28),
+                                                                                                    icon: 'question-circle',
+                                                                                                    icon_color: '#FFFFFF',
+                                                                                                    observation_type: 'intervention',
+                                                                                                    url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
+                                                                                                  }, {
+                                                                                                    x_axis_category: '08-07-2018',
+                                                                                                    event: activity_observation_multi_fuel.activity.activity_category.name,
+                                                                                                    id: activity_observation_multi_fuel.id,
+                                                                                                    date: Date.new(2018, 7, 8),
+                                                                                                    icon: 'clipboard-check',
+                                                                                                    icon_color: '#FFFFFF',
+                                                                                                    observation_type: 'activity',
+                                                                                                    url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+                                                                                                  }, {
+                                                                                                    x_axis_category: '12-07-2018',
+                                                                                                    event: activity_observation_storage_heater.activity.activity_category.name,
+                                                                                                    id: activity_observation_storage_heater.id,
+                                                                                                    date: Date.new(2018, 7, 12),
+                                                                                                    icon: 'clipboard-check',
+                                                                                                    icon_color: '#FFFFFF',
+                                                                                                    observation_type: 'activity',
+                                                                                                    url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
+                                                                                                  })
         end
       end
     end

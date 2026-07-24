@@ -41,13 +41,13 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let(:procurement_route_3) { create(:procurement_route) }
 
     let!(:funder) { Funder.create(name: 'Funder 1') }
-    let!(:funder_2) { Funder.create(name: 'Funder 2') }
 
     let(:school_group) { create(:school_group) }
 
     let!(:school_1) do
       school = create(:school,
                       visible: true,
+                      data_sharing: :within_group,
                       school_onboarding: school_onboarding,
                       school_group: school_group,
                       calendar: calendar,
@@ -57,10 +57,27 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
                       local_authority_area_group: create(:school_group, :local_authority_area),
                       local_authority_area: local_authority_area,
                       percentage_free_school_meals: 50,
-                      funder: funder,
                       removal_date: nil)
       school.project_groups << create(:school_group, :project)
+      school.organisation_group = school_group
+      contract = create(:commercial_contract, contract_holder: school_group)
+      create(:commercial_licence, contract:, school:)
       create(:staff, school:)
+
+      # for future funding summary
+      calendar = create(:national_calendar, title: 'England and Wales')
+      academic_year = create(:academic_year, calendar:)
+      create(:commercial_licence, contract:, school:)
+      next_academic_year = create(:academic_year,
+                                  calendar:,
+                                  start_date: academic_year.end_date + 1.day,
+                                  end_date: academic_year.end_date + 12.months)
+      create(:commercial_licence,
+             contract:, school:,
+             status: :confirmed,
+             start_date: next_academic_year.start_date,
+             end_date: next_academic_year.end_date)
+
       school
     end
 
@@ -83,7 +100,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     # only basic data, helps to catch errors checking for nils
     let!(:school_2) do
       create(:school, visible: true, active: false, removal_date: nil, archived_date: Time.zone.today,
-                      school_group: create(:school_group), funder: funder_2)
+                      school_group: create(:school_group))
     end
     # not included in export
     let!(:not_visible) do
@@ -104,15 +121,20 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       expect(school_1.archived?).to be(false)
       expect(school_2.archived?).to be(true)
 
+      current_licence = school_1.licences.current.by_start_date.first
+
       expect(csv.lines[1].chomp).to eq [
         school_1.school_group.name,
         school_1.name,
+        school_1.urn,
         'Primary',
         'false',
         'true',
+        school_1.data_sharing.humanize,
         school_1.school_onboarding.onboarding_completed_on.iso8601,
         school_1.school_onboarding.first_made_data_enabled.iso8601,
-        funder.name,
+        'MAT funding',
+        'MAT funding',
         school_1.funding_status.humanize,
         'AB1 2CD',
         'England',
@@ -142,17 +164,26 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil,
         solar_meter.procurement_route.organisation_name,
         nil,
-        nil
+        nil,
+        current_licence.contract.contract_holder.name,
+        current_licence.contract.start_date,
+        current_licence.contract.end_date,
+        current_licence.start_date,
+        current_licence.end_date,
+        current_licence.contract.product.name
       ].join(',')
       expect(csv.lines[2].chomp).to eq [
         school_2.school_group.name,
         school_2.name,
+        school_2.urn,
         'Primary',
         'true',
         'true',
+        school_2.data_sharing.humanize,
         nil,
         nil,
-        school_2.funder.name,
+        nil,
+        nil,
         school_2.funding_status.humanize,
         'AB1 2CD',
         'England',
@@ -178,6 +209,12 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil,
         nil,
         nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil, # Current Contract Holder
         nil,
         nil,
         nil,

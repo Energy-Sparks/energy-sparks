@@ -9,6 +9,8 @@ module Admin
       include Columns
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
+
+      before_action :enable_bootstrap5
       before_action :set_metadata
 
       layout 'admin_reports'
@@ -20,8 +22,7 @@ module Admin
             @columns = columns.filter(&:display_html)
           end
           format.csv do
-            send_data(csv_report(@columns, @results),
-                      filename: EnergySparks::Filenames.csv(controller_name))
+            send_data(csv_report(@columns, @results), filename: EnergySparks::Filenames.csv(controller_name))
           end
         end
       end
@@ -60,7 +61,7 @@ module Admin
                      ->(meter) { meter.school&.school_group&.name },
                      ->(meter, csv) { csv && link_to(csv, school_group_path(meter.school&.school_group)) }),
           Column.new(:admin,
-                     ->(meter) { meter.school&.school_group&.default_issues_admin_user&.name }),
+                     ->(meter) { meter.school&.default_issues_admin_user&.name }),
           Column.new(:school,
                      ->(meter) { meter.school.name },
                      ->(meter, csv) { link_to(csv, school_path(meter.school)) }),

@@ -5,10 +5,10 @@ RSpec.describe 'gas out of hours advice page', type: :system do
   let(:reading_end_date) { Time.zone.today }
   let(:school) do
     create(:school, :with_basic_configuration_single_meter_and_tariffs,
-      fuel_type: :gas,
-      reading_start_date: reading_start_date,
-      reading_end_date: reading_end_date,
-      calendar: create(:calendar, calendar_type: :school)) # create empty calendar initially, see nested tests
+           fuel_type: :gas,
+           reading_start_date: reading_start_date,
+           reading_end_date: reading_end_date,
+           calendar: create(:calendar, calendar_type: :school)) # create empty calendar initially, see nested tests
   end
 
   before { create(:advice_page, key: :gas_out_of_hours, fuel_type: :gas) }
@@ -41,11 +41,11 @@ RSpec.describe 'gas out of hours advice page', type: :system do
       it_behaves_like 'a gas out of hours advice page tab', tab: 'Insights'
 
       it 'includes introduction' do
-        expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.insights.title'))
+        expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.insights.title'))
       end
 
       it 'includes recommendations section' do
-        expect(page).to have_content(I18n.t('advice_pages.insights.recommendations.title'))
+        expect(page).to have_text(I18n.t('advice_pages.insights.recommendations.title'))
       end
 
       context 'with all zero readings' do
@@ -53,16 +53,16 @@ RSpec.describe 'gas out of hours advice page', type: :system do
 
         let(:school) do
           create(:school, :with_basic_configuration_single_meter_and_tariffs,
-            fuel_type: :gas,
-            reading_start_date: reading_start_date,
-            reading_end_date: reading_end_date,
-            reading: 0.0,
-            calendar: create(:calendar, calendar_type: :school)) # create empty calendar initially, see nested tests
+                 fuel_type: :gas,
+                 reading_start_date: reading_start_date,
+                 reading_end_date: reading_end_date,
+                 reading: 0.0,
+                 calendar: create(:calendar, calendar_type: :school)) # create empty calendar initially, see nested tests
         end
 
         it 'displays the no usage message' do
-          expect(page).to have_content(I18n.t('advice_pages.no_usage.title'))
-          expect(page).to have_content(reading_start_date.to_fs(:es_short))
+          expect(page).to have_text(I18n.t('advice_pages.no_usage.title'))
+          expect(page).to have_text(reading_start_date.to_fs(:es_short))
         end
       end
 
@@ -71,12 +71,12 @@ RSpec.describe 'gas out of hours advice page', type: :system do
 
         it 'displays not enough data message' do
           data_available_from = reading_start_date + 6.days
-          expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_fs(:es_short)}")
+          expect(page).to have_text("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_fs(:es_short)}")
         end
 
         it 'does not have other sections' do
-          expect(page).not_to have_content(I18n.t('advice_pages.gas_out_of_hours.insights.your_out_of_hours_usage_title'))
-          expect(page).not_to have_content(I18n.t('advice_pages.gas_out_of_hours.insights.comparison.title'))
+          expect(page).to have_no_text(I18n.t('advice_pages.gas_out_of_hours.insights.your_out_of_hours_usage_title'))
+          expect(page).to have_no_text(I18n.t('advice_pages.gas_out_of_hours.insights.comparison.title'))
         end
       end
 
@@ -84,31 +84,31 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         let(:reading_start_date) { 30.days.ago }
 
         it 'includes a summary of available data' do
-          expect(page).to have_content("Since #{reading_start_date.to_fs(:es_short)}, 100&percnt; of your gas was used when the school was closed")
+          expect(page).to have_text("Since #{reading_start_date.to_fs(:es_short)}, 100&percnt; of your gas was used when the school was closed")
         end
 
         it 'previews the comparison with other schools' do
-          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.insights.comparison.title'))
+          expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.insights.comparison.title'))
 
-          expect(page).to have_content('As we have less than a years worth of data for your school we are not yet able to benchmark your out of hours gas consumption against other schools.')
+          expect(page).to have_text('As we have less than a years worth of data for your school we are not yet able to benchmark your out of hours gas consumption against other schools.')
 
           well_managed = BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_GAS * 100
 
-          expect(page).to have_content("In a year a well managed school will use less than #{well_managed.to_i}&percnt; of its gas out of hours.")
+          expect(page).to have_text("In a year a well managed school will use less than #{well_managed.to_i}&percnt; of its gas out of hours.")
 
-          expect(page).not_to have_css('#comparison-gas-out-of-hours')
-          expect(page).not_to have_link('compare with other schools in your group')
+          expect(page).to have_no_css('#comparison-gas-out-of-hours')
+          expect(page).to have_no_link('compare with other schools in your group')
         end
       end
 
       context 'with more than a years meter data' do
         it 'includes a summary of whole year' do
-          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.insights.your_out_of_hours_usage_title'))
-          expect(page).to have_content('Over the last year 100&percnt; of your gas was used when the school was closed')
+          expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.insights.your_out_of_hours_usage_title'))
+          expect(page).to have_text('Over the last year 100&percnt; of your gas was used when the school was closed')
         end
 
         it 'includes a comparison with other schools' do
-          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.insights.comparison.title'))
+          expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.insights.comparison.title'))
           expect(page).to have_css('#comparison-gas-out-of-hours')
           expect(page).to have_link('compare with other schools in your group')
         end
@@ -121,7 +121,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
       it_behaves_like 'a gas out of hours advice page tab', tab: 'Analysis'
 
       it 'includes introduction' do
-        expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.summary'))
+        expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.analysis.summary'))
       end
 
       context 'with very limited meter data' do
@@ -129,7 +129,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
 
         it 'displays not enough data message' do
           data_available_from = reading_start_date + 6.days
-          expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_fs(:es_short)}")
+          expect(page).to have_text("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_fs(:es_short)}")
         end
       end
 
@@ -137,10 +137,10 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         let(:reading_start_date) { 20.days.ago }
 
         it 'has by day section' do
-          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
+          expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
           expect(page).to have_css('#chart_wrapper_gas_by_day_of_week_tolerant')
           # not enough data for this
-          expect(page).not_to have_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
+          expect(page).to have_no_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
         end
       end
 
@@ -149,28 +149,28 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         let(:reading_end_date)   { Date.new(2024, 1, 31) }
 
         it 'has last year section' do
-          expect(page).to have_content(I18n.t('advice_pages.gas_long_term.analysis.recent_trend.title'))
-          expect(page).not_to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title'))
+          expect(page).to have_text(I18n.t('advice_pages.gas_long_term.analysis.recent_trend.title'))
+          expect(page).to have_no_text(I18n.t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title'))
           expect(page).to have_css('#chart_wrapper_daytype_breakdown_gas_tolerant')
           expect(page).to have_css('#gas-out-of-hours-table')
         end
 
         it 'has by day section' do
-          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
+          expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
           expect(page).to have_css('#chart_wrapper_gas_by_day_of_week_tolerant')
           # not enough data for this
-          expect(page).not_to have_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
+          expect(page).to have_no_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
         end
 
         # 8 weekend days, usage from factorybot is 0.5 kWh per half-hour. So 8 * 48 * 0.5 = 192 kWh
         it 'has potential savings figures in by day section' do
-          expect(page).to have_content('By eliminating weekend gas consumption at your school you could save up to £19 (190kWh) per year.')
+          expect(page).to have_text('By eliminating weekend gas consumption at your school you could save up to £19 (190kWh) per year.')
         end
 
         it 'does not have a holiday usage section' do
-          expect(page).not_to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
-          expect(page).not_to have_css('#chart_wrapper_management_dashboard_group_by_week_gas')
-          expect(page).not_to have_css('#holiday-usage-table')
+          expect(page).to have_no_text(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
+          expect(page).to have_no_css('#chart_wrapper_management_dashboard_group_by_week_gas')
+          expect(page).to have_no_css('#holiday-usage-table')
         end
 
         context 'with school holidays defined' do
@@ -178,16 +178,15 @@ RSpec.describe 'gas out of hours advice page', type: :system do
             # create a number of holidays outside usage period
             let(:school) do
               create(:school, :with_basic_configuration_single_meter_and_tariffs,
-                fuel_type: :gas,
-                reading_start_date: reading_start_date, reading_end_date: reading_end_date,
-                calendar: create(:school_calendar, :with_terms_and_holidays, term_start_date: Date.new(2022, 1, 1))
-              )
+                     fuel_type: :gas,
+                     reading_start_date: reading_start_date, reading_end_date: reading_end_date,
+                     calendar: create(:school_calendar, :with_terms_and_holidays, term_start_date: Date.new(2022, 1, 1)))
             end
 
             it 'does not have holiday usage section' do
-              expect(page).not_to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
-              expect(page).not_to have_css('#chart_wrapper_management_dashboard_group_by_week_gas')
-              expect(page).not_to have_css('#holiday-usage-table')
+              expect(page).to have_no_text(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
+              expect(page).to have_no_css('#chart_wrapper_management_dashboard_group_by_week_gas')
+              expect(page).to have_no_css('#holiday-usage-table')
             end
           end
 
@@ -198,16 +197,16 @@ RSpec.describe 'gas out of hours advice page', type: :system do
               # but ensure there's one holiday within the period to confirm table displays
               create(:calendar_event_holiday, calendar: calendar, start_date: Date.new(2024, 1, 6), end_date: Date.new(2024, 1, 13))
               create(:school, :with_basic_configuration_single_meter_and_tariffs,
-                fuel_type: :gas,
-                reading_start_date: reading_start_date,
-                reading_end_date: reading_end_date,
-                calendar: calendar)
+                     fuel_type: :gas,
+                     reading_start_date: reading_start_date,
+                     reading_end_date: reading_end_date,
+                     calendar: calendar)
             end
 
             it 'has holiday usage section' do
               travel_to reading_end_date do
                 refresh
-                expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
+                expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
                 expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_gas')
                 expect(page).to have_css('#holiday-usage-table')
               end
@@ -220,14 +219,14 @@ RSpec.describe 'gas out of hours advice page', type: :system do
         let(:reading_start_date) { 500.days.ago }
 
         it 'has last year section' do
-          expect(page).not_to have_content(I18n.t('advice_pages.gas_long_term.analysis.recent_trend.title'))
-          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title'))
+          expect(page).to have_no_text(I18n.t('advice_pages.gas_long_term.analysis.recent_trend.title'))
+          expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title'))
           expect(page).to have_css('#chart_wrapper_daytype_breakdown_gas_tolerant')
           expect(page).to have_css('#gas-out-of-hours-table')
         end
 
         it 'has by day section' do
-          expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
+          expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.title'))
           expect(page).to have_css('#chart_wrapper_gas_by_day_of_week_tolerant')
         end
 
@@ -235,14 +234,14 @@ RSpec.describe 'gas out of hours advice page', type: :system do
           # create a number of holidays inside usage period
           let(:school) do
             create(:school, :with_basic_configuration_single_meter_and_tariffs,
-              fuel_type: :gas,
-              reading_start_date: reading_start_date)
+                   fuel_type: :gas,
+                   reading_start_date: reading_start_date)
           end
 
           it 'has a holiday usage section' do
             travel_to school.calendar.holidays.last.end_date do
               refresh
-              expect(page).to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
+              expect(page).to have_text(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
               expect(page).to have_css('#chart_wrapper_alert_group_by_week_gas_14_months')
               expect(page).to have_css('#holiday-usage-table')
             end

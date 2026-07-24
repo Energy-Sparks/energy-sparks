@@ -9,14 +9,14 @@ describe 'School group alerts page' do
 
     it 'has expected alert count in the navbar' do
       within('#nav-section-alerts') do
-        expect(page).to have_content('(1)')
+        expect(page).to have_text('(1)')
       end
     end
 
     it 'displays the grouped alerts' do
       within('#advice-alerts') do
-        expect(html).to have_content(dashboard_alert_content.group_dashboard_title.to_plain_text)
-        expect(html).to have_content(I18n.t('advice_pages.alerts.groups.advice'))
+        expect(html).to have_text(dashboard_alert_content.group_dashboard_title.to_plain_text)
+        expect(html).to have_text(I18n.t('advice_pages.alerts.groups.advice'))
       end
     end
   end

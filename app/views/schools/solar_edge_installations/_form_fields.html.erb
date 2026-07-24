@@ -1,0 +1,9 @@
+<%= form.input :site_id, as: :string, disabled: installation.persisted?, label: 'Site id',
+                         hint: 'The unique site id in the Solar Edge system. ' \
+                               'This cannot be changed once the installation has been created.' %>
+<%= form.input :mpan, as: :string, disabled: installation.persisted?, label: 'MPAN or unique id',
+                      hint: 'When a school has a single array, use the MPAN of the mains meter. ' \
+                            'Otherwise use the site id. This will ensure the solar meters are correctly generated. ' \
+                            'This cannot be changed once the installation has been created.' %>
+<%= form.input :api_key, as: :string, label: 'API key',
+                         hint: 'The code that authorises us to access data for this site.' %>

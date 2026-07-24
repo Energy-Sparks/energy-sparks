@@ -1,0 +1,52 @@
+.activity-overview {
+  padding-bottom: 20px;
+}
+
+.activity-form {
+  label {
+    font-weight: bold;
+  }
+}
+
+.select2-container--bootstrap .select2-results__group {
+  color: $body-color;
+  font-size: $f4;
+}
+
+.select2-container {
+  width: 100% !important;
+}
+
+.select2-selection--multiple:after{
+  content:"";
+  position:absolute;
+  right:10px;
+  top:15px;
+  width:0;
+  height:0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid $grey-dark;
+}
+
+.select2-results__options {
+  max-height: 300px !important;
+}
+
+img.activity-card-img {
+  min-height: 150px;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+img.activity-card-img-thumbnail {
+  min-height: 100px;
+  max-height: 100px;
+  object-fit: contain;
+}
+
+.activities-deck {
+  a {
+    text-decoration: none;
+  }
+}

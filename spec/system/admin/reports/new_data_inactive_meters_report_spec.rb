@@ -9,15 +9,16 @@ describe 'New data for inactive meters', :include_application_helper do
 
   let!(:gas_meter) do
     meter = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
-           active: active,
-           school: create(:school, :with_school_group),
-           start_date: 20.days.ago,
-           end_date: latest_reading_date,
-           admin_meter_status: admin_meter_status,
-           data_source: create(:data_source, import_warning_days: 5),
-           log: create(:amr_data_feed_import_log,
-                       amr_data_feed_config: create(:amr_data_feed_config),
-                       import_time: Time.zone.today))
+                   active: active,
+                   school: create(:school, :with_school_group),
+                   start_date: 20.days.ago,
+                   end_date: latest_reading_date,
+                   admin_meter_status: admin_meter_status,
+                   data_source: create(:data_source, import_warning_days: 5),
+                   supplier: create(:supplier),
+                   log: create(:amr_data_feed_import_log,
+                               amr_data_feed_config: create(:amr_data_feed_config),
+                               import_time: Time.zone.today))
     meter.amr_data_feed_readings.last.update!(readings: Array.new(48, ''))
     meter
   end
@@ -34,20 +35,20 @@ describe 'New data for inactive meters', :include_application_helper do
   end
 
   it_behaves_like 'an admin meter import report' do
-    let(:meter) { gas_meter}
-    let(:end_date) { latest_reading_date}
+    let(:meter) { gas_meter }
+    let(:end_date) { latest_reading_date }
   end
 
   context 'when status is ignored' do
     let(:admin_meter_status) { create(:admin_meter_status, ignore_in_inactive_meter_report: true) }
 
-    it { expect(page).not_to have_content(gas_meter.name) }
+    it { expect(page).to have_no_text(gas_meter.name) }
   end
 
   context 'when meter is active' do
     let(:active) { true }
 
-    it { expect(page).not_to have_content(gas_meter.name) }
+    it { expect(page).to have_no_text(gas_meter.name) }
   end
 
   context 'when no unvalidated readings' do
@@ -61,6 +62,6 @@ describe 'New data for inactive meters', :include_application_helper do
              data_source: create(:data_source, import_warning_days: 5))
     end
 
-    it { expect(page).not_to have_content(gas_meter.name) }
+    it { expect(page).to have_no_text(gas_meter.name) }
   end
 end

@@ -1,5 +1,4 @@
 module AnalyseHeatingAndHotWater
-
   # An attempt to analyse the breakdown between heating, hot water and kitchen
   # usage at a school, works on gas only
   class HeatingAndHotWaterBreakdown
@@ -11,6 +10,7 @@ module AnalyseHeatingAndHotWater
     # and therefore the adjusted kWh should be more than actual kWh
     def breakdown(start_date: nil, end_date: nil, change_in_degree_days_percent: 0.0)
       return nil if !@school.gas? || @school.aggregated_heat_meters.non_heating_only?
+
       end_date = @school.aggregated_heat_meters.amr_data.end_date if end_date.nil?
       start_date = [end_date - 365, @school.aggregated_heat_meters.amr_data.start_date].max
 
@@ -25,7 +25,7 @@ module AnalyseHeatingAndHotWater
       hot_water_summer_kwh = 0.0
 
       @model_cache = AnalyseHeatingAndHotWater::ModelCache.new(@school.aggregated_heat_meters)
-      one_year_meter_readings = SchoolDatePeriod.new(:current_year, '1 year model calculation', start_date, end_date)
+      one_year_meter_readings = SchoolDatePeriod.new(:analysis, '1 year model calculation', start_date, end_date)
 
       begin
         @heating_model = @model_cache.create_and_fit_model(:best, one_year_meter_readings)
@@ -70,16 +70,16 @@ module AnalyseHeatingAndHotWater
       percent_hw = (hot_water_winter_kwh + hot_water_summer_kwh) / total_kwh
 
       results = {
-        hot_water_summer_all_days_kwh:    hot_water_summer_kwh,
-        hot_water_winter_all_days_kwh:    hot_water_winter_kwh,
-        hot_water_percent_of_total_kwh:   percent_hw,
-        degreeday_adjustment_percent:     change_in_degree_days_percent,
+        hot_water_summer_all_days_kwh: hot_water_summer_kwh,
+        hot_water_winter_all_days_kwh: hot_water_winter_kwh,
+        hot_water_percent_of_total_kwh: percent_hw,
+        degreeday_adjustment_percent: change_in_degree_days_percent,
         percent_change_due_to_adjustment: percent,
-        total_heating_kwh:                total_kwh * (1.0 - percent_hw),
-        total_kwh:                        total_kwh,
-        total_adjusted_kwh:               adjusted_kwh,
-        start_date:                       start_date,
-        end_date:                         end_date
+        total_heating_kwh: total_kwh * (1.0 - percent_hw),
+        total_kwh: total_kwh,
+        total_adjusted_kwh: adjusted_kwh,
+        start_date: start_date,
+        end_date: end_date
       }
       results.merge!(hw_analysis) unless hw_analysis.nil?
       results

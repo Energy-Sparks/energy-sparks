@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: solar_edge_installations
 #
-#  amr_data_feed_config_id :bigint(8)        not null
-#  api_key                 :text
-#  created_at              :datetime         not null
 #  id                      :bigint(8)        not null, primary key
+#  active                  :boolean          default(TRUE), not null
+#  api_key                 :text
 #  information             :json
 #  mpan                    :text
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  amr_data_feed_config_id :bigint(8)        not null
 #  school_id               :bigint(8)        not null
 #  site_id                 :text
-#  updated_at              :datetime         not null
 #
 # Indexes
 #
@@ -26,9 +29,12 @@ class SolarEdgeInstallation < ApplicationRecord
   belongs_to :school, inverse_of: :solar_edge_installations
   belongs_to :amr_data_feed_config
 
-  has_many :meters
+  has_many :meters, dependent: nil
 
-  validates_presence_of :site_id, :mpan, :api_key
+  validates :site_id, :mpan, :api_key, presence: true
+  validate :site_id_unique_to_school
+
+  scope :active, -> { where(active: true) }
 
   def display_name
     site_id
@@ -39,13 +45,13 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def electricity_meter
-    meters.electricity.first if meters.electricity.present?
+    meters.electricity.presence&.first
   end
 
   def latest_electricity_reading
-    if electricity_meter && electricity_meter.amr_data_feed_readings.any?
-      Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
-    end
+    return unless electricity_meter&.amr_data_feed_readings&.any?
+
+    Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
   end
 
   def cached_api_information?
@@ -53,7 +59,15 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def api_latest_data_date
-    return nil unless information['dates'].present?
-    return Date.parse(information['dates'].last)
+    return nil if information['dates'].blank?
+
+    Date.parse(information['dates'].last)
+  end
+
+  private
+
+  def site_id_unique_to_school
+    existing = self.class.where(site_id:).where.not(id:).where.not(school:)
+    errors.add(:site_id, 'is already associated with a different school') if existing.exists?
   end
 end

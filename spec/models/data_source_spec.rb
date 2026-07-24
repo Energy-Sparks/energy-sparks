@@ -6,17 +6,91 @@ RSpec.describe DataSource, type: :model do
 
     it { is_expected.to be_valid }
     it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_numericality_of(:alert_percentage_threshold).is_in(0..100) }
   end
 
   describe 'enums' do
-    it { is_expected.to define_enum_for(:organisation_type).with_values([:energy_supplier, :procurement_organisation, :meter_operator, :council, :solar_monitoring_provider]) }
+    it { is_expected.to define_enum_for(:organisation_type).with_values(%i[energy_supplier procurement_organisation meter_operator council solar_monitoring_provider]) }
+  end
+
+  describe '.percentage_of_lagging_meters' do
+    subject(:percentage_of_lagging_meters) { data_source.percentage_of_lagging_meters }
+
+    let(:data_source) { create(:data_source) }
+
+    let(:lagging_date) { 11.days.ago }
+    let(:non_lagging_date) { 1.day.ago }
+
+    context 'when there are no active meters' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: lagging_date, active: false, data_source:)
+      end
+
+      it { expect(percentage_of_lagging_meters).to eq 0 }
+    end
+
+    context 'when all meters are lagging' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: lagging_date, active: true, data_source:)
+      end
+
+      it { expect(percentage_of_lagging_meters).to eq 100 }
+    end
+
+    context 'when half the meters are lagging' do
+      before do
+        create(:gas_meter_with_validated_reading_dates, end_date: non_lagging_date, active: true, data_source:)
+        create(:gas_meter_with_validated_reading_dates, end_date: lagging_date, active: true, data_source:)
+      end
+
+      it { expect(percentage_of_lagging_meters).to eq 50 }
+    end
+
+    context 'when no meters are lagging' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: non_lagging_date, active: true, data_source:)
+      end
+
+      it { expect(percentage_of_lagging_meters).to eq 0 }
+    end
+  end
+
+  describe '.exceeded_alert_threshold?' do
+    subject(:exceeded_alert_threshold) { data_source.exceeded_alert_threshold? }
+
+    let(:data_source) { create(:data_source) }
+
+    context 'when data source has more lagging meters than its threshold' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 11.days.ago, data_source:, active: true)
+      end
+
+      it { expect(exceeded_alert_threshold).to be true }
+    end
+
+    context 'when data source has no lagging meters' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 1.day.ago, data_source:, active: true)
+      end
+
+      it { expect(exceeded_alert_threshold).to be false }
+    end
+
+    context 'when the data source has no active meters' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 11.days.ago, data_source:, active: false)
+      end
+
+      it { expect(exceeded_alert_threshold).to be false }
+    end
   end
 
   describe '.to_csv' do
-    let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
 
-    let(:header) { 'School group,Admin,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
+    let(:data_source) { create(:data_source) }
+    let(:supplier) { create(:supplier) }
+    let(:header) { 'School group,Admin,School,MPAN/MPRN,Meter type,Supplier,Data Source,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
 
     before { freeze_time }
 
@@ -25,9 +99,21 @@ RSpec.describe DataSource, type: :model do
       let!(:meters) do
         school_group = create(:school_group, default_issues_admin_user: create(:admin))
         [
-          create(:gas_meter, data_source: data_source, school: create(:school, active: true), admin_meter_status: admin_meter_status, created_at: 3.seconds.ago),
-          create(:gas_meter, data_source: data_source, school: create(:school, school_group: school_group, active: true), admin_meter_status: admin_meter_status, created_at: 2.seconds.ago),
-          create(:gas_meter, data_source: data_source, school: create(:school, active: false), admin_meter_status: admin_meter_status, created_at: 1.second.ago)
+          create(:gas_meter, data_source:,
+                             supplier:,
+                             school: create(:school, active: true),
+                             admin_meter_status:,
+                             created_at: 3.seconds.ago),
+          create(:gas_meter, data_source:,
+                             supplier:,
+                             school: create(:school, school_group: school_group, active: true),
+                             admin_meter_status:,
+                             created_at: 2.seconds.ago),
+          create(:gas_meter, data_source:,
+                             supplier:,
+                             school: create(:school, active: false),
+                             admin_meter_status:,
+                             created_at: 1.second.ago)
         ]
       end
       let(:first_reading_date) { 1.year.ago.to_date + 2.days }
@@ -57,6 +143,8 @@ RSpec.describe DataSource, type: :model do
                 meters[i].school.name,
                 meters[i].mpan_mprn,
                 meters[i].meter_type.humanize,
+                meters[i].supplier&.name,
+                meters[i].data_source&.name,
                 meters[i].active,
                 meters[i].t_meter_system,
                 first_reading_date,

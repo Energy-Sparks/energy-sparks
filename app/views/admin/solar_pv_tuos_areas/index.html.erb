@@ -1,7 +1,7 @@
 <h1>Solar PV Areas</h1>
 
 <% if @solar_pv_tuos_areas.any? %>
-<table class="table table-sorted table-sm">
+<table class="table table-paged table-sm">
   <thead>
     <tr>
       <th></th>
@@ -9,6 +9,7 @@
       <th colspan="2">GSP</th>
       <th></th>
       <th>Dates</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -25,7 +26,7 @@
       <th>Readings</th>
       <th>Back fill</th>
       <th>Schools</th>
-      <th>Actions</th>
+      <th data-orderable="false">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -39,11 +40,11 @@
                         "https://www.openstreetmap.org/?mlat=#{area.latitude}&mlon=#{area.longitude}",
                         target: '_blank',
                         rel: 'noopener' %></td>
-        <td data-order="<%= area.earliest_reading_date&.iso8601 %>"><%= nice_dates(area.earliest_reading_date) %></td>
-        <td data-order="<%= area.latest_reading_date&.iso8601 %>"><%= nice_dates(area.latest_reading_date) %></td>
+        <td><%= area.earliest_reading_date&.iso8601 %></td>
+        <td><%= area.latest_reading_date&.iso8601 %></td>
         <td><%= area.solar_pv_tuos_readings.count %></td>
         <td><%= area.back_fill_years %></td>
-        <td><%= area.schools.count %></td>
+        <td><%= area.schools.active.count %></td>
         <td>
           <div class='btn-group'>
             <%= link_to 'Edit', edit_admin_solar_pv_tuos_area_path(area), class: 'btn btn-sm' %>

@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe SchoolGroupComparisonComponent, type: :component do
   let(:comparison) do
     {
-      benchmark_school: [{ 'school_id' => 1, 'school_slug' => 'school-1', 'school_name' => 'School 1', 'cluster_name' => 'My Area' }],
+      benchmark_school: [{ 'school_id' => 1, 'school_slug' => 'school-1', 'school_name' => 'School 1',
+                           'cluster_name' => 'My Area' }],
       exemplar_school: [
         { 'school_id' => 2, 'school_slug' => 'school-2', 'school_name' => 'School 2' },
         { 'school_id' => 3, 'school_slug' => 'school-3', 'school_name' => 'School 3' },
@@ -21,8 +22,10 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
   end
 
   let(:include_cluster) { false }
-  let(:params) { { id: 'spec-id', comparison: comparison, advice_page_key: :baseload, include_cluster: include_cluster } }
-  let(:component)  { SchoolGroupComparisonComponent.new(**params) }
+  let(:params) do
+    { id: 'spec-id', comparison: comparison, advice_page_key: :baseload, include_cluster: include_cluster }
+  end
+  let(:component) { SchoolGroupComparisonComponent.new(**params) }
   let(:html) { render_inline(component) }
 
   it 'renders ok' do
@@ -30,30 +33,30 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
   end
 
   it 'includes the values and the correct pluralisation of school' do
-    expect(html).to have_content('1')
-    expect(html).to have_content('3')
-    expect(html).to have_content('4')
+    expect(html).to have_text('1')
+    expect(html).to have_text('3')
+    expect(html).to have_text('4')
   end
 
   it 'includes the category titles' do
-    expect(html).to have_content(I18n.t('advice_pages.benchmarks.exemplar_school'))
-    expect(html).to have_content(I18n.t('advice_pages.benchmarks.benchmark_school'))
-    expect(html).to have_content(I18n.t('advice_pages.benchmarks.other_school'))
+    expect(html).to have_text(I18n.t('advice_pages.benchmarks.exemplar_school'))
+    expect(html).to have_text(I18n.t('advice_pages.benchmarks.benchmark_school'))
+    expect(html).to have_text(I18n.t('advice_pages.benchmarks.other_school'))
   end
 
   context 'Include cluster is not enabled' do
     let(:include_cluster) { false }
 
-    it { expect(html).not_to have_content('Cluster') }
-    it { expect(html).not_to have_content('Not set') }
-    it { expect(html).not_to have_content('My Area') }
+    it { expect(html).to have_no_text('Cluster') }
+    it { expect(html).to have_no_text('Not set') }
+    it { expect(html).to have_no_text('My Area') }
   end
 
   context 'Include cluster is enabled' do
     let(:include_cluster) { true }
 
-    it { expect(html).to have_content('Cluster') }
-    it { expect(html).to have_content('Not set') }
-    it { expect(html).to have_content('My Area') }
+    it { expect(html).to have_text('Cluster') }
+    it { expect(html).to have_text('Not set') }
+    it { expect(html).to have_text('My Area') }
   end
 end

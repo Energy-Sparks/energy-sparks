@@ -1,0 +1,61 @@
+<tr id='<%= @id %>'>
+  <td>
+    <%= link_to school.name, school_path(school) %>
+  </td>
+  <% if @show_data_visibility %>
+    <td>
+      <% if school.data_enabled? %>
+        <span class="badge rounded-pill text-bg-success">Yes</span>
+      <% else %>
+        <span class="badge rounded-pill text-bg-danger">No</span>
+      <% end %>
+    </td>
+  <% end %>
+  <td>
+    <%= render(Elements::BadgeComponent.new(licensed_for(@first_range).to_s.humanize,
+                                            pill: true,
+                                            colour: helpers.period_badge_colour(licensed_for(@first_range)))) %>
+
+  </td>
+  <td>
+    <%= contract_holder_for(@first_range).join(',') %>
+  </td>
+  <% licence = first_licence_for(@first_range) %>
+  <td>
+    <% if licence %>
+      <%= licence.start_date.to_fs(:es_short) %>
+    <% end %>
+  </td>
+  <td>
+    <% if licence %>
+      <%= licence.end_date.to_fs(:es_short) %>
+    <% end %>
+  </td>
+  <% if @second_range.present? %>
+    <td>
+      <%= render(Elements::BadgeComponent.new(licensed_for(@second_range).to_s.humanize,
+                                              pill: true,
+                                              colour: helpers.period_badge_colour(licensed_for(@second_range)))) %>
+
+    </td>
+    <td>
+      <%= contract_holder_for(@second_range).join(',') %>
+    </td>
+    <% licence = first_licence_for(@second_range) %>
+    <td>
+      <% if licence %>
+        <%= licence.start_date.to_fs(:es_short) %>
+      <% end %>
+    </td>
+    <td>
+      <% if licence %>
+        <%= licence.end_date.to_fs(:es_short) %>
+      <% end %>
+    </td>
+  <% end %>
+  <td>
+    <% buttons.each do |button| %>
+      <%= button %>
+    <% end %>
+  </td>
+</tr>

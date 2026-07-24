@@ -22,20 +22,20 @@ describe Alerts::GenerateManagementPriorities do
 
   context 'when there are management priorities that match the alert type' do
     let(:rating) { 5.0 }
-    let!(:alert) { create(:alert, :with_run, school: school, rating: rating)}
+    let!(:alert) { create(:alert, :with_run, school: school, rating: rating) }
     let!(:alert_type_rating) do
-      create :alert_type_rating,
-        alert_type: alert.alert_type,
-        rating_from: 1,
-        rating_to: 6,
-        management_priorities_active: management_priorities_active
+      create(:alert_type_rating,
+             alert_type: alert.alert_type,
+             rating_from: 1,
+             rating_to: 6,
+             management_priorities_active: management_priorities_active)
     end
-    let!(:content_version) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
+    let!(:content_version) { create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating) }
 
     let(:management_priorities_active) { true }
 
     context 'where the rating matches the range' do
-      it 'creates a management priority  pairing the alert and the content for each active dashboard' do
+      it 'creates a management priority pairing the alert and the content for each active dashboard' do
         service.perform(school.latest_alerts_without_exclusions)
         expect(content_generation_run.management_priorities.count).to be 1
 
@@ -46,15 +46,17 @@ describe Alerts::GenerateManagementPriorities do
       end
 
       it 'assigns a find out more from the run, if it matches the content version' do
-        find_out_more = create(:find_out_more, content_version: content_version, alert: alert, content_generation_run: content_generation_run)
+        find_out_more = create(:find_out_more, content_version: content_version, alert: alert,
+                                               content_generation_run: content_generation_run)
         service.perform(school.latest_alerts_without_exclusions)
         priority = content_generation_run.management_priorities.first
         expect(priority.find_out_more).to eq(find_out_more)
       end
 
       it 'does not assign the find out more if it is from different content' do
-        content_version_2 = create :alert_type_rating_content_version, alert_type_rating: alert_type_rating
-        create(:find_out_more, content_version: content_version_2, alert: alert, content_generation_run: content_generation_run)
+        content_version_2 = create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)
+        create(:find_out_more, content_version: content_version_2, alert: alert,
+                               content_generation_run: content_generation_run)
 
         service.perform(school.latest_alerts_without_exclusions)
         priority = content_generation_run.management_priorities.first
@@ -63,7 +65,9 @@ describe Alerts::GenerateManagementPriorities do
 
       it 'does not create any priorities if there is an alert type exception' do
         SchoolAlertTypeExclusion.create(school: school, alert_type: alert.alert_type)
-        expect { service.perform(school.latest_alerts_without_exclusions)}.to change { content_generation_run.management_priorities.count }.by(0)
+        expect { service.perform(school.latest_alerts_without_exclusions) }.not_to(change do
+          content_generation_run.management_priorities.count
+        end)
       end
 
       context 'where the management priorities are not active' do

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :meter_attribute do
     attribute_type { :function_switch }
     input_data { 'heating_only' }
-    association :meter, factory: :gas_meter
+    meter factory: %i[gas_meter]
     replaces { nil }
 
     trait :replaced do
@@ -37,8 +39,11 @@ FactoryBot.define do
 
   factory :storage_heaters_attribute, class: 'MeterAttribute' do
     attribute_type { :storage_heaters }
-    input_data { { 'start_date' => '01/01/2010', 'end_date' => '01/01/2025', 'power_kw' => '70', 'charge_start_time' => { 'hour' => '0', 'minutes' => '0' }, 'charge_end_time' => { 'hour' => '24', 'minutes' => '0' } } }
-    association :meter, factory: :electricity_meter
+    input_data do
+      { 'start_date' => '01/01/2010', 'end_date' => '01/01/2025', 'power_kw' => '70',
+        'charge_start_time' => { 'hour' => '0', 'minutes' => '0' }, 'charge_end_time' => { 'hour' => '24', 'minutes' => '0' } }
+    end
+    meter factory: %i[electricity_meter]
   end
 
   factory :solar_pv_attribute, class: 'MeterAttribute' do
@@ -48,7 +53,7 @@ FactoryBot.define do
       kwp           { 15.0 }
     end
     attribute_type { :solar_pv }
-    association :meter, factory: :electricity_meter
+    meter factory: %i[electricity_meter]
     input_data do
       {
         start_date: start_date,
@@ -67,18 +72,20 @@ FactoryBot.define do
       production_mpan3 { nil }
       production_mpan4 { nil }
       production_mpan5 { nil }
+      export_mpan { nil }
     end
     attribute_type { :solar_pv_mpan_meter_mapping }
-    association :meter, factory: :electricity_meter
+    meter factory: %i[electricity_meter]
     input_data do
       {
-        start_date: start_date,
-        end_date: end_date,
-        production_mpan: production_mpan,
+        start_date:,
+        end_date:,
+        production_mpan:,
         production_mpan2: production_mpan2,
         production_mpan3: production_mpan3,
         production_mpan4: production_mpan4,
-        production_mpan5: production_mpan5
+        production_mpan5: production_mpan5,
+        export_mpan:
       }
     end
   end

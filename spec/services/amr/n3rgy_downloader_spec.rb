@@ -1,72 +1,66 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Amr::N3rgyDownloader do
-  subject(:service) do
-    described_class.new(meter: meter, start_date: start_date, end_date: end_date)
-  end
+  subject(:service) { described_class.new(meter:, start_date:, end_date:) }
 
   let(:meter)     { create(:electricity_meter) }
-  let(:config)    { create(:amr_data_feed_config)}
+  let(:config)    { create(:amr_data_feed_config) }
   let(:end_date)  { Time.zone.today }
   let(:start_date) { end_date - 1 }
 
   describe '#readings' do
-    let(:stub) { double('data-api-client') }
+    subject(:readings) { service.readings }
+
+    let(:stub) { instance_double(DataFeeds::N3rgy::DataApiClient) }
 
     before do
       allow(DataFeeds::N3rgy::DataApiClient).to receive(:production_client).and_return(stub)
+      allow(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s,
+                                             DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION,
+                                             anything, anything)
+                                       .and_return(response)
     end
 
     context 'with a period of more than 90 days' do
       let(:start_date) { DateTime.new(2023, 1, 1, 0, 30) }
       let(:end_date) { DateTime.new(2023, 4, 11, 0, 0) } # 100 days ahead
-      let(:response) do
-        {
-          'devices' => [{ 'values' => [] }]
-        }
-      end
+      let(:response) { { 'devices' => [{ 'values' => [] }] } }
 
       it 'makes multiple API requests' do
-        allow(stub).to receive(:readings).at_least(:twice).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
-
         # split into 89 day first range, with correct start and end time
-        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, start_date, DateTime.new(2023, 3, 31, 0, 0))
-
+        readings
+        expect(stub).to have_received(:readings).with(
+          meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, start_date,
+          DateTime.new(2023, 3, 31, 0, 0)
+        )
         # split into final 11 day range with correct start and end time
-        expect(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, DateTime.new(2023, 3, 31, 0, 30), end_date)
-        service.readings
+        expect(stub).to have_received(:readings).with(
+          meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION,
+          DateTime.new(2023, 3, 31, 0, 30), end_date
+        )
       end
     end
 
     context 'with no device readings' do
-      let(:response) do
-        {
-          'devices' => []
-        }
-      end
+      let(:response) {  { 'devices' => [] } }
 
       it 'returns empty results' do
-        allow(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response)
-        readings = service.readings
         expect(readings[meter.meter_type][:readings]).to be_empty
       end
     end
 
     context 'with successful results' do
-      subject(:readings) { service.readings }
-
       # Match dates in fixture
-      let(:start_date) { Date.new(2012, 4, 27)}
-      let(:end_date) { Date.new(2012, 4, 28)}
-
+      let(:start_date) { Date.new(2012, 4, 27) }
+      let(:end_date) { Date.new(2012, 4, 28) }
       let(:response) { JSON.parse(File.read('spec/fixtures/n3rgy/get-reading-type-consumption.json')) }
 
-      let(:fixture_readings) do
-        [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0.214, 0.158, 0.064, 0.062, 0.1, 0.096, 0.061, 0.097, 0.102, 0.129, 0.1, 0.101, 0.123, 0.245, 0.109, 0.018, 0.058, 0.057, 0.019, 0.03, 0.107, 0.058, 0.025, 0.019, 0.1, 0.219, 0.132, 0.091, 0.105, 0.11, 0.09]
-      end
-
-      before do
-        allow(stub).to receive(:readings).with(meter.mpan_mprn, meter.fuel_type.to_s, DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION, anything, anything).and_return(response.with_indifferent_access)
+      def fixture_readings
+        [nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0.214, 0.158, 0.064,
+         0.062, 0.1, 0.096, 0.061, 0.097, 0.102, 0.129, 0.1, 0.101, 0.123, 0.245, 0.109, 0.018, 0.058, 0.057, 0.019,
+         0.03, 0.107, 0.058, 0.025, 0.019, 0.1, 0.219, 0.132, 0.091, 0.105, 0.11, 0.09]
       end
 
       it 'extracts the readings' do
@@ -76,35 +70,41 @@ describe Amr::N3rgyDownloader do
       end
 
       context 'when returned readings are in m3' do
-        let(:response) do
-          original = JSON.parse(File.read('spec/fixtures/n3rgy/get-reading-type-consumption.json'))
-          original['unit'] = 'm3'
-          original
-        end
+        let(:response) { super().merge('unit' => 'm3') }
+        let(:meter) { create(:gas_meter) }
 
         it 'converts to kWh' do
           adjusted = fixture_readings.map { |r| r.nil? ? nil : (r * 11.1).round(2) }
           readings_by_day = readings[meter.meter_type][:readings]
           expect(readings_by_day[start_date].kwh_data_x48.map { |f| f&.round(2) }).to eq(adjusted)
         end
+
+        it 'does not convert bad values' do
+          bad_value = Aggregation::ValidateAmrData::BadValues::GAS.first.first
+          response['devices'][0]['values'][0]['primaryValue'] = bad_value
+          expect(readings[meter.meter_type][:readings][start_date].kwh_halfhour(17)).to eq(bad_value)
+        end
       end
 
       context 'when there are multiple devices' do
         let(:response) do
-          original = JSON.parse(File.read('spec/fixtures/n3rgy/get-reading-type-consumption.json'))
-          original['devices'] << original['devices'][0] # duplicate the entries
-          original
+          response = super()
+          device = response['devices'][0].deep_dup
+          device['values'][-2]['primaryValue'] = 0.5
+          response['devices'] << device
+          response
         end
 
-        it 'still extract readings from first device' do
+        it 'combined readings from all devices' do
           readings_by_day = readings[meter.meter_type][:readings]
           # Match readings from fixture
-          expect(readings_by_day[start_date].kwh_data_x48).to eq(fixture_readings)
+          expect(readings_by_day[start_date].kwh_data_x48).to eq(fixture_readings.tap { |a| a[-2] = 0.5 })
         end
 
         it 'logs to Rollbar' do
-          expect(Rollbar).to receive(:warning).with(anything, meter: meter.mpan_mprn, school: meter.school.name)
+          allow(Rollbar).to receive(:warning)
           readings
+          expect(Rollbar).to have_received(:warning).with(anything, meter: meter.mpan_mprn, school: meter.school.name)
         end
       end
     end

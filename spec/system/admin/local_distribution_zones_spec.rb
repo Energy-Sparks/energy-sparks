@@ -23,16 +23,16 @@ RSpec.describe 'Local distribution zone' do
     fill_in 'Code', with: 'NZ'
     fill_in 'Publication ID', with: 'PUB0001'
     expect { click_on 'Create' }.to change(LocalDistributionZone, :count).by(1)
-    expect(page).to have_content('New Local distribution zone created')
-    expect(page).to have_content 'New Zone'
-    expect(page).to have_content 'NZ'
-    expect(page).to have_content 'PUB0001'
+    expect(page).to have_text('New Local distribution zone created')
+    expect(page).to have_text 'New Zone'
+    expect(page).to have_text 'NZ'
+    expect(page).to have_text 'PUB0001'
   end
 
   it 'checks for valid fields when creating a zone' do
     click_on 'New Local distribution zone'
     click_on 'Create'
-    expect(page).to have_content("can't be blank", count: 3)
+    expect(page).to have_text("can't be blank", count: 3)
   end
 
   context 'with an existing weather station' do
@@ -48,7 +48,7 @@ RSpec.describe 'Local distribution zone' do
     before { refresh }
 
     it 'displays the station' do
-      expect(page).to have_content('Local distribution zones')
+      expect(page).to have_text('Local distribution zones')
       expect(all('tr').map { |tr| tr.all('th, td').map(&:text) }).to eq(
         [['Name', 'Code', 'Publication ID', 'Readings', 'Earliest date', 'Latest date', 'Actions'],
          [zone.name, zone.code, zone.publication_id, '2', 'Sun 9th Mar 2025', 'Mon 10th Mar 2025', 'Edit']]
@@ -59,7 +59,7 @@ RSpec.describe 'Local distribution zone' do
       click_on 'Edit'
       fill_in 'Code', with: 'NC'
       click_on 'Update'
-      expect(page).to have_content('Local distribution zone was updated')
+      expect(page).to have_text('Local distribution zone was updated')
       zone.reload
       expect(zone.code).to eq('NC')
       expect(all('tr').map { |tr| tr.all('th, td').map(&:text) }).to eq(
@@ -72,13 +72,13 @@ RSpec.describe 'Local distribution zone' do
       click_on 'Edit'
       fill_in 'Name', with: ''
       click_on 'Update'
-      expect(page).to have_content("can't be blank", count: 1)
+      expect(page).to have_text("can't be blank", count: 1)
     end
 
     it 'shows the zone' do
       click_on zone.name
-      expect(page).to have_content('This calendar summarises the calorific values data from Sun 9th Mar 2025 ' \
-                                   'up until the present day.')
+      expect(page).to have_text('This calendar summarises the calorific values data from Sun 9th Mar 2025 ' \
+                                'up until the present day.')
     end
   end
 end

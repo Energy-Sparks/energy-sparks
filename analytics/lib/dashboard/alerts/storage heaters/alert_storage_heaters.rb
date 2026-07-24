@@ -5,7 +5,6 @@ require_relative './../gas/boiler control/alert_heating_day_base.rb'
 #require_relative './../gas/boiler control/alert_gas_heating_hot_water_on_during_holiday.rb'
 require_relative './../gas/boiler control/alert_seasonal_heating_schooldays.rb'
 require_relative './../gas/boiler control/alert_heating_off.rb'
-require_relative './../common/alert_targets.rb'
 # require_all 'lib/dashboard/alerts/time period comparison/'
 require_relative './../time period comparison/alert_schoolweek_comparison_gas.rb'
 require_relative './../time period comparison/alert_previous_year_holiday_comparison_gas.rb'
@@ -94,39 +93,6 @@ class AlertStorageHeatersLongTermTrend < AlertGasLongTermTrend
 
   protected def aggregate_meter
     @school.storage_heater_meter
-  end
-end
-
-class AlertStorageHeaterTargetAnnual < AlertGasTargetAnnual
-  include AlertGasToStorageHeaterSubstitutionMixIn
-  include ElectricityCostCo2Mixin
-  def self.template_variables
-    specific = { 'Storage heaters targetting and tracking' => long_term_variables('storage heaters')}
-    specific.merge(self.superclass.template_variables)
-  end
-
-  def fuel_type
-    :storage_heaters
-  end
-
-  def aggregate_meter
-    @school.storage_heater_meter
-  end
-
-  def aggregate_target_meter
-    @school.target_school.storage_heater_meter
-  end
-end
-
-class AlertStorageHeaterTarget4Week < AlertStorageHeaterTargetAnnual
-  def rating_target_percent
-    last_4_weeks_percent_of_target
-  end
-end
-
-class AlertStorageHeaterTarget1Week < AlertStorageHeaterTargetAnnual
-  def rating_target_percent
-    last_week_percent_of_target
   end
 end
 

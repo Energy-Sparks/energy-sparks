@@ -1,16 +1,24 @@
 module ApplicationHelper
   include Pagy::Method
   include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::NumberHelper
 
   def nice_date_times(datetime, options = {})
     return '' if datetime.nil?
 
-    datetime = datetime.in_time_zone(Rails.application.config.display_timezone) if options[:localtime] && Rails.application.config.display_timezone
-    "#{nice_dates(datetime)} #{nice_times_only(datetime)}"
+    if options[:localtime] && Rails.application.config.display_timezone
+      datetime = datetime.in_time_zone(Rails.application.config.display_timezone)
+    end
+    if options[:short_date]
+      "#{short_dates(datetime)} #{nice_times_only(datetime)}"
+    else
+      "#{nice_dates(datetime)} #{nice_times_only(datetime)}"
+    end
   end
 
   def nice_times_only(datetime)
     return '' if datetime.nil?
+
     datetime.strftime('%H:%M')
   end
 
@@ -21,6 +29,7 @@ module ApplicationHelper
   def short_dates(date, humanise: false)
     return '' unless date
     return t('application_helper.short_dates.today') if humanise && date.today?
+
     date ? date.to_fs(:es_short) : ''
   end
 
@@ -43,6 +52,7 @@ module ApplicationHelper
 
   def nice_dates_from_timestamp(timestamp)
     return '' if timestamp.nil?
+
     datetime = DateTime.strptime(timestamp.to_s, '%s')
     nice_dates(datetime)
   end
@@ -65,8 +75,7 @@ module ApplicationHelper
     options = collection.map do |element|
       [element.send(text_method), element.send(value_method), data.map do |k, v|
         { "data-#{k}" => element.send(v) }
-      end
-      ].flatten
+      end].flatten
     end
     selected, disabled = extract_selected_and_disabled(selected)
     select_deselect = {}
@@ -79,9 +88,9 @@ module ApplicationHelper
   def class_for_last_date(last_date)
     if last_date.nil?
       'table-light'
-    elsif last_date < Time.zone.now - 30.days
+    elsif last_date < 30.days.ago
       'table-danger'
-    elsif last_date < Time.zone.now - 5.days
+    elsif last_date < 5.days.ago
       'table-warning'
     else
       'table-success'
@@ -89,18 +98,20 @@ module ApplicationHelper
   end
 
   def missing_dates(dates)
-    if dates.count > 0
-      dates.count
-    end
+    return unless dates.count > 0
+
+    dates.count
   end
 
   def status_for_alert_colour(colour)
     return :neutral if colour.nil?
+
     colour
   end
 
   def class_for_alert_colour(colour)
     return class_for_alert_colour(:unknown) if colour.nil?
+
     case colour.to_sym
     when :negative then 'bg-negative'
     when :neutral then 'bg-neutral'
@@ -120,17 +131,18 @@ module ApplicationHelper
   end
 
   def target_percent_cell_colour(percent)
-    if percent
-      if percent > 0.0
-        'bg-negative-dark'
-      else
-        'bg-positive-dark'
-      end
+    return unless percent
+
+    if percent > 0.0
+      'bg-negative-dark'
+    else
+      'bg-positive-dark'
     end
   end
 
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
+
     if rating > 9
       class_for_alert_colour(:positive)
     elsif rating > 6
@@ -155,20 +167,20 @@ module ApplicationHelper
     content_tag(:i, nil, **kwargs)
   end
 
-  def fa_icon(icon_type, **kwargs)
-    icon('fas', icon_type, **kwargs)
+  def fa_icon(icon_type, **)
+    icon('fas', icon_type, **)
   end
 
-  def fab_icon(icon_type, **kwargs)
-    icon('fab', icon_type, **kwargs)
+  def fab_icon(icon_type, **)
+    icon('fab', icon_type, **)
   end
 
-  def fal_icon(icon_type, **kwargs)
-    icon('fal', icon_type, **kwargs)
+  def fal_icon(icon_type, **)
+    icon('fal', icon_type, **)
   end
 
-  def far_icon(icon_type, **kwargs)
-    icon('far', icon_type, **kwargs)
+  def far_icon(icon_type, **)
+    icon('far', icon_type, **)
   end
 
   def alert_type_icon(alert_type, size = nil)
@@ -183,6 +195,7 @@ module ApplicationHelper
 
   def fuel_type_icon(fuel_type)
     return nil unless fuel_type
+
     case fuel_type.to_sym
     when :electricity
       'bolt'
@@ -232,9 +245,7 @@ module ApplicationHelper
   end
 
   def tidy_label(current_label)
-    if label_is_energy_plus?(current_label)
-      current_label = sort_out_dates_when_tidying_labels(current_label)
-    end
+    current_label = sort_out_dates_when_tidying_labels(current_label) if label_is_energy_plus?(current_label)
     current_label
   end
 
@@ -255,7 +266,28 @@ module ApplicationHelper
 
   def format_school_time(school_time)
     return school_time if school_time.blank?
-    sprintf('%04d', school_time).insert(2, ':')
+
+    format('%04d', school_time).insert(2, ':')
+  end
+
+  # When decimals are true, round only to nearest penny and format. Otherwise just format the price
+  def format_price(price, decimals: true)
+    return '£0.00' unless price.present?
+
+    amount = BigDecimal(price.to_s)
+
+    if decimals
+      rounded = amount.round(2)
+      raw = format('%.2f', rounded)
+      integer, decimal = raw.split('.')
+
+      formatted_int = ActiveSupport::NumberHelper.number_to_delimited(integer)
+      "£#{formatted_int}.#{decimal}"
+    else
+      integer = amount.truncate.to_i
+      formatted_int = ActiveSupport::NumberHelper.number_to_delimited(integer)
+      "£#{formatted_int}"
+    end
   end
 
   def table_headers_from_array(array)
@@ -281,6 +313,10 @@ module ApplicationHelper
     boolean ? I18n.t('common.labels.yes_label') : I18n.t('common.labels.no_label')
   end
 
+  def y_n_badge(boolean)
+    content_tag(:span, y_n(boolean), class: "badge #{boolean ? 'text-bg-success' : 'text-bg-danger'}")
+  end
+
   def checkmark(boolean, on_class: 'text-success', off_class: 'text-danger')
     fa_icon(boolean ? "check-circle #{on_class}" : "times-circle #{off_class}")
   end
@@ -288,7 +324,7 @@ module ApplicationHelper
   def stars(rating)
     out_of_five = [(rating.round / 2.0), 0.5].max # enforce at least a half star
     full_stars = out_of_five.to_i
-    half_stars = out_of_five.round != out_of_five ? 1 : 0
+    half_stars = out_of_five.round == out_of_five ? 0 : 1
     empty_stars = 5 - full_stars - half_stars
 
     (Array.new(full_stars) { fa_icon('star') } +
@@ -298,11 +334,12 @@ module ApplicationHelper
 
   def up_downify(text, sanitize: true)
     return if text.nil? || text == '-'
+
     icon = if text.match?(/^\+/)
              fa_icon('arrow-circle-up')
            elsif text.match?(/increased/)
              fa_icon('arrow-circle-up')
-           elsif text.match?(/^\-/)
+           elsif text.match?(/^-/)
              fa_icon('arrow-circle-down')
            elsif text.match?(/decreased/)
              fa_icon('arrow-circle-down')
@@ -315,19 +352,19 @@ module ApplicationHelper
 
   def safely
     yield
-  rescue => e
+  rescue StandardError => e
     e.message
   end
 
   def print_meter_attribute(meter_attribute)
     sanitize(ap(MeterAttribute.to_analytics([meter_attribute]), index: false, plain: true))
-  rescue => e
+  rescue StandardError => e
     e.message
   end
 
   def print_meter_attributes(school, index = false, plain = true)
     sanitize ap(school.meter_attributes_to_analytics, index: index, plain: plain)
-  rescue => e
+  rescue StandardError => e
     e.message
   end
 
@@ -359,6 +396,7 @@ module ApplicationHelper
   def progress_as_percent(completed, total)
     return unless (completed.is_a? Numeric) && (total.is_a? Numeric)
     return unless total > 0
+
     percent = [100, (100 * completed.to_f / total.to_f)].min
     percent.round.to_s + ' %'
   end
@@ -377,23 +415,6 @@ module ApplicationHelper
       utm_medium: 'email',
       utm_campaign: campaign
     }
-  end
-
-  def add_or_remove(list, item)
-    arr = list ? list.split(',').map(&:strip) : []
-    arr.include?(item) ? arr.delete(item) : arr.append(item)
-    arr.join(',')
-  end
-
-  def activity_types_search_link(params, key_stage, subject)
-    query = params[:query]
-    key_stages = params[:key_stages]
-    subjects = params[:subjects]
-    search_activity_types_path(query: query, key_stages: add_or_remove(key_stages, key_stage), subjects: add_or_remove(subjects, subject))
-  end
-
-  def activity_types_badge_class(list, item, color = 'info')
-    list && list.include?(item) ? "badge badge-#{color}" : 'badge badge-light outline'
   end
 
   def file_type_icon(type)
@@ -416,11 +437,11 @@ module ApplicationHelper
   end
 
   def path_with_locale(preview_url, locale)
-    if preview_url.include?('?')
-      preview_url += '&'
-    else
-      preview_url += '?'
-    end
+    preview_url += if preview_url.include?('?')
+                     '&'
+                   else
+                     '?'
+                   end
     preview_url + "locale=#{locale}"
   end
 
@@ -428,8 +449,12 @@ module ApplicationHelper
     str.gsub('+', ' And ').delete(' ').underscore
   end
 
+  def redirect_back_path(params)
+    params[:redirect_back].presence || request.fullpath
+  end
+
   def redirect_back_url(params)
-    params[:redirect_back].blank? ? request.referer : params[:redirect_back]
+    params[:redirect_back].presence || request.referer
   end
 
   def redirect_back_tag(params)
@@ -446,7 +471,8 @@ module ApplicationHelper
     if messageable.dashboard_message
       title = 'Dashboard message is shown for '
       title += who
-      tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+      tag.span class: 'badge text-bg-info', data: { toggle: 'tooltip', bs_toggle: 'tooltip' },
+               title: "#{title}: #{messageable.dashboard_message.message}" do
         fa_icon(:info)
       end
     else
@@ -462,8 +488,8 @@ module ApplicationHelper
     (fa_icon('chevron-up', class: 'fa-fw') + fa_icon('chevron-down', class: 'fa-fw')).html_safe
   end
 
-  def text_with_icon(text, icon, **kwargs)
-    (icon ? "#{fa_icon(icon, **kwargs)} #{text}" : text).html_safe
+  def text_with_icon(text, icon, **)
+    (icon ? "#{fa_icon(icon, **)} #{text}" : text).html_safe
   end
 
   def school_name_group(school)
@@ -479,7 +505,7 @@ module ApplicationHelper
   end
 
   def recommendations_scope_for(task_type)
-    { 'action': :adult, 'activity': :pupil }[task_type]
+    { action: :adult, activity: :pupil }[task_type]
   end
 
   def live_data_path
@@ -510,21 +536,21 @@ module ApplicationHelper
   end
 
   def admin_only(path, to: 'Edit', tag: nil, classes: nil)
-    if current_user&.admin?
-      link = link_to to, path,
-                  class: classes,
-                  data: { toggle: 'tooltip', placement: 'right' },
-                  title: 'Admin Only'
-      tag ? content_tag(tag, link) : link
-    end
+    return unless current_user&.admin?
+
+    link = link_to to, path,
+                   class: classes,
+                   data: { bs_toggle: 'tooltip', toggle: 'tooltip', bs_placement: 'right', placement: 'right' },
+                   title: 'Admin Only'
+    tag ? content_tag(tag, link) : link
   end
 
   def admin_link(path, to: 'Link', tag: nil, classes: nil)
-    admin_only(path, to: to, tag: tag, classes: classes || 'badge badge-light font-weight-normal')
+    admin_only(path, to: to, tag: tag, classes: classes || 'badge text-bg-light fw-normal')
   end
 
   def admin_button(path, to: 'Edit', tag: nil, classes: nil)
-    admin_only(path, to: to, tag: tag, classes: classes || 'btn btn-xs')
+    admin_only(path, to: to, tag: tag, classes: classes || 'btn btn-default btn-xs')
   end
 
   def email_with_wbr(email)
@@ -533,6 +559,7 @@ module ApplicationHelper
 
   def label_with_wbr(label)
     return '' unless label.present?
+
     label.gsub(%r{/}, '/<wbr>').html_safe
   end
 
@@ -548,6 +575,7 @@ module ApplicationHelper
 
   def home_class
     return '' unless controller_name == 'home'
+
     %w[index show].include?(action_name) ? ' home' : ' home-page'
   end
 
@@ -565,6 +593,47 @@ module ApplicationHelper
   # 'none' or anything else: no container class
   def container_class
     return 'container' if !content_for?(:container_size) || content_for(:container_size) == 'normal'
+
     content_for(:container_size) == 'wide' ? 'container-fluid' : ''
+  end
+
+  def label_count(label, count)
+    "#{label} #{content_tag(:span, count, class: %w[badge text-bg-secondary])}".html_safe
+  end
+
+  def collection_from_enum(enum)
+    enum.transform_keys(&:humanize).sort.to_h
+  end
+
+  def bootstrap_version
+    Current.bs5 ? 5 : 4
+  end
+
+  def bootstrap_path(path = '')
+    Current.bs5 ? path : "bootstrap4/#{path}"
+  end
+
+  # Helper for the impact report pages, passes a scope to the I18n.t API based on
+  # our naming convention and page keys. Will only work on impact report pages
+  # content, e.g school_groups.impact.*
+  def impact_t(key, **vars)
+    I18n.t(key, **vars, scope: %i[school_groups impact]).html_safe
+  end
+
+  def entity_icon_name(entity)
+    return '' if entity.nil?
+
+    klass = entity.is_a?(Class) ? entity : entity.class
+
+    return 'users'    if klass == SchoolGroup
+    return 'school'   if klass == School
+    return 'download' if klass == DataSource
+
+    ''
+  end
+
+  def entity_icon(entity)
+    icon_name = entity_icon_name(entity)
+    fa_icon(icon_name)
   end
 end

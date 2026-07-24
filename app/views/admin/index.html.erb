@@ -2,6 +2,11 @@
 
 <h1>Administration</h1>
 
+<%= render Elements::ButtonComponent.new('Ops Dashboards',
+                                         admin_dashboards_path,
+                                         style: :secondary,
+                                         classes: 'mb-2 me-2') %>
+
 <div class="row">
   <div class="col">
     <h2>School onboarding</h2>
@@ -18,12 +23,14 @@
       <% SchoolGroup::RESTRICTED_GROUP_TYPES.sort.each do |group_type| %>
         <li><%= link_to "Manage #{group_type.to_s.humanize} Groups", admin_school_groups_path(group_type:) %></li>
       <% end %>
+      <li><%= link_to 'Manage Impact Reports', admin_impact_reports_path %></li>
     </ul>
 
     <h2>Schools and and scoreboards</h2>
     <ul>
       <li><%= link_to 'Find school by MPXN', admin_find_school_by_mpxn_index_path %></li>
       <li><%= link_to 'Find school by URN', admin_find_school_by_urn_index_path %></li>
+      <li><%= link_to 'Find school by name', admin_find_school_by_name_index_path %></li>
       <li><%= link_to 'Manage Scoreboards', admin_scoreboards_path %></li>
     </ul>
 
@@ -50,6 +57,7 @@
       <li><%= link_to 'Categories', admin_cms_categories_path %></li>
       <li><%= link_to 'Help Pages', admin_help_pages_path %></li>
       <li><%= link_to 'Jobs', admin_jobs_path %></li>
+      <li><%= link_to 'Organisational Impact Statements', admin_organisation_statements_path %></li>
       <li><%= link_to 'Newsletters', admin_newsletters_path %></li>
       <li><%= link_to 'Pages', admin_cms_pages_path %></li>
       <li><%= link_to 'Resources', admin_resource_files_path %></li>
@@ -67,6 +75,7 @@
       <li><%= link_to 'Energy Tariffs', admin_settings_energy_tariffs_path %></li>
       <li><%= link_to 'Solar PV Areas', admin_solar_pv_tuos_areas_path %></li>
       <li><%= link_to 'Weather Stations', admin_weather_stations_path %></li>
+      <li><%= link_to 'Suppliers', admin_suppliers_path %></li>
       <li><%= link_to 'Data Sources', admin_data_sources_path %></li>
       <li><%= link_to 'Procurement Routes', admin_procurement_routes_path %></li>
       <li><%= link_to 'Global Meter Attributes', admin_global_meter_attributes_path %></li>
@@ -78,6 +87,11 @@
     <ul>
       <li><%= link_to 'Alert Types', admin_alert_types_path %></li>
       <li><%= link_to 'Equivalence Types', admin_equivalence_types_path %></li>
+    </ul>
+
+    <h2>Commercial</h2>
+    <ul>
+      <li><%= link_to 'Contracts & Licensing', admin_commercial_path %></li>
     </ul>
 
     <h2>Development</h2>
@@ -104,6 +118,7 @@
       <li><%= link_to 'Partners', admin_partners_path %></li>
       <li><%= link_to 'Site Settings', admin_settings_path %></li>
       <li><%= link_to 'Transport Types', admin_transport_types_path %></li>
+      <li><%= link_to 'Issue Tags', admin_issue_tags_path %></li>
     </ul>
   </div>
 </div>

@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe TabsComponent, type: :component do
-  def render_component(**kwargs)
-    render_inline(described_class.new(**kwargs)) do |component|
+  def render_component(**)
+    render_inline(described_class.new(**)) do |component|
       component.with_tab(name: :first, label: 'First') { 'first tab content' }
       component.with_tab(name: :second, label: 'Second') { 'second tab content' }
     end
@@ -15,6 +15,7 @@ RSpec.describe TabsComponent, type: :component do
       { 'aria-controls': name,
         'aria-selected': active.to_s,
         'data-toggle': 'tab',
+        'data-bs-toggle': 'tab',
         class: ['nav-link', active ? 'active' : nil].compact.join(' '),
         href: "##{name}",
         id: "#{name}-tab",

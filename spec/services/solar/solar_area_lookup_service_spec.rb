@@ -5,11 +5,17 @@ describe Solar::SolarAreaLookupService, type: :service do
   let!(:solar_area)      { create(:solar_pv_tuos_area, gsp_id: 1, latitude: 42.143042, longitude: -106.352703) }
 
   # near bath
-  let!(:bath_area)       { create(:solar_pv_tuos_area, gsp_id: 199, gsp_name: 'MELK_1', latitude: 51.344996, longitude: -2.008303, active: false) }
+  let!(:bath_area)       do
+    create(:solar_pv_tuos_area, gsp_id: 199, gsp_name: 'MELK_1', latitude: 51.344996, longitude: -2.008303,
+                                active: false)
+  end
   # in the Highlands
-  let!(:highlands_area) { create(:solar_pv_tuos_area, gsp_id: 18, gsp_name: 'BEAU_P|ORRI_P', latitude: 57.51208, longitude: -4.560742, active: false) }
+  let!(:highlands_area) do
+    create(:solar_pv_tuos_area, gsp_id: 18, gsp_name: 'BEAU_P|ORRI_P', latitude: 57.51208, longitude: -4.560742,
+                                active: false)
+  end
 
-  let(:school)            { create(:school) }
+  let(:school) { create(:school) }
 
   let(:service) { Solar::SolarAreaLookupService.new(school) }
 

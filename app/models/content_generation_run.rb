@@ -2,10 +2,10 @@
 #
 # Table name: content_generation_runs
 #
-#  created_at :datetime         not null
 #  id         :bigint(8)        not null, primary key
-#  school_id  :bigint(8)        not null
+#  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  school_id  :bigint(8)        not null
 #
 # Indexes
 #

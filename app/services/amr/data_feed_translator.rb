@@ -47,7 +47,7 @@ module Amr
     end
 
     def reading_date(row)
-      date_string = fetch_from_row(:reading_date_index, row)
+      date_string = fetch_from_row(:reading_date_index, row)&.strip
       return date_string unless @config.delayed_reading
 
       # a delayed reading config means the date/date-time column is when the readings

@@ -25,8 +25,8 @@ class AlertGasHeatingHotWaterOnDuringHoliday < Alerts::UsageDuringCurrentHoliday
              heating_type: heating_type,
              holiday_name: holiday_name,
              date: I18n.l(@asof_date, format: '%A %e %b %Y'),
-             cost: FormatUnit.format(:£, @holiday_usage_to_date_£, :html),
-             project_cost: FormatUnit.format(:£, @holiday_projected_usage_£, :html))
+             cost: FormatUnit.format(:£, @holiday_usage_to_date_gbp, :html),
+             project_cost: FormatUnit.format(:£, @holiday_projected_usage_gbp, :html))
     else
       I18n.t("#{i18n_prefix}.heating_not_on")
     end

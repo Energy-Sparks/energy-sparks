@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Can be included by comparison models that have attributes for multiple fuel types
 # and units across two different periods (current and previous)
 #
@@ -35,6 +37,7 @@ module MultipleFuelComparisonView
   # See EnergySparks::Calculator.sum_if_complete
   def total_previous_period(unit: :kwh, mode: :strict)
     return all_previous_period(unit: unit).sum unless mode == :strict
+
     EnergySparks::Calculator.sum_if_complete(all_previous_period(unit: unit), all_current_period(unit: unit))
   end
 

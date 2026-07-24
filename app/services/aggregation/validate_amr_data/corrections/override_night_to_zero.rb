@@ -12,9 +12,7 @@ module Aggregation
 
             data = meter.amr_data.one_days_data_x48(date)
             modified = Utilities::SunTimes.zero_night_hours(date, meter.meter_collection, data)
-            if modified
-              meter.amr_data.add(date, OneDayAMRReading.new(meter.mpan_mprn, date, 'SOLN', nil, DateTime.now, data))
-            end
+            meter.amr_data.add(date, OneDayAMRReading.new(date, 'SOLN', nil, DateTime.now, data)) if modified
           end
         end
       end

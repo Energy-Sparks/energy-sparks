@@ -6,13 +6,13 @@
 module Aggregation
   class SolarPvPanels
     include Logging
+
     attr_reader :meter_attributes_config, :real_production_data
 
-    def self.create(meter, attribute_name)
+    def self.create(meter, attribute_name, override_default)
       return unless meter.meter_attributes.key?(attribute_name)
 
-      new(meter.meter_attributes[attribute_name], meter.meter_collection.solar_pv,
-          override_default: attribute_name == :solar_pv)
+      new(meter.meter_attributes[attribute_name], meter.meter_collection.solar_pv, override_default:)
     end
 
     # @param [Hash] meter_attributes_config the :solar_pv meter attributes to process
@@ -43,7 +43,7 @@ module Aggregation
       print_detailed_results(pv_meter_map, 'Before solar pv calculation:')
 
       # Create the solar PV generation data (or override existing data if needed)
-      create_generation_data(pv_meter_map, false)
+      create_generation_data(pv_meter_map)
 
       # Create an export meter, with empty data, unless there is one already
       create_export_meter_if_missing(pv_meter_map)
@@ -63,11 +63,19 @@ module Aggregation
       print_detailed_results(pv_meter_map, 'After solar pv calculation')
     end
 
+    def create_generation_meter(mains_consume)
+      generation = create_generation_meter_from_mains(mains_consume)
+      create_generation_amr_data(mains_consume.amr_data, generation.amr_data, mains_consume.mpan_mprn)
+      generation
+    end
+
+    private
+
     # Calculate solar PV generation for a given day
     #
     # @param [Date] date the day to calculate
     # @param [String] mpan the mpan for the meter
-    def days_pv(date, mpan)
+    def days_pv(date, _mpan)
       capacity = degraded_kwp(date, :override_generation)
       pv_yield = @synthetic_sheffield_solar_pv_yields[date]
       scaled_pv_kwh_x48 = AMRData.one_day_zero_kwh_x48
@@ -75,10 +83,8 @@ module Aggregation
         scaled_pv_kwh_x48 = AMRData.fast_multiply_x48_x_scalar(pv_yield,
                                                                capacity / 2.0)
       end
-      OneDayAMRReading.new(mpan, date, 'SOLR', nil, DateTime.now, scaled_pv_kwh_x48)
+      OneDayAMRReading.new(date, 'SOLR', nil, DateTime.now, scaled_pv_kwh_x48)
     end
-
-    private
 
     # Creates a solar generation meter, if required, then populates the meter
     # with synthetic data
@@ -87,73 +93,59 @@ module Aggregation
     # meter attributes are configured to do so
     #
     # @param [SolarMeterMap] pv_meter_map the solar meters
-    # @param [boolean] create_zero_if_no_config THIS IS ALWAYS FALSE
-    def create_generation_data(pv_meter_map, create_zero_if_no_config)
-      pv_meter_map[:generation] = create_generation_meter_from_map(pv_meter_map) if pv_meter_map[:generation].nil?
-
-      create_generation_amr_data(
-        pv_meter_map[:mains_consume].amr_data,
-        pv_meter_map[:generation].amr_data,
-        pv_meter_map[:mains_consume].mpan_mprn,
-        create_zero_if_no_config
-      )
+    def create_generation_data(pv_meter_map)
+      mains_consume = pv_meter_map.mains_consume
+      if pv_meter_map.generation.nil?
+        pv_meter_map.set_meter(:generation, create_generation_meter_from_mains(mains_consume))
+      end
+      create_generation_amr_data(mains_consume.amr_data, pv_meter_map.generation.amr_data, mains_consume.mpan_mprn)
     end
 
     def create_export_meter_if_missing(pv_meter_map)
-      pv_meter_map[:export] = create_export_meter_from_map(pv_meter_map) if pv_meter_map[:export].nil?
+      pv_meter_map.set_meter(:export, create_export_meter_from_map(pv_meter_map)) if pv_meter_map.export.nil?
     end
 
     # Calculate or override the solar export data for the export meter in the SolarMeterMap
     def create_or_override_export_data(pv_meter_map, meter_collection)
       override_export_data_detail(
-        pv_meter_map[:mains_consume].amr_data,
-        pv_meter_map[:generation].amr_data,
-        pv_meter_map[:export].amr_data,
+        pv_meter_map.mains_consume.amr_data,
+        pv_meter_map.generation.amr_data,
+        pv_meter_map.export.amr_data,
         meter_collection,
-        pv_meter_map[:mains_consume].mpan_mprn
+        pv_meter_map.mains_consume.mpan_mprn
       )
     end
 
     def create_self_consumption_meter_if_missing(pv_meter_map)
-      return unless pv_meter_map[:self_consume].nil?
+      return unless pv_meter_map.self_consume.nil?
 
-      pv_meter_map[:self_consume] =
-        create_self_consumption_meter_from_map(pv_meter_map)
+      pv_meter_map.set_meter(:self_consume, create_self_consumption_meter_from_map(pv_meter_map))
     end
 
     # Calculate or override the solar self consumption data for the self consumption meter in the SolarMeterMap
     def create_self_consumption_data(pv_meter_map, meter_collection)
       calculate_self_consumption_data(
-        pv_meter_map[:mains_consume].amr_data,
-        pv_meter_map[:generation].amr_data,
-        pv_meter_map[:export].amr_data,
-        pv_meter_map[:self_consume].amr_data,
+        pv_meter_map.mains_consume.amr_data,
+        pv_meter_map.generation.amr_data,
+        pv_meter_map.export.amr_data,
+        pv_meter_map.self_consume.amr_data,
         meter_collection,
-        pv_meter_map[:mains_consume].mpan_mprn
+        pv_meter_map.mains_consume.mpan_mprn
       )
     end
 
     # @param [AmrData] mains_amr_data data for the mains consumption meter
     # @param [AmrData] pv_amr_data data for the pv generation meter
     # @param [String] mpan mpan/mprn for the mains consumption meter
-    # @param [boolean] create_zero_if_no_config THIS IS ALWAYS FALSE?
-    def create_generation_amr_data(mains_amr_data, pv_amr_data, mpan, create_zero_if_no_config)
+    def create_generation_amr_data(mains_amr_data, pv_amr_data, mpan)
       mains_amr_data.date_range.each do |date|
         # set only where config says so, either because we are overridding actual metered solar data
         # or we are just producing synthetic solar data
-        if synthetic_data?(date, :override_generation)
-          pv = days_pv(date, mpan)
-          pv_amr_data.add(date, pv)
-          compact_print_day('override generation', date, pv.kwh_data_x48)
-        elsif create_zero_if_no_config
-          # TODO: this never seems to be used, as param is always FALSE?
-          #
-          # pad out generation data to that of mains electric meter
-          # so downstream analysis doesn't need to continually test
-          # for its existence
-          pv_amr_data.add(date, OneDayAMRReading.zero_reading(mpan, date, 'SOL0'))
-          compact_print_day('override generation zero', date, negative_only_exported_kwh_x48)
-        end
+        next unless synthetic_data?(date, :override_generation)
+
+        pv = days_pv(date, mpan)
+        pv_amr_data.add(date, pv)
+        compact_print_day('override generation', date, pv.kwh_data_x48)
       end
     end
 
@@ -320,21 +312,14 @@ module Aggregation
       end
     end
 
-    # Create a solar generation meter, based on the mains_consume meter in the map
-    def create_generation_meter_from_map(pv_meter_map)
-      date_range, meter_to_clone, meter_collection = meter_creation_data(pv_meter_map)
-      create_generation_meter(date_range, meter_to_clone, meter_collection)
-    end
-
-    def create_generation_meter(_date_range, meter_to_clone, meter_collection)
-      create_meter(
-        meter_to_clone,
-        :solar_pv,
-        :solar_pv,
-        meter_collection,
-        SolarPVPanels::SOLAR_PV_PRODUCTION_METER_NAME,
-        'SOLR'
-      )
+    # Create a solar generation meter, based on the mains_consume meter
+    def create_generation_meter_from_mains(mains_consume)
+      create_meter(mains_consume,
+                   :solar_pv,
+                   :solar_pv,
+                   mains_consume.meter_collection,
+                   SolarPVPanels::SOLAR_PV_PRODUCTION_METER_NAME,
+                   'SOLR')
     end
 
     # Create a solar export meter, based on the mains_consume meter in the map
@@ -344,14 +329,12 @@ module Aggregation
     end
 
     def create_export_meter(_date_range, meter_to_clone, meter_collection)
-      create_meter(
-        meter_to_clone,
-        :exported_solar_pv,
-        :solar_pv_exported_sub_meter,
-        meter_collection,
-        SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME,
-        'SOLE'
-      )
+      create_meter(meter_to_clone,
+                   :exported_solar_pv,
+                   :solar_pv_exported_sub_meter,
+                   meter_collection,
+                   SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME,
+                   'SOLE')
     end
 
     # Create a solar self consumption meter, based on the mains_consume meter in the map
@@ -361,14 +344,12 @@ module Aggregation
     end
 
     def create_self_consumption_meter(_date_range, meter_to_clone, meter_collection)
-      create_meter(
-        meter_to_clone,
-        :solar_pv,
-        :solar_pv_consumed_sub_meter,
-        meter_collection,
-        SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME,
-        'SOLO'
-      )
+      create_meter(meter_to_clone,
+                   :solar_pv,
+                   :solar_pv_consumed_sub_meter,
+                   meter_collection,
+                   SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME,
+                   'SOLO')
     end
 
     # Creates a new meter, cloning some values from an original
@@ -406,9 +387,9 @@ module Aggregation
 
     def meter_creation_data(pv_meter_map)
       [
-        pv_meter_map[:mains_consume].amr_data.date_range,
-        pv_meter_map[:mains_consume],
-        pv_meter_map[:mains_consume].meter_collection
+        pv_meter_map.mains_consume.amr_data.date_range,
+        pv_meter_map.mains_consume,
+        pv_meter_map.mains_consume.meter_collection
       ]
     end
 
@@ -422,8 +403,8 @@ module Aggregation
       @solar_pv_panel_config.degraded_kwp(date, override_key)
     end
 
-    def one_day_reading(mpan, date, type, data_x48 = Array.new(48, 0.0))
-      OneDayAMRReading.new(mpan, date, type, nil, DateTime.now, data_x48)
+    def one_day_reading(_mpan, date, type, data_x48 = Array.new(48, 0.0))
+      OneDayAMRReading.new(date, type, nil, DateTime.now, data_x48)
     end
 
     # Is the school unoccupied on a given date

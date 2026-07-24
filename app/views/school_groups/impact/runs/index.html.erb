@@ -1,0 +1,36 @@
+<% content_for :page_title, "#{@school_group.name} Impact report runs" %>
+<% content_for :header_title, "#{@school_group.name} Impact report runs" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th class="text-start">Date</th>
+      <th class="text-start">Schools</th>
+      <th class="text-start">Total metrics</th>
+      <th class="text-start">Enough data</th>
+      <th class="text-start">Overview</th>
+      <th class="text-start">Energy efficiency</th>
+      <th class="text-start">Engagement</th>
+      <th class="text-start">Potential savings</th>
+      <th class="text-center no-sort">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @runs.each do |run| %>
+      <tr>
+        <td class="text-start"><%= run.run_date %></td>
+        <td class="text-center"><%= run.visible_schools %></td>
+        <td class="text-center"><%= run.metrics.count %></td>
+        <td class="text-center"><%= run.metrics.count(&:enough_data) %></td>
+        <td class="text-center"><%= run.metrics.count(&:overview?) %></td>
+        <td class="text-center"><%= run.metrics.count(&:energy_efficiency?) %></td>
+        <td class="text-center"><%= run.metrics.count(&:engagement?) %></td>
+        <td class="text-center"><%= run.metrics.count(&:potential_savings?) %></td>
+        <td class="text-center">
+          <%= link_to 'View', school_group_impact_run_path(@school_group, run),
+                      class: 'btn btn-secondary btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -43,8 +43,8 @@ describe 'change_in_heating_since_last_year' do
         current_year_gas_kwh: 2,
         previous_year_gas_co2: 3,
         current_year_gas_co2: 4,
-        previous_year_gas_gbp: 5,
-        current_year_gas_gbp: 6 }
+        previous_year_gas_gbpcurrent: 5,
+        current_year_gas_gbpcurrent: 6 }
     end
 
     it_behaves_like 'a school comparison report'
@@ -59,8 +59,8 @@ describe 'change_in_heating_since_last_year' do
         current_year_storage_heaters_kwh: 2,
         previous_year_storage_heaters_co2: 3,
         current_year_storage_heaters_co2: 4,
-        previous_year_storage_heaters_gbp: 5,
-        current_year_storage_heaters_gbp: 6 }
+        previous_year_storage_heaters_gbpcurrent: 5,
+        current_year_storage_heaters_gbpcurrent: 6 }
     end
 
     it_behaves_like 'a school comparison report'

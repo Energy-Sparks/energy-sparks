@@ -34,11 +34,9 @@ module DataFeeds
     private
 
     def connection
-      Faraday.new(BASE_URL) do |f|
+      FaradayHelper.connection(url: BASE_URL,
+                               retry_options: { retry_statuses: [429], interval: 2.0, backoff_factor: 2 }) do |f|
         f.response :json
-        f.response :raise_error
-        f.response :logger if Rails.env.development?
-        f.request(:retry, { retry_statuses: [429], interval: 2.0, backoff_factor: 2 })
       end
     end
 

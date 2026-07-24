@@ -2,61 +2,41 @@
   <% content_for :page_title do %>
     <%= @activity_type.name %>
   <% end %>
-
-  <div class="row padded-row">
-    <div class="col-md-3">
-      <%= render 'activity_types/image', activity_type: @activity_type, css_class: '' %>
-    </div>
-    <div class="col-md-6">
-      <h2><%= @activity_type.name %></h2>
-      <p><%= @activity_type.summary %></p>
-      <div>
-        <%= render 'activity_types/activity_type_score', activity_type: @activity_type %>
-        <%= render 'activity_types/activity_type_key_stages', activity_type: @activity_type %>
-        <%= render 'activity_types/activity_type_subjects', activity_type: @activity_type %>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <%= link_to t('activity_types.show.view_related_activities',
-                    count: @activity_type.activity_category.activity_types.count),
-                  activity_category_path(@activity_type.activity_category), class: 'btn btn-default' %>
-    </div>
-  </div>
-
-  <% if current_user.nil? %>
-    <%= render 'shared/activities/prompt_login_to_record', label: 'activity', score: @activity_type.score,
-                                                           return_path: activity_type_path(@activity_type) %>
+  <% @audience = :pupil_tasks %>
+  <% content_for :header do %>
+    <%= render Tasks::Header.new(task: @activity_type) %>
   <% end %>
-
-  <% if can?(:create, Activity) && @can_be_completed_for_schools.present? %>
-    <% if @can_be_completed_for_schools.one? %>
-      <%= render 'activity_types/prompt_score', activity_type: @activity_type,
-                                                school: @can_be_completed_for_schools.first %>
+  <% content_for :rightcol do %>
+    <%= render 'shared/tasks/rightcol/download_links', task: @activity_type %>
+    <%= render 'shared/tasks/rightcol/category', task: @activity_type %>
+    <%= render 'shared/tasks/rightcol/programmes', task: @activity_type %>
+  <% end %>
+  <% if current_user_school && @activity_type.activities_for_school(current_user_school).any? %>
+    <%= render 'shared/tasks/prompts/previous_records',
+               recordings: @activity_type.activities_for_school(current_user_school),
+               school: current_user_school, resource_type: :activity %>
+  <% end %>
+  <% if current_user.nil? %>
+    <%= render 'shared/tasks/prompts/login_to_record', task: @activity_type %>
+  <% end %>
+  <% if can?(:create, Activity) && @available_schools_for_user.present? %>
+    <% if @available_schools_for_user.one? %>
+      <%= render 'shared/tasks/prompts/score', task: @activity_type,
+                                               url: new_school_activity_path(
+                                                 @available_schools_for_user.first,
+                                                 activity_type_id: @activity_type.id
+                                               ),
+                                               school: @available_schools_for_user.first %>
     <% else %>
-      <%= render 'activity_types/prompt_score_for_group', activity_type: @activity_type,
-                                                          schools: @can_be_completed_for_schools %>
+      <%= render 'shared/tasks/prompts/score_for_group', task: @activity_type,
+                                                         url: for_school_activity_type_path(@activity_type),
+                                                         schools: @available_schools_for_user %>
     <% end %>
   <% end %>
-
-  <% unless @activity_type.activities_for_school(current_user_school).empty? %>
-    <%= render 'activity_types/previous_records',
-               activities: @activity_type.activities_for_school(current_user_school).by_date,
-               school: current_user_school %>
+  <h3 class="pt-0"><%= t('common.labels.overview') %></h3>
+  <%= @activity_type_content %>
+  <% if can?(:edit, @activity_type) %>
+    <p><%= admin_button edit_admin_activity_type_path(@activity_type),
+                        classes: 'btn btn-default' %></p>
   <% end %>
-
-  <div class="row padded-row">
-    <div class="col-md-9">
-      <div class="activity_type">
-        <%= @activity_type_content %>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <% if @activity_type.download_links.present? %>
-        <h4 style="padding-top: 0px;"><%= t('activity_types.show.download_resources') %></h4>
-        <div class="activity_type activity-type-download-links" data-event-value="<%= @activity_type.id %>">
-          <%= @activity_type.download_links %>
-        </div>
-      <% end %>
-    </div>
-  </div>
 <% end %>

@@ -1,6 +1,35 @@
 ---
 en:
   tasks:
+    action:
+      complete_this_for_group_html:
+        one: Complete this action on behalf of a school to score <strong>1</strong> point!
+        other: Complete this action on behalf of a school to score <strong>%{count}</strong> points!
+      complete_this_html:
+        one: Complete this action to score your school <strong>1</strong> point!
+        other: Complete this action to score your school <strong>%{count}</strong> points!
+      record_this: Record this action
+      sign_in_html:
+        one: Sign in now to record this action and score your school <strong>1</strong> point!
+        other: Sign in now to record this action and score your school <strong>%{count}</strong> points!
+      view_category_tasks:
+        one: View 1 action in this category
+        other: View %{count} actions in this category
+    activity:
+      complete_this_for_group_html:
+        one: Complete this activity on behalf of a school to score <strong>1</strong> point!
+        other: Complete this activity on behalf of a school to score <strong>%{count}</strong> points!
+      complete_this_html:
+        one: Complete this activity to score your school <strong>1</strong> point!
+        other: Complete this activity to score your school <strong>%{count}</strong> points!
+      record_this: Record this activity
+      sign_in_html:
+        one: Sign in now to record this activity and score your school <strong>1</strong> point!
+        other: Sign in now to record this activity and score your school <strong>%{count}</strong> points!
+      view_category_tasks:
+        one: View 1 activity in this category
+        other: View %{count} activities in this category
+    category: "%{category} category"
     complete:
       action: Complete action
       activity: Complete activity
@@ -19,9 +48,21 @@ en:
       share: Share what you’ve done with others in the school community
       what_next: What do you want to do next?
     completed_on: Completed on %{date}
+    download_resources: Download resources
+    login_to_record:
+      are_you_an_energy_sparks_user: Are you an Energy Sparks user?
+    points:
+      action: Points for this action
+      activity: Points for this activity
+    previous_records:
+      completed_most_recently_on: most recently on
+      completed_on: 'on'
+      previously_completed: "%{label} previously completed"
+    related_programmes: Related programmes
     score:
       action: Score for this action
       activity: Score for this activity
+    select_school: Select a school...
     view:
       action: View action
       activity: View activity

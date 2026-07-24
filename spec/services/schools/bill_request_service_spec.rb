@@ -14,19 +14,19 @@ RSpec.describe Schools::BillRequestService do
     end
 
     context 'with users' do
-      let!(:school_admin)     { create(:school_admin, school: school)}
+      let!(:school_admin)     { create(:school_admin, school: school) }
       let!(:cluster_admin)    { create(:school_admin, name: 'Cluster admin', cluster_schools: [school]) }
-      let!(:staff)            { create(:staff, school: school)}
-      let!(:pupil)            { create(:pupil, school: school)}
+      let!(:staff)            { create(:staff, school: school) }
+      let!(:pupil)            { create(:pupil, school: school) }
 
       it 'returns only staff and school admins' do
-        expect(service.users).to match_array([staff, cluster_admin, school_admin])
+        expect(service.users).to contain_exactly(staff, cluster_admin, school_admin)
       end
     end
 
     context 'with group admin cluster user (without staff role)' do
-      let!(:school_admin)   { create(:school_admin, school: school)}
-      let!(:group_admin)    { create(:group_admin, school: school)}
+      let!(:school_admin)   { create(:school_admin, school: school) }
+      let!(:group_admin)    { create(:group_admin, school: school) }
 
       before do
         school.cluster_users << group_admin
@@ -38,9 +38,9 @@ RSpec.describe Schools::BillRequestService do
     end
 
     context 'with group admin (not in cluster)' do
-      let!(:school_group)   { create(:school_group, schools: [school])}
-      let!(:school_admin)   { create(:school_admin, school: school)}
-      let!(:group_admin)    { create(:group_admin, school_group: school_group)}
+      let!(:school_group)   { create(:school_group, schools: [school]) }
+      let!(:school_admin)   { create(:school_admin, school: school) }
+      let!(:group_admin)    { create(:group_admin, school_group: school_group) }
 
       it 'returns group admin users last' do
         expect(service.users).to eq([school_admin, group_admin])
@@ -49,7 +49,7 @@ RSpec.describe Schools::BillRequestService do
   end
 
   describe '#request_documentation!' do
-    let!(:school_admin) { create(:school_admin, school: school)}
+    let!(:school_admin) { create(:school_admin, school: school) }
 
     it 'generates an email' do
       expect do
@@ -60,7 +60,9 @@ RSpec.describe Schools::BillRequestService do
     it 'sets flag on school' do
       expect do
         service.request_documentation!([school_admin])
-      end.to change(school, :bill_requested).from(false).to(true).and change { school.bill_requested_at.class }.from(NilClass).to(ActiveSupport::TimeWithZone)
+      end.to change(school, :bill_requested).from(false).to(true).and change {
+  school.bill_requested_at.class
+}.from(NilClass).to(ActiveSupport::TimeWithZone)
     end
 
     context 'when formatting email' do
@@ -69,7 +71,7 @@ RSpec.describe Schools::BillRequestService do
       end
 
       it 'sends to the correct users' do
-        expect(email.to).to match_array([school_admin.email])
+        expect(email.to).to contain_exactly(school_admin.email)
       end
 
       it 'has the expected subject line' do
@@ -98,8 +100,8 @@ RSpec.describe Schools::BillRequestService do
     end
 
     context 'with mpans' do
-      let!(:electricity_meter)  { create(:electricity_meter, school: school)}
-      let!(:gas_meter)          { create(:gas_meter, school: school)}
+      let!(:electricity_meter)  { create(:electricity_meter, school: school) }
+      let!(:gas_meter)          { create(:gas_meter, school: school) }
 
       it 'includes the requested MPANs' do
         service.request_documentation!([school_admin], [electricity_meter, gas_meter])

@@ -1,49 +1,127 @@
-<% content_for :page_title, 'Energy tariffs report' %>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+      <%= "Energy Tariffs for #{@dashboard_user.display_name}" %>
+    <% end %>
+  <%= render Elements::ButtonComponent.new('View full report',
+                                           admin_reports_energy_tariffs_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
 
-<h1>Energy tariffs overview</h1>
+  <p>
+    The following table summarises the energy tariffs currently configured in the system for
+     <%= "#{@dashboard_user.display_name}'s" %> school groups.
+  </p>
+<% else %>
 
-<p>
-The following table summarises the energy tariffs currently configured in the system.
-</p>
+  <% content_for :page_title, 'Energy tariffs report' %>
+
+  <h1>Energy tariffs overview</h1>
+
+  <p>
+    The following table summarises the energy tariffs currently configured in the system.
+  </p>
+<% end %>
 
 <p>
  It only counts tariffs that are currently enabled and in-use. As well as a count
  of how many tariffs for each school group, it lists how many schools in those groups
- have their own tariffs, either manually entered or imported via their smart meters.
+ have their own tariffs, both electricity and gas.
 </p>
+
+<%= render Elements::ButtonComponent.new('Download CSV',
+                                         url_for(
+                                           controller: controller_path,
+                                           action: :index,
+                                           only_path: true,
+                                           format: :csv
+                                         ),
+                                         style: :secondary,
+                                         classes: 'mb-2 me-2') %>
 
 <table class="advice-table mt-4 table table-sm table-sorted">
   <thead>
+    <tr style="text-align:center">
+      <% unless @dashboard_user %>
+        <th colspan="3"></th>
+      <% else %>
+        <th colspan="2"></th>
+      <% end %>
+      <th colspan="2" style="text-align:center">Current electricity tariff</th>
+      <th colspan="2" style="text-align:center">Current gas tariff</th>
+      <th colspan="2" style="text-align:center">School tariffs</th>
+    </tr>
     <tr>
-      <th>School Group</th>
-      <th>Tariffs</th>
-      <th>Schools with Tariffs</th>
-      <th>Schools with DCC Tariffs</th>
+      <th style="text-align:center">School Group</th>
+      <% unless @dashboard_user %>
+        <th style="text-align:center">Admin</th>
+      <% end %>
+      <th style="text-align:center">Tariffs</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th style="text-align:center">Electricity</th>
+      <th style="text-align:center">Gas</th>
     </tr>
   </thead>
   <tbody>
-    <% SchoolGroup.organisation_groups.with_visible_schools.order(:name).each do |school_group| %>
+    <% @school_groups.organisation_groups.with_visible_schools.order(:name).each do |school_group| %>
       <tr>
         <td><%= link_to school_group.name, school_group_energy_tariffs_path(school_group) %></td>
-        <td>
-          <% if @count_by_school_group[school_group.slug].present? %>
-            <%= link_to(@count_by_school_group[school_group.slug], school_group_energy_tariffs_path(school_group)) %>
+        <% unless @dashboard_user %>
+          <td><%= school_group.default_issues_admin_user.display_name %></td>
+        <% end %>
+        <td style="text-align:center">
+          <% if @count_by_active_school_group[school_group.slug].present? %>
+            <% current_tariffs = school_group.energy_tariffs.current.by_start_date %>
+            <% electricity_tariff = current_tariffs.electricity&.last %>
+            <% gas_tariff = current_tariffs.gas&.last %>
+            <%= link_to(@count_by_active_school_group[school_group.slug],
+                        school_group_energy_tariffs_path(school_group)) %>
           <% else %>
             -
           <% end %>
         </td>
-        <td>
-          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group) %>
+        <td data-order="<%= sortable_date(electricity_tariff&.start_date) %>" style="text-align:center">
+          <% if electricity_tariff.present? %>
+            <%= electricity_tariff.display_start_date %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td data-order="<%= sortable_date(electricity_tariff&.end_date) %>" style="text-align:center">
+          <% if electricity_tariff.present? %>
+            <%= electricity_tariff.display_end_date %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td data-order="<%= sortable_date(gas_tariff&.start_date) %>" style="text-align:center">
+          <% if gas_tariff.present? %>
+            <%= gas_tariff.display_start_date %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td data-order="<%= sortable_date(gas_tariff&.end_date) %>" style="text-align:center">
+          <% if gas_tariff.present? %>
+            <%= gas_tariff.display_end_date %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td style="text-align:center">
+          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :electricity) %>
           <% if count > 0 %>
             <%= link_to count, group_school_tariffs_school_group_energy_tariffs_path(school_group) %>
           <% else %>
             -
           <% end %>
         </td>
-        <td>
-          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :dcc) %>
+        <td style="text-align:center">
+          <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :gas) %>
           <% if count > 0 %>
-            <%= link_to count, admin_reports_tariffs_path(anchor: school_group.name.parameterize) %>
+            <%= link_to count, group_school_tariffs_school_group_energy_tariffs_path(school_group) %>
           <% else %>
             -
           <% end %>

@@ -2,15 +2,19 @@ require 'rails_helper'
 
 describe Alert do
   let(:alert_type_description) { 'all about this alert type' }
-  let(:gas_fuel_alert_type)             { create(:alert_type, fuel_type: :gas, frequency: :termly, description: alert_type_description) }
-  let(:electricity_fuel_alert_type)     { create(:alert_type, fuel_type: :electricity, frequency: :termly, description: alert_type_description) }
-  let(:school)                          { create(:school) }
+  let(:gas_fuel_alert_type) do
+    create(:alert_type, fuel_type: :gas, frequency: :termly, description: alert_type_description)
+  end
+  let(:electricity_fuel_alert_type) do
+    create(:alert_type, fuel_type: :electricity, frequency: :termly, description: alert_type_description)
+  end
+  let(:school) { create(:school) }
 
   it 'ignores alerts if there is an exception' do
     alert_1 = create(:alert, school: school, alert_type: gas_fuel_alert_type, created_at: Time.zone.today)
     alert_2 = create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Time.zone.today)
 
-    expect(Alert.without_exclusions).to match_array([alert_1, alert_2])
+    expect(Alert.without_exclusions).to contain_exactly(alert_1, alert_2)
 
     SchoolAlertTypeExclusion.create(school: school, alert_type: gas_fuel_alert_type)
     expect(Alert.without_exclusions).to eq([alert_2])
@@ -34,7 +38,10 @@ describe Alert do
         'timescale' => '2 flynedd diwethaf'
       }
     end
-    let!(:alert) { create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Time.zone.today, template_data: template_data, template_data_cy: template_data_cy) }
+    let!(:alert) do
+      create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: Time.zone.today,
+                     template_data: template_data, template_data_cy: template_data_cy)
+    end
 
     it 'returns welsh template data for cy locale' do
       I18n.with_locale(:cy) do

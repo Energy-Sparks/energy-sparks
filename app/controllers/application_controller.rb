@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group,
                 :current_user_default_school_group, :current_school, :current_school_group, :utm_params
   before_action :update_trackable!
+  before_action :bootstrap_5_switcher
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, alert: exception.message
@@ -76,7 +77,7 @@ class ApplicationController < ActionController::Base
   end
 
   def admin_mode?
-    ENV['ADMIN_MODE'] == 'true'
+    ENV['ADMIN_MODE'] == 'true' || File.exist?('/tmp/admin_mode')
   end
 
   def current_user_admin?
@@ -105,5 +106,17 @@ class ApplicationController < ActionController::Base
 
   def handle_head_request
     head :ok if request.head?
+  end
+
+  def bootstrap_5_switcher
+    Current.bs5 = Flipper.enabled?(:bootstrap_switcher) && ActiveModel::Type::Boolean.new.cast(params[:bs5])
+  end
+
+  def enable_bootstrap5
+    Current.bs5 = true unless Flipper.enabled?(:bootstrap_switcher) && params[:bs5]
+  end
+
+  def enable_prototype_page
+    Current.prototype_page = true
   end
 end

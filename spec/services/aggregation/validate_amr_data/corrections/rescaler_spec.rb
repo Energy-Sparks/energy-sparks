@@ -23,7 +23,6 @@ describe Aggregation::ValidateAmrData::Corrections::Rescaler, type: :service do
 
   it 'annotates the corrected data' do
     expect(results.days_amr_data(start_date)).not_to be_nil
-    expect(results.meter_id(start_date)).to eq mpan_mprn
     expect(results.substitution_type(start_date)).to eq 'S31M'
     expect(results.substitution_date(start_date)).to be_nil
   end

@@ -1,20 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.shared_examples_for 'a group long term advice page' do
   let!(:school_group) { create(:school_group, :with_active_schools, public: true) }
-  let!(:school) { create(:school, :with_fuel_configuration, school_group: school_group) }
+  let!(:school) { create(:school, :with_fuel_configuration, school_group:) }
   let!(:report) { create(:report, key: report_key) }
-  let(:comparison_variables) do
-    {
-      "previous_year_#{fuel_type}_kwh": 1000.0,
-      "current_year_#{fuel_type}_kwh": 500.0,
-      "previous_year_#{fuel_type}_co2": 800.0,
-      "current_year_#{fuel_type}_co2": 400.0,
-      "previous_year_#{fuel_type}_gbp": 2000.0,
-      "current_year_#{fuel_type}_gbp": 1200.0,
-      solar_type: 'synthetic'
-    }
-  end
   let(:variables) do
     {
       average_one_year_saving_gbp: 200.0,
@@ -24,21 +15,11 @@ RSpec.shared_examples_for 'a group long term advice page' do
   end
 
   before do
-    create(:advice_page_school_benchmark,
-            school: school,
-            advice_page: advice_page,
-            benchmarked_as: :benchmark_school)
-
-    alert_run = create(:alert_generation_run, school: school)
-
-    comparison_alert_type = create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: comparison_alert_type,
-                   variables: comparison_variables)
-
-    alert_type = create(:alert_type, class_name: class_name)
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type,
-                   variables: variables)
-
+    create(:advice_page_school_benchmark, school:, advice_page:, benchmarked_as: :benchmark_school)
+    alert_generation_run = create(:alert_generation_run, school: school)
+    create(:alert, :energy_annual_versus_benchmark, school:, alert_generation_run:, fuel_type:)
+    alert_type = create(:alert_type, class_name:)
+    create(:alert, school:, alert_generation_run:, alert_type:, variables:)
     report_class.refresh
   end
 
@@ -70,16 +51,16 @@ RSpec.shared_examples_for 'a group long term advice page' do
       end
 
       it 'has the comparisons section' do
-        expect(page).to have_content(I18n.t("advice_pages.#{advice_page.key}.insights.comparison.title"))
+        expect(page).to have_text(I18n.t("advice_pages.#{advice_page.key}.insights.comparison.title"))
         expect(page).to have_css('.school-group-comparison-component')
         expect(page).to have_link(href: analysis_path)
       end
 
       it 'has the current use section' do
-        expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.insights.current_use.title'))
+        expect(page).to have_text(I18n.t('school_groups.advice_pages.long_term.insights.current_use.title'))
         expect(page).to have_css("##{report_key}-table")
         within("##{report_key}-table") do
-          expect(page).to have_content(school.name)
+          expect(page).to have_text(school.name)
         end
       end
     end
@@ -101,7 +82,9 @@ RSpec.shared_examples_for 'a group long term advice page' do
       end
 
       context 'with potential savings' do
-        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.analysis.potential_savings.title')) }
+        it {
+          expect(page).to have_text(I18n.t('school_groups.advice_pages.long_term.analysis.potential_savings.title'))
+        }
 
         it_behaves_like 'it contains the expected data table' do
           let(:table_id) { "##{advice_page.key}-savings" }
@@ -120,7 +103,7 @@ RSpec.shared_examples_for 'a group long term advice page' do
       end
 
       context 'with comparison section' do
-        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.analysis.comparisons.title')) }
+        it { expect(page).to have_text(I18n.t('school_groups.advice_pages.long_term.analysis.comparisons.title')) }
 
         it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { report }

@@ -12,7 +12,7 @@ class ScheduleDataManagerService
   end
 
   def self.invalidate_cached_calendar(calendar)
-    Rails.cache.delete(self.calendar_cache_key(calendar))
+    Rails.cache.delete(calendar_cache_key(calendar))
   end
 
   def self.calendar_cache_key(calendar)
@@ -41,7 +41,8 @@ class ScheduleDataManagerService
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
     Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRY) do
       data = SolarPV.new('solar pv')
-      DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id).pluck(:reading_date, :generation_mw_x48).each do |date, values|
+      DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id)
+                                   .pluck(:reading_date, :generation_mw_x48).each do |date, values|
         data.add(date, values.map(&:to_f))
       end
       data
@@ -73,22 +74,15 @@ class ScheduleDataManagerService
 
   def find_holidays
     Rails.cache.fetch(self.class.calendar_cache_key(@calendar), expires_in: CACHE_EXPIRY) do
-      hol_data = HolidayData.new
-
-      Calendar.find(@calendar.id).outside_term_time.order(:start_date).includes(:academic_year, :calendar_event_type).map do |holiday|
-        academic_year = nil # Not really being used at the moment by the analytics code
-
-        analytics_holiday = Holiday.new(
-          holiday.calendar_event_type.analytics_event_type.to_sym,
-          nil,
-          holiday.start_date,
-          holiday.end_date,
-          academic_year
-        )
-
-        hol_data.add(analytics_holiday)
+      holidays = Calendar.find(@calendar.id).outside_term_time.order(:start_date)
+                         .includes(:academic_year, :calendar_event_type).map do |holiday|
+        Holiday.new(holiday.calendar_event_type.analytics_event_type.to_sym,
+                    nil,
+                    holiday.start_date,
+                    holiday.end_date,
+                    nil)
       end
-      Holidays.new(hol_data)
+      Holidays.new(holidays)
     end
   end
 
@@ -100,7 +94,8 @@ class ScheduleDataManagerService
   # returns earliest date encountered
   def load_meteostat_readings(temperatures)
     earliest = nil
-    WeatherObservation.where(weather_station_id: @weather_station_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
+    WeatherObservation.where(weather_station_id: @weather_station_id)
+                      .pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
       if earliest.nil?
         earliest = date
       elsif date < earliest
@@ -114,15 +109,18 @@ class ScheduleDataManagerService
   # Load Dark Sky readings if there's any associated with schools
   # Optionally only loading those from before a specified date
   def load_dark_sky_readings(temperatures, earliest = nil)
-    if @dark_sky_area_id.present?
-      if earliest.present?
-        DataFeeds::DarkSkyTemperatureReading.where('area_id = ? AND reading_date < ?', @dark_sky_area_id, earliest).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
-          temperatures.add(date, values.map(&:to_f))
-        end
-      else
-        DataFeeds::DarkSkyTemperatureReading.where(area_id: @dark_sky_area_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
-          temperatures.add(date, values.map(&:to_f))
-        end
+    return if @dark_sky_area_id.blank?
+
+    if earliest.present?
+      DataFeeds::DarkSkyTemperatureReading.where('area_id = ? AND reading_date < ?', @dark_sky_area_id, earliest).pluck(
+        :reading_date, :temperature_celsius_x48
+      ).each do |date, values|
+        temperatures.add(date, values.map(&:to_f))
+      end
+    else
+      DataFeeds::DarkSkyTemperatureReading.where(area_id: @dark_sky_area_id).pluck(:reading_date,
+                                                                                   :temperature_celsius_x48).each do |date, values|
+        temperatures.add(date, values.map(&:to_f))
       end
     end
   end

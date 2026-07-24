@@ -25,7 +25,7 @@ module Schools
     end
 
     def school_params
-      allowed = %i[indicated_has_solar_panels indicated_has_storage_heaters has_swimming_pool]
+      allowed = %i[indicated_has_solar_panels indicated_has_storage_heaters has_swimming_pool has_battery]
       allowed += School::HEATING_TYPES.flat_map do |type|
         [:"heating_#{type}", :"heating_#{type}_notes", :"heating_#{type}_percent"]
       end

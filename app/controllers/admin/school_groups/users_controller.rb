@@ -1,8 +1,16 @@
+# frozen_string_literal: true
+
 module Admin
   module SchoolGroups
     class UsersController < AdminController
       include ApplicationHelper
+      include SchoolGroupBreadcrumbs
+
       load_and_authorize_resource :school_group
+
+      before_action :breadcrumbs
+
+      layout 'group_settings'
 
       def show
         @group_admins = @school_group.users.sort_by(&:email)
@@ -50,7 +58,8 @@ module Admin
             'Last signed in',
             'Alerts',
             'Language',
-            'Locked'
+            'Locked',
+            'Climate Action Lead'
           ]
           group_admins.each do |user|
             add_user_to_csv(csv, school_group, nil, user)
@@ -68,17 +77,9 @@ module Admin
           school_group.name,
           school&.name || '',
           school&.school_type&.humanize || '',
-          if school
-            school&.active? ? 'Yes' : 'No'
-          else
-            ''
-          end,
-          if school
-            school&.data_enabled? ? 'Yes' : 'No'
-          else
-            ''
-          end,
-          school&.funder&.name || '',
+          school ? y_n(school&.active?) : '',
+          school ? y_n(school&.data_enabled?) : '',
+          school.summarised_current_contract_holder_name,
           school&.region&.to_s&.titleize || '',
           user.name,
           user.pupil? ? 'N/A' : user.email,
@@ -88,8 +89,13 @@ module Admin
           display_last_signed_in_as(user),
           user.group_user? ? 'N/A' : y_n(user.contact_for_school),
           I18n.t("languages.#{user.preferred_locale}"),
-          y_n(user.access_locked?)
+          y_n(user.access_locked?),
+          y_n(user.climate_action_lead)
         ]
+      end
+
+      def breadcrumbs
+        build_breadcrumbs([{ name: t('school_groups.titles.users') }])
       end
     end
   end

@@ -17,13 +17,13 @@ RSpec.describe Admin::RecordComponent, :include_url_helpers, type: :component do
 
   describe '#render?' do
     context 'with an admin' do
-      it { expect(component.render?).to be(true)}
+      it { expect(component.render?).to be(true) }
     end
 
     context 'with an school admin' do
       let(:current_user) { create(:school_admin, school: record.school) }
 
-      it { expect(component.render?).to be(false)}
+      it { expect(component.render?).to be(false) }
     end
   end
 
@@ -32,16 +32,16 @@ RSpec.describe Admin::RecordComponent, :include_url_helpers, type: :component do
       render_inline(component)
     end
 
-    it { expect(html).to have_content(record.created_at.to_fs(:es_compact))}
-    it { expect(html).to have_content(record.updated_at.to_fs(:es_compact))}
+    it { expect(html).to have_text(record.created_at.to_fs(:es_compact)) }
+    it { expect(html).to have_text(record.updated_at.to_fs(:es_compact)) }
 
     context 'with staff users' do
-      it { expect(html).to have_link(updated_by.display_name, href: user_path(updated_by))}
+      it { expect(html).to have_link(updated_by.display_name, href: user_path(updated_by)) }
     end
 
     context 'with pupil users' do
-      it { expect(html).to have_content(created_by.display_name)}
-      it { expect(html).to have_no_link(created_by.display_name, href: user_path(created_by))}
+      it { expect(html).to have_text(created_by.display_name) }
+      it { expect(html).to have_no_link(created_by.display_name, href: user_path(created_by)) }
     end
   end
 end

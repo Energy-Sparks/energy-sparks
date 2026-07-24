@@ -1,0 +1,36 @@
+<%= tag.div id: id, class: classes do %>
+  <table id="<%= @table_id %>" class="table table-sorted table-sm advice-table">
+    <thead>
+      <tr>
+        <th colspan="<%= @show_data_visibility ? '2' : '1' %>"></th>
+        <th colspan="4"><%= @labels[:first] %></th>
+        <% if @second_range.present? %>
+          <th colspan="4"><%= @labels[:second] %></th>
+        <% end %>
+        <th></th>
+      </tr>
+      <tr>
+        <th class="col-2">School</th>
+        <% if @show_data_visibility %>
+          <th class="col-1">Data visible</th>
+        <% end %>
+        <th class="col-1">Licensed?</th>
+        <th class="col-1">Funder</th>
+        <th class="col-1">First licence start</th>
+        <th class="col-1">First licence end</th>
+        <% if @second_range.present? %>
+          <th class="col-1">Licensed?</th>
+          <th class="col-1">Funder</th>
+          <th class="col-1">First licence start</th>
+          <th class="col-1">First licence end</th>
+        <% end %>
+        <th class="col-1"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% rows.each do |row| %>
+        <%= row %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

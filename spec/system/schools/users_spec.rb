@@ -14,6 +14,10 @@ describe 'School user management' do
 
     let(:staff_role) { nil }
 
+    def user
+      school.users.where(role:).first
+    end
+
     before do
       click_on I18n.t("schools.users.index.new_#{role}_account")
       fill_in 'Name', with: name
@@ -23,7 +27,6 @@ describe 'School user management' do
 
     it 'creates the user' do
       expect { click_on 'Create account' }.to change(User, :count).by(1).and change(Contact, :count).by(0)
-      user = school.users.where(role:).first
       expect(user.email).to eq(email)
       expect(user.confirmed?).to be false
       expect(user.created_by).to eq(school_admin)
@@ -44,6 +47,15 @@ describe 'School user management' do
 
       it { expect(page).to have_text("Name *\ncan't be blank") }
       it { expect(page).to have_text("Email *\ncan't be blank") }
+    end
+
+    context 'when a climate action lead' do
+      before do
+        check 'Climate action lead' unless role == :student
+        click_on 'Create account'
+      end
+
+      it { expect(user.climate_action_lead).to be role != :student }
     end
   end
 
@@ -89,7 +101,7 @@ describe 'School user management' do
         end
       end
 
-      it { expect(page).to have_no_content 'Subscribe to school alerts' }
+      it { expect(page).to have_no_text 'Subscribe to school alerts' }
     end
 
     context 'when not subscribed to alerts' do
@@ -146,14 +158,14 @@ describe 'School user management' do
       before { visit school_users_path(school) }
 
       context 'when creating an account' do
+        subject(:pupil) { school.users.pupil.first }
+
         before do
           click_on I18n.t('schools.users.index.new_pupil_account')
           fill_in 'Name', with: 'The Pupils'
           fill_in 'Pupil password', with: 'the elektrons'
           click_on 'Create account'
         end
-
-        subject(:pupil) { school.users.pupil.first }
 
         it 'creates the account' do
           expect(pupil.email).not_to be_nil
@@ -181,7 +193,7 @@ describe 'School user management' do
 
       context 'when creating an account' do
         it_behaves_like 'creating an account with an email address' do
-          let(:staff_role) { teacher_role}
+          let(:staff_role) { teacher_role }
           let(:role) { :staff }
         end
       end
@@ -201,14 +213,14 @@ describe 'School user management' do
         it 'shows preferred language' do
           visit school_users_path(school)
           within '#staff' do
-            expect(page).to have_content('Welsh')
+            expect(page).to have_text('Welsh')
           end
         end
 
         it 'does not have link to profile' do
           visit school_users_path(school)
           within('#staff') do
-            expect(page).not_to have_link(user.name, href: user_path(user))
+            expect(page).to have_no_link(user.name, href: user_path(user))
           end
         end
 
@@ -286,21 +298,21 @@ describe 'School user management' do
         it 'shows preferred language' do
           visit school_users_path(school)
           within '#student' do
-            expect(page).to have_content('Welsh')
+            expect(page).to have_text('Welsh')
           end
         end
 
         it 'does not have link to profile' do
           visit school_users_path(school)
           within('#student') do
-            expect(page).not_to have_link(user.name, href: user_path(user))
+            expect(page).to have_no_link(user.name, href: user_path(user))
           end
         end
 
         it 'does not have link to promote' do
           visit school_users_path(school)
           within('#student') do
-            expect(page).not_to have_link('Make school admin')
+            expect(page).to have_no_link('Make school admin')
           end
         end
 
@@ -370,12 +382,12 @@ describe 'School user management' do
             end
           end
 
-          expect(page).to have_content('Edit school admin account')
+          expect(page).to have_text('Edit school admin account')
 
           fill_in 'Name', with: 'Ms Jones'
           click_on 'Update account'
 
-          expect(page).to have_content('Ms Jones')
+          expect(page).to have_text('Ms Jones')
           new_admin.reload
           expect(new_admin.name).to eq('Ms Jones')
         end
@@ -437,8 +449,8 @@ describe 'School user management' do
           Flipper.enable(:onboarding_mailer_2025)
           fill_in 'Email', with: other_school_admin.email
           click_on 'Continue'
-          expect(page).to have_content('Added user as a school admin')
-          expect(page).to have_content(other_school_admin.name)
+          expect(page).to have_text('Added user as a school admin')
+          expect(page).to have_text(other_school_admin.name)
           other_school_admin.reload
           expect(other_school_admin.cluster_schools_for_switching).to eq([school])
           perform_enqueued_jobs
@@ -464,8 +476,8 @@ describe 'School user management' do
           it 'notifies about a group admin' do
             fill_in 'Email', with: other_school_admin.email
             click_on 'Continue'
-            expect(page).to have_content("As a group admin for #{other_school_admin.school_group.name}, this user is" \
-                                         ' already able to administer this school')
+            expect(page).to have_text("As a group admin for #{other_school_admin.school_group.name}, this user is " \
+                                      'already able to administer this school')
           end
         end
       end
@@ -479,7 +491,7 @@ describe 'School user management' do
         end
 
         it 'can edit fields' do
-          expect(page).to have_content('Other admin')
+          expect(page).to have_text('Other admin')
           within '#school_admin' do
             # this avoids problems with ambiguous matches in find/click_on
             # find the row for the new admin, using name set above
@@ -493,7 +505,7 @@ describe 'School user management' do
           fill_in 'Name', with: 'Ms Jones'
           click_on 'Update account'
 
-          expect(page).to have_content('Ms Jones')
+          expect(page).to have_text('Ms Jones')
           other_school_admin.reload
           expect(other_school_admin.name).to eq('Ms Jones')
         end
@@ -522,7 +534,7 @@ describe 'School user management' do
           create(:school_admin, school:, preferred_locale: :cy)
           visit school_users_path(school)
           within '#school_admin' do
-            expect(page).to have_content('Welsh')
+            expect(page).to have_text('Welsh')
           end
         end
       end
@@ -557,8 +569,8 @@ describe 'School user management' do
       expect(deliveries).to eq 2
       # check the email we just sent
       expect(email.subject).to eq 'Please confirm your account on Energy Sparks'
-      expect(page).to have_content('Confirmation email sent')
-      expect(page).to have_content('School admin accounts')
+      expect(page).to have_text('Confirmation email sent')
+      expect(page).to have_text('School admin accounts')
     end
 
     it 'can disable users' do

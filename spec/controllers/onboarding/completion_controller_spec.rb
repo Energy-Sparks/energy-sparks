@@ -5,7 +5,7 @@ RSpec.describe Onboarding::CompletionController, type: :controller do
   let!(:onboarding) do
     create(:school_onboarding, created_user: user)
   end
-  let(:school) { build :school }
+  let(:school) { build(:school) }
 
   before do
     SchoolCreator.new(school).onboard_school!(onboarding)

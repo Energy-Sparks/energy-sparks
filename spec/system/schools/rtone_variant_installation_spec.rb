@@ -19,24 +19,26 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
       visit school_meters_path(school)
     end
 
-    it 'I can add, edit and delete an rtone variant installation' do
+    it 'can add, edit and delete an rtone variant installation' do
       click_on 'Solar Feeds'
 
-      expect(page).to have_content('This school has no Rtone Variant API feeds')
+      expect(page).to have_text('This school has no Rtone Variant API feeds')
       click_on 'New Rtone Variant API feed'
 
       fill_in(:rtone_variant_installation_rtone_meter_id, with: rtone_meter_id)
       fill_in(:rtone_variant_installation_username, with: username)
       fill_in(:rtone_variant_installation_password, with: password)
+      uncheck('Active')
 
       expect { click_on 'Submit' }.to change(RtoneVariantInstallation, :count).by(1)
 
-      expect(page).to have_no_content('This school has no Rtone Variant API feeds')
-      expect(page).to have_content(rtone_meter_id)
-      expect(school.rtone_variant_installations.first).to have_attributes(meter:, username:, password:)
+      expect(page).to have_no_text('This school has no Rtone Variant API feeds')
+      expect(page).to have_text(rtone_meter_id)
+      expect(school.rtone_variant_installations.first).to \
+        have_attributes(meter:, username:, password:, amr_data_feed_config:, active: false)
 
       click_on 'Edit'
-      expect(page).to have_content('Update Rtone Variant')
+      expect(page).to have_text('Update Rtone Variant')
 
       select 'in1', from: 'Rtone Meter Type'
       fill_in(:rtone_variant_installation_username, with: 'changed-user')
@@ -44,14 +46,13 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
 
       click_on 'Submit'
 
-      expect(school.rtone_variant_installations.first.rtone_component_type).to eql 'in1'
-      expect(school.rtone_variant_installations.first.password).to eql 'changed-pass'
-      expect(school.rtone_variant_installations.first.username).to eql 'changed-user'
+      expect(school.rtone_variant_installations.first).to \
+        have_attributes(rtone_component_type: 'in1', username: 'changed-user', password: 'changed-pass')
 
-      expect(page).to have_content('Delete')
+      expect(page).to have_text('Delete')
       expect { click_on 'Delete' }.to change(RtoneVariantInstallation, :count).by(-1)
 
-      expect(page).to have_content('This school has no Rtone Variant API feeds')
+      expect(page).to have_text('This school has no Rtone Variant API feeds')
     end
 
     context 'with existing installation' do
@@ -63,7 +64,7 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
 
       it 'displays the check button with a question mark by default' do
         within "#rtone-variant-#{installation.id}-test" do
-          expect(page).to have_content('Check')
+          expect(page).to have_text('Check')
           expect(page).to have_css("i[class*='fa-circle-question']")
         end
       end
@@ -106,9 +107,9 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
           # ...but check the method is called
           expect(Solar::RtoneVariantLoaderJob).to receive(:perform_later).with(installation: installation,
                                                                                notify_email: admin.email)
-          expect(page).to have_content('Run Loader')
+          expect(page).to have_text('Run Loader')
           find("#rtone-variant-#{installation.id}-run-load").click
-          expect(page).to have_content("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
+          expect(page).to have_text("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
         end
       end
     end

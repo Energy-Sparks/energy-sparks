@@ -17,10 +17,7 @@ class BlogService
     @key = "blog:#{url}"
     @retries = retries
 
-    @connection = Faraday.new(url: url) do |f|
-      f.request :retry, RETRY_OPTIONS.merge(max_option)
-      f.response :logger if Rails.env.development?
-    end
+    @connection = FaradayHelper.connection(url:, retry_options: retries ? { max: retries } : {})
   end
 
   def items
@@ -39,16 +36,9 @@ class BlogService
   private
 
   def fetch_items
-    response = @connection.get
-    if response.success?
-      extract_items(response.body)
-    else
-      Rollbar.error("Unable to fetch blog feed: #{url}. Status: #{response.status}, body: #{response.body}")
-    end
-  end
-
-  def max_option
-    retries ? { max: retries } : {}
+    extract_items(@connection.get.body)
+  rescue Faraday::Error => e
+    Rollbar.error("Unable to fetch blog feed: #{url}. Status: #{e.response_status}, body: #{e.response_body}")
   end
 
   def clean(html)

@@ -2,17 +2,18 @@
 #
 # Table name: intervention_type_groups
 #
+#  id          :bigint(8)        not null, primary key
 #  active      :boolean          default(TRUE)
-#  created_at  :datetime         not null
 #  description :string
 #  icon        :string           default("question-circle")
-#  id          :bigint(8)        not null, primary key
 #  name        :string
+#  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 class InterventionTypeGroup < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include TaskCategory
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }
@@ -20,6 +21,7 @@ class InterventionTypeGroup < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   has_many :intervention_types
+  alias tasks intervention_types
 
   scope :by_name, -> { i18n.order(name: :asc) }
   scope :active,  -> { where(active: true) }
@@ -30,6 +32,6 @@ class InterventionTypeGroup < ApplicationRecord
   end
 
   def self.listed_with_intervention_types
-    all.order(:name).map {|group| [group, group.intervention_types.display_order.to_a]}
+    all.order(:name).map { |group| [group, group.intervention_types.display_order.to_a] }
   end
 end

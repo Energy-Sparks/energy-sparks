@@ -4,7 +4,7 @@ require 'rails_helper'
 
 shared_examples 'a long term advice page' do
   let(:reading_start_date) { 1.year.ago }
-  let(:school) do
+  def create_school
     school = create(:school,
                     :with_school_group,
                     :with_fuel_configuration,
@@ -16,11 +16,28 @@ shared_examples 'a long term advice page' do
                                              start_date: nil, end_date: nil)
     create(:"#{fuel_type}_meter_with_validated_reading_dates",
            school:, start_date: reading_start_date, end_date: Time.zone.today, reading: 10)
+    yield school if block_given?
     school
   end
+  let(:school) { create_school }
   let(:key) { :"#{fuel_type}_long_term" }
 
-  before { create(:advice_page, key:, fuel_type:) }
+  before do
+    create(:advice_page, key:, fuel_type:)
+    SecrCo2Equivalence.create!(year: 2024,
+                               electricity_co2e: 0.20705,
+                               electricity_co2e_co2: 0.20493,
+                               transmission_distribution_co2e: 0.0183,
+                               natural_gas_co2e: 0.1829,
+                               natural_gas_co2e_co2: 0.18253)
+    SecrCo2Equivalence.create!(year: 2023,
+                               electricity_co2e: 0.207074,
+                               electricity_co2e_co2: 0.20496,
+                               transmission_distribution_co2e: 0.0183,
+                               natural_gas_co2e: 0.18,
+                               natural_gas_co2e_co2: 0.18256)
+    Flipper.enable(:manual_readings)
+  end
 
   shared_examples 'a long term advice page tab' do |tab:|
     it_behaves_like('an advice page tab', tab:) do
@@ -45,6 +62,10 @@ shared_examples 'a long term advice page' do
       it_behaves_like 'a long term advice page tab', tab: 'Insights'
     end
 
+    def manual_readings_prompt_text
+      "We don't have enough data to show a complete year."
+    end
+
     context "when on the 'Insights' tab" do
       before { click_on 'Insights' }
 
@@ -53,8 +74,8 @@ shared_examples 'a long term advice page' do
 
         it 'includes expected sections' do
           data_available_from = reading_start_date + 89.days # TODO: not sure why this isn't 90 days
-          expect(page).to have_content('Assuming we continue to regularly receive data we expect this analysis to be ' \
-                                       "available after #{data_available_from.to_fs(:es_short)}")
+          expect(page).to have_text('Assuming we continue to regularly receive data we expect this analysis to be ' \
+                                    "available after #{data_available_from.to_fs(:es_short)}")
         end
       end
 
@@ -64,9 +85,10 @@ shared_examples 'a long term advice page' do
         it_behaves_like 'a long term advice page tab', tab: 'Insights'
 
         it 'includes expected sections' do
-          expect(page).to have_content('Tracking long term trends')
-          expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
-          expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
+          expect(page).to have_text(manual_readings_prompt_text)
+          expect(page).to have_text('Tracking long term trends')
+          expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
+          expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
         end
 
         it_behaves_like 'it contains the expected data table', sortable: false, aligned: 2 do
@@ -83,14 +105,26 @@ shared_examples 'a long term advice page' do
 
         it 'includes expected data' do
           if fuel_type == :gas
-            expect(page).to have_content('130,000kWh of gas')
+            expect(page).to have_text('130,000kWh of gas')
           else
-            expect(page).to have_content('220kWh of electricity')
+            expect(page).to have_text('220kWh of electricity')
           end
         end
 
         it 'excludes the comparison' do
           expect(page).to have_no_css("##{fuel_type}-comparison")
+        end
+
+        context 'with manual readings' do
+          let(:school) do
+            create_school do |school|
+              (3..24).each { |i| school.manual_readings.create!(month: Date.current - i.months, fuel_type => 1) }
+            end
+          end
+
+          it "doesn't show manual readings prompt" do
+            expect(page).to have_no_text(manual_readings_prompt_text)
+          end
         end
       end
 
@@ -98,9 +132,10 @@ shared_examples 'a long term advice page' do
         it_behaves_like 'a long term advice page tab', tab: 'Insights'
 
         it 'includes expected sections' do
-          expect(page).to have_content('Tracking long term trends')
-          expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
-          expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
+          expect(page).to have_text(manual_readings_prompt_text)
+          expect(page).to have_text('Tracking long term trends')
+          expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
+          expect(page).to have_text(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
         end
 
         it_behaves_like 'it contains the expected data table', sortable: false, aligned: 2 do
@@ -117,13 +152,8 @@ shared_examples 'a long term advice page' do
         end
 
         it 'includes expected data' do
-          if fuel_type == :gas
-            expect(page).to have_content("Exemplar\n<100,000 kWh")
-            expect(page).to have_content("Well managed\n<130,000 kWh")
-          else
-            expect(page).to have_content("Exemplar\n<200 kWh")
-            expect(page).to have_content("Well managed\n<220 kWh")
-          end
+          expect(page).to have_text("Exemplar\n<#{{ gas: '100,000', electricity: '200' }[fuel_type]} kWh")
+          expect(page).to have_text("Well managed\n<#{{ gas: '130,000', electricity: '220' }[fuel_type]} kWh")
         end
 
         it 'includes the comparison' do
@@ -133,6 +163,14 @@ shared_examples 'a long term advice page' do
                                     href: compare_path(benchmark:, school_group_ids: [school.school_group.id]))
         end
       end
+
+      context 'with more than two years of meter data' do
+        let(:reading_start_date) { 730.days.ago }
+
+        it "doesn't show the manual reading prompt" do
+          expect(page).to have_no_text(manual_readings_prompt_text)
+        end
+      end
     end
 
     context "when on the 'Analysis' tab" do
@@ -140,13 +178,17 @@ shared_examples 'a long term advice page' do
 
       shared_examples 'the analysis tab' do |recent:, comparison:, high:, longterm_chart:, limited_data_charts:|
         def expect_content(should_have, content)
-          should_have ? (expect(page).to have_content(content)) : (expect(page).to have_no_content(content))
+          should_have ? (expect(page).to have_text(content)) : (expect(page).to have_no_text(content))
         end
 
         it 'includes expected sections' do
           expect_content(recent, I18n.t("advice_pages.#{fuel_type}_long_term.analysis.recent_trend.title"))
           expect_content(comparison, I18n.t("advice_pages.#{fuel_type}_long_term.analysis.comparison.title"))
-          expect(page).to have_no_content(I18n.t("advice_pages.#{fuel_type}_long_term.analysis.meter_breakdown.title"))
+          expect(page).to have_no_text(I18n.t("advice_pages.#{fuel_type}_long_term.analysis.meter_breakdown.title"))
+        end
+
+        it 'displays the manual reading prompt correctly' do
+          expect_content(!longterm_chart, manual_readings_prompt_text)
         end
 
         it "doesn't say usage is high" do
@@ -180,7 +222,7 @@ shared_examples 'a long term advice page' do
               'Previous Year', 'This Year', '% change',
               'Previous Year', 'This Year', '% change']]
           end
-          let(:expected_rows) { expected_consumption_rows }
+          let(:expected_rows) { expected_consumption_rows.map { |row| row.map { |cell| cell.gsub('%', '&percnt;') } } }
         end
       end
 
@@ -200,12 +242,12 @@ shared_examples 'a long term advice page' do
                     ['June', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
                     ['July', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
                     ['August', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-                    ['September', '-', '13,900 *', '-', '-', '£1,390 *', '-', '-', '2,270 *', '-'],
+                    ['September', '-', '13,900 i', '-', '-', '£1,390 i', '-', '-', '2,270 i', '-'],
                     ['October', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
                     ['November', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
-                    ['December', '-', '480 *', '-', '-', '£48 *', '-', '-', '78.2 *', '-']]
+                    ['December', '-', '480 i', '-', '-', '£48 i', '-', '-', '78.2 i', '-']]
             if fuel_type == :gas
-              ['2,540 *', '2,720', '2,630', '87.6 *'].reverse.zip(rows.reverse).each do |co2, row|
+              ['2,540 i', '2,720', '2,630', '87.6 i'].reverse.zip(rows.reverse).each do |co2, row|
                 row[-2] = co2
               end
             end
@@ -231,7 +273,7 @@ shared_examples 'a long term advice page' do
                     ['September', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
                     ['October', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
                     ['November', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
-                    ['December', '14,900', '480 *', '-', '£1,490', '£48 *', '-', '2,440', '78.2 *', '-']]
+                    ['December', '14,900', '480 i', '-', '£1,490', '£48 i', '-', '2,440', '78.2 i', '-']]
 
             if fuel_type == :gas
               [['-', '2,720'],
@@ -245,9 +287,49 @@ shared_examples 'a long term advice page' do
                ['-', '2,630'],
                ['-', '2,720'],
                ['-', '2,630'],
-               ['2,720', '87.6 *']].zip(rows).each { |gas_row, row| row[-3..-2] = gas_row }
+               ['2,720', '87.6 i']].zip(rows).each { |gas_row, row| row[-3..-2] = gas_row }
             end
             rows
+          end
+        end
+
+        context 'with manual readings' do
+          let(:school) do
+            create_school do |school|
+              (20..24).each { |i| school.manual_readings.create!(month: Date.current - i.months, fuel_type => 15_000) }
+            end
+          end
+
+          it_behaves_like 'it contains the monthly consumption table' do
+            let(:expected_consumption_rows) do
+              rows = [['January', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,070 m', '2,430', '-21%'],
+                      ['February', '15,000 m', '13,900', '-7.2%', '-', '£1,390', '-', '3,070 m', '2,270', '-26%'],
+                      ['March', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,070 m', '2,430', '-21%'],
+                      ['April', '15,000 m', '14,400', '-4%', '-', '£1,440', '-', '3,070 m', '2,350', '-24%'],
+                      ['May', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
+                      ['June', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
+                      ['July', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
+                      ['August', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
+                      ['September', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
+                      ['October', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
+                      ['November', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
+                      ['December', '14,900', '480 i', '-', '£1,490', '£48 i', '-', '2,440', '78.2 i', '-']]
+              if fuel_type == :gas
+                [['2,740 m', '2,720', '-0.82%'],
+                 ['2,740 m', '2,540', '-7.2%'],
+                 ['2,740 m', '2,720', '-0.82%'],
+                 ['2,740 m', '2,630', '-4%'],
+                 ['-', '2,720'],
+                 ['-', '2,630'],
+                 ['-', '2,720'],
+                 ['-', '2,720'],
+                 ['-', '2,630'],
+                 ['-', '2,720'],
+                 ['-', '2,630'],
+                 ['2,720', '87.6 i']].zip(rows).each { |gas_row, row| row[-3..-(4 - gas_row.length)] = gas_row }
+              end
+              rows
+            end
           end
         end
       end
@@ -271,7 +353,7 @@ shared_examples 'a long term advice page' do
                     ['September', '14,400', '14,400', '0%', '£1,440', '£1,440', '0%', '2,360', '2,350', '-0.67%'],
                     ['October', '14,900', '14,900', '0%', '£1,490', '£1,490', '0%', '2,440', '2,430', '-0.67%'],
                     ['November', '14,400', '14,400', '0%', '£1,440', '£1,440', '0%', '2,360', '2,350', '-0.67%'],
-                    ['December', '14,900', '480 *', '-', '£1,490', '£48 *', '-', '2,440', '78.2 *', '-']]
+                    ['December', '14,900', '480 i', '-', '£1,490', '£48 i', '-', '2,440', '78.2 i', '-']]
             if fuel_type == :gas
               [['2,720', '2,720', '0%'],
                ['2,450', '2,540', '+3.6%'],
@@ -284,9 +366,9 @@ shared_examples 'a long term advice page' do
                ['2,630', '2,630', '0%'],
                ['2,720', '2,720', '0%'],
                ['2,630', '2,630', '0%'],
-               ['2,720', '87.6 *', '-']].zip(rows).each { |gas_row, row| row[-gas_row.length..] = gas_row }
+               ['2,720', '87.6 i', '-']].zip(rows).each { |gas_row, row| row[-gas_row.length..] = gas_row }
             end
-            rows.map { |row| row.map { |cell| cell.gsub('%', '&percnt;') } }
+            rows
           end
         end
       end

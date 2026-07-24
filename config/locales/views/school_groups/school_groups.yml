@@ -142,6 +142,10 @@ en:
       view_map: View map
     labels:
       floor_area: Floor area (m2)
+    login_prompt:
+      login: Login as a group or school user for this group to view the dashboard and energy analysis
+      restricted_html: Please <a href='%{href}'>explore other school groups</a> that are publicly available
+      title: Access to %{school_group} is restricted
     meters_as_csv: Download meters as CSV
     priority_actions:
       alert_types:
@@ -271,8 +275,8 @@ en:
           <p>The emission factors in the table above come from the
           <a href='https://www.gov.uk/government/collections/government-conversion-factors-for-company-reporting'>
           Government conversion factors for company reporting of greenhouse gas emissions</a>. We have applied the
-          ‘Majority’ approach - applying the factors from the calendar year in which the greatest portion of your data
-          falls should. For example, for the academic year 2023/24, we have applied the 2024 conversion factors.</p>
+          "Majority" approach - applying the factors from the calendar year in which the greatest portion of your data
+          falls. For example, for the academic year 2023/24, we have applied the 2024 conversion factors.</p>
         current_table_title: Current academic year (%{start_date} to %{end_date})
         data_quality_html: |-
           <h4>Data quality</h4>
@@ -365,8 +369,9 @@ en:
         purpose_of_this_tool_html: |-
           <h3>Purpose of this tool</h3>
           <p>
-          Multi-Academy Trusts consuming more than a set amount of energy are required to report their energy consumption and related greenhouse gas emissions. For more detail, see <a href=\"https://www.gov.uk/government/publications/streamlined-energy-and-carbon-reporting-secr-for-academy-trusts/streamlined-energy-and-carbon-reporting-secr-for-academy-trusts\">Streamlined Energy and Carbon Reporting (SECR)
-          for academy trusts - GOV.UK</a>.
+          Multi-Academy Trusts consuming more than a set amount of energy are required to report their energy consumption and related greenhouse gas emissions. For more detail,
+          see <a href="https://www.gov.uk/government/publications/streamlined-energy-and-carbon-reporting-secr-for-academy-trusts/streamlined-energy-and-carbon-reporting-secr-for-academy-trusts">Streamlined Energy and Carbon Reporting (SECR)
+          for academy trusts</a>.
           </p>
           <p>
           Energy Sparks provides a unique repository of energy data for MATs, and presents an opportunity to reduce the effort required by MAT staff in compiling their SECR reports. However, your Energy Sparks dataset will not always cover all energy data required. For example, we may not include all of your schools; some schools may have meters  that aren’t capable of sending data to us; or there may be gaps in some of the reported energy
@@ -400,6 +405,7 @@ en:
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)
+      status_note_html: This table show schools with published data. <a href="%{path}">See a full list of schools and their status</a>
       we_are_working_with:
         in_partnership_with_html:
           one: We are working with 1 school in this %{group_type} in partnership with %{partners}
@@ -421,8 +427,10 @@ en:
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters
+      contracts: Contracts
       edit_group: Edit group
       group_admin: Group admin
+      licence_summaries: Licence summaries
       manage_group: Manage Group
       manage_partners: Manage partners
       manage_users: Manage users
@@ -436,8 +444,16 @@ en:
       advice: Advice
       charts: Energy use charts
       comparisons: Comparisons
+      contracts: Contracts
       current_scores: Current Scores
+      edit: Edit group
+      impact_report: Impact report
+      issues: Issues
+      licence_summaries: Licence summaries
       map: Map
+      meter_attributes: Meter attributes
+      meter_updates: Meter updates
+      partners: Manage partners
       previous_scores: Previous Scores
       priority_actions: Priority Actions
       recent_usage: Recent Usage
@@ -446,3 +462,4 @@ en:
       secr: SECR report
       settings: Settings
       show: Group Dashboard
+      users: Manage users

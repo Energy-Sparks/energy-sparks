@@ -6,7 +6,7 @@ class HotWaterHeatingSplitter
     @fault_tolerant_model_dates = fault_tolerant_model_dates
   end
 
-  def split_heat_and_hot_water(start_date, end_date, meter: @school.aggregated_heat_meters)
+  def split_heat_and_hot_water(start_date, end_date, meter: @school.aggregated_heat_meters) # rubocop:todo Metrics/MethodLength
     average_hot_water_only_day_kwh_x48 = average_hot_water_day_x48(start_date, end_date, meter: meter)
     average_hot_water_only_day_kwh = average_hot_water_only_day_kwh_x48.sum
     heating_day_dates = []
@@ -18,12 +18,13 @@ class HotWaterHeatingSplitter
       if @heating_model.model_type?(date) == :summer_occupied_all_days
         hotwater_days.add(date, meter.amr_data.days_amr_data(date))
       elsif @heating_model.model_type?(date) != :none
-        hw_day = OneDayAMRReading.new(0, date, 'HSIM', nil, DateTime.now, average_hot_water_only_day_kwh_x48)
+        hw_day = OneDayAMRReading.new(date, 'HSIM', nil, DateTime.now, average_hot_water_only_day_kwh_x48)
         hotwater_days.add(date, hw_day)
 
         days_data_kwh_x48 = meter.amr_data.days_kwh_x48(date)
-        heating_days_data_kwh_x48 = remove_hot_water_from_heating_data(date, days_data_kwh_x48, average_hot_water_only_day_kwh_x48)
-        heating_day = OneDayAMRReading.new(0, date, 'HSIM', nil, DateTime.now, heating_days_data_kwh_x48)
+        heating_days_data_kwh_x48 = remove_hot_water_from_heating_data(date, days_data_kwh_x48,
+                                                                       average_hot_water_only_day_kwh_x48)
+        heating_day = OneDayAMRReading.new(date, 'HSIM', nil, DateTime.now, heating_days_data_kwh_x48)
         heating_days.add(date, heating_day)
         heating_day_dates.push(date)
       end
@@ -34,12 +35,12 @@ class HotWaterHeatingSplitter
     total_hot_water = hotwater_days.total
     error = total - total_heating - total_hot_water # would expect small error dur to 'max' function in remove_hot_water_from_heating_data
     {
-      heating_only_amr:           heating_days,
-      hot_water_only_amr:         hotwater_days,
-      average_hot_water_day_kwh:  average_hot_water_only_day_kwh_x48.sum,
-      error_kwh:                  error,
-      error_percent:              error / total,
-      heating_day_dates:          heating_day_dates
+      heating_only_amr: heating_days,
+      hot_water_only_amr: hotwater_days,
+      average_hot_water_day_kwh: average_hot_water_only_day_kwh_x48.sum,
+      error_kwh: error,
+      error_percent: error / total,
+      heating_day_dates: heating_day_dates
     }
   end
 
@@ -49,14 +50,14 @@ class HotWaterHeatingSplitter
     hotwater_kwh  = calc[:hot_water_only_amr].total
     total_kwh = heating_kwh + hotwater_kwh
     {
-      heating_kwh:                heating_kwh,
-      hotwater_kwh:               hotwater_kwh,
-      total_kwh:                  total_kwh,
-      heating_percent:            heating_kwh / total_kwh,
-      hotwater_percent:           hotwater_kwh / total_kwh,
-      average_hot_water_day_kwh:  calc[:average_hot_water_day_kwh],
-      error_kwh:                  calc[:error_kwh],
-      error_percent:              calc[:error_percent]
+      heating_kwh: heating_kwh,
+      hotwater_kwh: hotwater_kwh,
+      total_kwh: total_kwh,
+      heating_percent: heating_kwh / total_kwh,
+      hotwater_percent: hotwater_kwh / total_kwh,
+      average_hot_water_day_kwh: calc[:average_hot_water_day_kwh],
+      error_kwh: calc[:error_kwh],
+      error_percent: calc[:error_percent]
     }
   end
 
@@ -81,7 +82,7 @@ class HotWaterHeatingSplitter
     results.delete(:heating_degree_days)
 
     results
-  rescue => e
+  rescue StandardError => e
     logger.info e.message
     logger.info e.backtrace[0]
     unless Object.const_defined?('Rails')
@@ -91,19 +92,24 @@ class HotWaterHeatingSplitter
     {}
   end
 
-  def degree_day_adjust_heating(date_ranges, meter: @school.aggregated_heat_meters, adjustment_method: :average, data_type: :kwh)
+  def degree_day_adjust_heating(date_ranges, meter: @school.aggregated_heat_meters, adjustment_method: :average,
+                                data_type: :kwh)
     return {} if date_ranges.empty?
 
-    date_ranges.sort_by!{ |dr| dr.first }
+    date_ranges.sort_by! { |dr| dr.first }
 
-    data = date_ranges.map { |dr| split_heat_and_hot_water_aggregate(dr.first, somerset_final_august_adjustment(meter, dr.last), data_type: data_type) }
+    data = date_ranges.map do |dr|
+      split_heat_and_hot_water_aggregate(dr.first, somerset_final_august_adjustment(meter, dr.last),
+                                         data_type: data_type)
+    end
 
     degree_days = data.map { |d| d[:average_heating_degree_days] }
 
     average_to_degree_days = adjustment_method == :average ? (degree_days.sum / degree_days.length) : degree_days.last
 
     data.map.with_index do |period_data, index|
-      adjusted_heating = period_data[:heating_kwh] * degree_day_adjustment(period_data[:average_heating_degree_days], average_to_degree_days)
+      adjusted_heating = period_data[:heating_kwh] * degree_day_adjustment(period_data[:average_heating_degree_days],
+                                                                           average_to_degree_days)
       [
         date_ranges[index],
         adjusted_heating + period_data[:non_heating_kwh]
@@ -121,11 +127,13 @@ class HotWaterHeatingSplitter
 
   def average_heating_degreedays(results)
     return 0.0 if results[:heating_degree_days].nil? || results[:heating_degree_days].empty?
+
     results[:heating_degree_days].sum / results[:heating_degree_days].length
   end
 
   def degree_day_adjustment(average_degree_days, average_to_degree_days)
     return 1.0 if average_to_degree_days == 0.0
+
     average_degree_days / average_to_degree_days
   end
 
@@ -153,11 +161,11 @@ class HotWaterHeatingSplitter
     aggregated_hot_water_days = AMRData.one_day_zero_kwh_x48
 
     (start_date..end_date).each do |date|
-      if @heating_model.model_type?(date) == :summer_occupied_all_days
-        days_kwh_x48 = meter.amr_data.days_kwh_x48(date)
-        aggregated_hot_water_days = AMRData.fast_add_x48_x_x48(days_kwh_x48, aggregated_hot_water_days)
-        hot_water_days += 1
-      end
+      next unless @heating_model.model_type?(date) == :summer_occupied_all_days
+
+      days_kwh_x48 = meter.amr_data.days_kwh_x48(date)
+      aggregated_hot_water_days = AMRData.fast_add_x48_x_x48(days_kwh_x48, aggregated_hot_water_days)
+      hot_water_days += 1
     end
 
     if hot_water_days.zero?
@@ -179,7 +187,7 @@ class HotWaterHeatingSplitter
       start_date = [end_date - 365, meter.amr_data.start_date].max
     end
 
-    model_period = SchoolDatePeriod.new(:heat_balance_simulation, 'Current Year', start_date, end_date)
+    model_period = SchoolDatePeriod.new(:analysis, 'Current Year', start_date, end_date)
     meter.heating_model(model_period)
   end
 end

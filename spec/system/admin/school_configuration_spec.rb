@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'editing school configuration', type: :system do
-  let!(:school) { create(:school)}
+  let!(:school) { create(:school) }
 
   before do
     sign_in(create(:admin))
@@ -11,10 +11,20 @@ RSpec.describe 'editing school configuration', type: :system do
   context 'when editing basic configuration' do
     let!(:school_group) { create(:school_group) }
     let!(:scoreboard) { create(:scoreboard) }
-    let!(:funder) { create(:funder) }
 
     before do
       click_on('School configuration')
+    end
+
+    context 'when editing full school flag' do
+      before do
+        uncheck 'Full school'
+        click_on('Update configuration')
+      end
+
+      it 'allows the option to be changed' do
+        expect(school.reload.full_school).to be(false)
+      end
     end
 
     it 'allows school group to be updated' do
@@ -76,7 +86,7 @@ RSpec.describe 'editing school configuration', type: :system do
         before do
           school.update_attribute(:local_authority_area_group, area)
           refresh
-          select '', from: 'Local Authority Area'
+          select '', from: 'Local Authority Area Group'
           click_on('Update configuration')
         end
 
@@ -86,19 +96,11 @@ RSpec.describe 'editing school configuration', type: :system do
       end
     end
 
-
     it 'allows scoreboard to be updated' do
       select scoreboard.name, from: 'Scoreboard'
       click_on('Update configuration')
       school.reload
       expect(school.scoreboard).to eq scoreboard
-    end
-
-    it 'allows funder to be updated' do
-      select funder.name, from: 'Funder'
-      click_on('Update configuration')
-      school.reload
-      expect(school.funder).to eq funder
     end
   end
 

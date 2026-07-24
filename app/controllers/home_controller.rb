@@ -1,11 +1,13 @@
 class HomeController < ApplicationController
   include VideoHelper
   include ApplicationHelper
+  include AdvicePageHelper
 
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
   before_action :set_blog_service, only: [:index, :show]
+  before_action :set_impact_statement, only: [:index, :show]
 
   def index
   end
@@ -21,6 +23,7 @@ class HomeController < ApplicationController
   end
 
   def product
+    @prices = formatted_prices
   end
 
   def contact
@@ -87,6 +90,12 @@ class HomeController < ApplicationController
     @trustees = TeamMember.trustee.order(:position)
   end
 
+  def our_impact
+    @organisation_statement = ImpactReport::OrganisationStatement.current_statement
+    redirect_to home_page_path unless Flipper.enabled?(:org_impact_page, current_user)
+    redirect_to home_page_path unless @organisation_statement
+  end
+
   private
 
   def find_school_statistics
@@ -105,17 +114,29 @@ class HomeController < ApplicationController
     @blog = BlogService.new
   end
 
-  def redirect_if_logged_in
-    if user_signed_in?
-      if current_user.school
-        redirect_to redirect_with_school_path
-      elsif current_user.school_onboarding? && current_user.school_onboardings.any?
-        redirect_to onboarding_path(current_user.school_onboardings.last)
-      elsif current_user.school_group && can?(:show, current_user.school_group)
-        redirect_to school_group_path(current_user.school_group)
-      else
-        redirect_to schools_path
-      end
+  def set_impact_statement
+    @organisation_statement = ImpactReport::OrganisationStatement.current_statement
+  end
+
+  def redirect_if_logged_in # rubocop:disable Metrics/AbcSize
+    return unless user_signed_in?
+
+    if current_user.school
+      redirect_to redirect_with_school_path
+    elsif current_user.school_onboarding? && current_user.school_onboardings.any?
+      redirect_to onboarding_path(current_user.school_onboardings.last)
+    elsif current_user.school_group && can?(:show, current_user.school_group)
+      redirect_to school_group_path(current_user.school_group)
+    else
+      redirect_to redirect_with_admin
+    end
+  end
+
+  def redirect_with_admin
+    if current_user.operations
+      admin_dashboard_path(current_user)
+    else
+      schools_path
     end
   end
 
@@ -125,5 +146,18 @@ class HomeController < ApplicationController
     else
       school_inactive_path(current_user.school)
     end
+  end
+
+  def formatted_prices
+    product = Commercial::Product.default_product
+    return {} unless product
+    {
+      small_school_price: format_price(product.small_school_price, decimals: false),
+      large_school_price: format_price(product.large_school_price, decimals: false),
+      mat_price: format_price(product.mat_price, decimals: false),
+      private_account_fee: format_price(product.private_account_fee, decimals: false),
+      metering_fee: format_price(product.metering_fee, decimals: false),
+      size_threshold: product.size_threshold
+    }
   end
 end

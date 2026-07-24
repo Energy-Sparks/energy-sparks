@@ -1,0 +1,58 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @funder.name %>
+  <% header_nav.with_button 'All funders', admin_funders_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <%= link_to 'Contracts', admin_funder_contracts_path(@funder), class: 'btn btn-sm' %>
+    <%= link_to 'Edit', edit_admin_funder_path(@funder), class: 'btn btn-sm' %>
+    <%= link_to 'Delete',
+                admin_funder_path(@funder),
+                method: :delete,
+                data: { confirm: 'Are you sure?' },
+                class: 'btn btn-danger btn-sm' %>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col">
+    <%= render Elements::BadgeComponent.new(@funder.invoiced? ? 'Invoiced' : 'Not Invoiced', colour: :warning) %>
+  </div>
+</div>
+
+<h2>Funded schools</h2>
+
+<p>
+  The following shows numbers of schools and onboardings linked to any current
+  <%= link_to 'contracts held by this Funder', admin_funder_contracts_path(@funder) %>.
+</p>
+
+<table id='funded-schools' class="table table-sm">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Schools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Onboarding</td>
+      <td>
+        <%= @funding_summary[:onboardings] %>
+      </td>
+    </tr>
+    <tr>
+      <td>Visible not data enabled</td>
+      <td><%= @funding_summary[:visible_not_data_enabled] %></td>
+    </tr>
+    <tr>
+      <td>Visible and data enabled</td>
+      <td><%= @funding_summary[:visible_data_enabled] %></td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td><%= @funding_summary[:total] %></td>
+    </tr>
+  </tbody>
+</table>

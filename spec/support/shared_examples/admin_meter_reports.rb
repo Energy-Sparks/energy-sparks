@@ -26,7 +26,7 @@ RSpec.shared_examples 'an admin meter report' do |help: true|
 
   it 'has filters' do
     expect(page).to have_field(:school_group)
-    expect(page).to have_field(:user)
+    expect(page).to have_field(:admin)
   end
 
   it 'has a table with a common set of columns' do
@@ -40,12 +40,12 @@ RSpec.shared_examples 'an admin meter import report' do
     expect(all('tr').map { |tr| tr.all('th, td').map(&:text) }).to \
       eq([
            ['School Group', 'Admin', 'School', 'Meter', 'Meter Name',
-            'Meter Type', 'Meter System', 'Data Source', 'Procurement Route', 'Meter Status', 'Manual Reads',
-            'Last Validated Date', 'Issues & Notes'],
+            'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Procurement Route', 'Admin Meter Status',
+            'Manual Reads', 'Last Validated Date', 'Issues & Notes'],
            [
              meter.school.school_group.name, 'Admin', meter.school.name, meter.mpan_mprn.to_s, meter.name,
-             '', meter.t_meter_system, meter.data_source&.name, '', meter.admin_meter_status&.label.to_s, 'N',
-             nice_dates(end_date), ''
+             '', meter.t_meter_system, meter.supplier&.name, meter.data_source&.name, '',
+             meter.admin_meter_status&.label.to_s, 'N', nice_dates(end_date), ''
            ]
          ])
   end
@@ -54,12 +54,12 @@ RSpec.shared_examples 'an admin meter import report' do
     click_on 'CSV'
     expect(page.response_headers['content-type']).to eq('text/csv')
     header = ['School Group', 'Admin', 'School', 'Meter', 'Meter Name',
-              'Meter Type', 'Meter System', 'Data Source', 'Procurement Route', 'Meter Status', 'Manual Reads',
-              'Last Validated Date', 'Issues', 'Notes']
+              'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Procurement Route', 'Admin Meter Status',
+              'Manual Reads', 'Last Validated Date', 'Issues', 'Notes']
     expect(body).to \
       eq("#{header.join(',')}\n" \
          "#{meter.school.school_group.name},Admin,#{meter.school.name},#{meter.mpan_mprn},#{meter.name}," \
-         "gas,#{meter.t_meter_system},#{meter.data_source&.name},,#{meter.admin_meter_status&.label},N," \
-         "#{end_date.to_date.iso8601},0,0\n")
+         "gas,#{meter.t_meter_system},#{meter.supplier&.name},#{meter.data_source&.name},," \
+         "#{meter.admin_meter_status&.label},N,#{end_date.to_date.iso8601},0,0\n")
   end
 end

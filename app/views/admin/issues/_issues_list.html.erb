@@ -5,10 +5,12 @@
       <th>Title</th>
       <th>Fuel</th>
       <th class="nowrap">Created by</th>
-      <th class="nowrap">Assigned to</th>
+      <% unless @dashboard_user %>
+        <th class="nowrap">Assigned to</th>
+      <% end %>
       <th>Status</th>
       <th>Updated</th>
-      <th>Review</th>
+      <th class="nowrap">Next review</th>
       <th class="no-sort"></th>
     </tr>
   </thead>
@@ -18,27 +20,32 @@
         <td class="fit issue-type <%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type, 1) %></td>
         <td width="100%" class="overflow" data-order="<%= issue.issueable&.name %>">
           <%= render 'admin/issues/pinned', issue: issue %>
-          <span title="<%= issue.title %>" data-toggle="tooltip">
+          <span title="<%= issue.title %>" data-toggle="tooltip" data-bs-toggle="tooltip">
             <%= link_to issue.title, polymorphic_path([:admin, issue.issueable, issue]) %>
           </span><br>
           <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
+          <%= render 'admin/issues/issue_tags', issue: issue %>
           <%= render 'admin/issues/meters', issue: issue %>
         </td>
         <td class="fit"><%= render 'admin/issues/fuel_type', issue: issue %></td>
         <td class="fit"><%= render 'admin/issues/created_by', issue: issue %></td>
-        <td class="fit"><%= render 'admin/issues/owned_by', issue: issue %></td>
+        <% unless @dashboard_user %>
+          <td class="fit"><%= render 'admin/issues/owned_by', issue: issue %></td>
+        <% end %>
         <td class="fit"><%= render 'admin/issues/status', issue: issue %></td>
 
         <td class="fit" data-order="<%= issue.updated_at %>">
-          <div class="badge badge-pill bg-white text-dark font-weight-normal nowrap">
+          <div class="badge rounded-pill bg-white text-dark fw-normal nowrap">
             <%= nice_date_times_today(issue.updated_at) %>
           </div>
         </td>
-        <td class="fit" data-order="<%= issue.review_date %>">
-          <%= review_date_badge(issue, label: false, classes: 'ml-auto pl-2') %>
+        <td class="fit text-start" data-order="<%= issue.review_date %>">
+          <%= review_date_badge(issue, label: false, classes: 'pl-2') %>
         </td>
-        <td class="fit nowrap text-right">
-          <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-secondary btn-sm edit' %>
+        <td class="fit nowrap text-end">
+          <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue],
+                                                    redirect_back: request.fullpath),
+                      class: 'btn btn-secondary btn-sm edit' %>
         </td>
       </tr>
     <% end %>

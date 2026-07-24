@@ -5,7 +5,7 @@ module Admin
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
 
-      def index
+      def index # rubocop:disable Metrics/CyclomaticComplexity
         meter_issue_counts =
           Meter.joins(:issues).where(issues: { status: :open }).group('meters.id', 'issues.issue_type')
                .count
@@ -30,6 +30,8 @@ module Admin
           Column.new(:type,
                      ->(meter) { meter.meter_type.to_s.titleize },
                      ->(meter) { fa_icon(fuel_type_icon(meter.meter_type)) }),
+          Column.new(:supplier,
+                     ->(meter) { meter.supplier&.name }),
           Column.new(:data_source,
                      ->(meter) { meter.data_source&.name }),
           Column.new(:MPAN,

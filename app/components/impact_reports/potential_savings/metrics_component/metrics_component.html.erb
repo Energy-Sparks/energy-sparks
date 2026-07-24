@@ -1,0 +1,18 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(id: 'potential-savings-cards',
+                                       cols: cols,
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% displayable.each do |metric| %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_header title: impact_t("potential_savings.titles.#{metric.fuel_type}") %>
+        <%= card.with_figure format_unit(metric.value, :£) %>
+        <%= card.with_subtext do
+              impact_t("potential_savings.keys.#{metric.metric_type}",
+                       fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}"),
+                       count: metric.number_of_schools)
+            end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

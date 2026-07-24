@@ -2,7 +2,7 @@ class SchoolGroups::ComparisonReportListComponentPreview < ViewComponent::Previe
   # @param fuel_type select { choices: [all, electricity, gas, solar_pv] }
   # @param slug select :group_options
   def example(slug: nil, fuel_type: :all)
-    fuel_types = fuel_type == :all ? [:electricity, :gas, :solar_pv, :storage_heaters] : [fuel_type]
+    fuel_types = fuel_type == :all ? %i[electricity gas solar_pv storage_heaters] : [fuel_type]
     school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
     render SchoolGroups::ComparisonReportListComponent.new(school_group:, fuel_types:) do |c|
       c.with_link 'No fuel type', report: :annual_energy_use

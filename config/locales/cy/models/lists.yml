@@ -39,12 +39,14 @@ cy:
   role:
     admin: Gweinyddwr
     analytics: Dadansoddeg
-    group_admin: Gweinyddwr Grŵp
+    group_admin: Gweinyddwr  y grŵp
+    group_manager: Rheolwr y grŵp
     guest: Gwestai
     pupil: Disgybl
-    school_admin: Gweinyddwr Ysgol
-    school_onboarding: Cofrestru
+    school_admin: Gweinyddwr yr ysgol
+    school_onboarding: Gweinyddwr cofrestru
     staff: Staff
+    student: Myfyriwr
   staff_role:
     building_site_manager_or_caretaker: Rheolwr adeilad/safle neu ofalwr
     business_manager: Rheolwr busnes

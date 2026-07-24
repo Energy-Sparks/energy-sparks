@@ -39,9 +39,42 @@ cy:
   campaign_mailer:
     final: Edrychwn ymlaen at eich helpu i arbed ynni a brwydro yn erbyn newid hinsawdd.
     job_title: Prif Swyddog Gweithredol Sbarcynni
-    name: Claudia
+    name: Claudia Towner
+    school_demo:
+      ceo_name: Claudia Towner
+      ceo_title: Prif Swyddog Gweithredol Sbarcynni
+      dear: Annwyl %{name}
+      full_demo:
+        body: Edrychwch yn fanylach ar brif nodweddion ein hofferyn rheoli ynni a darganfyddwch sut y gallai Sbarcynni helpu eich ysgol i dorri costau ynni a charbon.
+        heading: Demo llawn (25 munud)
+      intro: 'Diolch am gofrestru i wylio demo Sbarcynni — mae gennym ddau fideo i chi ddewis ohonynt:'
+      next_steps:
+        enrol:
+          answer_html: Cymerwch olwg ar ein tudalen gymorth i ddysgu am ein gofynion mesur a gofynion eraill, yna <a href="%{url}">cwblhewch ein ffurflen gofrestru</a>.
+          question: Yn barod i gofrestru?
+        heading: 'Camau nesaf:'
+        information_pack:
+          answer_html: <a href="%{url}">Mae gennym becyn gwybodaeth gyda deunyddiau</a> a allai fod yn ddefnyddiol i chi.
+          question: Angen help i argyhoeddi gwneuthurwyr penderfyniadau eich ysgol?
+        learn_more:
+          answer_html: Mae gan y rhan fwyaf o'n <a href='%{schools_url}'>hysgolion ddata sydd ar gael i'r cyhoedd</a> — beth am edrych ar sut maen nhw'n defnyddio ein platfform? Mae gennym ni hefyd gyfoeth o wybodaeth ar ein tudalennau cymorth ac yn <a href='%{newsletters_url}'>ein cylchlythyrau</a>, neu gallwch gysylltu â ni yn <a href="mailto:support@energysparks.uk">support@energysparks.uk</a>.
+          question: Eisiau dysgu rhagor?
+      short_demo:
+        body: Yn y canllaw cyflym hwn o'n hofferyn rheoli ynni, byddwch yn dysgu rhagor am ein dangosfyrddau oedolion a disgyblion, siartiau defnydd ynni, cyngor arbed ynni pwrpasol, rhybuddion a rhagor.
+        heading: Demo byr (5 munud)
+      signoff: Cofion cynnes
+      subject: Diolch am eich diddordeb yn Sbarcynni!
     send_information_school:
-      intro: Diolch am eich diddordeb yn Sbarcynni.
+      intro: Dyma'r wybodaeth am Sbarcynni y gofynnoch chi amdani
+      stats_html: |-
+        <p>
+        Oeddech chi'n gwybod yn 2023/24:
+        </p>
+        <ul>
+          <li>Arbedodd yr ysgol gynradd Sbarcynni gyffredin £5,000 a 7 tunnell o CO2</li>
+          <li>Arbedodd yr ysgol uwchradd gyffredin £21,000 a 26 tunnell o CO24
+          <li>Cyflawnodd ein hysgolion gorau arbedion ynni blynyddol o 40%
+        </ul>
       subject: Rhagor o wybodaeth am Sbarcynni
     sign_off: Cofion cynnes
   consent_grant_mailer:
@@ -80,44 +113,59 @@ cy:
       subject: Mae'n bryd adolygu'r tariffau ynni ar gyfer %{school_name} ar Sbarcynni
   mailer:
     get_in_touch: Cysylltwch
-  onboarding_mailer2025:
-    onboarded_email:
-      subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
-    welcome_email:
-      subject: Croeso i Sbarcynni
   onboarding_mailer:
+    build_an_energy_saving_team_html: <b>Adeiladu tîm arbed ynni:</b> ystyriwch <a href="%{root_url}activity_types/33">sefydlu tîm myfyrwyr</a> i arwain ar effeithlonrwydd ynni yn eich ysgol a'u helpu i <a href="%{root_url}activity_types/174">ddod o hyd i'w cynghreiriaid ynni</a>. Gallant ddechrau defnyddio ein gweithgareddau addysgol ar unwaith. Gwyliwch ein <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">fideo</a> ar sut i gofnodi gweithgareddau.
     completion_email:
       find_them_on_energy_sparks: Dewch o hyd iddynt ar Sbarcynni
       subject: "Mae %{school} (%{school_group}) wedi cwblhau'r broses ymuno"
       title: "Mae %{school_name} (%{school_group}) wedi cwblhau'r broses gosod awtomatig"
     data_enabled_email:
-      explore_data: Archwilio eich data
-      get_in_touch_html: <a href="%{contact_url}">Cysylltwch</a> os oes gennych unrhyw gwestiynau pellach.
-      join_a_webinar: Ymuno â gweminar
-      need_some_help: Angen help?
-      paragraph_1_html: Gallwch bellach ddefnyddio Sbarcynni i <strong><a href="%{school_url}">weld faint o ynni mae eich ysgol yn ei ddefnyddio</a></strong>.
-      paragraph_2: Mae eich dangosfyrddau ysgol a disgyblion bellach yn cynnwys amrywiaeth o fewnwelediadau, siartiau a dadansoddiadau a fydd yn eich helpu i ddeall sut mae eich ysgol yn defnyddio ynni, ac argymhellion ar sut i leihau eich ôl troed carbon. Byddwch nawr hefyd yn derbyn rhybuddion i'ch rhybuddio am ddefnydd uchel o ynni.
-      paragraph_3_html: Ochr yn ochr â’r nodweddion newydd hyn gallwch barhau i <strong><a href="%{activity_categories_url}">archwilio ein gweithgareddau a’n hadnoddau addysgol</a></strong> sydd wedi’u cynllunio i addysgu’ch disgyblion am ynni tra’n arbed arian i’w hysgol.
-      paragraph_4_html: I gael help i ddefnyddio Sbarcynni darllenwch ein <a href="https://energysparks.uk/resources/12/download">Canllaw Defnyddiwr</a>, gwyliwch ein <a href="%{user_guide_videos_url}">Fideos Hyfforddi</a> neu ymunwch ag un o'n sesiynau <a href="%{training_url}">hyfforddi gweminar byw</a>.
-      paragraph_5: Gobeithiwn y bydd Sbarcynni yn grymuso eich disgyblion, staff yr ysgol, a chymuned ehangach yr ysgol i gymryd camau i wneud eich ysgol yn fwy ynni-effeithlon.
-      set_your_first_targets: Gosodwch eich targedau cyntaf
-      subject: "Mae data ynni %{school} bellach ar gael ar Sbarcynni"
-      thanks_for_joining: Diolch am ymuno!
-      the_energy_sparks_team: Tîm Sbarcynni
-      title: "Mae data ynni %{school_name} bellach ar gael ar Sbarcynni"
+      below_are_a_few_admin_html: |-
+        <div>
+        <b>Ychwanegu defnyddwyr ychwanegol</b>
+        <p>I annog eich cydweithwyr i gymryd rhan yn Sbarcynni, gallwch chi sefydlu cyfrif defnyddiwr iddyn nhw ar Sbarcynni. Rydym yn annog pob ysgol i gael o leiaf 3 aelod o staff gyda chyfrifon defnyddwyr. I ychwanegu eich cydweithwyr, cliciwch <a href="%{users_url}">yma</a>. Rhowch eu manylion a byddant yn cael e-bost sefydlu cyfrif.</p>
+        </div>
+        <div>
+        <b>Diweddarwch eich oriau agor i gynnwys gweithgareddau ar ôl ysgol ac unrhyw rhentu</b>
+        <p>Ar hyn o bryd mae Sbarcynni yn seilio ei ddadansoddiad ar amseroedd agor ysgolion o %{opening_time} i %{closing_time}. Dylai'r rhain fod yr amseroedd pan fydd y disgyblion yn cyrraedd ac yn gadael yr ysgol. Dylai hyn fod pan fydd yr ysgol yn gwbl weithredol gyda mwyafrif y disgyblion yn yr ysgol. Gellir cynnwys clybiau cyn ac ar ôl ysgol os yw mwyafrif yr ysgol yn cael ei defnyddio gan ddisgyblion. Dylid rhestru rhentiadau allanol neu adegau pan fydd gennych gyfran fach yn unig o ystâd eich ysgol yn cael ei defnyddio gan ddisgyblion o dan amseroedd defnydd cymunedol.</p>
+        <p>Bydd gan lawer o ysgolion staff glanhau neu staff eraill sy'n gweithio yn yr ysgol y tu allan i'r oriau pan fydd ar agor i ddisgyblion. Peidiwch â chynnwys y cyfnodau hyn ym mhrif oriau agor eich ysgol gan ein bod yn argymell y dylech gadw'r defnydd o ynni i'r lleiafswm yn ystod yr amseroedd hyn.</p>
+        <p>I osod oriau agor eich ysgol, cliciwch <a href="%{times_url}">yma</a>.
+        </div>
+      below_are_a_few_common_html: |-
+        <p>Isod mae ychydig o bethau eraill a allai eich helpu wrth ddefnyddio Sbarcynni:</p>
+        <div>
+        <b>Gosodwch eich targedau arbed ynni cyntaf</b>
+        <p>Gallwch osod targedau ar gyfer lleihau eich defnydd o ynni. Byddwn yn rhoi adroddiadau i chi i'ch helpu i fonitro eich cynnydd, set o weithgareddau a argymhellir a fydd yn ymgysylltu â'r ysgol gyfan, a mewnwelediadau ychwanegol trwy ein dadansoddiad manwl o'ch defnydd o ynni.</p>
+        <p>Ddim yn siŵr beth sy'n gyraeddadwy? Rydym wedi awgrymu targed cychwynnol yn seiliedig ar ein llwyddiannau wrth weithio gydag ysgolion ledled y wlad.</p>
+        </div>
+        <div>
+        <b>Gwyliau ysgol</b>
+        <p><b>Ar gyfartaledd, mae 15% o ynni ysgolion yn cael ei ddefnyddio yn ystod y gwyliau.</b> Mae creu rhestr wirio diffodd ynni ar gyfer y gwyliau a mynd drwy'r rhestr ar ddiwedd y tymor yn un o'r ffyrdd hawsaf a rhataf o leihau biliau ynni, hyd yn oed i ysgolion sydd â chlybiau gwyliau. Mae gennym rai <a href="%{root_url}intervention_types/71">rhestrau gwirio diffodd enghreifftiol</a> ar gael i chi eu defnyddio.</p>
+        </div>
+        <div>
+        <b>Hyfforddiant staff</b>
+        <p>Os hoffech dderbyn hyfforddiant pellach ar sut i ddefnyddio Sbarcynni yn effeithiol yn eich ysgol, gallwch gofrestru ar gyfer un o'n sesiynau sefydlu rhithwir drwy <a href="%{root_url}training">ein gwefan</a>. Gall staff hefyd wylio ein fideos cyflwyniadol wedi'u recordio ymlaen llaw sydd ar gael yn <a href="https://www.youtube.com/@energysparksuk">https://www.youtube.com/@energysparksuk</a>.</p>
+        </div>
+      below_are_a_few_final_html: |-
+        <div>
+        <b>Cofnodwch eich gweithgareddau</b>
+        <p>Mae <a href="%{root_url}activity_categories">dros 140 o weithgareddau</a>  ar wefan Sbarcynni i chi eu gwneud gyda'ch myfyrwyr. Ar ôl i chi gwblhau gweithgaredd, peidiwch ag anghofio <a href="%{root_url}activity_categories">ei gofnodi</a> ar eich cyfrif Sbarcynni. Mae gennym ni hefyd <a href="%{root_url}intervention_type_groups">lawer o gamau arbed ynni dan arweiniad oedolion</a>. Gallwch chi <a href="%{root_url}intervention_type_groups">gofnodi gweithredoedd dan arweiniad oedolion</a> ar Sbarcynni a byddwch chi'n ennill pwyntiau amdanyn nhw hefyd. Wrth i chi ennill pwyntiau, byddwch chi'n symud i fyny <a href="%{root_url}scoreboards">sgôr-fwrdd</a> Sbarcynni. Bob blwyddyn mae gennym wobrau sgôr-fwrdd cyffrous i'r ysgolion sy'n sgorio orau.</p>
+        </div>
+        <div>
+        <b>Diolch am ymuno!</b>
+        <p>Pob lwc i chi ar eich taith arbed ynni. Os oes gennych unrhyw gwestiynau, byddaf yn hapus i helpu.</p>
+        </div>
+      subject: Mae data ynni bellach ar gael ar Sbarcynni ar gyfer %{school}
+      we_are_pleased_html: Rydym yn falch o'ch hysbysu bod data defnydd ynni bellach ar gael ar eich cyfrif Sbarcynni. Gallwch ddefnyddio Sbarcynni <a href="%{url}">i weld faint o ynni mae eich ysgol yn ei ddefnyddio</a>.
+    familiarise_yourself_html: <b>Ymgyfarwyddwch</b> â defnyddio Sbarcynni, mae gennym ni <a href="%{root_url}intervention_types/74">lawer o ganllawiau a gwybodaeth ddefnyddiol am hyfforddiant</a>.
+    find_your_biggest_html: <b>Dewch o hyd i'ch cyfleoedd arbed ynni mwyaf:</b> rydym yn dadansoddi eich data ynni ac yn eich helpu i flaenoriaethu'r camau rydych yn eu cymryd i leihau eich costau ac allyriadau carbon deuocsid. <a href="%{url}">Dewch o hyd i'r rhain yma</a>.
+    here_is_our_quick_guide: 'Dyma ein canllaw cyflym ar gyfer gwneud y gorau o''ch cyfrif Sbarcynni:'
+    many_thanks: Diolch yn fawr
     onboarded_email:
       get_in_touch_message_html: <a href="%{contact_url}">Cysylltwch</a> os oes gennych unrhyw gwestiynau pellach.
-      join_a_webinar: Ymunwch â gweminar
-      need_some_help: Angen help?
-      paragraph_1_html: Wrth aros gallwch ddefnyddio Sbarcynni i ddechrau cofnodi eich gweithgareddau arbed ynni. Archwiliwch ein <strong><a href="%{activity_categories_url}">gweithgareddau ac adnoddau addysgol</a></strong> dan arweiniad disgyblion sydd wedi'u cynllunio i addysgu'ch disgyblion am ynni tra'n arbed arian i'w hysgol.
-      paragraph_2_html: Mae gennym hefyd amrywiaeth o <strong><a href="%{intervention_type_groups_url}">gamau arbed ynni</a></strong> y gallwch chi, aelodau eraill o staff a gwirfoddolwyr eu cymryd i ddechrau gwella eich defnydd o ynni.
-      paragraph_3_html: Edrychwch ar eich <strong><a href="%{school_url}">dangosfwrdd ysgol</a></strong> am awgrymiadau ar sut i ddechrau arni.
-      paragraph_4_html: I gael help i ddefnyddio Sbarcynni darllenwch ein <a href="https://energysparks.uk/resources/12/download">Canllaw Defnyddiwr</a>, gwyliwch ein <a href="%{user_guide_videos_url}">Fideos Hyfforddi</a> neu ymunwch ag un o'n sesiynau <a href="%{training_url}">hyfforddi gweminar byw</a>.
-      paragraph_5: Gobeithiwn y bydd Sbarcynni yn grymuso eich disgyblion, staff yr ysgol, a chymuned ehangach yr ysgol i gymryd camau i wneud eich ysgol yn fwy ynni-effeithlon.
+      in_the_mean_time: 'Yn y cyfamser, dyma ein canllaw cyflym ar gyfer gwneud y gorau o''ch cyfrif Sbarcynni:'
+      review_our_range_html: <b>Adolygwch ein hamrywiaeth o <a href="%{root_url}intervention_type_groups">weithredoedd arbed ynni</a></b> y gallwch chi, aelodau eraill o staff a gwirfoddolwyr eu cymryd i ddechrau gwella eich defnydd o ynni.
       subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
-      thanks_for_joining: Diolch am ymuno!
-      the_energy_sparks_team: Tîm Sbarcynni
-      title: "Mae %{school_name} bellach yn fyw ar Sbarcynni"
       we_are_working_message: Rydym yn gweithio i gael mynediad at ddata ynni eich ysgol.
       we_will_be_in_touch_shortly_message: Byddwn mewn cysylltiad yn fuan i gadarnhau pan fyddwn wedi gorffen cael mynediad at eich data ynni.
     onboarding_email:
@@ -155,13 +203,32 @@ cy:
         two: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
         many: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
         other: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+    set_up_a_holiday_switch_off_routine_html: <b>Sefydlu trefn diffodd ar gyfer y gwyliau:</b> Ar gyfartaledd, mae 15% o ynni ysgolion yn cael ei ddefnyddio yn ystod y gwyliau. Mae creu rhestr wirio diffodd ynni ar gyfer y gwyliau a mynd drwy'r rhestr ar ddiwedd y tymor yn un o'r ffyrdd hawsaf a rhataf o leihau biliau ynni, hyd yn oed i ysgolion sydd â chlybiau gwyliau. Mae gennym rai <a href="%{root_url}intervention_types/71"> rhestrau gwirio diffodd enghreifftiol</a> ar gael i chi eu defnyddio.
+    set_up_with_a_staff_account: Rydych chi wedi cael cyfrif staff. Os ydych chi'n meddwl y gallai fod angen i chi wirio a diweddaru manylion yr ysgol, bydd angen cyfrif gweinyddwr arnoch chi.
+    sign_up_to_energy_saving_alerts_html: <b>Cofrestrwch ar gyfer rhybuddion a negeseuon arbed ynni:</b> Mae ein system rhybuddio wedi helpu rhai ysgolion i arbed miloedd o bunnoedd drwy eu hysbysu am newidiadau disgwyliedig yn eu defnydd o ynni. Gallwch hefyd dderbyn awgrymiadau a diweddariadau rheolaidd i helpu eich ysgol i wneud y gorau o'i chyfrif Sbarcynni drwy gydol y flwyddyn. <a href="%{root_url}profiles">Newidiwch eich dewisiadau e-bost yma.</a>
+    we_hope: Gobeithiwn y bydd Sbarcynni yn grymuso eich disgyblion, staff yr ysgol, a chymuned ehangach yr ysgol i gymryd camau i wneud eich ysgol yn fwy ynni-effeithlon.
     welcome_email:
-      paragraph_1: Gallwch bellach ddefnyddio Sbarcynni i weld faint o ynni y mae eich ysgol yn ei ddefnyddio, cael gwybod am y cyfleoedd arbed ynni mwyaf ac archwilio ein gweithgareddau a’n hadnoddau addysgol sydd wedi’u cynllunio i addysgu’ch disgyblion am ynni tra’n arbed arian i’w hysgol.
-      paragraph_2_html: I gael help i ddefnyddio Sbarcynni darllenwch ein <a href="https://energysparks.uk/resources/12/download">Canllaw Defnyddiwr</a>, gwyliwch ein <a href="https://energysparks.uk/user-guide-videos">Fideos Hyfforddi</a> neu ymunwch ag un o'n sesiynau <a href="https://energysparks.uk/training">hyfforddi gweminar byw</a>.
-      paragraph_3: Gobeithiwn y bydd Sbarcynni yn grymuso eich disgyblion, staff yr ysgol, a chymuned ehangach yr ysgol i gymryd camau i wneud eich ysgol yn fwy ynni-effeithlon.
+      check_your_school_details_html: '<b>Gwiriwch fod manylion eich ysgol yn gywir</b> ar Sbarcynni: Gall sicrhau bod <a href="%{details_url}">manylion eich ysgol</a>, <a href="%{times_url}">oriau agor</a> a <a href="%{calendar_url}">chalendr eich ysgol</a> yn gywir wella''r gefnogaeth a gewch gennym ni.'
       subject: Croeso i Sbarcynni
-      title: Diolch am gadarnhau eich cyfrif defnyddiwr Sbarcynni.
+      thank_you_for_confirming: Diolch am gadarnhau eich cyfrif defnyddiwr Sbarcynni.
       view_your_school: Gweld eich ysgol
+      we_are_current_working: Rydym wrthi’n gweithio i gael data ynni ar gyfer eich ysgol a byddwn yn rhoi gwybod i chi pan fydd ar gael.
+      we_have_now: Rydym bellach wedi sefydlu eich cyfrif Sbarcynni ac yn fuan byddwch yn gallu ei ddefnyddio i weld faint o ynni mae eich ysgol yn ei ddefnyddio a darganfod rhagor am y cyfleoedd arbed ynni gorau yn seiliedig ar eich defnydd ynni presennol.
+      you_can_now_use: Gallwch bellach ddefnyddio Sbarcynni i weld faint o ynni y mae eich ysgol yn ei ddefnyddio, cael gwybod am y cyfleoedd arbed ynni mwyaf ac archwilio ein gweithgareddau a’n hadnoddau addysgol sydd wedi’u cynllunio i addysgu’ch disgyblion am ynni tra’n arbed arian i’w hysgol.
+    welcome_existing:
+      dashboard_message: 'Sylwer: %{message}'
+      need_some_help_html: <b>Os ydych chi'n teimlo bod angen rhywfaint o help arnoch chi</b> i ddefnyddio Sbarcynni, mae gennym ni lawer o ganllawiau a gwybodaeth ddefnyddiol am hyfforddiant <a href="%{root_url}intervention_types/74">yma</a>.
+      subject: Croeso i gyfrif Sbarcynni %{school}
+      we_are_pleased_html: Rydym yn falch o'ch croesawu i gyfrif Sbarcynni %{school}. Er efallai eich bod eisoes yn gyfarwydd â Sbarcynni, mae'r e-bost hwn yn cynnwys gwybodaeth bwysig i'ch helpu i ymgyfarwyddo â data ar gyfer %{school} ac i roi rhai atgoffwyr i chi rhag ofn y bydd eu hangen arnoch. Gallwch ddefnyddio Sbarcynni i <a href="%{url}">weld faint o ynni mae eich ysgol yn ei ddefnyddio</a>.
+      we_estimated_that_html: Rydym yn amcangyfrif mai eich cyfle arbed ynni blaenoriaeth uchaf yw %{opportunity}. Gallai gwneud hyn arbed cymaint â %{gbp_saving} a %{co2_saving}kg o CO₂ y flwyddyn i chi.
+  school_archived_mailer:
+    archived:
+      has_been_archived: "Mae %{school_name} wedi'i archifo ar Sbarcynni. Ni fyddwch bellach yn gallu cael mynediad at y mewnwelediadau data ynni na'r gweithgareddau a gofnodwyd yn flaenorol ar gyfer eich ysgol."
+      newsletters: Os ydych chi wedi tanysgrifio i'n cylchlythyrau, byddwch yn parhau i dderbyn y rhain, ond gallwch chi ddewis optio allan gan ddefnyddio'r ddolen dad-danysgrifio ar waelod pob cylchlythyr.
+      subject: "Mae %{school_name} wedi'i archifo ar Sbarcynni"
+      title: Ysgol wedi'i harchifo
+      we_would_love_html: Byddem wrth ein bodd yn cefnogi eich ysgol eto yn y dyfodol. Gallwch weld ein gwasanaethau a'n prisiau cyfredol <a href="%{url}">yma</a> neu ofyn i ail-gofrestru eich ysgol drwy e-bostio <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
+      your_account: Efallai bod eich cyfrif wedi'i archifo oherwydd bod defnydd yr ysgol o Sbarcynni wedi dod i ben ac rydych chi wedi dewis peidio â thalu am ein gwasanaethau o hyn ymlaen. Gallai hefyd fod oherwydd nad ydych wedi adnewyddu contract â thâl i ddefnyddio ein hofferyn rheoli ynni ar-lein.
   target_mailer:
     first_target:
       subject: Gosodwch eich targed arbed ynni cyntaf
@@ -175,6 +242,7 @@ cy:
       subject: Nodyn atgoffa i osod eich targed arbed ynni cyntaf
       title: Gosodwch eich targed arbed ynni cyntaf
     review_target:
+      its_time_2025_html: Mae'n bryd adolygu eich cynnydd ar gyfer <a href="%{gas_url}">nwy</a> a <a href="%{electricity_url}">thrydan</a> a gosod targed newydd ar gyfer y flwyddyn i ddod.
       its_time_html: Mae'n amser <a href='%{school_target_url}'>adolygu eich cynnydd</a> a gosod targed newydd ar gyfer y flwyddyn i ddod
       set_a_new_target: Gosod targed newydd
       subject: Adolygwch eich cynnydd a gosodwch darged arbed newydd

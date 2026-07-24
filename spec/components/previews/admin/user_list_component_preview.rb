@@ -1,4 +1,3 @@
 class Admin::UserListComponentPreview < ViewComponent::Preview
-  def examples
-  end
+  def examples; end
 end

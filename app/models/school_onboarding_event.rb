@@ -2,11 +2,11 @@
 #
 # Table name: school_onboarding_events
 #
-#  created_at           :datetime         not null
-#  event                :integer          not null
 #  id                   :bigint(8)        not null, primary key
-#  school_onboarding_id :bigint(8)        not null
+#  event                :integer          not null
+#  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  school_onboarding_id :bigint(8)        not null
 #
 # Indexes
 #

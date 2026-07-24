@@ -30,12 +30,12 @@ RSpec.describe EquivalenceComponent, type: :component do
   end
 
   describe '#show_fuel_type?' do
-    it { expect(component.show_fuel_type?).to be false}
+    it { expect(component.show_fuel_type?).to be false }
 
     context 'with flag' do
       let(:show_fuel_type) { true }
 
-      it { expect(component.show_fuel_type?).to be true}
+      it { expect(component.show_fuel_type?).to be true }
 
       context 'when param is missing' do
         let(:params) do
@@ -64,8 +64,8 @@ RSpec.describe EquivalenceComponent, type: :component do
       end
 
       it { expect(html).to have_css('div.equivalence-component.horizontal') }
-      it { expect(html).to have_content('Header') }
-      it { expect(html).to have_content(content) }
+      it { expect(html).to have_text('Header') }
+      it { expect(html).to have_text(content) }
 
       it_behaves_like 'an application component' do
         let(:expected_classes) { classes }
@@ -84,11 +84,11 @@ RSpec.describe EquivalenceComponent, type: :component do
         end
       end
 
-      it { expect(html).to have_content('Title') }
-      it { expect(html).to have_content('Equivalence') }
+      it { expect(html).to have_text('Title') }
+      it { expect(html).to have_text('Equivalence') }
 
       it { expect(html).to have_css('div.equivalence-component.horizontal') }
-      it { expect(html).to have_content(content) }
+      it { expect(html).to have_text(content) }
 
       it_behaves_like 'an application component' do
         let(:expected_classes) { classes }
@@ -103,7 +103,7 @@ RSpec.describe EquivalenceComponent, type: :component do
 
       let(:show_fuel_type) { true }
 
-      it { expect(html).not_to have_content(I18n.t('common.electricity')) }
+      it { expect(html).to have_no_text(I18n.t('common.electricity')) }
 
       context 'with vertical layout' do
         let(:params) do
@@ -116,7 +116,7 @@ RSpec.describe EquivalenceComponent, type: :component do
         end
 
         it { expect(html).to have_css('div.equivalence-component.vertical') }
-        it { expect(html).to have_content(I18n.t('common.electricity')) }
+        it { expect(html).to have_text(I18n.t('common.electricity')) }
       end
     end
   end

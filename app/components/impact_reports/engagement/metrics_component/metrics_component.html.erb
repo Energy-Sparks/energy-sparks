@@ -1,0 +1,33 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(id: 'engagement-cards',
+                                       cols: cols,
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% grid.with_stats_card(if: display?(:activities)) do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.activities.title') %>
+      <%= card.with_figure number_with_delimiter(engagement(:activities).value) %>
+      <%= card.with_subtext do
+            impact_t('engagement.cards.activities.subtext',
+                     count: engagement(:activities).number_of_schools)
+          end %>
+    <% end %>
+    <% grid.with_stats_card(if: display?(:actions)) do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.actions.title') %>
+      <%= card.with_figure number_with_delimiter(engagement(:actions).value) %>
+      <%= card.with_subtext do
+            impact_t('engagement.cards.actions.subtext',
+                     count: overview(:active_users).value)
+          end %>
+    <% end %>
+    <% grid.with_stats_card(if: display?(:points)) do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.points.title') %>
+      <%= card.with_figure number_with_delimiter(engagement(:points).value) %>
+      <%= card.with_subtext { impact_t('engagement.cards.points.subtext') } %>
+    <% end %>
+    <% grid.with_stats_card(if: display?(:targets)) do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.targets.title') %>
+      <%= card.with_figure number_with_delimiter(engagement(:targets).value) %>
+      <%= card.with_subtext { impact_t('engagement.cards.targets.subtext') } %>
+    <% end %>
+  <% end %>
+<% end %>

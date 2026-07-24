@@ -1,0 +1,24 @@
+<%# i18n-tasks-use t('tasks.activity.complete_this_for_group_html') %>
+<%# i18n-tasks-use t('tasks.action.complete_this_for_group_html') %>
+<%# i18n-tasks-use t('tasks.activity.record_this') %>
+<%# i18n-tasks-use t('tasks.action.record_this') %>
+
+<%= simple_form_for :activity_type, url: url, method: :get do |f| %>
+  <%= render PromptComponent.new(icon: 'tasks', theme: :dark, classes: 'mb-4') do |prompt| %>
+    <% prompt.with_title { t("tasks.#{task.public_type}.complete_this_for_group_html", count: task.score) } %>
+    <% prompt.with_content_action do |c| %>
+        <% c.with_body do %>
+          <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name),
+                         include_blank: t('tasks.select_school'),
+                         class: 'form-select select2 must-select disable-tooltip' %>
+        <% end %>
+        <% c.with_action do %>
+          <%= f.submit t("tasks.#{task.public_type}.record_this"),
+                       class: 'btn btn-primary',
+                       'data-bs-toggle': 'tooltip',
+                       'data-bs-placement': 'bottom',
+                       title: t('tasks.select_school') %>
+        <% end %>
+    <% end %>
+  <% end %>
+<% end %>

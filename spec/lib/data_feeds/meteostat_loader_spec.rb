@@ -2,14 +2,17 @@ require 'rails_helper'
 
 module DataFeeds
   describe MeteostatLoader do
-    let(:interface) { double('meteostat_interface')}
+    let(:interface) { double('meteostat_interface') }
     let!(:weather_station)                  { create(:weather_station) }
     let!(:inactive_station)                 { create(:weather_station, active: false) }
     let(:start_date)                        { Date.parse('2021-01-01') }
     let(:bad_temperature_readings)          { [10.0] }
     let(:good_temperature_readings)         { Array.new(48, 10.0) }
     let(:good_warmer_temperature_readings)  { Array.new(48, 15.0) }
-    let(:weather_observation)               { create(:weather_observation, weather_station: weather_station, reading_date: start_date, temperature_celsius_x48: good_temperature_readings)}
+    let(:weather_observation)               do
+      create(:weather_observation, weather_station: weather_station, reading_date: start_date,
+                                   temperature_celsius_x48: good_temperature_readings)
+    end
 
     context 'when running an import' do
       it 'only processes active meteostat stations' do
@@ -74,7 +77,8 @@ module DataFeeds
           { temperatures: { start_date => good_temperature_readings }, missing: nil }
         end
         expect(interface).to receive(:historic_temperatures).with(
-          weather_station.latitude, weather_station.longitude, start_date, start_date + 1.day)
+          weather_station.latitude, weather_station.longitude, start_date, start_date + 1.day
+        )
         loader = MeteostatLoader.new(start_date, start_date + 1.day, interface)
         loader.import_station(weather_station)
       end

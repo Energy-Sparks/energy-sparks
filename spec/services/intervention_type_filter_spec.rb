@@ -24,7 +24,7 @@ RSpec.describe InterventionTypeFilter, type: :service do
 
   context 'with default scope' do
     it 'returns the actions' do
-      expect(results).to match_array([intervention_type_1, intervention_type_2])
+      expect(results).to contain_exactly(intervention_type_1, intervention_type_2)
     end
   end
 
@@ -32,7 +32,7 @@ RSpec.describe InterventionTypeFilter, type: :service do
     let(:scope) { InterventionType.all }
 
     it 'returns the actions' do
-      expect(results).to match_array([intervention_type_1, intervention_type_2, intervention_type_3])
+      expect(results).to contain_exactly(intervention_type_1, intervention_type_2, intervention_type_3)
     end
   end
 
@@ -49,11 +49,12 @@ RSpec.describe InterventionTypeFilter, type: :service do
       school.observations.create!(
         observation_type: :intervention,
         intervention_type_id: intervention_type_1.id,
-        at: Date.new(2019, 9, 27))
+        at: Date.new(2019, 9, 27)
+      )
     end
 
     it 'returns a single action' do
-      expect(results).to match_array([intervention_type_2])
+      expect(results).to contain_exactly(intervention_type_2)
     end
   end
 end

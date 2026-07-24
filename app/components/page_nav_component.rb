@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class PageNavComponent < ApplicationComponent
-  renders_many :sections, ->(**kwargs) do
+  renders_many :sections, lambda { |**kwargs|
     kwargs[:options] ||= {}
     kwargs[:options] = options.merge(kwargs[:options])
     SectionComponent.new(**kwargs)
-  end
+  }
 
   attr_reader :name, :icon, :classes, :href, :options
 
-  def initialize(name: 'Menu', icon: 'home', href:, classes: nil, options: {})
+  def initialize(href:, name: 'Menu', icon: 'home', classes: nil, options: {})
     super(classes: classes)
     @name = name
     @icon = icon
@@ -25,14 +25,16 @@ class PageNavComponent < ApplicationComponent
   end
 
   class SectionComponent < ViewComponent::Base
-    renders_many :items, ->(**kwargs) do
+    renders_many :items, lambda { |**kwargs|
       kwargs[:match_controller] ||= options[:match_controller]
+      kwargs[:match_on_param] ||= options[:match_on_param]
       PageNavComponent::ItemComponent.new(**kwargs)
-    end
+    }
 
     attr_reader :name, :icon, :visible, :classes, :options
 
-    def initialize(id: nil, name: nil, icon: nil, visible: true, toggler: true, expanded: true, classes: nil, options: {})
+    def initialize(id: nil, name: nil, icon: nil, visible: true, toggler: true, expanded: true, classes: nil,
+                   options: {})
       @id = id
       @name = name
       @classes = classes
@@ -48,7 +50,8 @@ class PageNavComponent < ApplicationComponent
     end
 
     def link_text
-      helpers.text_with_icon(content_tag(:span, name, class: 'nav-text'), icon, class: 'fuel fa-fw') + content_tag(:span, helpers.toggler, class: 'nav-toggle-icons')
+      helpers.text_with_icon(content_tag(:span, name, class: 'nav-text'), icon,
+                             class: 'fuel fa-fw') + content_tag(:span, helpers.toggler, class: 'nav-toggle-icons')
     end
 
     def expanded?
@@ -63,7 +66,9 @@ class PageNavComponent < ApplicationComponent
       if @toggler
         toggle_classes = 'nav-link toggler'
         toggle_classes += ' collapsed' unless expanded?
-        args = { class: toggle_classes, 'data-toggle': 'collapse', 'data-target': "##{id}" }
+        args = { class: toggle_classes,
+                 'data-toggle': 'collapse', 'data-bs-toggle': 'collapse',
+                 'data-target': "##{id}", 'data-bs-target': "##{id}" }
       else
         args = { class: '' }
       end
@@ -73,9 +78,10 @@ class PageNavComponent < ApplicationComponent
   end
 
   class ItemComponent < ViewComponent::Base
-    attr_reader :name, :href, :match_controller, :classes
+    attr_reader :name, :href, :match_controller, :classes, :match_on_param
 
-    def initialize(name:, href:, note: nil, match_controller: false, selected: false, visible: true, classes: nil)
+    def initialize(name:, href:, note: nil, match_controller: false, selected: false, # rubocop:disable Lint/MissingSuper, Metrics/ParameterLists
+                   visible: true, classes: nil, match_on_param: nil)
       @name = name
       @note = note
       @href = href
@@ -83,6 +89,7 @@ class PageNavComponent < ApplicationComponent
       @selected = selected
       @visible = visible
       @classes = classes
+      @match_on_param = match_on_param
     end
 
     def current_controller?(href)
@@ -90,7 +97,11 @@ class PageNavComponent < ApplicationComponent
     end
 
     def current_item?(href)
-      match_controller ? current_controller?(href) : current_page?(href)
+      if match_on_param
+        params[match_on_param[:param]] == match_on_param[:value] && current_page?(href)
+      else
+        match_controller ? current_controller?(href) : current_page?(href)
+      end
     end
 
     def call
@@ -125,7 +136,9 @@ class PageNavComponent < ApplicationComponent
     end
 
     def call
-      kwargs = { class: "nav-link d-md-none d-#{display}", 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      kwargs = { class: "nav-link d-md-none d-#{display}",
+                 'data-toggle': 'collapse', 'data-bs-toggle': 'collapse',
+                 'data-target': "##{id}", 'data-bs-target': "##{id}" }
       link_to(icon, '', kwargs)
     end
   end

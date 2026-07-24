@@ -2,9 +2,9 @@
 #
 # Table name: contacts
 #
+#  id                  :bigint(8)        not null, primary key
 #  description         :text
 #  email_address       :text
-#  id                  :bigint(8)        not null, primary key
 #  mobile_phone_number :text
 #  name                :text
 #  school_id           :bigint(8)        not null

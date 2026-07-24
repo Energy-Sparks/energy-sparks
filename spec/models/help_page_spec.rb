@@ -5,6 +5,6 @@ RSpec.describe HelpPage, type: :model do
   let!(:help_page_2) { HelpPage.create(title: 'two', feature: 1) }
 
   it '#tx_resources' do
-    expect(HelpPage.tx_resources).to match_array([help_page_1, help_page_2])
+    expect(HelpPage.tx_resources).to contain_exactly(help_page_1, help_page_2)
   end
 end

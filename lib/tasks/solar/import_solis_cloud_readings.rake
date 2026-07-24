@@ -5,7 +5,7 @@ namespace :solar do
   task :import_solis_cloud_readings, %i[start_date end_date] => :environment do |_t, args|
     start_date = args[:start_date]&.to_date
     end_date = args[:end_date]&.to_date
-    SolisCloudInstallation.find_each do |installation|
+    SolisCloudInstallation.active.find_each do |installation|
       Solar::SolisCloudDownloadAndUpsert.new(installation: installation, start_date:, end_date:).perform
     end
   end

@@ -11,8 +11,17 @@ module NewsletterSubscriber
     Mailchimp::Contact.default_interests(@email_types, user)
   end
 
+  def interests_from_params
+    params.permit(interests: {}).to_h['interests'].transform_values { |v| v == 'true' }
+  end
+
   def create_contact_from_user(user, sign_up_params)
     Mailchimp::Contact.from_user(user, interests: sign_up_params[:interests].transform_values {|v| v == 'true' })
+  end
+
+  def subscribe_newsletter(user, sign_up_params)
+    contact = create_contact_from_user(user, sign_up_params)
+    subscribe_contact(contact, user, show_errors: false)
   end
 
   def subscribe_contact(contact, user, show_errors: true)
@@ -45,5 +54,14 @@ module NewsletterSubscriber
     Rails.logger.error(e)
     Rollbar.error(e)
     []
+  end
+
+  def user_interests(user)
+    mailchimp_contact = audience_manager.get_list_member(user.email)
+    if mailchimp_contact
+      mailchimp_contact[:interests] # Hash of id -> status
+    else
+      default_interests(user)
+    end
   end
 end

@@ -9,7 +9,10 @@ RSpec.describe 'activity type', type: :system do
   let!(:ks3) { create(:key_stage, name: 'KS3') }
 
   let!(:activity_category_1) { create(:activity_category, name: 'cat1', featured: true) }
-  let!(:activity_type_1_1) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks1, ks2], school_specific_description: 'school specific descriptive text here') }
+  let!(:activity_type_1_1) do
+    create(:activity_type, activity_category: activity_category_1, key_stages: [ks1, ks2],
+                           school_specific_description: 'school specific descriptive text here')
+  end
   let!(:activity_type_1_2) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3]) }
   let!(:activity_type_1_3) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3]) }
   let!(:activity_type_1_4) { create(:activity_type, activity_category: activity_category_1, key_stages: [ks3]) }
@@ -28,13 +31,13 @@ RSpec.describe 'activity type', type: :system do
       end
 
       it 'shows categories with 4 activity types' do
-        expect(page).to have_content(activity_category_1.name)
+        expect(page).to have_text(activity_category_1.name)
 
-        expect(page).to have_content(activity_type_1_1.name)
-        expect(page).to have_content(activity_type_1_2.name)
+        expect(page).to have_text(activity_type_1_1.name)
+        expect(page).to have_text(activity_type_1_2.name)
 
-        expect(page).not_to have_content(activity_category_2.name)
-        expect(page).not_to have_content(activity_type_2_1.name)
+        expect(page).to have_no_text(activity_category_2.name)
+        expect(page).to have_no_text(activity_type_2_1.name)
       end
 
       context 'when user has a school' do
@@ -49,18 +52,18 @@ RSpec.describe 'activity type', type: :system do
 
       it 'links to category page, activity page and back' do
         click_link 'View all 4 activities'
-        expect(page).to have_content(activity_category_1.name)
-        expect(page).to have_content(activity_category_1.description)
+        expect(page).to have_text(activity_category_1.name)
+        expect(page).to have_text(activity_category_1.description)
 
         click_link activity_type_1_1.name
-        expect(page).to have_content(activity_type_1_1.name)
-        expect(page).to have_content('school specific descriptive text here')
+        expect(page).to have_text(activity_type_1_1.name)
+        expect(page).to have_text('school specific descriptive text here')
 
-        click_link "View #{activity_category_1.activity_types.count} related activities"
-        expect(page).to have_content(activity_category_1.name)
+        click_link "View #{activity_category_1.activity_types.count} activities in this category"
+        expect(page).to have_text(activity_category_1.name)
 
         click_link 'All activities'
-        expect(page).to have_content('Explore energy saving activities')
+        expect(page).to have_text('Explore energy saving activities')
       end
     end
   end
@@ -75,7 +78,7 @@ RSpec.describe 'activity type', type: :system do
       let(:user) { create(:staff, school: school) }
 
       it 'redirects to new recommemndations page for school' do
-        expect(page).to have_content('Recommended activities and actions')
+        expect(page).to have_text('Recommended activities and actions')
       end
     end
 
@@ -83,7 +86,7 @@ RSpec.describe 'activity type', type: :system do
       let(:user) { create(:admin, school: nil) }
 
       it 'redirects to the activity categories index' do
-        expect(page).to have_content('Explore energy saving activities')
+        expect(page).to have_text('Explore energy saving activities')
       end
     end
   end

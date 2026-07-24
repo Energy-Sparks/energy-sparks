@@ -19,21 +19,21 @@ describe 'Jobs', type: :system do
     click_on 'New Job'
     fill_in_trix with: 'Help us do a thing really well'
     click_on 'Create'
-    expect(page).to have_content('blank')
+    expect(page).to have_text('blank')
     fill_in 'Title', with: title
     attach_file('File', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
     check 'Voluntary'
     click_on 'Create'
-    expect(page).to have_content title
+    expect(page).to have_text title
 
     click_on 'Edit'
     fill_in 'Title', with: new_title
     click_on 'Update'
 
-    expect(page).to have_content new_title
+    expect(page).to have_text new_title
 
     click_on 'Delete'
-    expect(page).to have_content('Job was successfully deleted.')
+    expect(page).to have_text('Job was successfully deleted.')
     expect(Job.count).to eq(0)
   end
 end

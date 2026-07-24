@@ -9,6 +9,8 @@ module Admin
         super + [
           Column.new(:meter_type,
                      ->(meter) { meter.meter_type.to_s }),
+          Column.new(:supplier,
+                     ->(meter) { meter.supplier&.name }),
           Column.new(:data_source,
                      ->(meter) { meter.data_source&.name }),
           Column.new(:last_validated_date,
@@ -30,7 +32,7 @@ module Admin
       def results
         results = Meter.active.where(manual_reads: true).with_school_and_group
         results = results.for_school_group(SchoolGroup.find(params[:school_group])) if params[:school_group].present?
-        results = results.for_admin(User.admin.find(params[:user])) if params[:user].present?
+        results = results.for_admin(User.admin.find(params[:admin])) if params[:admin].present?
         results
       end
 

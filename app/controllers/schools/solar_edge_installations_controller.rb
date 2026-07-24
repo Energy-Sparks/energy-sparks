@@ -11,8 +11,9 @@ module Schools
 
       return unless @installation.cached_api_information?
 
-      start_time = @installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
-      end_time = @installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
+      latest_date = @installation.api_latest_data_date
+      start_time = (latest_date - 1.day).strftime('%Y-%m-%d 00:00:00')
+      end_time = latest_date.strftime('%Y-%m-%d 00:00:00')
       @reading_params = @api_params.merge({ timeUnit: 'QUARTER_OF_AN_HOUR', startTime: start_time,
                                             endTime: end_time })
     end
@@ -22,13 +23,8 @@ module Schools
     def edit; end
 
     def create
-      @installation = Solar::SolarEdgeInstallationFactory.new(
-        school: @school,
-        mpan: solar_edge_installation_params[:mpan],
-        site_id: solar_edge_installation_params[:site_id],
-        api_key: solar_edge_installation_params[:api_key],
-        amr_data_feed_config: AmrDataFeedConfig.find(solar_edge_installation_params[:amr_data_feed_config_id])
-      ).perform
+      @installation = Solar::SolarEdgeInstallationFactory.new(@installation,
+                                                              AmrDataFeedConfig.solar_edge_api.first).perform
 
       if @installation.persisted?
         redirect_to school_solar_feeds_configuration_index_path(@school),
@@ -59,9 +55,7 @@ module Schools
     private
 
     def solar_edge_installation_params
-      params.require(:solar_edge_installation).permit(
-        :site_id, :amr_data_feed_config_id, :mpan, :api_key
-      )
+      params.expect(solar_edge_installation: %i[site_id amr_data_feed_config_id mpan api_key active])
     end
   end
 end

@@ -7,8 +7,8 @@ RSpec.describe Scoreboards::ActivityTableComponent, :include_url_helpers, type: 
     render_inline(described_class.new(**params))
   end
 
-  let!(:other_school) { create :school, scoreboard: create(:scoreboard) }
-  let!(:activity_type) { create :activity_type, score: 10 }
+  let!(:other_school) { create(:school, scoreboard: create(:scoreboard)) }
+  let!(:activity_type) { create(:activity_type, score: 10) }
   let!(:activity) { create(:activity, school: other_school, activity_type:) }
   let!(:observation) { create(:observation, :activity, activity: activity, school: other_school) }
 
@@ -47,7 +47,7 @@ RSpec.describe Scoreboards::ActivityTableComponent, :include_url_helpers, type: 
     end
 
     it 'displays the observations' do
-      expect(html).to have_content(I18n.t('common.school'))
+      expect(html).to have_text(I18n.t('common.school'))
       expect(html).to have_selector(:table_row, [
                                       other_school.name,
                                       '10',
@@ -68,7 +68,7 @@ RSpec.describe Scoreboards::ActivityTableComponent, :include_url_helpers, type: 
     end
 
     it 'displays the observations' do
-      expect(html).to have_content(I18n.t('common.labels.place'))
+      expect(html).to have_text(I18n.t('common.labels.place'))
       expect(html).to have_selector(:table_row, [
                                       '1st',
                                       '10',

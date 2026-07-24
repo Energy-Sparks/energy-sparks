@@ -6,7 +6,7 @@ RSpec.describe CaseStudy, type: :model do
     let!(:case_study_2) { create(:case_study, title: 'two', position: 1) }
 
     it 'returns case studies in id order' do
-      expect(CaseStudy.tx_resources).to match_array([case_study_1, case_study_2])
+      expect(CaseStudy.tx_resources).to contain_exactly(case_study_1, case_study_2)
     end
 
     context 'when there is an unpublished case study' do
@@ -20,8 +20,12 @@ RSpec.describe CaseStudy, type: :model do
 
   describe '.without_images' do
     context 'when all case studies have images attached' do
-      let!(:case_study_with_image_1) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
-      let!(:case_study_with_image_2) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
+      let!(:case_study_with_image_1) do
+        create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg'))
+      end
+      let!(:case_study_with_image_2) do
+        create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg'))
+      end
 
       it 'returns nothing' do
         expect(CaseStudy.without_images).to be_empty
@@ -29,11 +33,13 @@ RSpec.describe CaseStudy, type: :model do
     end
 
     context 'when some case studies do not have images attached' do
-      let!(:case_study_with_image) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
+      let!(:case_study_with_image) do
+        create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg'))
+      end
       let!(:case_study_without_image) { build(:case_study, image: nil).tap { |cs| cs.save(validate: false) } }
 
       it 'returns only case studies without images' do
-        expect(CaseStudy.without_images).to match_array([case_study_without_image])
+        expect(CaseStudy.without_images).to contain_exactly(case_study_without_image)
       end
     end
 
@@ -42,7 +48,7 @@ RSpec.describe CaseStudy, type: :model do
       let!(:case_study_without_image_2) { build(:case_study, image: nil).tap { |cs| cs.save(validate: false) } }
 
       it 'returns all case studies' do
-        expect(CaseStudy.without_images).to match_array([case_study_without_image_1, case_study_without_image_2])
+        expect(CaseStudy.without_images).to contain_exactly(case_study_without_image_1, case_study_without_image_2)
       end
     end
 
@@ -66,7 +72,7 @@ RSpec.describe CaseStudy, type: :model do
       let!(:case_study) { create(:case_study, tags: 'one, two, three') }
 
       it 'returns a list of tags' do
-        expect(case_study.tag_list).to match_array(['one', 'two', 'three'])
+        expect(case_study.tag_list).to contain_exactly('one', 'two', 'three')
       end
     end
   end

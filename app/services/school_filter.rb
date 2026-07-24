@@ -37,6 +37,6 @@ class SchoolFilter
   end
 
   def schools_with_funder(schools)
-    schools.where(funder_id: @funders)
+    schools.with_current_licence_for_contract_holder(@funders)
   end
 end

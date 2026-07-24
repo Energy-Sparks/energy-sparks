@@ -3,26 +3,26 @@
 <% end %>
 
 <div class="row pb-2">
-  <div class="col-12">
-    <div class="card-deck">
+  <div class="col-6">
       <div class="card">
         <div class="card-body">
-          <div>Active meters <span class="float-right badge badge-success">
+          <div>Active meters <span class="float-end badge text-bg-success">
             <%= @procurement_route.meters.active.count %></span>
           </div>
-          <div>Inactive meters <span class="float-right badge badge-secondary">
+          <div>Inactive meters <span class="float-end badge text-bg-secondary">
             <%= @procurement_route.meters.inactive.count %></span>
           </div>
         </div>
       </div>
+  </div>
+  <div class="col-6">
       <div class="card">
         <div class="card-body">
-          <div>Associated schools <span class="float-right badge badge-success">
+          <div>Associated schools <span class="float-end badge text-bg-success">
             <%= @procurement_route.schools.count %></span>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </div>
 
@@ -31,11 +31,13 @@
     <span data-toggle="collapse"
           href="#procurement-route"
           role="button" aria-expanded="true" aria-controls="procurement-route"
-          class="badge badge-light toggler text-decoration-none collapsed">
+          class="badge text-bg-light toggler text-decoration-none collapsed">
       <%= toggler %>
     </span>
-    <span class='float-right'>
-      <%= render 'email_report_button', procurement_route: @procurement_route, class: 'btn btn-sm' %>
+    <span class='float-end'>
+      <%= render Forms::EmailReportButtonComponent.new(admin_procurement_route_deliver_path(@procurement_route),
+                                                       'Email Procurement Route Report',
+                                                       button_class: 'btn btn-secondary btn-sm') %>
       <%= link_to 'Edit', edit_admin_procurement_route_path(@procurement_route), class: 'btn btn-sm' %>
       <%= link_to 'Delete',
                   admin_procurement_route_path(@procurement_route),

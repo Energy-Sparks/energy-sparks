@@ -18,14 +18,16 @@ module Admin
         end
       end
 
-      def with_limited_data(fuel_type: :electricity, days_of_data: 365, recent_data: true, scenario: :less_than_x_days)
+      def with_limited_data(fuel_type: :electricity, min_days_of_data: 0, max_days_of_data: 365, recent_data: true, scenario: :less_than_x_days)
         @schools.filter_map do |school|
           dates = ::Schools::AnalysisDates.new(school, fuel_type)
           next unless school.send("has_#{fuel_type}?")
 
           case scenario
           when :less_than_x_days
-            next unless dates.days_of_data <= days_of_data && dates.recent_data == recent_data
+            next unless dates.days_of_data >= min_days_of_data &&
+                        dates.days_of_data <= max_days_of_data &&
+                        dates.recent_data == recent_data
           when :between_1_and_2_years
             next unless dates.days_of_data > 365 && dates.days_of_data <= 730 && dates.recent_data == recent_data
           when :more_than_2_years

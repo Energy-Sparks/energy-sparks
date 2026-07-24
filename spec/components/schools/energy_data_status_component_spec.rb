@@ -3,15 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :component do
+  subject(:html) do
+    render_inline(described_class.new(**params))
+  end
+
   around do |example|
     travel_to Date.new(2025, 9, 26)
     ClimateControl.modify AWESOMEPRINT: 'off' do
       example.run
     end
-  end
-
-  subject(:html) do
-    render_inline(described_class.new(**params))
   end
 
   let(:base_params) { { id: 'custom-id', classes: 'extra-classes', school: school } }
@@ -37,13 +37,13 @@ RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :
     end
 
     it 'shows the date ranges for the fuel type' do
-      expect(html).to have_selector('tr', text: /Electricity\s*26 Sep 2024\s+26 Sep 2025/)
+      expect(html).to have_css('tr', text: /Electricity\s*26 Sep 2024\s+26 Sep 2025/)
     end
 
     context 'when show_icon is false' do
-      let(:params) { base_params.update(show_fuel_icon: false)}
+      let(:params) { base_params.update(show_fuel_icon: false) }
 
-      it { expect(html).not_to have_css('td i.fa-bolt') }
+      it { expect(html).to have_no_css('td i.fa-bolt') }
     end
   end
 
@@ -56,13 +56,13 @@ RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :
     end
 
     it 'shows the date ranges for the fuel type' do
-      expect(html).to have_selector('tr', text: /Gas\s*26 Sep 2024\s+26 Sep 2025/)
+      expect(html).to have_css('tr', text: /Gas\s*26 Sep 2024\s+26 Sep 2025/)
     end
   end
 
   context 'when table_small is true' do
-    let(:params) { base_params.merge(table_small: true)}
+    let(:params) { base_params.merge(table_small: true) }
 
-    it { expect(html).to have_selector('table.table-sm') }
+    it { expect(html).to have_css('table.table-sm') }
   end
 end

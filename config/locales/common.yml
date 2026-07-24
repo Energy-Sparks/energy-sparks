@@ -15,10 +15,13 @@ en:
     electricity_and_solar_pv: Electricity and Solar PV
     email_us: email us
     engagement: Engagement
+    enter_number: Enter a number
     explore_energy_data: Explore energy data
     exported_solar_pv: Exported Solar PV
+    feature_not_available: This feature is not available
     gas: Gas
     labels:
+      action: Action
       actions: Actions
       activate: Activate
       active: Active
@@ -61,6 +64,7 @@ en:
       not_applicable: N/A
       not_set: Not set
       onboarded_date: Onboarded date
+      overview: Overview
       place: Place
       points: Points
       previous: Previous
@@ -87,11 +91,13 @@ en:
       upload: Upload
       view: View
       view_alerts: View alerts
+      view_all_potential_savings: View all potential savings
       view_now: View now
       view_opportunities: View opportunities
       view_results: View results
       welcome: Welcome
       yes_label: 'Yes'
+    last_updated_on_html: Last updated on <strong>%{date}</strong>
     line_graphs: Line graphs
     pie_charts: Pie charts
     points: points
@@ -110,6 +116,7 @@ en:
       secondary: Secondary
       special: Special or Alternative Provision
     schools: Schools
+    select_date: Select date
     settings: Settings
     solar_pv: Solar PV
     storage_heater: Storage heater
@@ -127,6 +134,11 @@ en:
       minutes:
         one: "%{count} minute"
         other: "%{count} minutes"
+    view_all_potential_savings: View all potential savings
+    view_analysis: View analysis
+    view_dashboard: View dashboard
+    view_scoreboard: View scoreboard
+    view_timeline: View timeline
   kwh: kWh
   usage_co2: kg/CO2
   "£": "£"

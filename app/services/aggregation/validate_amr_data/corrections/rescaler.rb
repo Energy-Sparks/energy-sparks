@@ -20,7 +20,7 @@ module Aggregation
             (0..47).each do |halfhour_index|
               new_data_x48.push(@amr_data.kwh(date, halfhour_index) * scale)
             end
-            scaled_data = OneDayAMRReading.new(@mpan_mprn, date, 'S31M', nil, DateTime.now, new_data_x48)
+            scaled_data = OneDayAMRReading.new(date, 'S31M', nil, DateTime.now, new_data_x48)
             @amr_data.add(date, scaled_data)
           end
           @amr_data

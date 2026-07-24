@@ -12,7 +12,7 @@ cy:
             description: Disgrifiad
             fuel_type: Tanwydd
             kwh_saving: Ynni (kWh)
-            savings: Arbedion
+            savings: Arbedion posib
         table_note: Defnyddiwch benawdau'r tabl i drefnu'r argymhellion. Nid yw arbedion cost posibl ar gyfer yr un math o danwydd yn ychwanegyn.
         table_title: Cyfleoedd wedi'u blaenoriaethu
         title: Cyfleoedd arbed ynni
@@ -34,16 +34,19 @@ cy:
           electricity_meter_breakdown: Crynodeb o ddefnydd ar draws eich mesuryddion trydan
           electricity_out_of_hours: Faint o'ch defnydd trydan sydd y tu allan i oriau ysgol?
           electricity_recent_changes: Sut mae eich defnydd o drydan wedi newid dros yr ychydig wythnosau diwethaf?
+          electricity_target: Targed ar gyfer lleihau eich defnydd o drydan
           gas_costs: Adolygwch faint mae eich ysgol wedi'i wario ar nwy yn ddiweddar
           gas_long_term: Gweld tueddiadau hirdymor yn eich defnydd o nwy
           gas_meter_breakdown: Crynodeb o ddefnydd ar draws eich mesuryddion nwy
           gas_out_of_hours: Faint o'ch defnydd nwy sydd y tu allan i oriau ysgol?
           gas_recent_changes: Sut mae eich defnydd o nwy wedi newid dros yr ychydig wythnosau diwethaf?
+          gas_target: Targed ar gyfer lleihau eich defnydd o nwy
           heating_control: Adolygwch amseroedd eich gwres canolog a'ch defnydd o nwy i wresogi'r ysgol
           hot_water: Deall effeithlonrwydd eich system dŵr poeth
           solar_pv:
             has_solar: Gweld maneteision cael paneli solar ar eich ysgol
             no_solar: Gweld manteision posib gosod paneli solar ar eich ysgol
+          storage_heater_target: Targed ar gyfer lleihau eich defnydd o stôr-wresogyddion
           storage_heaters: Adolygwch faint o ynni rydych yn ei ddefnyddio i bweru'ch gwresogyddion stôr
           thermostatic_control: Deall pa mor dda y mae eich defnydd o nwy yn addasu i dymheredd newidiol
         title: Trosolwg

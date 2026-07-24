@@ -3,12 +3,6 @@ require 'rails_helper'
 describe 'school group energy tariffs', type: :system do
   let!(:school_group) { create(:school_group, public: true) }
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: 'true' do
-      example.run
-    end
-  end
-
   context 'as an admin user' do
     let!(:current_user) { create(:admin) }
 
@@ -16,14 +10,14 @@ describe 'school group energy tariffs', type: :system do
   end
 
   context 'as a group_admin user' do
-    let(:current_user) { create(:user, role: :group_admin, school_group: school_group)}
+    let(:current_user) { create(:user, role: :group_admin, school_group: school_group) }
 
     it_behaves_like 'a school group energy tariff editor'
   end
 
   context 'as a group_admin user of a different group' do
     let!(:school_group_2) { create(:school_group, public: true) }
-    let(:current_user) { create(:user, role: :group_admin, school_group: school_group_2)}
+    let(:current_user) { create(:user, role: :group_admin, school_group: school_group_2) }
     let(:path) { school_group_energy_tariffs_path(school_group) }
 
     before { sign_in(current_user) }

@@ -1,0 +1,57 @@
+cy:
+  school_groups:
+    advice_pages:
+      electricity_out_of_hours:
+        analysis:
+          comparisons:
+            chart:
+              header: Mae'r siart ganlynol yn dadansoddi'r defnydd o drydan ar draws gwahanol gyfnodau amser ar gyfer pob ysgol yn y grŵp hwn. Mae "diwrnod ysgol ar agor" yn cyfeirio at yr amser pan fydd yr ysgol ar agor i ddisgyblion a staff. "Diwrnod ysgol ar gau" yw pan fydd yr ysgol ar gau i ddisgyblion a staff dros nos.
+              subtitle: Canran y trydan a ddefnyddir ar gyfer gwahanol gyfnodau amser yn seiliedig ar y 12 mis diweddaraf o ddata ar gyfer pob ysgol
+              title: Defnydd Trydan Blynyddol y Tu Allan i Oriau Ysgol
+            table:
+              header_html: |-
+                <p>
+                Mae'r tabl canlynol yn rhoi dadansoddiad mwy manwl o pryd mae trydan yn cael ei ddefnyddio ar gyfer pob ysgol. Mae'r dadansoddiad yn seiliedig ar y 12 mis diweddaraf o ddata ar gyfer pob ysgol a'r oriau agor a ffurfiwyd ar gyfer pob ysgol.
+                </p>
+                <p>
+                Mae'r tabl yn rhoi syniad o gostau defnyddio trydan y tu allan i oriau gwaith (a ddiffinnir fel pan fydd yr ysgol ar gau, ar benwythnosau ac yn ystod gwyliau), ynghyd â chostau sy'n gysylltiedig â chyfnodau pan ddefnyddir yr ysgolion i gynnal digwyddiadau, clybiau neu osodiadau preifat eraill.
+                </p>
+            title: Cymhariaeth ysgolion
+          potential_savings:
+            table:
+              header_html: |-
+                <p>
+                Mae ysgolion yn cael eu meincnodi ag ysgolion cymharol yn seiliedig ar sawl nodwedd allweddol gan gynnwys arwynebedd llawr,
+                lleoliad, niferoedd disgyblion a math.
+                </p>
+                <p>
+                Mae'r tabl canlynol yn crynhoi sut rydym wedi meincnodi pob ysgol yn eich grŵp yn ôl ei
+                defnydd trydan y tu allan i oriau ysgol.
+                <p>
+                Mae'r arbedion ar gyfer pob ysgol yn seiliedig ar leihau eu defnydd i gyd-fynd â rhai <a data-toggle="modal" data-target="#%{modal_id}" data-remote="false" href="#">ysgol Enghreifftiol â nodweddion tebyg.</a>.
+                </p>
+            title: Arbedion posib
+          summary: Mae'r dudalen hon yn rhoi trosolwg o'r trydan a ddefnyddir y tu allan i oriau ysgol ar draws yr ysgolion yn eich grŵp
+        insights:
+          current_use:
+            summary_html: |-
+              <p>
+              Mae'r tabl canlynol yn crynhoi'r defnydd presennol y tu allan i oriau ysgol ar draws pob ysgol.
+              <p>
+              <p>
+              Mae "diwrnod ysgol ar agor" yn cyfeirio at yr amser pan fydd yr ysgol ar agor i ddisgyblion a staff. Mae "diwrnod ysgol ar gau" yn cyfeirio at yr amser pan fydd yr ysgol ar gau i ddisgyblion a staff dros nos.
+              </p>
+              <p>Mae <a href="%{link}">tabl a siart mwy manwl</a> ar gael hefyd.
+              </p>
+            title: Defnydd y tu allan i oriau ysgol
+          what_is_out_of_hours_usage_html: |-
+            <p>
+              Defnydd o drydan y tu allan i oriau yw'r swm o drydan a ddefnyddir pan fydd yr ysgolion ar gau - dros nos, ar y penwythnos ac yn ystod y gwyliau.
+            </p>
+
+              Lleihau'r defnydd o drydan y tu allan i oriau yw un o'r ffyrdd hawsaf a rhataf o arbed llawer o ynni.
+
+            <p>
+              Sylwer: Mae'r dadansoddiad o fewn y dudalen hon yn seiliedig ar oriau agor yr ysgol wedi'u gosod ar gyfer pob ysgol. Mae'n well gosod y rhain i fod mor gywir â phosibl er mwyn i chi gael cyngor priodol.
+            </p>
+        page_title: Defnydd trydan y tu allan i oriau ysgol

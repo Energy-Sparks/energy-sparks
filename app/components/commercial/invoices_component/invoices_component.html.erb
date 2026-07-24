@@ -1,0 +1,49 @@
+<%= tag.div id: id, class: classes do %>
+  <%= helpers.simple_form_for :export, url: export_admin_commercial_invoices_path, method: 'GET' do |f| %>
+    <table id='invoices-table' class="table table-sm table-paged">
+      <thead>
+        <tr>
+          <th class="no-sort">
+            <%= check_box_tag 'check-all', false, false, { class: 'check-all-form' } %>
+          </th>
+          <th>Number</th>
+          <% if @show_contract %>
+            <th>Contract</th>
+            <th>Contract Holder</th>
+          <% end %>
+          <th>User</th>
+          <th>Date</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @invoices.each do |invoice| %>
+          <tr>
+            <td class="">
+                <%= check_box_tag 'invoices[]',
+                                  invoice.id,
+                                  false,
+                                  class: 'allow-submit',
+                                  id: "invoice_#{invoice.id}" %>
+            </td>
+            <td><%= link_to invoice.invoice_number, admin_commercial_invoice_path(invoice) %></td>
+            <% if @show_contract %>
+              <td><%= link_to invoice.contract.name, admin_commercial_contract_path(invoice.contract) %></td>
+              <td><%= invoice.contract_holder.name %></td>
+            <% end %>
+            <td>
+              <%= link_to email_with_wbr(invoice.created_by.display_name), user_path(invoice.created_by) %>
+            </td>
+            <td data-order="<%= invoice.date.iso8601 %>">
+              <%= invoice.date.to_fs(:es_short) %>
+            </td>
+            <td>
+              <%= helpers.format_price invoice.value.total %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= f.submit 'Export for xero', disabled: true, class: 'btn btn-sm btn-primary', data: { disable_with: false } %>
+  <% end %>
+<% end %>

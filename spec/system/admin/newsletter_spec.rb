@@ -8,7 +8,7 @@ RSpec.describe 'Admin newsletters', type: :system do
       before { visit admin_newsletters_path }
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -16,7 +16,7 @@ RSpec.describe 'Admin newsletters', type: :system do
       before { visit new_admin_newsletter_path }
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
   end
@@ -44,8 +44,8 @@ RSpec.describe 'Admin newsletters', type: :system do
           click_on 'Save'
         end
 
-        it { expect(page).to have_content("Title *\ncan't be blank") }
-        it { expect(page).to have_content("Url *\ncan't be blank") }
+        it { expect(page).to have_text("Title *\ncan't be blank") }
+        it { expect(page).to have_text("Url *\ncan't be blank") }
       end
 
       context 'when publishing without an image' do
@@ -54,7 +54,7 @@ RSpec.describe 'Admin newsletters', type: :system do
           click_on 'Save'
         end
 
-        it { expect(page).to have_content('No image attached') }
+        it { expect(page).to have_text('No image attached') }
       end
 
       context 'with valid attributes' do
@@ -69,9 +69,9 @@ RSpec.describe 'Admin newsletters', type: :system do
         end
 
         it 'shows the newsletter details' do
-          expect(page).to have_content(title)
-          expect(page).to have_content(url)
-          expect(page).to have_content('Newsletter was successfully created.')
+          expect(page).to have_text(title)
+          expect(page).to have_text(url)
+          expect(page).to have_text('Newsletter was successfully created.')
         end
       end
     end
@@ -92,8 +92,8 @@ RSpec.describe 'Admin newsletters', type: :system do
           click_on 'Save'
         end
 
-        it { expect(page).to have_content('Updated Title') }
-        it { expect(page).to have_content('Newsletter was successfully updated.') }
+        it { expect(page).to have_text('Updated Title') }
+        it { expect(page).to have_text('Newsletter was successfully updated.') }
       end
     end
 
@@ -108,8 +108,8 @@ RSpec.describe 'Admin newsletters', type: :system do
       end
 
       it 'removes the newsletter' do
-        expect(page).to have_content('Newsletter was successfully destroyed.')
-        expect(page).not_to have_content('Delete Me')
+        expect(page).to have_text('Newsletter was successfully destroyed.')
+        expect(page).to have_no_text('Delete Me')
       end
     end
   end

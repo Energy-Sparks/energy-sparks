@@ -50,7 +50,7 @@ describe CustomisedChartConfig do
     it 'converts the mpan_mprn to an integer' do
       expect(
         CustomisedChartConfig.new({}).customise({ mpan_mprn: '12345' })
-      ).to eq({ meter_definition: 12345 })
+      ).to eq({ meter_definition: 12_345 })
     end
   end
 

@@ -21,7 +21,7 @@ describe EnergyTariff do
       energy_tariff_prices: energy_tariff_prices,
       energy_tariff_charges: energy_tariff_charges,
       meters: meters
-      )
+    )
   end
 
   context 'validations' do
@@ -155,7 +155,7 @@ describe EnergyTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:name]).to eq('My First Tariff')
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
-      expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(:"5%")
+      expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(:'5%')
       expect(meter_attribute[:accounting_tariff_generic][0][:tariff_holder]).to eq :school
       expect(meter_attribute[:accounting_tariff_generic][0][:created_at].iso8601).to eq energy_tariff.created_at.to_datetime.iso8601
     end
@@ -340,15 +340,15 @@ describe EnergyTariff do
           end
 
           it 'includes the charges' do
-            expect(attributes[:rates][:agreed_availability_charge]).to eq({ :per => 'kva', :rate => '6.78' })
-            expect(attributes[:rates][:excess_availability_charge]).to eq({ :per => 'kva', :rate => '6.78' })
+            expect(attributes[:rates][:agreed_availability_charge]).to eq({ per: 'kva', rate: '6.78' })
+            expect(attributes[:rates][:excess_availability_charge]).to eq({ per: 'kva', rate: '6.78' })
           end
         end
       end
 
       it 'includes standing charges' do
         rates = attributes[:rates]
-        expect(rates[:fixed_charge]).to eq({ :per => 'month', :rate => '4.56' })
+        expect(rates[:fixed_charge]).to eq({ per: 'month', rate: '4.56' })
       end
 
       it 'includes rates with adjusted end times' do
@@ -367,46 +367,49 @@ describe EnergyTariff do
 
   describe '#for_schools_in_group' do
     let!(:school_group)     { create(:school_group) }
-    let!(:school)           { create(:school, school_group: school_group)}
-    let!(:energy_tariff)    { create(:energy_tariff, tariff_holder: school)}
-    let!(:energy_tariff_2)  { create(:energy_tariff, tariff_holder: school, enabled: false)}
-    let!(:energy_tariff_3)  { create(:energy_tariff)}
-    let!(:energy_tariff_4)  { create(:energy_tariff, tariff_holder: school_group)}
+    let!(:school)           { create(:school, school_group: school_group) }
+    let!(:energy_tariff)    { create(:energy_tariff, tariff_holder: school) }
+    let!(:energy_tariff_2)  { create(:energy_tariff, tariff_holder: school, enabled: false) }
+    let!(:energy_tariff_3)  { create(:energy_tariff) }
+    let!(:energy_tariff_4)  { create(:energy_tariff, tariff_holder: school_group) }
     let!(:remove_school_tariff) do
       removed_school = create(:school, school_group: school_group, active: false)
       create(:energy_tariff, tariff_holder: removed_school)
     end
 
     it 'returns expected schools' do
-      expect(EnergyTariff.for_schools_in_group(school.school_group)).to match_array([energy_tariff])
+      expect(EnergyTariff.for_schools_in_group(school.school_group)).to contain_exactly(energy_tariff)
     end
   end
 
   describe '#count_schools_with_tariff_by_group' do
-    let!(:school)           { create(:school, school_group: create(:school_group))}
-    let!(:energy_tariff)    { create(:energy_tariff, tariff_holder: school)}
-    let!(:energy_tariff_2)  { create(:energy_tariff)}
+    let!(:school)           { create(:school, school_group: create(:school_group)) }
+    let!(:energy_tariff)    { create(:energy_tariff, tariff_holder: school) }
+    let!(:energy_tariff_2)  { create(:energy_tariff) }
 
     it 'returns expected count' do
       expect(EnergyTariff.count_schools_with_tariff_by_group(school.school_group)).to eq 1
     end
   end
 
-  describe '#count_by_school_group' do
-    let!(:school_group_1)     { create(:school_group) }
-    let!(:school_group_2)     { create(:school_group) }
-    let!(:school_group_3)     { create(:school_group) }
+  describe '#count_by_active_school_group' do
+    let!(:school_group_1)     { create(:school_group, :with_active_schools) }
+    let!(:school_group_2)     { create(:school_group, :with_active_schools) }
+    let!(:school_group_3)     { create(:school_group, :with_active_schools) }
+    let!(:school_group_4)     { create(:school_group) }
 
-    let!(:energy_tariff)      { create(:energy_tariff, tariff_holder: school_group_1)}
-    let!(:energy_tariff_2)    { create(:energy_tariff, tariff_holder: school_group_2)}
-    let!(:energy_tariff_3)    { create(:energy_tariff, tariff_holder: school_group_2)}
+    let!(:energy_tariff)      { create(:energy_tariff, tariff_holder: school_group_1) }
+    let!(:energy_tariff_2)    { create(:energy_tariff, tariff_holder: school_group_2) }
+    let!(:energy_tariff_3)    { create(:energy_tariff, tariff_holder: school_group_2) }
+    let!(:energy_tariff_4)    { create(:energy_tariff, tariff_holder: school_group_4) }
 
-    let(:counts)              { EnergyTariff.count_by_school_group }
+    let(:counts)              { EnergyTariff.count_by_active_school_group }
 
     it 'returns expected counts' do
       expect(counts[school_group_1.slug]).to eq 1
       expect(counts[school_group_2.slug]).to eq 2
       expect(counts[school_group_3.slug]).to be_nil
+      expect(counts[school_group_4.slug]).to be_nil
     end
   end
 

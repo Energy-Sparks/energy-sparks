@@ -1,5 +1,7 @@
-<%= content_for :page_title, t('school_groups.secr.title') %>
-<h1><%= t('school_groups.secr.title') %></h1>
+<%= render 'admin/shared/dashboard_message', messageable: @school_group %>
+
+<% content_for :header_title, "#{@school_group.name} - #{t('school_groups.secr.title')}" %>
+
 <%= render TabsComponent.new do |component| %>
   <% component.with_tab(name: :usage, label: t('school_groups.secr.tabs.usage')) do %>
     <%= t('school_groups.secr.usage.purpose_of_this_tool_html') %>
@@ -32,17 +34,17 @@
           active_schools: schools.length,
           gas_meters: meters.gas.count,
           electricity_meters: meters.electricity.count,
-          metered_solar_schools: (MeterAttribute.metered_solar.pluck(:school_id) & schools).length,
-          estimated_solar_schools: (MeterAttribute.solar_pv.pluck(:school_id) & schools).length,
+          metered_solar_schools: (Report::SolarMeter.metered_school_ids & schools).length,
+          estimated_solar_schools: (Report::SolarMeter.modelled_school_ids & schools).length,
           number_of_pupils:) %>
     <%= t('school_groups.secr.data.carbon_emission_factors_html') %>
     <h2><%= t('school_groups.secr.data.downloads.title') %></h2>
     <p><%= t('school_groups.secr.data.downloads.introduction') %></p>
     <ul>
-      <% types = %w[electricity gas self export]
-         years = @last_two_academic_year_periods.map { | date| "#{date[0].year}/#{(date[0].year + 1).to_s.last(2)}" }
-         years.each_with_index do |year, i|
-           types.each do |type| %>
+      <% types = %w[electricity gas self export] %>
+      <% years = @last_two_academic_year_periods.map { |date| "#{date[0].year}/#{(date[0].year + 1).to_s.last(2)}" } %>
+      <% years.each_with_index do |year, i| %>
+        <% types.each do |type| %>
           <% csv = "#{type}#{i.zero? ? '_previous' : ''}" %>
           <%# i18n-tasks-use t('school_groups.secr.data.downloads.electricity') %>
           <%# i18n-tasks-use t('school_groups.secr.data.downloads.gas') %>

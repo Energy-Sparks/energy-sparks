@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe Amr::DataFeedUpserter do
-  subject(:service) { described_class.new(amr_data_feed_config, amr_data_feed_import_log, array_of_readings)}
+  subject(:service) { described_class.new(amr_data_feed_config, amr_data_feed_import_log, array_of_readings) }
 
   let!(:meter) { create(:electricity_meter) }
   let!(:amr_data_feed_config) { create(:amr_data_feed_config) }
-  let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config)}
+  let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config) }
   let(:array_of_readings) { [] }
 
   def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'))
@@ -93,9 +93,9 @@ describe Amr::DataFeedUpserter do
     context 'with data for same meter but different date formats' do
       let!(:todays_reading) do
         create(:amr_data_feed_reading,
-        meter: meter,
-        reading_date: Time.zone.today.strftime('%d %b %Y %H:%M'),
-        readings: Array.new(48, '2.0'))
+               meter: meter,
+               reading_date: Time.zone.today.strftime('%d %b %Y %H:%M'),
+               readings: Array.new(48, '2.0'))
       end
 
       let(:array_of_readings) do

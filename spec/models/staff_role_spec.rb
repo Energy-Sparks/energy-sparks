@@ -31,7 +31,7 @@ describe StaffRole, type: :model do
             'Rheolwr busnes',
             'Rhiant neu wirfoddolwr'
           ]
-          )
+        )
       end
       I18n.with_locale(:en) do
         expect(StaffRole.translated_names_and_ids.map(&:first)).to eq(staff_roles)
@@ -45,7 +45,7 @@ describe StaffRole, type: :model do
     it_behaves_like 'a MailchimpUpdateable' do
       let(:mailchimp_field_changes) do
         {
-          title: 'New',
+          title: 'New'
         }
       end
     end

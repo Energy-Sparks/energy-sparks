@@ -1,0 +1,41 @@
+<%= render Layout::GridComponent.new(
+      id: 'notes',
+      cols: 2,
+      classes: 'pt-2 scrollable-title'
+    ) do |grid| %>
+  <%= grid.with_header(level: 4, title: impact_t('notes.title')) %>
+  <%= grid.with_block %>
+  <%= grid.with_paragraph(classes: 'small') do %>
+    <%= impact_t('notes.data_updated', date: @run.run_date.to_fs(:es_long)) %>
+  <% end %>
+<% end %>
+<%= render Layout::GridComponent.new(
+      id: 'notes-content',
+      cols: 2,
+      classes: 'mb-4'
+    ) do |grid| %>
+  <%= grid.with_block do %>
+    <p class='small'>
+      <%= impact_t('notes.reporting_basis',
+                   start_date: @run.start_date.to_fs(:es_long),
+                   end_date: @run.end_date.to_fs(:es_long)) %>
+    </p>
+    <p class='small'>
+      <%= impact_t('notes.comparisons_basis',
+                   comparison_start: @run.comparison_start_date.to_fs(:es_long),
+                   comparison_end: @run.comparison_end_date.to_fs(:es_long)) %>
+    </p>
+    <p class='small'>
+      <%= impact_t('notes.schools_with_data',
+                   count: run.overview(:data_visible_schools).value) %>
+    </p>
+    <p class='small'><%= impact_t('notes.other_analysis') %></p>
+    <p class='small'><%= impact_t('notes.other_metrics') %></p>
+  <% end %>
+  <%= grid.with_block do %>
+    <p class='small'><%= impact_t('notes.cost_savings') %></p>
+    <p class='small'><%= impact_t('notes.potential_savings') %></p>
+    <p class='small'><%= impact_t('notes.coverage') %></p>
+    <p class='small'><%= impact_t('notes.pupil_numbers') %></p>
+  <% end %>
+<% end %>

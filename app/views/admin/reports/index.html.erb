@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col">
-    <h3>Onboarding & Funding</h3>
+    <h3>Onboarding &amp; Funding</h3>
     <ul>
       <li><%= link_to 'Consents Granted', admin_consent_grants_path %></li>
       <li><%= link_to 'Funder allocation report', admin_reports_funder_allocations_path %></li>
@@ -12,20 +12,21 @@
       <li><%= link_to 'Schools removed', admin_schools_removals_path %></li>
     </ul>
 
-    <h3>Users & Engagement</h3>
+    <h3>Users &amp; Engagement</h3>
     <ul>
       <li><%= link_to 'Engaged Groups', admin_reports_engaged_groups_path %></li>
       <li><%= link_to 'Engaged Schools', admin_reports_engaged_schools_path %></li>
       <li><%= link_to 'User logins', admin_reports_user_logins_path %></li>
+      <li><%= link_to 'Limited users', admin_reports_limited_users_path %></li>
     </ul>
 
-    <h3>Activities & actions</h3>
-
+    <h3>Activities &amp; actions</h3>
     <ul>
       <li><%= link_to 'Activity type management report', admin_reports_activity_types_path %></li>
       <li><%= link_to 'Intervention type management report', admin_reports_intervention_types_path %></li>
       <li><%= link_to 'Recently recorded activities', admin_reports_activities_path %></li>
       <li><%= link_to 'Recently recorded interventions', admin_reports_interventions_path %></li>
+      <li><%= link_to 'Images', admin_reports_images_path %></li>
     </ul>
 
     <h3>Weekly Alerts</h3>
@@ -41,7 +42,6 @@
     </ul>
 
     <h3>Development</h3>
-
     <ul>
       <li><%= link_to 'School scenarios', admin_reports_school_scenarios_path %></li>
       <li><%= link_to 'Good Job Statistics', admin_reports_good_jobs_path %></li>
@@ -58,7 +58,8 @@
       <li><%= link_to 'Issues & Notes', admin_issues_path %></li>
       <li><%= link_to 'Recent audits', admin_reports_recent_audits_path %></li>
       <li><%= link_to 'School targets', admin_reports_school_targets_path %></li>
-      <li><%= link_to 'Solar panels', admin_reports_solar_panels_path %></li>
+      <li><%= link_to 'Pupil Number Updates', admin_reports_pupil_number_updates_path %></li>
+      <li><%= link_to 'Solar Installations', admin_reports_solar_installations_path %></li>
     </ul>
 
     <h3>Data Imports</h3>
@@ -79,7 +80,7 @@
       <li><%= link_to 'Unvalidated readings', admin_reports_unvalidated_readings_path %></li>
     </ul>
 
-    <h3>Meters & readings</h3>
+    <h3>Meters &amp; readings</h3>
     <ul>
       <li><%= link_to 'Meters for admin user', admin_reports_admin_user_meter_report_index_path %></li>
       <li><%= link_to 'Baseload anomalies', admin_reports_baseload_anomaly_index_path %></li>
@@ -88,6 +89,12 @@
       <li><%= link_to 'Manually read meters', admin_reports_manual_reads_path %></li>
       <li><%= link_to 'Perse meter summary', admin_reports_perse_meter_index_path %></li>
       <li><%= link_to 'PROB data report', admin_prob_data_reports_path %></li>
+      <li>Solar
+        <ul>
+          <li><%= link_to 'Metered', admin_reports_metered_solar_index_path %></li>
+          <li><%= link_to 'Modelled', admin_reports_modelled_solar_index_path %></li>
+        </ul>
+      </li>
     </ul>
 
     <h3>Tariffs</h3>
@@ -96,7 +103,6 @@
       <li><%= link_to 'DCC Tariff imports report', admin_reports_tariff_import_logs_path %></li>
       <li><%= link_to 'Energy Tariffs', admin_reports_energy_tariffs_path %></li>
     </ul>
-
   </div>
 </div>
 

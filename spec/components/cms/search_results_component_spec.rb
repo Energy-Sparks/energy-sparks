@@ -3,59 +3,58 @@
 require 'rails_helper'
 
 RSpec.describe Cms::SearchResultsComponent, :include_application_helper, :include_url_helpers, type: :component do
-  let(:id) { 'custom-id' }
-  let(:classes) { 'extra-classes' }
-  let(:search) { 'Section' }
-  let!(:section) { create(:section, published: true) }
-  let!(:unpublished) { create(:section, published: false) }
-
   let(:base_params) do
-    {
-      id: id,
-      classes: classes,
+    { id: 'custom-id',
+      classes: 'extra-classes',
       query: search,
-      results: Cms::Section.search(query: search, show_all: true)
-    }
+      results: Cms::Section.search(query: search, show_all: true) }
+  end
+  let(:search) { 'Section' }
+  let!(:sections) do
+    [create(:section, published: true),
+     create(:section, published: false),
+     create(:section, published: false, page: nil)]
   end
 
-  let(:html) do
-    render_inline(described_class.new(**params))
-  end
+  before { render_inline(described_class.new(**params)) }
 
   context 'with base params' do
     let(:params) { base_params }
+    let(:results) { page.all('.search-result') }
 
     it_behaves_like 'an application component' do
-      let(:expected_classes) { classes }
-      let(:expected_id) { id }
+      let(:expected_classes) { base_params[:classes] }
+      let(:expected_id) { base_params[:id] }
     end
 
-    it { expect(html).to have_content('Found 2 results for "Section"') }
+    it { expect(page).to have_text('Found 3 results for "Section"') }
+    it { expect(results.length).to eq(3) }
 
     it 'links to all sections' do
-      within('.search-results') do
-        cms_sections.each do |section|
-          expect(html).to have_link(section.title, href: page_path(section.page, anchor: section.slug))
-          expect(html).to have_content(section.page.category.title)
-        end
+      results[..1].zip(sections[..1]).each do |result, section|
+        expect(result).to have_link(section.title,
+                                    href: category_page_path(section.page.category, section.page, anchor: section.slug))
+        expect(result).to have_text(section.page.category.title)
       end
+      expect(results[2]).to have_link(sections[2].title, href: edit_admin_cms_section_path(sections[2].slug))
+      expect(results[2]).to have_text('No page')
     end
 
     it 'includes publication badge' do
-      within('#unpublished') do
-        expect(html).to have_content('Unpublished')
-      end
+      expect(results[0]).to have_no_text('Unpublished')
+      expect(results[1]).to have_text('Unpublished')
+      expect(results[2]).to have_text('Unpublished')
     end
 
     context 'when there are no results' do
-      let(:search) { 'Lorem ipsum'}
+      let(:search) { 'Lorem ipsum' }
+
+      it { expect(page).to have_text('Found no results') }
 
       it 'includes additional links' do
-        within('.search_results') do
-          expect(page).to have_link(href: categories_path)
-          expect(page).to have_link(href: training_path)
-          expect(page).to have_link(href: contact_path)
-        end
+        expect(page).to have_link(href: categories_path)
+        expect(page).to have_link(href: training_path)
+        expect(page).to have_link(href: contact_path)
       end
     end
   end

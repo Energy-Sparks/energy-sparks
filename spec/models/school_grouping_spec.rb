@@ -182,7 +182,8 @@ describe SchoolGrouping do
     end
 
     it 'is valid when using a different group' do
-      valid = build(:school_grouping, school:, school_group: create(:school_group, group_type: :project), role: 'project')
+      valid = build(:school_grouping, school:, school_group: create(:school_group, group_type: :project),
+                                      role: 'project')
       expect(valid).to be_valid
     end
 
@@ -286,7 +287,9 @@ describe SchoolGrouping do
 
     context 'when there is an existing grouping' do
       let!(:school_group) { create(:school_group, group_type: :local_authority_area, dfe_code: '383') }
-      let!(:school) { create(:school, :with_local_authority_area, establishment: create(:establishment, la_code: '383')) }
+      let!(:school) do
+        create(:school, :with_local_authority_area, establishment: create(:establishment, la_code: '383'))
+      end
 
       before do
         described_class.assign_area(school)

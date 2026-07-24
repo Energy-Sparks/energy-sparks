@@ -1,6 +1,5 @@
 require 'energy_sparks/csv_loader'
 
-
 describe EnergySparks::CsvLoader do
   it 'converts headers to symbols' do
     csv = <<~CSV
@@ -8,7 +7,7 @@ describe EnergySparks::CsvLoader do
       1, 2
     CSV
     results = EnergySparks::CsvLoader.from_text(csv)
-    expect(results.first.headers).to eq([:header_1, :header_2])
+    expect(results.first.headers).to eq(%i[header_1 header_2])
   end
 
   it 'removes lines with no values' do

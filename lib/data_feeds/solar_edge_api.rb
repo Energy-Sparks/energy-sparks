@@ -10,13 +10,15 @@ module DataFeeds
     class NotFound < StandardError; end
     class NotAllowed < StandardError; end
     class NotAuthorised < StandardError; end
+    class SiteStatusIssue < StandardError; end
 
     BASE_URL = 'https://monitoringapi.solaredge.com'
     # Maximum number of days that can be requested for 15 minute period data
     # API docs say "one month"
     MAX_WINDOW_SIZE = 25
-    def initialize(api_key = ENV.fetch('ENERGYSPARKSSOLAREDGEAPIKEY', nil))
+    def initialize(api_key = ENV.fetch('ENERGYSPARKSSOLAREDGEAPIKEY', nil), connection = nil)
       @api_key = api_key
+      @connection = connection || Faraday.new(BASE_URL, headers: default_headers)
     end
 
     def site_details
@@ -32,8 +34,8 @@ module DataFeeds
     end
 
     def site_start_end_dates(site_id)
-      dates = get_data("/site/#{site_id}/dataPeriod")
-      [Date.parse(dates['dataPeriod']['startDate']), Date.parse(dates['dataPeriod']['endDate'])]
+      period = get_data("/site/#{site_id}/dataPeriod").fetch('dataPeriod', {})
+      %w[startDate endDate].map { |key| Date.parse(period[key]) if period[key] }
     end
 
     # Used by application code
@@ -177,7 +179,10 @@ module DataFeeds
     end
 
     def dates(meter_id, start_date, end_date)
-      sd, ed = site_start_end_dates(meter_id) if start_date.nil? || end_date.nil?
+      sd, ed = site_start_end_dates(meter_id)
+
+      raise SiteStatusIssue, 'Site has incomplete Data Period. Is site still in pending status?' if sd.nil? || ed.nil?
+
       start_date = sd if start_date.nil?
       end_date   = ed if end_date.nil?
       [start_date, end_date]
@@ -187,8 +192,8 @@ module DataFeeds
       date.strftime('%Y-%m-%d 00:00:00')
     end
 
-    def get_data(path, params = default_params, headers = default_headers)
-      response = Faraday.get(BASE_URL + path, params, headers)
+    def get_data(path, params = default_params)
+      response = @connection.get(BASE_URL + path, params)
       handle_response(response)
     end
 

@@ -1,0 +1,20 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::Cards::FeatureComponent.new(theme: :pale,
+                                                 classes: 'p-4 rounded-lg mb-4',
+                                                 cell_classes: 'mb-4') do |feature| %>
+    <%= feature.with_header level: 2, title: impact_t('prompt.title') %>
+    <%= feature.with_block(classes: 'd-flex flex-column flex-xl-row align-items-xl-center') do %>
+      <div>
+        <%= impact_t(
+              'feature.description_html',
+              count: @run.visible_schools,
+              group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type')
+            ) %>
+      </div>
+
+      <%= link_to impact_t('prompt.view_report'),
+                  school_group_impact_index_path(@school_group),
+                  class: 'btn btn-primary mt-3 mt-xl-0 ml-xl-auto align-self-start text-nowrap mt-xl-auto' %>
+    <% end %>
+  <% end %>
+<% end %>

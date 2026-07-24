@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-require 'net/http'
-require 'date'
-require 'time'
-require 'amazing_print'
-require 'interpolate'
-require 'tzinfo'
-
 module DataFeeds
   class MeteoStat
     DAYS_PER_REQUEST = 30

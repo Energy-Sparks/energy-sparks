@@ -5,7 +5,7 @@ describe AmrDataFeedReading do
     let(:date_format)   { '%d-%m-%Y' }
     let(:reading_date)  { '28-06-2023' }
     let!(:config)      { create(:amr_data_feed_config, date_format: date_format) }
-    let!(:reading)     { create(:amr_data_feed_reading, reading_date: reading_date, amr_data_feed_config: config)}
+    let!(:reading)     { create(:amr_data_feed_reading, reading_date: reading_date, amr_data_feed_config: config) }
 
     let(:results) { AmrDataFeedReading.unvalidated_data_report_for_mpans([reading.mpan_mprn]) }
 
@@ -22,6 +22,7 @@ describe AmrDataFeedReading do
       FORMATS = {
         '%d/%m/%Y' => '28/06/2023',
         '%Y-%m-%d' => '2023-06-28',
+        '%Y-%m-%d ' => '2023-06-28 ',
         '%y-%m-%d' => '23-06-28',
         '%H:%M:%S %a %d/%m/%Y' => '14:00:00 Wed 28/06/2023',
         '%e %b %Y %H:%M:%S' => '28 Jun 2023 14:00:00',
@@ -45,7 +46,8 @@ describe AmrDataFeedReading do
         ['%Y-%m-%d', '28/06/2023'],
         ['%d-%m-%Y', '2023-06-28'],
         ['%e %b %Y %H:%M:%S', '2023-06-28'],
-        ['%d/%m/%Y %H:%M:%S', '2023-06-28']
+        ['%d/%m/%Y %H:%M:%S', '2023-06-28'],
+        ['%y-%m-%d', '28/06/2023']
       ].freeze
 
       FORMATS.each do |format|
@@ -96,15 +98,15 @@ describe AmrDataFeedReading do
     context 'with a manually uploaded csv' do
       let!(:amr_uploaded_reading) do
         create(:amr_uploaded_reading,
-          amr_data_feed_config: reading.amr_data_feed_config,
-          file_name: reading.amr_data_feed_import_log.file_name,
-          imported: true)
+               amr_data_feed_config: reading.amr_data_feed_config,
+               file_name: reading.amr_data_feed_import_log.file_name,
+               imported: true)
       end
 
       before do
         create_list(:amr_uploaded_reading, 1,
-          amr_data_feed_config: reading.amr_data_feed_config,
-          imported: false)
+                    amr_data_feed_config: reading.amr_data_feed_config,
+                    imported: false)
       end
 
       it 'joins to the uploaded readings' do
@@ -115,7 +117,8 @@ describe AmrDataFeedReading do
 
     context 'with several readings' do
       let!(:duplicate) do
-        create(:amr_data_feed_reading, mpan_mprn: mpan_mprn, reading_date: '25/12/2024', created_at: reading.created_at - 1.day)
+        create(:amr_data_feed_reading, mpan_mprn: mpan_mprn, reading_date: '25/12/2024',
+                                       created_at: reading.created_at - 1.day)
       end
 
       let!(:earlier) do

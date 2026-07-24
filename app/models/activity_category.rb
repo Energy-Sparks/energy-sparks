@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: activity_categories
 #
-#  created_at  :datetime         not null
+#  id          :bigint(8)        not null, primary key
 #  description :string
 #  featured    :boolean          default(FALSE)
 #  icon        :string           default("clipboard-check")
-#  id          :bigint(8)        not null, primary key
 #  live_data   :boolean          default(FALSE)
 #  name        :string
 #  pupil       :boolean          default(FALSE)
+#  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 
@@ -17,14 +19,16 @@ class ActivityCategory < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   include TranslatableAttachment
+  include TaskCategory
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }
 
   has_many :activity_types
+  alias tasks activity_types
+
   validates_presence_of :name
   validates_uniqueness_of :name
-
   t_has_one_attached :image
 
   scope :by_name, -> { i18n.order(name: :asc) }
@@ -33,6 +37,6 @@ class ActivityCategory < ApplicationRecord
   scope :live_data, -> { where(live_data: true) }
 
   def self.listed_with_activity_types
-    by_name.map {|category| [category, category.activity_types.custom_last.order(:name).to_a]}
+    by_name.map { |category| [category, category.activity_types.custom_last.order(:name).to_a] }
   end
 end

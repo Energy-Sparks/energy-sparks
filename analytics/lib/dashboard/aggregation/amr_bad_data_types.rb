@@ -102,9 +102,7 @@ class OneDayAMRReading
     'CAVG' => { name: 'calculated average school data' },
     'SOLN' => { name: 'Override night data with zero' }
   }.freeze
-
-  # allow access until front end changes made
-  # private_constant :AMR_TYPES
+  AMR_TYPE_SET = AMR_TYPES.keys.to_set.freeze
 
   # duplicate name to description: a bit of a fudge as the original design
   # was to make name a short description, but most end up being the same length

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'TransifexLoads', type: :system, include_application_helper: true do
+describe 'TransifexLoads', :include_application_helper, type: :system do
   let(:admin)                   { create(:admin) }
   let!(:transifex_load)         { create(:transifex_load, pulled: 6, pushed: 7) }
   let!(:transifex_load_error)   { create(:transifex_load_error) }
@@ -15,7 +15,7 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
   it 'has link to report' do
     expect(page).to have_link('Transifex Content Loads')
     click_on 'Transifex Content Loads'
-    expect(page).to have_content('Transifex Content Loads')
+    expect(page).to have_text('Transifex Content Loads')
   end
 
   context 'viewing report' do
@@ -24,7 +24,7 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
     end
 
     it 'shows reports' do
-      expect(page).to have_content(nice_dates(transifex_load.created_at))
+      expect(page).to have_text(nice_dates(transifex_load.created_at))
     end
 
     it 'links to reports' do
@@ -39,8 +39,8 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
     end
 
     it 'shows errors' do
-      expect(page).to have_content('1 error occured')
-      expect(page).to have_content('A problem occured')
+      expect(page).to have_text('1 error occured')
+      expect(page).to have_text('A problem occured')
     end
   end
 
@@ -50,9 +50,9 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
     end
 
     it 'shows a summary' do
-      expect(page).to have_content('pulled 6 resources')
-      expect(page).to have_content('pushed 7 resources')
-      expect(page).to have_content('0 errors occured')
+      expect(page).to have_text('pulled 6 resources')
+      expect(page).to have_text('pushed 7 resources')
+      expect(page).to have_text('0 errors occured')
     end
   end
 end

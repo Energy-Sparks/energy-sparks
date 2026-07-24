@@ -1,0 +1,6 @@
+<%= render PromptComponent.new(icon: 'share', status: :positive, style: local_assigns[:style]) do |prompt| %>
+  <% prompt.with_link do %>
+    <%= link_to t("tasks.completed.#{task_type}.view_link"), recording_path(recording) %>
+  <% end %>
+  <%= t('tasks.completed.share') %>
+<% end %>

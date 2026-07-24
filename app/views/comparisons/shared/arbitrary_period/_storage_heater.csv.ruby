@@ -9,13 +9,13 @@ CSV.generate do |csv|
       @include_previous_period_unadjusted && format_unit(result.storage_heater_previous_period_kwh_unadjusted, Float, true, :benchmark),
       format_unit(result.storage_heater_previous_period_kwh, Float, true, :benchmark),
       format_unit(result.storage_heater_current_period_kwh, Float, true, :benchmark),
-      format_unit(percent_change(result.storage_heater_previous_period_kwh, result.storage_heater_current_period_kwh) * 100, Float, true, :benchmark),
+      format_csv_percent_change(result.storage_heater_previous_period_kwh, result.storage_heater_current_period_kwh),
       format_unit(result.storage_heater_previous_period_co2, Float, true, :benchmark),
       format_unit(result.storage_heater_current_period_co2, Float, true, :benchmark),
-      format_unit(percent_change(result.storage_heater_previous_period_co2, result.storage_heater_current_period_co2) * 100, Float, true, :benchmark),
+      format_csv_percent_change(result.storage_heater_previous_period_co2, result.storage_heater_current_period_co2),
       format_unit(result.storage_heater_previous_period_gbp, Float, true, :benchmark),
       format_unit(result.storage_heater_current_period_gbp, Float, true, :benchmark),
-      format_unit(percent_change(result.storage_heater_previous_period_gbp, result.storage_heater_current_period_gbp) * 100, Float, true, :benchmark)
+      format_csv_percent_change(result.storage_heater_previous_period_gbp, result.storage_heater_current_period_gbp)
     ].select(&:itself)
   end
 end.html_safe

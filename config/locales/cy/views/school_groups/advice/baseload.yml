@@ -1,0 +1,47 @@
+cy:
+  school_groups:
+    advice_pages:
+      baseload:
+        analysis:
+          comparisons:
+            chart:
+              header: Mae'r siart ganlynol yn dangos cymhariaeth o'r llwyth sylfaenol fesul disgybl ar draws ysgolion yn y grŵp hwn. Gall helpu i nodi pa ysgolion sy'n defnyddio'r mwyaf o drydan i gadw offer yn rhedeg.
+              subtitle: Llwyth sylfaenol fesul disgybl (W) yn seiliedig ar y 12 mis diweddaraf o ddata ar gyfer pob ysgol
+              title: Llwyth sylfaenol fesul disgybl
+            table:
+              header_html: |-
+                <p>
+                Mae'r tabl canlynol yn rhoi dadansoddiad mwy manwl o'r llwyth sylfaenol fesul disgybl ar gyfer pob ysgol. Mae'r dadansoddiad yn seiliedig ar y 12 mis diweddaraf o ddata ar gyfer pob ysgol.
+                </p>
+                <p>
+                Mae'r tabl yn rhoi syniad o gostau defnyddio trydan i gadw offer yn rhedeg drwy'r amser yn seiliedig ar y tariffau cyfredol ar gyfer pob ysgol.
+                Mae arbedion yn seiliedig ar amcangyfrif y costau is pe bai pob ysgol yn lleihau ei llwyth sylfaenol i gyd-fynd â'r ysgolion sy'n perfformio orau ar Sbarcynni, gan addasu ar gyfer niferoedd disgyblion.
+                </p>
+            title: Cymhariaeth ysgolion
+          potential_savings:
+            table:
+              header_html: |-
+                <p>
+                Mae ysgolion yn cael eu meincnodi ag ysgolion cymharol yn seiliedig ar sawl nodwedd allweddol gan gynnwys arwynebedd llawr,
+                lleoliad, niferoedd disgyblion a math.
+                </p>
+                <p>
+                Mae'r tabl canlynol yn crynhoi sut rydym wedi meincnodi pob ysgol yn eich grŵp yn ôl ei
+                llwyth sylfaenol.
+                <p>
+                Mae'r arbedion ar gyfer pob ysgol yn seiliedig ar leihau eu defnydd i gyd-fynd â rhai <a data-toggle="modal" data-target="#%{modal_id}" data-remote="false" href="#">ysgol Enghreifftiol
+                â nodweddion tebyg.</a>.
+                </p>
+            title: Arbedion posib
+          summary: Mae'r dudalen hon yn rhoi trosolwg o'r llwyth sylfaenol ar draws yr ysgolion yn eich grŵp
+        insights:
+          current_baseload:
+            summary_html: |-
+              <p>
+              Mae'r tabl canlynol yn crynhoi'r llwyth sylfaenol cyfredol fesul disgybl a'r llwyth sylfaenol cyfartalog dros y 12 mis diwethaf ar gyfer pob ysgol.
+              <p>
+              <p>
+              Mae <a href="%{link}">tabl a siart mwy manwl</a> ar gael hefyd.
+              </p>
+            title: Llwyth sylfaenol presennol
+        page_title: Dadansoddiad llwyth sylfaenol

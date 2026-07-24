@@ -2,9 +2,12 @@
   <h2>Cached site information</h2>
 
   <p>
-    The following is a summary of the site description. It was last refreshed on
-    <%= nice_date_times(@installation.updated_at) %>. Edit and then save the site to update this cached copy.
-    Or click the links below to view live (raw) data.
+    The following is a cached summary of the site description. It was last refreshed on
+    <%= nice_date_times(@installation.updated_at) %>.
+  </p>
+  <p>
+    <%= link_to 'Edit and then save the site', edit_school_solar_edge_installation_path(@school, @installation) %>
+    to update this cached copy. Or click the links below to view live (raw) data.
   </p>
 
   <table class="table">

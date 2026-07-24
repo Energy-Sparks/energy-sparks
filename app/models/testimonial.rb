@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: testimonials
 #
-#  active        :boolean          default(FALSE), not null
-#  case_study_id :bigint(8)
-#  category      :integer          default("default"), not null
-#  created_at    :datetime         not null
 #  id            :bigint(8)        not null, primary key
+#  active        :boolean          default(FALSE), not null
+#  category      :integer          default("default"), not null
 #  name          :string
 #  organisation  :string
+#  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  case_study_id :bigint(8)
 #
 # Indexes
 #
@@ -20,6 +22,19 @@ class Testimonial < ApplicationRecord
   include TransifexSerialisable
 
   belongs_to :case_study, optional: true
+
+  has_many :impact_report_organisation_statements_as_first,
+           class_name: 'ImpactReport::OrganisationStatement',
+           foreign_key: :first_testimonial_id,
+           dependent: :restrict_with_error,
+           inverse_of: :first_testimonial
+
+  has_many :impact_report_organisation_statements_as_second,
+           class_name: 'ImpactReport::OrganisationStatement',
+           foreign_key: :second_testimonial_id,
+           dependent: :restrict_with_error,
+           inverse_of: :second_testimonial
+
   has_one_attached :image
 
   translates :title, type: :string, fallbacks: { cy: :en }
@@ -31,9 +46,15 @@ class Testimonial < ApplicationRecord
   validates :image, :title_en, :name, :quote_en, :organisation, :category, presence: true
 
   validates :image,
-              content_type: ['image/png', 'image/jpeg'],
-              dimension: { width: { min: 640, max: 1400 } } # betwen half and full container width size to be conservative
+            content_type: ['image/png', 'image/jpeg'],
+            dimension: { width: { min: 640, max: 1400 } } # betwen half and full container width size to be conservative
 
   scope :active, -> { where(active: true) }
+  scope :by_title, lambda {
+    i18n.joins(:string_translations)
+        .where(mobility_string_translations: { key: 'title', locale: I18n.locale })
+        .order('mobility_string_translations.value ASC')
+  }
+
   scope :tx_resources, -> { active.order(:id) }
 end

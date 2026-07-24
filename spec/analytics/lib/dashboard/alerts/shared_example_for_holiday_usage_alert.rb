@@ -2,6 +2,7 @@
 
 RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
   let(:asof_date) { Date.new(2023, 12, 23) }
+  let(:variables) { alert.variables_for_reporting }
 
   include_context 'with today'
 
@@ -53,6 +54,22 @@ RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
 
       it 'calculates rating' do
         expect(alert.rating).to eq(0.0)
+      end
+
+      it 'has the correct summary' do
+        expected = if alert.fuel_type == :electricity
+                     'Your electricity usage during Xmas holiday up until Friday 22 Dec 2023 ' \
+                       'has cost £340.By the end of the holiday this will cost you £820.'
+                   else
+                     "Your #{alert.fuel_type == :gas ? 'gas boiler' : 'storage heaters'} has been left on over the " \
+                       "Xmas holiday. Up\nuntil Friday 22 Dec 2023 this has cost &pound;340. With a projected cost " \
+                       "of &pound;820 by the end of the holiday.\n"
+                   end
+        expect(variables[:summary]).to eq(expected)
+      end
+
+      it 'has the correct timescale' do
+        expect(variables[:timescale]).to eq('this holiday')
       end
 
       it 'calculates expected usage' do

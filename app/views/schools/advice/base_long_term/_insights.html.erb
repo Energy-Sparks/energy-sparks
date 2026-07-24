@@ -1,12 +1,13 @@
-  <%= render 'insights_intro', school: @school %>
-  <%= render 'current_usage',
-             school: @school,
-             analysis_dates: @analysis_dates,
-             dashboard_alerts: @dashboard_alerts,
-             fuel_type: @fuel_type,
-             usage_service: @usage_service %>
-  <%= render 'comparison',
-             school: @school,
-             benchmarked_usage: @benchmarked_usage,
-             analysis_dates: @analysis_dates,
-             fuel_type: @fuel_type %>
+<%= render 'insights_intro', school: @school %>
+<%= render 'current_usage',
+           school: @school,
+           analysis_dates: @analysis_dates,
+           dashboard_alerts: @dashboard_alerts,
+           fuel_type: @fuel_type,
+           usage_service: @usage_service,
+           consumption_by_month: @consumption_by_month %>
+<%= render 'comparison',
+           school: @school,
+           benchmarked_usage: @benchmarked_usage,
+           analysis_dates: @analysis_dates,
+           fuel_type: @fuel_type %>

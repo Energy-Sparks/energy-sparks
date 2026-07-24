@@ -121,7 +121,8 @@ RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
 
         context 'when there are onboarding events' do
           before do
-            create(:school_onboarding, :with_events, school:, school_group:, event_names: [:onboarding_complete, :onboarding_data_enabled])
+            create(:school_onboarding, :with_events, school:, school_group:,
+                                                     event_names: %i[onboarding_complete onboarding_data_enabled])
           end
 
           it 'produces expected rows' do

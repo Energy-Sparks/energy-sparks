@@ -2,9 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'heating control advice page', type: :system do
   let(:key) { 'heating_control' }
-  let(:expected_page_title) { 'Heating control analysis' }
-  include_context 'gas advice page'
-
   let(:enough_data) { true }
   let(:enough_data_for_seasonal_analysis) { true }
   let(:average_start_time_last_week) { TimeOfDay.new(4, 0) }
@@ -23,7 +20,6 @@ RSpec.describe 'heating control advice page', type: :system do
   let(:last_week_start_times) do
     Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: average_start_time_last_week)
   end
-
   let(:seasonal_analysis) do
     OpenStruct.new(
       heating_on_in_warm_weather_days: 42,
@@ -31,6 +27,9 @@ RSpec.describe 'heating control advice page', type: :system do
       estimated_savings: CombinedUsageMetric.new(kwh: 500, £: 500, co2: 200)
     )
   end
+  let(:expected_page_title) { 'Heating control analysis' }
+
+  include_context 'gas advice page'
 
   it_behaves_like 'it responds to HEAD requests'
 
@@ -67,10 +66,10 @@ RSpec.describe 'heating control advice page', type: :system do
 
       it_behaves_like 'an advice page tab', tab: 'Insights'
       it 'includes expected sections' do
-        expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.title'))
-        expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.comparison.title'))
-        expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.controls.title'))
-        expect(page).to have_content <<~CONTENT
+        expect(page).to have_text(I18n.t('advice_pages.heating_control.insights.title'))
+        expect(page).to have_text(I18n.t('advice_pages.heating_control.insights.comparison.title'))
+        expect(page).to have_text(I18n.t('advice_pages.heating_control.insights.controls.title'))
+        expect(page).to have_text <<~CONTENT
           #{I18n.t('advice_pages.heating_control.insights.controls.title')}
           Back to top
           AlertHeatingSensitivityAdvice
@@ -78,21 +77,21 @@ RSpec.describe 'heating control advice page', type: :system do
           AlertImpendingHoliday
           #{I18n.t('advice_pages.heating_control.holiday_notice')}
         CONTENT
-        expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.warm_weather.title'))
+        expect(page).to have_text(I18n.t('advice_pages.heating_control.insights.warm_weather.title'))
       end
 
       it 'includes expected data' do
-        expect(page).to have_content('the average start time for your heating')
-        expect(page).to have_content('04:00')
-        expect(page).to have_content('£1,234')
-        expect(page).to have_content('42')
+        expect(page).to have_text('the average start time for your heating')
+        expect(page).to have_text('04:00')
+        expect(page).to have_text('£1,234')
+        expect(page).to have_text('42')
       end
 
       context 'and there\'s is no average start time' do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
 
         it 'does not show that text' do
-          expect(page).to have_no_content('the average start time for your heating')
+          expect(page).to have_no_text('the average start time for your heating')
         end
       end
     end
@@ -108,16 +107,16 @@ RSpec.describe 'heating control advice page', type: :system do
       it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'includes expected sections' do
-        expect(page).to have_content <<~CONTENT
+        expect(page).to have_text <<~CONTENT
           #{I18n.t('advice_pages.heating_control.analysis.heating_timings.title')}
           Back to top
           AlertGasHeatingHotWaterOnDuringHoliday
           AlertImpendingHoliday
           #{I18n.t('advice_pages.heating_control.holiday_notice')}
         CONTENT
-        expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.school_day_heating.title'))
-        expect(page).to have_content(I18n.t('advice_pages.heating_control.analysis.seasonal_control.title'))
-        expect(page).to have_no_content(I18n.t('advice_pages.heating_control.analysis.meter_breakdown.title'))
+        expect(page).to have_text(I18n.t('advice_pages.heating_control.analysis.school_day_heating.title'))
+        expect(page).to have_text(I18n.t('advice_pages.heating_control.analysis.seasonal_control.title'))
+        expect(page).to have_no_text(I18n.t('advice_pages.heating_control.analysis.meter_breakdown.title'))
       end
 
       it 'includes expected charts' do
@@ -128,11 +127,11 @@ RSpec.describe 'heating control advice page', type: :system do
       it 'includes expected data in table' do
         expect(page).to have_css('#heating-start-times')
         within('#heating-start-times') do
-          expect(page).to have_content(date.to_fs(:es_full))
-          expect(page).to have_content('12')
-          expect(page).to have_content('05:00')
-          expect(page).to have_content('06:00')
-          expect(page).to have_content('too early')
+          expect(page).to have_text(date.to_fs(:es_full))
+          expect(page).to have_text('12')
+          expect(page).to have_text('05:00')
+          expect(page).to have_text('06:00')
+          expect(page).to have_text('too early')
         end
       end
 
@@ -150,25 +149,25 @@ RSpec.describe 'heating control advice page', type: :system do
         it 'includes expected data in table' do
           expect(page).to have_css('#heating-start-times')
           within('#heating-start-times') do
-            expect(page).to have_content(date.to_fs(:es_full))
-            expect(page).to have_content('4')
-            expect(page).to have_content('05:00')
-            expect(page).to have_content('-')
-            expect(page).to have_content('on time')
+            expect(page).to have_text(date.to_fs(:es_full))
+            expect(page).to have_text('4')
+            expect(page).to have_text('05:00')
+            expect(page).to have_text('-')
+            expect(page).to have_text('on time')
           end
         end
       end
 
       it 'includes expected data in seasonal analysis' do
-        expect(page).to have_content('£1,234')
-        expect(page).to have_content('42')
+        expect(page).to have_text('£1,234')
+        expect(page).to have_text('42')
       end
 
       context 'and theres is no average start time' do
         let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
 
         it 'does not show the table' do
-          expect(page).to have_no_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html'))
+          expect(page).to have_no_text(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html'))
           expect(page).to have_no_css('#heating-start-times')
         end
       end
@@ -183,7 +182,7 @@ RSpec.describe 'heating control advice page', type: :system do
     context 'with not enough data' do
       let(:enough_data) { false }
 
-      it { expect(page).to have_content(I18n.t('advice_pages.heating_control.not_enough_data.title')) }
+      it { expect(page).to have_text(I18n.t('advice_pages.heating_control.not_enough_data.title')) }
     end
   end
 end

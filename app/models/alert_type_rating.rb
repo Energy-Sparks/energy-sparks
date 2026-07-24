@@ -2,13 +2,11 @@
 #
 # Table name: alert_type_ratings
 #
-#  alert_type_id                     :bigint(8)        not null
-#  created_at                        :datetime         not null
+#  id                                :bigint(8)        not null, primary key
 #  description                       :string           not null
 #  email_active                      :boolean          default(FALSE)
 #  find_out_more_active              :boolean          default(FALSE)
 #  group_dashboard_alert_active      :boolean          default(FALSE)
-#  id                                :bigint(8)        not null, primary key
 #  management_dashboard_alert_active :boolean          default(FALSE)
 #  management_dashboard_table_active :boolean          default(FALSE)
 #  management_priorities_active      :boolean          default(FALSE)
@@ -17,7 +15,9 @@
 #  rating_from                       :decimal(, )      not null
 #  rating_to                         :decimal(, )      not null
 #  sms_active                        :boolean          default(FALSE)
+#  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
+#  alert_type_id                     :bigint(8)        not null
 #
 # Indexes
 #

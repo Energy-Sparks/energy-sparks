@@ -7,7 +7,7 @@ RSpec.describe DashboardChartsComponent, type: :component do
     described_class.new(**params)
   end
 
-  let(:id) { 'custom-id'}
+  let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:school) { create(:school) }
 
@@ -21,10 +21,10 @@ RSpec.describe DashboardChartsComponent, type: :component do
 
   shared_context 'with chart configuration' do
     let(:dashboard_charts) do
-      [:management_dashboard_group_by_week_electricity,
-       :management_dashboard_group_by_week_gas,
-       :management_dashboard_group_by_week_storage_heater,
-       :management_dashboard_group_by_month_solar_pv]
+      %i[management_dashboard_group_by_week_electricity
+         management_dashboard_group_by_week_gas
+         management_dashboard_group_by_week_storage_heater
+         management_dashboard_group_by_month_solar_pv]
     end
 
     before do

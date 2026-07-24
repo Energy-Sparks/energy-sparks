@@ -2,28 +2,25 @@
 #
 # Table name: schools
 #
+#  id                                      :bigint(8)        not null, primary key
 #  activation_date                         :date
 #  active                                  :boolean          default(TRUE)
 #  address                                 :text
 #  archived_date                           :date
 #  bill_requested                          :boolean          default(FALSE)
 #  bill_requested_at                       :datetime
-#  calendar_id                             :bigint(8)
 #  chart_preference                        :integer          default("default"), not null
 #  cooks_dinners_for_other_schools         :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count   :integer
 #  cooks_dinners_onsite                    :boolean          default(FALSE), not null
 #  country                                 :integer          default("england"), not null
-#  created_at                              :datetime         not null
-#  dark_sky_area_id                        :bigint(8)
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
 #  enable_targets_feature                  :boolean          default(TRUE)
-#  establishment_id                        :bigint(8)
 #  floor_area                              :decimal(, )
 #  full_school                             :boolean          default(TRUE)
-#  funder_id                               :bigint(8)
 #  funding_status                          :integer          default("state_school"), not null
+#  has_battery                             :boolean          default(FALSE), not null
 #  has_swimming_pool                       :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump            :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump_notes      :text
@@ -58,16 +55,12 @@
 #  heating_water_source_heat_pump          :boolean          default(FALSE), not null
 #  heating_water_source_heat_pump_notes    :text
 #  heating_water_source_heat_pump_percent  :integer          default(0)
-#  id                                      :bigint(8)        not null, primary key
 #  indicated_has_solar_panels              :boolean          default(FALSE), not null
 #  indicated_has_storage_heaters           :boolean          default(FALSE)
 #  latitude                                :decimal(10, 6)
 #  level                                   :integer          default(0)
-#  local_authority_area_id                 :bigint(8)
-#  local_distribution_zone_id              :bigint(8)
 #  longitude                               :decimal(10, 6)
 #  mailchimp_fields_changed_at             :datetime
-#  met_office_area_id                      :bigint(8)
 #  name                                    :string
 #  number_of_pupils                        :integer
 #  percentage_free_school_meals            :integer
@@ -76,21 +69,29 @@
 #  public                                  :boolean          default(TRUE)
 #  region                                  :integer
 #  removal_date                            :date
-#  school_group_cluster_id                 :bigint(8)
-#  school_group_id                         :bigint(8)
+#  renewal_behaviour                       :enum             default("renew"), not null
 #  school_type                             :integer          not null
-#  scoreboard_id                           :bigint(8)
 #  serves_dinners                          :boolean          default(FALSE), not null
 #  slug                                    :string
-#  solar_pv_tuos_area_id                   :bigint(8)
-#  temperature_area_id                     :bigint(8)
-#  template_calendar_id                    :integer
-#  updated_at                              :datetime         not null
 #  urn                                     :integer          not null
 #  validation_cache_key                    :string           default("initial")
 #  visible                                 :boolean          default(FALSE)
-#  weather_station_id                      :bigint(8)
 #  website                                 :string
+#  created_at                              :datetime         not null
+#  updated_at                              :datetime         not null
+#  calendar_id                             :bigint(8)
+#  dark_sky_area_id                        :bigint(8)
+#  establishment_id                        :bigint(8)
+#  local_authority_area_id                 :bigint(8)
+#  local_distribution_zone_id              :bigint(8)
+#  met_office_area_id                      :bigint(8)
+#  school_group_cluster_id                 :bigint(8)
+#  school_group_id                         :bigint(8)
+#  scoreboard_id                           :bigint(8)
+#  solar_pv_tuos_area_id                   :bigint(8)
+#  temperature_area_id                     :bigint(8)
+#  template_calendar_id                    :integer
+#  weather_station_id                      :bigint(8)
 #
 # Indexes
 #
@@ -122,8 +123,16 @@ class School < ApplicationRecord
   include Enums::DataSharing
   include Enums::SchoolType
   include AlphabeticalScopes
+  include Commercial::ContractHolder
+  include Commercial::LicenceHolder
+  include PgSearch::Model
 
-  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
+  pg_search_scope :search_by_name, against: :name,
+                                   using: {
+                                     tsearch: { prefix: true }
+                                   }
+
+  watch_mailchimp_fields :active, :country, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
@@ -202,8 +211,6 @@ class School < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
 
-  has_many :estimated_annual_consumptions
-
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
@@ -219,6 +226,7 @@ class School < ApplicationRecord
                                   attributes[:gas].blank? && attributes[:electricity].blank?
                                 },
                                 allow_destroy: true
+  has_many :regeneration_errors, dependent: :destroy
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
@@ -229,14 +237,13 @@ class School < ApplicationRecord
   belongs_to :weather_station, optional: true
 
   belongs_to :school_group, optional: true
-  delegate :default_issues_admin_user, to: :school_group
+  delegate :default_issues_admin_user, to: :school_group, allow_nil: true
 
   belongs_to :scoreboard, optional: true
   belongs_to :local_authority_area, optional: true
 
   belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
 
-  belongs_to :funder, optional: true
   belongs_to :local_distribution_zone, optional: true
 
   has_one :school_onboarding
@@ -247,6 +254,7 @@ class School < ApplicationRecord
   has_many :school_partners, -> { order(position: :asc) }
   has_many :partners, through: :school_partners
   accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
+  has_many :case_studies, as: :organisation, dependent: :nullify
 
   has_many :school_groupings, dependent: :destroy
   has_many :assigned_school_groups, through: :school_groupings, source: :school_group
@@ -277,6 +285,14 @@ class School < ApplicationRecord
   enum :region, { north_east: 0, north_west: 1, yorkshire_and_the_humber: 2, east_midlands: 3,
                   west_midlands: 4, east_of_england: 5, london: 6, south_east: 7, south_west: 8 }
 
+  RENEWAL_BEHAVIOUR = {
+    renew: 'renew',
+    archive: 'archive',
+    waitlist: 'waitlist'
+  }.freeze
+
+  enum :renewal_behaviour, RENEWAL_BEHAVIOUR
+
   # active flag is a soft-delete, those with a removal date are deleted, others
   # are archived, with chance of returning if we receive funding
   scope :active,              -> { where(active: true) }
@@ -291,34 +307,35 @@ class School < ApplicationRecord
   scope :without_scoreboard,  -> { active.where(scoreboard_id: nil) }
   scope :awaiting_activation, -> { active.where('visible = ? or data_enabled = ?', false, false) }
   scope :data_visible,        -> { data_enabled.visible }
-
   scope :with_config, -> { joins(:configuration) }
-
   scope :by_name,     -> { order(name: :asc) }
-
   scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
-
   scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id)) }
-
   scope :with_establishment, -> { where.not(establishment_id: nil) }
-
   # includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
   scope :with_recent_engagement,
         ->(range) { where(id: Observation.engagement.recorded_since(range).select(:school_id)) }
-
   # have recently run a transport survey
   scope :with_transport_survey, ->(range) { where(id: TransportSurvey.recently_added(range).select(:school_id)) }
-
   # have recently started a programme that isn't the default programme
   scope :joined_programme, ->(range) { where(id: Programme.recently_started_non_default(range).select(:school_id)) }
-
   # TODO: cluster users, not just those directly linked
   scope :with_recently_logged_in_users, ->(date) { where(id: User.recently_logged_in(date).select(:school_id)) }
-
-  scope :unfunded, -> { where(schools: { funder_id: nil }) }
-
-
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
+  scope :limited_users, lambda {
+    adult_users = User.where(role: [User.roles[:school_admin], User.roles[:staff]])
+                      .where.not(school_id: nil)
+                      .select('users.id AS user_id, users.school_id AS school_id')
+
+    cluster_users = User.joins('INNER JOIN cluster_schools_users ON cluster_schools_users.user_id = users.id')
+                        .where(role: [User.roles[:school_admin], User.roles[:staff]])
+                        .select('users.id AS user_id, cluster_schools_users.school_id AS school_id')
+
+    joins("LEFT JOIN (#{adult_users.to_sql} UNION #{cluster_users.to_sql}) AS adult_users ON adult_users.school_id = schools.id")
+      .group('schools.id')
+      .having('COUNT(DISTINCT adult_users.user_id) < 3')
+  }
+  scope :full_school, -> { where(full_school: true) }
 
   def self.with_energy_tariffs
     joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'")
@@ -540,15 +557,26 @@ class School < ApplicationRecord
   end
 
   delegate :school_admin, to: :users
-
   delegate :staff, to: :users
 
   def all_school_admins
-    school_admin + cluster_users
+    User.where(id: school_admin).or(
+      User.where(id: cluster_users)
+    )
+  end
+
+  def all_staff
+    User.where(id: staff).distinct
   end
 
   def all_adult_school_users
-    (all_school_admins + staff).uniq
+    User.where(id: all_school_admins).or(
+      User.where(id: staff)
+    ).distinct
+  end
+
+  def active_alert_contacts
+    all_adult_school_users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
   end
 
   def activation_users
@@ -649,10 +677,6 @@ class School < ApplicationRecord
     school_targets.by_start_date.expired[idx + 1]
   end
 
-  def has_expired_target_for_fuel_type?(fuel_type)
-    has_expired_target? && expired_target.try(fuel_type).present? && expired_target.saved_progress_report_for(fuel_type).present?
-  end
-
   def has_expired_target?
     expired_target.present?
   end
@@ -665,10 +689,6 @@ class School < ApplicationRecord
     school_onboarding && school_onboarding.has_event?(event_name)
   end
 
-  def suggest_annual_estimate?
-    estimated_annual_consumptions.any? || configuration.suggest_annual_estimate?
-  end
-
   def school_target_attributes
     # use the current target if we have one, otherwise the most current target
     # based on start date. So if target as expired, then progress pages still work
@@ -679,14 +699,6 @@ class School < ApplicationRecord
     else
       {}
     end
-  end
-
-  def latest_annual_estimate
-    estimated_annual_consumptions.order(created_at: :desc).first
-  end
-
-  def estimated_annual_consumption_meter_attributes
-    latest_annual_estimate.nil? ? {} : latest_annual_estimate.meter_attributes_by_meter_type
   end
 
   def school_group_pseudo_meter_attributes
@@ -736,11 +748,7 @@ class School < ApplicationRecord
   end
 
   def invalidate_cache_key
-    if Flipper.enabled?(:meter_collection_cache_delete_on_invalidate)
-      AggregateSchoolService.new(self).invalidate_cache
-    else
-      update_attribute(:validation_cache_key, SecureRandom.uuid)
-    end
+    AggregateSchoolService.new(self).invalidate_cache
   end
 
   def process_data!
@@ -774,6 +782,18 @@ class School < ApplicationRecord
 
   def community_use_times_to_analytics
     school_times.community_use.map(&:to_analytics)
+  end
+
+  def status_display
+    return { title: 'Deleted', classes: 'ms-1 badge rounded-pill text-bg-dark border border-pale' } if deleted?
+
+    return { title: 'Archived', classes: 'ms-1 badge rounded-pill text-bg-dark border border-pale' } if archived?
+
+    return { title: 'Data Visible', classes: 'ms-1 badge rounded-pill text-bg-success' } if data_visible?
+
+    return { title: 'Visible', classes: 'ms-1 badge rounded-pill text-bg-success' } if visible?
+
+    { title: 'Awaiting Activation', classes: 'ms-1 badge rounded-pill text-bg-danger' }
   end
 
   def self.status_counts
@@ -838,14 +858,6 @@ class School < ApplicationRecord
 
   def data_visible?
     data_enabled && visible
-  end
-
-  def active_adult_users
-    users.active.where.not(role: :pupil)
-  end
-
-  def active_alert_contacts
-    users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
   end
 
   # gov.uk have figures for recommended gross area for different sizes of schools.
@@ -985,7 +997,36 @@ class School < ApplicationRecord
     # 7 - "All-through"
   end
 
+  def contract_holder
+    licences.current.first&.contract_holder
+  end
+
+  def summarised_current_contract_holder_name
+    summarise_contract_holder(contract_holder)
+  end
+
+  def summarised_future_contract_holder_name
+    year = Calendar.default_national&.current_academic_year&.next_year
+    return nil unless year
+
+    future_licences = licences.not_provisional.for_period(year.start_date..year.end_date)
+    summarise_contract_holder(future_licences.first&.contract_holder)
+  end
+
   private
+
+  def summarise_contract_holder(contract_holder)
+    return nil unless contract_holder.present?
+
+    case contract_holder
+    when self
+      'School self funding'
+    when organisation_group
+      'MAT funding'
+    else
+      contract_holder.name
+    end
+  end
 
   def valid_uk_postcode
     return unless latitude.blank? || longitude.blank? || country.blank?

@@ -9,21 +9,11 @@ en:
     funders: Our funders
     jobs: Jobs
     open_data: Open data
+    our_impact: Our impact
     privacy_policy: Privacy policy
     school_statistics: School statistics
     team: Team
     terms_and_conditions: Terms and conditions
-  activities:
-    previous_records:
-      completed_most_recently_on: most recently on
-      completed_on: 'on'
-      previously_completed: "%{label} previously completed"
-    prompt_login_to_record:
-      are_you_an_energy_sparks_user: Are you an Energy Sparks user?
-      sign_in_html:
-        one: Sign in now to record this %{label} and score your school <strong>1</strong> point!
-        other: Sign in now to record this %{label} and score your school <strong>%{count}</strong> points!
-      sign_in_to_record_html: Sign in to record %{label}
   analysis_controls:
     back_one: Back 1
     change_units: Change units
@@ -75,9 +65,10 @@ en:
     title: Energy Sparks is currently down for maintenance
     unavailable: We're sorry but Energy Sparks is currently unavailable while we carry out some essential maintenance
   manage_menu:
-    admin: Admin
+    admin: Admin Home
     manage: Manage
-    reports: Reports
+    my_dashboard: My Dashboard
+    reports: All Reports
   manage_school_menu:
     batch_reports: Batch reports
     digital_signage: Digital signage
@@ -124,7 +115,9 @@ en:
     enrol: Enrol
     my_account: My account
     my_schools: My schools
-    points: "%{count} points"
+    points:
+      one: "%{count} point"
+      other: "%{count} points"
     sign_in: Sign In
     sign_out: Sign Out
   our_schools_menu:

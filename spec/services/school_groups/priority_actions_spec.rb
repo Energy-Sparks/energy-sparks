@@ -1,97 +1,37 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SchoolGroups::PriorityActions, type: :service do
-  let(:school_group) { create :school_group, name: 'A Group' }
+  subject(:service) { described_class.new(school_group.schools) }
 
-  let(:school_1)  { create(:school, school_group: school_group, visible: true) }
-  let(:school_2)  { create(:school, school_group: school_group, visible: true) }
-
-  let!(:alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
-  let!(:alert_type_rating_low) do
-    create(
-      :alert_type_rating,
-      alert_type: alert_type,
-      rating_from: 0,
-      rating_to: 4,
-      management_priorities_active: true,
-      description: 'low'
-    )
-  end
-  let!(:alert_type_rating_content_version_low) do
-    create(
-      :alert_type_rating_content_version,
-      alert_type_rating: alert_type_rating_low,
-      management_priorities_title: 'Spending too much money on heating (low)',
-    )
-  end
-  let!(:alert_type_rating_medium) do
-    create(
-      :alert_type_rating,
-      alert_type: alert_type,
-      rating_from: 4.1,
-      rating_to: 6,
-      management_priorities_active: true,
-      description: 'medium'
-    )
-  end
-  let!(:alert_type_rating_content_version_medium) do
-    create(
-      :alert_type_rating_content_version,
-      alert_type_rating: alert_type_rating_medium,
-      management_priorities_title: 'Spending too much money on heating (medium)',
-    )
-  end
-  let!(:alert_type_rating_high) do
-    create(
-      :alert_type_rating,
-      alert_type: alert_type,
-      rating_from: 6.1,
-      rating_to: 10,
-      management_priorities_active: true,
-      description: 'high'
-    )
-  end
-  let!(:alert_type_rating_content_version_high) do
-    create(
-      :alert_type_rating_content_version,
-      alert_type_rating: alert_type_rating_high,
-      management_priorities_title: 'Spending too much money on heating (high)',
-    )
-  end
-
+  let(:school_group) { create(:school_group, name: 'A Group') }
+  let(:schools) { create_list(:school, 2, school_group:, visible: true) }
+  let(:alert_type) { create(:alert_type) }
   let!(:alert_school_1) do
     create(:alert, :with_run,
-      alert_type: alert_type,
-      run_on: Time.zone.today, school: school_1,
-      rating: 2.0,
-      template_data: {
-        average_one_year_saving_£: '£1,000',
-        one_year_saving_co2: '1,100 kg CO2',
-        one_year_saving_kwh: '1,111 kWh'
-      }
-    )
+           alert_type:,
+           run_on: Time.zone.today, school: schools[0],
+           rating: 2.0,
+           template_data: {
+             average_one_year_saving_£: '£1,000',
+             one_year_saving_co2: '1,100 kg CO2',
+             one_year_saving_kwh: '1,111 kWh'
+           })
   end
-
   let!(:alert_school_2) do
     create(:alert, :with_run,
-      alert_type: alert_type,
-      run_on: Time.zone.today, school: school_2,
-      rating: 8.0,
-      template_data: {
-        average_one_year_saving_£: '£2,000',
-        one_year_saving_co2: '2,200 kg CO2',
-        one_year_saving_kwh: '2,222 kWh'
-      }
-    )
+           alert_type: alert_type,
+           run_on: Time.zone.today, school: schools[1],
+           rating: 8.0,
+           template_data: {
+             average_one_year_saving_£: '£2,000',
+             one_year_saving_co2: '2,200 kg CO2',
+             one_year_saving_kwh: '2,222 kWh'
+           })
   end
 
-  let(:service) { SchoolGroups::PriorityActions.new(school_group.schools) }
-
-  before do
-    # just run the services to set up rest of test data
-    Alerts::GenerateContent.new(school_1).perform
-    Alerts::GenerateContent.new(school_2).perform
-  end
+  include_context 'with alert type ratings'
 
   describe '#priority_actions' do
     let(:priority_actions) { service.priority_actions }
@@ -109,17 +49,23 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
     end
 
     it 'returns values for all schools' do
-      school_1_priority = OpenStruct.new(school: school_1, average_one_year_saving_gbp: 1000, one_year_saving_co2: 1100, one_year_saving_kwh: 1111)
-      school_2_priority = OpenStruct.new(school: school_2, average_one_year_saving_gbp: 2000, one_year_saving_co2: 2200, one_year_saving_kwh: 2222)
-      expect(priority_actions[alert_type_rating_high]).to match_array([school_1_priority, school_2_priority])
+      school_1_priority = OpenStruct.new(school: schools[0], average_one_year_saving_gbp: 1000,
+                                         one_year_saving_co2: 1100, one_year_saving_kwh: 1111)
+      school_2_priority = OpenStruct.new(school: schools[1], average_one_year_saving_gbp: 2000,
+                                         one_year_saving_co2: 2200, one_year_saving_kwh: 2222)
+      expect(priority_actions[alert_type_rating_high]).to contain_exactly(school_1_priority, school_2_priority)
     end
 
     context 'when a school is not data visible' do
-      let(:school_2) { create(:school, school_group: school_group, visible: true, data_enabled: false) }
+      let(:schools) do
+        [create(:school, school_group:, visible: true),
+         create(:school, school_group:, visible: true, data_enabled: false)]
+      end
 
       it 'returns values for the data enabled school only' do
-        school_1_priority = OpenStruct.new(school: school_1, average_one_year_saving_gbp: 1000, one_year_saving_co2: 1100, one_year_saving_kwh: 1111)
-        expect(priority_actions[alert_type_rating_high]).to match_array([school_1_priority])
+        school_1_priority = OpenStruct.new(school: schools[0], average_one_year_saving_gbp: 1000,
+                                           one_year_saving_co2: 1100, one_year_saving_kwh: 1111)
+        expect(priority_actions[alert_type_rating_high]).to contain_exactly(school_1_priority)
       end
     end
   end
@@ -147,7 +93,10 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
     end
 
     context 'when a school is not data visible' do
-      let(:school_2) { create(:school, school_group: school_group, visible: true, data_enabled: false) }
+      let(:schools) do
+        [create(:school, school_group:, visible: true),
+         create(:school, school_group:, visible: true, data_enabled: false)]
+      end
 
       it 'returns values for the data enabled school only' do
         expect(total_savings[alert_type_rating_high].average_one_year_saving_gbp).to eq 1000

@@ -1,0 +1,18 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Contracts with pending invoices' %>
+  <% header_nav.with_button 'Contracts & Licensing', admin_commercial_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+        The following contracts all have at least one licence in the "pending invoicing" status
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <%= render Commercial::PendingInvoicingComponent.new(contracts: @contracts) %>
+  </div>
+</div>

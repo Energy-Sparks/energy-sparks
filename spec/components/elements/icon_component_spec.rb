@@ -66,7 +66,7 @@ RSpec.describe Elements::IconComponent, type: :component do
 
         it 'overrides the colour' do
           expect(html).to have_css('i.text-danger')
-          expect(html).not_to have_css('i.text-electric')
+          expect(html).to have_no_css('i.text-electric')
           expect(html).to have_css('i.fa-bolt')
         end
       end
@@ -89,7 +89,7 @@ RSpec.describe Elements::IconComponent, type: :component do
         { fuel_type: :electricity, colour: :notgood }
       end
 
-      it { expect { html }.to raise_error(ArgumentError, 'Unknown colour variant: notgood. Valid values are: primary, secondary, success, info, warning, danger, light, dark') }
+      it { expect { html }.to raise_error(ArgumentError, 'Unknown \'notgood\' is not a permitted value for colour. Must be one of: primary, secondary, success, info, warning, danger, light, and dark') }
     end
   end
 end

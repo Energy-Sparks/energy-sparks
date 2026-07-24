@@ -3,16 +3,17 @@ require 'rails_helper'
 module Amr
   describe N3rgyReadingsUpserter do
     let(:meter)           { create(:electricity_meter) }
-    let(:config)          { create(:amr_data_feed_config)}
+    let(:config)          { create(:amr_data_feed_config) }
     let(:end_date)     { Time.zone.today }
     let(:start_date) { end_date - 1 }
     let(:readings) do
       {
         meter.meter_type => {
-            mpan_mprn:        meter.mpan_mprn,
-            readings:         { start_date => OneDayAMRReading.new(meter.mpan_mprn, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
-            missing_readings: []
-          }
+          mpan_mprn: meter.mpan_mprn,
+          readings: { start_date => OneDayAMRReading.new(start_date, 'ORIG', nil,
+                                                         start_date, Array.new(48, 0.25)) },
+          missing_readings: []
+        }
       }
     end
     let(:import_log) { create(:amr_data_feed_import_log) }
@@ -41,8 +42,9 @@ module Amr
       let(:readings) do
         {
           meter.meter_type => {
-            mpan_mprn:      meter.mpan_mprn,
-            readings:       { start_date => OneDayAMRReading.new('1234567890009', start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
+            mpan_mprn: meter.mpan_mprn,
+            readings: { start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date,
+                                                           Array.new(48, 0.25)) },
             missing_readings: []
           }
         }

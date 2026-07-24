@@ -1,0 +1,11 @@
+cy:
+  components:
+    dashboards:
+      group_learn_more:
+        advice:
+          intro: Cliciwch drwodd i weld trosolwg o ddata ynni eich grŵp ynghyd â dadansoddiad manwl o lwyth sylfaenol, tueddiadau hirdymor a defnydd y tu allan i oriau gwaith.
+          title: Dysgu am ddefnydd ynni'r grŵp hwn
+        intro_no_data: Rydym yn dal i sefydlu data ar gyfer yr ysgolion yn y grŵp hwn. Unwaith y bydd y data hwnnw ar gael, byddwn yn gallu darparu dadansoddiad o'r data ynni ar draws pob ysgol yn y grŵp hwn
+        schools:
+          intro: Dewiswch ysgol i archwilio ei data ynni, rhybuddion defnydd ynni a gweithgaredd bwrdd sgorio diweddaraf
+          title: Gweld ysgolion yn y grŵp hwn

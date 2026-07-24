@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
+RSpec.describe ChartComponent, :include_url_helpers, type: :component do
   let(:school) { create(:school) }
   let(:chart_type) { :baseload }
   let(:params) { { school: school, chart_type: chart_type, html_class: 'usage-chart' } }
@@ -10,13 +10,15 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
   context 'with all params' do
     let(:html) { render_inline(ChartComponent.new(**params)) }
 
-    it { expect(html).not_to have_selector('h4') }
-    it { expect(html).not_to have_selector('h5.chart-subtitle') }
-    it { expect(html).to have_selector('div', id: 'chart_wrapper_baseload') }
-    it { expect(html).to have_selector('div', class: 'usage-chart') }
+    it { expect(html).to have_no_css('h4') }
+    it { expect(html).to have_no_css('h5.chart-subtitle') }
+    it { expect(html).to have_css('div', id: 'chart_wrapper_baseload') }
+    it { expect(html).to have_css('div', class: 'usage-chart') }
 
     it 'sets up chart config data attribute' do
-      expect(html).to have_selector('div', id: 'chart_baseload') { |d| JSON.parse(d['data-chart-config'])['type'] == 'baseload' }
+      expect(html).to have_css('div', id: 'chart_baseload') { |d|
+        JSON.parse(d['data-chart-config'])['type'] == 'baseload'
+      }
     end
   end
 
@@ -38,10 +40,10 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
       end
     end
 
-    it { expect(html).to have_selector('h4', text: "I'm a title") }
-    it { expect(html).to have_selector('h4', id: 'chart-section-baseload') }
-    it { expect(html).to have_selector('h5.chart-subtitle', text: "I'm a subtitle") }
-    it { expect(html).to have_selector('strong', text: "I'm a header") }
-    it { expect(html).to have_selector('small', text: "I'm a footer") }
+    it { expect(html).to have_css('h4', text: "I'm a title") }
+    it { expect(html).to have_css('h4', id: 'chart-section-baseload') }
+    it { expect(html).to have_css('h5.chart-subtitle', text: "I'm a subtitle") }
+    it { expect(html).to have_css('strong', text: "I'm a header") }
+    it { expect(html).to have_css('small', text: "I'm a footer") }
   end
 end

@@ -19,15 +19,17 @@ module Admin
 
       def school_params
         params.require(:school_onboarding).permit(
-          :template_calendar_id,
+          :contract_id,
+          :country,
           :dark_sky_area_id,
-          :scoreboard_id,
-          :project_group_id,
+          :data_sharing,
+          :default_chart_preference,
           :diocese_id,
           :local_authority_area_id,
-          :weather_station_id,
-          :default_chart_preference,
-          :country
+          :project_group_id,
+          :scoreboard_id,
+          :template_calendar_id,
+          :weather_station_id
         )
       end
     end

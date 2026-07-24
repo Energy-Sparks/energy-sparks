@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe Mailchimp::CsvExporter do
-  include_context 'with a stubbed audience manager'
-
   subject(:service) do
     described_class.new(add_default_interests: add_default_interests, subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
   end
+
+  include_context 'with a stubbed audience manager'
 
   let(:add_default_interests) { true }
   let(:subscribed) { [] }
@@ -370,7 +370,7 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a school onboarding user' do
-      let!(:user) { create(:onboarding_user)}
+      let!(:user) { create(:onboarding_user) }
 
       before do
         service.perform

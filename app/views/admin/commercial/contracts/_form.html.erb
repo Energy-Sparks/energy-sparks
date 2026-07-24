@@ -1,0 +1,179 @@
+<% content_for :head do %>
+  <%= javascript_import_module_tag 'commercial/contract_holder' %>
+<% end %>
+
+<% all_contracts_path = if local_assigns[:original].present? || contract.persisted?
+                          polymorphic_path([:admin, contract.contract_holder,
+                                            :contracts])
+                        else
+                          admin_commercial_contracts_path
+                        end %>
+
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'All contracts', all_contracts_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <% if local_assigns[:original].present? %>
+      <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
+        <p>
+          Creating a new contract for <strong><%= contract.contract_holder.name %></strong> based on
+          <strong><%= original.name %></strong>.
+        </p>
+        <p>
+          The form has been populated using the existing contractual details, including contract terms, length and
+          agreed pricing.
+        </p>
+        <% if @contract.licence_period != @original.licence_period %>
+          <p>
+            <strong>Note</strong> based on the chosen option the licence period has been changed to
+            <%= @contract.licence_period.to_s.humanize %>
+          </p>
+        <% end %>
+      <% end %>
+    <% elsif contract.persisted? && contract.invoiced? %>
+      <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
+        <p>
+          One or more licences associated with this contract have already been invoiced. Only limited changes can now
+          be made the contract itself.
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <% url = if contract.new_record?
+               admin_commercial_contracts_path
+             else
+               admin_commercial_contract_path(contract)
+             end %>
+    <%= simple_form_for(contract, as: :contract, url: url) do |f| %>
+      <%= render 'shared/errors', subject: contract, subject_name: 'contract' %>
+
+      <%= hidden_field_tag :original_contract_id, original.id if local_assigns[:original].present? %>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Basic information</h3>
+        <%= f.input :name %>
+        <%= f.input :comments %>
+      </div>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Commercial information</h3>
+        <% if contract.editable_attribute?(:product_id) %>
+          <%= f.input :product_id,
+                      collection: Commercial::Product.with_default_first,
+                      include_blank: false %>
+        <% end %>
+
+        <% if contract.contract_holder.present? %>
+          <%= f.input :contract_holder_type, as: :hidden %>
+          <%= f.input :contract_holder_id, as: :hidden %>
+        <% elsif contract.editable_attribute?(:contract_holder_id) %>
+          <%= f.input :contract_holder_type,
+                      as: :radio_buttons,
+                      collection: Commercial::HasContractHolder::ALLOWED_HOLDERS.map(&:name).sort,
+                      include_blank: false,
+                      input_html: { class: 'contract-holder-type' } %>
+
+          <%= f.input :contract_holder_id,
+                      collection: [],
+                      include_blank: true,
+                      input_html: {
+                        class: 'contract-holder-select',
+                        data: { selected_id: contract.contract_holder_id }
+                      } %>
+        <% end %>
+
+        <%= if contract.editable_attribute?(:agreed_school_price)
+              f.input :agreed_school_price,
+                      hint: 'Override product pricing based on size of schools. ' \
+                      'Specify annual price for all schools in contract, in £'
+            end %>
+        <%= if contract.editable_attribute?(:number_of_schools)
+              f.input :number_of_schools, hint: 'Expected number of schools for this contract'
+            end %>
+        <%= if contract.editable_attribute?(:status)
+              f.input :status,
+                      collection: collection_from_enum(Commercial::Contract.statuses),
+                      include_blank: false
+            end %>
+      </div>
+
+      <% unless contract.invoiced? %>
+        <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+          <h3>Contract and licence terms</h3>
+          <% if local_assigns[:original].present? %>
+            <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
+              <p>
+                Provisional licences for all schools under <strong><%= original.name %></strong> will be added
+                by default if the below option is checked. Additional schools can be added later.
+              </p>
+            <% end %>
+          <% end %>
+          <% if contract.persisted? %>
+            <%= render PromptComponent.new icon: 'circle-info', status: :negative do %>
+              <p>
+                Any changes made to the start and end dates or licence years fields for this contract will be
+                applied to any licences that have not yet been invoiced, if the below option is checked.
+              </p>
+              <p>
+                This will overwrite any existing licence dates.
+              </p>
+            <% end %>
+          <% end %>
+
+          <%= f.input :start_date, as: :tempus_dominus_date if contract.editable_attribute?(:start_date) %>
+          <%= f.input :end_date, as: :tempus_dominus_date if contract.editable_attribute?(:end_date) %>
+
+          <% if contract.editable_attribute?(:invoice_terms) && !contract.custom? %>
+            <%= f.input :invoice_terms,
+                        collection: collection_from_enum(Commercial::Contract.invoice_terms),
+                        include_blank: false %>
+          <% else %>
+            <%= f.input :invoice_terms, as: :hidden %>
+          <% end %>
+
+          <%= f.input :licence_period, as: :hidden %>
+          <%= if contract.custom? && contract.editable_attribute?(:licence_years)
+                f.input :licence_years, hint: 'Length of custom licence in years. E.g. 1.0, 2.0, 3.0, 1.2, 1.5, etc'
+              end %>
+
+          <% if local_assigns[:original].present? || contract.persisted? %>
+            <div class="form-group">
+              <div class="form-check">
+                <%= f.check_box :update_licences, class: 'form-check-input' %>
+
+                <% if local_assigns[:original].present? %>
+                  <% label = 'Automatically add licences for all schools associated with the original contract?' %>
+                <% else contract.persisted? %>
+                  <% label = 'Automatically update existing licences based on changes?' %>
+                <% end %>
+
+                <%= f.label :update_licences, label, class: 'form-check-label' %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="col-12 mb-4 bg-light rounded-2 pb-3">
+        <h3>Invoicing</h3>
+        <%= f.input :purchase_order_number if contract.editable_attribute?(:purchase_order_number) %>
+        <% if contract.editable_attribute?(:xero_account_code_id) %>
+          <%= f.input :xero_account_code_id,
+                      collection: Commercial::XeroAccountCode.all.by_code,
+                      label_method: :display_label,
+                      include_blank: true %>
+        <% end %>
+      </div>
+
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', all_contracts_path, class: 'btn' %>
+    <% end %>
+  </div>
+</div>

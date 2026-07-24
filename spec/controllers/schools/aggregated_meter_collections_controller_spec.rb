@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller do
-  let(:school) { create(:school, visible: visible, public: public)}
+  let(:school) { create(:school, visible: visible, public: public) }
 
   context 'as an admin' do
     let(:admin) { create(:admin) }
@@ -93,7 +93,7 @@ RSpec.describe Schools::AggregatedMeterCollectionsController, type: :controller 
   end
 
   context 'as a teacher' do
-    let(:teacher) { create(:school_admin, school: school)}
+    let(:teacher) { create(:school_admin, school: school) }
 
     before do
       sign_in(teacher)

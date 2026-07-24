@@ -7,7 +7,7 @@ module Admin
 
       def filter_results(results)
         results = results.for_school_group(SchoolGroup.find(params[:school_group])) if params[:school_group].present?
-        results = results.for_admin(User.admin.find(params[:user])) if params[:user].present?
+        results = results.for_admin(User.admin.find(params[:admin])) if params[:admin].present?
         results.default_order
       end
 
@@ -26,9 +26,14 @@ module Admin
                      ->(row, csv) { link_to(csv, school_meter_path(row.meter.school, row.meter)) }),
           Column.new(:meter_name,
                      ->(row) { row.meter&.name }),
+          Column.new(:meter_system,
+                     ->(row) { row.meter&.t_meter_system }),
+          Column.new(:supplier,
+                     ->(row) { row.meter.supplier&.name }),
+          Column.new(:data_source,
+                     ->(row) { row.meter.data_source&.name }),
           Column.new(:reading_date,
-                     ->(row) { row.reading_date })
-
+                     ->(row) { row.reading_date }),
         ]
       end
     end

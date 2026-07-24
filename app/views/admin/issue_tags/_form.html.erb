@@ -1,0 +1,12 @@
+<div class="row p-2">
+  <div class="col-md-12 rounded pb-2">
+    <%= render 'header', title: title do %>
+      <%= header_nav_link 'All issue tags', admin_issue_tags_url %>
+    <% end %>
+  </div>
+
+  <%= simple_form_for([:admin, issue_tag]) do |f| %>
+    <%= f.input :label %>
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
+  <% end %>
+</div>

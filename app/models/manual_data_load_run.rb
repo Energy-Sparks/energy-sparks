@@ -2,11 +2,11 @@
 #
 # Table name: manual_data_load_runs
 #
-#  amr_uploaded_reading_id :bigint(8)        not null
-#  created_at              :datetime         not null
 #  id                      :bigint(8)        not null, primary key
 #  status                  :integer          default("pending"), not null
+#  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  amr_uploaded_reading_id :bigint(8)        not null
 #
 # Indexes
 #

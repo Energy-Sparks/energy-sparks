@@ -8,15 +8,11 @@ module Schools
     JOB_CLASS = Solar::SolisCloudLoaderJob
 
     def create
-      @installation = if params[:existing].present?
-                        SolisCloudInstallation.find(params[:existing])
-                      else
-                        SolisCloudInstallation.new(
-                          api_id: resource_params[:api_id],
-                          api_secret: resource_params[:api_secret],
-                          amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'solis-cloud')
-                        )
-                      end
+      if params[:existing].present?
+        @installation = SolisCloudInstallation.find(params[:existing])
+      else
+        @installation.amr_data_feed_config = AmrDataFeedConfig.find_by!(identifier: 'solis-cloud')
+      end
       if params[:existing].present? || @installation.save
         @school.solis_cloud_installations << @installation
         begin
@@ -75,7 +71,7 @@ module Schools
     private
 
     def resource_params
-      params.require(:solis_cloud_installation).permit(:api_id, :api_secret)
+      params.expect(solis_cloud_installation: %i[api_id api_secret active])
     end
   end
 end

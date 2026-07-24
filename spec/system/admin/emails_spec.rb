@@ -20,7 +20,9 @@ describe 'Emails', type: :system do
         visit admin_mailer_preview_path(preview.preview_name)
         expect(page).to have_current_path('/admin/mailer_previews/' + preview.preview_name, ignore_query: true)
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(page).to have_current_path('/admin/mailer_previews/' + preview.preview_name + '/' + preview.emails.first, ignore_query: true)
+        expect(page).to have_current_path(
+          '/admin/mailer_previews/' + preview.preview_name + '/' + preview.emails.first, ignore_query: true
+        )
       end
     end
 

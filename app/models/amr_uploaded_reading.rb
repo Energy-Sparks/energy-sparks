@@ -2,13 +2,13 @@
 #
 # Table name: amr_uploaded_readings
 #
-#  amr_data_feed_config_id :bigint(8)        not null
-#  created_at              :datetime         not null
-#  file_name               :text             default("f"), not null
 #  id                      :bigint(8)        not null, primary key
+#  file_name               :text             default("f"), not null
 #  imported                :boolean          default(FALSE), not null
 #  reading_data            :json             not null
+#  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  amr_data_feed_config_id :bigint(8)        not null
 #
 # Indexes
 #

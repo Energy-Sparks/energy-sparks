@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe Mailchimp::CsvImporter do
   subject(:service) do
-    described_class.new(subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed, cleaned: cleaned)
+    described_class.new(subscribed: subscribed, nonsubscribed: nonsubscribed, unsubscribed: unsubscribed,
+                        cleaned: cleaned)
   end
 
   let(:subscribed) { [] }

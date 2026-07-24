@@ -8,7 +8,7 @@ class Charts::ComparisonChartComponentPreview < ViewComponent::Preview
     x_data = {
       series_name => Array.new(schools) { rand(1..10) }.sort.reverse
     }
-    fuel_type = fuel_type.present? ? fuel_type.to_sym : nil
+    fuel_type = fuel_type.presence&.to_sym
     render(Charts::ComparisonChartComponent.new(id: :demo, x_axis: x_axis, x_data: x_data, y_axis_label:, fuel_type:))
   end
 end

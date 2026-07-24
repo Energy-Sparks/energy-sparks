@@ -12,8 +12,9 @@
   <li><a href="#all">All options</a></li>
   <li><a href="#custom">Custom background colour</a></li>
   <li><a href="#compact">Compact style</a></li>
-
+  <li><a href="#content-action">Content with action</a></li>
   <li><a href="#columns">Rendering within columns</a></li>
+  <li><a href="#image">Compact with image</a></li>
 </ul>
 
 <h4 id='basic'>Basic format</h4>
@@ -77,7 +78,7 @@
 <%= render PromptComponent.new do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
@@ -89,7 +90,7 @@
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'Title and a pill' } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
@@ -107,26 +108,23 @@
 <% end %>
 
 <h4 id='all'>All options (link, title, pill, content)</h4>
-
 <%= render PromptComponent.new status: :neutral, icon: 'calendar-alt' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'This is the title' } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
     odio in vestibulum. Duis a semper mi.
   </p>
 <% end %>
-
 <h4 id='custom'>Custom background colour</h4>
-
 <%= render PromptComponent.new classes: fuel_type_background_class(:gas), icon: 'calendar-alt' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'This is the title' } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
@@ -135,16 +133,14 @@
 <% end %>
 
 <h4 id='compact'>Compact Style</h4>
-
 <p>
   With <code>:compact</code> style, content should be wrapped in an outer tag. Longer content will force the row to wrap
 </p>
-
 <%= render PromptComponent.new status: :neutral, style: :compact, icon: 'calendar-alt' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <% c.with_title { 'This is the title' } %>
   <% c.with_pill do %>
-    <span class="badge badge-warning">Warning</span>
+    <span class="badge text-bg-warning">Warning</span>
   <% end %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
@@ -152,8 +148,29 @@
   </p>
 <% end %>
 
-<h4 id='columns'>Rendering within columns</h4>
+<h4 id='content-action'>Content with action</h4>
+<%= render PromptComponent.new icon: 'tasks', status: :neutral do |c| %>
+  <% c.with_title { 'Activity score' } %>
+  <% c.with_content_action do |ca| %>
+    <% ca.with_body do %>
+      <p class="mb-2">Select a school to record this activity</p>
+    <% end %>
+    <% ca.with_action do %>
+      <button class="btn btn-primary">Record</button>
+    <% end %>
+  <% end %>
+<% end %>
 
+<h4 id='image'>Compact with image</h4>
+<%= render PromptComponent.new image: 'audit-boiler.jpg', status: :neutral, style: :compact do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='columns'>Rendering within columns</h4>
 <div class="row">
   <div class="col-12 col-lg-6">
     <%= render PromptComponent.new do |c| %>
@@ -166,7 +183,7 @@
       <% c.with_link { link_to 'This is the link', root_path } %>
       <% c.with_title { 'This is the title' } %>
       <% c.with_pill do %>
-        <span class="badge badge-warning">Warning</span>
+        <span class="badge text-bg-warning">Warning</span>
       <% end %>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
@@ -185,7 +202,7 @@
       <% c.with_link { link_to 'This is the link', root_path } %>
       <% c.with_title { 'This is the title' } %>
       <% c.with_pill do %>
-        <span class="badge badge-warning">Warning</span>
+        <span class="badge text-bg-warning">Warning</span>
       <% end %>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin

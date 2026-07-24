@@ -4,7 +4,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::BaseloadBenchmarkGenerator, type: 
   let(:advice_page) { create(:advice_page, key: :baseload) }
   let(:aggregate_school) { double(:aggregate_school) }
 
-  let(:service) { Schools::AdvicePageBenchmarks::BaseloadBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:service) { Schools::AdvicePageBenchmarks::BaseloadBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school) }
 
   describe '#benchmark_school' do
     let(:enough_data) { true }

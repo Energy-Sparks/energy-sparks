@@ -1,4 +1,4 @@
-require_relative './advice_gas_base.rb'
+require_relative 'advice_gas_base'
 
 class AdviceBoilerHeatingBase < AdviceGasBase
   include Logging
@@ -36,7 +36,7 @@ class AdviceBoilerHeatingBase < AdviceGasBase
 
   def calculate_heating_model(model_type: default_model)
     start_date = [meter.amr_data.end_date - 364, meter.amr_data.start_date].max
-    last_year = SchoolDatePeriod.new(:analysis, 'validate amr', start_date, meter.amr_data.end_date)
+    last_year = SchoolDatePeriod.new(:analysis, 'boiler analysis', start_date, meter.amr_data.end_date)
     meter.heating_model(last_year, model_type)
   end
 

@@ -1,0 +1,21 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render PromptListComponent.new do |list| %>
+    <% if title? %>
+      <% list.with_title(level: 2) do %>
+        <%= title %>
+      <% end %>
+    <% end %>
+
+    <% dashboard_prompts.each do |prompt| %>
+      <% add_prompt(id: prompt[:id],
+                    check: prompt[:check],
+                    list: list,
+                    status: prompt[:status],
+                    icon: prompt[:icon],
+                    link: prompt[:link],
+                    path: prompt[:path]) do %>
+      <p><%= prompt[:content] %></p>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

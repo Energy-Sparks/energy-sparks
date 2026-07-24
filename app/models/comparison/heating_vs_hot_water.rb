@@ -2,9 +2,9 @@
 #
 # Table name: comparison_heating_vs_hot_waters
 #
+#  id                             :bigint(8)
 #  estimated_hot_water_gas_kwh    :float
 #  estimated_hot_water_percentage :float
-#  id                             :bigint(8)
 #  last_year_gas_kwh              :float
 #  school_id                      :bigint(8)
 #

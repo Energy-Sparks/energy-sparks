@@ -20,12 +20,12 @@ describe 'school group meter reports', type: :system do
     end
 
     it 'displays the reports index' do
-      expect(page).to have_content('School group meter data reports')
-      expect(page).to have_content(school_group.name)
+      expect(page).to have_text('School group meter data reports')
+      expect(page).to have_text(school_group.name)
       expect(page).to have_button('Meter report')
     end
 
-    context 'when clicking on the email meter report link', js: true do
+    context 'when clicking on the email meter report link', :js do
       before do
         click_on 'Meter report'
         accept_alert do
@@ -33,8 +33,8 @@ describe 'school group meter reports', type: :system do
         end
       end
 
-      it { expect(page).to have_content "Meter report for #{school_group.name} requested to be sent to #{admin.email}" }
-      it { expect(page).to have_content 'School group meter data reports' }
+      it { expect(page).to have_text "Meter report for #{school_group.name} requested to be sent to #{admin.email}" }
+      it { expect(page).to have_text 'School group meter data reports' }
     end
   end
 
@@ -44,22 +44,22 @@ describe 'school group meter reports', type: :system do
     end
 
     it 'links to downloads and all meters' do
-      expect(page).to have_content("#{school_group.name} meter report")
+      expect(page).to have_text("#{school_group.name} meter report")
       expect(page).to have_button('Meter report')
     end
 
     it 'only shows active meters' do
-      expect(page).to have_content(meter.mpan_mprn)
-      expect(page).not_to have_content(meter_inactive.mpan_mprn)
+      expect(page).to have_text(meter.mpan_mprn)
+      expect(page).to have_no_text(meter_inactive.mpan_mprn)
       expect(page).to have_link('Show all meters')
     end
 
     it 'links to page including inactive meters' do
       click_on 'Show all meters'
-      expect(page).to have_content("#{school_group.name} meter report")
-      expect(page).to have_content(meter.mpan_mprn)
-      expect(page).to have_content(meter_inactive.mpan_mprn)
-      expect(page).not_to have_link('Show all meters')
+      expect(page).to have_text("#{school_group.name} meter report")
+      expect(page).to have_text(meter.mpan_mprn)
+      expect(page).to have_text(meter_inactive.mpan_mprn)
+      expect(page).to have_no_link('Show all meters')
     end
   end
 end

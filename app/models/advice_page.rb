@@ -2,12 +2,12 @@
 #
 # Table name: advice_pages
 #
-#  created_at      :datetime         not null
-#  fuel_type       :integer
 #  id              :bigint(8)        not null, primary key
+#  fuel_type       :integer
 #  key             :string           not null
 #  multiple_meters :boolean          default(FALSE), not null
 #  restricted      :boolean          default(FALSE)
+#  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
 # Indexes

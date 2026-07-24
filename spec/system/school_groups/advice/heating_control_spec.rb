@@ -50,16 +50,16 @@ describe 'School group heating control page' do
       end
 
       it 'has the comparisons section' do
-        expect(page).to have_content(I18n.t('advice_pages.heating_control.insights.comparison.title'))
+        expect(page).to have_text(I18n.t('advice_pages.heating_control.insights.comparison.title'))
         expect(page).to have_css('.school-group-comparison-component')
         expect(page).to have_link(href: analysis_school_group_advice_heating_control_path(school_group))
       end
 
       it 'has the current use section' do
-        expect(page).to have_content(I18n.t('school_groups.advice_pages.heating_control.insights.current_use.title'))
+        expect(page).to have_text(I18n.t('school_groups.advice_pages.heating_control.insights.current_use.title'))
         expect(page).to have_css("##{report.key}-table")
         within("##{report.key}-table") do
-          expect(page).to have_content(school.name)
+          expect(page).to have_text(school.name)
         end
       end
     end
@@ -81,7 +81,7 @@ describe 'School group heating control page' do
       end
 
       context 'with potential savings' do
-        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.heating_control.analysis.potential_savings.title')) }
+        it { expect(page).to have_text(I18n.t('school_groups.advice_pages.heating_control.analysis.potential_savings.title')) }
 
         it_behaves_like 'it contains the expected data table' do
           let(:table_id) { "##{advice_page_key}-savings" }
@@ -100,7 +100,7 @@ describe 'School group heating control page' do
       end
 
       context 'with comparison section' do
-        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.heating_control.analysis.comparisons.title')) }
+        it { expect(page).to have_text(I18n.t('school_groups.advice_pages.heating_control.analysis.comparisons.title')) }
 
         it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { report }

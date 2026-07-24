@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Amr
@@ -17,16 +19,17 @@ module Amr
       # in the list of readings. For a given day d, n3rgy return the final half-hourly reading
       # as midnight of d+1. This conversion function handles this, so that the readings
       # are properly associated with each date
-      meter_readings = X48Formatter.convert_dt_to_v_to_date_to_v_x48(@start_date.to_date,
-        @end_date.to_date, readings_by_date_time, true, nil)
+      meter_readings = X48Formatter.convert_dt_to_v_to_date_to_v_x48(
+        @start_date.to_date, @end_date.to_date, readings_by_date_time, true, nil
+      )
 
       # This return format matches the original v1 code. This can be simplified as there is no
       # need to create the one day readings to then just throw them away in the next step
       {
         @meter.meter_type =>
           {
-            mpan_mprn:        @meter.mpan_mprn,
-            readings:         make_one_day_readings(meter_readings[:readings], @meter.mpan_mprn),
+            mpan_mprn: @meter.mpan_mprn,
+            readings: make_one_day_readings(meter_readings[:readings]),
             missing_readings: meter_readings[:missing_readings]
           }
       }
@@ -34,11 +37,11 @@ module Amr
 
     private
 
-    # TODO remove, unnecessary, see note above
-    def make_one_day_readings(meter_readings_by_date, mpan_mprn)
-      meter_readings_by_date.map do |date, readings|
-        [date.to_date, OneDayAMRReading.new(mpan_mprn, date.to_date, 'ORIG', nil, DateTime.now, readings, true)]
-      end.to_h
+    # TODO: remove, unnecessary, see note above
+    def make_one_day_readings(meter_readings_by_date)
+      meter_readings_by_date.to_h do |date, readings|
+        [date.to_date, OneDayAMRReading.new(date.to_date, 'ORIG', nil, DateTime.now, readings)]
+      end
     end
 
     # Query the n3rgy API in blocks of up to 90 days to fetch all of the readings
@@ -61,10 +64,10 @@ module Amr
         start_date_time = date_range_max_90days.first
         end_date_time = (date_range_max_90days.last + 1.day).change({ hour: 0, min: 0, sec: 0 })
         response = api_client.readings(@meter.mpan_mprn,
-          @meter.fuel_type.to_s,
-          DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION,
-          start_date_time,
-          end_date_time)
+                                       @meter.fuel_type.to_s,
+                                       DataFeeds::N3rgy::DataApiClient::READING_TYPE_CONSUMPTION,
+                                       start_date_time,
+                                       end_date_time)
         readings += extract_readings(response)
       end
       readings.to_h
@@ -75,7 +78,7 @@ module Amr
     # For gas readings, values are converted from cubic meters to kWh using
     # a fixed conversion value.
     def extract_readings(response)
-      return [] unless response.dig('devices', 0, 'values').present?
+      return [] if response.dig('devices', 0, 'values').blank?
 
       # v2 returns an array of readings for each 'device'. It is technically possible
       # within the SMETS standard for there to be up to 5 devices of the same type,
@@ -89,20 +92,25 @@ module Amr
       #
       # Individual values can also include an additionalInformation key, to indicate
       # why data is missing which we are not currently using either.
-      response['devices'][0]['values'].map do |half_hourly_reading|
-        timestamp = DateTime.parse(half_hourly_reading['timestamp'])
-        value = case response['unit']
-                when 'm3'
-                  to_kwh(half_hourly_reading['primaryValue'], timestamp)
-                else
-                  half_hourly_reading['primaryValue']
-                end
-        [timestamp, value]
+      response['devices'].flat_map do |device|
+        device['values'].map do |half_hourly_reading|
+          timestamp = DateTime.parse(half_hourly_reading['timestamp'])
+          value = case response['unit']
+                  when 'm3'
+                    to_kwh(half_hourly_reading['primaryValue'], timestamp)
+                  else
+                    half_hourly_reading['primaryValue']
+                  end
+          [timestamp, value]
+        end
       end
     end
 
     def to_kwh(value, timestamp)
-      LocalDistributionZone.kwh_per_m3(@meter&.school&.local_distribution_zone, timestamp) * value unless value.nil?
+      return if value.nil?
+      return value if Aggregation::ValidateAmrData::BadValues.bad_dcc_value?(value, @meter.meter_type.to_sym)
+
+      LocalDistributionZone.kwh_per_m3(@meter&.school&.local_distribution_zone, timestamp) * value
     end
 
     def api_client
@@ -110,12 +118,11 @@ module Amr
     end
 
     def warn_if_multiple_devices(response)
-      if response['devices'].length > 1
-        Rollbar.warning("Multiple devices (#{response['devices'].length}) present in n3rgy readings API",
+      return unless response['devices'].length > 1
+
+      Rollbar.warning("Multiple devices (#{response['devices'].length}) present in n3rgy readings API",
                       meter: @meter.mpan_mprn,
-                      school: @meter.school.name
-                    )
-      end
+                      school: @meter.school.name)
     end
   end
 end

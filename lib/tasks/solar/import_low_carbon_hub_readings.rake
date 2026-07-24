@@ -1,17 +1,19 @@
-namespace :solar do
-  desc "Import low carbon hub data"
-  task :import_low_carbon_hub_readings, [:start_date, :end_date] => :environment do |_t, args|
+# frozen_string_literal: true
 
+namespace :solar do
+  desc 'Import low carbon hub data'
+  task :import_low_carbon_hub_readings, %i[start_date end_date] => :environment do |_t, args|
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : nil
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : nil
 
     puts "#{DateTime.now.utc} import_low_carbon_hub_readings start"
     begin
-      LowCarbonHubInstallation.all.each do |installation|
+      LowCarbonHubInstallation.active.find_each do |installation|
         puts "Running for #{installation.rbee_meter_id}"
-        Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: start_date, end_date: end_date).perform
+        Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: start_date,
+                                                 end_date: end_date).perform
       end
-    rescue => e
+    rescue StandardError => e
       puts "Exception: importing readings #{e.class} #{e.message}"
       puts e.backtrace.join("\n")
       Rails.logger.error "Exception: importing readings: #{e.class} #{e.message}"

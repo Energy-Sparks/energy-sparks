@@ -1,5 +1,5 @@
 <%= render 'limited_advice_page', title: t('advice_pages.target.no_target.title') do %>
-  <p><%= t('advice_pages.target.no_target.text', fuel_type: t_fuel_type) %></p>
+  <p><%= t('advice_pages.target.no_target.text', fuel_type: @advice_page.t_fuel_type) %></p>
   <p>
     <% path = if @target.nil? || @target.expired?
                 new_school_school_target_path(@school)

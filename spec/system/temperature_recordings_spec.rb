@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe 'temperature recordings as school admin' do
-  let(:school_name) { 'Active school'}
+  let(:school_name) { 'Active school' }
   let!(:school)     { create(:school, name: school_name) }
 
   let!(:the_hall) { create(:location, school: school, name: 'The Hall') }
 
   context 'as a pupil' do
-    let!(:user)       { create(:pupil, school: school)}
+    let!(:user)       { create(:pupil, school: school) }
 
     context 'when the site settings are turned off' do
       before do
@@ -17,7 +17,7 @@ describe 'temperature recordings as school admin' do
       it 'does not show temperature recording links' do
         sign_in(user)
         visit root_path
-        expect(page).not_to have_link('Enter temperatures')
+        expect(page).to have_no_link('Enter temperatures')
       end
     end
 
@@ -31,13 +31,13 @@ describe 'temperature recordings as school admin' do
 
       context 'adding recordings' do
         it 'displays the locations and allows the user to add a new one and then enter temperatures for the current locations' do
-          expect(page).to have_content('The Hall')
+          expect(page).to have_text('The Hall')
 
           fill_in 'Name', with: 'Blue classroom'
           click_on 'Create Location'
 
-          expect(page).to have_content('The Hall')
-          expect(page).to have_content('Blue classroom')
+          expect(page).to have_text('The Hall')
+          expect(page).to have_text('Blue classroom')
 
           click_on 'Next'
 
@@ -77,9 +77,9 @@ describe 'temperature recordings as school admin' do
           fill_in :location_name, with: 'The Great Hall'
           click_on 'Update Location'
 
-          expect(page).not_to have_content('The Hall')
-          expect(page).to have_content('The Great Hall')
-          expect(page).to have_content('Location updated')
+          expect(page).to have_no_text('The Hall')
+          expect(page).to have_text('The Great Hall')
+          expect(page).to have_text('Location updated')
         end
 
         it 'deletes an assocated temperature recording if location is nobbled' do
@@ -87,7 +87,7 @@ describe 'temperature recordings as school admin' do
             create(:temperature_recording, observation: obs, location: the_hall)
           end
           click_on 'Change room names'
-          expect(page).to have_content(observation.locations.first.name)
+          expect(page).to have_text(observation.locations.first.name)
           expect { click_on 'Delete' }.to change(Location, :count).by(-1).and change(TemperatureRecording, :count).by(-1)
         end
       end
@@ -95,7 +95,7 @@ describe 'temperature recordings as school admin' do
   end
 
   context 'deleting a temperature recording as admin' do
-    let!(:user)       { create(:school_admin, school: school)}
+    let!(:user)       { create(:school_admin, school: school) }
     let!(:observation) do
       create(:observation, :temperature, school: school).tap do |obs|
         create(:temperature_recording, observation: obs, location: the_hall)

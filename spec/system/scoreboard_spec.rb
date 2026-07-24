@@ -26,42 +26,44 @@ RSpec.describe 'scoreboards', :scoreboards do
       end
 
       it 'allows anyone to see the scoreboard' do
-        expect(page).to have_content('Super scoreboard')
+        expect(page).to have_text('Super scoreboard')
         expect(page).to have_link(href: scoreboard_path(scoreboard))
-        expect(page).to have_content(school_with_points.name)
+        expect(page).to have_text(school_with_points.name)
       end
 
       it 'has a national scoreboard' do
-        expect(page).to have_content('National Scoreboard')
+        expect(page).to have_text('National Scoreboard')
         expect(page).to have_link(href: scoreboard_path('national'))
       end
 
       it 'includes top ranking schools' do
-        expect(page).to have_content(school_with_points.name)
-        expect(page).to have_content(points)
-        expect(page).to have_no_content(school.name)
+        expect(page).to have_text(school_with_points.name)
+        expect(page).to have_text(points)
+        expect(page).to have_no_text(school.name)
         expect(page).to have_link('View scores for 2 schools')
       end
     end
 
     it 'includes schools and points on the scoreboard' do
       visit scoreboard_path(scoreboard)
-      expect(page).to have_content('Super scoreboard')
-      expect(page).to have_content(school_with_points.name)
-      expect(page).to have_link(points.to_s, href: school_timeline_path(school_with_points, academic_year: scoreboard.this_academic_year))
-      expect(page).to have_content(points)
-      expect(page).to have_content(school.name)
-      expect(page).to have_content('0')
+      expect(page).to have_text('Super scoreboard')
+      expect(page).to have_text(school_with_points.name)
+      expect(page).to have_link(points.to_s,
+                                href: school_timeline_path(school_with_points,
+                                                           academic_year: scoreboard.this_academic_year))
+      expect(page).to have_text(points)
+      expect(page).to have_text(school.name)
+      expect(page).to have_text('0')
     end
 
     it 'shows schools and points on the national scoreboard' do
       visit scoreboard_path('national')
-      expect(page).to have_content('National Scoreboard')
-      expect(page).to have_content(school_with_points.name)
-      expect(page).to have_content(points)
+      expect(page).to have_text('National Scoreboard')
+      expect(page).to have_text(school_with_points.name)
+      expect(page).to have_text(points)
       expect(page).to have_link(points.to_s, href: school_timeline_path(school_with_points))
       expect(page).to have_link('last year', href: scoreboard_path('national', previous_year: true))
-      expect(page).to have_no_content(school.name)
+      expect(page).to have_no_text(school.name)
     end
 
     it 'redirects all to national' do
@@ -79,13 +81,13 @@ RSpec.describe 'scoreboards', :scoreboards do
       within '#our-schools' do
         click_on 'Scoreboards'
       end
-      expect(page).to have_content('Super scoreboard')
-      expect(page).to have_no_content('Private scoreboard')
+      expect(page).to have_text('Super scoreboard')
+      expect(page).to have_no_text('Private scoreboard')
     end
 
     it 'doesn\'t allow access to the private scoreboard' do
       visit scoreboard_path(private_scoreboard)
-      expect(page).to have_content('You are not authorized to access this page')
+      expect(page).to have_text('You are not authorized to access this page')
     end
 
     describe 'when logged in as user from school linked to scoreboard' do
@@ -97,12 +99,12 @@ RSpec.describe 'scoreboards', :scoreboards do
 
       it 'can view the public and private boards' do
         visit scoreboards_path
-        expect(page).to have_content('Super scoreboard')
-        expect(page).to have_content('Private scoreboard')
+        expect(page).to have_text('Super scoreboard')
+        expect(page).to have_text('Private scoreboard')
         expect(page).to have_link(href: scoreboard_path(private_scoreboard))
         visit scoreboard_path(private_scoreboard)
-        expect(page).to have_content('Private scoreboard')
-        expect(page).to have_content(other_school.name)
+        expect(page).to have_text('Private scoreboard')
+        expect(page).to have_text(other_school.name)
       end
     end
   end
@@ -120,12 +122,12 @@ RSpec.describe 'scoreboards', :scoreboards do
     context 'on index page' do
       before { visit scoreboards_path }
 
-      it { expect(page).to have_no_content(prize_excerpt) }
+      it { expect(page).to have_no_text(prize_excerpt) }
 
       context 'feature is active' do
         let(:feature_active) { true }
 
-        it { expect(page).to have_content(prize_excerpt) }
+        it { expect(page).to have_text(prize_excerpt) }
         it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
       end
     end
@@ -133,12 +135,12 @@ RSpec.describe 'scoreboards', :scoreboards do
     context 'on scoreboard page' do
       before { visit scoreboards_path(scoreboard) }
 
-      it { expect(page).to have_no_content(prize_excerpt) }
+      it { expect(page).to have_no_text(prize_excerpt) }
 
       context 'feature is active' do
         let(:feature_active) { true }
 
-        it { expect(page).to have_content(prize_excerpt) }
+        it { expect(page).to have_text(prize_excerpt) }
         it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
       end
     end

@@ -61,7 +61,6 @@ class SchoolsController < ApplicationController
     authorize! :show, @school
     @audience = :adult
     @observations = setup_timeline(@school.observations.includes(:activity, :intervention_type))
-    @progress_summary = progress_service.progress_summary if @school.data_enabled?
   end
 
   # GET /schools/1/edit
@@ -182,31 +181,31 @@ class SchoolsController < ApplicationController
 
   def school_params
     allowed = %i[
-      name
       activation_date
-      school_type
-      funding_status
       address
-      postcode
-      country
-      latitude
-      longitude
-      website
-      urn
-      number_of_pupils
-      floor_area
-      percentage_free_school_meals
-      indicated_has_solar_panels
-      indicated_has_storage_heaters
-      has_swimming_pool
-      serves_dinners
-      cooks_dinners_onsite
+      chart_preference
       cooks_dinners_for_other_schools
       cooks_dinners_for_other_schools_count
+      cooks_dinners_onsite
+      country
       enable_targets_feature
+      floor_area
+      funding_status
+      has_battery
+      has_swimming_pool
+      indicated_has_solar_panels
+      indicated_has_storage_heaters
+      latitude
+      longitude
+      name
+      number_of_pupils
+      percentage_free_school_meals
+      postcode
       public
-      chart_preference
-      funder_id
+      school_type
+      serves_dinners
+      urn
+      website
     ]
     allowed += School::HEATING_TYPES.map { |type| :"heating_#{type}" }
     params.require(:school).permit(*allowed, key_stage_ids: [])

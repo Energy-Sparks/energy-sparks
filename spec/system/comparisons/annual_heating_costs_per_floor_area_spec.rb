@@ -26,9 +26,9 @@ describe 'annual_heating_costs_per_floor_area' do
       one_year_gas_per_floor_area_co2: 21.239315786816878,
       one_year_gas_per_floor_area_gbp: 6.514057089992596,
       one_year_gas_per_floor_area_kwh: 116.32244803558191,
-      last_year_co2:  28651.83699641597,
+      last_year_co2: 28_651.83699641597,
       last_year_gbp: 8787.463014400011,
-      last_year_kwh: 156918.9824,
+      last_year_kwh: 156_918.9824,
       one_year_saving_versus_exemplar_gbpcurrent: 5662.080886786545
     }
   end
@@ -141,7 +141,6 @@ describe 'annual_heating_costs_per_floor_area' do
          [school.name, '5,850', '1,540', '775', '5.56', '1.47', '0.737', '']]
       end
     end
-
 
     it_behaves_like 'a school comparison report with a chart' do
       let(:expected_report) { report }

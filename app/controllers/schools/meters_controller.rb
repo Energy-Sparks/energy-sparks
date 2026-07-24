@@ -36,9 +36,8 @@ module Schools
     def edit; end
 
     def create
-      manager = MeterManagement.new(@meter)
       if @meter.save
-        manager.process_creation!
+        MeterManagement.new(@meter).process_creation!(current_user)
         redirect_to school_meters_path(@school)
       else
         load_meters
@@ -114,8 +113,8 @@ module Schools
 
     def meter_params
       params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :data_source_id,
-                                    :procurement_route_id, :admin_meter_statuses_id, :meter_system, :perse_api,
-                                    :manual_reads, :gas_unit)
+                                    :supplier_id, :procurement_route_id, :admin_meter_statuses_id, :meter_system,
+                                    :perse_api, :manual_reads, :gas_unit)
     end
   end
 end

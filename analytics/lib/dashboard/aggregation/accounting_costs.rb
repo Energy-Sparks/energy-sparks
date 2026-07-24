@@ -17,9 +17,14 @@ class AccountingCosts < CostSchedule
   # @param Date combined_end_date end date of range
   # @return AccountingCostsPrecalculated
   def self.combine_accounting_costs_from_multiple_meters(combined_meter, list_of_meters, combined_start_date, combined_end_date)
-    combine_costs_from_multiple_meters(combined_meter, list_of_meters, combined_start_date, combined_end_date, :accounting_tariff, AccountingCostsPrecalculated.new(combined_meter.meter_tariffs, combined_meter.amr_data, combined_meter.fuel_type)) do |date, list_of_meters_on_date|
-      missing_accounting_costs = list_of_meters_on_date.select { |m| !m.amr_data.date_exists_by_type?(date, :accounting_cost) }
-      missing_accounting_costs.length > 0
+    cost_schedule = AccountingCostsPrecalculated.new(combined_meter.meter_tariffs, combined_meter.amr_data,
+                                                     combined_meter.fuel_type)
+    combine_costs_from_multiple_meters(combined_meter, list_of_meters, combined_start_date, combined_end_date,
+                                       :accounting_tariff, cost_schedule) do |date, list_of_meters_on_date|
+      missing_accounting_costs = list_of_meters_on_date.reject do |m|
+        m.amr_data.date_exists_by_type?(date, :accounting_cost)
+      end
+      missing_accounting_costs.length.positive?
     end
   end
 

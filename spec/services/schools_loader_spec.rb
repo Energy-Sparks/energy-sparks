@@ -8,7 +8,10 @@ describe SchoolsLoader, type: :service do
     let!(:school_1) { create(:school, name: 'zulu', school_group: nil) }
     let!(:school_2) { create(:school, name: 'alpha', school_group: nil) }
 
-    let(:data) { { 'schools' => [{ 'name' => school_1.slug, 'description' => 'foo' }, { 'name' => school_2.slug, 'description' => 'bar' }] } }
+    let(:data) do
+      { 'schools' => [{ 'name' => school_1.slug, 'description' => 'foo' },
+                      { 'name' => school_2.slug, 'description' => 'bar' }] }
+    end
 
     context 'with no list' do
       it 'returns empty list' do

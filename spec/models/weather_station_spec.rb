@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe WeatherStation, type: :model do
   let!(:station) { create(:weather_station) }
-  let!(:station_inactive) { create(:weather_station, active: false)}
+  let!(:station_inactive) { create(:weather_station, active: false) }
 
   it 'applies active by type scope' do
     expect(WeatherStation.count).to be 2

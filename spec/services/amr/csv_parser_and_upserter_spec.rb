@@ -118,15 +118,14 @@ describe Amr::CsvParserAndUpserter do
 
     let!(:config) do
       create(:amr_data_feed_config,
-        identifier: 'row-per-day',
-        number_of_header_rows: 1,
-        date_format: '%d/%m/%y',
-        mpan_mprn_field: 'Site Id',
-        msn_field: 'Meter Number',
-        reading_date_field: 'Reading Date',
-        reading_fields: valid_reading_times,
-        header_example: 'Site Id,Meter Number,Reading Date,' + valid_reading_times.join(',')
-      )
+             identifier: 'row-per-day',
+             number_of_header_rows: 1,
+             date_format: '%d/%m/%y',
+             mpan_mprn_field: 'Site Id',
+             msn_field: 'Meter Number',
+             reading_date_field: 'Reading Date',
+             reading_fields: valid_reading_times,
+             header_example: 'Site Id,Meter Number,Reading Date,' + valid_reading_times.join(','))
     end
 
     it_behaves_like 'it handles empty files'
@@ -208,14 +207,13 @@ describe Amr::CsvParserAndUpserter do
     context 'with incorrectly formatted file' do
       let!(:config) do
         create(:amr_data_feed_config,
-          identifier: 'row-per-day',
-          number_of_header_rows: 1,
-          date_format: '%d/%m/%y',
-          mpan_mprn_field: 'MPAN',
-          reading_date_field: 'Date',
-          reading_fields: valid_reading_times,
-          header_example: 'MPAN,Reading Date,' + valid_reading_times.join(',')
-        )
+               identifier: 'row-per-day',
+               number_of_header_rows: 1,
+               date_format: '%d/%m/%y',
+               mpan_mprn_field: 'MPAN',
+               reading_date_field: 'Date',
+               reading_fields: valid_reading_times,
+               header_example: 'MPAN,Reading Date,' + valid_reading_times.join(','))
       end
 
       let(:file_name) { 'valid.csv' }
@@ -227,16 +225,15 @@ describe Amr::CsvParserAndUpserter do
   context 'with row per reading files' do
     let!(:config) do
       create(:amr_data_feed_config,
-        identifier: 'row-per-reading',
-        row_per_reading: true,
-        half_hourly_labelling: :end,
-        number_of_header_rows: 2,
-        date_format: '%e %b %Y %H:%M:%S',
-        mpan_mprn_field: 'MPR',
-        reading_date_field: 'ReadDatetime',
-        reading_fields: ['kWh'],
-        header_example: 'MPR,ReadDatetime,kWh,ReadType'
-      )
+             identifier: 'row-per-reading',
+             row_per_reading: true,
+             half_hourly_labelling: :end,
+             number_of_header_rows: 2,
+             date_format: '%e %b %Y %H:%M:%S',
+             mpan_mprn_field: 'MPR',
+             reading_date_field: 'ReadDatetime',
+             reading_fields: ['kWh'],
+             header_example: 'MPR,ReadDatetime,kWh,ReadType')
     end
 
     it_behaves_like 'it handles empty files'

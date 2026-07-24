@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: activities
 #
+#  id                   :bigint(8)        not null, primary key
+#  happened_on          :date
+#  pupil_count          :integer
+#  title                :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #  activity_category_id :bigint(8)
 #  activity_type_id     :bigint(8)        not null
-#  created_at           :datetime         not null
 #  created_by_id        :bigint(8)
-#  happened_on          :date
-#  id                   :bigint(8)        not null, primary key
-#  pupil_count          :integer
 #  school_id            :bigint(8)        not null
-#  title                :string
-#  updated_at           :datetime         not null
 #  updated_by_id        :bigint(8)
 #
 # Indexes
@@ -34,6 +36,8 @@
 class Activity < ApplicationRecord
   include Description
   include Todos::Recording
+  include CsvExportable
+  include RecordingScopes
 
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities
@@ -48,51 +52,60 @@ class Activity < ApplicationRecord
   # At last check, activities had one obsevation each (with four having none)
   has_many :observations
 
-  validates_presence_of :school, :activity_type, :activity_category, :happened_on
+  validates :happened_on, presence: true
 
-  scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
-  scope :for_school, ->(school) { where(school: school) }
-  scope :most_recent, -> { order(created_at: :desc) }
-  scope :by_date, ->(order = :asc) { order(happened_on: order) }
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
+  scope :by_date, ->(order = :asc) { order(happened_on: order, id: order) }
+  scope :most_recent, -> { order(created_at: :desc) }
+  scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
-  scope :in_academic_year_for, ->(school, date) { (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
+  scope :in_academic_year_for, lambda { |school, date|
+    (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
+  }
+  scope :recorded_in_last_year, -> { where(activities: { created_at: 1.year.ago.. }) }
+  scope :recorded_in_last_week, -> { where(activities: { created_at: 1.week.ago.. }) }
+
+  scope :search, lambda { |search|
+    joins(:rich_text_description).where('title ~* ? or action_text_rich_texts.body ~* ?', search, search)
+  }
 
   has_rich_text :description
 
   after_update :update_observations
 
-  self.ignored_columns = %w(deprecated_description)
+  self.ignored_columns = %w[deprecated_description]
 
-  def display_name
-    activity_type.custom ? title : activity_type.name
-  end
+  def display_name = activity_type.custom ? title : activity_type.name
 
   # There should only ever be one observation per activity
   # But we maintain has_many relationship for now
-  def points
-    observations.sum(:points)
+  def points = observations.sum(:points)
+
+  def academic_year = school.academic_year_for(happened_on)
+
+  def type_name = activity_type&.name
+
+  def observation_user
+    observations.first&.created_by
   end
 
-  def academic_year
-    school.academic_year_for(happened_on)
+  def display_title
+    title.nil? ? activity_type.name : title
+  end
+
+  def task
+    activity_type
   end
 
   private
 
-  def description_previously_changed?
-    rich_text_description&.previous_changes&.key?('body')
-  end
+  def description_previously_changed? = rich_text_description&.previous_changes&.key?('body')
 
-  def update_observations?
-    happened_on_previously_changed? || description_previously_changed? || updated_by_previously_changed?
-  end
+  def update_observations? = happened_on_previously_changed? || description_previously_changed? || updated_by_previously_changed?
 
   def update_observations
-    if update_observations?
-      observations.each { |o| o.update(updated_by:, at: happened_on) } # forces callbacks to update points
-    end
+    return unless update_observations?
+
+    observations.each { |o| o.update(updated_by:, at: happened_on) } # forces callbacks to update points
   end
 end

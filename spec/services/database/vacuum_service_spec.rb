@@ -4,9 +4,9 @@ describe Database::VacuumService do
   # Vacuum can't run inside in a transaction block
   self.use_transactional_tests = false
 
-  let(:tables) { [:amr_data_feed_readings, :amr_reading_warnings] }
-
   subject(:vacuum_service) { Database::VacuumService.new(tables) }
+
+  let(:tables) { %i[amr_data_feed_readings amr_reading_warnings] }
 
   describe '#perform' do
     context 'under normal running conditions' do

@@ -1,0 +1,12 @@
+<% content_for :title, "#{@dashboard_user&.display_name}'s Admin Dashboard" %>
+
+<%= cache({ title: :admin_quick_links_component, user: @dashboard_user.id },
+          expires_in: 2.hours) do %>
+  <%= render Admin::QuickLinksComponent.new(user: @dashboard_user, classes: 'mt-1') %>
+<% end %>
+
+<%= cache({ title: :admin_dashboard_prompt_component, user: @dashboard_user.id,
+            timestamp: prompt_cache_timestamp(@dashboard_user) },
+          expires_in: 20.minutes) do %>
+  <%= render Admin::DashboardPromptComponent.new(user: @dashboard_user, classes: 'mt-1') %>
+<% end %>

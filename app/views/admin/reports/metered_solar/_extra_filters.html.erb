@@ -1,0 +1,5 @@
+<%= render 'filter',
+           field: :school,
+           options: options_from_collection_for_select(School.active.by_name, :id, :name, params[:school]),
+           blank: 'Any School' %>
+<%= render 'admin_meter_status_filter' %>

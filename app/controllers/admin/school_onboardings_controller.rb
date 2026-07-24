@@ -1,12 +1,16 @@
 require 'securerandom'
 module Admin
   class SchoolOnboardingsController < AdminController
+    include Pagy::Backend
     load_and_authorize_resource find_by: :uuid
 
     INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = 'incomplete-onboarding-schools.csv'.freeze
 
     def index
       @school_groups = SchoolGroup.order(name: :asc)
+
+      @school_groups = @school_groups.where(default_issues_admin_user: @dashboard_user) if @dashboard_user
+
       respond_to do |format|
         format.html
         format.csv { send_data produce_csv, filename: INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME }
@@ -17,10 +21,22 @@ module Admin
     end
 
     def completed
-      @completed_schools = @school_onboardings.complete.order(updated_at: :desc)
+      @pagy, @records = pagy(
+        @completed_schools = @school_onboardings.complete.includes(:school, school: :school_group).order(updated_at: :desc)
+      )
     end
 
     def create
+      existing_school = School.find_by(urn: params[:school_onboarding][:urn])
+      if existing_school
+        flash.now[:alert] = view_context.safe_join(
+          [
+            'This URN is already in use by ',
+            view_context.link_to(existing_school.name, school_path(existing_school))
+          ]
+        )
+        return render :new
+      end
       @school_onboarding.populate_default_values(current_user)
       if @school_onboarding.save
         redirect_to edit_admin_school_onboarding_configuration_path(@school_onboarding)
@@ -51,12 +67,14 @@ module Admin
 
     def produce_csv
       CSV.generate do |csv|
-        csv << ['School name', 'School Group Name', 'Contact email', 'Notes', 'Last event']
+        csv << ['School name', 'School Group Name', 'Contact email', 'Notes', 'Invite sent', 'Last event', 'Last event date']
 
         @school_onboardings.order(:school_group_id).incomplete.each do |school_onboarding|
+          invite_sent = school_onboarding.started_on&.to_fs(:es_short)
           last_event = school_onboarding.events.order(event: :desc).first
+          last_event_date = last_event ? last_event.created_at.to_fs(:es_short) : nil
           last_event = last_event.event.to_s.humanize if last_event
-          csv << [school_onboarding.school_name, school_onboarding.school_group&.name, school_onboarding.contact_email, school_onboarding.notes, last_event]
+          csv << [school_onboarding.school_name, school_onboarding.school_group&.name, school_onboarding.contact_email, school_onboarding.notes, invite_sent, last_event, last_event_date]
         end
       end
     end
@@ -64,14 +82,12 @@ module Admin
     def school_onboarding_params
       params.require(:school_onboarding).permit(
         :contact_email,
-        :data_sharing,
-        :funder_id,
+        :full_school,
         :notes,
         :school_group_id,
         :school_name,
         :school_will_be_public,
-        :urn,
-        :full_school
+        :urn
       )
     end
   end

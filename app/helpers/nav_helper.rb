@@ -16,7 +16,7 @@ module NavHelper
   end
 
   def order_expand_class
-    "order-#{expand_class}-12"
+    "order-#{expand_class}-last"
   end
 
   def navbar_hide_class
@@ -92,8 +92,19 @@ module NavHelper
 
   def header_nav_link(link_text, link_path, **kwargs)
     return if current_page?(link_path) # don't show link if already on page
-    nav_class = 'btn '
+    nav_class = 'btn btn-default '
     nav_class += " #{kwargs[:class]}" if kwargs[:class]
     link_to link_text, link_path, class: nav_class
+  end
+
+  def school_context?
+    current_school && request.path.starts_with?('/schools/', '/pupils/schools/', '/admin/')
+  end
+
+  def school_group_context?
+    # Historically we have not allowed /admin/school_group routes to have school group
+    # context menus etc, but have changed this to allow the Manage Group menu to be displayed on admin pages
+    current_school_group &&
+      request.path.match?(%r{\A/(?:school_groups|admin/school_groups|admin/dashboards/\d+/school_groups)(?:/|$)})
   end
 end

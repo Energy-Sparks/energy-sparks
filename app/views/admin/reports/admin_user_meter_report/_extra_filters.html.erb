@@ -1,0 +1,7 @@
+<%= render 'filter', field: :meter_type,
+                     options: options_for_select(Meter.meter_types.to_a, params[:meter_type]),
+                     blank: 'Any Meter Type' %>
+<%= render 'admin_meter_status_filter' %>
+<%= render 'filter', field: :active,
+                     options: options_for_select([%w[Active true], %w[Inactive false], %w[All all]],
+                                                 params[:active].presence || 'true') %>

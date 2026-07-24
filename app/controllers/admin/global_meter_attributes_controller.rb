@@ -43,15 +43,22 @@ module Admin
     def update
       meter_attribute = GlobalMeterAttribute.find(params[:id])
       authorize! :edit, @meter_attribute
-      new_attribute = GlobalMeterAttribute.create!(
-        attribute_type: meter_attribute.attribute_type,
-        reason: params[:attribute][:reason],
-        input_data: params[:attribute][:root],
-        meter_types: params[:attribute][:meter_types],
-        created_by: current_user
-      )
-      meter_attribute.update!(replaced_by: new_attribute)
-      redirect_to admin_global_meter_attributes_path
+      if params[:restore]
+        meter_attribute.deleted_by = nil
+        meter_attribute.save(validate: false)
+        notice = 'Meter attribute successfully restored'
+      else
+        new_attribute = GlobalMeterAttribute.create!(
+          attribute_type: meter_attribute.attribute_type,
+          reason: params[:attribute][:reason],
+          input_data: params[:attribute][:root],
+          meter_types: params[:attribute][:meter_types],
+          created_by: current_user
+        )
+        meter_attribute.update!(replaced_by: new_attribute)
+        notice = 'Meter attribute successfully updated'
+      end
+      redirect_to admin_global_meter_attributes_path, notice: notice
     rescue => e
       redirect_back fallback_location: admin_global_meter_attributes_path, notice: e.message
     end

@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 describe 'site settings energy tariffs', type: :system do
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: 'true' do
-      example.run
-    end
-  end
-
   context 'as an admin user' do
     let!(:current_user) { create(:admin) }
 

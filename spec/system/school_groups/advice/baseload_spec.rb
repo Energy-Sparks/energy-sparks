@@ -64,17 +64,17 @@ describe 'School group baseload page' do
       end
 
       it 'has the comparisons section' do
-        expect(page).to have_content(I18n.t('advice_pages.baseload.comparison.title'))
+        expect(page).to have_text(I18n.t('advice_pages.baseload.comparison.title'))
         expect(page).to have_css('.school-group-comparison-component')
         expect(page).to have_link(href: analysis_school_group_advice_baseload_path(school_group, anchor: 'potential-savings'))
       end
 
       it 'has the key insights section' do
-        expect(page).to have_content(I18n.t('school_groups.advice_pages.baseload.insights.current_baseload.title'))
+        expect(page).to have_text(I18n.t('school_groups.advice_pages.baseload.insights.current_baseload.title'))
         expect(page).to have_css('#baseload_per_pupil-table')
         within('#baseload_per_pupil-table') do
-          expect(page).to have_content(school.name)
-          expect(page).to have_content('20')
+          expect(page).to have_text(school.name)
+          expect(page).to have_text('20')
         end
       end
     end
@@ -96,7 +96,7 @@ describe 'School group baseload page' do
       end
 
       context 'with potential savings' do
-        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.baseload.analysis.potential_savings.title')) }
+        it { expect(page).to have_text(I18n.t('school_groups.advice_pages.baseload.analysis.potential_savings.title')) }
 
         it_behaves_like 'it contains the expected data table' do
           let(:table_id) { '#baseload-savings' }
@@ -115,7 +115,7 @@ describe 'School group baseload page' do
       end
 
       context 'with comparison section' do
-        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.title')) }
+        it { expect(page).to have_text(I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.title')) }
 
         it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { report }

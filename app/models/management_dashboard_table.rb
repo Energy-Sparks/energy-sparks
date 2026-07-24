@@ -2,12 +2,12 @@
 #
 # Table name: management_dashboard_tables
 #
+#  id                                   :bigint(8)        not null, primary key
+#  created_at                           :datetime         not null
+#  updated_at                           :datetime         not null
 #  alert_id                             :bigint(8)
 #  alert_type_rating_content_version_id :bigint(8)
 #  content_generation_run_id            :bigint(8)
-#  created_at                           :datetime         not null
-#  id                                   :bigint(8)        not null, primary key
-#  updated_at                           :datetime         not null
 #
 # Indexes
 #

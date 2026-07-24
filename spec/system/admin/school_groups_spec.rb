@@ -21,7 +21,8 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
   def create_data_for_project_groups(school_group, project_groups)
     project_groups.each do |project_group|
       create(:school_onboarding, created_by: admin, school_group: school_group, project_group:)
-      create(:school, :with_project, visible: true, data_enabled: true, school_group: school_group, group: project_group)
+      create(:school, :with_project, visible: true, data_enabled: true, school_group: school_group,
+                                     group: project_group)
       create(:school, :with_project, visible: false, school_group: school_group, group: project_group)
       create(:school, :with_project, active: false, school_group: school_group, group: project_group)
     end
@@ -41,8 +42,13 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           [create(:school_group, default_issues_admin_user: create(:admin)), create(:school_group)]
         end
 
+        let(:reviewable_school_group) { create(:school_group) }
+
+        let!(:issue) { create(:issue, :with_group_review, issueable: reviewable_school_group, review_date: 1.day.from_now) }
+
         before do
           create_data_for_school_groups(school_groups)
+          create_data_for_school_groups([reviewable_school_group])
           click_on 'Manage School Groups'
         end
 
@@ -52,6 +58,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
               expect(page).to have_selector(:table_row,
                                             { 'Name' => school_group.name, 'Type' => school_group.group_type.humanize,
                                               'Admin' => school_group.default_issues_admin_user.try(:display_name) || '',
+                                              'Review date' => '',
                                               'Onboarding' => 1,
                                               'Active' => 1,
                                               'Data visible' => 1,
@@ -61,17 +68,38 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           end
         end
 
+        it 'displays review dates when available' do
+          within('table') do
+            expect(page).to have_selector(:table_row,
+                                          { 'Name' => reviewable_school_group.name, 'Type' => reviewable_school_group.group_type.humanize,
+                                            'Admin' => reviewable_school_group.default_issues_admin_user.try(:display_name) || '',
+                                            'Review date' => short_dates(1.day.from_now),
+                                            'Onboarding' => 1,
+                                            'Active' => 1,
+                                            'Data visible' => 1,
+                                            'Invisible' => 1,
+                                            'Removed' => 1 })
+          end
+        end
+
+        it 'links to the group review' do
+          within('table') do
+            expect(page).to have_link(short_dates(1.day.from_now), href: admin_issue_path(issue))
+          end
+        end
+
         it 'displays a grand total' do
           within('table') do
             expect(page).to have_selector(:table_row,
                                           { 'Name' => 'All Energy Sparks Schools',
                                             'Type' => '',
                                             'Admin' => '',
-                                            'Onboarding' => 2,
-                                            'Active' => 2,
-                                            'Data visible' => 2,
-                                            'Invisible' => 2,
-                                            'Removed' => 2 })
+                                            'Review date' => '',
+                                            'Onboarding' => 3,
+                                            'Active' => 3,
+                                            'Data visible' => 3,
+                                            'Invisible' => 3,
+                                            'Removed' => 3 })
           end
         end
 
@@ -128,13 +156,16 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
         it 'displays totals for each group' do
           within('table') do
             school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row,
-                                            { 'Name' => school_group.name,
-                                              'Onboarding' => 1,
-                                              'Active' => 1,
-                                              'Data visible' => 1,
-                                              'Invisible' => 1,
-                                              'Removed' => 1 })
+              expect(page).to have_selector(
+                :table_row,
+                { 'Name' => school_group.name,
+                  'Admin' => school_group.default_issues_admin_user.try(:display_name) || '',
+                  'Onboarding' => 1,
+                  'Active' => 1,
+                  'Data visible' => 1,
+                  'Invisible' => 1,
+                  'Removed' => 1 }
+              )
             end
           end
         end
@@ -187,7 +218,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'Manage School Groups'
         end
 
-        it { expect(page).not_to have_link("New #{I18n.t('school_groups.clusters.group_type.diocese')} group") }
+        it { expect(page).to have_no_link("New #{I18n.t('school_groups.clusters.group_type.diocese')} group") }
       end
 
       context 'with local authority group' do
@@ -195,7 +226,9 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'Manage School Groups'
         end
 
-        it { expect(page).not_to have_link("New #{I18n.t('school_groups.clusters.group_type.local_authority_area')} group") }
+        it {
+          expect(page).to have_no_link("New #{I18n.t('school_groups.clusters.group_type.local_authority_area')} group")
+        }
       end
 
       context 'when creating an organisation group' do
@@ -207,16 +240,16 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'New school group'
         end
 
-        it { expect(page).to have_content('New School group')}
-        it { expect(page).to have_css('#group-defaults')}
+        it { expect(page).to have_text('New School group') }
+        it { expect(page).to have_css('#group-defaults') }
 
         context 'when required data has not been entered' do
           before do
             click_on 'Create School group'
           end
 
-          it { expect(page).to have_content('New School group')}
-          it { expect(page).to have_content("Name can't be blank") }
+          it { expect(page).to have_text('New School group') }
+          it { expect(page).to have_text("Name can't be blank") }
         end
 
         context 'when all data has been entered' do
@@ -247,16 +280,16 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'New Project group'
         end
 
-        it { expect(page).to have_content('New Project group')}
-        it { expect(page).not_to have_css('#group-defaults')}
+        it { expect(page).to have_text('New Project group') }
+        it { expect(page).to have_no_css('#group-defaults') }
 
         context 'when required data has not been entered' do
           before do
             click_on 'Create School group'
           end
 
-          it { expect(page).to have_content('New Project group')}
-          it { expect(page).to have_content("Name can't be blank") }
+          it { expect(page).to have_text('New Project group') }
+          it { expect(page).to have_text("Name can't be blank") }
         end
 
         context 'when all data has been entered' do

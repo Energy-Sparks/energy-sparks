@@ -1,8 +1,7 @@
 require 'rails_helper'
 
-
 describe Alerts::System::ContentManaged do
-  let(:school) { create :school, name: 'St. Egberts' }
+  let(:school) { create(:school, name: 'St. Egberts') }
   let!(:aggregate_school) { instance_double('meter-collection') }
 
   let(:today) { Date.new(2019, 4, 26) }

@@ -1,0 +1,9 @@
+cy:
+  components:
+    dashboards:
+      group_savings_prompt:
+        co2_prompt_html: Cymerwch gamau mewn <strong>%{schools}</strong> i leihau allyriadau carbon o'ch defnydd %{fuel_type} gan <strong>%{saving}</strong>.
+        gbp_prompt_html: Cymerwch gamau mewn <strong>%{schools}</strong> i leihau eich  costau %{fuel_type} dros y flwyddyn nesaf gan <strong>%{saving}</strong>.
+        kwh_prompt_html: Cymerwch gamau mewn <strong>%{schools}</strong> i leihau eich defnydd o %{fuel_type} dros y flwyddyn nesaf gan <strong>%{saving}</strong>.
+        note: Dyma un enghraifft yn unig o'r arbedion posibl rydyn ni wedi'u nodi ar draws ysgolion yn y grŵp hwn
+        view_all_potential_savings: Gweld yr holl arbedion posibl

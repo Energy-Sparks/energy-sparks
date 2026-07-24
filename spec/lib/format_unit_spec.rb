@@ -106,7 +106,8 @@ describe FormatUnit, :aggregate_failures do
 
     context 'with :relative_percent no scale' do
       it 'formats correctly' do
-        expect(described_class.format({ units: :relative_percent, options: { scale: false } }, -11.8891179217)).to eq('-12%')
+        expect(described_class.format({ units: :relative_percent, options: { scale: false } },
+                                      -11.8891179217)).to eq('-12%')
       end
     end
 

@@ -12,29 +12,19 @@ module AnalyseHeatingAndHotWater
   # associated with a meter
   class ModelCache
     include Logging
+
     def initialize(meter)
       @meter = meter
-      logger.info "Creating model cache for meter #{meter.id}"
+      logger.debug { "Creating model cache for meter #{meter.id}" }
       @processed_model_overrides = false
       @models = {}
-    end
-
-    def results(model_type)
-      @models[model_type]
-    end
-
-    def holidays
-      @meter.meter_collection.holidays
-    end
-
-    def temperatures
-      @meter.meter_collection.temperatures
     end
 
     private def override_model_start_end_dates?(allow_more_than_1_year, period)
       return false if @model_overrides.fitting.nil?
       return false if period.end_date >= @model_overrides.fitting[:expiry_date_of_override]
       return false if allow_more_than_1_year && !@model_overrides.fitting[:use_dates_for_model_validation]
+
       true
     end
 
@@ -47,9 +37,13 @@ module AnalyseHeatingAndHotWater
     end
 
     def create_and_fit_model(heating_model_type, period, allow_more_than_1_year = false, non_heating_model_type = nil)
-      logger.info "create_and_fit_model start heat #{heating_model_type} hw #{non_heating_model_type} #{period.start_date} to #{period.end_date}"
+      logger.debug do
+        "create_and_fit_model start. type: #{heating_model_type} " \
+          "non_model_type: #{non_heating_model_type}; period: #{period.type} #{period.start_date} to #{period.end_date}"
+      end
       # use composite key to index model for caching
-      model_type = { heat_model: heating_model_type, period: period, years: allow_more_than_1_year, non_heating_model: non_heating_model_type}
+      model_type = { heat_model: heating_model_type, period: period, years: allow_more_than_1_year,
+                     non_heating_model: non_heating_model_type }
 
       unless @processed_model_overrides # deferred until meter available
         @model_overrides = HeatingModelOverrides.new(@meter)
@@ -65,7 +59,10 @@ module AnalyseHeatingAndHotWater
         )
       end
 
-      return @models[model_type] if @models.key?(model_type)
+      if @models.key?(model_type)
+        logger.debug { 'Returning cached heating model' }
+        return @models[model_type]
+      end
 
       case heating_model_type
       when :simple_regression_temperature
@@ -85,32 +82,33 @@ module AnalyseHeatingAndHotWater
         if type == :simple_regression_temperature
           @models[:override_model] = HeatingModelTemperatureSpaceManuallyConfigured.new(@meter, @model_overrides)
         elsif type == :thermal_mass_regression_temperature
-          @models[:override_model] = HeatingModelThermalMassingModeTemperatureSpaceManuallyConfigured.new(@meter, @model_overrides)
+          @models[:override_model] =
+            HeatingModelThermalMassingModeTemperatureSpaceManuallyConfigured.new(@meter, @model_overrides)
         else
-          raise EnergySparksUnexpectedStateException.new('Unexpected model_type missing or misconfigured override_best_model_type parameter?')
+          raise EnergySparksUnexpectedStateException,
+                'Unexpected model_type missing or misconfigured override_best_model_type parameter?'
         end
         @models[model_type].calculate_regression_model(period, allow_more_than_1_year, non_heating_model_type)
       when :best
         @models[model_type] = best_model(period, allow_more_than_1_year)
       else
-        raise EnergySparksUnexpectedStateException.new("Unexpected model_type #{model_type}")
+        raise EnergySparksUnexpectedStateException, "Unexpected model_type #{model_type}"
       end
-      logger.info "create_and_fit_model end"
+      logger.debug { 'create_and_fit_model end' }
 
       @models[model_type]
     end
 
     private def enough_amr_data?
-      if @meter.amr_data.days < 30
-        raise EnergySparksNotEnoughDataException, "Not enough amr data for model to provide good regression fit #{@meter.amr_data.days} days"
-      end
+      return true unless @meter.amr_data.days < 30
+
+      raise EnergySparksNotEnoughDataException,
+            "Not enough amr data for model to provide good regression fit #{@meter.amr_data.days} days"
     end
 
     class HeatingModelOverrides
-      attr_reader :override_best_model_type
-      attr_reader :override_regression_model, :reason, :function, :fitting
-      attr_reader :heating_non_heating_day_separation_model_override
-      attr_reader :heating_non_heating_day_fixed_kwh_separation
+      attr_reader :override_best_model_type, :override_regression_model, :reason, :function, :fitting,
+                  :heating_non_heating_day_separation_model_override, :heating_non_heating_day_fixed_kwh_separation
 
       def initialize(meter, ignore_meter_attributes = false)
         @meter = meter
@@ -127,8 +125,8 @@ module AnalyseHeatingAndHotWater
           @fitting = overrides.fetch(:fitting, nil)
         end
 
-        @heating_non_heating_day_fixed_kwh_separation  = meter.attributes(:heating_non_heating_day_fixed_kwh_separation)
-        @heating_non_heating_day_separation_model_override  = meter.attributes(:heating_non_heating_day_separation_model_override)
+        @heating_non_heating_day_fixed_kwh_separation = meter.attributes(:heating_non_heating_day_fixed_kwh_separation)
+        @heating_non_heating_day_separation_model_override = meter.attributes(:heating_non_heating_day_separation_model_override)
 
         @function = meter.attributes(:function)
       end
@@ -143,17 +141,24 @@ module AnalyseHeatingAndHotWater
     def best_model(period, allow_more_than_1_year)
       simple_model = create_and_fit_model(:simple_regression_temperature, period, allow_more_than_1_year)
       thermal_mass_model = create_and_fit_model(:thermal_mass_regression_temperature, period, allow_more_than_1_year)
-      override_model = create_and_fit_model(:override_model, period, allow_more_than_1_year) unless @model_overrides.override_regression_model.nil?
+      unless @model_overrides.override_regression_model.nil?
+        override_model = create_and_fit_model(:override_model, period,
+                                              allow_more_than_1_year)
+      end
 
-      if !@model_overrides.override_regression_model.nil?
-        override_model
-      else
-        return simple_model if simple_model.enough_samples_for_good_fit && !thermal_mass_model.enough_samples_for_good_fit
-
-        if !simple_model.enough_samples_for_good_fit
-          raise EnergySparksNotEnoughDataException, "Not enough samples for model to provide good regression fit simple: #{simple_model.winter_heating_samples} massive: #{thermal_mass_model.winter_heating_samples} mpan or mprn #{@meter.mpan_mprn} period: #{period.start_date} to #{period.end_date}"
+      if @model_overrides.override_regression_model.nil?
+        if simple_model.enough_samples_for_good_fit && !thermal_mass_model.enough_samples_for_good_fit
+          return simple_model
         end
+
+        unless simple_model.enough_samples_for_good_fit
+          raise EnergySparksNotEnoughDataException,
+                "Not enough samples for model to provide good regression fit simple: #{simple_model.winter_heating_samples} massive: #{thermal_mass_model.winter_heating_samples} mpan or mprn #{@meter.mpan_mprn} period: #{period.start_date} to #{period.end_date}"
+        end
+
         thermal_mass_model.standard_deviation_percent < simple_model.standard_deviation_percent ? thermal_mass_model : simple_model
+      else
+        override_model
       end
     end
   end
@@ -173,6 +178,7 @@ module AnalyseHeatingAndHotWater
     # nested class: this is the basic model for holding the linear regression parameters
     class RegressionModelTemperature
       include Logging
+
       attr_reader :key, :long_name, :a, :b, :r2, :standard_error, :x_data, :y_data
       attr_accessor :base_temperature
       attr_writer :samples # only want to set, as nil tolerant getter but want to set in derived class
@@ -195,7 +201,7 @@ module AnalyseHeatingAndHotWater
 
       def predicted_kwh_temperature(temperature)
         base_temp_problem_or_not_set = @base_temperature.nil? || @base_temperature.nan?
-        @a + @b * (base_temp_problem_or_not_set ? temperature : [temperature, @base_temperature].min)
+        @a + (@b * (base_temp_problem_or_not_set ? temperature : [temperature, @base_temperature].min))
       end
 
       def valid?
@@ -207,7 +213,7 @@ module AnalyseHeatingAndHotWater
       end
 
       def differences_from_model
-        @x_data.map.with_index{ |_x, i| y_data[i] - (a + b * x_data[i]) }
+        @x_data.map.with_index { |_x, i| y_data[i] - (a + (b * x_data[i])) }
       end
 
       def standard_deviation_from_model
@@ -216,27 +222,27 @@ module AnalyseHeatingAndHotWater
 
       def to_s
         # logger.info "a #{a} b #{b} r2 #{r2} x #{samples} bt #{base_temp_display}"
-        a.nan? ? 'kwh=NaN' : sprintf('kwh=%.0f+%.0fxT,R2=%.2f,N=%d baseT=%sC', a, b, r2, samples, base_temp_display)
+        a.nan? ? 'kwh=NaN' : format('kwh=%.0f+%.0fxT,R2=%.2f,N=%d baseT=%sC', a, b, r2, samples, base_temp_display)
       end
 
       # for debugging, display
       def configuration
         {
-          a:                [a,                 :kwh],
-          b:                [b,                 :kwh, :temperature],
-          r2:               [r2,                :float_2dp],
-          samples:          [samples,           :integer],
-          base_temperature: [base_temperature,  :temperature]
+          a: [a,                 :kwh],
+          b: [b,                 :kwh, :temperature],
+          r2: [r2, :float_2dp],
+          samples: [samples, :integer],
+          base_temperature: [base_temperature, :temperature]
         }
       end
 
       def base_temp_display
-        @base_temperature.nil? ? '' : sprintf('%.1f', @base_temperature)
+        @base_temperature.nil? ? '' : format('%.1f', @base_temperature)
       end
 
       # sorted array of [DD, kWh] pairs
       def sort_raw_data
-        @x_data.zip(y_data).sort { |a,b| a[0] <=> b[0] }
+        @x_data.zip(y_data).sort_by { |a| a[0] }
       end
 
       def format_sorted_raw_data
@@ -246,14 +252,14 @@ module AnalyseHeatingAndHotWater
 
     class RegressionModelTemperatureManuallyConfigured < RegressionModelTemperature
       attr_accessor :x, :y # override attr_reader
+
       def initialize(key, long_name, a, b, base_temperature)
         super(key, long_name, a, b, 0.0, nil, nil, nil)
         @base_temperature = base_temperature
       end
     end
 
-    attr_reader :models, :heating_on_periods, :heating_days_of_week_parameters
-    attr_reader :model_config
+    attr_reader :models, :heating_on_periods, :heating_days_of_week_parameters, :model_config
     attr_accessor :base_degreedays_temperature
 
     def initialize(meter, model_overrides)
@@ -261,7 +267,6 @@ module AnalyseHeatingAndHotWater
       @meter = meter
       @model_overrides = model_overrides
       @base_degreedays_temperature = 30.0
-      @super_debug = false
       @heating_model_override = model_overrides
     end
 
@@ -285,12 +290,12 @@ module AnalyseHeatingAndHotWater
         0.6...0.7 => { percent: 0.16,   rating: :about_average,      rating_value: 7 },
         0.7...0.8 => { percent: 0.23,   rating: :above_average,      rating_value: 8 },
         0.8...0.9 => { percent: 0.10,   rating: :excellent,          rating_value: 9 },
-        0.9..1.0  => { percent: 0.00,   rating: :perfect,            rating_value: 10 }
+        0.9..1.0 => { percent: 0.00, rating: :perfect,            rating_value: 10 }
       }
     end
 
     def self.r2_rating_adjective(r2)
-      I18nHelper.adjective( find_r2_rating(r2, :rating) )
+      I18nHelper.adjective(find_r2_rating(r2, :rating))
     end
 
     def self.r2_rating_out_of_10(r2)
@@ -307,30 +312,30 @@ module AnalyseHeatingAndHotWater
 
     # avoid using name as ambiguous, use urn
     def self.example_good_r2_school
-      { name: 'Bishop Sutton Primary School', urn: 109061 }
+      { name: 'Bishop Sutton Primary School', urn: 109_061 }
     end
 
     # avoid using name as ambiguous, use urn
     def self.example_poor_r2_school
-      { name: 'Freshford Primary School', urn: 109195 }
+      { name: 'Freshford Primary School', urn: 109_195 }
     end
 
     # based on analysis of 31 schools from 16Feb2019
     def self.school_heating_days_statistics
       { # days range => stats, rating
-        0...90    => { percent: 0.10,   rating: :perfect,              rating_value: 10 },
-        90...100  => { percent: 0.20,   rating: :excellent,            rating_value: 10 },
+        0...90 => { percent: 0.10, rating: :perfect,              rating_value: 10 },
+        90...100 => { percent: 0.20, rating: :excellent, rating_value: 10 },
         100...110 => { percent: 0.07,   rating: :good,                 rating_value: 9 },
         110...120 => { percent: 0.23,   rating: :better_than_average,  rating_value: 7 },
         120...130 => { percent: 0.23,   rating: :about_average,        rating_value: 4 },
         130...140 => { percent: 0.10,   rating: :worse_than_average,   rating_value: 3 },
         140...150 => { percent: 0.0,    rating: :poor,                 rating_value: 2 },
-        150..365  => { percent: 0.10,   rating: :very_poor,            rating_value: 0 },
+        150..365 => { percent: 0.10, rating: :very_poor, rating_value: 0 }
       }
     end
 
     def self.school_heating_day_adjective(days)
-      I18nHelper.adjective( find_school_day_rating(days, :rating) )
+      I18nHelper.adjective(find_school_day_rating(days, :rating))
     end
 
     def self.school_day_heating_rating_out_of_10(days)
@@ -349,22 +354,22 @@ module AnalyseHeatingAndHotWater
     # based on analysis of 31 schools from 16Feb2019
     def self.non_school_heating_days_statistics
       { # days range => stats, rating
-        0...5     => { percent: 0.07,   rating: :perfect,              rating_value: 10  },
-        5...10    => { percent: 0.11,   rating: :excellent,            rating_value:  9  },
-        10...15   => { percent: 0.04,   rating: :good,                 rating_value:  8  },
-        15...20   => { percent: 0.11,   rating: :better_than_average,  rating_value:  7  },
-        20...25   => { percent: 0.29,   rating: :about_average,        rating_value:  6  },
-        25...30   => { percent: 0.14,   rating: :worse_than_average,   rating_value:  5  },
-        30...35   => { percent: 0.0,    rating: :poor,                 rating_value:  4  },
-        35...40   => { percent: 0.07,   rating: :poor,                 rating_value:  3  },
-        40...50   => { percent: 0.04,   rating: :very_poor,            rating_value:  2  },
-        50...70   => { percent: 0.07,   rating: :very_poor,            rating_value:  1  },
-        70...300  => { percent: 0.07,   rating: :bad,                  rating_value:  0  }
+        0...5 => { percent: 0.07, rating: :perfect, rating_value: 10 },
+        5...10 => { percent: 0.11, rating: :excellent, rating_value: 9 },
+        10...15 => { percent: 0.04,   rating: :good,                 rating_value:  8  },
+        15...20 => { percent: 0.11,   rating: :better_than_average,  rating_value:  7  },
+        20...25 => { percent: 0.29,   rating: :about_average,        rating_value:  6  },
+        25...30 => { percent: 0.14,   rating: :worse_than_average,   rating_value:  5  },
+        30...35 => { percent: 0.0,    rating: :poor,                 rating_value:  4  },
+        35...40 => { percent: 0.07,   rating: :poor,                 rating_value:  3  },
+        40...50 => { percent: 0.04,   rating: :very_poor,            rating_value:  2  },
+        50...70 => { percent: 0.07,   rating: :very_poor,            rating_value:  1  },
+        70...300 => { percent: 0.07, rating: :bad, rating_value: 0 }
       }
     end
 
     def self.non_school_heating_day_adjective(days)
-      I18nHelper.adjective( non_find_school_day_rating(days, :rating) )
+      I18nHelper.adjective(non_find_school_day_rating(days, :rating))
     end
 
     def self.non_school_day_heating_rating_out_of_10(days)
@@ -408,14 +413,15 @@ module AnalyseHeatingAndHotWater
     def kwh_saving_for_1_C_thermostat_reduction(start_date, end_date)
       total_kwh = 0.0
       (start_date..end_date).each do |date|
-        if heating_on?(date) && !weekend?(date)
-          model_type = model_type?(date)
-          # deal with schools with perfect holiday/weekend heating management - mainly switched off
-          next if %i[holiday_heating weekend_heating].include?(model_type) && @models[model_type].nil?
-          kwh_sensitivity = -@models[model_type].b
-          _offset = @models[model_type].a
-          total_kwh += kwh_sensitivity
-        end
+        next unless heating_on?(date) && !weekend?(date)
+
+        model_type = model_type?(date)
+        # deal with schools with perfect holiday/weekend heating management - mainly switched off
+        next if %i[holiday_heating weekend_heating].include?(model_type) && @models[model_type].nil?
+
+        kwh_sensitivity = -@models[model_type].b
+        _offset = @models[model_type].a
+        total_kwh += kwh_sensitivity
       end
       total_kwh
     end
@@ -427,10 +433,13 @@ module AnalyseHeatingAndHotWater
     def heating_change_statistics(previous_year_range, last_year_range)
       return nil if previous_year_range.first < @amr_data.start_date
 
-      previous_year_average_heating_temperature = average_temperature_when_heating_on(previous_year_range.first, previous_year_range.last)
-      last_year_average_heating_temperature     = average_temperature_when_heating_on(last_year_range.first, last_year_range.last)
-      change_in_average_heating_temperature     = last_year_average_heating_temperature - previous_year_average_heating_temperature
-      impact_1c_change_kwh = -kwh_saving_for_1_C_thermostat_reduction(previous_year_range.first, previous_year_range.last)
+      previous_year_average_heating_temperature = average_temperature_when_heating_on(previous_year_range.first,
+                                                                                      previous_year_range.last)
+      last_year_average_heating_temperature     = average_temperature_when_heating_on(last_year_range.first,
+                                                                                      last_year_range.last)
+      change_in_average_heating_temperature = last_year_average_heating_temperature - previous_year_average_heating_temperature
+      impact_1c_change_kwh = -kwh_saving_for_1_C_thermostat_reduction(previous_year_range.first,
+                                                                      previous_year_range.last)
       kwh_impact = impact_1c_change_kwh * change_in_average_heating_temperature
       last_year_kwh     = @amr_data.kwh_date_range(last_year_range.first, last_year_range.last)
       previous_year_kwh = @amr_data.kwh_date_range(previous_year_range.first, previous_year_range.last)
@@ -439,20 +448,20 @@ module AnalyseHeatingAndHotWater
       {
         last_year: {
           average_heating_temperature: last_year_average_heating_temperature,
-          annual_kwh:                  last_year_kwh
+          annual_kwh: last_year_kwh
         },
         previous_year: {
           average_heating_temperature: previous_year_average_heating_temperature,
-          annual_kwh:                  previous_year_kwh,
-          adjust_kwh:                  kwh_impact,
-          adjusted_annual_kwh:         adjusted_previous_year_kwh
+          annual_kwh: previous_year_kwh,
+          adjust_kwh: kwh_impact,
+          adjusted_annual_kwh: adjusted_previous_year_kwh
         },
         change: {
-          temperature:          change_in_average_heating_temperature,
-          kwh:                  last_year_kwh - previous_year_kwh,
-          adjusted_kwh:         last_year_kwh - adjusted_previous_year_kwh,
-          percent:              (last_year_kwh - previous_year_kwh) / previous_year_kwh,
-          adjusted_percent:     (last_year_kwh - adjusted_previous_year_kwh) / adjusted_previous_year_kwh,
+          temperature: change_in_average_heating_temperature,
+          kwh: last_year_kwh - previous_year_kwh,
+          adjusted_kwh: last_year_kwh - adjusted_previous_year_kwh,
+          percent: (last_year_kwh - previous_year_kwh) / previous_year_kwh,
+          adjusted_percent: (last_year_kwh - adjusted_previous_year_kwh) / adjusted_previous_year_kwh,
           impact_1c_change_kwh: impact_1c_change_kwh
         }
       }
@@ -474,17 +483,26 @@ module AnalyseHeatingAndHotWater
 
     def hot_water_poor_insulation_cost_kwh(start_date, end_date, max_non_hotwater_criteria = 50.0)
       calculation = hot_water_analysis(start_date, end_date, max_non_hotwater_criteria)
-      calculation.nil? ? [0.0, 0.0] : [calculation[:annual_sensitivity_to_insulation_kwh], calculation[:percent_base_hot_water_usage]]
+      if calculation.nil?
+        [0.0,
+         0.0]
+      else
+        [calculation[:annual_sensitivity_to_insulation_kwh],
+         calculation[:percent_base_hot_water_usage]]
+      end
     end
 
     private def hotwater_in_period?(model_type, max_non_hotwater_criteria)
       return false unless @models.key?(model_type)
+
       crude_hw_estimate_kwh_per_day = @models[model_type].predicted_kwh_temperature(20.0)
       crude_hw_estimate_kwh_per_day > max_non_hotwater_criteria
     end
 
     def hot_water_analysis(start_date, end_date, max_non_hotwater_criteria = 50.0)
-      return nil if @meter.heating_only? || !@models.key?(:summer_occupied_all_days) || !@models.key?(:holiday_hotwater_only)
+      if @meter.heating_only? || !@models.key?(:summer_occupied_all_days) || !@models.key?(:holiday_hotwater_only)
+        return nil
+      end
 
       temperature_sensitivity_kwh_per_c = -1.0 * @models[:summer_occupied_all_days].b
       base_hotwater_usage_at_20c = @models[:summer_occupied_all_days].predicted_kwh_temperature(20.0)
@@ -500,21 +518,20 @@ module AnalyseHeatingAndHotWater
       hot_water_kwh_in_heating_period = 0.0
 
       (start_date..end_date).each do |date|
-        if (weekend?(date) && weekend_hotwater) ||
-           (holiday?(date) && holiday_hotwater) ||
-           occupied?(date)
+        next unless (weekend?(date) && weekend_hotwater) ||
+                    (holiday?(date) && holiday_hotwater) ||
+                    occupied?(date)
 
-          avg_temp = temperatures.average_temperature(date)
-          temperature_sensitivity_kwh += temperature_sensitivity_kwh_per_c * [20.0 - avg_temp, 0.0].max
-          base_hot_water_usage += base_hotwater_usage_at_20c
+        avg_temp = temperatures.average_temperature(date)
+        temperature_sensitivity_kwh += temperature_sensitivity_kwh_per_c * [20.0 - avg_temp, 0.0].max
+        base_hot_water_usage += base_hotwater_usage_at_20c
 
-          unless boiler_off?(date)
-            if heating_on?(date)
-              total_heating_on_kwh += @amr_data.one_day_kwh(date)
-              hot_water_kwh_in_heating_period += base_hotwater_usage_at_20c
-            else
-              total_heating_off_kwh += @amr_data.one_day_kwh(date)
-            end
+        unless boiler_off?(date)
+          if heating_on?(date)
+            total_heating_on_kwh += @amr_data.one_day_kwh(date)
+            hot_water_kwh_in_heating_period += base_hotwater_usage_at_20c
+          else
+            total_heating_off_kwh += @amr_data.one_day_kwh(date)
           end
         end
       end
@@ -527,12 +544,12 @@ module AnalyseHeatingAndHotWater
 
       {
         annual_sensitivity_to_insulation_kwh: sensivitity_kwh,
-        percent_base_hot_water_usage:         percent_base_hot_water_usage,
-        annual_heating_kwh:                   heating_kwh,
-        annual_hotwater_kwh:                  hot_water_kwh,
-        daily_hotwater_usage_kwh:             base_hotwater_usage_at_20c,
-        daily_holiday_hotwater_usage_kwh:     holiday_hotwater_usage_at_20c,
-        hot_water_efficiency:                 hot_water_efficiency
+        percent_base_hot_water_usage: percent_base_hot_water_usage,
+        annual_heating_kwh: heating_kwh,
+        annual_hotwater_kwh: hot_water_kwh,
+        daily_hotwater_usage_kwh: base_hotwater_usage_at_20c,
+        daily_holiday_hotwater_usage_kwh: holiday_hotwater_usage_at_20c,
+        hot_water_efficiency: hot_water_efficiency
       }
     end
 
@@ -543,7 +560,8 @@ module AnalyseHeatingAndHotWater
         elsif weekend?(date)
           :weekend_heating_on
         else
-          recommended = within_recommended_heating_period(date, doy_recommended_heating_start_date, doy_recommended_heating_doy_end_date)
+          recommended = within_recommended_heating_period(date, doy_recommended_heating_start_date,
+                                                          doy_recommended_heating_doy_end_date)
           recommended ? :schoolday_heating_on_recommended : :schoolday_heating_on_not_recommended
         end
       else
@@ -551,12 +569,14 @@ module AnalyseHeatingAndHotWater
       end
     end
 
-    def within_recommended_heating_period(date, doy_recommended_heating_start_date, doy_recommended_heating_doy_end_date)
+    def within_recommended_heating_period(date, doy_recommended_heating_start_date,
+                                          doy_recommended_heating_doy_end_date)
       toy = TimeOfYear.to_toy(date)
       TimeOfYear.within_period(toy, doy_recommended_heating_start_date, doy_recommended_heating_doy_end_date)
     end
 
-    def heating_day_breakdown(start_date, end_date, doy_recommended_heating_start_date = TimeOfYear.new(10,28), doy_recommended_heating_doy_end_date = TimeOfYear.new(4,5))
+    def heating_day_breakdown(start_date, end_date, doy_recommended_heating_start_date = TimeOfYear.new(10, 28),
+                              doy_recommended_heating_doy_end_date = TimeOfYear.new(4, 5))
       kwhs = {
         schoolday_heating_on_recommended: 0.0,
         schoolday_heating_on_not_recommended: 0.0,
@@ -575,36 +595,19 @@ module AnalyseHeatingAndHotWater
       !weekend?(date) && !holiday?(date)
     end
 
-    def weekend?(date)
-      DateTimeHelper.weekend?(date)
-    end
+    delegate :weekend?, to: :DateTimeHelper
 
-    def holiday?(date)
-      holidays.holiday?(date)
-    end
+    delegate :holiday?, to: :holidays
 
     def report_missing_amr_dates(missing_dates)
-      logger.info 'Warning: missing dates during regression modelling'
-      # rubocop:disable Naming/VariableNumber
+      logger.debug { 'Warning: missing dates during regression modelling' }
       missing_dates.each_slice(10) do |group_of_10|
-        logger.info group_of_10.to_s
-      end
-      # rubocop:enable Naming/VariableNumber
-    end
-
-    def save_raw_regression_data_to_csv_for_debug(filename, x1, y1, a, b, r2)
-      filepath = File.join(File.dirname(__FILE__), '../../../log/' + filename)
-      File.open(filepath, 'w') do |file|
-        file.puts "#{a}, #{b}, #{r2}"
-        file.puts
-        x1.length.times do |i|
-          file.puts "#{x1[i]}, #{y1[i]}"
-        end
+        logger.debug { group_of_10.to_s }
       end
     end
 
     def sorted_model_keys(models)
-      models.sort_by { |k, _v| models_ordered[k]}
+      models.sort_by { |k, _v| models_ordered[k] }
     end
 
     # not ideal, but needed for tabular html advice presentation
@@ -616,11 +619,11 @@ module AnalyseHeatingAndHotWater
       doy_models = HeatingModelTemperatureSpaceThermalMass::SCHOOLDAYHEATINGMODELTYPES
       model_sort_order2 = doy_models.each_with_index.map { |model_type, i| [model_type, i + 2] }.to_h
       model_sort_order3 = {
-        weekend_heating:       7,
-        holiday_heating:       8,
+        weekend_heating: 7,
+        holiday_heating: 8,
         weekend_hotwater_only: 9,
         holiday_hotwater_only: 10,
-        none:                  11
+        none: 11
       }
       model_sort_order1.merge(model_sort_order2.merge(model_sort_order3))
     end
@@ -638,14 +641,13 @@ module AnalyseHeatingAndHotWater
     HEATINGWEEKENDMODEL = :weekend_heating
     HEATINGHOLIDAYMODEL = :holiday_heating
     SCHOOLDAYHEATINGMODELTYPES = [HEATINGOCCUPIEDMODEL]
-    HEATINGMODELTYPES = [HEATINGOCCUPIEDMODEL,  HEATINGWEEKENDMODEL, HEATINGHOLIDAYMODEL].freeze
+    HEATINGMODELTYPES = [HEATINGOCCUPIEDMODEL, HEATINGWEEKENDMODEL, HEATINGHOLIDAYMODEL].freeze
     ALLMODELTYPES = %i[heating_occupied_all_days weekend_heating holiday_heating
-                      summer_occupied_all_days holiday_hotwater_only weekend_hotwater_only none].freeze
-    attr_reader :standard_deviation, :standard_deviation_percent, :model_calculation_time
-    attr_reader :non_heating_model
+                       summer_occupied_all_days holiday_hotwater_only weekend_hotwater_only none].freeze
+    attr_reader :standard_deviation, :standard_deviation_percent, :model_calculation_time, :non_heating_model
 
     def initialize(heat_meter, model_overrides)
-      super(heat_meter, model_overrides)
+      super
       @base_degreedays_temperature = 50.0
       @max_zero_daily_kwh = 20.0
       @heat_meter = heat_meter
@@ -715,19 +717,19 @@ module AnalyseHeatingAndHotWater
     # for debugging or presentation
     def model_configuration
       results = {
-        'School Name'                 =>    @heat_meter.meter_collection.name,
-        'Floor Area'                  =>    [@heat_meter.meter_collection.floor_area, :float_0dp],
-        'Pupils'                      =>    [@heat_meter.meter_collection.number_of_pupils, :integer],
-        'Max summer kWh'              =>    [non_heating_model.average_max_non_heating_day_kwh, :kwh],
-        'Non heating model'           =>    [non_heating_model.class.name, :string],
-        'Standard Deviation'          =>    [@standard_deviation, :kwh],
-        'Standard Deviation Percent'  =>    [@standard_deviation_percent, :percent],
-        'Balance Point Temperature'   =>    [average_base_temperature,  :temperature],
-        'Average R2'                  =>    [average_heating_school_day_r2, :float_1dp],
-        'School Heating Days'         =>    [number_of_heating_school_days, :integer],
-        'Non School Day Heating Days' =>    [number_of_non_school_heating_days, :integer],
-        'Days of meter readings'      =>    [(@amr_data.end_date - @amr_data.start_date + 1).to_i, :integer],
-        'Model calculation time (ms)' =>    [(@model_calculation_time * 1000.0).to_i, :integer],
+        'School Name' => @heat_meter.meter_collection.name,
+        'Floor Area' => [@heat_meter.meter_collection.floor_area, :float_0dp],
+        'Pupils' => [@heat_meter.meter_collection.number_of_pupils, :integer],
+        'Max summer kWh' => [non_heating_model.average_max_non_heating_day_kwh, :kwh],
+        'Non heating model' => [non_heating_model.class.name, :string],
+        'Standard Deviation' => [@standard_deviation, :kwh],
+        'Standard Deviation Percent' => [@standard_deviation_percent, :percent],
+        'Balance Point Temperature' => [average_base_temperature, :temperature],
+        'Average R2' => [average_heating_school_day_r2, :float_1dp],
+        'School Heating Days' => [number_of_heating_school_days, :integer],
+        'Non School Day Heating Days' => [number_of_non_school_heating_days, :integer],
+        'Days of meter readings' => [(@amr_data.end_date - @amr_data.start_date + 1).to_i, :integer],
+        'Model calculation time (ms)' => [(@model_calculation_time * 1000.0).to_i, :integer]
       }
 
       results.merge!(regression_model_configuration)
@@ -765,7 +767,7 @@ module AnalyseHeatingAndHotWater
 
     def heating_on_time_assessment(date, datatype = :kwh)
       temperature = temperatures.average_temperature_in_time_range(date, 0, 10).round(1) # between midnight and 5:00am
-      return [nil, nil, temperature, nil] if !heating_on?(date)
+      return [nil, nil, temperature, nil] unless heating_on?(date)
 
       heating_on_halfhour_index = heating_on_half_hour_index(date)
       return [nil, nil, temperature, nil] if heating_on_halfhour_index.nil?
@@ -810,7 +812,7 @@ module AnalyseHeatingAndHotWater
       peakload_kw   = @heat_meter.amr_data.statistical_peak_kw(date)
       half_load_kwh = (baseload_kw + ((peakload_kw - baseload_kw) * 0.5)) / 2.0
       days_data = @heat_meter.amr_data.days_kwh_x48(date)
-      days_data.index{ |kwh| kwh > half_load_kwh }
+      days_data.index { |kwh| kwh > half_load_kwh }
     end
 
     # perhaps needs merging with def heating_on_time_assessment, but not in this test cycle TODO(PH, 25Jul2020)
@@ -829,9 +831,10 @@ module AnalyseHeatingAndHotWater
       [@amr_data.end_date, temperatures.end_date].min
     end
 
-
-    def optimum_start_analysis(start_date: one_year_start_date, end_date: one_year_end_date, days_of_the_week: nil, months_of_year: nil)
-      start_time_temperature_pairs = optimum_start_times_temperatures(start_date, end_date, days_of_the_week, months_of_year)
+    def optimum_start_analysis(start_date: one_year_start_date, end_date: one_year_end_date, days_of_the_week: nil,
+                               months_of_year: nil)
+      start_time_temperature_pairs = optimum_start_times_temperatures(start_date, end_date, days_of_the_week,
+                                                                      months_of_year)
       return nil_optimum_start_model_result if start_time_temperature_pairs.empty?
 
       # print_optimum_start_times_temperatures(start_time_temperature_pairs)
@@ -841,12 +844,12 @@ module AnalyseHeatingAndHotWater
 
     def nil_optimum_start_model_result
       {
-        regression_start_time:        nil,
-        optimum_start_sensitivity:    nil,
-        regression_r2:                nil,
-        average_start_time:           nil,
+        regression_start_time: nil,
+        optimum_start_sensitivity: nil,
+        regression_r2: nil,
+        average_start_time: nil,
         start_time_standard_devation: nil,
-        days:                         0
+        days: 0
       }
     end
 
@@ -857,12 +860,12 @@ module AnalyseHeatingAndHotWater
       sr = Statsample::Regression.simple(x, y)
 
       {
-        regression_start_time:        sr.a,
-        optimum_start_sensitivity:    sr.b,
-        regression_r2:                sr.r2,
-        average_start_time:           start_times.sum / start_times.length,
+        regression_start_time: sr.a,
+        optimum_start_sensitivity: sr.b,
+        regression_r2: sr.r2,
+        average_start_time: start_times.sum / start_times.length,
         start_time_standard_devation: EnergySparks::Maths.standard_deviation(start_times),
-        days:                         time_temp_pairs.length
+        days: time_temp_pairs.length
       }
     end
 
@@ -893,10 +896,10 @@ module AnalyseHeatingAndHotWater
       }
       interpolation = Interpolate::Points.new(optimum_start_regression)
       start_time = interpolation.at(temperature)
-      #previously we calculated time of day using start_time * 2.0. but this produces overly
-      #precise timings, e.g. 05.02, 03:57, 03:38, which we can't confidently use or display
-      #to users. So we now round to the half-hourly index, which aligns better with our
-      #prediction of when heating is on, which is only to an hh index.
+      # previously we calculated time of day using start_time * 2.0. but this produces overly
+      # precise timings, e.g. 05.02, 03:57, 03:38, which we can't confidently use or display
+      # to users. So we now round to the half-hourly index, which aligns better with our
+      # prediction of when heating is on, which is only to an hh index.
       [TimeOfDay.time_of_day_from_halfhour_index((start_time * 2).to_i), (start_time * 2).to_i]
     end
 
@@ -923,11 +926,13 @@ module AnalyseHeatingAndHotWater
 
     private def check_model_fitting_start_end_dates(period, allow_more_than_1_year)
       return unless @model_overrides.fitting.nil?
+
       days = period.end_date - period.start_date + 1
-      if !allow_more_than_1_year && (days > 365 || days < 362)
-        logger.info "Error: regression model fitting should only be over a year, got #{days}"
-        raise EnergySparksUnexpectedStateException, "Error: regression model fitting should only be over a year, got #{days}"
-      end
+      return unless !allow_more_than_1_year && (days > 365 || days < 362)
+
+      logger.debug { "Error: regression model fitting should only be over a year, got #{days}" }
+      raise EnergySparksUnexpectedStateException,
+            "Error: regression model fitting should only be over a year, got #{days}"
     end
 
     def non_heating_model_type_description
@@ -937,16 +942,18 @@ module AnalyseHeatingAndHotWater
     def calculate_regression_model(period, allow_more_than_1_year, non_heating_model_type = nil)
       # check_model_fitting_start_end_dates(period, allow_more_than_1_year)
 
-      bm = Benchmark.realtime {
-        @non_heating_model = HeatingNonHeatingDisaggregationModelBase.model_factory(non_heating_model_type, @heat_meter, @model_overrides)
+      bm = Benchmark.realtime do
+        @non_heating_model = HeatingNonHeatingDisaggregationModelBase.model_factory(non_heating_model_type,
+                                                                                    @heat_meter, @model_overrides)
         @heating_model_period = period
         @non_heating_model.calculate_max_summer_hotwater_kitchen_kwh(period)
         x_data, y_data = assign_models(period)
         calculate_regressions(x_data, y_data)
         calculate_base_temperatures
-      }
+      end
       @model_calculation_time = bm
-      @standard_deviation, @standard_deviation_percent = standard_deviation_from_model(period.start_date, period.end_date)
+      @standard_deviation, @standard_deviation_percent = standard_deviation_from_model(period.start_date,
+                                                                                       period.end_date)
       @cached_model_type = {}
     end
 
@@ -954,11 +961,11 @@ module AnalyseHeatingAndHotWater
       x_data = {}
       y_data = {}
       (period.start_date..period.end_date).each do |date|
-        if @amr_data.date_exists?(date)
-          model_type = model_type?(date)
-          (x_data[model_type] ||= []).push(temperatures.average_temperature(date))
-          (y_data[model_type] ||= []).push(@amr_data.one_day_kwh(date))
-        end
+        next unless @amr_data.date_exists?(date)
+
+        model_type = model_type?(date)
+        (x_data[model_type] ||= []).push(temperatures.average_temperature(date))
+        (y_data[model_type] ||= []).push(@amr_data.one_day_kwh(date))
       end
       [x_data, y_data]
     end
@@ -972,38 +979,40 @@ module AnalyseHeatingAndHotWater
       end
       sd = EnergySparks::Maths.standard_deviation(differences)
       avg_kwh = @amr_data.average_in_date_range_ignore_missing(start_date, end_date)
-      [sd, sd/avg_kwh]
+      [sd, sd / avg_kwh]
     end
 
     def calculate_regressions(x_data, y_data)
-      logger.info "Regression model calculation result for #{self.class.name}"
+      logger.debug { "Regression model calculation result for #{self.class.name}" }
       x_data.each_key do |model_type|
         @models[model_type] = regression(model_type, x_data[model_type], y_data[model_type])
-        logger.info "#{model_type}: #{@models[model_type]}"
+        logger.debug { "#{model_type}: #{@models[model_type]}" }
       end
     end
 
     def model_type?(date)
       model_type = @cached_model_type[date]
       return model_type unless model_type.nil?
+
       @cached_model_type[date] = model_type_slow_lookup?(date)
     end
 
     def model_type_slow_lookup?(date)
       model_type = @cached_model_type[date]
       return model_type unless model_type.nil?
+
       model_type = if boiler_off?(date)
-          :none
-        elsif @meter.heating_only?
-          heating_on?(date) ? winter_model(date) : :none
-        elsif @meter.kitchen_only?
-          kitchen_model(date)
-        elsif @meter.hot_water_only?
-          summer_model(date)
-        else
-          heating_on?(date) ? winter_model(date) : summer_model(date)
-        end
-      logger.info "Missing model type for date #{date}" if model_type.nil?
+                     :none
+                   elsif @meter.heating_only?
+                     heating_on?(date) ? winter_model(date) : :none
+                   elsif @meter.kitchen_only?
+                     kitchen_model(date)
+                   elsif @meter.hot_water_only?
+                     summer_model(date)
+                   else
+                     heating_on?(date) ? winter_model(date) : summer_model(date)
+                   end
+      logger.debug { "Missing model type for date #{date}" } if model_type.nil?
       model_type
     end
 
@@ -1073,17 +1082,17 @@ module AnalyseHeatingAndHotWater
     def number_of_non_school_heating_days
       weekend_days = @models[HEATINGWEEKENDMODEL].nil? ? 0 : @models[HEATINGWEEKENDMODEL].samples
       holidays = @models[HEATINGHOLIDAYMODEL].nil? ? 0 : @models[HEATINGHOLIDAYMODEL].samples
-      logger.info "Weekend model:  #{@models[HEATINGWEEKENDMODEL]}"
-      logger.info "Holiday model:  #{@models[HEATINGHOLIDAYMODEL]}"
+      logger.debug { "Weekend model:  #{@models[HEATINGWEEKENDMODEL]}" }
+      logger.debug { "Holiday model:  #{@models[HEATINGHOLIDAYMODEL]}" }
       weekend_days + holidays
     end
 
     def number_of_non_school_heating_days_method_b(start_date, end_date, gas_meter_noise_kwh_day = 25.0)
       count = 0
       (start_date..end_date).each do |date|
-        unless occupied?(date)
-          count += 1 if @amr_data.one_day_kwh(date) > (@non_heating_model.max_non_heating_day_kwh(date)
- + gas_meter_noise_kwh_day)
+        if !occupied?(date) && (@amr_data.one_day_kwh(date) > (@non_heating_model.max_non_heating_day_kwh(date)
+                                                               + gas_meter_noise_kwh_day))
+          count += 1
         end
       end
       count
@@ -1107,11 +1116,11 @@ module AnalyseHeatingAndHotWater
 
         base_temperature = - summer_model.a / summer_model.b
       else
-        if summer_model.nil?
-          base_temperature = - winter_model.a / winter_model.b
-        else
-          base_temperature = (winter_model.a - summer_model.a) / (summer_model.b - winter_model.b)
-        end
+        base_temperature = if summer_model.nil?
+                             - winter_model.a / winter_model.b
+                           else
+                             (winter_model.a - summer_model.a) / (summer_model.b - winter_model.b)
+                           end
       end
 
       base_temperature
@@ -1119,7 +1128,7 @@ module AnalyseHeatingAndHotWater
 
     def regression(model_name, x1, y1)
       if x1.empty? || x1.length == 1
-        logger.warn "Warning: empty data set for calculating regression for #{model_name}"
+        logger.warn { "Warning: empty data set for calculating regression for #{model_name}" }
         error = x1.empty? ? 'Warning: zero vector' : 'Warning: vector of length 1'
         return RegressionModelTemperature.new(model_name, error, 0.0, 0.0, 0.0, 0, nil, nil)
       end
@@ -1129,18 +1138,15 @@ module AnalyseHeatingAndHotWater
       sr = Statsample::Regression.simple(x, y)
       model = RegressionModelTemperature.new(model_name, model_name.to_s, sr.a, sr.b, sr.r2, x1.length, x1, y1)
 
-      logger.info "Calculating regression for #{model_name}: a = #{model.a} b = #{model.b} r2 = #{model.r2} x #{model.samples}"
-
-      if @super_debug
-        filename = model_name.to_s + ' ' + DateTime.now.strftime('%Y%m%d%H%M%3N') + '.csv'
-        save_raw_regression_data_to_csv_for_debug(filename, x1, y1, sr.a, sr.b, sr.r2)
+      logger.debug do
+        "Calculating regression for #{model_name}: a = #{model.a} b = #{model.b} r2 = #{model.r2} x #{model.samples}"
       end
 
       model
     end
 
     def configure_models
-      logger.info "HeatingModelTemperatureSpace.configure_models() - do nothing"
+      logger.info 'HeatingModelTemperatureSpace.configure_models() - do nothing'
     end
 
     def boiler_off?(date)
@@ -1187,7 +1193,8 @@ module AnalyseHeatingAndHotWater
       [[percent, 0.0].max, 1.0].min
     end
 
-    def heating_on_seasonal_analysis(start_date: [@amr_data.end_date - 365, @amr_data.start_date].max, end_date: @amr_data.end_date, split_out_hotwater: true)
+    def heating_on_seasonal_analysis(start_date: [@amr_data.end_date - 365, @amr_data.start_date].max,
+                                     end_date: @amr_data.end_date, split_out_hotwater: true)
       analysis = Hash.new { |h, k| h[k] = Hash.new { |h, k| h[k] = Hash.new { |h, k| h[k] = 0.0 } } }
 
       (start_date..end_date).each do |date|
@@ -1219,7 +1226,7 @@ module AnalyseHeatingAndHotWater
       if heat_type == :heating_off
         {
           heating_cold_weather: 0.0,
-          heating_off:          total
+          heating_off: total
         }
       else
         # co2 and £ datatype linear for gas so kWh based disaggregation
@@ -1227,8 +1234,8 @@ module AnalyseHeatingAndHotWater
         pct_hw = percent_hot_water(date)
 
         {
-          heat_type =>   total * (1.0 - pct_hw),
-          heating_off:   total * pct_hw
+          heat_type => total * (1.0 - pct_hw),
+          heating_off: total * pct_hw
         }
       end
     end
@@ -1243,7 +1250,7 @@ module AnalyseHeatingAndHotWater
       # whether heating is on in circumstance data is missing on date
 
       if @heating_on_periods.nil?
-        calculate_heating_periods(@amr_data.start_date, @amr_data.end_date) if @heating_on_periods.nil?
+        calculate_heating_periods(@amr_data.start_date, @amr_data.end_date)
         # consolidate_heating_periods(@heating_on_periods)
       end
       !SchoolDatePeriod.find_period_for_date(date, @heating_on_periods).nil?
@@ -1254,9 +1261,9 @@ module AnalyseHeatingAndHotWater
     # this heuristic method is employed to consolidate the heating_on_periods
     def consolidate_heating_periods(heating_on_periods)
       df = '%a %d-%b-%Y'
-      logger.info "Original heating periods #{@heat_meter.mpan_mprn}"
+      logger.debug { "Original heating periods #{@heat_meter.mpan_mprn}" }
       heating_on_periods.each do |heating_period|
-        logger.info "#{heating_period.start_date.strftime(df)} #{heating_period.start_date.strftime(df)}"
+        logger.debug { "#{heating_period.start_date.strftime(df)} #{heating_period.start_date.strftime(df)}" }
       end
     end
 
@@ -1268,53 +1275,51 @@ module AnalyseHeatingAndHotWater
       @heating_on_periods = []
       heating_start_date = start_date
 
-      logger.info "Calculating Heating Periods between #{start_date} and #{end_date} for #{@heat_meter.mpan_mprn}"
+      logger.debug { "Calculating Heating Periods between #{start_date} and #{end_date} for #{@heat_meter.mpan_mprn}" }
       previous_date = start_date
       missing_dates = []
 
       (start_date..end_date).each do |date|
-        begin
-          if @amr_data.date_exists?(date)
-            next if weekend?(date) # skip weekends, i.e. work out heating day ranges for school days and holidays only
+        if @amr_data.date_exists?(date)
+          next if weekend?(date) # skip weekends, i.e. work out heating day ranges for school days and holidays only
 
-            kwh_today = @amr_data.one_day_kwh(date)
-            temperature = temperatures.average_temperature(date)
-            if kwh_today > @non_heating_model.max_non_heating_day_kwh(date) && !heating_on
-              # puts "heating on  transition #{date.strftime('%a %d-%b-%Y')} #{kwh_today.round(0)} v #{@non_heating_model.max_non_heating_day_kwh(date)}"
-              heating_on = true
-              heating_start_date = date
-            elsif kwh_today <= @non_heating_model.max_non_heating_day_kwh(date) && heating_on
-              # puts "heating off transition #{date.strftime('%a %d-%b-%Y')} #{kwh_today.round(0)} v #{@non_heating_model.max_non_heating_day_kwh(date)}"
-              heating_on = false
-              heating_period = SchoolDatePeriod.new(:heatingperiod, 'N/A', heating_start_date, previous_date)
-              @heating_on_periods.push(heating_period)
-            end
-            previous_date = date
-          else
-            missing_dates.push(date)
+          kwh_today = @amr_data.one_day_kwh(date)
+          temperature = temperatures.average_temperature(date)
+          if kwh_today > @non_heating_model.max_non_heating_day_kwh(date) && !heating_on
+            # puts "heating on  transition #{date.strftime('%a %d-%b-%Y')} #{kwh_today.round(0)} v #{@non_heating_model.max_non_heating_day_kwh(date)}"
+            heating_on = true
+            heating_start_date = date
+          elsif kwh_today <= @non_heating_model.max_non_heating_day_kwh(date) && heating_on
+            # puts "heating off transition #{date.strftime('%a %d-%b-%Y')} #{kwh_today.round(0)} v #{@non_heating_model.max_non_heating_day_kwh(date)}"
+            heating_on = false
+            heating_period = SchoolDatePeriod.new(:heatingperiod, 'N/A', heating_start_date, previous_date)
+            @heating_on_periods.push(heating_period)
           end
-        rescue StandardError => e
-          logger.error e
+          previous_date = date
+        else
+          missing_dates.push(date)
         end
+      rescue StandardError => e
+        logger.error e
       end
       if heating_on
         heating_period = SchoolDatePeriod.new(:heatingperiod, 'N/A', heating_start_date, end_date)
         @heating_on_periods.push(heating_period)
       end
 
-      logger.info "#{@heating_on_periods.length} heating periods"
+      logger.debug { "#{@heating_on_periods.length} heating periods" }
       @heating_on_periods
     end
 
     def regression_model_parameters(date)
       model = @models[model_type?(date)]
       {
-        a:                model.a,
-        b:                model.b,
-        r2:               model.r2,
+        a: model.a,
+        b: model.b,
+        r2: model.r2,
         base_temperature: model.base_temperature,
-        model_name:       model.key,
-        heating_on:       heating_on?(date)
+        model_name: model.key,
+        heating_on: heating_on?(date)
       }
     end
 
@@ -1324,7 +1329,11 @@ module AnalyseHeatingAndHotWater
     # there isn't a better solution
     def community_use_model_scaling_factor(date, community_use)
       @community_use_model_scaling_factors ||= calculate_community_use_model_scaling_factors(community_use)
-      raise ScalingModelCalculationDoesntCoverAllModelTypes, "Extend sd, ed calc below to cover #{date}" unless @community_use_model_scaling_factors.key?(model_type?(date))
+      unless @community_use_model_scaling_factors.key?(model_type?(date))
+        raise ScalingModelCalculationDoesntCoverAllModelTypes,
+              "Extend sd, ed calc below to cover #{date}"
+      end
+
       @community_use_model_scaling_factors[model_type?(date)]
     end
 
@@ -1356,13 +1365,15 @@ module AnalyseHeatingAndHotWater
       end
     end
 
-    def temperature_compensated_one_day_gas_kwh(from_date, to_temperature, from_kwh = @amr_data.one_day_kwh(from_date), floor, community_use: nil)
+    def temperature_compensated_one_day_gas_kwh(from_date, to_temperature, from_kwh = @amr_data.one_day_kwh(from_date),
+                                                floor, community_use: nil)
       model_type = model_type?(from_date)
       model = @models[model_type]
       return from_kwh if model_type == :none && model.nil?
+
       from_temperature = temperatures.average_temperature(from_date)
       scale = community_use_model_scaling_factor(from_date, community_use)
-      to_kwh = from_kwh + scale * model.b * (to_temperature - from_temperature)
+      to_kwh = from_kwh + (scale * model.b * (to_temperature - from_temperature))
       floor.nil? ? to_kwh : [to_kwh, 0.0].max
     end
 
@@ -1391,6 +1402,7 @@ module AnalyseHeatingAndHotWater
     def predicted_heating_kwh_future_date(date, temperature)
       model = @models[heating_model_for_future_date(date)]
       return 0.0 if model.nil? # generally assume this when for example heating completely off at weekends or holidays
+
       model.predicted_kwh_temperature(temperature)
     end
 
@@ -1402,15 +1414,24 @@ module AnalyseHeatingAndHotWater
     def predicted_non_heating_kwh_future_date(date, temperature)
       model = @models[non_heating_model_for_future_date(date)]
       return 0.0 if model.nil? # generally assume this when for example hot water completely off at weekends or holidays
+
       model.predicted_kwh_temperature(temperature)
     end
 
     def heating_model_for_future_date(date)
-      holiday?(date) ? HEATINGHOLIDAYMODEL : weekend?(date) ? HEATINGWEEKENDMODEL : HEATINGOCCUPIEDMODEL
+      if holiday?(date)
+        HEATINGHOLIDAYMODEL
+      else
+        weekend?(date) ? HEATINGWEEKENDMODEL : HEATINGOCCUPIEDMODEL
+      end
     end
 
     def non_heating_model_for_future_date(date)
-      holiday?(date) ? :holiday_hotwater_only : weekend?(date) ? :weekend_hotwater_only : :summer_occupied_all_days
+      if holiday?(date)
+        :holiday_hotwater_only
+      else
+        weekend?(date) ? :weekend_hotwater_only : :summer_occupied_all_days
+      end
     end
 
     def predicted_kwh_daterange(start_date, end_date, temperatures)
@@ -1433,13 +1454,14 @@ module AnalyseHeatingAndHotWater
 
   # heavy thermal mass (day of week) version of temperature space regression model
   class HeatingModelTemperatureSpaceThermalMass < HeatingModelTemperatureSpace
-    SCHOOLDAYHEATINGMODELTYPES = %i[heating_occupied_monday heating_occupied_tuesday heating_occupied_wednesday heating_occupied_thursday heating_occupied_friday].freeze
+    SCHOOLDAYHEATINGMODELTYPES = %i[heating_occupied_monday heating_occupied_tuesday heating_occupied_wednesday
+                                    heating_occupied_thursday heating_occupied_friday].freeze
     HEATINGMODELTYPES = SCHOOLDAYHEATINGMODELTYPES + [HEATINGWEEKENDMODEL, HEATINGHOLIDAYMODEL]
     ALLMODELTYPES = %i[heating_occupied_monday heating_occupied_tuesday heating_occupied_wednesday heating_occupied_thursday heating_occupied_friday
-                      weekend_heating holiday_heating
-                      summer_occupied_all_days holiday_hotwater_only weekend_hotwater_only none].freeze
+                       weekend_heating holiday_heating
+                       summer_occupied_all_days holiday_hotwater_only weekend_hotwater_only none].freeze
     def initialize(heat_meter, model_overrides)
-      super(heat_meter, model_overrides)
+      super
     end
 
     def name
@@ -1451,7 +1473,11 @@ module AnalyseHeatingAndHotWater
     end
 
     def heating_model_for_future_date(date)
-      holiday?(date) ? HEATINGHOLIDAYMODEL : weekend?(date) ? HEATINGWEEKENDMODEL : school_day_model(date)
+      if holiday?(date)
+        HEATINGHOLIDAYMODEL
+      else
+        weekend?(date) ? HEATINGWEEKENDMODEL : school_day_model(date)
+      end
     end
 
     def winter_heating_model_types
@@ -1485,7 +1511,10 @@ module AnalyseHeatingAndHotWater
     end
 
     def school_day_model(date)
-      raise EnergySparksUnexpectedStateException.new("Unexpected weekend date #{date}") if date.saturday? || date.sunday?
+      if date.saturday? || date.sunday?
+        raise EnergySparksUnexpectedStateException.new("Unexpected weekend date #{date}")
+      end
+
       SCHOOLDAYHEATINGMODELTYPES[date.wday - 1]
     end
 
@@ -1525,8 +1554,9 @@ module AnalyseHeatingAndHotWater
 
   module SharedManuallyConfiguredMultipleInheritanceCode
     attr_reader :reason
+
     def initialize(heat_meter, model_overrides)
-      super(heat_meter, model_overrides)
+      super
 
       @reason = model_overrides.reason
       model_overrides.override_regression_model[:regression_models].each do |key, model|
@@ -1551,17 +1581,18 @@ module AnalyseHeatingAndHotWater
 
     # just assign sample data, don't calculate model as manually set
     def calculate_regression_model(period, _allow_more_than_1_year, _non_heating_model)
-      bm = Benchmark.realtime {
+      bm = Benchmark.realtime do
         x_data, y_data = assign_models(period)
         x_data.each do |model_type, samples|
-          if @models.key?(model_type)
-            @models[model_type].samples = samples.length
-            @models[model_type].x = samples
-            @models[model_type].y = y_data[model_type]
-          end
+          next unless @models.key?(model_type)
+
+          @models[model_type].samples = samples.length
+          @models[model_type].x = samples
+          @models[model_type].y = y_data[model_type]
         end
-        @standard_deviation, @standard_deviation_percent = standard_deviation_from_model(period.start_date, period.end_date)
-      }
+        @standard_deviation, @standard_deviation_percent = standard_deviation_from_model(period.start_date,
+                                                                                         period.end_date)
+      end
       @model_calculation_time = bm
     end
   end
@@ -1570,7 +1601,8 @@ module AnalyseHeatingAndHotWater
   class HeatingModelTemperatureSpaceManuallyConfigured < HeatingModelTemperatureSpace
     include SharedManuallyConfiguredMultipleInheritanceCode
   end
-    # manually configured version of therally heavy model, data held in meter attributes
+
+  # manually configured version of therally heavy model, data held in meter attributes
   class HeatingModelThermalMassingModeTemperatureSpaceManuallyConfigured < HeatingModelTemperatureSpaceThermalMass
     include SharedManuallyConfiguredMultipleInheritanceCode
   end

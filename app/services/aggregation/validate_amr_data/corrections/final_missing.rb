@@ -20,7 +20,7 @@ module Aggregation
             if %i[solar_pv exported_solar_pv].freeze.include?(meter.meter_type)
               Utilities::SunTimes.zero_night_hours(date, meter.meter_collection, no_data)
             end
-            dummy_data = OneDayAMRReading.new(meter.mpan_mprn, date, 'PROB', nil, DateTime.now, no_data)
+            dummy_data = OneDayAMRReading.new(date, 'PROB', nil, DateTime.now, no_data)
             amr_data.add(date, dummy_data)
           end
         end

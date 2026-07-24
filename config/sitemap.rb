@@ -38,14 +38,15 @@ if ENV.key?('GENERATE_SITEMAP')
       add programme_type_path(programme_type)
     end
 
-    Scoreboard.is_public.find_each do |scoreboard|
-      add scoreboard_path(scoreboard)
-    end
-
     School.visible.find_each do |school|
       add school_path(school)
       add school_activities_path(school)
       add school_timeline_path(school)
+    end
+
+    SchoolGroup.with_visible_schools.find_each do |school_group|
+      add school_group_path(school_group)
+      add school_group_timeline_path(school_group)
     end
   end
 end

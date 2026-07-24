@@ -14,7 +14,7 @@ RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, typ
       card.with_tag('Guidance')
       card.with_tag('Fuel')
       card.with_date(date)
-      card.with_author(href: '/') {'Happy Blogger'}
+      card.with_author(href: '/') { 'Happy Blogger' }
       card.with_header(title: 'Header')
       card.with_description { 'Description' }
       card.with_button('button 1', 'link_to_button_1', style: :primary)
@@ -36,12 +36,12 @@ RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, typ
     end
 
     it { expect(html).to have_css('h3') }
-    it { expect(html).to have_content('Guidance') }
-    it { expect(html).to have_content('Fuel') }
-    it { expect(html).to have_content(short_dates(date)) }
+    it { expect(html).to have_text('Guidance') }
+    it { expect(html).to have_text('Fuel') }
+    it { expect(html).to have_text(short_dates(date)) }
     it { expect(html).to have_link('Happy Blogger', href: '/') }
-    it { expect(html).to have_content('Header') }
-    it { expect(html).to have_content('Description') }
+    it { expect(html).to have_text('Header') }
+    it { expect(html).to have_text('Description') }
     it { expect(html).to have_link('button 1', href: 'link_to_button_1') }
     it { expect(html).to have_link('button 2', href: 'link_to_button_2') }
   end
@@ -53,7 +53,7 @@ RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, typ
       it { expect(html).to have_css('h3') }
     end
 
-    described_class.sizes.each do |size, value|
+    described_class.const_get(:SIZES).each do |size, value|
       context "when size = #{size}" do
         let(:params) { base_params.merge(size: size) }
 

@@ -19,12 +19,13 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe Admin::ActivityTypesController, type: :controller do
-  let(:activity_category) { FactoryBot.create :activity_category }
+  let(:activity_category) { FactoryBot.create(:activity_category) }
   # This should return the minimal set of attributes required to create a valid
   # ActivityType. As you add validations to ActivityType, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { name: 'test name', activity_category_id: activity_category.id, description: 'test description', active: true, score: 10 }
+    { name: 'test name', activity_category_id: activity_category.id, description: 'test description', active: true,
+      score: 10 }
   end
 
   let(:invalid_attributes) do
@@ -153,7 +154,7 @@ RSpec.describe Admin::ActivityTypesController, type: :controller do
         activity_type = ActivityType.create! valid_attributes
         expect do
           delete :destroy, params: { id: activity_type.to_param }
-        end.to change(ActivityType, :count).by(0)
+        end.not_to change(ActivityType, :count)
       end
 
       it 'redirects to the activity_types list' do
