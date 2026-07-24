@@ -23,7 +23,6 @@ RSpec.describe DataFeeds::MeterZ do
 
     context 'when start is nil' do
       before do
-        travel_to(Time.zone.local(2026))
         stub_readings([1])
       end
 
