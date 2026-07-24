@@ -22,7 +22,7 @@ class ConsumptionEstimator
     solar_pv_consumed_onsite_total_£  = 0.0
     new_mains_consumption_total_£     = 0.0
 
-    logger.info "PV date range #{meter_collection.solar_pv.start_date} to #{meter_collection.solar_pv.end_date}"
+    logger.debug "PV date range #{meter_collection.solar_pv.start_date} to #{meter_collection.solar_pv.end_date}"
 
     (start_date..end_date).each do |date|
       pv_yield_x48 = meter_collection.solar_pv[date]

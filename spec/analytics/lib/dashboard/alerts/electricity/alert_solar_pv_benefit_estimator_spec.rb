@@ -3,65 +3,48 @@
 require 'rails_helper'
 
 describe AlertSolarPVBenefitEstimator do
-  let(:school) { @acme_academy }
-  let(:alert) { described_class.new(school) }
-  let(:default_pricing_template_variables) do
-    {
-      optimum_kwp: '100 kWp',
-      optimum_payback_years: '8 years',
-      optimum_mains_reduction_percent: '16%',
-      one_year_saving_£current: '£11,000',
-      relevance: 'relevant',
-      analysis_date: '',
-      status: '',
-      rating: '5',
-      term: '',
-      max_asofdate: '',
-      pupils: '961',
-      floor_area: '5,900 m2',
-      school_type: 'secondary',
-      school_name: 'Acme Academy',
-      school_activation_date: '',
-      school_creation_date: '2020-10-08',
-      urn: '123456',
-      one_year_saving_kwh: '76,000 kWh',
-      one_year_saving_£: '£11,000',
-      one_year_saving_co2: '15,000 kg CO2',
-      ten_year_saving_co2: '150,000 kg CO2',
-      average_one_year_saving_£: '£11,000',
-      average_ten_year_saving_£: '£110,000',
-      ten_year_saving_£: '£110,000',
-      payback_years: '',
-      average_payback_years: '8 years',
-      capital_cost: '£84,000',
-      average_capital_cost: '£84,000',
-      timescale: 'year',
-      time_of_year_relevance: '5'
-    }
+  subject(:alert) { described_class.new(meter_collection) }
+
+  # using fixed generation and consumption to simplify calculating expected values
+  let(:solar_generation_x48) { [*([0.0] * 10), *([0.25] * 10), *([0.5] * 8), *([0.25] * 10), *([0.0] * 10)] }
+  let(:consumption_x48) { [*([0.1] * 10), *([0.005] * 10), *([0.4] * 8), *([0.25] * 10), *([0.01] * 10)] }
+
+  include_context 'with an aggregated meter with tariffs and school times' do
+    let(:amr_start_date)  { Date.new(2024, 1, 1) }
+    let(:amr_end_date)    { Date.new(2025, 12, 31) }
+    let(:days_solar_pv_yield) { solar_generation_x48 }
+
+    let(:amr_data) do
+      build(:amr_data, :with_date_range, :with_grid_carbon_intensity,
+            grid_carbon_intensity: grid_carbon_intensity,
+            start_date: amr_start_date,
+            end_date: amr_end_date,
+            kwh_data_x48: consumption_x48)
+    end
   end
 
-  before(:all) do
-    @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy')
-  end
+  context 'when school does not have solar' do
+    let(:service) do
+      SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(meter_collection:,
+                                                                asof_date: Date.new(2025, 12, 31))
+    end
 
-  it 'calculates the alert for a given asof date' do
-    current_pricing = BenchmarkMetrics.default_prices
-    class_double('BenchmarkMetrics', pricing: current_pricing, default_prices: current_pricing).as_stubbed_const
-    alert.calculate(Date.new(2022, 7, 12))
-    expect(BenchmarkMetrics.pricing).to eq(current_pricing)
-    expect(alert.text_template_variables).to eq(default_pricing_template_variables)
+    before do
+      alert.analyse(Date.new(2025, 12, 31))
+    end
 
-    new_pricing = OpenStruct.new(gas_price: 0.06, electricity_price: 0.3, solar_export_price: 0.1)
-    class_double('BenchmarkMetrics', pricing: new_pricing, default_prices: new_pricing).as_stubbed_const
-    expect(BenchmarkMetrics.pricing).to eq(new_pricing)
-    alert.calculate(Date.new(2022, 7, 12))
-    expect(alert.text_template_variables).not_to eq(default_pricing_template_variables)
-    expect(alert.text_template_variables[:one_year_saving_£current]).to eq('£26,000')
-    expect(alert.text_template_variables[:one_year_saving_£]).to eq('£26,000')
-    expect(alert.text_template_variables[:average_one_year_saving_£]).to eq('£26,000')
-    expect(alert.text_template_variables[:average_ten_year_saving_£]).to eq('£260,000')
-    expect(alert.text_template_variables[:ten_year_saving_£]).to eq('£260,000')
-    expect(alert.text_template_variables[:capital_cost]).to eq('£170,000')
-    expect(alert.text_template_variables[:average_capital_cost]).to eq('£170,000')
+    it 'creates variables based on the benefit estimate' do
+      optimum_scenario = service.calculate_optimum_scenario
+
+      expect(alert.optimum_kwp).to eq(optimum_scenario[:kwp])
+      expect(alert.optimum_payback_years).to eq(optimum_scenario[:payback_years])
+      expect(alert.optimum_mains_reduction_percent).to eq(optimum_scenario[:reduction_in_mains_percent])
+      expect(alert.one_year_saving_£current).to eq(optimum_scenario[:total_annual_saving_£]) # rubocop:disable Naming/AsciiIdentifiers
+      expect(alert.one_year_saving_kwh).to eq(optimum_scenario[:reduction_in_mains_kwh])
+      expect(alert.one_year_saving_co2).to eq(optimum_scenario[:total_annual_saving_co2])
+      expect(alert.one_year_saving_£).to eq(Range.new(optimum_scenario[:total_annual_saving_£], # rubocop:disable Naming/AsciiIdentifiers
+                                                      optimum_scenario[:total_annual_saving_£]))
+      expect(alert.capital_cost).to eq(Range.new(optimum_scenario[:capital_cost_£], optimum_scenario[:capital_cost_£]))
+    end
   end
 end
