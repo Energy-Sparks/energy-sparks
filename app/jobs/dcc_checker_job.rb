@@ -13,9 +13,8 @@ class DccCheckerJob < ApplicationJob
   def update_meters(meters)
     meters.filter_map do |meter|
       meter.update!(dcc_checked_at: Time.current, dcc_meter: Meters::N3rgyMeteringService.new(meter).type)
-      meter.id if meter.saved_change_to_dcc_meter?
-    rescue StandardError => e
-      EnergySparks::Log.exception(e, job: :dcc_checker, mpxn: meter.mpan_mprn, school_name: meter.school.name)
+      old_value, new_value = meter.saved_change_to_dcc_meter
+      meter.id if old_value == 'no' && new_value != 'no'
     end
   end
 end
