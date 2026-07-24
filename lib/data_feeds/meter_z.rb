@@ -6,12 +6,13 @@ module DataFeeds
 
     # the x-api-key header needs to be lowercase to work (believe should be case insensitive per http spec) but
     # Net::Http capitalizes by default
-    # http2 (as curl uses by default) would also work as that requires all headers are lowercase
+    # http2 (as curl uses by default) would also work as that makes all headers lowercase
     class CustomAdapter < Faraday::Adapter::NetHttp
       private
 
       def create_request(env)
         request = super # a Net::HTTPGenericRequest
+        # prevents default capitalization
         def request.capitalize(name) = name
         request
       end

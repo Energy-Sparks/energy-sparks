@@ -11,10 +11,5 @@ class CreateMeterZInstallation < ActiveRecord::Migration[8.1]
     end
     add_index :meter_z_installations, :api_key, unique: true
     add_reference :meters, :meter_z_installation, foreign_key: { on_delete: :cascade }
-    # create_table :meter_z_installation_schools do |t|
-    #   t.references :school, null: false, foreign_key: true
-    #   t.references :meter_z_installation, null: false, foreign_key: true
-    #   t.timestamps
-    # end
   end
 end
