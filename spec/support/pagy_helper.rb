@@ -2,12 +2,12 @@
 
 module PagyHelper
   def run_with_temporary_pagy_default(**kwargs)
-    originals = Pagy::DEFAULT.slice(*kwargs.keys)
-    Pagy::DEFAULT.merge!(kwargs)
+    original = Pagy::OPTIONS
+    Pagy.const_set(:OPTIONS, Pagy::OPTIONS.merge(kwargs))
     begin
       yield
     ensure
-      Pagy::DEFAULT.merge!(originals)
+      Pagy.const_set(:OPTIONS, original)
     end
   end
 end
