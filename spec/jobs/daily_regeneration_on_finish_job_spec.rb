@@ -28,7 +28,7 @@ describe DailyRegenerationOnFinishJob do
       it 'emails a report' do
         expect(email.to).to eq(['operations@energysparks.uk'])
         expect(email.subject).to eq('[energy-sparks-unknown] Energy Sparks - Regeneration Errors')
-        expect(html_email_as_markdown(email)).to eq(<<~EMAIL)
+        expect(EmailHelpers.html_email_as_markdown(email)).to eq(<<~EMAIL)
           # Regeneration Errors
 
           The following schools have failed to properly regenerate as part of the automated overnight processing. This means the latest data will not be available on the website and other content, e.g. dashboard alerts, will be out of date. Review the school configuration and try manually regenerating to see the detailed errors.

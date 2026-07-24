@@ -1,0 +1,55 @@
+<% if installation.persisted? %>
+  <h3>Meters</h3>
+  <h4>Unassigned</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Site Name</th>
+        <th>Meter Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% (installation.meters_list || []).sort_by { |meter| [meter['site_name'], meter['meter_name']] }.each do |meter| %>
+        <% next if installation.meters.pluck(:meter_serial_number).include?(meter['meter_id']) %>
+        <tr>
+          <td><%= meter['site_name'] %></td>
+          <td><%= meter['meter_name'] %></td>
+          <td><%= button_tag('Assign', name: 'assign', value: meter['meter_id'], class: 'btn btn-primary') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <h4>Assigned</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Meter Name</th>
+        <th>Meter serial</th>
+        <th>Pseudo MPAN</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% installation.meters.where(school:).order(:name).each do |meter| %>
+        <tr>
+          <td><%= meter.name %></td>
+          <td><%= meter.meter_serial_number %></td>
+          <td><%= link_to meter.mpan_mprn, school_meter_path(meter.school_id, meter.id) %></td>
+          <td><%= button_tag('Unassign', name: 'unassign', value: meter.id, class: 'btn btn-primary') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="actions">
+    <%= link_to 'Back', school_solar_feeds_configuration_index_path(school), class: 'btn' %>
+  </div>
+  <div class="other-actions">
+    <%= link_to 'Update Meter List', check_school_meter_z_installation_path(school, installation),
+                method: :post, class: 'btn btn-primary mb-4' %>
+  </div>
+<% else %>
+  <%= render 'existing',
+             options: MeterZInstallation.all.map { |installation| [installation.api_key, installation.id] } %>
+<% end %>
+<%= form.input :api_key, as: :string %>

@@ -188,7 +188,7 @@ describe SchoolRemover, :schools, type: :service do
           email = ActionMailer::Base.deliveries.last
           expect(email.subject).to eq("#{school.name} has been archived on Energy Sparks")
           expect(email.to).to contain_exactly(school_admin.email, school_admin_user.email, staff_user.email)
-          expect(bootstrap_email_body_to_markdown(email)).to eq(<<~EMAIL.chomp)
+          expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to eq(<<~EMAIL.chomp)
             # School archived
 
             #{school.name} has been archived on Energy Sparks. You will no longer be able to access the energy data insights or previously recorded activities for your school.

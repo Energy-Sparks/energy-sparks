@@ -1635,6 +1635,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.index ["user_id"], name: "index_meter_reviews_on_user_id"
   end
 
+  create_table "meter_z_installations", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.bigint "amr_data_feed_config_id", null: false
+    t.text "api_key", null: false
+    t.datetime "created_at", null: false
+    t.jsonb "meters_list"
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_meter_z_installations_on_amr_data_feed_config_id"
+    t.index ["api_key"], name: "index_meter_z_installations_on_api_key", unique: true
+  end
+
   create_table "meters", force: :cascade do |t|
     t.boolean "active", default: true
     t.bigint "admin_meter_statuses_id"
@@ -1650,6 +1661,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.text "meter_serial_number"
     t.integer "meter_system", default: 0
     t.integer "meter_type"
+    t.bigint "meter_z_installation_id"
     t.bigint "mpan_mprn"
     t.string "name"
     t.enum "perse_api", enum_type: "meter_perse_api"
@@ -1664,6 +1676,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
+    t.index ["meter_z_installation_id"], name: "index_meters_on_meter_z_installation_id"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
     t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"
@@ -2652,8 +2665,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
   add_foreign_key "meter_reviews", "consent_grants"
   add_foreign_key "meter_reviews", "schools"
   add_foreign_key "meter_reviews", "users"
+  add_foreign_key "meter_z_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "meters", "low_carbon_hub_installations", on_delete: :cascade
   add_foreign_key "meters", "meter_reviews"
+  add_foreign_key "meters", "meter_z_installations", on_delete: :cascade
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
   add_foreign_key "meters", "solis_cloud_installations", on_delete: :cascade

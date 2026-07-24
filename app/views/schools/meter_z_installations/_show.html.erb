@@ -1,0 +1,14 @@
+<% if installation.meters_list.present? %>
+  <h2>Cached meters information</h2>
+  <p>
+    The following is a summary of the meters API response. It was last refreshed on
+    <%= nice_date_times(installation.updated_at) %>. Run Check API on the previous page to update this
+    cached copy.
+  </p>
+  <% installation.meters_list.each do |meter| %>
+    <h3>Meter <%= meter['meter_id'] %></h3>
+    <%= render 'key_value_table', pairs: meter %>
+  <% end %>
+<% else %>
+  <p>There is no cached copy of the site metadata</p>
+<% end %>
