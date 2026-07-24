@@ -2,7 +2,8 @@
 
 module SolarPhotovoltaics
   class PotentialBenefitsEstimatorService # rubocop:disable Metrics/ClassLength
-    PANEL_CAPACITY = 0.300 # originally 300 Wp per panel.
+    # originally 300 Wp per panel. 2027-07-24: latest panels are 400 Wp
+    PANEL_CAPACITY = 0.400
     STANDARD_PANEL_SIZE = 1.6 * 0.9 # Standard solar panels are roughly 1.6m x 0.9m
     ESTIMATE_ROOF_AREA_SIZE = 0.25 # Conservative estimate of roof area as % of floor area.
 
@@ -11,7 +12,9 @@ module SolarPhotovoltaics
     # 1 x 300 Wp panel is around 1.6m square (estimated slightly larger than above standard size)
     # 1 kWp capacity array is around 3.3 x 300 Wp panels
     # 1.6 * 3.3 = 5.28 then rounded up to 6.0
-    SQUARE_METERS_PER_KWP = 6.0
+    #
+    # 2027-07-24: For 400 Wp panels, more like 5.0
+    SQUARE_METERS_PER_KWP = 5.0
 
     include AnalysableMixin
 
