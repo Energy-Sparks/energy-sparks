@@ -18,4 +18,15 @@
 class Comparison::SolarGenerationSummary < Comparison::View
   scope :with_data, -> { where.not(annual_solar_pv_kwh: nil) }
   scope :sort_default, -> { joins(:school).order('schools.name') }
+
+  def self.report_headers
+    [
+      I18n.t('analytics.benchmarking.configuration.column_headings.school'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.solar_mains_consume'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.solar_generation'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.solar_self_consume'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.solar_export'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.solar_mains_onsite')
+    ]
+  end
 end
