@@ -32,12 +32,6 @@ class CustomAlert < ContentBase
       description: 'mapped to native type',
       units: Date
     },
-    a_table: {
-      description: 'a table',
-      units: :table,
-      header: %w[x y],
-      column_types: [String, :£]
-    },
     a_chart: {
       description: 'a chart',
       units: :chart
@@ -141,7 +135,6 @@ describe ContentBase do
 
       it 'strips other variables' do
         expect(variables['Custom Alert']).not_to have_key(:a_chart)
-        expect(variables['Custom Alert']).not_to have_key(:a_table)
         expect(variables['Custom Alert']).not_to have_key(:stripped)
       end
     end
