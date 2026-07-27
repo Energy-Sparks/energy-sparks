@@ -220,6 +220,9 @@ describe ChartDataValues do
           'Electricity consumed from solar pv' => Colours.chart_electricity_consumed_from_solar_pv,
           'Electricity consumed from mains' => Colours.chart_electricity_consumed_from_mains,
           'Exported solar electricity (not consumed onsite)' => Colours.chart_exported_solar_electricity,
+          'Self consumption (kWh)' => Colours.chart_electricity_consumed_from_solar_pv,
+          'Mains consumption (kWh)' => Colours.chart_electricity_consumed_from_mains,
+          'Export (kWh)' => Colours.chart_exported_solar_electricity,
           'Solar irradiance (brightness of sunshine)' => Colours.chart_y2_solar_label,
           'Rating' => Colours.chart_y2_rating }
       )

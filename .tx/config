@@ -701,6 +701,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-home-our_impact-yml]
+file_filter  = config/locales/<lang>/views/home/our_impact.yml
+source_file  = config/locales/views/home/our_impact.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-home-privacy_and_cookie_policy-yml]
 file_filter  = config/locales/<lang>/views/home/privacy_and_cookie_policy.yml
 source_file  = config/locales/views/home/privacy_and_cookie_policy.yml
@@ -851,6 +858,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-long_term-yml]
 file_filter  = config/locales/<lang>/views/school_groups/advice/long_term.yml
 source_file  = config/locales/views/school_groups/advice/long_term.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-solar_pv-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/solar_pv.yml
+source_file  = config/locales/views/school_groups/advice/solar_pv.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
