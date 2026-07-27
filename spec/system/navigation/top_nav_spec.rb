@@ -7,7 +7,6 @@ RSpec.describe 'Navigation -> top nav', type: :system do
 
   before do
     Flipper.enable :support_pages
-    Flipper.enable :org_impact_page
     sign_in(user) if user
     visit root_path(locale: locale)
   end
