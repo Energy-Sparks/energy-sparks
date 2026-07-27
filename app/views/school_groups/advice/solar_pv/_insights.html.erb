@@ -1,0 +1,45 @@
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <%= t('school_groups.advice_pages.solar_pv.insights.summary_html') %>
+<% end %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'current-benefits',
+           section_title: t('school_groups.advice_pages.solar_pv.insights.potential_benefits.title') %>
+
+<%= t('school_groups.advice_pages.solar_pv.insights.potential_benefits.summary_html',
+      link: analysis_school_group_advice_solar_pv_path(@school_group, anchor: 'potential-benefits')) %>
+
+<%= render ComparisonTableComponent.new(
+      advice_page: @advice_page, advice_page_tab: :analysis,
+      colgroups: [], headers: @benefit_table_headers, index_params: index_params,
+      report: @benefit_report, table_name: :table, table_classes: comparison_table_class(@benefit_report_results)
+    ) do |c| %>
+  <% @benefit_report_results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <%= r.with_var val: result.optimum_mains_reduction_percent, unit: :percent %>
+      <%= r.with_var val: result.one_year_saving_gbpcurrent, unit: :£current %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'current-benefits',
+           section_title: t('school_groups.advice_pages.solar_pv.insights.current_benefits.title') %>
+
+<%= t('school_groups.advice_pages.solar_pv.insights.current_benefits.summary_html',
+      link: analysis_school_group_advice_solar_pv_path(@school_group, anchor: 'comparison')) %>
+
+<%= render ComparisonTableComponent.new(
+      advice_page: @advice_page, advice_page_tab: :analysis,
+      colgroups: [], headers: @insight_table_headers, index_params: index_params,
+      report: @report, table_name: :table, table_classes: comparison_table_class(@results)
+    ) do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <%= r.with_var val: result.annual_mains_consumed_kwh, unit: :kwh %>
+      <%= r.with_var val: result.annual_solar_pv_consumed_onsite_kwh, unit: :kwh %>
+    <% end %>
+  <% end %>
+<% end %>
