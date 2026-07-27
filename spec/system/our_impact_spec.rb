@@ -8,7 +8,6 @@ describe 'manage organisation impact statement' do
   let!(:statement) { create(:impact_report_organisation_statement, :current) }
 
   before do
-    Flipper.enable :org_impact_page
     visit our_impact_path
   end
 

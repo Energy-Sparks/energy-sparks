@@ -115,6 +115,10 @@
             t('home.buttons.watch_a_demo'),
             watch_demo_campaigns_path, style: :secondary, classes: 'mb-2'
           ) %>
+      <%= render Elements::ButtonComponent.new(
+            t('about_menu.our_impact'),
+            our_impact_path, style: :secondary, classes: 'mb-2 me-2'
+          ) %>
     </div>
 
     <%= render Layout::GridComponent.new(
