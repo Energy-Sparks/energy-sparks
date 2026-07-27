@@ -197,7 +197,6 @@ module SolarPhotovoltaics
     end
 
     def max_possible_kwp
-      # 25% of floor area, 6m2 panels/kWp
       @max_possible_kwp ||= (@meter_collection.floor_area * ESTIMATE_ROOF_AREA_SIZE) / SQUARE_METERS_PER_KWP
     end
   end

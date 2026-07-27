@@ -43,7 +43,7 @@ class AlertSolarPVBenefitEstimator < AlertElectricityOnlyBase
 
   def calculate(asof_date)
     service = ::SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(meter_collection: @school, asof_date:)
-    raise EnergySparksNotEnoughDataException, "Only #{days_data.to_i} days meter data" unless service.enough_data?
+    raise EnergySparksNotEnoughDataException, 'Less than one years worth of data' unless service.enough_data?
 
     optimum_scenario = service.calculate_optimum_scenario
 
