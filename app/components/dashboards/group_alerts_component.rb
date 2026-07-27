@@ -2,7 +2,7 @@ module Dashboards
   # FIXME should use PromptList directly, and pass through additional prompts if possible.
   class GroupAlertsComponent < ApplicationComponent
     ALERT_GROUPS = %w[priority change benchmarking advice].freeze # specific order
-    GROUP_ADVICE_PAGES = %w[baseload electricity_long_term electricity_out_of_hours gas_long_term gas_out_of_hours heating_control].freeze
+    GROUP_ADVICE_PAGES = %w[baseload electricity_long_term electricity_out_of_hours gas_long_term gas_out_of_hours heating_control solar_pv].freeze
 
     attr_reader :school_group, :limit
 
