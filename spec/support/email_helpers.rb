@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 module EmailHelpers
+  def last_email
+    expect(ActionMailer::Base.deliveries.length).to eq(1)
+    ActionMailer::Base.deliveries.last
+  end
+
+  module_function
+
   def html_email(email)
     Nokogiri::HTML(email.html_part.decoded)
   end
@@ -17,10 +24,5 @@ module EmailHelpers
     ReverseMarkdown.convert(bootstrap_email_body(email))
                    .gsub("\n\n| &nbsp; |\n\n", "\n\n").gsub("| \n", '').gsub(' |', '')
                    .split("\n").map(&:strip).join("\n")
-  end
-
-  def last_email
-    expect(ActionMailer::Base.deliveries.length).to eq(1)
-    ActionMailer::Base.deliveries.last
   end
 end

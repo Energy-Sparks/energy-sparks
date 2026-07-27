@@ -73,6 +73,9 @@
       <%= section_header.with_button t('home.buttons.watch_a_demo'),
                                      watch_demo_campaigns_path(utm_params),
                                      style: :primary %>
+      <%= section_header.with_button t('about_menu.our_impact'),
+                                     our_impact_path(utm_params),
+                                     style: :secondary %>
       <%= section_header.with_button t('common.labels.request_more_info'),
                                      more_information_campaigns_path(utm_params),
                                      style: :secondary %>
@@ -188,6 +191,8 @@
         <%= feature.with_header(title: t('product.call_to_action.title')) %>
         <%= feature.with_description { t('product.call_to_action.description_html', count: schools_count) } %>
         <%= feature.with_button t('enrol.enrol_now'), enrol_our_school_path, style: :primary %>
+        <%= feature.with_button(t('about_menu.our_impact'),
+                                our_impact_path, style: :secondary) %>
         <%= feature.with_button(t('common.labels.request_more_info'),
                                 more_information_campaigns_path(utm_params), style: :secondary) %>
       <% end %>

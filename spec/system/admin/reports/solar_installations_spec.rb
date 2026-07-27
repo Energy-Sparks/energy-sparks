@@ -9,10 +9,11 @@ describe 'Solar installations report' do
     create(:low_carbon_hub_installation, school:, active: false)
     create(:rtone_variant_installation, school:)
     create(:solis_cloud_installation).schools << school
+    create(:solar_pv_meter, school:, meter_z_installation: create(:meter_z_installation)).meter_z_installation
     school
   end
   let(:installation_counts) do
-    { solar_edge_active: 1, rtone_inactive: 1, rtone_variant_active: 1, solis_cloud_active: 1 }
+    { solar_edge_active: 1, rtone_inactive: 1, rtone_variant_active: 1, solis_cloud_active: 1, meter_z_active: 1 }
   end
 
   def csv_headers
@@ -20,13 +21,14 @@ describe 'Solar installations report' do
      'SolarEdge Active', 'SolarEdge Inactive',
      'Rtone Active', 'Rtone Inactive',
      'Rtone Variant Active', 'Rtone Variant Inactive',
-     'SolisCloud Active', 'SolisCloud Inactive']
+     'SolisCloud Active', 'SolisCloud Inactive',
+     'MeterZ Active', 'MeterZ Inactive']
   end
 
   def html_headers = [csv_headers + ['']]
 
   def counts_hash_to_a(hash)
-    %i[solar_edge rtone rtone_variant solis_cloud].product(%i[active inactive]).map do |type|
+    %i[solar_edge rtone rtone_variant solis_cloud meter_z].product(%i[active inactive]).map do |type|
       hash.fetch(type.join('_').to_sym, 0).to_s
     end
   end

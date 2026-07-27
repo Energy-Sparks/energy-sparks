@@ -22,6 +22,7 @@
 #  data_source_id                 :bigint(8)
 #  low_carbon_hub_installation_id :bigint(8)
 #  meter_review_id                :bigint(8)
+#  meter_z_installation_id        :bigint(8)
 #  procurement_route_id           :bigint(8)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
@@ -34,6 +35,7 @@
 #  index_meters_on_low_carbon_hub_installation_id  (low_carbon_hub_installation_id)
 #  index_meters_on_meter_review_id                 (meter_review_id)
 #  index_meters_on_meter_type                      (meter_type)
+#  index_meters_on_meter_z_installation_id         (meter_z_installation_id)
 #  index_meters_on_mpan_mprn                       (mpan_mprn) UNIQUE
 #  index_meters_on_procurement_route_id            (procurement_route_id)
 #  index_meters_on_school_id                       (school_id)
@@ -45,6 +47,7 @@
 #
 #  fk_rails_...  (low_carbon_hub_installation_id => low_carbon_hub_installations.id) ON DELETE => cascade
 #  fk_rails_...  (meter_review_id => meter_reviews.id)
+#  fk_rails_...  (meter_z_installation_id => meter_z_installations.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (solar_edge_installation_id => solar_edge_installations.id) ON DELETE => cascade
 #  fk_rails_...  (solis_cloud_installation_id => solis_cloud_installations.id) ON DELETE => cascade
@@ -55,6 +58,7 @@ class Meter < ApplicationRecord
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
   belongs_to :solis_cloud_installation, optional: true
+  belongs_to :meter_z_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
   belongs_to :supplier, optional: true
