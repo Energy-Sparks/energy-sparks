@@ -152,6 +152,10 @@ class AlertAnalysisBase < ContentBase
       units: :£,
       priority_code: 'CAPC'
     },
+    timescale: {
+      description: 'Timescale of analysis e.g. week, month, year',
+      units: String
+    },
     time_of_year_relevance: {
       description: 'Rating: 10 = relevant to time of year, 0 = irrelevant, 5 = average/normal',
       units: Float,
