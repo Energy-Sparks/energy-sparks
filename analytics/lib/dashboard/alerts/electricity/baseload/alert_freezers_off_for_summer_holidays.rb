@@ -49,12 +49,6 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
   ]
 
   TEMPLATE_VARIABLES = {
-    summer_holiday_analysis_table: {
-      description:  'Change in baseload during summer holidays',
-      units:        :table,
-      header:       TABLE_COLUMN_HEADERS,
-      column_types: TABLE_COLUMN_UNITS
-    },
     annualised_reduction_£: {
       description: 'Annualised value of reduction over holiday',
       units:  :£,
@@ -88,10 +82,6 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
 
   def timescale
     I18n.t("#{i18n_prefix}.timescale")
-  end
-
-  def summer_holiday_analysis_table_html
-    AlertRenderTable.new(TABLE_COLUMN_HEADERS, holiday_data_table(:html)).render
   end
 
   def analysis_periods

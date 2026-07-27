@@ -27,7 +27,7 @@ class RunAlerts < RunAnalyticsTest
                   compare_results: {
                     summary:              :differences, # true || false || :detail || :differences
                     report_if_differs:    true,
-                    methods:              %i[raw_variables_for_saving front_end_template_data html_template_variables],   # %i[ raw_variables_for_saving front_end_template_data front_end_template_chart_data front_end_template_table_data
+                    methods:              %i[raw_variables_for_saving front_end_template_data html_template_variables],   # %i[ raw_variables_for_saving front_end_template_data front_end_template_chart_data
                     class_methods:        %i[front_end_template_variables],
                   },
 

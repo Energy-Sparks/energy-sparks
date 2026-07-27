@@ -32,7 +32,7 @@ script = {
                 compare_results: {
                   summary:              :differences, # true || false || :detail || :differences
                   report_if_differs:    true,
-                  methods:              %i[raw_variables_for_saving],   # %i[ raw_variables_for_saving front_end_template_data front_end_template_chart_data front_end_template_table_data
+                  methods:              %i[raw_variables_for_saving],   # %i[ raw_variables_for_saving front_end_template_data front_end_template_chart_data
                   class_methods:        %i[front_end_template_variables],
                   comparison_directory: ENV['ANALYTICSTESTRESULTDIR'] + '\Alerts\Base',
                   output_directory:     ENV['ANALYTICSTESTRESULTDIR'] + '\Alerts\New'
@@ -45,7 +45,7 @@ script = {
 
                 log: %i[:failed_calculations], # :sucessful_calculations, :invalid_alerts
 
-                no_outputs:     %i[front_end_template_variables front_end_template_data front_end_template_tables front_end_template_table_data], # front_end_template_variables front_end_template_data raw_variables_for_saving],
+                no_outputs:     %i[front_end_template_variables front_end_template_data], # front_end_template_variables front_end_template_data raw_variables_for_saving],
                 asof_date:      run_date
               }
   },

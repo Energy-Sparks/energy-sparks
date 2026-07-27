@@ -19,10 +19,6 @@ module Alerts
         {}
       end
 
-      def self.front_end_template_tables
-        {}
-      end
-
       def self.benchmark_template_variables
         {}
       end

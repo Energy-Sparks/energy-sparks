@@ -30,9 +30,6 @@ module Alerts
           chart_data: {
             chart: 'variables'
           },
-          table_data: {
-            table: 'variables'
-          },
           priority_data: {
             priority: 'variables'
           }
@@ -50,10 +47,6 @@ module Alerts
         TEMPLATE_VARIABLES.select {|_key, value| value[:units] == :chart }
       end
 
-      def self.front_end_template_tables
-        TEMPLATE_VARIABLES.select {|_key, value| value[:units] == :table }
-      end
-
       def self.front_end_template_variables
         { 'Dummy alert' => TEMPLATE_VARIABLES, 'Common' => {} }
       end
@@ -66,14 +59,6 @@ module Alerts
         chart_b: {
           description: 'chart description B',
           units: :chart
-        },
-        table_a: {
-          description: 'table description A',
-          units: :table
-        },
-        table_b: {
-          description: 'table description B',
-          units: :table
         }
       }.freeze
     end

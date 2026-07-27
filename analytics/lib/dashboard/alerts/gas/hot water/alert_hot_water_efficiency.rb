@@ -2,7 +2,6 @@
 require_relative '../alert_gas_model_base.rb'
 
 class AlertHotWaterEfficiency < AlertGasModelBase
-  attr_reader :investment_choices_table, :daytype_breakdown_table
   attr_reader :theoretical_annual_hot_water_requirement_litres, :theoretical_annual_hot_water_requirement_kwh
   attr_reader :avg_gas_per_pupil_£, :benchmark_existing_gas_efficiency
   attr_reader :benchmark_gas_better_control_saving_£, :benchmark_point_of_use_electric_saving_£, :electric_hot_water_saving_co2
@@ -37,24 +36,6 @@ class AlertHotWaterEfficiency < AlertGasModelBase
     summer_hot_water_efficiency_chart: {
       description: 'Chart of summer gas consumption before and during summer holidays',
       units: :chart
-    },
-    investment_choices_table: {
-      description: 'Current v. Improved Control v. Point of Use Electric cost-benefit table',
-      units: :table,
-      header: ['Choice', 'Annual kWh', 'Annual Cost £', 'Annual CO2/kg',
-               'Efficiency', 'Saving £', 'Saving £ percent', 'Saving CO2',
-               'Saving CO2 percent', 'Capital Cost', 'Payback (years)'],
-      column_types: [String, {kwh: :gas}, :£, :co2,
-                      :percent, :£, :percent, :co2,
-                      :percent, :£, :years],
-      data_column_justification: %i[left right right right right right right right right right right]
-    },
-    daytype_breakdown_table: {
-      description: 'School day open v. School day closed v Holidays v Weekends kWh/£ usage',
-      units: :table,
-      header: ['', 'Average daily kWh', 'Average daily £', 'Annual kWh', 'Annual £'],
-      column_types: [String, {kwh: :gas}, :£, {kwh: :gas}, :£],
-      data_column_justification: %i[left right right right right]
     },
     theoretical_annual_hot_water_requirement_litres: {
       description: 'Estimate of schools annual hot water requirement in litres',

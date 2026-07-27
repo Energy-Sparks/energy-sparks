@@ -172,21 +172,6 @@ describe ContentBase do
         )
       end
     end
-
-    describe '#front_end_template_tables' do
-      let(:tables) { CustomAlert.front_end_template_tables }
-
-      it 'returns only tables' do
-        expect(tables).to eq(
-          a_table: {
-            description: 'a table',
-            units: :table,
-            header: %w[x y],
-            column_types: [String, :£]
-          }
-        )
-      end
-    end
   end
 
   context 'when returning data' do

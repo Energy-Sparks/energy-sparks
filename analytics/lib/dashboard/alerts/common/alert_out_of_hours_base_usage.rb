@@ -17,7 +17,6 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
   attr_reader :holidays_£, :weekends_£, :schoolday_open_£, :schoolday_closed_£, :out_of_hours_£, :community_£
   attr_reader :holidays_£current, :weekends_£current, :schoolday_open_£current, :schoolday_closed_£current, :out_of_hours_£current, :community_£current
   attr_reader :holidays_co2, :weekends_co2, :schoolday_open_co2, :schoolday_closed_co2, :out_of_hours_co2, :community_co2
-  attr_reader :daytype_breakdown_table, :daytype_breakdown_table_current_£
   attr_reader :percent_improvement_to_exemplar, :potential_saving_kwh, :potential_saving_£, :potential_saving_co2
   attr_reader :total_annual_£, :total_annual_co2, :summary
   attr_reader :tariff_has_changed_during_period_text
@@ -31,7 +30,6 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
     @bad_out_of_hours_use_percent = bad_out_of_hours_use_percent
     @meter_definition = meter_definition
     @chart_results = nil
-    @table_results = nil
     @relevance = :never_relevant if @relevance != :never_relevant && aggregate_meter.amr_data.days_valid_data < 364
   end
 
@@ -136,18 +134,6 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
         description: 'Description: £spend/yr, percent out of hours',
         units: String
       },
-      daytype_breakdown_table: {
-        description: 'Table broken down by school day in/out hours, weekends, holidays - kWh, percent, £ (annual), CO2 (historic tariffs)',
-        units: :table,
-        header: ['Time of Day', 'kWh', '£', 'CO2 kg', 'Percent'],
-        column_types: [String, :kwh, :£, :co2, :percent]
-      },
-      daytype_breakdown_table_current_£: {
-        description: 'Table broken down by school day in/out hours, weekends, holidays - kWh, percent, £ (annual), CO2 (latest tariffs)',
-        units: :table,
-        header: ['Time of Day', 'kWh', '£ (at current tariff)', 'CO2 kg', 'Percent'],
-        column_types: [String, :kwh, :£, :co2, :percent]
-      },
       tariff_has_changed_during_period_text: {
         description: 'Caveat text to explain change in £ tariffs during year period, blank if no change',
         units:  String
@@ -174,8 +160,6 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
     calculate_£
     calculate_£current
     calculate_co2
-    calculate_table_historic_£
-    calculate_table_current_£
 
     @average_percent = AVERAGEPERCENTUSEDOUTOFHOURS
 
@@ -213,18 +197,6 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
 
   def community_name
     @community_name ||= OpenCloseTime.humanize_symbol(OpenCloseTime::COMMUNITY)
-  end
-
-  def analysis_table_data(fuel_type, datatype)
-    raise UnexpectedDataType, "Unexpected data type #{datatype}" unless %i[£ £current].include?(datatype)
-
-    data_rows = table_data(datatype)
-    {
-      units:  table_config(fuel_type, datatype, :column_types),
-      header: table_config(fuel_type, datatype, :header),
-      data:   data_rows,
-      totals: total_columns(data_rows)
-    }
   end
 
   private
@@ -293,46 +265,8 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
     @out_of_hours_co2 = @total_annual_co2 - @schoolday_open_co2
   end
 
-  def calculate_table_current_£
-    @daytype_breakdown_table_current_£ = [
-      [Series::DayType::HOLIDAY,          @holidays_kwh,         @holidays_£current,         @holidays_co2,         @holidays_percent],
-      [Series::DayType::WEEKEND,          @weekends_kwh,         @weekends_£current,         @weekends_co2,         @weekends_percent],
-      [Series::DayType::SCHOOLDAYOPEN,    @schoolday_open_kwh,   @schoolday_open_£current,   @schoolday_open_co2,   @schoolday_open_percent],
-      [school_day_closed_key,             @schoolday_closed_kwh, @schoolday_closed_£current, @schoolday_closed_co2, @schoolday_closed_percent]
-    ]
-
-    if @school.community_usage?
-      community_row = [community_name,  @community_kwh, @community_percent,  @community_£current, @community_co2]
-      @daytype_breakdown_table.push(community_row)
-    end
-  end
-
-  def calculate_table_historic_£
-    @daytype_breakdown_table = [
-      [Series::DayType::HOLIDAY,          @holidays_kwh,         @holidays_£,         @holidays_co2,          @holidays_percent],
-      [Series::DayType::WEEKEND,          @weekends_kwh,         @weekends_£,         @weekends_co2,          @weekends_percent],
-      [Series::DayType::SCHOOLDAYOPEN,    @schoolday_open_kwh,   @schoolday_open_£,   @schoolday_open_co2,    @schoolday_open_percent],
-      [school_day_closed_key,             @schoolday_closed_kwh, @schoolday_closed_£, @schoolday_closed_co2,  @schoolday_closed_percent]
-    ]
-
-    if @school.community_usage?
-      community_row = [community_name,  @community_kwh, @community_percent,  @community_£, @community_co2]
-      @daytype_breakdown_table.push(community_row)
-    end
-  end
-
   def school_day_closed_key
     Series::DayType::SCHOOLDAYCLOSED
-  end
-
-  def convert_breakdown_to_html_compliant_array(breakdown)
-    html_table = []
-    breakdown[:x_data].each do |daytype, consumption|
-      formatted_consumption = sprintf('%.0f kWh', consumption[0])
-      formatted_cost = sprintf('£%.0f', consumption[0] * tariff)
-      html_table.push([daytype, formatted_consumption, formatted_cost])
-    end
-    html_table
   end
 
   def extract_data_from_chart_data(breakdown)
@@ -355,82 +289,5 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
   def out_of_hours_energy_consumption(data_type)
     chart = ChartManager.new(@school)
     chart.run_standard_chart(breakdown_charts[data_type], nil, true)
-  end
-
-  def generate_html(template, binding)
-    begin
-      rhtml = ERB.new(template)
-      rhtml.result(binding)
-    rescue StandardError => e
-      logger.error "Error generating html for #{self.class.name}"
-      logger.error e.message
-      '<div class="alert alert-danger" role="alert"><p>Error generating advice</p></div>'
-    end
-  end
-
-  def html_table_from_data(data)
-    template = %{
-      <table class="table table-striped table-sm" id="alert-table-#{@alert_type}">
-        <thead>
-          <tr class="thead-dark">
-            <th scope="col">Out of hours</th>
-            <th scope="col" class="text-center">Energy usage</th>
-            <th scope="col" class="text-center">Cost &pound;</th>
-            <th scope="col" class="text-center">CO2 kg</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% data.each do |row, usage, cost, co2| %>
-            <tr>
-              <td><%= row %></td>
-              <td class="text-right"><%= usage %></td>
-              <td class="text-right"><%= cost %></td>
-              <td class="text-right"><%= co2 %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    }.gsub(/^  /, '')
-
-    generate_html(template, binding)
-  end
-
-  def table_config(fuel_type, datatype, value)
-    AlertOutOfHoursBaseUsage.static_template_variables(@fuel_type)[table_name(datatype)][value]
-  end
-
-  def table_data(datatype)
-    case datatype
-    when :£
-      daytype_breakdown_table
-    when :£current
-      daytype_breakdown_table_current_£
-    end
-  end
-
-  def total_columns(table_rows)
-    totals_row = Array.new(table_rows.first.length)
-
-    table_rows.each_with_index do |row|
-      row.each_with_index do |column_value, col|
-        if column_value.is_a? Numeric
-          totals_row[col] = 0.0 if totals_row[col].nil?
-          totals_row[col] += row[col]
-        end
-      end
-    end
-
-    totals_row[0] = "Total"
-
-    totals_row
-  end
-
-  def table_name(datatype)
-    case datatype
-    when :£
-      :daytype_breakdown_table
-    when :£current
-      :daytype_breakdown_table_current_£
-    end
   end
 end

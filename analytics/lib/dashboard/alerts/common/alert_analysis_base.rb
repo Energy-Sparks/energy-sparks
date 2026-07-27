@@ -74,20 +74,6 @@ class AlertAnalysisBase < ContentBase
     { 'Common' => TEMPLATE_VARIABLES }
   end
 
-  def summary_wording(format = :html)
-    return nil if default_summary.nil? # remove once all new style alerts implemeted TODO(PH,13Mar2019)
-
-    summary = AlertTemplateBinding.new(default_summary, formatted_template_variables(format), format)
-    summary.bind
-  end
-
-  def content_wording(format = :html)
-    return nil if default_content.nil? # remove once all new style alerts implemeted TODO(PH,13Mar2019)
-
-    content = AlertTemplateBinding.new(default_content, formatted_template_variables(format), format)
-    content.bind
-  end
-
   TEMPLATE_VARIABLES = {
     relevance: {
       description: 'Relevance of a alert to a school at this point in time',
@@ -221,20 +207,6 @@ class AlertAnalysisBase < ContentBase
 
   def valid_alert?
     valid_content? && meter_readings_up_to_date_enough?
-  end
-
-  # unused method?
-  def self.print_all_formatted_template_variable_values
-    puts 'Available variables and values:'
-    template_variables.each do |group_name, variable_group|
-      puts "  #{group_name}"
-      variable_group.each do |type, data|
-        # next if data[:units] == :table
-        value = send(type)
-        formatted_value = format(data[:units], value, :html, false, user_numeric_comprehension_level)
-        puts format('    %-40.40s %-20.20s', type, formatted_value) + ' ' + data.to_s
-      end
-    end
   end
 
   protected
