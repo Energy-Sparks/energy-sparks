@@ -203,6 +203,7 @@ class School < ApplicationRecord
   has_many :rtone_variant_installations, inverse_of: :school
   has_many :solis_cloud_installation_schools
   has_many :solis_cloud_installations, through: :solis_cloud_installation_schools
+  has_many :meter_z_installations, through: :meters
 
   has_many :equivalences
 

@@ -14,11 +14,11 @@ module Solar
     def perform
       log_perform_start
       @readings.each do |meter_type, details|
-        attributes = meter_model_attributes(details).stringify_keys
+        attributes = meter_model_attributes(details)
         meter = find_meter_or_create(meter_type, details) do |new_record|
           new_record.assign_attributes({ name: meter_type.to_s.humanize, active: false }.merge(attributes))
         end
-        meter.update!(attributes) unless meter.attributes >= attributes
+        meter.update!(attributes) unless meter.attributes >= attributes.stringify_keys
         Amr::DataFeedUpserter.new(@amr_data_feed_config,
                                   @amr_data_feed_import_log,
                                   data_feed_reading_array(details[:readings], meter.id, meter.mpan_mprn)).perform

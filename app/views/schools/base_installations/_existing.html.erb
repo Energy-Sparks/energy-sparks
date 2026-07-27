@@ -1,0 +1,6 @@
+<div class="form-group">
+  <%= label_tag 'Use Existing Installation', nil, class: 'form-control-label' %>
+  <%= select_tag 'existing', options_for_select([['Select an existing installation', '']] + options),
+                 class: 'form-control select' %>
+</div>
+<p>or create a new one</p>
