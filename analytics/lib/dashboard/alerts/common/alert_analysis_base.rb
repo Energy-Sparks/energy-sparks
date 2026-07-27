@@ -89,31 +89,11 @@ class AlertAnalysisBase < ContentBase
   end
 
   TEMPLATE_VARIABLES = {
-    relevance: {
-      description: 'Relevance of a alert to a school at this point in time',
-      units: :relevance
-    },
-    analysis_date: {
-      description: 'Latest date on which the alert data is based',
-      units: :date
-    },
-    status: {
-      description: 'Status: good, bad, failed',
-      units: Symbol
-    },
     rating: {
       description: 'Rating out of 10',
       units: Float,
       priority_code: 'RATE',
       benchmark_code: 'ratg'
-    },
-    term: {
-      description: 'long term or short term',
-      units: Symbol
-    },
-    max_asofdate: {
-      description: 'The latest date on which an alert can be run given the available data',
-      units: :date
     },
     pupils: {
       description: 'Number of pupils for relevant part of school on this date',
@@ -122,26 +102,6 @@ class AlertAnalysisBase < ContentBase
     floor_area: {
       description: 'Floor area of relevant part of school',
       units: :m2
-    },
-    school_type: {
-      description: 'Primary or Secondary',
-      units: :school_type
-    },
-    school_name: {
-      description: 'Name of school',
-      units: String
-    },
-    school_activation_date: {
-      description: 'Date school activated on Energy Sparks',
-      units: Date
-    },
-    school_creation_date: {
-      description: 'Date school created on Energy Sparks',
-      units: Date
-    },
-    urn: {
-      description: 'School URN',
-      units: Integer
     },
     one_year_saving_kwh: {
       description: 'Estimated one year kwh reduction range',
@@ -191,10 +151,6 @@ class AlertAnalysisBase < ContentBase
       description: 'Average Capital cost',
       units: :£,
       priority_code: 'CAPC'
-    },
-    timescale: {
-      description: 'Timescale of analysis e.g. week, month, year',
-      units: String
     },
     time_of_year_relevance: {
       description: 'Rating: 10 = relevant to time of year, 0 = irrelevant, 5 = average/normal',
