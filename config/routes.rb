@@ -312,7 +312,8 @@ Rails.application.routes.draw do
            gas_out_of_hours
            electricity_long_term
            gas_long_term
-           heating_control].each do |page|
+           heating_control
+           solar_pv].each do |page|
           # Override Rails default behaviour of mapping HEAD request to a GET and send to a
           # generic action method that returns OK with no content.
           %i[insights analysis].each do |action|
@@ -475,28 +476,13 @@ Rails.application.routes.draw do
 
       resources :solar_feeds_configuration, only: [:index]
 
-      resources :solar_edge_installations, only: %i[new show create edit update destroy] do
-        member do
-          post :check
-          post :submit_job
-        end
-      end
-      resources :low_carbon_hub_installations, only: %i[new show create edit update destroy] do
-        member do
-          post :check
-          post :submit_job
-        end
-      end
-      resources :rtone_variant_installations, only: %i[new create edit update destroy] do
-        member do
-          post :check
-          post :submit_job
-        end
-      end
-      resources :solis_cloud_installations, except: [:index] do
-        member do
-          post :check
-          post :submit_job
+      %i[solar_edge_installations low_carbon_hub_installations rtone_variant_installations
+         solis_cloud_installations meter_z_installations].each do |installation|
+        resources installation, except: [:index] do
+          member do
+            post :check
+            post :submit_job
+          end
         end
       end
 

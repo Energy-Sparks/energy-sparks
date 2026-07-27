@@ -1,31 +1,14 @@
-<% if @installation.cached_api_information? %>
+<% if installation.cached_api_information? %>
   <h2>Cached site information</h2>
-
   <p>
     The following is a cached summary of the site description. It was last refreshed on
-    <%= nice_date_times(@installation.updated_at) %>.
+    <%= nice_date_times(installation.updated_at) %>.
   </p>
   <p>
-    <%= link_to 'Edit and then save the site', edit_school_solar_edge_installation_path(@school, @installation) %>
+    <%= link_to 'Edit and then save the site', edit_school_solar_edge_installation_path(school, installation) %>
     to update this cached copy. Or click the links below to view live (raw) data.
   </p>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Field</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @installation.information.each do |key, value| %>
-        <tr>
-          <th><%= key %></th>
-          <td><%= value %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render 'key_value_table', pairs: installation.information %>
 <% else %>
   <p>There is no cached copy of the site metadata</p>
 <% end %>
@@ -40,12 +23,12 @@
 <ul>
  <li><%= link_to 'Site Details', "#{DataFeeds::SolarEdgeApi::BASE_URL}/sites/list?#{@api_params.to_query}" %> - live
      version of the above <code>site_details</code> data. Summarises all sites for which this API key has access</li>
- <% site_url = "#{DataFeeds::SolarEdgeApi::BASE_URL}/site/#{@installation.site_id}" %>
+ <% site_url = "#{DataFeeds::SolarEdgeApi::BASE_URL}/site/#{installation.site_id}" %>
  <li><%= link_to 'Data Period', "#{site_url}/dataPeriod?#{@api_params.to_query}" %> - live version of the above
  <code>dates</code>. Returns the dates of earliest and latest readings</li>
  <li><%= link_to 'Site Overview', "#{site_url}/overview?#{@api_params.to_query}" %> - The current power and daily,
      monthly, yearly and life time energy production for this specific site id</li>
- <% equipment_url = "#{DataFeeds::SolarEdgeApi::BASE_URL}/equipment/#{@installation.site_id}" %>
+ <% equipment_url = "#{DataFeeds::SolarEdgeApi::BASE_URL}/equipment/#{installation.site_id}" %>
  <li><%= link_to 'Components List', "#{equipment_url}/list?#{@api_params.to_query}" %> - return a list of the
      inverters/SMIs for this site</li>
 
