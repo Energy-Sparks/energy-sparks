@@ -7,7 +7,7 @@ namespace :after_party do
 
     AmrDataFeedConfig.create!(description: 'MeterZ',
                               identifier: 'meter-z',
-                              date_format: 'n/a',
+                              date_format: 'YYYY-MM-DD',
                               mpan_mprn_field: 'n/a',
                               reading_date_field: 'n/a',
                               reading_fields: [],

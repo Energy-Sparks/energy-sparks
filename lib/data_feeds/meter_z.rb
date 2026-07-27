@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# API docs - https://api.meterz.co.uk/v1/api-docs/
 module DataFeeds
   class MeterZ
     BASE_URL = 'https://api.meterz.co.uk/v1'
