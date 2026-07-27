@@ -5,21 +5,45 @@
   <% if description %>
     <p><%= description %></p>
   <% end %>
-  <div class="card-deck justify-content-center">
-    <% items.first(limit).each_with_index do |item, i| %>
-      <div class="card<%= responsive_classes(i) %>">
-        <%= link_to item.href do %>
-          <%= image_tag(cdn_link_url(item.image), class: 'card-img-top img-fluid activity-card-img') %>
+
+  <%= render Layout::GridComponent.new(
+        id: 'recommendations',
+        cols: limit,
+        cell_classes: 'mb-4',
+        component_classes: 'h-100'
+      ) do |grid| %>
+    <%# TODO: Make task into a component, to be used widely throughout the site %>
+    <%# Rather than recommendations component, we might rename it a tasklist component %>
+    <%# Tasks::List or Tasks::Grid and maybe Tasks::Card %>
+    <%# Make description turn on / offable %>
+    <%# Consider not having the link at the bottom and making the whole card clickable %>
+    <%# to save on space %>
+    <%# NB the "Languages, Literacy and Communication" subject is problematically long and busts out of the card %>
+    <% @tasks.first(limit).each do |task| %>
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(
+              src: cdn_link_url(task.t_attached_or_default(:image)),
+              rounded: :top,
+              classes: 'border-top border-start border-end'
+            ) %>
+        <%= card.with_feature_card(
+              theme: task.public_type == :activity ? :accent : :light, size: :xs,
+              classes: 'rounded-bottom-xl'
+            ) do |feature| %>
+          <%= feature.with_header(title: task.name) %>
+          <%= feature.with_tag(t('nav.points', count: task.score),
+                               colour: :success, tooltip: t("tasks.points.#{task.public_type}")) %>
+          <% if task.is_a?(ActivityType) %>
+            <% task.key_stages.order(:name).each do |key_stage| %>
+              <%= feature.with_tag(t(key_stage.i18n_key), colour: :info, tooltip: t('activity_types.key_stages')) %>
+            <% end %>
+            <% task.subjects.order(:name).each do |subject| %>
+              <%= feature.with_tag(t(subject.i18n_key), colour: :warning, tooltip: t('activity_types.subjects')) %>
+            <% end %>
+          <% end %>
+          <%= feature.with_link(href: helpers.url_for(task)) { link_text(task) } %>
         <% end %>
-        <div class="card-body">
-          <p class="card-text">
-          <%= link_to item.name, item.href, class: 'text-decoration-none stretched-link' %>
-          </p>
-        </div>
-        <% if footer %>
-          <div class="card-footer border-top-0 bg-transparent"><%= footer %></div>
-        <% end %>
-      </div>
+      <% end %>
     <% end %>
-  </div>
+  <% end %>
 <% end %>
