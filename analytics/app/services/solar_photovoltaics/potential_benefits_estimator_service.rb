@@ -36,7 +36,7 @@ module SolarPhotovoltaics
       # sets @optimum_kwp, @optimum_payback_years, @optimum_mains_reduction_percent
       assign_optimum_values(optimum_kwp)
 
-      OpenStruct.new( # rubocop:todo Style/OpenStructUse
+      ActiveSupport::OrderedOptions.new.merge(
         optimum_kwp: @optimum_kwp,
         optimum_payback_years: @optimum_payback_years,
         optimum_mains_reduction_percent: @optimum_mains_reduction_percent,
@@ -84,7 +84,7 @@ module SolarPhotovoltaics
         solar_pv_benefit_results = calculate_solar_pv_benefit(date, kwp)
         economic_benefit_results = calculate_economic_benefit(solar_pv_benefit_results)
 
-        @scenarios << OpenStruct.new( # rubocop:todo Style/OpenStructUse
+        @scenarios << ActiveSupport::OrderedOptions.new.merge(
           solar_pv_benefit_results.merge(economic_benefit_results)
         )
       end
