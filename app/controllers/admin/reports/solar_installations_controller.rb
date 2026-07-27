@@ -55,14 +55,17 @@ module Admin
 
       def results
         filter_results(School.joins(:school_group)
-                             .joins(join_count(SolarEdgeInstallation))
-                             .joins(join_count(LowCarbonHubInstallation))
-                             .joins(join_count(RtoneVariantInstallation))
-                             .joins(join_count(solis_cloud_installation))
-                             .joins(join_count(meter_z_installation))
+                             .then { |scope| join_installation_counts(scope) }
                              .select('schools.*', *select_active_inactive)
                              .where(where_any_solar_installations)
                              .includes(school_group: %i[default_issues_admin_user]))
+      end
+
+      def join_installation_counts(scope)
+        [SolarEdgeInstallation, LowCarbonHubInstallation, RtoneVariantInstallation, solis_cloud_installation,
+         meter_z_installation].inject(scope) do |relation, installation|
+          relation.joins(join_count(installation))
+        end
       end
 
       def join_count(model)
