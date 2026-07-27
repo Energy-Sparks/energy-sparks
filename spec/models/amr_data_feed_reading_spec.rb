@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe AmrDataFeedReading do
@@ -7,15 +9,15 @@ describe AmrDataFeedReading do
     let!(:config)      { create(:amr_data_feed_config, date_format: date_format) }
     let!(:reading)     { create(:amr_data_feed_reading, reading_date: reading_date, amr_data_feed_config: config) }
 
-    let(:results) { AmrDataFeedReading.unvalidated_data_report_for_mpans([reading.mpan_mprn]) }
+    let(:results) { described_class.unvalidated_data_report_for_mpans([reading.mpan_mprn]) }
 
     it 'returns the expected data' do
       expect(results[0]['mpan_mprn']).to eq reading.mpan_mprn
       expect(results[0]['meter_id']).to eq reading.meter.id
       expect(results[0]['identifier']).to eq config.identifier
       expect(results[0]['description']).to eq config.description
-      expect(results[0]['earliest_reading']).to eq Date.new(2023, 6, 28).iso8601
-      expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28).iso8601
+      expect(results[0]['earliest_reading']).to eq Date.new(2023, 6, 28)
+      expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28)
     end
 
     context 'with other date formats' do
@@ -34,7 +36,7 @@ describe AmrDataFeedReading do
           let(:date_format)   { format }
           let(:reading_date)  { read_date }
 
-          it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28).iso8601 }
+          it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28) }
         end
       end
     end
@@ -55,7 +57,7 @@ describe AmrDataFeedReading do
           let(:date_format)   { format[0] }
           let(:reading_date)  { format[1] }
 
-          it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28).iso8601 }
+          it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 28) }
         end
       end
 
@@ -64,7 +66,7 @@ describe AmrDataFeedReading do
         let(:reading_date)  { '2-Jun-23' }
 
         context 'it parses correctly' do
-          it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 2).iso8601 }
+          it { expect(results[0]['latest_reading']).to eq Date.new(2023, 6, 2) }
         end
       end
     end
