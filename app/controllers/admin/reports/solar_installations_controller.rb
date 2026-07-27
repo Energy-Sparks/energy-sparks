@@ -61,10 +61,10 @@ module Admin
                              .includes(school_group: %i[default_issues_admin_user]))
       end
 
-      def join_installation_counts(scope)
+      def join_installation_counts(initial_scope)
         [SolarEdgeInstallation, LowCarbonHubInstallation, RtoneVariantInstallation, solis_cloud_installation,
-         meter_z_installation].inject(scope) do |injected_scope, installation|
-          injected_scope.joins(join_count(installation))
+         meter_z_installation].inject(initial_scope) do |scope, installation|
+          scope.joins(join_count(installation))
         end
       end
 
