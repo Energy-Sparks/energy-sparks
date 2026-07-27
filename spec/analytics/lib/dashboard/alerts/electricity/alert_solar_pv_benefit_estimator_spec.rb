@@ -5,14 +5,12 @@ require 'rails_helper'
 describe AlertSolarPVBenefitEstimator do
   subject(:alert) { described_class.new(meter_collection) }
 
-  # using fixed generation and consumption to simplify calculating expected values
-  let(:solar_generation_x48) { [*([0.0] * 10), *([0.25] * 10), *([0.5] * 8), *([0.25] * 10), *([0.0] * 10)] }
+  # using fixed generation (from context) and consumption to simplify calculating expected values
   let(:consumption_x48) { [*([0.1] * 10), *([0.005] * 10), *([0.4] * 8), *([0.25] * 10), *([0.01] * 10)] }
 
   include_context 'with an aggregated meter with tariffs and school times' do
     let(:amr_start_date)  { Date.new(2024, 1, 1) }
     let(:amr_end_date)    { Date.new(2025, 12, 31) }
-    let(:days_solar_pv_yield) { solar_generation_x48 }
 
     let(:amr_data) do
       build(:amr_data, :with_date_range, :with_grid_carbon_intensity,
