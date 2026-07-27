@@ -2,7 +2,7 @@
 
 module Solar
   class BaseDownloadAndUpsert
-    def initialize(start_date:, end_date:, installation:)
+    def initialize(installation:, start_date: nil, end_date: nil)
       @requested_start_date = start_date
       @requested_end_date = end_date
       @installation = installation
@@ -18,11 +18,9 @@ module Solar
     end
 
     def import_log
-      @import_log ||= AmrDataFeedImportLog.create(
-        amr_data_feed_config: @installation.amr_data_feed_config,
-        file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
-        import_time: DateTime.now.utc
-      )
+      @import_log ||= AmrDataFeedImportLog.create(amr_data_feed_config: @installation.amr_data_feed_config,
+                                                  file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
+                                                  import_time: DateTime.now.utc)
     end
 
     protected
@@ -57,6 +55,11 @@ module Solar
 
     def end_date
       @requested_end_date.presence || Date.yesterday
+    end
+
+    def hh_index(time)
+      total_minutes = (time.hour * 60) + time.min
+      total_minutes / 30
     end
   end
 end

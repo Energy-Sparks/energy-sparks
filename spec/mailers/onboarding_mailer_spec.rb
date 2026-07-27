@@ -246,13 +246,13 @@ describe OnboardingMailer, :aggregate_failures do
     it 'sends the onboarded email in en' do
       setup_and_send(:en)
       expect(email.subject).to eq("#{school.name} is now live on Energy Sparks")
-      expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('onboarded_email'))
+      expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to eq(read_md('onboarded_email'))
     end
 
     it 'sends the onboarded email in cy' do
       setup_and_send(:cy)
       expect(email.subject).to eq('Mae Test School bellach yn fyw ar Sbarcynni')
-      expect(bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('onboarded_email_cy').chomp)
+      expect(EmailHelpers.bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('onboarded_email_cy').chomp)
     end
   end
 
@@ -269,7 +269,8 @@ describe OnboardingMailer, :aggregate_failures do
 
       it 'sends the welcome email in en' do
         expect(email.subject).to eq('Welcome to Energy Sparks')
-        expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_school_admin_not_data_enabled'))
+        expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to \
+          eq(read_md('welcome_email_school_admin_not_data_enabled'))
       end
     end
 
@@ -278,7 +279,8 @@ describe OnboardingMailer, :aggregate_failures do
 
       it 'sends the welcome email in en' do
         expect(email.subject).to eq('Welcome to Energy Sparks')
-        expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_staff_not_data_enabled'))
+        expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to \
+          eq(read_md('welcome_email_staff_not_data_enabled'))
       end
     end
 
@@ -288,7 +290,7 @@ describe OnboardingMailer, :aggregate_failures do
 
       it 'sends the welcome email in en' do
         expect(email.subject).to eq('Welcome to Energy Sparks')
-        expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_data_enabled'))
+        expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_data_enabled'))
       end
     end
   end
@@ -311,7 +313,7 @@ describe OnboardingMailer, :aggregate_failures do
 
     it 'sends the expected email' do
       expect(email.subject).to eq('Welcome to the Test School Energy Sparks account')
-      expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_existing'))
+      expect(EmailHelpers.bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_existing'))
     end
   end
 
@@ -327,19 +329,20 @@ describe OnboardingMailer, :aggregate_failures do
     it 'sends the staff email' do
       setup_and_send(:staff, :en)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
-      expect(bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('data_enabled_email').chomp)
+      expect(EmailHelpers.bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('data_enabled_email').chomp)
     end
 
     it 'sends the admin email' do
       setup_and_send(:school_admin, :en)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
-      expect(bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('data_enabled_email_admin').chomp)
+      expect(EmailHelpers.bootstrap_email_body_to_markdown(email).chomp).to \
+        eq(read_md('data_enabled_email_admin').chomp)
     end
 
     it 'sends the staff email in welsh' do
       setup_and_send(:staff, :cy)
       expect(email.subject).to eq('Mae data ynni bellach ar gael ar Sbarcynni ar gyfer Test School')
-      expect(bootstrap_email_body(email).css('a').map { |a| URI(a['href']).host }.uniq).to \
+      expect(EmailHelpers.bootstrap_email_body(email).css('a').map { |a| URI(a['href']).host }.uniq).to \
         contain_exactly('cy.localhost', 'www.youtube.com')
     end
   end
