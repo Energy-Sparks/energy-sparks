@@ -25,7 +25,6 @@ class MeterZInstallation < ApplicationRecord
   belongs_to :amr_data_feed_config
 
   has_many :meters, dependent: nil
-  # has_many :meter_z_installation_schools, dependent: nil
   has_many :schools, through: :meters
 
   validates :api_key, presence: true

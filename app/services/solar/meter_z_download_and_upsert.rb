@@ -35,11 +35,12 @@ module Solar
     end
 
     def convert_to_readings_by_day(readings)
+      # store accumulated readings with both midnights so will have 49 readings for a complete day
       readings_by_day = Hash.new { |hash, key| hash[key] = Array.new(49, nil) }
       readings.each do |reading|
         date, accumulated, index = parse_reading(reading)
         readings_by_day[date][index] = accumulated
-        readings_by_day[date.prev_day][48] = accumulated if index.zero?
+        readings_by_day[date.prev_day][-1] = accumulated if index.zero?
       end
       readings_by_day
     end
