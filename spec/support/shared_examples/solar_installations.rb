@@ -78,14 +78,6 @@ shared_examples 'solar installation management' do
       expect(installation.meters.pluck(:meter_serial_number)).to include('123')
     end
 
-    # it 'allows creating a meter with school as station name' do
-    #   installation.update!(inverter_detail_list: [{ sn: '1234', stationName: school.name }])
-    #   click_on('Edit')
-    #   click_on('Assign')
-    #   expect(installation.meters.pluck(:meter_serial_number)).to eq(['1234'])
-    #   expect(installation.meters.first.name).to include(school.name)
-    # end
-
     it 'allows unassigning a meter' do
       click_on('Edit')
       expect { click_on('Unassign') }.to change(Meter, :count).by(-1)
