@@ -63,8 +63,8 @@ module Admin
 
       def join_installation_counts(scope)
         [SolarEdgeInstallation, LowCarbonHubInstallation, RtoneVariantInstallation, solis_cloud_installation,
-         meter_z_installation].inject(scope) do |relation, installation|
-          relation.joins(join_count(installation))
+         meter_z_installation].inject(scope) do |injected_scope, installation|
+          injected_scope.joins(join_count(installation))
         end
       end
 
