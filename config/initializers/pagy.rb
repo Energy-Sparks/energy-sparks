@@ -33,12 +33,12 @@ Pagy::OPTIONS.freeze
 # See https://ddnexus.github.io/pagy/resources/i18n/ for details.
 # Example for Rails:
 #
-Pagy::I18n.pathnames << Rails.root.join('config/locales/pagy')
+# Pagy::I18n.pathnames << Rails.root.join('config/locales/pagy')
 
 ############# I18n Gem Translation #########################################################
 # See https://ddnexus.github.io/pagy/resources/i18n/ for details.
 #
-# Pagy.translate_with_the_slower_i18n_gem!
+Pagy.translate_with_the_slower_i18n_gem!
 
 ############# Calendar Localization for non-en locales ####################################
 # See https://ddnexus.github.io/pagy/toolbox/paginators/calendar#localization for details.

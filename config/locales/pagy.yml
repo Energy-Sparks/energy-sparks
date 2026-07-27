@@ -7,7 +7,6 @@ en:
         other: Pages
       next: Next
       previous: Previous
-    gap: "&hellip;"
     info_tag:
       multiple_pages: Displaying %{item_name} %{from}-%{to} of %{count} in total
       no_count: Page %{page} of %{pages}
@@ -15,6 +14,3 @@ en:
       single_page: Displaying %{count} %{item_name}
     input_nav_js: Page %{page_input} of %{pages}
     limit_tag_js: Show %{limit_input} %{item_name} per page
-    next: "&gt;"
-    p11n: OneOther
-    previous: "&lt;"

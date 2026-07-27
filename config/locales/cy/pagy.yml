@@ -1,6 +1,9 @@
 ---
 cy:
   pagy:
+    aria_label:
+      next: Nesaf
+      previous: Blaenorol
     info_tag:
       multiple_pages: Wrthi'n arddangos %{item_name} <b>%{from}-%{to}</b> o <b>%{count}</b> i gyd
       no_items: Heb ganfod %{item_name}

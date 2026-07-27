@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
-  before_action :pagy_locale
   before_action :check_admin_mode
   helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group,
                 :current_user_default_school_group, :current_school, :current_school_group, :utm_params
@@ -90,10 +89,6 @@ class ApplicationController < ActionController::Base
 
   def analytics_code
     @analytics_code ||= ENV.fetch('GOOGLE_ANALYTICS_CODE', nil)
-  end
-
-  def pagy_locale
-    Pagy::I18n.locale = I18n.locale.to_s
   end
 
   # user has signed in via devise "remember me" functionality
