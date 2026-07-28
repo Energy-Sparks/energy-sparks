@@ -21,12 +21,12 @@ class EnergyEquivalences
   J_TO_KWH = 1000.0 * 60 * 60
 
   #
-  # updated with July 2025 figures - see the Analytics Benchmarking Values spreadsheet
+  # updated with July 2026 figures - see the Analytics Benchmarking Values spreadsheet
   #
   UK_ELECTRIC_GRID_£_KWH = BenchmarkMetrics.pricing.electricity_price
-  UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2573
+  UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2611
 
-  UK_DOMESTIC_GAS_£_KWH = 0.0633
+  UK_DOMESTIC_GAS_£_KWH = 0.0733
   UK_GAS_£_KWH = BenchmarkMetrics.pricing.gas_price
   GAS_BOILER_EFFICIENCY = 0.7
 
@@ -35,11 +35,11 @@ class EnergyEquivalences
 
   ICE_LITRES_PER_100KM = 7.1
   LITRE_PETROL_KWH = 9.6
-  LITRE_PETROL_CO2_KG = 2.07047
-  LITRE_PETROL_£ = 1.3415
-  ICE_KWH_KM = 0.7767
-  ICE_CO2_KM = 0.16984
-  ICE_£_KM = 0.1071
+  LITRE_PETROL_CO2_KG = 2.06107
+  LITRE_PETROL_£ = 1.5486
+  ICE_KWH_KM = 0.7380351489
+  ICE_CO2_KM = 0.16084
+  ICE_£_KM = 0.1773239437
 
   BEV_KWH_PER_KM = 0.188
   BEV_£_PER_KM = BEV_KWH_PER_KM * UK_DOMESTIC_ELECTRICITY_£_KWH
@@ -51,8 +51,8 @@ class EnergyEquivalences
   SHOWER_£ = SHOWER_KWH_NET * UK_DOMESTIC_GAS_£_KWH
   WATER_COST_PER_LITRE = 4.0 / 1000.0
 
-  HOMES_ELECTRICITY_KWH_YEAR = 2_700
-  HOMES_GAS_KWH_YEAR = 11_500
+  HOMES_ELECTRICITY_KWH_YEAR = 2_500
+  HOMES_GAS_KWH_YEAR = 9_500
   HOMES_KWH_YEAR = HOMES_ELECTRICITY_KWH_YEAR + HOMES_GAS_KWH_YEAR
   HOMES_ELECTRICITY_£_YEAR = HOMES_ELECTRICITY_KWH_YEAR * UK_DOMESTIC_ELECTRICITY_£_KWH
   HOMES_GAS_£_YEAR = HOMES_GAS_KWH_YEAR * UK_DOMESTIC_GAS_£_KWH
@@ -63,14 +63,14 @@ class EnergyEquivalences
   KETTLE_KWH = KETTLE_LITRES * KETTLE_LITRE_BY_85C_KWH
   KETTLE_£ = KETTLE_KWH * UK_DOMESTIC_ELECTRICITY_£_KWH
 
-  SMARTPHONE_CHARGE_kWH = 20.0 / 1000
+  SMARTPHONE_CHARGE_kWH = 21.0 / 1000
   SMARTPHONE_CHARGE_£ = SMARTPHONE_CHARGE_kWH * UK_DOMESTIC_ELECTRICITY_£_KWH
 
   ONE_HOUR = 1.0
-  TV_POWER_KW = 0.04 # also kWh/hour
-  TV_HOUR_£ = TV_POWER_KW * ONE_HOUR * UK_DOMESTIC_ELECTRICITY_£_KWH
+  TV_POWER_KW = 0.345 # also kWh/hour
+  TV_HOUR_£ = 0.09 # Was calculated, now using fixed value
 
-  COMPUTER_CONSOLE_POWER_KW = 0.2 # also kWh/hour
+  COMPUTER_CONSOLE_POWER_KW = 0.115 # also kWh/hour
   COMPUTER_CONSOLE_HOUR_£ = COMPUTER_CONSOLE_POWER_KW * ONE_HOUR * UK_DOMESTIC_ELECTRICITY_£_KWH
 
   TREE_LIFE_YEARS = 40
@@ -84,7 +84,7 @@ class EnergyEquivalences
   # https://www.fcrn.org.uk/research-library/quantifying-carbon-footprint-catering-service-public-schools => 1.7kg meat, 1.3kg veggie in Italy
   # https://www.fcrn.org.uk/research-library/contribution-healthy-and-unhealthy-primary-school-meals-greenhouse-gas-emissions => 0.7kg
   # https://www.sciencedirect.com/science/article/pii/S1876610217328126 1.02kg/0.5kg
-  CARNIVORE_DINNER_£ = 2.5
+  CARNIVORE_DINNER_£ = 3.5
   CARNIVORE_DINNER_CO2_KG = 1.0
   VEGETARIAN_DINNER_£ = 1.5
   VEGETARIAN_DINNER_CO2_KG = 0.5
@@ -97,8 +97,8 @@ class EnergyEquivalences
   OFFSHORE_WIND_TURBINE_CAPACITY_KW = 3000
   OFFSHORE_WIND_TURBINE_AVERAGE_KW_PER_HOUR = OFFSHORE_WIND_TURBINE_LOAD_FACTOR_PERCENT * OFFSHORE_WIND_TURBINE_CAPACITY_KW * ONE_HOUR
 
-  SOLAR_PANEL_KWP = 350.0
-  SOLAR_PANEL_YIELD_PER_KWH_PER_KWP_PER_YEAR = 0.7571428571
+  SOLAR_PANEL_KWP = 400.0
+  SOLAR_PANEL_YIELD_PER_KWH_PER_KWP_PER_YEAR = 0.6625
   SOLAR_PANEL_KWH_PER_YEAR = SOLAR_PANEL_KWP * SOLAR_PANEL_YIELD_PER_KWH_PER_KWP_PER_YEAR
 
   def self.co2_kg_kwh(fuel_type)
