@@ -66,7 +66,9 @@ module Aggregation
     end
 
     def correct_for_bad_readings
-      Corrections::OverrideNightToZero.apply(nil, nil, @meter) if @meter.meter_type == :solar_pv
+      if %i[solar_pv exported_solar_pv].include?(@meter.meter_type)
+        Corrections::OverrideNightToZero.apply(nil, nil, @meter)
+      end
 
       # Adjusts amr data start/end by one day to ignore days with partial data
       # (This overlaps with the remove_final_meter_reading_if_today check done
