@@ -107,7 +107,7 @@ shared_examples 'a long term advice page' do
           if fuel_type == :gas
             expect(page).to have_text('120,000kWh of gas')
           else
-            expect(page).to have_text('220kWh of electricity')
+            expect(page).to have_text('230kWh of electricity')
           end
         end
 
