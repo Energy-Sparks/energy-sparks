@@ -106,7 +106,7 @@ module BenchmarkMetrics
     when :special
       pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL
     when :secondary
-      if heat_pump?
+      if heat_pump
         pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE_HEAT_PUMP
       else
         pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE
@@ -129,7 +129,7 @@ module BenchmarkMetrics
     when :special
       pupils * EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL
     when :secondary
-      if heat_pump?
+      if heat_pump
         pupils * EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE_HEAT_PUMP
       else
         pupils * EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE
