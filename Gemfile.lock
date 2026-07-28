@@ -790,7 +790,7 @@ GEM
       activemodel (>= 7.0)
     simplecov (1.0.3)
     singleton (0.3.0)
-    sitemap_generator (7.1.0)
+    sitemap_generator (7.1.1)
       builder (~> 3.0)
     smart_properties (1.17.0)
     sortablejs-rails (1.15.6)
