@@ -10,7 +10,7 @@ module BenchmarkMetrics
   GAS_PRICE = 0.03
 
   #
-  # updated with July 2025 figures - see the Analytics Benchmarking Values spreadsheet
+  # updated with July 2026 figures - see the Analytics Benchmarking Values spreadsheet
   #
   # Annual alectricity Usage per pupil benchmark figures
   BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL = 221.0
@@ -21,22 +21,23 @@ module BenchmarkMetrics
   RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE = 1.7
 
   BENCHMARK_ELECTRICITY_USAGE_PER_M2 = 50_000.0 / 1_200.0
-  BENCHMARK_GAS_USAGE_PER_PUPIL = 419.0
-  BENCHMARK_GAS_USAGE_PER_M2 = 62.0
-  EXEMPLAR_GAS_USAGE_PER_M2 = 51.0
+  BENCHMARK_GAS_USAGE_PER_PUPIL = 435.0
+  BENCHMARK_GAS_USAGE_PER_M2 = 61.0
+  EXEMPLAR_GAS_USAGE_PER_M2 = 52.0
   LONG_TERM_ELECTRICITY_CO2_KG_PER_KWH = 0.15
   ANNUAL_AVERAGE_DEGREE_DAYS = 2000.0
   AVERAGE_GAS_PROPORTION_OF_HEATING = 0.6
 
   AVERAGE_OUT_OF_HOURS_PERCENT = 0.5
 
-  # Out of hours metrics recalculated in Feb 2023, see trello
-  # https://trello.com/c/FdBEY5Qz/2903-revise-approach-for-calculating-out-of-hours-usage-benchmark
-  EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY = 0.5
-  BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY = 0.55
+  #
+  # updated with July 2026 figures - see the Analytics Benchmarking Values spreadsheet
+  #
+  EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY = 0.54
+  BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY = 0.58
 
-  EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_GAS = 0.55
-  BENCHMARK_OUT_OF_HOURS_USE_PERCENT_GAS = 0.6
+  EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_GAS = 0.56
+  BENCHMARK_OUT_OF_HOURS_USE_PERCENT_GAS = 0.62
 
   EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_STORAGE_HEATER = 0.2
   BENCHMARK_OUT_OF_HOURS_USE_PERCENT_STORAGE_HEATER = 0.5
@@ -204,15 +205,15 @@ module BenchmarkMetrics
     [servers, power]
   end
 
-  # Based on W/pupil figures in Peak_Benchmarks_2025.xlsx
+  # Based on W/pupil figures in Peak_Benchmarks_2026.xlsx
   def self.exemplar_peak_kw(pupils, school_type)
     case school_type&.to_sym
     when :primary, :infant, :junior
-      0.077 * pupils
+      0.078 * pupils
     when :secondary, :middle, :mixed_primary_and_secondary
-      0.105 * pupils
+      0.103 * pupils
     when :special
-      0.242 * pupils
+      0.211 * pupils
     else
       raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in baseload floor area request"
     end
@@ -222,11 +223,11 @@ module BenchmarkMetrics
   def self.benchmark_peak_kw(pupils, school_type)
     case school_type&.to_sym
     when :primary, :infant, :junior
-      0.087 * pupils
+      0.090 * pupils
     when :secondary, :middle, :mixed_primary_and_secondary
-      0.116 * pupils
+      0.115 * pupils
     when :special
-      0.290 * pupils
+      0.278 * pupils
     else
       raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in baseload floor area request"
     end
