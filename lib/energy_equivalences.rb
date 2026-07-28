@@ -67,7 +67,7 @@ class EnergyEquivalences
   SMARTPHONE_CHARGE_£ = SMARTPHONE_CHARGE_kWH * UK_DOMESTIC_ELECTRICITY_£_KWH
 
   ONE_HOUR = 1.0
-  TV_POWER_KW = 0.345 # also kWh/hour
+  TV_POWER_KW = 0.0345 # also kWh/hour
   TV_HOUR_£ = 0.09 # Was calculated, now using fixed value
 
   COMPUTER_CONSOLE_POWER_KW = 0.115 # also kWh/hour
