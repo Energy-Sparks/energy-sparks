@@ -1014,6 +1014,10 @@ class School < ApplicationRecord
     summarise_contract_holder(future_licences.first&.contract_holder)
   end
 
+  def heat_pump?
+    heating_air_source_heat_pump || heating_ground_source_heat_pump || heating_water_source_heat_pump
+  end
+
   private
 
   def summarise_contract_holder(contract_holder)
