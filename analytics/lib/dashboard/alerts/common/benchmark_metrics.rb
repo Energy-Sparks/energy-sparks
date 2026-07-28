@@ -96,6 +96,7 @@ module BenchmarkMetrics
   #
   # @param Symbol school_type The symbol representing the type of school
   # @param Integer pupils The number of pupils
+  # @param boolean heat_pump Whether the school has a heat pump (of any kind)
   def self.benchmark_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type, 'benchmark electricity usage per pupil')
@@ -119,6 +120,7 @@ module BenchmarkMetrics
   #
   # @param Symbol school_type The symbol representing the type of school
   # @param Integer pupils The number of pupils
+  # @param boolean heat_pump Whether the school has a heat pump (of any kind)
   def self.exemplar_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type, 'benchmark electricity usage per pupil')
