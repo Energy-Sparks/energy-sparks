@@ -220,7 +220,9 @@ class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase
 
     latest_electricity_tariff = blended_baseload_rate_£current_per_kwh
 
-    @benchmark_per_pupil_kw = BenchmarkMetrics.recommended_baseload_for_pupils(pupils(asof_date - 365, asof_date), school_type)
+    @benchmark_per_pupil_kw = BenchmarkMetrics.recommended_baseload_for_pupils(pupils(asof_date - 365, asof_date),
+                                                                               school_type,
+                                                                               @school.heat_pump?)
     hours_in_year = 24.0 * 365.0
 
     @cost_saving_through_1_kw_reduction_in_baseload_£ = blended_baseload_rate_£current_per_kwh * hours_in_year
@@ -233,7 +235,9 @@ class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase
     @one_year_saving_versus_benchmark_£   = @one_year_saving_versus_benchmark_kwh * latest_electricity_tariff
     @one_year_saving_versus_benchmark_co2 = @one_year_saving_versus_benchmark_kwh * blended_co2_per_kwh
 
-    @exemplar_per_pupil_kw = BenchmarkMetrics.exemplar_baseload_for_pupils(pupils(asof_date - 365, asof_date), school_type)
+    @exemplar_per_pupil_kw = BenchmarkMetrics.exemplar_baseload_for_pupils(pupils(asof_date - 365, asof_date),
+                                                                           school_type,
+                                                                           @school.heat_pump?)
 
     @one_year_exemplar_by_pupil_kwh   = @exemplar_per_pupil_kw * hours_in_year
     @one_year_exemplar_by_pupil_£     = @one_year_exemplar_by_pupil_kwh * latest_electricity_tariff

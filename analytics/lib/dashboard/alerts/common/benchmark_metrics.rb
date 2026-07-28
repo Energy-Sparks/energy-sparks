@@ -162,35 +162,82 @@ module BenchmarkMetrics
     end
   end
 
-  def self.recommended_baseload_for_pupils(pupils, school_type)
+  def self.recommended_baseload_for_pupils(pupils, school_type, heat_pump = false) # rubocop:todo Metrics/MethodLength, Style/OptionalBooleanParameter
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type)
 
     case school_type
     when :primary, :infant, :junior
-      if pupils < 150
-        1.0
+      if heat_pump
+        baseload_with_threshold(
+          pupils: pupils,
+          base: 2.0,
+          threshold: 135.0,
+          increment: 1.5,
+          divisor: 100.0
+        )
       else
-        1.0 + 1.0 * (pupils - 150) / 100
+        baseload_with_threshold(
+          pupils: pupils,
+          base: 1.0,
+          threshold: 90.0,
+          increment: 1.12,
+          divisor: 100.0
+        )
       end
     when :special
-      if pupils < 30
-        2.5
-      else
-        2.5 + 1.8 * (pupils - 30) / 30
-      end
+      baseload_with_threshold(
+        pupils: pupils,
+        base: 2.5,
+        threshold: 40.0,
+        increment: 2.25,
+        divisor: 40.0
+      )
     when :secondary, :middle, :mixed_primary_and_secondary
-      if pupils < 500
-        10
+      if heat_pump
+        baseload_with_threshold(
+          pupils: pupils,
+          base: 11.0,
+          threshold: 500.0,
+          increment: 10.21,
+          divisor: 500.0
+        )
       else
-        10 + 9.5 * (pupils - 500) / 500
+        baseload_with_threshold(
+          pupils: pupils,
+          base: 13.5,
+          threshold: 500.0,
+          increment: 13.27,
+          divisor: 500.0
+        )
       end
     end
   end
 
-  def self.exemplar_baseload_for_pupils(pupils, school_type)
-    # arbitrarily 60% for the moment TODO(PH, 11Apr2019)
-    0.6 * recommended_baseload_for_pupils(pupils, school_type)
+  private_class_method def self.baseload_with_threshold(pupils:, base:, threshold:, increment:, divisor:)
+    return base if pupils < threshold
+
+    base + increment * (pupils - threshold) / divisor
+  end
+
+  def self.exemplar_baseload_for_pupils(pupils, school_type, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
+    recommended_baseload = recommended_baseload_for_pupils(pupils, school_type, heat_pump)
+    case school_type
+    when :primary, :infant, :junior
+      if heat_pump
+        0.8 * recommended_baseload
+      else
+        0.775 * recommended_baseload
+      end
+    when :special
+      0.8 * recommended_baseload
+    when :secondary, :middle, :mixed_primary_and_secondary
+      if heat_pump
+        0.8 * recommended_baseload
+      else
+        0.83 * recommended_baseload
+      end
+    end
   end
 
   def self.typical_servers_for_pupils(school_type, pupils)

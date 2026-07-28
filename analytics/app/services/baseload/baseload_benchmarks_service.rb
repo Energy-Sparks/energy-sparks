@@ -46,9 +46,9 @@ module Baseload
       pupils = pupils(@asof_date - 365, @asof_date)
       case compare
       when :benchmark_school
-        BenchmarkMetrics.recommended_baseload_for_pupils(pupils, school_type)
+        BenchmarkMetrics.recommended_baseload_for_pupils(pupils, school_type, @meter_collection.heat_pump?)
       when :exemplar_school
-        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils, school_type)
+        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils, school_type, @meter_collection.heat_pump?)
       else
         raise 'Invalid comparison'
       end
