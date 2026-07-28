@@ -13,12 +13,17 @@ module BenchmarkMetrics
   # updated with July 2026 figures - see the Analytics Benchmarking Values spreadsheet
   #
   # Annual alectricity Usage per pupil benchmark figures
-  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL = 221.0
-  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL = 942.0
-  EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL = 196.0
-  EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL = 727.0
+  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL = 229.0 # No heat pump
+  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP = 335.0 # With a heat pump
+  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL = 966.0
+
+  EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL = 195.0 # No heat pump
+  EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP = 273.0 # With a heat pump
+  EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL = 857.0
+
   # Secondary electricity usage typically higher due extra hours and server ICT
-  RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE = 1.7
+  RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE = 1.6 # No heat pump
+  RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE_HEAT_PUMP = 1.1 # With heat pump
 
   BENCHMARK_ELECTRICITY_USAGE_PER_M2 = 50_000.0 / 1_200.0
   BENCHMARK_GAS_USAGE_PER_PUPIL = 435.0
@@ -91,17 +96,21 @@ module BenchmarkMetrics
   #
   # @param Symbol school_type The symbol representing the type of school
   # @param Integer pupils The number of pupils
-  def self.benchmark_annual_electricity_usage_kwh(school_type, pupils = 1)
+  def self.benchmark_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type, 'benchmark electricity usage per pupil')
 
     case school_type
     when :primary, :infant, :junior, :middle, :mixed_primary_and_secondary
-      BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL * pupils
+      pupils * (heat_pump ? BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP : BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL)
     when :special
-      BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL * pupils
+      pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL
     when :secondary
-      RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL * pupils
+      if heat_pump?
+        pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE_HEAT_PUMP
+      else
+        pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE
+      end
     end
   end
 
@@ -110,17 +119,21 @@ module BenchmarkMetrics
   #
   # @param Symbol school_type The symbol representing the type of school
   # @param Integer pupils The number of pupils
-  def self.exemplar_annual_electricity_usage_kwh(school_type, pupils = 1)
+  def self.exemplar_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type, 'benchmark electricity usage per pupil')
 
     case school_type
     when :primary, :infant, :junior, :middle, :mixed_primary_and_secondary
-      EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL * pupils
+      pupils * (heat_pump ? EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP : EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL)
     when :special
-      EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL * pupils
+      pupils * EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL
     when :secondary
-      RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE * EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL * pupils
+      if heat_pump?
+        pupils * EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE_HEAT_PUMP
+      else
+        pupils * EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE
+      end
     end
   end
 
@@ -138,7 +151,9 @@ module BenchmarkMetrics
     case fuel_type
     when :electricity, :storage_heater, :storage_heaters
       number_of_pupils = school.aggregated_electricity_meters.meter_number_of_pupils(school, start_date, end_date)
-      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school.school_type, number_of_pupils)
+      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school.school_type,
+                                                             number_of_pupils,
+                                                             school.heat_pump?)
     when :gas
       floor_area = school.aggregated_heat_meters.meter_floor_area(school, start_date, end_date)
       BenchmarkMetrics::EXEMPLAR_GAS_USAGE_PER_M2 * floor_area
@@ -253,9 +268,9 @@ module BenchmarkMetrics
   # @param MeterCollection school
   private_class_method def self.benchmark_electricity_usage_kwh_per_pupil(benchmark_type, school)
     if benchmark_type == :benchmark
-      benchmark_annual_electricity_usage_kwh(school.school_type)
+      benchmark_annual_electricity_usage_kwh(school.school_type, 1, school.heat_pump?)
     else # :exemplar
-      exemplar_annual_electricity_usage_kwh(school.school_type)
+      exemplar_annual_electricity_usage_kwh(school.school_type, 1, school.heat_pump?)
     end
   end
 

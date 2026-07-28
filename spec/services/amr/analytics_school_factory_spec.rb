@@ -21,7 +21,7 @@ describe Amr::AnalyticsSchoolFactory do
     expect(data[:created_at]).to eql(school.created_at)
     expect(data[:location]).to eql([school.latitude, school.longitude])
     expect(data[:data_enabled]).to eql(school.data_enabled)
-    expect(date[:heat_pump]).to eql(school.heat_pump?)
+    expect(data[:heat_pump]).to eql(school.heat_pump?)
   end
 
   it 'returns expected funding status' do
