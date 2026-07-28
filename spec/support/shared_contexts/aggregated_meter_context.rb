@@ -87,6 +87,7 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
   # Configure objects as if we've run the aggregation process
   before do
     meter_collection.set_aggregate_meter(fuel_type, aggregate_meter)
+    meter_collection.update_electricity_meters([aggregate_meter]) if fuel_type == :electricity
     aggregate_meter.amr_data.open_close_breakdown = CommunityUseBreakdown.new(aggregate_meter, open_close_times)
     aggregate_meter.set_tariffs
   end
