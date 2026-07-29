@@ -2,7 +2,6 @@ require_relative './synthetic_school.rb'
 
 class BenchmarkSchool < SyntheticSchool
   def initialize(meter_collection, benchmark_type: :benchmark)
-    puts "Creating school"
     super(meter_collection)
     @benchmark_type = benchmark_type
   end
@@ -27,8 +26,6 @@ class BenchmarkSchool < SyntheticSchool
   end
 
   def create_benchmark_meter(fuel_type)
-    puts "=" * 100
-    puts "Calculating #{fuel_type} #{@benchmark_type}"
     original_meter = @original_school.aggregate_meter(fuel_type)
     return nil if original_meter.nil?
 

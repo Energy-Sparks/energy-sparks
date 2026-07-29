@@ -1,3 +1,4 @@
+# Generates the synthetic AMR data used to plot usage data for benchmark and exemplar schools
 class AverageSchoolCalculator
   class UnexpectedSchoolTypeException < StandardError; end
 
@@ -7,11 +8,6 @@ class AverageSchoolCalculator
 
   def benchmark_amr_data(meter:, benchmark_type: :benchmark)
     calculate_school_amr_data(meter: meter, benchmark_type: benchmark_type)
-  end
-
-  def normalised_amr_data(benchmark_type:, fuel_type:, degreeday_adjustment: false)
-    calculate_school_amr_data(meter: @school.aggregate_meter(fuel_type), benchmark_type: benchmark_type, pupils: 1,
-                              floor_area: 1, degreeday_adjustment: degreeday_adjustment)
   end
 
   def self.remap_low_sample_holiday(holiday_type, date)
@@ -43,6 +39,13 @@ class AverageSchoolCalculator
 
   private
 
+  # Calculates synthetic AMR data
+  #
+  # param Dashboard::Meter meter the meter whose AMR data will be basis for data
+  # param Symbol benchmark_type the type of benchmark being produced, e.g. benchmark (well managed) or exemplar
+  # param Integer pupils number of pupils in school
+  # param Float floor_area floor area of school
+  # param Boolean degreday_adjustment whether to adjust gas data based on degree days rather than floor area
   def calculate_school_amr_data(meter:, benchmark_type: :benchmark, pupils: @school.number_of_pupils,
                                 floor_area: @school.floor_area, degreeday_adjustment: true)
     amr_data = meter.amr_data
@@ -145,6 +148,7 @@ class AverageSchoolCalculator
     end
   end
 
+  # Creates hash of day type to Interpolate::Points, one per half-hour
   def create_14_months_of_interpolations(average_meter_data)
     %i[schoolday weekend].map do |daytype|
       extended_months_data = configure_14_months(average_meter_data[daytype])
@@ -177,9 +181,12 @@ class AverageSchoolCalculator
     days_since_start_of_year = [-15, 15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345, 380]
 
     (0..47).map do |half_hour|
+      # produce an array of 14 values, one value per month
       kwh_per_hh_per_pupil = extended_months_data.keys.map do |month|
         extended_months_data[month][half_hour]
       end
+      # given a hash of days_since_start_of_year to kwh_per_hh_per_pupil
+      # so converts the month number based hash into one based on days since year
       Interpolate::Points.new(days_since_start_of_year.zip(kwh_per_hh_per_pupil).to_h)
     end
   end
