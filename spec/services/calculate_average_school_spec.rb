@@ -58,6 +58,21 @@ describe CalculateAverageSchool, type: :service do
         end
       end
 
+      context 'with multiple primary schools some with heat pumps' do
+        before do
+          create(:school,
+                 :with_basic_configuration_single_meter_and_tariffs,
+                 reading: 1.0,
+                 number_of_pupils: 1,
+                 heating_air_source_heat_pump: true)
+        end
+
+        it_behaves_like 'it produces the average school data for the school type'
+        it_behaves_like 'it produces the average school data for the school type' do
+          let(:school_type) { :primary_with_heat_pump }
+        end
+      end
+
       it 'calculates gas' do
         expect(data[:gas]).to eq({ average: {}, benchmark: {}, exemplar: {} })
       end
