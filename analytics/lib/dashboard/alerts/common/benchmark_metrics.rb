@@ -240,35 +240,6 @@ module BenchmarkMetrics
     end
   end
 
-  def self.typical_servers_for_pupils(school_type, pupils)
-    school_type = school_type.to_sym if school_type.instance_of? String
-    servers = 1
-    power = 500.0
-    case school_type
-    when :primary, :infant, :junior, :special
-      servers = if pupils < 100
-                  2
-                elsif pupils < 300
-                  3
-                else
-                  3 + (pupils / 300).floor
-                end
-    when :secondary, :middle, :mixed_primary_and_secondary
-      power = 1000.0
-      servers = if pupils < 400
-                  4
-                elsif pupils < 1000
-                  8
-                else
-                  8 + ((pupils - 1000) / 250).floor
-                end
-    else
-      raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in typical servers request" unless school_type.nil?
-      raise EnergySparksUnexpectedStateException, 'Nil type of school in typical servers request' if school_type.nil?
-    end
-    [servers, power]
-  end
-
   # Based on W/pupil figures in Peak_Benchmarks_2026.xlsx
   def self.exemplar_peak_kw(pupils, school_type)
     case school_type&.to_sym
