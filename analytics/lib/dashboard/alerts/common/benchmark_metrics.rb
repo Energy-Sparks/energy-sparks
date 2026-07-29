@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module BenchmarkMetrics
+  extend self
+
   # rubocop:disable Style/ClassVars
   @@current_prices = nil
   # rubocop:enable Style/ClassVars
@@ -48,17 +50,17 @@ module BenchmarkMetrics
   BENCHMARK_OUT_OF_HOURS_USE_PERCENT_STORAGE_HEATER = 0.5
 
   # rubocop:disable Style/ClassVars
-  def self.set_current_prices(prices:)
+  def set_current_prices(prices:)
     @@current_prices = prices
   end
 
-  def self.pricing
+  def pricing
     @@current_prices || default_prices
   end
   # rubocop:enable Style/ClassVars
 
-  def self.default_prices
-    OpenStruct.new(
+  def default_prices
+    ActiveSupport::OrderedOptions.new.merge(
       gas_price: BenchmarkMetrics::GAS_PRICE,
       electricity_price: BenchmarkMetrics::ELECTRICITY_PRICE,
       solar_export_price: BenchmarkMetrics::SOLAR_EXPORT_PRICE
@@ -71,7 +73,7 @@ module BenchmarkMetrics
   # number less than 1.0 for colder area, > 1.0 for milder areas
   # multiply by this number if normalising school to other schools in different regions
   # divide by this number if scaling a central UK wide benchmark to a school
-  def self.normalise_degree_days(regional_temperatures, _holidays, fuel_type, asof_date)
+  def normalise_degree_days(regional_temperatures, _holidays, fuel_type, asof_date)
     regional_degree_days = regional_temperatures.degree_days_this_year(asof_date)
     if fuel_type == :gas
       scale_percent_towards_one(ANNUAL_AVERAGE_DEGREE_DAYS / regional_degree_days, AVERAGE_GAS_PROPORTION_OF_HEATING)
@@ -83,11 +85,17 @@ module BenchmarkMetrics
   end
 
   # Only called from AlertEnergyAnnualVersusBenchmark
-  def self.benchmark_energy_usage_£_per_pupil(benchmark_type, school, asof_date, list_of_fuels)
+  def benchmark_energy_usage_£_per_pupil(benchmark_type, school, asof_date, list_of_fuels)
     total = 0.0
     total += benchmark_electricity_usage_£_per_pupil(benchmark_type, school) if list_of_fuels.include?(:electricity)
-    total += benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date, :gas) if list_of_fuels.include?(:gas)
-    total += benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date, :storage_heaters) if list_of_fuels.include?(:storage_heater) || list_of_fuels.include?(:storage_heaters)
+    if list_of_fuels.include?(:gas)
+      total += benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date,
+                                                   :gas)
+    end
+    if list_of_fuels.include?(:storage_heater) || list_of_fuels.include?(:storage_heaters)
+      total += benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date,
+                                                   :storage_heaters)
+    end
     total
   end
 
@@ -97,7 +105,7 @@ module BenchmarkMetrics
   # @param Symbol school_type The symbol representing the type of school
   # @param Integer pupils The number of pupils
   # @param boolean heat_pump Whether the school has a heat pump (of any kind)
-  def self.benchmark_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
+  def benchmark_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type, 'benchmark electricity usage per pupil')
 
@@ -108,9 +116,13 @@ module BenchmarkMetrics
       pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL
     when :secondary
       if heat_pump
-        pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE_HEAT_PUMP
+        pupils *
+          BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP *
+          RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE_HEAT_PUMP
       else
-        pupils * BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL * RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE
+        pupils *
+          BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL *
+          RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE
       end
     end
   end
@@ -121,7 +133,7 @@ module BenchmarkMetrics
   # @param Symbol school_type The symbol representing the type of school
   # @param Integer pupils The number of pupils
   # @param boolean heat_pump Whether the school has a heat pump (of any kind)
-  def self.exemplar_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
+  def exemplar_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type, 'benchmark electricity usage per pupil')
 
@@ -140,7 +152,7 @@ module BenchmarkMetrics
   end
 
   # used by ManagementSummaryTable
-  def self.exemplar_£(school, fuel_type, start_date, end_date)
+  def exemplar_£(school, fuel_type, start_date, end_date)
     case fuel_type
     when :electricity, :storage_heater, :storage_heaters
       exemplar_kwh(school, fuel_type, start_date, end_date) * electricity_price_£_per_kwh(school)
@@ -149,7 +161,7 @@ module BenchmarkMetrics
     end
   end
 
-  def self.exemplar_kwh(school, fuel_type, start_date, end_date)
+  def exemplar_kwh(school, fuel_type, start_date, end_date)
     case fuel_type
     when :electricity, :storage_heater, :storage_heaters
       number_of_pupils = school.aggregated_electricity_meters.meter_number_of_pupils(school, start_date, end_date)
@@ -162,7 +174,7 @@ module BenchmarkMetrics
     end
   end
 
-  def self.recommended_baseload_for_pupils(pupils, school_type, heat_pump = false) # rubocop:todo Metrics/MethodLength, Style/OptionalBooleanParameter
+  def recommended_baseload_for_pupils(pupils, school_type, heat_pump = false) # rubocop:todo Metrics/MethodLength, Style/OptionalBooleanParameter
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type)
 
@@ -214,13 +226,7 @@ module BenchmarkMetrics
     end
   end
 
-  private_class_method def self.baseload_with_threshold(pupils:, base:, threshold:, increment:, divisor:)
-    return base if pupils < threshold
-
-    base + increment * (pupils - threshold) / divisor
-  end
-
-  def self.exemplar_baseload_for_pupils(pupils, school_type, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
+  def exemplar_baseload_for_pupils(pupils, school_type, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
     recommended_baseload = recommended_baseload_for_pupils(pupils, school_type, heat_pump)
     case school_type
     when :primary, :infant, :junior
@@ -241,7 +247,7 @@ module BenchmarkMetrics
   end
 
   # Based on W/pupil figures in Peak_Benchmarks_2026.xlsx
-  def self.exemplar_peak_kw(pupils, school_type)
+  def exemplar_peak_kw(pupils, school_type)
     case school_type&.to_sym
     when :primary, :infant, :junior
       0.078 * pupils
@@ -255,7 +261,7 @@ module BenchmarkMetrics
   end
 
   # Based on W/pupil figures in Peak_Benchmarks_2025.xlsx
-  def self.benchmark_peak_kw(pupils, school_type)
+  def benchmark_peak_kw(pupils, school_type)
     case school_type&.to_sym
     when :primary, :infant, :junior
       0.090 * pupils
@@ -268,25 +274,33 @@ module BenchmarkMetrics
     end
   end
 
+  private
+
+  def baseload_with_threshold(pupils:, base:, threshold:, increment:, divisor:)
+    return base if pupils < threshold
+
+    base + (increment * (pupils - threshold) / divisor)
+  end
+
   # p = 110%, s = 60% => 106%
-  private_class_method def self.scale_percent_towards_one(percent, scale)
+  def scale_percent_towards_one(percent, scale)
     ((percent - 1.0) * scale) + 1.0
   end
 
-  private_class_method def self.check_school_type(school_type, type = 'baseload benckmark')
+  def check_school_type(school_type, type = 'baseload benckmark')
     raise EnergySparksUnexpectedStateException, "Nil type of school in #{type} request" if school_type.nil?
     return if %i[primary infant junior special middle secondary mixed_primary_and_secondary].include?(school_type)
 
     raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in #{type} request"
   end
 
-  private_class_method def self.benchmark_electricity_usage_£_per_pupil(benchmark_type, school)
+  def benchmark_electricity_usage_£_per_pupil(benchmark_type, school)
     benchmark_electricity_usage_kwh_per_pupil(benchmark_type, school) * electricity_price_£_per_kwh(school)
   end
 
   # @param Symbol benchmark_type Either :benchmark or :exemplar
   # @param MeterCollection school
-  private_class_method def self.benchmark_electricity_usage_kwh_per_pupil(benchmark_type, school)
+  def benchmark_electricity_usage_kwh_per_pupil(benchmark_type, school)
     if benchmark_type == :benchmark
       benchmark_annual_electricity_usage_kwh(school.school_type, 1, school.heat_pump?)
     else # :exemplar
@@ -295,18 +309,19 @@ module BenchmarkMetrics
   end
 
   # as above, larger number returned for Scotland, lower for SW
-  private_class_method def self.benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date = nil, fuel_type = :gas)
+  def benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date = nil, fuel_type = :gas)
     if fuel_type == :gas
       benchmark_heating_usage_kwh_per_pupil(benchmark_type, school, asof_date, fuel_type) * gas_price_£_per_kwh(school)
     else # storage_heaters
-      benchmark_heating_usage_kwh_per_pupil(benchmark_type, school, asof_date, fuel_type) * electricity_price_£_per_kwh(school)
+      benchmark_heating_usage_kwh_per_pupil(benchmark_type, school, asof_date,
+                                            fuel_type) * electricity_price_£_per_kwh(school)
     end
   end
 
   # scale benchmark to schools's temperature zone; so result if higher for
   # Scotland and lower for SW UK
   # also scales years, so all years normalised to same temperature
-  private_class_method def self.benchmark_heating_usage_kwh_per_pupil(benchmark_type, school, asof_date = nil, fuel_type = :gas)
+  def benchmark_heating_usage_kwh_per_pupil(benchmark_type, school, asof_date = nil, fuel_type = :gas)
     dd_adj = normalise_degree_days(school.temperatures, school.holidays, fuel_type, asof_date)
     if benchmark_type == :benchmark
       BENCHMARK_GAS_USAGE_PER_PUPIL / dd_adj
@@ -315,11 +330,11 @@ module BenchmarkMetrics
     end
   end
 
-  private_class_method def self.electricity_price_£_per_kwh(school)
+  def electricity_price_£_per_kwh(school)
     school.aggregated_electricity_meters.amr_data.blended_rate(:kwh, :£)
   end
 
-  private_class_method def self.gas_price_£_per_kwh(school)
+  def gas_price_£_per_kwh(school)
     school.aggregated_heat_meters.amr_data.blended_rate(:kwh, :£)
   end
 end
