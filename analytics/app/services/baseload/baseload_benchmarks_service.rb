@@ -46,9 +46,13 @@ module Baseload
       pupils = pupils(@asof_date - 365, @asof_date)
       case compare
       when :benchmark_school
-        BenchmarkMetrics.recommended_baseload_for_pupils(pupils, school_type, @meter_collection.heat_pump?)
+        BenchmarkMetrics.recommended_baseload_for_pupils(pupils:,
+                                                         school_type: @meter_collection.school_type,
+                                                         heat_pump: @meter_collection.heat_pump?)
       when :exemplar_school
-        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils, school_type, @meter_collection.heat_pump?)
+        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils:,
+                                                      school_type: @meter_collection.school_type,
+                                                      heat_pump: @meter_collection.heat_pump?)
       else
         raise 'Invalid comparison'
       end
@@ -100,10 +104,6 @@ module Baseload
 
     def latest_electricity_tariff
       @latest_electricity_tariff ||= baseload_analysis.blended_baseload_tariff_rate_£_per_kwh(:£current, @asof_date)
-    end
-
-    def school_type
-      @meter_collection.school_type
     end
 
     def aggregate_meter

@@ -25,7 +25,11 @@ describe Baseload::BaseloadBenchmarkingService, type: :service do
 
   describe '#average_baseload_kw' do
     context 'with a well managed benchmark' do
-      let(:expected_baseload) { BenchmarkMetrics.recommended_baseload_for_pupils(1000, :primary, false) }
+      let(:expected_baseload) do
+        BenchmarkMetrics.recommended_baseload_for_pupils(pupils: 1000,
+                                                         school_type: :primary,
+                                                         heat_pump: false)
+      end
 
       it 'calculates baseload for a benchmark school' do
         expect(service.average_baseload_kw(compare: :benchmark_school)).to be_within(0.01).of(expected_baseload)
@@ -33,7 +37,11 @@ describe Baseload::BaseloadBenchmarkingService, type: :service do
     end
 
     context 'with an exemplar benchmark' do
-      let(:expected_baseload) { BenchmarkMetrics.exemplar_baseload_for_pupils(1000, :primary, false) }
+      let(:expected_baseload) do
+        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils: 1000,
+                                                      school_type: :primary,
+                                                      heat_pump: false)
+      end
 
       it 'calculates baseload for a benchmark school' do
         expect(service.average_baseload_kw(compare: :exemplar_school)).to be_within(0.01).of(expected_baseload)
@@ -45,7 +53,10 @@ describe Baseload::BaseloadBenchmarkingService, type: :service do
     context 'with a well managed benchmark' do
       subject(:usage) { service.baseload_usage(compare: :benchmark_school) }
 
-      let(:expected_baseload_kwh) { BenchmarkMetrics.recommended_baseload_for_pupils(1000, :primary, false) * 365 * 24 }
+      let(:expected_baseload_kwh) do
+        BenchmarkMetrics.recommended_baseload_for_pupils(pupils: 1000, school_type: :primary,
+                                                         heat_pump: false) * 365 * 24
+      end
 
       it 'calculates usage' do
         expect(usage.kwh).to be_within(0.01).of(expected_baseload_kwh)
@@ -57,7 +68,9 @@ describe Baseload::BaseloadBenchmarkingService, type: :service do
     context 'with an exemplar benchmark' do
       subject(:usage) { service.baseload_usage(compare: :exemplar_school) }
 
-      let(:expected_baseload_kwh) { BenchmarkMetrics.exemplar_baseload_for_pupils(1000, :primary, false) * 365 * 24 }
+      let(:expected_baseload_kwh) do
+        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils: 1000, school_type: :primary, heat_pump: false) * 365 * 24
+      end
 
       it 'calculates usage' do
         expect(usage.kwh).to be_within(0.01).of(expected_baseload_kwh)
@@ -76,7 +89,10 @@ describe Baseload::BaseloadBenchmarkingService, type: :service do
     context 'with a well managed benchmark' do
       subject(:usage) { service.estimated_savings(versus: :benchmark_school) }
 
-      let(:expected_baseload_kwh) { BenchmarkMetrics.recommended_baseload_for_pupils(1000, :primary, false) * 365 * 24 }
+      let(:expected_baseload_kwh) do
+        BenchmarkMetrics.recommended_baseload_for_pupils(pupils: 1000, school_type: :primary,
+                                                         heat_pump: false) * 365 * 24
+      end
 
       it 'calculates savings' do
         expect(usage.kwh).to be_within(0.01).of(expected_savings_kwh)
@@ -88,7 +104,9 @@ describe Baseload::BaseloadBenchmarkingService, type: :service do
     context 'with an exemplar benchmark' do
       subject(:usage) { service.estimated_savings(versus: :exemplar_school) }
 
-      let(:expected_baseload_kwh) { BenchmarkMetrics.exemplar_baseload_for_pupils(1000, :primary, false) * 365 * 24 }
+      let(:expected_baseload_kwh) do
+        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils: 1000, school_type: :primary, heat_pump: false) * 365 * 24
+      end
 
       it 'calculates savings' do
         expect(usage.kwh).to be_within(0.01).of(expected_savings_kwh)

@@ -67,9 +67,6 @@ module BenchmarkMetrics
     )
   end
 
-  # BENCHMARK_ENERGY_COST_PER_PUPIL = BENCHMARK_GAS_USAGE_PER_PUPIL * GAS_PRICE +
-  #                                  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL * ELECTRICITY_PRICE
-
   # number less than 1.0 for colder area, > 1.0 for milder areas
   # multiply by this number if normalising school to other schools in different regions
   # divide by this number if scaling a central UK wide benchmark to a school
@@ -87,14 +84,14 @@ module BenchmarkMetrics
   # Only called from AlertEnergyAnnualVersusBenchmark
   def benchmark_energy_usage_£_per_pupil(benchmark_type, school, asof_date, list_of_fuels)
     total = 0.0
-    total += benchmark_electricity_usage_£_per_pupil(benchmark_type, school) if list_of_fuels.include?(:electricity)
+    total += benchmark_electricity_usage_gbp_per_pupil(benchmark_type, school) if list_of_fuels.include?(:electricity)
     if list_of_fuels.include?(:gas)
-      total += benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date,
-                                                   :gas)
+      total += benchmark_heating_usage_gbp_per_pupil(benchmark_type, school, asof_date,
+                                                     :gas)
     end
     if list_of_fuels.include?(:storage_heater) || list_of_fuels.include?(:storage_heaters)
-      total += benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date,
-                                                   :storage_heaters)
+      total += benchmark_heating_usage_gbp_per_pupil(benchmark_type, school, asof_date,
+                                                     :storage_heaters)
     end
     total
   end
@@ -152,12 +149,12 @@ module BenchmarkMetrics
   end
 
   # used by ManagementSummaryTable
-  def exemplar_£(school, fuel_type, start_date, end_date)
+  def exemplar_gbp(school, fuel_type, start_date, end_date)
     case fuel_type
     when :electricity, :storage_heater, :storage_heaters
-      exemplar_kwh(school, fuel_type, start_date, end_date) * electricity_price_£_per_kwh(school)
+      exemplar_kwh(school, fuel_type, start_date, end_date) * electricity_price_gbp_per_kwh(school)
     when :gas
-      exemplar_kwh(school, fuel_type, start_date, end_date) * gas_price_£_per_kwh(school)
+      exemplar_kwh(school, fuel_type, start_date, end_date) * gas_price_gbp_per_kwh(school)
     end
   end
 
@@ -174,75 +171,37 @@ module BenchmarkMetrics
     end
   end
 
-  def recommended_baseload_for_pupils(pupils, school_type, heat_pump = false) # rubocop:todo Metrics/MethodLength, Style/OptionalBooleanParameter
+  def recommended_baseload_for_pupils(pupils:, school_type:, heat_pump: false)
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type)
 
     case school_type
     when :primary, :infant, :junior
       if heat_pump
-        baseload_with_threshold(
-          pupils: pupils,
-          base: 2.0,
-          threshold: 135.0,
-          increment: 1.5,
-          divisor: 100.0
-        )
+        baseload_with_threshold(pupils:, base: 2.0, threshold: 135.0, increment: 1.5, divisor: 100.0)
       else
-        baseload_with_threshold(
-          pupils: pupils,
-          base: 1.0,
-          threshold: 90.0,
-          increment: 1.12,
-          divisor: 100.0
-        )
+        baseload_with_threshold(pupils:, base: 1.0, threshold: 90.0, increment: 1.12, divisor: 100.0)
       end
     when :special
-      baseload_with_threshold(
-        pupils: pupils,
-        base: 2.5,
-        threshold: 40.0,
-        increment: 2.25,
-        divisor: 40.0
-      )
+      baseload_with_threshold(pupils:, base: 2.5, threshold: 40.0, increment: 2.25, divisor: 40.0)
     when :secondary, :middle, :mixed_primary_and_secondary
       if heat_pump
-        baseload_with_threshold(
-          pupils: pupils,
-          base: 11.0,
-          threshold: 500.0,
-          increment: 10.21,
-          divisor: 500.0
-        )
+        baseload_with_threshold(pupils:, base: 11.0, threshold: 500.0, increment: 10.21, divisor: 500.0)
       else
-        baseload_with_threshold(
-          pupils: pupils,
-          base: 13.5,
-          threshold: 500.0,
-          increment: 13.27,
-          divisor: 500.0
-        )
+        baseload_with_threshold(pupils:, base: 13.5, threshold: 500.0, increment: 13.27, divisor: 500.0)
       end
     end
   end
 
-  def exemplar_baseload_for_pupils(pupils, school_type, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
-    recommended_baseload = recommended_baseload_for_pupils(pupils, school_type, heat_pump)
+  def exemplar_baseload_for_pupils(pupils:, school_type:, heat_pump: false)
+    recommended_baseload = recommended_baseload_for_pupils(pupils:, school_type:, heat_pump:)
     case school_type
     when :primary, :infant, :junior
-      if heat_pump
-        0.8 * recommended_baseload
-      else
-        0.775 * recommended_baseload
-      end
+      recommended_baseload * (heat_pump ? 0.8 : 0.775)
     when :special
-      0.8 * recommended_baseload
+      recommended_baseload * 0.8
     when :secondary, :middle, :mixed_primary_and_secondary
-      if heat_pump
-        0.8 * recommended_baseload
-      else
-        0.83 * recommended_baseload
-      end
+      recommended_baseload * (heat_pump ? 0.8 : 0.83)
     end
   end
 
@@ -256,11 +215,11 @@ module BenchmarkMetrics
     when :special
       0.211 * pupils
     else
-      raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in baseload floor area request"
+      raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type}"
     end
   end
 
-  # Based on W/pupil figures in Peak_Benchmarks_2025.xlsx
+  # Based on W/pupil figures in Peak_Benchmarks_2026.xlsx
   def benchmark_peak_kw(pupils, school_type)
     case school_type&.to_sym
     when :primary, :infant, :junior
@@ -270,7 +229,7 @@ module BenchmarkMetrics
     when :special
       0.278 * pupils
     else
-      raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in baseload floor area request"
+      raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type}"
     end
   end
 
@@ -294,8 +253,8 @@ module BenchmarkMetrics
     raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in #{type} request"
   end
 
-  def benchmark_electricity_usage_£_per_pupil(benchmark_type, school)
-    benchmark_electricity_usage_kwh_per_pupil(benchmark_type, school) * electricity_price_£_per_kwh(school)
+  def benchmark_electricity_usage_gbp_per_pupil(benchmark_type, school)
+    benchmark_electricity_usage_kwh_per_pupil(benchmark_type, school) * electricity_price_gbp_per_kwh(school)
   end
 
   # @param Symbol benchmark_type Either :benchmark or :exemplar
@@ -309,12 +268,13 @@ module BenchmarkMetrics
   end
 
   # as above, larger number returned for Scotland, lower for SW
-  def benchmark_heating_usage_£_per_pupil(benchmark_type, school, asof_date = nil, fuel_type = :gas)
+  def benchmark_heating_usage_gbp_per_pupil(benchmark_type, school, asof_date = nil, fuel_type = :gas)
     if fuel_type == :gas
-      benchmark_heating_usage_kwh_per_pupil(benchmark_type, school, asof_date, fuel_type) * gas_price_£_per_kwh(school)
+      benchmark_heating_usage_kwh_per_pupil(benchmark_type, school, asof_date,
+                                            fuel_type) * gas_price_gbp_per_kwh(school)
     else # storage_heaters
       benchmark_heating_usage_kwh_per_pupil(benchmark_type, school, asof_date,
-                                            fuel_type) * electricity_price_£_per_kwh(school)
+                                            fuel_type) * electricity_price_gbp_per_kwh(school)
     end
   end
 
@@ -330,11 +290,11 @@ module BenchmarkMetrics
     end
   end
 
-  def electricity_price_£_per_kwh(school)
+  def electricity_price_gbp_per_kwh(school)
     school.aggregated_electricity_meters.amr_data.blended_rate(:kwh, :£)
   end
 
-  def gas_price_£_per_kwh(school)
+  def gas_price_gbp_per_kwh(school)
     school.aggregated_heat_meters.amr_data.blended_rate(:kwh, :£)
   end
 end
