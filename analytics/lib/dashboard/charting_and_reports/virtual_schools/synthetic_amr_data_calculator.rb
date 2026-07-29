@@ -6,10 +6,16 @@ class SyntheticAMRDataCalculator # rubocop:todo Metrics/ClassLength
 
   def initialize(school)
     @school = school
+    @school_type = school.school_type.to_sym
+    @floor_area = @school.floor_area
+    @pupils = @school.number_of_pupils
+    return if %i[primary infant junior special middle secondary mixed_primary_and_secondary].include?(@school_type)
+
+    raise UnexpectedSchoolTypeException, "Unknown school type #{@school_type}"
   end
 
   def benchmark_amr_data(meter:, benchmark_type: :benchmark)
-    calculate_school_amr_data(meter: meter, benchmark_type: benchmark_type)
+    calculate_amr_data(meter: meter, benchmark_type: benchmark_type)
   end
 
   def self.remap_low_sample_holiday(holiday_type, date) # rubocop:todo Metrics/CyclomaticComplexity
@@ -48,46 +54,37 @@ class SyntheticAMRDataCalculator # rubocop:todo Metrics/ClassLength
   # param Integer pupils number of pupils in school
   # param Float floor_area floor area of school
   # param Boolean degreday_adjustment whether to adjust gas data based on degree days rather than floor area
-  # rubocop:disable Metrics/AbcSize
-  def calculate_school_amr_data(meter:, benchmark_type: :benchmark, pupils: @school.number_of_pupils,
-                                floor_area: @school.floor_area, degreeday_adjustment: true)
-    amr_data = meter.amr_data
-    average_amr_data = AMRData.new(benchmark_type)
-
-    interpolators = calculate_interpolators(benchmark_type, meter.fuel_type)
-
-    # calculation approx ~20 ms per year
+  def calculate_amr_data(meter:, benchmark_type: :benchmark, degreeday_adjustment: true)
+    interpolators = create_term_time_interpolators(benchmark_type, meter.fuel_type)
     now = DateTime.now
+    scale_by = scaling_factor(meter, degreeday_adjustment:)
+    benchmark_amr_data = AMRData.new(benchmark_type)
 
-    scale_by = if meter.fuel_type == :electricity
-                 pupils
-               elsif degreeday_adjustment
-                 degree_days_to_average_factor_reversed(meter.meter_collection, amr_data.start_date,
-                                                        amr_data.end_date, floor_area)
-               else
-                 floor_area
-               end
-
-    (amr_data.start_date..amr_data.end_date).each do |date|
-      avg_kwh_x48_by_school_type = school_type_profiles_to_average_x48(date, benchmark_type, interpolators,
-                                                                       meter.fuel_type)
-
-      kwh_per_pupil_x48 = AMRData.fast_average_multiple_x48(avg_kwh_x48_by_school_type)
-
-      kwh_x48 = AMRData.fast_multiply_x48_x_scalar(kwh_per_pupil_x48, scale_by)
-
-      average_amr_data.add(date, OneDayAMRReading.new(date, 'CAVG', nil, now, kwh_x48))
+    (meter.amr_data.start_date..meter.amr_data.end_date).each do |date|
+      avg_kwh_x48_for_day = avg_kwh_x48_for_day(date, benchmark_type, interpolators, meter.fuel_type)
+      kwh_x48 = AMRData.fast_multiply_x48_x_scalar(avg_kwh_x48_for_day, scale_by)
+      benchmark_amr_data.add(date, OneDayAMRReading.new(date, 'CAVG', nil, now, kwh_x48))
     end
 
-    average_amr_data
+    benchmark_amr_data
   end
-  # rubocop:enable Metrics/AbcSize
 
-  def degree_days_to_average_factor_reversed(school, _start_date, end_date, floor_area)
+  def scaling_factor(meter, degreeday_adjustment: true)
+    if meter.fuel_type == :electricity
+      @pupils
+    elsif degreeday_adjustment
+      degree_days_to_average_factor_reversed(meter.meter_collection,
+                                             meter.amr_data.end_date)
+    else
+      @floor_area
+    end
+  end
+
+  def degree_days_to_average_factor_reversed(school, end_date)
     end_date   = [end_date, school.temperatures.end_date].min
     start_date = [end_date - 365, school.temperatures.start_date].max
 
-    return floor_area if end_date - start_date < 360 # shouldn't happen as temperatures should be backdated a year
+    return @floor_area if end_date - start_date < 360 # shouldn't happen as temperatures should be backdated a year
 
     avg_degree_days = BenchmarkMetrics::ANNUAL_AVERAGE_DEGREE_DAYS
 
@@ -99,51 +96,42 @@ class SyntheticAMRDataCalculator # rubocop:todo Metrics/ClassLength
 
     # if a school is colder than average i.e. > school_degree_days increase its consumption from average
 
-    floor_area * school_degree_days / avg_degree_days
+    @floor_area * school_degree_days / avg_degree_days
   end
 
-  def school_type_profiles_to_average_x48(date, benchmark_type, interpolators, fuel_type) # rubocop:disable Metrics/AbcSize
+  def avg_kwh_x48_for_day(date, benchmark_type, interpolators, fuel_type)
     day_type = @school.holidays.day_type(date)
     if day_type == :holiday
       holiday_type = @school.holidays.holiday(date).type
       holiday_type = self.class.remap_low_sample_holiday(holiday_type, date)
-      averaged_school_type_map(@school.school_type).map do |school_type|
-        Schools::AverageSchoolData.raw_data[fuel_type][benchmark_type][school_type.to_sym][:holiday][holiday_type]
-      end
+      average_school_data(fuel_type, benchmark_type)[:holiday][holiday_type]
     else
-      interpolators.map do |interpolator|
-        days_readings_x48(date.yday, interpolator[day_type])
-      end
+      days_readings_x48(date.yday, interpolators[day_type])
     end
   end
 
-  def calculate_interpolators(benchmark_type, fuel_type)
-    school_types = averaged_school_type_map(@school.school_type)
-    school_types.map do |school_type|
-      # interpolators take ~3 ms to setup, so fast enough
-      raw_data = Schools::AverageSchoolData.raw_data[fuel_type][benchmark_type][school_type.to_sym]
-      create_14_months_of_interpolations(raw_data)
+  # Create interpolators for calculating schoolday and weekend half-hourly data
+  # The interpolators are each responsible for creating values for single half-hour period.
+  def create_term_time_interpolators(benchmark_type, fuel_type)
+    raw_data = average_school_data(fuel_type, benchmark_type)
+    %i[schoolday weekend].to_h do |daytype|
+      extended_months_data = configure_14_months(raw_data[daytype])
+      [
+        daytype,
+        setup_intraday_interpolators_x48_half_hours_x14_months(extended_months_data)
+      ]
     end
   end
 
-  # there is only enough samples at the moment 25Oct2021 to
-  # use the data for :primary and :secondary, so average the
-  # other school types apart from special - which is normalised
-  # penalised, so for moment use :special despite the lack of samples
-  def averaged_school_type_map(school_type)
-    school_map = {
-      primary: [:primary],
-      special: [:special],
-      secondary: [:secondary],
-      mixed_primary_and_secondary: %i[primary secondary],
-      middle: %i[primary secondary],
-      infant: [:primary],
-      junior: [:primary]
-    }
+  def average_school_data(fuel_type, benchmark_type)
+    Schools::AverageSchoolData.raw_data[fuel_type][benchmark_type][average_school_type_key]
+  end
 
-    raise UnexpectedSchoolTypeException, "Unknown school type #{school_type}" unless school_map.key?(school_type.to_sym)
+  def average_school_type_key
+    return :primary if %i[infant junior].include?(@school_type)
+    return :secondary if %i[mixed_primary_and_secondary middle].include?(@school_type)
 
-    school_map[school_type.to_sym]
+    @school_type
   end
 
   def days_readings_x48(day_of_year, interpolators_x48)
@@ -152,31 +140,14 @@ class SyntheticAMRDataCalculator # rubocop:todo Metrics/ClassLength
     end
   end
 
-  # Creates hash of day type to Interpolate::Points, one per half-hour
-  def create_14_months_of_interpolations(average_meter_data)
-    %i[schoolday weekend].to_h do |daytype|
-      extended_months_data = configure_14_months(average_meter_data[daytype])
-      [
-        daytype,
-        setup_intraday_interpolators_x48_half_hours_x14_months(extended_months_data)
-      ]
-    end
-  end
-
+  # for interpolation purposes add a month on and start and end of a year so the data wraps around for interpolation,
+  # rather than the interpolation being truncated
+  #
+  # 2026-06 used to substitute August with July due to large number of Scottish schools with high usage skewing figures
+  # but now have few schools in Scotland.
   def configure_14_months(months_data)
-    # for interpolation purposes add a month on and start and end of a year
-    # so the data wraps around for interpolation, rather than the interpolation
-    # being truncated
     months_data[0]  = months_data[12]
     months_data[13] = months_data[0]
-
-    # overwrite Scottish specific school data
-    # - Scottish schools currently have very high usage and
-    #   distort averages at specific times of year e.g.
-    #   school days in August - as no English/Welsh schools
-    #   are represented
-    months_data[8] = months_data[7]
-
     months_data.sort.to_h
   end
 
@@ -189,8 +160,7 @@ class SyntheticAMRDataCalculator # rubocop:todo Metrics/ClassLength
       kwh_per_hh_per_pupil = extended_months_data.keys.map do |month|
         extended_months_data[month][half_hour]
       end
-      # given a hash of days_since_start_of_year to kwh_per_hh_per_pupil
-      # so converts the month number based hash into one based on days since year
+      # Converts the month number hash into one based on days since start of year, to can interpolate on day number
       Interpolate::Points.new(days_since_start_of_year.zip(kwh_per_hh_per_pupil).to_h)
     end
   end

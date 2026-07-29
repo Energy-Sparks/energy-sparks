@@ -92,6 +92,51 @@ describe SyntheticAMRDataCalculator do
         end
 
         it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :secondary }
+        end
+      end
+
+      context 'when school type is mixed primary and secondary' do
+        let(:school_attributes) do
+          {
+            school_type: :mixed_primary_and_secondary,
+            heat_pump: false
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :secondary }
+        end
+      end
+
+      context 'when school type is infant' do
+        let(:school_attributes) do
+          {
+            school_type: :infant,
+            heat_pump: false
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :primary }
+        end
+      end
+
+      context 'when school type is junior' do
+        let(:school_attributes) do
+          {
+            school_type: :junior,
+            heat_pump: false
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :primary }
+        end
       end
     end
   end
