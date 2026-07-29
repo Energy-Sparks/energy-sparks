@@ -76,10 +76,12 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
     build(:solar_pv, :with_days, start_date: amr_start_date, end_date: amr_end_date, data_x48: days_solar_pv_yield)
   end
 
+  let(:extra_school_attributes) { {} }
+
   # TODO: add temperatures
   let(:meter_collection) do
     build(:meter_collection,
-          school: build(:analytics_school, school_times:, community_use_times:),
+          school: build(:analytics_school, school_times:, community_use_times:, **extra_school_attributes),
           holidays:,
           solar_pv:)
   end
