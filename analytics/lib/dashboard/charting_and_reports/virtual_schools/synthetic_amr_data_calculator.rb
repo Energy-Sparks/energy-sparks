@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Generates the synthetic AMR data used to plot usage data for benchmark and exemplar schools
-class AverageSchoolCalculator
+class SyntheticAMRDataCalculator # rubocop:todo Metrics/ClassLength
   class UnexpectedSchoolTypeException < StandardError; end
 
   def initialize(school)
@@ -10,7 +12,7 @@ class AverageSchoolCalculator
     calculate_school_amr_data(meter: meter, benchmark_type: benchmark_type)
   end
 
-  def self.remap_low_sample_holiday(holiday_type, date)
+  def self.remap_low_sample_holiday(holiday_type, date) # rubocop:todo Metrics/CyclomaticComplexity
     holiday_type = :easter if holiday_type == :mayday
     if Holidays::MAIN_HOLIDAY_TYPES.include?(holiday_type)
       holiday_type
@@ -46,6 +48,7 @@ class AverageSchoolCalculator
   # param Integer pupils number of pupils in school
   # param Float floor_area floor area of school
   # param Boolean degreday_adjustment whether to adjust gas data based on degree days rather than floor area
+  # rubocop:disable Metrics/AbcSize
   def calculate_school_amr_data(meter:, benchmark_type: :benchmark, pupils: @school.number_of_pupils,
                                 floor_area: @school.floor_area, degreeday_adjustment: true)
     amr_data = meter.amr_data
@@ -69,17 +72,18 @@ class AverageSchoolCalculator
       avg_kwh_x48_by_school_type = school_type_profiles_to_average_x48(date, benchmark_type, interpolators,
                                                                        meter.fuel_type)
 
-      kWh_per_pupil_x48 = AMRData.fast_average_multiple_x48(avg_kwh_x48_by_school_type)
+      kwh_per_pupil_x48 = AMRData.fast_average_multiple_x48(avg_kwh_x48_by_school_type)
 
-      kWh_x48 = AMRData.fast_multiply_x48_x_scalar(kWh_per_pupil_x48, scale_by)
+      kwh_x48 = AMRData.fast_multiply_x48_x_scalar(kwh_per_pupil_x48, scale_by)
 
-      average_amr_data.add(date, OneDayAMRReading.new(date, 'CAVG', nil, now, kWh_x48))
+      average_amr_data.add(date, OneDayAMRReading.new(date, 'CAVG', nil, now, kwh_x48))
     end
 
     average_amr_data
   end
+  # rubocop:enable Metrics/AbcSize
 
-  def degree_days_to_average_factor_reversed(school, start_date, end_date, floor_area)
+  def degree_days_to_average_factor_reversed(school, _start_date, end_date, floor_area)
     end_date   = [end_date, school.temperatures.end_date].min
     start_date = [end_date - 365, school.temperatures.start_date].max
 
@@ -98,7 +102,7 @@ class AverageSchoolCalculator
     floor_area * school_degree_days / avg_degree_days
   end
 
-  def school_type_profiles_to_average_x48(date, benchmark_type, interpolators, fuel_type)
+  def school_type_profiles_to_average_x48(date, benchmark_type, interpolators, fuel_type) # rubocop:disable Metrics/AbcSize
     day_type = @school.holidays.day_type(date)
     if day_type == :holiday
       holiday_type = @school.holidays.holiday(date).type
@@ -107,7 +111,7 @@ class AverageSchoolCalculator
         Schools::AverageSchoolData.raw_data[fuel_type][benchmark_type][school_type.to_sym][:holiday][holiday_type]
       end
     else
-      avg_kwh_x48_by_school_type = interpolators.map do |interpolator|
+      interpolators.map do |interpolator|
         days_readings_x48(date.yday, interpolator[day_type])
       end
     end
@@ -115,7 +119,7 @@ class AverageSchoolCalculator
 
   def calculate_interpolators(benchmark_type, fuel_type)
     school_types = averaged_school_type_map(@school.school_type)
-    interpolators = school_types.map do |school_type|
+    school_types.map do |school_type|
       # interpolators take ~3 ms to setup, so fast enough
       raw_data = Schools::AverageSchoolData.raw_data[fuel_type][benchmark_type][school_type.to_sym]
       create_14_months_of_interpolations(raw_data)
@@ -150,13 +154,13 @@ class AverageSchoolCalculator
 
   # Creates hash of day type to Interpolate::Points, one per half-hour
   def create_14_months_of_interpolations(average_meter_data)
-    %i[schoolday weekend].map do |daytype|
+    %i[schoolday weekend].to_h do |daytype|
       extended_months_data = configure_14_months(average_meter_data[daytype])
       [
         daytype,
         setup_intraday_interpolators_x48_half_hours_x14_months(extended_months_data)
       ]
-    end.to_h
+    end
   end
 
   def configure_14_months(months_data)

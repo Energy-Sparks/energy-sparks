@@ -195,7 +195,7 @@ class CalculateAverageSchool
   def month_or_holiday(school, date)
     if school.holidays.day_type(date) == :holiday
       holiday_type = school.holidays.holiday(date).type
-      AverageSchoolCalculator.remap_low_sample_holiday(holiday_type, date)
+      SyntheticAMRDataCalculator.remap_low_sample_holiday(holiday_type, date)
     else
       date.month
     end
