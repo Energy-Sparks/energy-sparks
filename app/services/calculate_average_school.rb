@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CalculateAverageSchool
-  SCHOOL_TYPES = %i[primary secondary special].freeze # missing mixed?
+  SCHOOL_TYPES = %i[primary secondary special mixed_primary_and_secondary].freeze # missing mixed?
   RANGES = {
     average: 0.4..0.6,
     benchmark: 0.2..0.4,
