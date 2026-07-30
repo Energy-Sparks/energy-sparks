@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CalculateAverageSchool
-  SCHOOL_TYPES = %i[primary secondary special].freeze # missing mixed?
+  SCHOOL_TYPES = %i[primary secondary special mixed_primary_and_secondary].freeze
   RANGES = {
     average: 0.4..0.6,
     benchmark: 0.2..0.4,
@@ -50,7 +50,7 @@ class CalculateAverageSchool
     db_school_generator do |school|
       FUEL_TYPES.each do |fuel_type|
         school_data = calculate_school_average(school, fuel_type)
-        by_school_type[fuel_type][school.school_type.to_sym] << school_data if school_data
+        by_school_type[fuel_type][average_school_type(school, fuel_type)] << school_data if school_data
       end
     end
     by_school_type
@@ -115,7 +115,7 @@ class CalculateAverageSchool
   end
 
   def db_school_generator
-    School.data_enabled.order(:name).each do |school|
+    School.data_enabled.where(school_type: SCHOOL_TYPES).order(:name).each do |school|
       @logger.info("loading #{school.slug}")
       yield AggregateSchoolService.new(school).aggregate_school
     end
@@ -141,13 +141,13 @@ class CalculateAverageSchool
       @logger.error(e)
       return
     end
-    (@school_type_samples[school.school_type.to_sym] ||= Hash.new(0))[fuel_type] += 1
+    (@school_type_samples[average_school_type(school, fuel_type)] ||= Hash.new(0))[fuel_type] += 1
     factor = normalising_factor(school, meter, start_date, end_date)
     average_data(collated_data, factor)
   end
 
   def get_meter(school, fuel_type)
-    return unless SCHOOL_TYPES.include?(school.school_type.to_sym)
+    return unless SCHOOL_TYPES.include?(school.school_type.to_sym) # use database type here
 
     meter = school.aggregate_meter(fuel_type)
 
@@ -156,6 +156,16 @@ class CalculateAverageSchool
     return if fuel_type == :gas && meter.amr_data.days < 350 # degreeday adjustment wont work otherwise
 
     meter
+  end
+
+  # maps a School.school_type to an alternate name to be used in the average data hash
+  # allows further partitioning of schools into different groups
+  def average_school_type(school, fuel_type)
+    if fuel_type == :electricity && school.heat_pump?
+      :"#{school.school_type}_with_heat_pump"
+    else
+      school.school_type.to_sym
+    end
   end
 
   def normalising_factor(school, meter, start_date, end_date)
@@ -195,7 +205,7 @@ class CalculateAverageSchool
   def month_or_holiday(school, date)
     if school.holidays.day_type(date) == :holiday
       holiday_type = school.holidays.holiday(date).type
-      AverageSchoolCalculator.remap_low_sample_holiday(holiday_type, date)
+      SyntheticAMRDataCalculator.remap_low_sample_holiday(holiday_type, date)
     else
       date.month
     end
