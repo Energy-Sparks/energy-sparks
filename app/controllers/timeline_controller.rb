@@ -2,7 +2,7 @@ class TimelineController < ApplicationController
   include SchoolGroupBreadcrumbs
   include SchoolGroupAccessControl
   include NonPublicSchools
-  include Pagy::Backend
+  include Pagy::Method
 
   load_resource :school
   load_resource :school_group

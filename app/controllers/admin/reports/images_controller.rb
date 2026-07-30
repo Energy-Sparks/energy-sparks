@@ -3,7 +3,7 @@
 module Admin
   module Reports
     class ImagesController < ApplicationController
-      include Pagy::Backend
+      include Pagy::Method
       helper_method :item_path
 
       def index
