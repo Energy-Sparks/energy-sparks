@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Tasks::Recorder do
-  subject(:task_recorder) { Tasks::Recorder.new(recording, user) }
+  subject(:task_recorder) { described_class.new(recording, user) }
 
   let(:user) { create(:user) }
   let(:recording) {}
@@ -38,7 +40,7 @@ describe Tasks::Recorder do
 
       let(:activity_category) { create(:activity_category) }
       let(:activity_type) { create(:activity_type, score: 26, activity_category:) }
-      let(:description) { '<div></div>' }
+      let(:description) { 'description' }
       let(:activity) { build(:activity, activity_type:, description:) }
       let(:recording) { activity }
       let(:observation) { Observation.find_by!(activity_id: recording.id) }
@@ -95,7 +97,7 @@ describe Tasks::Recorder do
       let(:school) { create(:school) }
       let(:intervention_type) { create(:intervention_type, score: 26) }
       let(:at) { Time.zone.today }
-      let(:description) { '<div></div>' }
+      let(:description) { 'description' }
       let(:observation) { school.observations.intervention.new(intervention_type:, description:, at:) }
       let(:recording) { observation }
 
@@ -135,9 +137,9 @@ describe Tasks::Recorder do
   end
 
   shared_examples 'a completable when recording progress' do
-    subject(:task_recorder) { Tasks::Recorder.new(recording, user) }
+    # subject(:task_recorder) { described_class.new(recording, user) }
 
-    let(:user) { create(:user) }
+    let(:user) { nil }
 
     let!(:is_completable) { true }
 
@@ -155,7 +157,7 @@ describe Tasks::Recorder do
       before { task_recorder.process }
 
       it 'creates completed todo' do
-        expect(completable.completed_todos.count).to be(1)
+        expect(completable.completed_todos.count).to eq(1)
         expect(completable.completed_todos.last.recording).to eq(recording)
         expect(completable.completed_todos.last.todo.task).to eq(task)
         expect(completable.completed_todos.last.todo.assignable).to eq(assignable)
@@ -233,7 +235,7 @@ describe Tasks::Recorder do
 
     let(:activity_type_tasks) { create_list(:activity_type, 3) }
     let(:intervention_type_tasks) { create_list(:intervention_type, 3) }
-    let(:task_recorder) { Tasks::Recorder.new(recording, user) }
+    # let(:task_recorder) { described_class.new(recording, nil) }
 
     context 'when completable is a programme' do
       let!(:assignable) do
