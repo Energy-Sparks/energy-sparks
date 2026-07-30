@@ -137,10 +137,7 @@ describe Tasks::Recorder do
   end
 
   shared_examples 'a completable when recording progress' do
-    # subject(:task_recorder) { described_class.new(recording, user) }
-
     let(:user) { nil }
-
     let!(:is_completable) { true }
 
     context 'when recording a task that is not in todos' do
@@ -235,7 +232,6 @@ describe Tasks::Recorder do
 
     let(:activity_type_tasks) { create_list(:activity_type, 3) }
     let(:intervention_type_tasks) { create_list(:intervention_type, 3) }
-    # let(:task_recorder) { described_class.new(recording, nil) }
 
     context 'when completable is a programme' do
       let!(:assignable) do
