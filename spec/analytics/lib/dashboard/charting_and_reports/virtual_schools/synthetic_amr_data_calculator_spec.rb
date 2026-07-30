@@ -59,6 +59,20 @@ describe SyntheticAMRDataCalculator do
         it_behaves_like 'it generates expected amr data'
       end
 
+      context 'when school type is primary with heat pump' do
+        let(:school_attributes) do
+          {
+            school_type: :primary,
+            heat_pump: true
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :primary_with_heat_pump }
+        end
+      end
+
       context 'when school type is secondary' do
         let(:school_attributes) do
           {
@@ -71,6 +85,20 @@ describe SyntheticAMRDataCalculator do
         it_behaves_like 'it generates expected amr data'
       end
 
+      context 'when school type is secondary with heat pump' do
+        let(:school_attributes) do
+          {
+            school_type: :secondary,
+            heat_pump: true
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :secondary_with_heat_pump }
+        end
+      end
+
       context 'when school type is special' do
         let(:school_attributes) do
           {
@@ -81,6 +109,20 @@ describe SyntheticAMRDataCalculator do
 
         it_behaves_like 'it generates the expected range'
         it_behaves_like 'it generates expected amr data'
+      end
+
+      context 'when school type is special with heat pump' do
+        let(:school_attributes) do
+          {
+            school_type: :special,
+            heat_pump: true
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :secondary_with_heat_pump }
+        end
       end
 
       context 'when school type is middle' do
@@ -97,6 +139,20 @@ describe SyntheticAMRDataCalculator do
         end
       end
 
+      context 'when school type is middle with heat pump' do
+        let(:school_attributes) do
+          {
+            school_type: :middle,
+            heat_pump: true
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :secondary_with_heat_pump }
+        end
+      end
+
       context 'when school type is mixed primary and secondary' do
         let(:school_attributes) do
           {
@@ -107,7 +163,21 @@ describe SyntheticAMRDataCalculator do
 
         it_behaves_like 'it generates the expected range'
         it_behaves_like 'it generates expected amr data' do
-          let(:benchmark_school_type) { :secondary }
+          let(:benchmark_school_type) { :mixed_primary_and_secondary }
+        end
+      end
+
+      context 'when school type is mixed primary and secondary with heat pump' do
+        let(:school_attributes) do
+          {
+            school_type: :mixed_primary_and_secondary,
+            heat_pump: true
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :secondary_with_heat_pump }
         end
       end
 
@@ -125,6 +195,20 @@ describe SyntheticAMRDataCalculator do
         end
       end
 
+      context 'when school type is infant with heat pump' do
+        let(:school_attributes) do
+          {
+            school_type: :infant,
+            heat_pump: true
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :primary_with_heat_pump }
+        end
+      end
+
       context 'when school type is junior' do
         let(:school_attributes) do
           {
@@ -136,6 +220,20 @@ describe SyntheticAMRDataCalculator do
         it_behaves_like 'it generates the expected range'
         it_behaves_like 'it generates expected amr data' do
           let(:benchmark_school_type) { :primary }
+        end
+      end
+
+      context 'when school type is junior with heat pump' do
+        let(:school_attributes) do
+          {
+            school_type: :junior,
+            heat_pump: true
+          }
+        end
+
+        it_behaves_like 'it generates the expected range'
+        it_behaves_like 'it generates expected amr data' do
+          let(:benchmark_school_type) { :primary_with_heat_pump }
         end
       end
     end
