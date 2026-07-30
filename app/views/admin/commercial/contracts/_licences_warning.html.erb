@@ -1,0 +1,6 @@
+<% if overlapping_licences.any? %>
+  <%= render PromptComponent.new(id: 'overlapping-licences', status: :negative, icon: 'calendar-xmark') do |p| %>
+    <% p.with_link { link_to 'Overlapping licences', overlapping_admin_commercial_licences_path } %>
+    <%= "#{overlapping_licences.count} of the licences in this contract overlap with licences from other contracts" %>
+  <% end %>
+<% end %>
