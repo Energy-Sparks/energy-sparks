@@ -8,7 +8,7 @@
   <%= link_to @contract.name, admin_commercial_contract_path(@contract) %> contract.
 </p>
 
-<%= render 'admin/commercial/contracts/licences_warning' %>
+<%= render 'admin/commercial/contracts/licences_warning', overlapping_licences: @overlapping_licences %>
 
 <h3>Review account code</h3>
 
