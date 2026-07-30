@@ -84,16 +84,6 @@ class ContentBase
     formatted_template_variables(:html)
   end
 
-  #only called via the test framework
-  def format_variables_as_html
-    scalars = variable_list(true, :html)
-
-    header  = ['Variable', 'Value']
-    units   = [String,     String ]
-
-    HtmlTableFormatting.new(header, scalars.to_a, units).html
-  end
-
   def text_template_variables
     formatted_template_variables(:text)
   end

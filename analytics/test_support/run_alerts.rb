@@ -107,10 +107,6 @@ class RunAlerts < RunAnalyticsTest
 
       print_results(alert_class, alert, control[:outputs])
 
-      html = alert.format_variables_as_html
-
-      save_formatted_results(alert.class.name, html)
-
       save_to_yaml_and_compare_results(alert_class, alert, control, asof_date)
       save_class_methods_to_yaml_and_compare_results(alert_class, alert, control, asof_date)
 
@@ -122,13 +118,6 @@ class RunAlerts < RunAnalyticsTest
     rescue => e
       log_result(alert, "Crashed: #{e.message} #{e.backtrace[0]}")
     end
-  end
-
-  def save_formatted_results(type, html)
-    filename = "Alerts - #{type}.html"
-    html_file = HtmlFileWriter.new(filename, results_sub_directory_type: @results_sub_directory_type)
-    html_file.write_header_footer('', html, nil)
-    html_file.close
   end
 
   private
