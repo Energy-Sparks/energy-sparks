@@ -931,7 +931,10 @@ describe 'manage contracts', :include_application_helper do
         end
 
         it { expect(page).to have_link('Overlapping licences', href: overlapping_admin_commercial_licences_path) }
-        it { expect(page).to have_text('1 of these licences overlap with licences from other contracts') }
+
+        it do
+          expect(page).to have_text('1 of the licences in this contract overlap with licences from other contracts')
+        end
       end
     end
 
