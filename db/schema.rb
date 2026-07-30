@@ -396,7 +396,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_30_142636) do
     t.integer "reporting_period"
     t.date "run_on"
     t.bigint "school_id", null: false
-    t.json "table_data"
+    t.json "table_data", default: {}
     t.json "template_data", default: {}
     t.json "template_data_cy", default: {}
     t.datetime "updated_at", precision: nil, null: false
