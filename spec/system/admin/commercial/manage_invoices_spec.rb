@@ -212,6 +212,19 @@ describe 'manage invoices', :include_application_helper do
         end
       end
 
+      context 'with an overlapping licence' do
+        before do
+          create(:commercial_licence, school: licence.school, start_date: licence.start_date)
+          refresh
+        end
+
+        it { expect(page).to have_link('Overlapping licences', href: overlapping_admin_commercial_licences_path) }
+
+        it do
+          expect(page).to have_text('1 of the licences in this contract overlap with licences from other contracts')
+        end
+      end
+
       context 'when then proceeding', :js do
         before do
           check "licence_#{licence.id}"

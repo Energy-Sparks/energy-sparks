@@ -8,6 +8,8 @@
   <%= link_to @contract.name, admin_commercial_contract_path(@contract) %> contract.
 </p>
 
+<%= render 'admin/commercial/contracts/licences_warning', overlapping_licences: @overlapping_licences %>
+
 <h3>Review account code</h3>
 
 <p>This contract is set to raise invoices using <strong><%= @contract.xero_account_code&.display_label %></strong></p>
