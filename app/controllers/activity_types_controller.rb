@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ActivityTypesController < ApplicationController
-  include Pagy::Backend
+  include Pagy::Method
 
   layout 'task', only: [:show]
 

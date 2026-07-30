@@ -31,8 +31,7 @@ describe 'manual data load', type: :system do
 
     it 'has paging' do
       within '#paging-top' do
-        expect(page).to have_link('Next')
-        click_on('Next')
+        click_on('>')
       end
       expect(page).to have_no_text(newest_run.amr_uploaded_reading.file_name)
       expect(page).to have_text(oldest_run.amr_uploaded_reading.file_name)

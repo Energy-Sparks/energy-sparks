@@ -22,21 +22,20 @@ describe AlertAdditionalPrioritisationData do
     allow(meter_collection).to receive(:aggregated_heat_meters).and_return(meter)
   end
 
-  describe '#benchmark_template_data' do
+  describe '#analyse' do
     before do
       alert.analyse(asof_date)
     end
 
-    let(:template_data) { alert.benchmark_template_data }
+    context 'when producing variables for reporting' do
+      subject(:variables) { alert.variables_for_reporting }
 
-    it 'assigns the correct values' do
-      expect(template_data[:addp_name]).to eq meter_collection.school.name
-      expect(template_data[:addp_pupn]).to eq meter_collection.school.number_of_pupils
-      expect(template_data[:addp_flra]).to eq meter_collection.school.floor_area
-      expect(template_data[:addp_sctp]).to eq meter_collection.school.school_type
-      expect(template_data[:addp_urn]).to eq meter_collection.school.urn
-      expect(template_data[:addp_sact]).to eq meter_collection.school.activation_date
-      expect(template_data[:addp_sact]).to eq meter_collection.energysparks_start_date
+      it 'produces simple variables used in comparison reports' do
+        expect(variables[:activation_date]).to eq meter_collection.school.activation_date
+        expect(variables[:pupils]).to eq meter_collection.school.number_of_pupils
+        expect(variables[:floor_area]).to eq meter_collection.school.floor_area
+        expect(variables[:school_type_name]).to eq(I18n.t('analytics.school_types')[meter_collection.school.school_type])
+      end
     end
   end
 end
