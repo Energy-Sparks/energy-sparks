@@ -6,8 +6,7 @@ require_relative './alert_analysis_base.rb'
 # prioritisation of other alerts
 class AlertAdditionalPrioritisationData < AlertAnalysisBase
   include Logging
-  attr_reader :days_to_next_holiday, :days_from_last_holiday
-  attr_reader :average_temperature_last_week, :average_forecast_temperature_next_week_deprecated, :annual_electricity_kwh, :annual_gas_kwh, :annual_storage_heater_kwh, :annual_electricity_£, :annual_gas_£, :annual_storage_heater_£, :degree_days_15_5C_domestic, :school_area, :electricity_economic_tariff_changed_this_year, :electricity_economic_tariff_changed_in_the_previous_year, :electricity_economic_tariff_changed_this_year_percent,
+  attr_reader :electricity_economic_tariff_changed_this_year, :electricity_economic_tariff_changed_in_the_previous_year, :electricity_economic_tariff_changed_this_year_percent,
               :electricity_economic_tariff_last_changed_date, :gas_economic_tariff_changed_this_year, :gas_economic_tariff_changed_in_the_previous_year, :gas_economic_tariff_changed_this_year_percent, :gas_economic_tariff_last_changed_date, :activation_date
 
   def initialize(school)
