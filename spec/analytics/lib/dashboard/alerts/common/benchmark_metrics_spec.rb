@@ -10,7 +10,7 @@ describe BenchmarkMetrics do
     let(:annual_usage_kwh) do
       stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 229)
       stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP', 335)
-      BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type, pupils, heat_pump)
+      BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type:, pupils:, heat_pump:)
     end
 
     context 'with a primary school' do
@@ -81,7 +81,7 @@ describe BenchmarkMetrics do
     let(:annual_usage_kwh) do
       stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 195)
       stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP', 273)
-      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type, pupils, heat_pump)
+      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type:, pupils:, heat_pump:)
     end
 
     context 'with a primary school' do

@@ -268,7 +268,9 @@ class AlertElectricityAnnualVersusBenchmark < AlertElectricityOnlyBase
       @previous_year_£current = kwh(one_year_before_prev_date, prev_date, :£current)
     end
 
-    @one_year_benchmark_by_pupil_kwh            = BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type, pup, school.heat_pump?)
+    @one_year_benchmark_by_pupil_kwh = BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type:,
+                                                                                               pupils: pup,
+                                                                                               heat_pump: school.heat_pump?)
     @one_year_benchmark_by_pupil_£current       = @one_year_benchmark_by_pupil_kwh * @current_rate_£_per_kwh
     @one_year_benchmark_by_pupil_£              = @one_year_benchmark_by_pupil_kwh * @historic_rate_£_per_kwh
     @one_year_benchmark_by_pupil_co2 = @one_year_benchmark_by_pupil_kwh * blended_co2_per_kwh
@@ -282,7 +284,9 @@ class AlertElectricityAnnualVersusBenchmark < AlertElectricityOnlyBase
     @one_year_saving_versus_benchmark_£current  = @one_year_saving_versus_benchmark_£current.magnitude
     @one_year_saving_versus_benchmark_co2 = @one_year_saving_versus_benchmark_kwh  * blended_co2_per_kwh
 
-    @one_year_exemplar_by_pupil_kwh             = BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type, pup, school.heat_pump?)
+    @one_year_exemplar_by_pupil_kwh = BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type:,
+                                                                                             pupils: pup,
+                                                                                             heat_pump: school.heat_pump?)
     @one_year_exemplar_by_pupil_£               = @one_year_exemplar_by_pupil_kwh * @historic_rate_£_per_kwh
     @one_year_exemplar_by_pupil_£current        = @one_year_exemplar_by_pupil_kwh * @current_rate_£_per_kwh
     @one_year_exemplar_by_pupil_co2 = @one_year_exemplar_by_pupil_kwh * blended_co2_per_kwh

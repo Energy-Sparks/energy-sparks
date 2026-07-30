@@ -102,7 +102,7 @@ module BenchmarkMetrics
   # @param Symbol school_type The symbol representing the type of school
   # @param Integer pupils The number of pupils
   # @param boolean heat_pump Whether the school has a heat pump (of any kind)
-  def benchmark_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
+  def benchmark_annual_electricity_usage_kwh(school_type:, pupils: 1, heat_pump: false)
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type, 'benchmark electricity usage per pupil')
 
@@ -130,7 +130,7 @@ module BenchmarkMetrics
   # @param Symbol school_type The symbol representing the type of school
   # @param Integer pupils The number of pupils
   # @param boolean heat_pump Whether the school has a heat pump (of any kind)
-  def exemplar_annual_electricity_usage_kwh(school_type, pupils = 1, heat_pump = false) # rubocop:todo Style/OptionalBooleanParameter
+  def exemplar_annual_electricity_usage_kwh(school_type:, pupils: 1, heat_pump: false)
     school_type = school_type.to_sym if school_type.instance_of? String
     check_school_type(school_type, 'benchmark electricity usage per pupil')
 
@@ -161,10 +161,10 @@ module BenchmarkMetrics
   def exemplar_kwh(school, fuel_type, start_date, end_date)
     case fuel_type
     when :electricity, :storage_heater, :storage_heaters
-      number_of_pupils = school.aggregated_electricity_meters.meter_number_of_pupils(school, start_date, end_date)
-      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school.school_type,
-                                                             number_of_pupils,
-                                                             school.heat_pump?)
+      pupils = school.aggregated_electricity_meters.meter_number_of_pupils(school, start_date, end_date)
+      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type: school.school_type,
+                                                             pupils:,
+                                                             heat_pump: school.heat_pump?)
     when :gas
       floor_area = school.aggregated_heat_meters.meter_floor_area(school, start_date, end_date)
       BenchmarkMetrics::EXEMPLAR_GAS_USAGE_PER_M2 * floor_area
@@ -261,9 +261,9 @@ module BenchmarkMetrics
   # @param MeterCollection school
   def benchmark_electricity_usage_kwh_per_pupil(benchmark_type, school)
     if benchmark_type == :benchmark
-      benchmark_annual_electricity_usage_kwh(school.school_type, 1, school.heat_pump?)
+      benchmark_annual_electricity_usage_kwh(school_type: school.school_type, pupils: 1, heat_pump: school.heat_pump?)
     else # :exemplar
-      exemplar_annual_electricity_usage_kwh(school.school_type, 1, school.heat_pump?)
+      exemplar_annual_electricity_usage_kwh(school_type: school.school_type, pupils: 1, heat_pump: school.heat_pump?)
     end
   end
 
