@@ -14,14 +14,14 @@ describe 'manage xero account codes' do
     before do
       click_on 'Xero Account Codes'
       click_on 'New account code'
-      fill_in 'Code', with: 42
+      fill_in 'Code', with: '042'
       fill_in 'Label', with: 'The label'
     end
 
     it 'creates the code' do
       expect { click_on 'Save' }.to change(Commercial::XeroAccountCode, :count).by(1)
       expect(page).to have_text('Code was successfully created')
-      expect(Commercial::XeroAccountCode.last).to have_attributes(code: 42, label: 'The label')
+      expect(Commercial::XeroAccountCode.last).to have_attributes(code: '042', label: 'The label')
     end
   end
 

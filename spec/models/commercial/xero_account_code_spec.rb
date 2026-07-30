@@ -9,6 +9,6 @@ describe Commercial::XeroAccountCode do
   context 'when validating code' do
     subject { create(:commercial_xero_account_code) }
 
-    it { is_expected.to validate_uniqueness_of(:code) }
+    it { is_expected.to validate_uniqueness_of(:code).case_insensitive }
   end
 end
