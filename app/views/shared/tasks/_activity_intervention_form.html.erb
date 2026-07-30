@@ -27,13 +27,15 @@
     <div class="col-lg-6">
       <% if activity
            date_field = :happened_on
+           label = t('activities.form.when_did_you_complete_this_activity')
            hint = t('activities.form.build_a_record_message')
          elsif observation
            date_field = :at
+           label = t('interventions.form.when_did_you_complete_this_action')
            hint = t('interventions.form.you_can_record_label')
          end %>
       <%= f.input date_field, as: :tempus_dominus_date,
-                              label: t("#{type}.form.when_did_you_complete_this_activity"),
+                              label:,
                               label_html: { class: 'fw-semibold mb-1' },
                               input_html: { placeholder: t('common.select_date') },
                               hint: %>
@@ -74,13 +76,22 @@
             <%= t("#{type}.form.bonus_points_message") %>
             <strong>
               <%= SiteSettings.current.photo_bonus_points %>
+              <%# i18n-tasks-use t("activities.form.bonus_points") %>
+              <%# i18n-tasks-use t("interventions.form.bonus_points") %>
               <%= t("#{type}.form.bonus_points", count: SiteSettings.current.photo_bonus_points) %>.
               </strong>
             </small>
         <% end %>
       </div>
-
-      <p><small class="text-muted"><%= t('activities.form.tell_us_more_formatting_message') %>.</small></p>
+      <p>
+        <small class="text-muted">
+          <% if activity %>
+              <%= t('activities.form.tell_us_more_formatting_message') %>.
+          <% elsif observation %>
+            <%= t('interventions.form.you_can_add_formatting_label') %>.
+          <% end %>
+        </small>
+      </p>
 
       <div class="mt-4">
         <%= render(Forms::TrixComponent.new(form: f, field: :description, button_size: :default, controls: :simple)) %>

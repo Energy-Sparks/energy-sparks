@@ -15,7 +15,6 @@ cy:
         many: pwyntiau bonws
         other: pwyntiau bonws
       build_a_record_message: Gallwch gofnodi gweithgaredd diweddar a gweithgareddau hŷn i adeiladu cofnod o'r holl weithgareddau arbed ynni rydych wedi'u cyflawni fel ysgol
-      cancel: Canslo
       completing_this_activity:
         one: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill 1 pwynt i chi
         two: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} bwynt i chi
