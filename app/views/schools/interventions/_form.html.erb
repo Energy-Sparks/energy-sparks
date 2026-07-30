@@ -1,4 +1,6 @@
-<%= render 'shared/tasks/activity_intervention_form', form_target: [school, observation],
+<% url = observation.persisted? ? school_intervention_path(school, observation) : school_interventions_path(school) %>
+<%= render 'shared/tasks/activity_intervention_form', form_target: observation,
+                                                      form_kwargs: { url: },
                                                       activity: nil,
                                                       observation:,
                                                       type: 'interventions' %>
