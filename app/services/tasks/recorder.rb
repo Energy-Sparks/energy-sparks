@@ -17,7 +17,7 @@ class Tasks::Recorder
   end
 
   def process
-    if @recording.save
+    if @recording.save(context: :require_description)
       after_save
       # This uses the same logic as the current activity creator
       # i.e. go through all subscribed programmes,
