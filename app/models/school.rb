@@ -190,6 +190,7 @@ class School < ApplicationRecord
   has_many :equivalences, dependent: :destroy
   has_many :locations, dependent: :destroy
   has_many :low_carbon_hub_installations, inverse_of: :school, dependent: :destroy
+  has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
   has_many :meters, inverse_of: :school, dependent: :destroy
   has_many :meter_attributes, inverse_of: :school, class_name: 'SchoolMeterAttribute', dependent: :destroy
   has_many :observations, inverse_of: :school, dependent: :destroy
@@ -201,7 +202,6 @@ class School < ApplicationRecord
   has_one :school_onboarding, dependent: :destroy
   has_many :school_target_events, inverse_of: :school, dependent: :destroy
   has_many :school_times, inverse_of: :school, dependent: :destroy
-  has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
   has_many :solar_edge_installations, inverse_of: :school, dependent: :destroy
   has_many :subscription_generation_runs, inverse_of: :school, dependent: :destroy
   has_many :transport_surveys, inverse_of: :school, dependent: :destroy
@@ -220,17 +220,17 @@ class School < ApplicationRecord
   has_many :consent_grants, inverse_of: :school, dependent: :destroy
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
-  has_many :meter_reviews, inverse_of: :school, dependent: :destroy
   has_many :intervention_types, through: :observations
+  has_many :meter_reviews, inverse_of: :school, dependent: :destroy
+  has_many :meter_z_installations, through: :meters
   has_many :programme_types, through: :programmes
   has_many :regeneration_errors, dependent: :destroy
   has_many :rtone_variant_installations, inverse_of: :school, dependent: :destroy
   has_many :school_groupings, dependent: :destroy
-  has_many :solis_cloud_installation_schools
-  has_many :solis_cloud_installations, through: :solis_cloud_installation_schools
-  has_many :meter_z_installations, through: :meters
   has_many :school_partners, -> { order(position: :asc) }, dependent: :destroy
   has_many :school_targets, inverse_of: :school, dependent: :destroy
+  has_many :solis_cloud_installation_schools
+  has_many :solis_cloud_installations, through: :solis_cloud_installation_schools
 
   has_many :assigned_school_groups, through: :school_groupings, source: :school_group
   has_many :partners, through: :school_partners
