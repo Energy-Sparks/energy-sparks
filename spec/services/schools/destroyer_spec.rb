@@ -50,7 +50,7 @@ describe Schools::Destroyer, :schools, type: :service do
         let!(:to_be_deleted) { create(:school, :archived, archived_date: 3.years.ago) }
         let!(:to_be_ignored) { create(:school, :archived, archived_date: 3.years.ago + 1.day) }
       end
-      # rubocop:enabled RSpec/LetSetup
+      # rubocop:enable RSpec/LetSetup
 
       it_behaves_like 'it destroys the expected schools'
     end
@@ -61,7 +61,7 @@ describe Schools::Destroyer, :schools, type: :service do
         let!(:to_be_deleted) { create(:school, :deleted, removal_date: 3.years.ago) }
         let!(:to_be_ignored) { create(:school, :deleted, removal_date: 3.years.ago + 1.day) }
       end
-      # rubocop:enabled RSpec/LetSetup
+      # rubocop:enable RSpec/LetSetup
 
       it_behaves_like 'it destroys the expected schools'
     end
