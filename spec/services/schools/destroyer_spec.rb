@@ -26,9 +26,9 @@ describe Schools::Destroyer, :schools, type: :service do
       expect { service.perform! }.to change(School, :count).by(-1) &
                                      change(User, :count).by(-1) &
                                      change(Meter, :count).by(-1) &
-                                     change(AmrValidatedReading, :count).by(-1)
-      change(Contact, :count).by(-1)
-      change(Issue, :count).by(-2)
+                                     change(AmrValidatedReading, :count).by(-1) &
+                                     change(Contact, :count).by(-1) &
+                                     change(Issue, :count).by(-2)
     end
 
     it 'ignores the other school' do
