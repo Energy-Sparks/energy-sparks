@@ -15,45 +15,31 @@ describe School do
   describe 'when destroying' do
     subject(:attempt_destroy) { school.destroy }
 
-    let!(:school) { create(:school, visible: visible, active: active, removal_date: removal_date) }
+    let!(:school) { create(:school, visible: visible, active: active) }
 
-    context 'when school is visible, active, and has no removal_date' do
+    context 'when school is visible and active' do
       let(:visible) { true }
       let(:active) { true }
-      let(:removal_date) { nil }
 
       it 'cannot be destroyed' do
         expect { attempt_destroy }.not_to(change(described_class, :count))
-        expect(school.errors[:base]).to include('School cannot be removed while it is visible, active, or missing a removal_date')
+        expect(school.errors[:base]).to include('School cannot be removed while it is visible or active')
       end
     end
 
-    context 'when school is active, and has no removal_date' do
+    context 'when school is active' do
       let(:visible) { false }
       let(:active) { true }
-      let(:removal_date) { nil }
 
       it 'cannot be destroyed' do
         expect { attempt_destroy }.not_to(change(described_class, :count))
-        expect(school.errors[:base]).to include('School cannot be removed while it is visible, active, or missing a removal_date')
-      end
-    end
-
-    context 'when school is inactive, and has no removal_date' do
-      let(:visible) { false }
-      let(:active) { false }
-      let(:removal_date) { nil }
-
-      it 'cannot be destroyed' do
-        expect { attempt_destroy }.not_to(change(described_class, :count))
-        expect(school.errors[:base]).to include('School cannot be removed while it is visible, active, or missing a removal_date')
+        expect(school.errors[:base]).to include('School cannot be removed while it is visible or active')
       end
     end
 
     context 'when school is eligible for removal' do
       let(:visible) { false }
       let(:active) { false }
-      let(:removal_date) { Time.zone.today }
 
       it 'can be destroyed' do
         expect { attempt_destroy }.to change(described_class, :count).by(-1)
@@ -1440,7 +1426,7 @@ describe School do
 
     describe 'destroys school groupings' do
       before do
-        school.save
+        school.update!(visible: false, active: false)
         school.destroy
       end
 

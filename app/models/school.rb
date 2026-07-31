@@ -1035,9 +1035,9 @@ class School < ApplicationRecord
   end
 
   def ensure_already_soft_deleted
-    return unless visible? || active? || removal_date.blank?
+    return unless visible? || active?
 
-    errors.add(:base, 'School cannot be removed while it is visible, active, or missing a removal_date')
+    errors.add(:base, 'School cannot be removed while it is visible or active')
     throw(:abort)
   end
 end
