@@ -12,6 +12,55 @@ describe School do
     expect(school).to be_valid
   end
 
+  describe 'when destroying' do
+    subject(:attempt_destroy) { school.destroy }
+
+    let!(:school) { create(:school, visible: visible, active: active, removal_date: removal_date) }
+
+    context 'when school is visible, active, and has no removal_date' do
+      let(:visible) { true }
+      let(:active) { true }
+      let(:removal_date) { nil }
+
+      it 'cannot be destroyed' do
+        expect { attempt_destroy }.not_to(change(described_class, :count))
+        expect(school.errors[:base]).to include('School cannot be removed while it is visible, active, or missing a removal_date')
+      end
+    end
+
+    context 'when school is active, and has no removal_date' do
+      let(:visible) { false }
+      let(:active) { true }
+      let(:removal_date) { nil }
+
+      it 'cannot be destroyed' do
+        expect { attempt_destroy }.not_to(change(described_class, :count))
+        expect(school.errors[:base]).to include('School cannot be removed while it is visible, active, or missing a removal_date')
+      end
+    end
+
+    context 'when school is inactive, and has no removal_date' do
+      let(:visible) { false }
+      let(:active) { false }
+      let(:removal_date) { nil }
+
+      it 'cannot be destroyed' do
+        expect { attempt_destroy }.not_to(change(described_class, :count))
+        expect(school.errors[:base]).to include('School cannot be removed while it is visible, active, or missing a removal_date')
+      end
+    end
+
+    context 'when school is eligible for removal' do
+      let(:visible) { false }
+      let(:active) { false }
+      let(:removal_date) { Time.zone.today }
+
+      it 'can be destroyed' do
+        expect { attempt_destroy }.to change(described_class, :count).by(-1)
+      end
+    end
+  end
+
   it 'builds a slug on create using :name' do
     expect(school.slug).to eq(school.name.parameterize)
   end

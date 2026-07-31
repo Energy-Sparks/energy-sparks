@@ -372,6 +372,7 @@ class School < ApplicationRecord
   # Sync legacy school_group_id with new "organisation" grouping
   after_create :sync_organisation_grouping_from_legacy
   after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
+  before_destroy :ensure_already_soft_deleted
 
   geocoded_by :postcode do |school, results|
     if (geo = results.first)
@@ -1031,5 +1032,12 @@ class School < ApplicationRecord
     else
       SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
     end
+  end
+
+  def ensure_already_soft_deleted
+    return unless visible? || active? || removal_date.blank?
+
+    errors.add(:base, 'School cannot be removed while it is visible, active, or missing a removal_date')
+    throw(:abort)
   end
 end
