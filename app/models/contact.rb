@@ -27,8 +27,10 @@ class Contact < ApplicationRecord
   belongs_to :school, inverse_of: :contacts
   belongs_to :user, optional: true
   belongs_to :staff_role, optional: true
+
   has_many   :alert_subscription_events
   has_many   :alert_type_rating_unsubscriptions
+  has_many :emails, dependent: :destroy
 
   scope :for_school, ->(school) { where(school: school) }
 

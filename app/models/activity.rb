@@ -50,7 +50,7 @@ class Activity < ApplicationRecord
 
   # Probably should be a has_one relationship
   # At last check, activities had one obsevation each (with four having none)
-  has_many :observations
+  has_many :observations, dependent: :destroy
 
   validates :happened_on, presence: true
 

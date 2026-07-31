@@ -65,17 +65,15 @@ class Meter < ApplicationRecord
   belongs_to :procurement_route, optional: true
   belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
-  has_one :rtone_variant_installation, required: false
-  has_one :school_group, through: :school
-
-  has_many :amr_data_feed_readings,     inverse_of: :meter
-  has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
-  has_many :meter_attributes
+  has_many :amr_data_feed_readings, inverse_of: :meter, dependent: :nullify
+  has_many :amr_validated_readings, inverse_of: :meter, dependent: :destroy
+  has_and_belongs_to_many :energy_tariffs, inverse_of: :meters, dependent: :destroy
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
-  has_many :meter_monthly_summaries
-
-  has_and_belongs_to_many :energy_tariffs, inverse_of: :meters
+  has_many :meter_attributes, dependent: :destroy
+  has_many :meter_monthly_summaries, dependent: :destroy
+  has_one :rtone_variant_installation, required: false
+  has_one :school_group, through: :school
 
   CREATABLE_METER_TYPES = %i[electricity gas solar_pv exported_solar_pv].freeze
   MAIN_METER_TYPES = %i[electricity gas].freeze
