@@ -106,11 +106,13 @@ FactoryBot.define do
 
     trait :archived do
       active { false }
+      visible { false }
       removal_date { nil }
     end
 
     trait :deleted do
       active { false }
+      visible { false }
       removal_date { Date.new(2023, 1, 1) }
     end
 
