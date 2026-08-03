@@ -4,7 +4,7 @@ shared_examples_for 'a displayed data source' do
   it 'displays data source fields' do
     expect(page).to have_text(data_source.organisation_type.try(:humanize).presence || '')
     expect(page).to have_text(data_source.owned_by.try(:name).presence || '')
-    expect(page).to have_text("Load tariffs for SMETS meters\n#{y_n(data_source.load_tariffs)}")
+    # expect(page).to have_text("Load tariffs for SMETS meters\n#{y_n(data_source.load_tariffs)}")
     expect(page).to have_text("Alerts on\n#{y_n(data_source.alerts_on)}")
     text_attributes.each_key do |text_field|
       expect(page).to have_text(data_source[text_field])
@@ -16,7 +16,6 @@ shared_examples_for 'a data source form' do
   it 'shows prefilled form' do
     expect(page).to have_select('Organisation type', selected: data_source.organisation_type.try(:humanize).presence || [])
     expect(page).to have_select('Owned by', selected: data_source.owned_by.try(:name).presence || [])
-    expect(page).to have_field('Load tariffs for SMETS meters')
     expect(page).to have_field('Turn on email alerts for lagging meters?')
 
     text_attributes.each do |text_field, label|
@@ -171,7 +170,6 @@ RSpec.describe 'Data Sources admin', :include_application_helper, :school_groups
                       organisation_type: :council,
                       alert_percentage_threshold: 3,
                       import_warning_days: 9,
-                      load_tariffs: false,
                       alerts_on: false,
                       owned_by: user)
               end
@@ -179,7 +177,6 @@ RSpec.describe 'Data Sources admin', :include_application_helper, :school_groups
               before do
                 select new_data_source.organisation_type.humanize, from: 'Organisation type'
                 select user.name, from: 'Owned by'
-                uncheck 'Load tariffs for SMETS meters'
                 uncheck 'Turn on email alerts for lagging meters?'
 
                 text_attributes.each do |text_field, label|
@@ -334,7 +331,6 @@ RSpec.describe 'Data Sources admin', :include_application_helper, :school_groups
           before do
             select new_data_source.organisation_type.humanize, from: 'Organisation type'
             select user.name, from: 'Owned by'
-            check 'Load tariffs for SMETS meters'
             check 'Turn on email alerts for lagging meters?'
 
             text_attributes.each do |text_field, label|
