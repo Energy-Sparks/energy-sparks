@@ -323,7 +323,6 @@ RSpec.describe 'Data Sources admin', :include_application_helper, :school_groups
           let(:new_data_source) do
             build(:data_source,
                   organisation_type: :council,
-                  load_tariffs: true,
                   alerts_on: true,
                   owned_by: user)
           end
