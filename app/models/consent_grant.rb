@@ -31,6 +31,8 @@ class ConsentGrant < ApplicationRecord
   belongs_to :school, inverse_of: :consent_grants
   belongs_to :consent_statement, inverse_of: :consent_grants
 
+  has_many :meter_reviews, dependent: :destroy
+
   validates :user, :school, :consent_statement, presence: true
   validates :guid, uniqueness: true
 

@@ -63,6 +63,8 @@ class Contact < ApplicationRecord
   private
 
   def update_user_mailchimp_timestamp
+    return if user.nil? || user.destroyed?
+
     user&.touch_mailchimp_timestamp!
   end
 end

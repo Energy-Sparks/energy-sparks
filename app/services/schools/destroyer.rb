@@ -7,37 +7,37 @@ module Schools
     end
 
     def perform!
-      soft_delete_archived_schools
+      destroy_archived_schools
       destroy_deleted_schools
     end
 
     private
 
-    # Ensure any schools archived before threshold are put into same state as other soft deleted schools
-    # Will ensure that users are unlinked from the school, unvalidated meter data is deleted and issues are removed
-    def soft_delete_archived_schools
+    # Archiving schools skips some changes to users and meter data that are carried out when a school is
+    # soft-deleted. So ensure those steps are completed first, using the Remover class then destroy the school.
+    def destroy_archived_schools
       School.archived.where(archived_date: ..@before_date).find_each do |school|
         remover = Remover.new(school)
         begin
           school.transaction do
-            remover.remove_users!
-            remover.remove_meters!
-            remover.remove_school!
-            school.update!(removal_date: school.archived_date) # Set to original archive date, so destroyed in next step
+            remover.remove_users! # deactivate users, remove association with school if user has multiple schools
+            remover.remove_meters! # deactivate meters, removing consent via API call if needed
+            school.destroy!
           end
         rescue StandardError => e
-          EnergySparks::Log.exception(e, :soft_delete_archived_schools, school_slug: school.slug)
+          EnergySparks::Log.exception(e, school_slug: school.slug)
         end
       end
     end
 
+    # Assumes school was soft deleted using the Remover, so safe to just destroy the school.
     def destroy_deleted_schools
       School.deleted.where(removal_date: ..@before_date).find_each do |school|
         school.transaction do
           school.destroy!
         end
       rescue StandardError => e
-        EnergySparks::Log.exception(e, :destroy_deleted_schools, school_slug: school.slug)
+        EnergySparks::Log.exception(e, school_slug: school.slug)
       end
     end
   end

@@ -4,6 +4,8 @@ class SchoolOnboardingDeletor
   end
 
   def delete!
+    raise 'Can only remove incomplete onboardings' unless @school_onboarding.incomplete?
+
     SchoolOnboarding.transaction do
       if @school_onboarding.created_user && @school_onboarding.school
         remove_school(@school_onboarding.created_user, @school_onboarding.school)
