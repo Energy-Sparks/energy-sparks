@@ -14,6 +14,7 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
   end
 
   before do
+    travel_to Time.zone.local(2026, 5)
     render_inline(described_class.new(**params))
   end
 
