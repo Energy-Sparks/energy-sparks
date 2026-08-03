@@ -157,6 +157,15 @@ class School < ApplicationRecord
   delegate :holiday_approaching?, :next_holiday, to: :calendar
   delegate :default_issues_admin_user, to: :school_group, allow_nil: true
 
+  before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
+  before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
+
+  # Sync legacy school_group_id with new "organisation" grouping
+  after_create :sync_organisation_grouping_from_legacy
+  after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
+
+  before_destroy :ensure_already_soft_deleted, prepend: true # ensure run before callbacks to remove associations
+
   belongs_to :calendar, optional: true
   belongs_to :dark_sky_area, optional: true
   belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
@@ -364,15 +373,6 @@ class School < ApplicationRecord
   validates :weather_station, presence: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
-
-  before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
-
-  before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
-
-  # Sync legacy school_group_id with new "organisation" grouping
-  after_create :sync_organisation_grouping_from_legacy
-  after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
-  before_destroy :ensure_already_soft_deleted
 
   geocoded_by :postcode do |school, results|
     if (geo = results.first)
@@ -1035,9 +1035,9 @@ class School < ApplicationRecord
   end
 
   def ensure_already_soft_deleted
-    return unless visible? || active?
+    return unless visible? || active? || meters.active.any? || users.active.any?
 
-    errors.add(:base, 'School cannot be removed while it is visible or active')
+    errors.add(:base, 'School cannot be removed while it is visible or active or has active meters or users')
     throw(:abort)
   end
 end
