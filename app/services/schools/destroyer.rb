@@ -13,8 +13,8 @@ module Schools
 
     private
 
-    # Archiving schools skips some changes to users and meter data that are carried out when a school is
-    # soft-deleted. So ensure those steps are completed first, using the Remover class then destroy the school.
+    # Archiving schools skips some changes to users and meter data that are normally carried out when a school is
+    # soft-deleted. So ensure those steps are completed first, using the Remover class, before destroying the school.
     def destroy_archived_schools
       School.archived.where(archived_date: ..@before_date).find_each do |school|
         remover = Remover.new(school)
