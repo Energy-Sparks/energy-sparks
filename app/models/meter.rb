@@ -75,6 +75,8 @@ class Meter < ApplicationRecord
   has_one :rtone_variant_installation, required: false
   has_one :school_group, through: :school
 
+  before_destroy :ensure_not_consented
+
   CREATABLE_METER_TYPES = %i[electricity gas solar_pv exported_solar_pv].freeze
   MAIN_METER_TYPES = %i[electricity gas].freeze
   SUB_METER_TYPES = %i[solar_pv exported_solar_pv].freeze
@@ -370,5 +372,12 @@ class Meter < ApplicationRecord
 
   def real_electric?
     !gas? && !pseudo?
+  end
+
+  def ensure_not_consented
+    return unless can_withdraw_consent?
+
+    errors.add(:base, 'Audit requirements mean consent must be withdrawn before removing meter')
+    throw(:abort)
   end
 end
