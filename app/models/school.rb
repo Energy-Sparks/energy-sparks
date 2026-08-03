@@ -1036,9 +1036,8 @@ class School < ApplicationRecord
 
   def ensure_already_soft_deleted
     return unless visible? || active?
-    return if meters.all?(:inactive) || users.all?(&:inactive?)
 
-    errors.add(:base, 'School cannot be removed while it is visible or active, or has active meters or users')
+    errors.add(:base, 'School cannot be removed while it is visible or active')
     throw(:abort)
   end
 end

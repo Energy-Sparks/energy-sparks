@@ -13,36 +13,30 @@ describe School do
   end
 
   describe 'when destroying' do
-    subject(:attempt_destroy) { school.destroy }
-
-    let!(:school) { create(:school, visible: visible, active: active) }
-
-    context 'when school is visible and active' do
-      let(:visible) { true }
-      let(:active) { true }
-
+    shared_examples 'a school that cannot be destroyed' do
       it 'cannot be destroyed' do
-        expect { attempt_destroy }.not_to(change(described_class, :count))
+        expect { school.destroy }.not_to(change(described_class, :count))
         expect(school.errors[:base]).to include('School cannot be removed while it is visible or active')
       end
+    end
+
+    context 'when school is visible and active' do
+      let!(:school) { create(:school, visible: true, active: true) }
+
+      it_behaves_like 'a school that cannot be destroyed'
     end
 
     context 'when school is active' do
-      let(:visible) { false }
-      let(:active) { true }
+      let!(:school) { create(:school, visible: false, active: true) }
 
-      it 'cannot be destroyed' do
-        expect { attempt_destroy }.not_to(change(described_class, :count))
-        expect(school.errors[:base]).to include('School cannot be removed while it is visible or active')
-      end
+      it_behaves_like 'a school that cannot be destroyed'
     end
 
     context 'when school is eligible for removal' do
-      let(:visible) { false }
-      let(:active) { false }
+      let!(:school) { create(:school, visible: false, active: false) }
 
       it 'can be destroyed' do
-        expect { attempt_destroy }.to change(described_class, :count).by(-1)
+        expect { school.destroy }.to change(described_class, :count).by(-1)
       end
     end
   end
