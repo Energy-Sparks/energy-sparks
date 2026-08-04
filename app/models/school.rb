@@ -1024,7 +1024,7 @@ class School < ApplicationRecord
   end
 
   def sync_organisation_grouping_from_legacy
-    return unless school_group_id.present?
+    return if school_group_id.nil? || organisation_school_grouping&.new_record?
 
     existing = SchoolGrouping.find_by(school_id: id, role: 'organisation')
     if existing
