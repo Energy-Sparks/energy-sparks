@@ -2,4 +2,4 @@
 <% content_for :main_classes, 'bg-blue-pale' %>
 <%= render Tasks::Header.new(recording: @observation) %>
 
-<%= render 'form', observation: @observation %>
+<%= render 'form', observation: @observation, school: @school %>

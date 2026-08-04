@@ -14,7 +14,6 @@ en:
         other: bonus points
       bonus_points_message: Adding a photo to document your activity can score you
       build_a_record_message: You can record a recent activity and older activities to build up a record of all of the energy saving activities you've carried out as a school
-      cancel: Cancel
       completing_this_activity:
         one: Completing this activity up to %{maximum} times this academic year will earn you 1 point
         other: Completing this activity up to %{maximum} times this academic year  will earn you %{count} points
