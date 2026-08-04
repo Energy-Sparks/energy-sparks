@@ -135,7 +135,7 @@ describe SyntheticAMRDataCalculator do
 
         it_behaves_like 'it generates the expected range'
         it_behaves_like 'it generates expected amr data' do
-          let(:benchmark_school_type) { :secondary }
+          let(:benchmark_school_type) { :primary }
         end
       end
 
@@ -149,7 +149,7 @@ describe SyntheticAMRDataCalculator do
 
         it_behaves_like 'it generates the expected range'
         it_behaves_like 'it generates expected amr data' do
-          let(:benchmark_school_type) { :secondary_with_heat_pump }
+          let(:benchmark_school_type) { :primary_with_heat_pump }
         end
       end
 

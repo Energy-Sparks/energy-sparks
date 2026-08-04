@@ -186,9 +186,9 @@ module BenchmarkMetrics
       baseload_with_threshold(pupils:, base: 2.5, threshold: 40.0, increment: 2.25, divisor: 40.0)
     when :secondary, :middle, :mixed_primary_and_secondary
       if heat_pump
-        baseload_with_threshold(pupils:, base: 11.0, threshold: 500.0, increment: 10.21, divisor: 500.0)
-      else
         baseload_with_threshold(pupils:, base: 13.5, threshold: 500.0, increment: 13.27, divisor: 500.0)
+      else
+        baseload_with_threshold(pupils:, base: 11.0, threshold: 500.0, increment: 10.21, divisor: 500.0)
       end
     end
   end
