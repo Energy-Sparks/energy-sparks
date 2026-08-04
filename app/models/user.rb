@@ -104,7 +104,7 @@ class User < ApplicationRecord
     SchoolOnboarding: :created,
     User: :created
 
-  has_many :cluster_schools_users, dependent: :destroy
+  has_many :cluster_schools_users, dependent: :delete_all
   has_many :cluster_schools, through: :cluster_schools_users, source: :school
 
   # Include default devise modules. Others available are:

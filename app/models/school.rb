@@ -192,7 +192,7 @@ class School < ApplicationRecord
   has_many :alerts, inverse_of: :school, dependent: :destroy
   has_many :audits, inverse_of: :school, dependent: :destroy
   has_many :cads, inverse_of: :school, dependent: :destroy
-  has_many :cluster_schools_users, dependent: :destroy
+  has_many :cluster_schools_users, dependent: :delete_all
   has_many :cluster_users, through: :cluster_schools_users, source: :user
   has_one :configuration, class_name: 'Schools::Configuration', dependent: :destroy
   has_many :contacts, inverse_of: :school, dependent: :destroy
@@ -207,7 +207,7 @@ class School < ApplicationRecord
   has_many :programmes, inverse_of: :school, dependent: :destroy
   has_many :school_alert_type_exclusions, dependent: :destroy
   has_many :school_batch_runs, dependent: :destroy
-  has_many :school_key_stages, dependent: :destroy
+  has_many :school_key_stages, dependent: :delete_all
   has_many :key_stages, through: :school_key_stages
   has_many :school_meter_attributes, dependent: :destroy
   has_one :school_onboarding, dependent: :destroy
