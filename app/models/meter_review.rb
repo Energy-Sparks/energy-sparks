@@ -31,9 +31,4 @@ class MeterReview < ApplicationRecord
 
   has_many :meters, dependent: nil
   has_and_belongs_to_many :consent_documents
-
-  before_destroy do |review|
-    review.meters.clear
-    review.consent_documents.clear
-  end
 end
