@@ -104,7 +104,8 @@ class User < ApplicationRecord
     SchoolOnboarding: :created,
     User: :created
 
-  has_and_belongs_to_many :cluster_schools, class_name: 'School', join_table: :cluster_schools_users
+  has_many :cluster_schools_users, dependent: :destroy
+  has_many :cluster_schools, through: :cluster_schools_users, source: :school
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
