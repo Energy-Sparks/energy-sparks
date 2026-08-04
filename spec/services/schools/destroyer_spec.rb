@@ -7,11 +7,11 @@ describe Schools::Destroyer, :schools, type: :service do
 
   shared_context 'with models to be deleted and ignored' do
     before do
-      user = create(:school_admin, school: to_be_deleted, active: true)
+      user = create(:school_admin, school: to_be_deleted, active: false)
       create(:contact_with_name_email_phone, school: to_be_deleted, user:)
       create(:school_admin, :with_cluster_schools, active: false, school: to_be_ignored, existing_school: to_be_deleted)
 
-      meter = create(:electricity_meter_with_validated_reading, school: to_be_deleted)
+      meter = create(:electricity_meter_with_validated_reading, school: to_be_deleted, active: false)
       create(:amr_data_feed_reading, meter: meter)
 
       create(:issue, school: to_be_deleted)
