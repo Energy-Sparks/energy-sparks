@@ -75,7 +75,7 @@ class User < ApplicationRecord
   belongs_to :staff_role, optional: true
   belongs_to :school_group, optional: true
   belongs_to :created_by, class_name: :User, optional: true
-  has_many :contacts
+  has_many :contacts, dependent: :destroy
   has_many :consent_grants, inverse_of: :user, dependent: :nullify
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
   has_many :issues_admin_for, class_name: 'SchoolGroup', inverse_of: :default_issues_admin_user,
