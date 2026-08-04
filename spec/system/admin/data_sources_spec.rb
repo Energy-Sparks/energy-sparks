@@ -4,7 +4,6 @@ shared_examples_for 'a displayed data source' do
   it 'displays data source fields' do
     expect(page).to have_text(data_source.organisation_type.try(:humanize).presence || '')
     expect(page).to have_text(data_source.owned_by.try(:name).presence || '')
-    # expect(page).to have_text("Load tariffs for SMETS meters\n#{y_n(data_source.load_tariffs)}")
     expect(page).to have_text("Alerts on\n#{y_n(data_source.alerts_on)}")
     text_attributes.each_key do |text_field|
       expect(page).to have_text(data_source[text_field])

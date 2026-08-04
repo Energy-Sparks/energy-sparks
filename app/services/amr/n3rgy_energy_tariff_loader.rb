@@ -9,6 +9,7 @@ module Amr
     def perform
       return unless @meter.dcc_meter_smets2? && @meter.consent_granted
 
+      import_log = create_import_log
       current_n3rgy_tariff = N3rgyTariffDownloader.new(meter: @meter).current_tariff
       N3rgyTariffManager.new(meter: @meter, current_n3rgy_tariff:, import_log:).perform
     rescue StandardError => e
@@ -19,11 +20,11 @@ module Amr
 
     private
 
-    def import_log
+    def create_import_log
       now = DateTime.now.utc
-      @import_log ||= TariffImportLog.create!(source: 'n3rgy-api',
-                                              description: "Tariff import for #{@meter.mpan_mprn} at #{now}",
-                                              import_time: now)
+      TariffImportLog.create!(source: 'n3rgy-api',
+                              description: "Tariff import for #{@meter.mpan_mprn} at #{now}",
+                              import_time: now)
     end
   end
 end
