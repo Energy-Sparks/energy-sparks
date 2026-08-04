@@ -128,13 +128,12 @@ class SyntheticAMRDataCalculator # rubocop:todo Metrics/ClassLength
   end
 
   def average_school_type_key
-    if @school.heat_pump? && %i[infant junior primary].include?(@school_type)
+    if @school.heat_pump? && %i[infant junior primary middle].include?(@school_type)
       return :primary_with_heat_pump
-    elsif @school.heat_pump? && %i[middle mixed_primary_and_secondary secondary special].include?(@school_type)
+    elsif @school.heat_pump? && %i[mixed_primary_and_secondary secondary special].include?(@school_type)
       return :secondary_with_heat_pump
     end
-    return :primary if %i[infant junior].include?(@school_type)
-    return :secondary if @school_type == :middle
+    return :primary if %i[infant junior middle].include?(@school_type)
 
     @school_type
   end
