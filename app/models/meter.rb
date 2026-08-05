@@ -67,7 +67,11 @@ class Meter < ApplicationRecord
 
   has_many :amr_data_feed_readings, inverse_of: :meter, dependent: :nullify
   has_many :amr_validated_readings, inverse_of: :meter, dependent: :destroy
-  has_and_belongs_to_many :energy_tariffs, inverse_of: :meters, dependent: :destroy
+
+  has_many :energy_tariffs_meters, dependent: :delete_all
+  has_many :energy_tariffs,
+           through: :energy_tariffs_meters,
+           source: :energy_tariff
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
   has_many :meter_attributes, dependent: :destroy
