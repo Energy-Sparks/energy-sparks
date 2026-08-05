@@ -105,6 +105,7 @@ describe 'viewing and recording action' do
         select other_school.name, from: :school_id
         click_on 'Record this action'
         fill_in :observation_at, with: Time.zone.today.strftime('%d/%m/%Y')
+        fill_in_trix with: 'description'
         click_on 'Record action'
       end
 
