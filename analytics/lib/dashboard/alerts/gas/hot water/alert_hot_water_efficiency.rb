@@ -88,12 +88,6 @@ class AlertHotWaterEfficiency < AlertGasModelBase
     else
       investment = HotWaterInvestmentAnalysisText.new(@school)
       set_tabular_data_as_dynamically_created_attributes(investment.alert_table_data)
-      header, rows, totals = investment.investment_table(nil)
-      @investment_choices_table = rows
-
-      header, rows, totals = investment.daytype_breakdown_table(nil)
-      @daytype_breakdown_table = rows
-
       @theoretical_annual_hot_water_requirement_litres = investment.annual_litres
       @theoretical_annual_hot_water_requirement_kwh = investment.annual_kwh
 

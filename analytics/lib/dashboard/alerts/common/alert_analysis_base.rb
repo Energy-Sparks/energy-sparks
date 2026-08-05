@@ -13,7 +13,7 @@ class AlertAnalysisBase < ContentBase
 
   ALERT_HELP_URL = 'https://blog.energysparks.uk/alerts'.freeze
 
-  attr_reader :status, :rating, :term, :default_summary, :default_content, :analysis_date, :max_asofdate,
+  attr_reader :status, :rating, :term, :analysis_date, :max_asofdate,
               :calculation_worked, :capital_cost, :one_year_saving_£, :ten_year_saving_£, :payback_years, :one_year_saving_co2, :ten_year_saving_co2, :one_year_saving_kwh, :average_capital_cost, :average_one_year_saving_£, :average_payback_years, :average_ten_year_saving_£, :error_message, :backtrace, :time_of_year_relevance
 
   def initialize(school, _report_type)

@@ -4,7 +4,6 @@ require 'erb'
 
 class AlertOutOfHoursBaseUsage < AlertAnalysisBase
   AVERAGEPERCENTUSEDOUTOFHOURS = 0.5
-  class UnexpectedDataType < StandardError; end
   include Logging
 
   attr_reader :fuel, :fuel_cost, :fuel_cost_current
