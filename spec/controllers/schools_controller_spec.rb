@@ -75,20 +75,5 @@ RSpec.describe SchoolsController, type: :controller do
         end
       end
     end
-
-    describe 'DELETE #destroy' do
-      it 'destroys the requested school' do
-        school = FactoryBot.create(:school)
-        expect do
-          delete :destroy, params: { id: school.to_param }
-        end.to change(School, :count).by(-1)
-      end
-
-      it 'redirects to the schools list' do
-        school = FactoryBot.create(:school)
-        delete :destroy, params: { id: school.to_param }
-        expect(response).to redirect_to(schools_url)
-      end
-    end
   end
 end

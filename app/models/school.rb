@@ -137,6 +137,8 @@ class School < ApplicationRecord
 
   class ProcessDataError < StandardError; end
 
+  DELETION_THRESHOLD = 3.years
+
   HEATING_TYPES = %i[gas electric oil lpg biomass underfloor district_heating ground_source_heat_pump
                      air_source_heat_pump water_source_heat_pump chp].freeze
 
@@ -155,130 +157,127 @@ class School < ApplicationRecord
   friendly_id :slug_candidates, use: %i[finders slugged history]
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
+  delegate :default_issues_admin_user, to: :school_group, allow_nil: true
 
-  has_and_belongs_to_many :key_stages, join_table: :school_key_stages
+  before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
+  before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
 
-  has_many :users
-  has_many :meters,               inverse_of: :school
-  has_many :cads,                 inverse_of: :school
-  has_many :school_times,         inverse_of: :school
-  has_many :activities,           inverse_of: :school
+  # Sync legacy school_group_id with new "organisation" grouping
+  after_create :sync_organisation_grouping_from_legacy
+  after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
+
+  before_destroy :ensure_already_soft_deleted, prepend: true # ensure run before callbacks to remove associations
+
+  belongs_to :calendar, optional: true
+  belongs_to :dark_sky_area, optional: true
+  belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
+  belongs_to :local_authority_area, optional: true
+  belongs_to :local_distribution_zone, optional: true
+  belongs_to :school_group, optional: true
+  belongs_to :school_group_cluster, optional: true
+  belongs_to :scoreboard, optional: true
+  belongs_to :solar_pv_tuos_area, optional: true
+  belongs_to :template_calendar, optional: true, class_name: 'Calendar'
+  belongs_to :weather_station, optional: true
+
+  # TODO: These associations all have foreign keys on the dependent table with
+  # on_delete: :cascade behaviour.
+  #
+  # So even if no dependent parameter defined, removing the school will delete
+  # the associated records, not nullify the keys
+  #
+  # Have added dependent: :destroy to clarify what will happen but need to decide on how to
+  # revise foreign keys, e.g. add restrict or retain cascade and add same to other associations
+  has_many :advice_page_school_benchmarks, dependent: :destroy
+  has_many :activities, inverse_of: :school, dependent: :destroy
+  has_many :alert_generation_runs, inverse_of: :school, dependent: :destroy
+  has_many :alerts, inverse_of: :school, dependent: :destroy
+  has_many :audits, inverse_of: :school, dependent: :destroy
+  has_many :cads, inverse_of: :school, dependent: :destroy
+  has_many :cluster_schools_users, dependent: :delete_all
+  has_many :cluster_users, through: :cluster_schools_users, source: :user
+  has_one :configuration, class_name: 'Schools::Configuration', dependent: :destroy
+  has_many :contacts, inverse_of: :school, dependent: :destroy
+  has_many :content_generation_runs, inverse_of: :school, dependent: :destroy
+  has_many :equivalences, dependent: :destroy
+  has_many :locations, dependent: :destroy
+  has_many :low_carbon_hub_installations, inverse_of: :school, dependent: :destroy
+  has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
+  has_many :meters, inverse_of: :school, dependent: :destroy
+  has_many :meter_attributes, inverse_of: :school, class_name: 'SchoolMeterAttribute', dependent: :destroy
+  has_many :observations, inverse_of: :school, dependent: :destroy
+  has_many :programmes, inverse_of: :school, dependent: :destroy
+  has_many :school_alert_type_exclusions, dependent: :destroy
+  has_many :school_batch_runs, dependent: :destroy
+  has_many :school_key_stages, dependent: :delete_all
+  has_many :key_stages, through: :school_key_stages
+  has_many :school_meter_attributes, dependent: :destroy
+  has_one :school_onboarding, dependent: :destroy
+  has_many :school_target_events, inverse_of: :school, dependent: :destroy
+  has_many :school_times, inverse_of: :school, dependent: :destroy
+  has_many :solar_edge_installations, inverse_of: :school, dependent: :destroy
+  has_many :subscription_generation_runs, inverse_of: :school, dependent: :destroy
+  has_many :transport_surveys, inverse_of: :school, dependent: :destroy
+  has_many :users, dependent: :destroy
+
+  # Following do not have foreign keys with on_delete: cascade
   has_many :activity_types, through: :activities
-
-  has_many :contacts,             inverse_of: :school
-  has_many :observations,         inverse_of: :school
-  has_many :intervention_types, through: :observations
-
-  has_many :transport_surveys,    inverse_of: :school
-  has_many :consent_documents,    inverse_of: :school
-  has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
-  has_many :consent_grants,       inverse_of: :school
-  has_many :meter_reviews,        inverse_of: :school
-  has_many :school_targets,       inverse_of: :school
-  has_many :school_target_events, inverse_of: :school
-  has_many :audits,               inverse_of: :school
-
-  # relationships to be removed when :todos removed
-  has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
-  has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
-
   has_many :audit_todos, through: :audits, source: :todos
   has_many :audit_activity_type_tasks, through: :audit_todos, source: :task, source_type: 'ActivityType'
   has_many :audit_intervention_type_tasks, through: :audit_todos, source: :task, source_type: 'InterventionType'
-
-  has_many :programmes,               inverse_of: :school
-  has_many :programme_types, through: :programmes
-
-  # relationships to be removed when :todos removed
-  has_many :programme_activity_types, through: :programmes, source: :activity_types
-
-  has_many :alerts,                                   inverse_of: :school
-  has_many :content_generation_runs,                  inverse_of: :school
-  has_many :alert_generation_runs,                    inverse_of: :school
-  has_many :subscription_generation_runs,             inverse_of: :school
-  has_many :benchmark_result_school_generation_runs,  inverse_of: :school
-
-  has_many :low_carbon_hub_installations, inverse_of: :school
-  has_many :solar_edge_installations, inverse_of: :school
-  has_many :rtone_variant_installations, inverse_of: :school
-  has_many :solis_cloud_installation_schools
-  has_many :solis_cloud_installations, through: :solis_cloud_installation_schools
-  has_many :meter_z_installations, through: :meters
-
-  has_many :equivalences
-
-  has_many :locations
-
+  has_many :alert_subscription_events, through: :contacts
+  has_many :amr_data_feed_readings, through: :meters
+  has_many :amr_validated_readings, through: :meters
+  has_many :case_studies, as: :organisation, dependent: :nullify
+  has_many :consent_documents, inverse_of: :school, dependent: :destroy
+  has_many :consent_grants, inverse_of: :school, dependent: :destroy
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
+  has_many :intervention_types, through: :observations
+  has_many :meter_reviews, inverse_of: :school, dependent: :destroy
+  has_many :meter_z_installations, through: :meters
+  has_many :programme_types, through: :programmes
+  has_many :regeneration_errors, dependent: :destroy
+  has_many :rtone_variant_installations, inverse_of: :school, dependent: :destroy
+  has_many :school_groupings, dependent: :destroy
+  has_many :school_partners, -> { order(position: :asc) }, dependent: :destroy
+  has_many :school_targets, inverse_of: :school, dependent: :destroy
+  has_many :solis_cloud_installation_schools
+  has_many :solis_cloud_installations, through: :solis_cloud_installation_schools
 
-  has_many :amr_data_feed_readings,       through: :meters
-  has_many :amr_validated_readings,       through: :meters
-  has_many :alert_subscription_events,    through: :contacts
+  has_many :assigned_school_groups, through: :school_groupings, source: :school_group
+  has_many :partners, through: :school_partners
 
-  has_many :school_alert_type_exclusions, dependent: :destroy
-  has_many :school_batch_runs
+  # filtered relationships via SchoolGrouping
+  has_one :area_school_grouping, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
+  has_one :local_authority_area_group, through: :area_school_grouping, source: :school_group
 
-  has_many :advice_page_school_benchmarks
+  has_one :diocese_school_grouping, -> { where(role: 'diocese') }, class_name: 'SchoolGrouping'
+  has_one :diocese, through: :diocese_school_grouping, source: :school_group
 
-  has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
+  has_one :organisation_school_grouping, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
+  has_one :organisation_group, through: :organisation_school_grouping, source: :school_group
+
+  has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+  has_many :project_groups, through: :project_school_groupings, source: :school_group
+
+  # TODO: relationships to be removed when :todos removed
+  has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
+  has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
+  has_many :programme_activity_types, through: :programmes, source: :activity_types
+
+  accepts_nested_attributes_for :area_school_grouping, update_only: true
   accepts_nested_attributes_for :manual_readings,
                                 reject_if: proc { |attributes|
                                   attributes[:gas].blank? && attributes[:electricity].blank?
                                 },
                                 allow_destroy: true
-  has_many :regeneration_errors, dependent: :destroy
-
-  belongs_to :calendar, optional: true
-  belongs_to :template_calendar, optional: true, class_name: 'Calendar'
-  belongs_to :school_group_cluster, optional: true
-
-  belongs_to :solar_pv_tuos_area, optional: true
-  belongs_to :dark_sky_area, optional: true
-  belongs_to :weather_station, optional: true
-
-  belongs_to :school_group, optional: true
-  delegate :default_issues_admin_user, to: :school_group, allow_nil: true
-
-  belongs_to :scoreboard, optional: true
-  belongs_to :local_authority_area, optional: true
-
-  belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
-
-  belongs_to :local_distribution_zone, optional: true
-
-  has_one :school_onboarding
-  has_one :configuration, class_name: 'Schools::Configuration'
-
-  has_and_belongs_to_many :cluster_users, class_name: 'User', join_table: :cluster_schools_users
-
-  has_many :school_partners, -> { order(position: :asc) }
-  has_many :partners, through: :school_partners
-  accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
-  has_many :case_studies, as: :organisation, dependent: :nullify
-
-  has_many :school_groupings, dependent: :destroy
-  has_many :assigned_school_groups, through: :school_groupings, source: :school_group
-
-  # filtered relationships
-  has_one :organisation_school_grouping, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
-  accepts_nested_attributes_for :organisation_school_grouping, update_only: true
-
-  has_one :diocese_school_grouping, -> { where(role: 'diocese') }, class_name: 'SchoolGrouping'
   accepts_nested_attributes_for :diocese_school_grouping, update_only: true
-
-  has_one :area_school_grouping, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
-  accepts_nested_attributes_for :area_school_grouping, update_only: true
-
-  has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :organisation_school_grouping, update_only: true
   accepts_nested_attributes_for :project_school_groupings, allow_destroy: true
-
-  # school groups via the filtered SchoolGrouping relationships
-  has_one :organisation_group, through: :organisation_school_grouping, source: :school_group
-  has_one :diocese, through: :diocese_school_grouping, source: :school_group
-  has_one :local_authority_area_group, through: :area_school_grouping, source: :school_group
-
-  has_many :project_groups, through: :project_school_groupings, source: :school_group
+  accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
+  accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes['day'].blank? },
+                                               allow_destroy: true
 
   enum :chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, { england: 0, scotland: 1, wales: 2 }
@@ -377,18 +376,7 @@ class School < ApplicationRecord
 
   validates :weather_station, presence: true
 
-  accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes['day'].blank? },
-                                               allow_destroy: true
-
   auto_strip_attributes :name, :website, :postcode, squish: true
-
-  before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
-
-  before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
-
-  # Sync legacy school_group_id with new "organisation" grouping
-  after_create :sync_organisation_grouping_from_legacy
-  after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
 
   geocoded_by :postcode do |school, results|
     if (geo = results.first)
@@ -1014,6 +1002,10 @@ class School < ApplicationRecord
     summarise_contract_holder(future_licences.first&.contract_holder)
   end
 
+  def deletable?
+    (archived? && archived_date < DELETION_THRESHOLD.ago) || (deleted? && removal_date < DELETION_THRESHOLD.ago)
+  end
+
   private
 
   def summarise_contract_holder(contract_holder)
@@ -1040,7 +1032,7 @@ class School < ApplicationRecord
   end
 
   def sync_organisation_grouping_from_legacy
-    return unless school_group_id.present?
+    return if school_group_id.nil? || organisation_school_grouping&.new_record?
 
     existing = SchoolGrouping.find_by(school_id: id, role: 'organisation')
     if existing
@@ -1048,5 +1040,12 @@ class School < ApplicationRecord
     else
       SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
     end
+  end
+
+  def ensure_already_soft_deleted
+    return unless visible? || active? || meters.active.any? || users.active.any?
+
+    errors.add(:base, 'School cannot be removed while it is visible or active or has active meters or users')
+    throw(:abort)
   end
 end
