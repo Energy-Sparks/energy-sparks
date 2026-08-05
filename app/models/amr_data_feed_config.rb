@@ -17,7 +17,6 @@
 #  header_example          :text
 #  identifier              :text             not null
 #  lookup_by_serial_number :boolean          default(FALSE)
-#  meter_description_field :text
 #  missing_reading_window  :integer          default(5)
 #  missing_readings_limit  :integer
 #  mpan_mprn_field         :text             not null
@@ -25,15 +24,12 @@
 #  number_of_header_rows   :integer          default(0), not null
 #  period_field            :string
 #  positional_index        :boolean          default(FALSE), not null
-#  postcode_field          :text
-#  process_type            :integer          default("s3_folder"), not null
-#  provider_id_field       :text
+#  process_type            :integer          default(0), not null
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
 #  reading_time_field      :text
 #  row_per_reading         :boolean          default(FALSE), not null
-#  source_type             :integer          default("email"), not null
-#  total_field             :text
+#  source_type             :integer          default(0), not null
 #  units_field             :text
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
