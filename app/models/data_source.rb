@@ -16,7 +16,6 @@
 #  import_warning_days         :integer          default(7)
 #  loa_contact_details         :text
 #  loa_expiry_procedure        :text
-#  load_tariffs                :boolean          default(TRUE), not null
 #  name                        :string           not null
 #  new_area_data_feed          :text
 #  organisation_type           :integer
