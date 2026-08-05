@@ -5,7 +5,6 @@ FactoryBot.define do
     sequence(:name) { |n| "Data source name #{n}" }
     organisation_type { :energy_supplier }
     alerts_on { true }
-    load_tariffs { true }
     sequence(:contact_name) { |n| "Contact name #{n}" }
     sequence(:contact_email) { |n| "contact#{n}@email.com" }
     sequence(:loa_contact_details) { |n| "LOA contact details #{n}" }

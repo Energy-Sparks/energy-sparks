@@ -977,7 +977,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
     t.integer "import_warning_days", default: 7
     t.text "loa_contact_details"
     t.text "loa_expiry_procedure"
-    t.boolean "load_tariffs", default: true, null: false
     t.string "name", null: false
     t.text "new_area_data_feed"
     t.integer "organisation_type"
