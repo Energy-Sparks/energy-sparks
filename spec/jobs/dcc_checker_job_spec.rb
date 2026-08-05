@@ -29,7 +29,7 @@ describe DccCheckerJob do
     end
   end
 
-  context 'with smets2' do
+  context 'with smets2 response' do
     let(:type) { :smets2 }
 
     it 'sets dcc true and timestamp if found' do
@@ -39,22 +39,22 @@ describe DccCheckerJob do
     end
 
     it 'generates an email if status changed' do
-      expect { perform }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
+      expect { perform }.to change(ActionMailer::Base.deliveries, :count).by(1)
     end
 
-    context 'when other' do
+    context 'when other meter' do
       let(:meter) { create(:electricity_meter, dcc_meter: :other) }
 
-      it 'does not generate an email' do
-        expect { perform }.not_to change(ActionMailer::Base.deliveries, :count)
+      it 'generates an email if status changed' do
+        expect { perform }.to change(ActionMailer::Base.deliveries, :count).by(1)
       end
     end
   end
 
-  context 'with other' do
+  context 'with other response' do
     let(:type) { :other }
 
-    context 'when smets2' do
+    context 'when smets2 meter' do
       let(:meter) { create(:electricity_meter, dcc_meter: :smets2) }
 
       it 'does not generate an email' do

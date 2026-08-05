@@ -1,51 +1,53 @@
 require 'rails_helper'
 
 describe Amr::N3rgyEnergyTariffLoader do
-  subject(:service) do
-    described_class.new(meter: meter)
-  end
+  subject(:service) { described_class.new(meter:) }
+
+  let(:meter) { create(:electricity_meter, **meter_attributes) }
+  let(:meter_attributes) { { dcc_meter: :smets2, consent_granted: true } }
 
   describe '#perform' do
-    let(:downloader) { instance_double(Amr::N3rgyTariffDownloader) }
-    let(:manager) { instance_double(Amr::N3rgyTariffManager) }
+    let(:downloader) { instance_double(Amr::N3rgyTariffDownloader, current_tariff: nil) }
+    let(:manager) { instance_double(Amr::N3rgyTariffManager, perform: nil) }
 
-    context 'when tariff loading is disabled' do
-      let(:meter) do
-        create(:electricity_meter, dcc_meter: :smets2, consent_granted: true,
-                                   data_source: create(:data_source, load_tariffs: false))
+    context 'when a smets2 meter' do
+      before do
+        allow(Amr::N3rgyTariffDownloader).to receive(:new).and_return(downloader)
+        allow(Amr::N3rgyTariffManager).to receive(:new).and_return(manager)
       end
 
-      it 'does not load tariffs' do
-        expect { service.perform }.not_to change(TariffImportLog, :count)
-      end
-    end
-
-    context 'when tariff loading is enabled' do
       context 'with data source setting' do
-        let(:meter) do
-          create(:electricity_meter, dcc_meter: :smets2, consent_granted: true,
-                                     data_source: create(:data_source, load_tariffs: true))
-        end
+        let(:meter_attributes) { super().merge(data_source: create(:data_source)) }
 
         it 'loads tariffs' do
-          allow(Amr::N3rgyTariffDownloader).to receive(:new).and_return(downloader)
-          expect(downloader).to receive(:current_tariff)
-          allow(Amr::N3rgyTariffManager).to receive(:new).and_return(manager)
-          expect(manager).to receive(:perform)
           service.perform
+          expect(manager).to have_received(:perform)
+          expect(downloader).to have_received(:current_tariff)
         end
       end
 
       context 'with no data source configured' do
-        let(:meter) { create(:electricity_meter, dcc_meter: :smets2, consent_granted: true, data_source: nil) }
-
         it 'loads tariffs' do
-          allow(Amr::N3rgyTariffDownloader).to receive(:new).and_return(downloader)
-          expect(downloader).to receive(:current_tariff)
-          allow(Amr::N3rgyTariffManager).to receive(:new).and_return(manager)
-          expect(manager).to receive(:perform)
           service.perform
+          expect(manager).to have_received(:perform)
+          expect(downloader).to have_received(:current_tariff)
         end
+      end
+
+      context 'when consent not granted' do
+        let(:meter_attributes) { super().merge(consent_granted: false) }
+
+        it 'does not load tariffs' do
+          expect { service.perform }.not_to change(TariffImportLog, :count)
+        end
+      end
+    end
+
+    context 'when not a smets2 meter' do
+      let(:meter_attributes) { super().merge(dcc_meter: :other) }
+
+      it 'does not load tariffs' do
+        expect { service.perform }.not_to change(TariffImportLog, :count)
       end
     end
   end

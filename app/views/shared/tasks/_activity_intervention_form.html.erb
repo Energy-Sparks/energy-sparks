@@ -1,0 +1,119 @@
+<%= simple_form_for(form_target, html: { class: 'bg-white px-5 pt-5 pb-4 rounded-3' }, **form_kwargs) do |f| %>
+  <h2 class="pt-0 pb-4">
+    <% if activity&.persisted? %>
+      <%= t('activities.edit.update_your_activity') %>
+    <% elsif activity %>
+      <%= t('activities.new.record_a_new_activity') %>
+    <% elsif observation %>
+      <%= t("interventions.#{observation.persisted? ? 'edit' : 'new'}.title") %>
+    <% end %>
+  </h2>
+
+  <% if activity&.activity_type&.custom %>
+    <div class="row">
+      <div class="col-12">
+        <%= f.input :title,
+                    required: true,
+                    value: t('activities.form.other'),
+                    label: "#{t('activities.form.how_would_you_describe_this_activity')}?",
+                    label_html: { class: 'fw-semibold mb-1' },
+                    placeholder: 'Describe your activity',
+                    hint: t('activities.form.not_a_standard_activity_message') %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row g-5">
+    <div class="col-lg-6">
+      <% if activity
+           date_field = :happened_on
+           label = t('activities.form.when_did_you_complete_this_activity')
+           hint = t('activities.form.build_a_record_message')
+         elsif observation
+           date_field = :at
+           label = t('interventions.form.when_did_you_complete_this_action')
+           hint = t('interventions.form.you_can_record_label')
+         end %>
+      <%= f.input date_field, as: :tempus_dominus_date,
+                              label:,
+                              label_html: { class: 'fw-semibold mb-1' },
+                              input_html: { placeholder: t('common.select_date') },
+                              hint: %>
+    </div>
+    <div class="col-lg-6">
+      <%= f.input :pupil_count, as: :numeric,
+                                label: t('activities.form.how_many_pupils_were_involved_in_this_activity'),
+                                label_html: { class: 'fw-semibold  mb-1' },
+                                placeholder: t('common.enter_number'),
+                                hint: t('interventions.form.pupil_count_hint') %>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <hr>
+      <h4 class="d-flex align-items-center">
+        <%= f.label :description, for: :description do %>
+          <% if activity %>
+            <%= t('activities.form.tell_us_more_label') %>
+          <% elsif observation %>
+            <%= t('interventions.form.tell_us_more') %>
+          <% end %>
+          <%== SimpleForm::Inputs::StringInput.translate_required_html %>
+        <% end %>
+        <%= render 'shared/tasks/bonus_points', type: %>
+      </h4>
+      <div>
+        <small>
+          <% if activity %>
+            <%= t('activities.form.tell_us_more_message') %>
+          <% elsif observation %>
+            <%= t('interventions.form.adding_some_background_detail_label') %>.
+          <% end %>
+        </small>
+        <% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
+          <small>
+            <%= t("#{type}.form.bonus_points_message") %>
+            <strong>
+              <%= SiteSettings.current.photo_bonus_points %>
+              <%# i18n-tasks-use t("activities.form.bonus_points") %>
+              <%# i18n-tasks-use t("interventions.form.bonus_points") %>
+              <%= t("#{type}.form.bonus_points", count: SiteSettings.current.photo_bonus_points) %>.
+              </strong>
+            </small>
+        <% end %>
+      </div>
+      <p>
+        <small class="text-muted">
+          <% if activity %>
+              <%= t('activities.form.tell_us_more_formatting_message') %>.
+          <% elsif observation %>
+            <%= t('interventions.form.you_can_add_formatting_label') %>.
+          <% end %>
+        </small>
+      </p>
+
+      <div class="mt-4">
+        <%= render(Forms::TrixComponent.new(form: f, field: :description, button_size: :default, controls: :simple)) %>
+      </div>
+
+      <hr class="my-4">
+      <div class="d-flex justify-content-end gap-2">
+        <% if activity
+             field_name = :activity_type_id
+             value = activity.activity_type.id
+             cancel_path = activity_type_path(activity.activity_type)
+             submit = t("activities.form.#{activity.persisted? ? 'update' : 'save'}_activity")
+           elsif observation
+             field_name = :intervention_type_id
+             value = observation.intervention_type.id
+             cancel_path = intervention_type_path(observation.intervention_type)
+             submit = t("interventions.form.#{observation.persisted? ? 'update' : 'record'}_action")
+           end %>
+        <%= f.hidden_field field_name, value:, required: true %>
+        <%= link_to t('common.labels.cancel'), cancel_path, class: 'btn btn-secondary' %>
+        <%= f.submit submit, class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+<% end %>

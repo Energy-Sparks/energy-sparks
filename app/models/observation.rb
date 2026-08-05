@@ -86,6 +86,7 @@ class Observation < ApplicationRecord
   validates :activity_id, presence: true, if: :activity?
   validates :observable_id, presence: true, unless: -> { temperature? || intervention? || activity? }
   validates :pupil_count, absence: true, unless: :intervention? # Only record pupil counts for interventions
+  validates :description, presence: true, on: :require_description, if: :intervention?
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 

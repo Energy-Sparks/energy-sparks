@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   # Response for fetching latest tariff data for a meter, then interpreting the
   # response so its ready for processing
@@ -28,7 +30,7 @@ module Amr
     # }
     def current_tariff
       response = api_client.tariff(@meter.mpan_mprn, @meter.meter_type)
-      return parse_tariff(response)
+      parse_tariff(response)
     end
 
     private
@@ -48,7 +50,7 @@ module Amr
       return nil unless supported_pricing?(periods)
 
       standing_charge = standing_charge(response)
-      if periods.count == 1
+      if periods.one?
         flat_rate = to_pounds(periods.first.dig('prices', 0, 'value'))
         {
           standing_charge: standing_charge,
@@ -65,7 +67,10 @@ module Amr
     def valid_response?(response)
       valid = response.dig('devices', 0, 'tariffs').present? &&
               response.dig('devices', 0, 'months').present?
-      Rollbar.error('Unexpected/incomplete tariff response from n3rgy API', meter: @meter.mpan_mprn, school: @meter.school.name) unless valid
+      unless valid
+        Rollbar.error('Unexpected/incomplete tariff response from n3rgy API', meter: @meter.mpan_mprn,
+                                                                              school: @meter.school.name)
+      end
       valid
     end
 
@@ -95,6 +100,7 @@ module Amr
     # get a zero price from n3rgy rather than an empty or missing response.
     def tariffs_for_meter?(response)
       return false if nil_or_zero?(response, 'primaryActiveTariffPrice') || nil_or_zero?(response, 'standingCharge')
+
       true
     end
 
@@ -116,6 +122,7 @@ module Amr
     def supported_pricing?(periods)
       return false if periods.nil?
       return true if all_tou_prices?(periods)
+
       # Warn that school has non-TOU tariff
       Rollbar.warning('None TOU tariff returned by n3rgy API', meter: @meter.mpan_mprn, school: @meter.school.name)
       false
