@@ -137,6 +137,8 @@ class School < ApplicationRecord
 
   class ProcessDataError < StandardError; end
 
+  DELETION_THRESHOLD = 3.years
+
   HEATING_TYPES = %i[gas electric oil lpg biomass underfloor district_heating ground_source_heat_pump
                      air_source_heat_pump water_source_heat_pump chp].freeze
 
@@ -998,6 +1000,10 @@ class School < ApplicationRecord
 
     future_licences = licences.not_provisional.for_period(year.start_date..year.end_date)
     summarise_contract_holder(future_licences.first&.contract_holder)
+  end
+
+  def deletable?
+    (archived? && archived_date < DELETION_THRESHOLD.ago) || (deleted? && removal_date < DELETION_THRESHOLD.ago)
   end
 
   private

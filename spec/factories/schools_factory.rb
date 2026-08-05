@@ -107,6 +107,7 @@ FactoryBot.define do
     trait :archived do
       active { false }
       visible { false }
+      archived_date { Time.zone.today }
       removal_date { nil }
     end
 
