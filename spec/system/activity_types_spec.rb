@@ -69,7 +69,7 @@ describe 'activity types' do
         expect(page).to have_text(activity_types[0].name)
         expect(page).to have_no_text(activity_types[1].name)
 
-        click_on 'Next'
+        click_on '>'
         expect(page).to have_no_text(activity_types[0].name)
         expect(page).to have_text(activity_types[1].name)
       end

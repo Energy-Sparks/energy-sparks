@@ -217,6 +217,7 @@ describe 'viewing and recording activities' do
         context 'with non-custom activity' do
           before do
             fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
+            fill_in_trix with: 'description'
             click_on 'Save activity'
           end
 
@@ -241,6 +242,7 @@ describe 'viewing and recording activities' do
 
           before do
             fill_in :activity_happened_on, with: future_date.strftime('%d/%m/%Y')
+            fill_in_trix with: 'description'
             click_on 'Save activity'
           end
 
@@ -300,6 +302,7 @@ describe 'viewing and recording activities' do
             visit activity_type_path(activity_type)
             click_on 'Record this activity'
             fill_in :activity_happened_on, with: time.strftime('%d/%m/%Y')
+            fill_in_trix with: 'description'
             click_on 'Save activity'
           end
 
@@ -364,6 +367,7 @@ describe 'viewing and recording activities' do
         select other_school.name, from: :school_id
         click_on 'Record this activity'
         fill_in :activity_happened_on, with: Time.zone.today.strftime('%d/%m/%Y')
+        fill_in_trix with: 'description'
       end
 
       it 'associates activity with correct school from group' do

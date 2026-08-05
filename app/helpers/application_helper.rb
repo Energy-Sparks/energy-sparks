@@ -1,5 +1,5 @@
 module ApplicationHelper
-  include Pagy::Frontend
+  include Pagy::Method
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::NumberHelper
 

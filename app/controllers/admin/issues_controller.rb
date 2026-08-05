@@ -2,7 +2,7 @@
 
 module Admin
   class IssuesController < AdminController
-    include Pagy::Backend
+    include Pagy::Method
     include SchoolGroupBreadcrumbs
 
     load_and_authorize_resource :school
