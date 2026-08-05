@@ -98,16 +98,12 @@ class AmrDataFeedConfig < ApplicationRecord
     this_header = header || header_example
     header_array = this_header.split(',')
     {
+      meter_serial_number_index: header_array.find_index(msn_field),
       mpan_mprn_index: header_array.find_index(mpan_mprn_field),
+      period_index: header_array.find_index(period_field),
       reading_date_index: header_array.find_index(reading_date_field),
       reading_time_index: header_array.find_index(reading_time_field),
-      postcode_index: header_array.find_index(postcode_field),
-      units_index: header_array.find_index(units_field),
-      description_index: header_array.find_index(meter_description_field),
-      total_index: header_array.find_index(total_field),
-      meter_serial_number_index: header_array.find_index(msn_field),
-      provider_record_id_index: header_array.find_index(provider_id_field),
-      period_index: header_array.find_index(period_field)
+      units_index: header_array.find_index(units_field)
     }
   end
 
