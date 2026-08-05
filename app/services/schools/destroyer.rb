@@ -2,7 +2,7 @@
 
 module Schools
   class Destroyer
-    def initialize(before_date: 3.years.ago)
+    def initialize(before_date: School::DELETION_THRESHOLD.ago)
       @before_date = before_date
     end
 

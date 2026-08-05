@@ -66,7 +66,7 @@ class Meter < ApplicationRecord
   belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
   has_many :amr_data_feed_readings, inverse_of: :meter, dependent: :nullify
-  has_many :amr_validated_readings, inverse_of: :meter, dependent: :destroy
+  has_many :amr_validated_readings, inverse_of: :meter, dependent: :delete_all
 
   has_many :energy_tariffs_meters, dependent: :delete_all
   has_many :energy_tariffs,
