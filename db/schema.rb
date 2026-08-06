@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_30_142636) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_03_141852) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -988,7 +988,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_30_142636) do
     t.integer "import_warning_days", default: 7
     t.text "loa_contact_details"
     t.text "loa_expiry_procedure"
-    t.boolean "load_tariffs", default: true, null: false
     t.string "name", null: false
     t.text "new_area_data_feed"
     t.integer "organisation_type"
