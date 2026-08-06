@@ -15,12 +15,12 @@ describe AmrUploadedReading do
     end
   end
 
-  describe '.delete_old_records!' do
+  describe '.delete_old_readings!' do
     context 'with an old record' do
       before { create(:amr_uploaded_reading, created_at: 3.years.ago) }
 
       it 'deletes the record' do
-        expect { described_class.delete_old_records! }.to change(described_class, :count).by(-1)
+        expect { described_class.delete_old_readings! }.to change(described_class, :count).by(-1)
       end
     end
 
@@ -28,7 +28,7 @@ describe AmrUploadedReading do
       before { create(:amr_uploaded_reading, created_at: 3.years.ago + 1.day) }
 
       it 'does nothing' do
-        expect { described_class.delete_old_records! }.not_to change(described_class, :count)
+        expect { described_class.delete_old_readings! }.not_to change(described_class, :count)
       end
     end
   end

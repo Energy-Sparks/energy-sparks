@@ -33,7 +33,7 @@ class AmrUploadedReading < ApplicationRecord
     reading_data.map(&:with_indifferent_access).reject { |reading| reading[:warnings]  }
   end
 
-  def self.delete_old_records!(before_date: AmrDataFeedReading::DELETE_THRESHOLD.ago)
+  def self.delete_old_readings!(before_date: AmrDataFeedReading::DELETE_THRESHOLD.ago)
     AmrUploadedReading.transaction do
       AmrUploadedReading.where(created_at: ...before_date).destroy_all
     end

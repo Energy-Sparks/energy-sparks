@@ -183,7 +183,7 @@ class AmrDataFeedReading < ApplicationRecord
     end
   end
 
-  def self.delete_old_records!(before_date: DELETE_THRESHOLD.ago)
+  def self.delete_old_readings!(before_date: DELETE_THRESHOLD.ago)
     AmrDataFeedReading.transaction do
       AmrDataFeedReading.where(meter_id: nil).where(created_at: ...before_date).delete_all
       AmrDataFeedImportLog.unused.delete_all # remove those no longer referenced from table
