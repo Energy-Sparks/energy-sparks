@@ -97,5 +97,25 @@ describe AmrDataFeedReading do
         expect(amr_data_feed_config.reading_status_indexes).to eq((0..47).map { |i| 4 + (i * 2) })
       end
     end
+
+    context 'with status field per reading and repeated column names' do
+      subject(:amr_data_feed_config) do
+        reading_fields = Array.new(48) { |i| TimeOfDay.time_of_day_from_halfhour_index(i).to_s }
+        header_example = (['Name', 'MPRN', 'Date'] + reading_fields.zip(Array.new(48, 'Type')).flatten).join(',')
+        create(:amr_data_feed_config,
+               :with_half_hourly_status_fields,
+               reading_status_fields: ['Type'],
+               reading_fields:,
+               header_example:)
+      end
+
+      it 'correctly identifies the reading indexes' do
+        expect(amr_data_feed_config.reading_indexes).to eq((0..47).map { |i| 3 + (i * 2) })
+      end
+
+      it 'correctly identifies the reading status indexes' do
+        expect(amr_data_feed_config.reading_status_indexes).to eq((0..47).map { |i| 4 + (i * 2) })
+      end
+    end
   end
 end

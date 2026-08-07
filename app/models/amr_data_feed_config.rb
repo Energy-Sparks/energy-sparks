@@ -50,7 +50,7 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
-  ESTIMATED_STATUS = 'E'
+  ESTIMATED_STATUS = Set['E', 'Estimated']
 
   scope :enabled,           -> { where(enabled: true) }
   scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
@@ -113,11 +113,18 @@ class AmrDataFeedConfig < ApplicationRecord
   end
 
   def reading_indexes(header = nil)
-    column_indexes_from_array(reading_fields, header)
+    this_header = header || header_example
+    header_array = this_header.split(',')
+    reading_fields.map { |reading_header| header_array.find_index(reading_header) }
   end
 
   def reading_status_indexes(header = nil)
-    column_indexes_from_array(reading_status_fields, header)
+    this_header = header || header_example
+    header_array = this_header.split(',')
+
+    reading_status_fields.flat_map do |field|
+      header_array.each_index.select { |i| header_array[i] == field }
+    end
   end
 
   def header_first_thing
@@ -148,12 +155,6 @@ class AmrDataFeedConfig < ApplicationRecord
   end
 
   private
-
-  def column_indexes_from_array(column_array, header = nil)
-    this_header = header || header_example
-    header_array = this_header.split(',')
-    column_array.map { |field| header_array.find_index(field) }
-  end
 
   def no_missing_reading_indexes
     return unless reading_indexes.include?(nil)
