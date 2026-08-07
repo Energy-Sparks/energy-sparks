@@ -7,7 +7,6 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
   SIGNIFICANT_£_DROP = 200
   INEFFICIENT_APPLIANCES_KW = 1.0 # zero rating range
 
-  attr_reader :summer_holiday_analysis_table
   attr_reader :holiday_reduction_£, :annualised_reduction_£, :reduction_kw
   attr_reader :reduction_rating, :turn_off_rating
 
@@ -21,40 +20,7 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
     specific.merge(self.superclass.template_variables)
   end
 
-  TABLE_COLUMN_HEADERS = [
-    'Holiday',
-    'Baseload outside holiday (kW)',
-    'Baseload in summer holidays (kW)',
-    'Change in baseload (kW)',
-    'Annualised value of reduction',
-    'Significant change?'
-  ]
-
-  TABLE_COLUMN_UNITS = [
-    String,
-    :kw,
-    :kw,
-    :kw,
-    :£,
-    String
-  ]
-
-  TABLE_HASH_KEYS = %i[
-    holiday_name
-    weekend_baseload_kw
-    holiday_baseload_kw
-    change_in_baseload_kw
-    annualised_saving_£
-    signifcant_change
-  ]
-
   TEMPLATE_VARIABLES = {
-    summer_holiday_analysis_table: {
-      description:  'Change in baseload during summer holidays',
-      units:        :table,
-      header:       TABLE_COLUMN_HEADERS,
-      column_types: TABLE_COLUMN_UNITS
-    },
     annualised_reduction_£: {
       description: 'Annualised value of reduction over holiday',
       units:  :£,
@@ -90,10 +56,6 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
     I18n.t("#{i18n_prefix}.timescale")
   end
 
-  def summer_holiday_analysis_table_html
-    AlertRenderTable.new(TABLE_COLUMN_HEADERS, holiday_data_table(:html)).render
-  end
-
   def analysis_periods
     @summer_holiday_periods ||= @fridge_analysis.periods_around_summer_holidays
   end
@@ -104,8 +66,6 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
 
   def calculate(asof_date)
     raise EnergySparksNotEnoughDataException, 'meter readings prior to last summer holiday required' if enough_data == :not_enough
-    @summer_holiday_analysis_table = holiday_data_table
-
     ratings_based_on_last_n_years_data
 
     @rating = [@turn_off_rating, @reduction_rating].min
@@ -155,23 +115,6 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
 
   def years_with_significant_drop(years_data)
     years_data.select{ |year| year[:annualised_saving_£] > SIGNIFICANT_£_DROP }
-  end
-
-  def holiday_data_table(medium = :raw)
-    format_array_of_hashes_into_table(summer_holiday_data, TABLE_HASH_KEYS, TABLE_COLUMN_UNITS, medium)
-  end
-
-  def format_array_of_hashes_into_table(rows, keys, units, medium)
-    rows.map do |row|
-      keys.each_with_index.map do |key, column_number|
-        format_for_table(row[key], units[column_number], medium)
-      end
-    end
-  end
-
-  def format_for_table(value, unit, medium)
-    return value if medium == :raw || unit == String
-    FormatUnit.format(unit, value, medium, false, true)
   end
 
   def summer_holiday_data

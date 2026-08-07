@@ -85,10 +85,6 @@ class AlertType < ApplicationRecord
     class_from_name.front_end_template_charts.map { |variable_name, values| [values[:description], variable_name] }
   end
 
-  def available_tables
-    class_from_name.front_end_template_tables.map { |variable_name, values| [values[:description], variable_name] }
-  end
-
   def benchmark_variables
     class_from_name.benchmark_template_variables
   end

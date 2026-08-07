@@ -37,10 +37,6 @@ module Alerts
         { chart: 'variables' }
       end
 
-      def front_end_template_table_data
-        { table: 'variables' }
-      end
-
       def priority_template_data
         { priority: 'variables' }
       end
@@ -197,7 +193,6 @@ module Alerts
       expect(normalised_report.rating).to eq 5.0
       expect(normalised_report.template_data).to eq({ template: 'variables' })
       expect(normalised_report.chart_data).to eq({ chart: 'variables' })
-      expect(normalised_report.table_data).to eq({ table: 'variables' })
       expect(normalised_report.variables).to eq({ variables: 'variables' })
       expect(normalised_report.priority_data).to eq({ priority: 'variables' })
       expect(normalised_report.benchmark_data).to eq({ benchmark: 'data' })
@@ -216,7 +211,6 @@ module Alerts
       expect(normalised_report.rating).to eq 5.0
       expect(normalised_report.template_data).to eq({ template: 'variables' })
       expect(normalised_report.chart_data).to eq({ chart: 'variables' })
-      expect(normalised_report.table_data).to eq({ table: 'variables' })
       expect(normalised_report.variables).to eq({ variables: 'variables' })
       expect(normalised_report.priority_data).to eq({ priority: 'variables' })
       expect(normalised_report.benchmark_data).to eq({})
@@ -227,7 +221,6 @@ module Alerts
         normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotEnoughDataClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
         expect(normalised_report.template_data).to eq({})
         expect(normalised_report.chart_data).to eq({})
-        expect(normalised_report.table_data).to eq({})
         expect(normalised_report.benchmark_data).to eq({})
         expect(normalised_report.variables).to eq({})
       end
@@ -238,7 +231,6 @@ module Alerts
         normalised_report = Adapters::AnalyticsAdapter.new(alert_type: DummyAnalyticsAlertNotRelevantClass.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
         expect(normalised_report.template_data).to eq({})
         expect(normalised_report.chart_data).to eq({})
-        expect(normalised_report.table_data).to eq({})
         expect(normalised_report.benchmark_data).to eq({})
         expect(normalised_report.variables).to eq({})
       end
@@ -260,7 +252,6 @@ module Alerts
         expect(normalised_report.template_data).to eq({ template: 'variables' })
         expect(normalised_report.template_data_cy).to eq({ template: 'welsh variables' })
         expect(normalised_report.chart_data).to eq({ chart: 'variables' })
-        expect(normalised_report.table_data).to eq({ table: 'variables' })
         expect(normalised_report.priority_data).to eq({ priority: 'variables' })
         expect(normalised_report.variables).to eq({ variables: 'variables' })
         expect(normalised_report.benchmark_data).to eq({ benchmark: 'data' })

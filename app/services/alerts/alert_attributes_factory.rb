@@ -24,7 +24,6 @@ module Alerts
         template_data: @alert_report.template_data,
         template_data_cy: @alert_report.template_data_cy,
         chart_data: @alert_report.chart_data,
-        table_data: @alert_report.table_data,
         priority_data: @alert_report.priority_data,
         variables: @alert_report.variables,
         reporting_period: @alert_report.reporting_period

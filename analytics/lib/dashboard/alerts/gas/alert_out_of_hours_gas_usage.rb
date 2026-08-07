@@ -2,7 +2,6 @@
 require_relative '../common/alert_out_of_hours_base_usage.rb'
 
 class AlertOutOfHoursGasUsage < AlertOutOfHoursBaseUsage
-  attr_reader :daytype_breakdown_table
   def initialize(
     school,
     fuel = 'gas',

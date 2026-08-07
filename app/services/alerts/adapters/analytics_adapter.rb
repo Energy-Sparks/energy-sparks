@@ -61,7 +61,6 @@ module Alerts
         variable_data = {
           template_data: analysis_object.front_end_template_data,
           chart_data: analysis_object.front_end_template_chart_data,
-          table_data: analysis_object.front_end_template_table_data,
           priority_data: analysis_object.priority_template_data,
           variables: rename_variables(convert_for_storage(analysis_object.variables_for_reporting)),
         }

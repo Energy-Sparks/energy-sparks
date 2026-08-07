@@ -32,7 +32,6 @@ module Admin
             with: @alert.template_variables
           )
           @chart = @alert.chart_data[content_version.find_out_more_chart_variable]
-          @table = @alert.table_data[content_version.find_out_more_table_variable]
         end
 
         def from_parameter
