@@ -102,11 +102,15 @@ module Usage
     private
 
     def benchmark_annual_electricity_usage_kwh
-      BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type, school_size_calculator.pupils)
+      BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type:,
+                                                              pupils: school_size_calculator.pupils,
+                                                              heat_pump: @meter_collection.heat_pump?)
     end
 
     def exemplar_annual_electricity_usage_kwh
-      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type, school_size_calculator.pupils)
+      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type:,
+                                                             pupils: school_size_calculator.pupils,
+                                                             heat_pump: @meter_collection.heat_pump?)
     end
 
     def benchmark_annual_gas_usage_kwh
