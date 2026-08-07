@@ -8,13 +8,14 @@ describe Amr::DataFeedUpserter do
   let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config) }
   let(:array_of_readings) { [] }
 
-  def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'))
+  def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'), estimated: false)
     {
       mpan_mprn: meter.mpan_mprn,
       meter_id: meter.id,
       reading_date: date,
-      readings: readings,
-      amr_data_feed_config_id: amr_data_feed_config.id
+      readings:,
+      amr_data_feed_config_id: amr_data_feed_config.id,
+      estimated:
     }
   end
 
@@ -44,6 +45,17 @@ describe Amr::DataFeedUpserter do
           service.perform
           expect(meter.amr_data_feed_readings.first.created_at).not_to be_nil
           expect(meter.amr_data_feed_readings.first.updated_at).not_to be_nil
+        end
+
+        context 'with estimated reads' do
+          let(:array_of_readings) do
+            [create_reading(meter, Time.zone.today.iso8601, Array.new(48, '1.0'), estimated: true)]
+          end
+
+          it 'stores estimated status' do
+            service.perform
+            expect(meter.amr_data_feed_readings.first.estimated).to be true
+          end
         end
 
         it 'updates import log with statistics' do

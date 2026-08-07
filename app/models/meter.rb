@@ -221,7 +221,7 @@ class Meter < ApplicationRecord
 
     # find chunks where consecutive readings were all non-ORIG
     gaps = amr_validated_readings.since(since_date).by_date.select(:reading_date, :status).chunk_while do |r1, r2|
-      r1.status != 'ORIG' && r2.status != 'ORIG'
+      OneDayAMRReading::ORIGINAL.exclude?(r1.status) && OneDayAMRReading::ORIGINAL.exclude?(r2.status)
     end
     # return chunks of specified size or bigger
     gaps.select { |gap| gap.count >= gap_size }

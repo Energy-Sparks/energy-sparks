@@ -79,6 +79,8 @@ class MeterMonthlySummary < ApplicationRecord
       :incomplete
     elsif month_readings.to_set(&:type) == %w[ORIG].to_set
       :actual
+    elsif month_readings.to_set(&:type) == %w[EST].to_set
+      :estimated
     else
       :corrected
     end

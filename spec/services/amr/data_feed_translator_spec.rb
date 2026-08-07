@@ -41,6 +41,7 @@ describe Amr::DataFeedTranslator do
       expect(result[:reading_date]).to eq('31/12/2019')
       expect(result[:readings].first).to eq('1.20800000')
       expect(result[:readings].last).to eq('1.17700000')
+      expect(result[:estimated]).to be false
       expect(result[:units]).to eq('kwh')
     end
 
@@ -94,11 +95,46 @@ describe Amr::DataFeedTranslator do
         expect(results.first[:reading_date]).to eq('01/06/2023')
         expect(results.first[:reading_time]).to eq('00:00')
         expect(results.first[:readings]).to eq(['0.001'])
+        expect(results.first[:estimated]).to be false
 
         expect(results.last[:mpan_mprn]).to eq('10070831')
         expect(results.last[:reading_date]).to eq('02/06/2023')
         expect(results.last[:reading_time]).to eq('23:30')
         expect(results.last[:readings]).to eq(['0.048'])
+        expect(results.last[:estimated]).to be false
+      end
+
+      context 'with status column' do
+        let(:config) do
+          build(:amr_data_feed_config,
+                date_format: '%d/%m/%Y',
+                mpan_mprn_field: 'Site Name',
+                reading_date_field: 'Read date',
+                reading_time_field: 'Time',
+                reading_fields: [' Actual (KWH)'],
+                header_example: 'Read date,Time,Site Name, Actual (KWH),Est',
+                row_per_reading: true,
+                positional_index: true,
+                reading_status_fields: ['Est'])
+        end
+
+        let(:readings) do
+          half_hours = (0..23).map { |hour| [format('%02d:00', hour), format('%02d:30', hour)] }.flatten
+          ['01/06/2023', '02/06/2023'].flat_map do |date|
+            half_hours.map.with_index do |time, i|
+              # ['Read date', 'Time', 'Site Name', ' Actual (KWH)', 'E']
+              [date, time, '10070831', "0.#{format('%03d', i + 1)}", 'E']
+            end
+          end
+        end
+
+        it 'identifies estimated reads' do
+          expect(results.first[:mpan_mprn]).to eq('10070831')
+          expect(results.first[:reading_date]).to eq('01/06/2023')
+          expect(results.first[:reading_time]).to eq('00:00')
+          expect(results.first[:readings]).to eq(['0.001'])
+          expect(results.first[:estimated]).to be true
+        end
       end
     end
 
@@ -296,6 +332,70 @@ describe Amr::DataFeedTranslator do
           expect(results.first[:reading_date]).to eq('2023-09-11T01:05:02Z')
         end
       end
+    end
+
+    context 'when checking if data is estimated' do
+      subject(:translated_row) { described_class.new(config, readings).perform.first }
+
+      let(:config) { create(:amr_data_feed_config) }
+
+      let(:reading) do
+        ['Meter 1', '2333300681718', '2026-08-07'] + Array.new(48) { |i| i + 1 }
+      end
+
+      it 'returns false with no reading flags' do
+        expect(translated_row[:estimated]).to be false
+      end
+
+      # rubocop:disable RSpec/NestedGroups
+      context 'with single status for whole day' do
+        subject(:config) { create(:amr_data_feed_config, :with_single_status_field) }
+
+        context 'when Actual (A)' do
+          let(:reading) do
+            ['Meter 1', '2333300681718', '2026-08-07', 'A'] + Array.new(48) { |i| i + 1 }
+          end
+
+          it { expect(translated_row[:estimated]).to be false }
+        end
+
+        context 'when Estimated (E)' do
+          let(:reading) do
+            ['Meter 1', '2333300681718', '2026-08-07', 'E'] + Array.new(48) { |i| i + 1 }
+          end
+
+          it { expect(translated_row[:estimated]).to be true }
+        end
+      end
+      # rubocop:enable RSpec/NestedGroups
+
+      # rubocop:disable RSpec/NestedGroups
+      context 'with status per half hour' do
+        subject(:config) { create(:amr_data_feed_config, :with_half_hourly_status_fields) }
+
+        let(:reading) do
+          ['Meter 1', '2333300681718', '2026-08-07'] + Array.new(48) { |i| i + 1 }.zip(statuses).flatten
+        end
+
+        context 'when all Actual (A)' do
+          let(:statuses) { Array.new(48, 'A') }
+
+          it { expect(translated_row[:estimated]).to be false }
+        end
+
+        context 'when all Estimated (E)' do
+          let(:statuses) { Array.new(48, 'E') }
+
+          it { expect(translated_row[:estimated]).to be true }
+        end
+
+        context 'when single Estimated (E)' do
+          let(:statuses) { Array.new(47, 'A') << 'E' }
+
+          it { expect(translated_row[:estimated]).to be true }
+        end
+      end
+      # rubocop:enable RSpec/NestedGroups
     end
   end
 end

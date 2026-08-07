@@ -18,8 +18,8 @@ class StorageHeater
       if @storage_heater_config.in_operation?(date)
         storage_heater_kwh, electric_only_kwh = disaggregate_one_day(date, amr_data)
 
-        sh_type = amr_data.substitution_type(date) == 'ORIG' ? 'STOR' : 'STRO'
-        e_type  = amr_data.substitution_type(date) == 'ORIG' ? 'STEX' : 'STXE'
+        sh_type = amr_data[date].original? ? 'STOR' : 'STRO'
+        e_type  = amr_data[date].original? ? 'STEX' : 'STXE'
 
         storage_heater_amr_data.add(date, OneDayAMRReading.new(date, sh_type, nil, DateTime.now, storage_heater_kwh))
         electricity_only_amr_data.add(date, OneDayAMRReading.new(date, e_type, nil, DateTime.now, electric_only_kwh))

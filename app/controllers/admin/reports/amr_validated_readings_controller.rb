@@ -50,6 +50,9 @@ module Admin
         if status == 'ORIG'
           description = 'ORIG, uncorrected good data'
           colour = Colours.chart_green
+        elsif status == 'EST'
+          description = 'EST, original estimated data'
+          colour = Colours.solar_dark
         else
           description = 'Corrected/modified data'
           colour = '#3f7d69'
