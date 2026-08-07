@@ -17,7 +17,6 @@
 #  header_example          :text
 #  identifier              :text             not null
 #  lookup_by_serial_number :boolean          default(FALSE)
-#  meter_description_field :text
 #  missing_reading_window  :integer          default(5)
 #  missing_readings_limit  :integer
 #  mpan_mprn_field         :text             not null
@@ -25,15 +24,12 @@
 #  number_of_header_rows   :integer          default(0), not null
 #  period_field            :string
 #  positional_index        :boolean          default(FALSE), not null
-#  postcode_field          :text
-#  process_type            :integer          default("s3_folder"), not null
-#  provider_id_field       :text
+#  process_type            :integer          default(0), not null
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
 #  reading_time_field      :text
 #  row_per_reading         :boolean          default(FALSE), not null
-#  source_type             :integer          default("email"), not null
-#  total_field             :text
+#  source_type             :integer          default(0), not null
 #  units_field             :text
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
@@ -102,16 +98,12 @@ class AmrDataFeedConfig < ApplicationRecord
     this_header = header || header_example
     header_array = this_header.split(',')
     {
+      meter_serial_number_index: header_array.find_index(msn_field),
       mpan_mprn_index: header_array.find_index(mpan_mprn_field),
+      period_index: header_array.find_index(period_field),
       reading_date_index: header_array.find_index(reading_date_field),
       reading_time_index: header_array.find_index(reading_time_field),
-      postcode_index: header_array.find_index(postcode_field),
-      units_index: header_array.find_index(units_field),
-      description_index: header_array.find_index(meter_description_field),
-      total_index: header_array.find_index(total_field),
-      meter_serial_number_index: header_array.find_index(msn_field),
-      provider_record_id_index: header_array.find_index(provider_id_field),
-      period_index: header_array.find_index(period_field)
+      units_index: header_array.find_index(units_field)
     }
   end
 

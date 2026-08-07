@@ -23,7 +23,6 @@ module Alerts
         template_data: { template: 'variables' },
         template_data_cy: { template: 'welsh variables' },
         chart_data: { chart: 'variables' },
-        table_data: { table: 'variables' },
         priority_data: { priority: 'variables' },
         benchmark_data: { benchmark: 'variables', var: Float::INFINITY },
         benchmark_data_cy: { benchmark: 'welsh-variables', var: Float::INFINITY }

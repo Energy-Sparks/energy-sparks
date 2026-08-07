@@ -18,8 +18,7 @@
 
         <h5>Chart data</h5>
         <%= sanitize ap(@alert.chart_data, index: false, plain: true, sort_keys: true) %>
-        <h5>Table data</h5>
-        <%= sanitize ap(@alert.table_data, index: false, plain: true, sort_keys: true) %>
+
         <h5>Priority data</h5>
         <%= sanitize ap(@alert.priority_data, index: false, plain: true, sort_keys: true) %>
       </div>

@@ -11,23 +11,16 @@
 # Table name: amr_data_feed_readings
 #
 #  id                          :bigint(8)        not null, primary key
-#  description                 :text
 #  meter_serial_number         :text
 #  mpan_mprn                   :text             not null
-#  postcode                    :text
 #  reading_date                :text             not null
-#  reading_time                :text
 #  readings                    :text             not null, is an Array
-#  school                      :text
-#  total                       :text
-#  type                        :text
 #  units                       :text
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #  amr_data_feed_config_id     :bigint(8)        not null
 #  amr_data_feed_import_log_id :bigint(8)        not null
 #  meter_id                    :bigint(8)
-#  provider_record_id          :text
 #
 # Indexes
 #

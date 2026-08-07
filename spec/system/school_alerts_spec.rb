@@ -44,10 +44,7 @@ RSpec.describe 'dashboard alerts', type: :system do
       create(:alert, :with_run,
              alert_type: gas_fuel_alert_type,
              run_on: gas_date, school: school,
-             rating: 9.0,
-             table_data: {
-               dummy_table: [['Header 1', 'Header 2'], ['Body 1', 'Body 2']]
-             })
+             rating: 9.0)
     end
 
     before do

@@ -13,7 +13,7 @@ class AlertAnalysisBase < ContentBase
 
   ALERT_HELP_URL = 'https://blog.energysparks.uk/alerts'.freeze
 
-  attr_reader :status, :rating, :term, :default_summary, :default_content, :analysis_date, :max_asofdate,
+  attr_reader :status, :rating, :term, :analysis_date, :max_asofdate,
               :calculation_worked, :capital_cost, :one_year_saving_£, :ten_year_saving_£, :payback_years, :one_year_saving_co2, :ten_year_saving_co2, :one_year_saving_kwh, :average_capital_cost, :average_one_year_saving_£, :average_payback_years, :average_ten_year_saving_£, :error_message, :backtrace, :time_of_year_relevance
 
   def initialize(school, _report_type)
@@ -72,20 +72,6 @@ class AlertAnalysisBase < ContentBase
   # inherited, so derived class has hash of 'name' => variables
   def self.template_variables
     { 'Common' => TEMPLATE_VARIABLES }
-  end
-
-  def summary_wording(format = :html)
-    return nil if default_summary.nil? # remove once all new style alerts implemeted TODO(PH,13Mar2019)
-
-    summary = AlertTemplateBinding.new(default_summary, formatted_template_variables(format), format)
-    summary.bind
-  end
-
-  def content_wording(format = :html)
-    return nil if default_content.nil? # remove once all new style alerts implemeted TODO(PH,13Mar2019)
-
-    content = AlertTemplateBinding.new(default_content, formatted_template_variables(format), format)
-    content.bind
   end
 
   TEMPLATE_VARIABLES = {
@@ -181,20 +167,6 @@ class AlertAnalysisBase < ContentBase
 
   def valid_alert?
     valid_content? && meter_readings_up_to_date_enough?
-  end
-
-  # unused method?
-  def self.print_all_formatted_template_variable_values
-    puts 'Available variables and values:'
-    template_variables.each do |group_name, variable_group|
-      puts "  #{group_name}"
-      variable_group.each do |type, data|
-        # next if data[:units] == :table
-        value = send(type)
-        formatted_value = format(data[:units], value, :html, false, user_numeric_comprehension_level)
-        puts format('    %-40.40s %-20.20s', type, formatted_value) + ' ' + data.to_s
-      end
-    end
   end
 
   protected
