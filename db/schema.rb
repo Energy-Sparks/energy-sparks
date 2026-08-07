@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_07_091147) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -462,6 +462,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
     t.bigint "amr_data_feed_config_id", null: false
     t.bigint "amr_data_feed_import_log_id", null: false
     t.datetime "created_at", precision: nil, null: false
+    t.boolean "estimated", default: false, null: false
     t.bigint "meter_id"
     t.text "meter_serial_number"
     t.text "mpan_mprn", null: false

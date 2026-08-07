@@ -11,6 +11,7 @@
 # Table name: amr_data_feed_readings
 #
 #  id                          :bigint(8)        not null, primary key
+#  estimated                   :boolean          default(FALSE), not null
 #  meter_serial_number         :text
 #  mpan_mprn                   :text             not null
 #  reading_date                :text             not null
