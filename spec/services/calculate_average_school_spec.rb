@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe CalculateAverageSchool, type: :service do
+  before { travel_to(Date.new(2026, 8, 1)) }
+
   describe '#calculate_school_averages' do
     subject(:data) { described_class.perform }
 
