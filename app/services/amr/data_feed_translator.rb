@@ -145,7 +145,7 @@ module Amr
       return false unless @config.reading_status_fields.any?
 
       statuses = @config.reading_status_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
-      statuses.intersect?(AmrDataFeedConfig::ESTIMATED_STATUS)
+      statuses.any? { |s| AmrDataFeedConfig::ESTIMATED_STATUS.include?(s) } # rubocop:disable Style/ArrayIntersect
     end
   end
 end
