@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: amr_data_feed_configs
@@ -27,6 +29,7 @@
 #  process_type            :integer          default(0), not null
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
+#  reading_status_fields   :string           default([]), not null, is an Array
 #  reading_time_field      :text
 #  row_per_reading         :boolean          default(FALSE), not null
 #  source_type             :integer          default(0), not null
@@ -47,6 +50,8 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
+  ESTIMATED_STATUS = 'E'
+
   scope :enabled,           -> { where(enabled: true) }
   scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
 
@@ -79,7 +84,7 @@ class AmrDataFeedConfig < ApplicationRecord
   validates :msn_field, presence: { if: :lookup_by_serial_number }
 
   validate :period_or_time_field, if: :positional_index
-  validate :no_nil_array_of_reading_indexes, if: :header_example
+  validate :no_missing_reading_indexes, if: :header_example
   validate :source_and_process_type
 
   BLANK_THRESHOLD = 1
@@ -107,10 +112,12 @@ class AmrDataFeedConfig < ApplicationRecord
     }
   end
 
-  def array_of_reading_indexes(header = nil)
-    this_header = header || header_example
-    header_array = this_header.split(',')
-    reading_fields.map { |reading_header| header_array.find_index(reading_header) }
+  def reading_indexes(header = nil)
+    column_indexes_from_array(reading_fields, header)
+  end
+
+  def reading_status_indexes(header = nil)
+    column_indexes_from_array(reading_status_fields, header)
   end
 
   def header_first_thing
@@ -142,8 +149,14 @@ class AmrDataFeedConfig < ApplicationRecord
 
   private
 
-  def no_nil_array_of_reading_indexes
-    return unless array_of_reading_indexes.include?(nil)
+  def column_indexes_from_array(column_array, header = nil)
+    this_header = header || header_example
+    header_array = this_header.split(',')
+    column_array.map { |field| header_array.find_index(field) }
+  end
+
+  def no_missing_reading_indexes
+    return unless reading_indexes.include?(nil)
 
     errors.add(:header_example, "can't find all reading_fields in header_example")
   end
