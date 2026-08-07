@@ -77,8 +77,10 @@ class MeterMonthlySummary < ApplicationRecord
     missing_days = calculate_missing_days(month_readings.to_set(&:date), month_start)
     if missing_days.any?
       :incomplete
-    elsif month_readings.to_set(&:type) == %w[ORIG EST].to_set
+    elsif month_readings.to_set(&:type) == %w[ORIG].to_set
       :actual
+    elsif month_readings.to_set(&:type) == %w[EST].to_set
+      :estimated
     else
       :corrected
     end
@@ -109,7 +111,7 @@ class MeterMonthlySummary < ApplicationRecord
         :actual
       elsif types.intersect?(%w[PROB ZMDR E0H1])
         :incomplete
-      elsif types.intersect?(%w[SOLR SOLO SOLE BKPV EST])
+      elsif types.intersect?(%w[SOLR SOLO SOLE BKPV])
         :estimated
       else
         raise "unknown #{types} - #{month_start} #{month_readings}"
