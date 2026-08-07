@@ -435,6 +435,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_091147) do
     t.integer "process_type", default: 0, null: false
     t.text "reading_date_field", null: false
     t.text "reading_fields", null: false, array: true
+    t.string "reading_status_fields", default: [], null: false, array: true
     t.text "reading_time_field"
     t.boolean "row_per_reading", default: false, null: false
     t.integer "source_type", default: 0, null: false
