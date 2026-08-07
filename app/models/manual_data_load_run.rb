@@ -19,7 +19,7 @@
 class ManualDataLoadRun < ApplicationRecord
   belongs_to :amr_uploaded_reading, dependent: :destroy
   enum :status, { pending: 0, running: 1, done: 2, failed: 3 }
-  has_many :manual_data_load_run_log_entries, dependent: :destroy
+  has_many :manual_data_load_run_log_entries, dependent: :delete_all
 
   scope :by_date, -> { order(created_at: :desc) }
 

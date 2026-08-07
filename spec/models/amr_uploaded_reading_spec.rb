@@ -14,4 +14,22 @@ describe AmrUploadedReading do
       expect(amr_uploaded_reading.valid?).to be false
     end
   end
+
+  describe '.delete_old_readings!' do
+    context 'with an old record' do
+      before { create(:amr_uploaded_reading, created_at: 3.years.ago) }
+
+      it 'deletes the record' do
+        expect { described_class.delete_old_readings! }.to change(described_class, :count).by(-1)
+      end
+    end
+
+    context 'with an newer unused record' do
+      before { create(:amr_uploaded_reading, created_at: 3.years.ago + 1.day) }
+
+      it 'does nothing' do
+        expect { described_class.delete_old_readings! }.not_to change(described_class, :count)
+      end
+    end
+  end
 end

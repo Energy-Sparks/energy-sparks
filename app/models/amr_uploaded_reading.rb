@@ -21,8 +21,9 @@
 
 class AmrUploadedReading < ApplicationRecord
   belongs_to :amr_data_feed_config
+  has_one :manual_data_load_run, dependent: :destroy
 
-  validates_presence_of :file_name
+  validates :file_name, presence: true
 
   def warnings
     reading_data.map(&:with_indifferent_access).select { |reading| reading[:warnings]  }
@@ -30,5 +31,11 @@ class AmrUploadedReading < ApplicationRecord
 
   def valid_readings
     reading_data.map(&:with_indifferent_access).reject { |reading| reading[:warnings]  }
+  end
+
+  def self.delete_old_readings!(before_date: AmrDataFeedReading::DELETE_THRESHOLD.ago)
+    AmrUploadedReading.transaction do
+      AmrUploadedReading.where(created_at: ...before_date).destroy_all
+    end
   end
 end
