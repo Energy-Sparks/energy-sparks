@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class N3rgyEnergyTariffLoader
     def initialize(meter:)
@@ -5,38 +7,24 @@ module Amr
     end
 
     def perform
-      return unless @meter.data_source.nil? || @meter.data_source.load_tariffs
+      return unless @meter.dcc_meter_smets2? && @meter.consent_granted
 
-      todays_tariff = N3rgyTariffDownloader.new(meter: @meter).current_tariff
-
-      N3rgyTariffManager.new(meter: @meter,
-        current_n3rgy_tariff: todays_tariff,
-        import_log: import_log).perform
-    rescue => e
-      msg = "Exception: downloading N3rgy tariffs for #{@meter.mpan_mprn} from #{start_date} to #{end_date} : #{e.class} #{e.message}"
-      import_log.update!(error_messages: msg) if import_log
-      Rails.logger.error msg
-      Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, job: :n3rgy_energy_tariffs, meter_id: @meter.mpan_mprn, start_date: start_date, end_date: end_date)
+      import_log = create_import_log
+      current_n3rgy_tariff = N3rgyTariffDownloader.new(meter: @meter).current_tariff
+      N3rgyTariffManager.new(meter: @meter, current_n3rgy_tariff:, import_log:).perform
+    rescue StandardError => e
+      import_log.update!(error_messages: "Exception: downloading N3rgy tariffs for #{@meter.mpan_mprn}: " \
+                                         "#{e.class} #{e.message}")
+      EnergySparks::Log.exception(e, job: :n3rgy_energy_tariffs, meter_mpan: @meter.mpan_mprn)
     end
 
     private
 
-    def start_date
-      @start_date ||= DateTime.now.yesterday.beginning_of_day
-    end
-
-    def end_date
-      @end_date ||= DateTime.now.yesterday.end_of_day
-    end
-
-    def import_log
-      @import_log ||= TariffImportLog.create!(
-        source: 'n3rgy-api',
-        description: "Tariff import for #{@meter.mpan_mprn} at #{DateTime.now.utc}",
-        start_date: start_date,
-        end_date: end_date,
-        import_time: DateTime.now.utc)
+    def create_import_log
+      now = DateTime.now.utc
+      TariffImportLog.create!(source: 'n3rgy-api',
+                              description: "Tariff import for #{@meter.mpan_mprn} at #{now}",
+                              import_time: now)
     end
   end
 end

@@ -12,7 +12,6 @@ describe Amr::DataFeedTranslator do
           reading_date_field: 'ConsumptionDate',
           period_field: 'Period',
           reading_fields: reading_fields,
-          meter_description_field: 'siteRef',
           header_example:
             "siteRef,MPAN,ConsumptionDate,Period,units,#{reading_fields.join(',')},#{(1..48).map { |i| "kVArh_#{i}" }}")
   end
@@ -40,7 +39,6 @@ describe Amr::DataFeedTranslator do
       result = results.first
       expect(result[:mpan_mprn]).to eq('2333300681718')
       expect(result[:reading_date]).to eq('31/12/2019')
-      expect(result[:description]).to eq('MEERSBROOK PRIMARY - M1')
       expect(result[:readings].first).to eq('1.20800000')
       expect(result[:readings].last).to eq('1.17700000')
       expect(result[:units]).to eq('kwh')
@@ -125,7 +123,6 @@ describe Amr::DataFeedTranslator do
               units_field: 'units',
               reading_date_field: 'DateTime',
               reading_fields: reading_fields,
-              meter_description_field: 'Description',
               header_example: "Description,SerialNumber,DateTime,import_total,export_total,#{reading_fields.join(',_,')}",
               expected_units: '',
               msn_field: 'SerialNumber',
