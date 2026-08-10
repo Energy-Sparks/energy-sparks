@@ -8,7 +8,6 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
   MAX_HALFHOURS_HEATING_ON = 10
 
   attr_reader :last_year_kwh, :last_year_£
-  attr_reader :heating_on_times_table
 
   attr_reader :one_year_optimum_start_saving_kwh, :one_year_optimum_start_saving_£, :one_year_optimum_start_saving_co2
   attr_reader :one_year_optimum_start_saving_£current
@@ -29,12 +28,6 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
   end
 
   TEMPLATE_VARIABLES = {
-    heating_on_times_table: {
-      description: 'Last 7 days, heating on times and recommended heating start times with optimal start control and frost protection',
-      units: :table,
-      header: ['Date', 'Heating on time', 'Recommended on time', 'Overnight temperature', 'Timing', 'Potential Saving (kWh)', 'Potential Saving (£)', 'Potential Saving (CO2kg)'],
-      column_types: [:date, TimeOfDay, TimeOfDay, :temperature, String, { kwh: :gas }, :£, :co2]
-    },
     one_year_optimum_start_saving_kwh: {
       description: 'Estimates (up to saving) of benefit of starting boiler later in morning using a crude optimum start and frost model - kWh',
       units:  {kwh: :gas}
@@ -91,7 +84,7 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
   def calculate(asof_date)
     calculate_model(asof_date) # heating model call
 
-    @heating_on_times_table, rating_7_day, @avg_week_start_time = heating_on_time_assessment(asof_date)
+    _, rating_7_day, @avg_week_start_time = heating_on_time_assessment(asof_date)
 
     @one_year_optimum_start_saving_kwh, @percent_of_annual_gas = hm_1_year_saving(asof_date, :kwh)
     @one_year_optimum_start_saving_£, _p                       = hm_1_year_saving(asof_date, :£)

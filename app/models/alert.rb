@@ -12,7 +12,6 @@
 #  relevance               :integer          default("relevant")
 #  reporting_period        :integer
 #  run_on                  :date
-#  table_data              :json
 #  template_data           :json
 #  template_data_cy        :json
 #  variables               :jsonb

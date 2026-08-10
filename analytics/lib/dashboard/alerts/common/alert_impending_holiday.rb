@@ -8,7 +8,7 @@ class AlertImpendingHoliday < AlertGasOnlyBase
   WEEKDAYS_HOLIDAY_LOOKAHEAD_PERIOD = 15
   include AlertFloorAreaMixin
 
-  attr_reader :saving_kwh, :saving_co2, :daytype_breakdown_table, :total_annual_£, :holidays_percent
+  attr_reader :saving_kwh, :saving_co2, :total_annual_£, :holidays_percent
   attr_reader :holiday_length_days
   attr_reader :holiday_length_weekdays, :holiday_length_weeks
   attr_reader :holiday_start_date, :holiday_end_date
@@ -174,13 +174,7 @@ class AlertImpendingHoliday < AlertGasOnlyBase
     name_of_last_year_holiday: {
       description: 'name of holiday last year',
       units: String, benchmark_code: 'pper'
-    },
-    daytype_breakdown_table: {
-      description: 'Table broken down by school day in/out hours, weekends, holidays - percent in £ terms, £ (annual)',
-      units: :table,
-      header: [ 'Day type', 'Percent', '£' ],
-      column_types: [String, :percent, :£ ]
-    },
+    }
   }
 
   ALERT_INHERITANCE = { # name_var_name: { class, old_name }, definition of attributes moved from other alerts, renamed to avoid clashes
@@ -192,7 +186,6 @@ class AlertImpendingHoliday < AlertGasOnlyBase
     electricity_potential_saving_kwh:     { class_type: AlertOutOfHoursElectricityUsage, variable_name: :potential_saving_kwh },
     electricity_potential_saving_£:       { class_type: AlertOutOfHoursElectricityUsage, variable_name: :potential_saving_£ },
     electricity_potential_saving_co2:     { class_type: AlertOutOfHoursElectricityUsage, variable_name: :potential_saving_co2 },
-    electricity_daytype_breakdown_table:  { class_type: AlertOutOfHoursElectricityUsage, variable_name: :daytype_breakdown_table },
     electricity_breakdown_chart:          { class_type: AlertOutOfHoursElectricityUsage, variable_name: :breakdown_chart },
     electricity_weekly_chart:             { class_type: AlertOutOfHoursElectricityUsage, variable_name: :group_by_week_day_type_chart },
     electricity_rating:                   { class_type: AlertOutOfHoursElectricityUsage, variable_name: :rating },
@@ -205,7 +198,6 @@ class AlertImpendingHoliday < AlertGasOnlyBase
     gas_potential_saving_kwh:     { class_type: AlertOutOfHoursGasUsage, variable_name: :potential_saving_kwh },
     gas_potential_saving_£:       { class_type: AlertOutOfHoursGasUsage, variable_name: :potential_saving_£ },
     gas_potential_saving_co2:     { class_type: AlertOutOfHoursGasUsage, variable_name: :potential_saving_co2 },
-    gas_daytype_breakdown_table:  { class_type: AlertOutOfHoursGasUsage, variable_name: :daytype_breakdown_table },
     gas_breakdown_chart:          { class_type: AlertOutOfHoursGasUsage, variable_name: :breakdown_chart },
     gas_weekly_chart:             { class_type: AlertOutOfHoursGasUsage, variable_name: :group_by_week_day_type_chart },
     gas_rating:                   { class_type: AlertOutOfHoursGasUsage, variable_name: :rating }
@@ -216,21 +208,9 @@ class AlertImpendingHoliday < AlertGasOnlyBase
     ALERT_INHERITANCE.each do |new_variable_name, third_party_alert_variable|
       third_party_alert = third_party_alert_variable[:class_type]
       variable_definition = third_party_alert.flatten_front_end_template_variables[third_party_alert_variable[:variable_name]]
-      vars[new_variable_name] = add_fuel_type_to_table(variable_definition, new_variable_name)
+      vars[new_variable_name] = variable_definition
     end
     vars
-  end
-
-  private_class_method def self.add_fuel_type_to_table(variable_definition, new_variable_name)
-    return variable_definition unless new_variable_name.to_s.include?('daytype_breakdown_table')
-    return merge_into_description(variable_definition, 'gas') if new_variable_name.to_s.include?('gas')
-    return merge_into_description(variable_definition, 'electricity') if new_variable_name.to_s.include?('electricity')
-    variable_definition
-  end
-
-  private_class_method def self.merge_into_description(definition, fuel_type)
-    definition[:description] = definition[:description] + ' (' + fuel_type + ')'
-    definition
   end
 
   private def assign_third_party_alert_variables(class_type, third_party_alert)
@@ -356,21 +336,6 @@ class AlertImpendingHoliday < AlertGasOnlyBase
     @holidays_£         = (electricity? ? electricity_holidays_£ : 0.0) + (gas? ? gas_holidays_£ : 0.0)
     @potential_saving_£ = (electricity? ? electricity_potential_saving_£ : 0.0) + (gas? ? gas_potential_saving_£ : 0.0)
     @holidays_percent = @holidays_£ / @total_annual_£
-
-    electric_table  = respond_to?(:electricity_daytype_breakdown_table) ? electricity_daytype_breakdown_table : nil
-    gas_table       = respond_to?(:gas_daytype_breakdown_table) ? gas_daytype_breakdown_table : nil
-
-    merge_day_type_breakdown_tables(electric_table, gas_table)
-  end
-
-  private def merge_day_type_breakdown_tables(electric_table, gas_table)
-    if electricity? && gas?
-      aggregate_electricity_and_gas_day_type_breakdown_tables(electric_table, gas_table)
-    elsif electricity?
-      strip_kwh_from_table(electric_table)
-    else
-      strip_kwh_from_table(gas_table)
-    end
   end
 
   public def days_amr_data
@@ -393,28 +358,6 @@ class AlertImpendingHoliday < AlertGasOnlyBase
       'electricity only'
     else
       'gas only'
-    end
-  end
-
-  private def aggregate_electricity_and_gas_day_type_breakdown_tables(electric_table, gas_table)
-    @daytype_breakdown_table = []
-    electric_table.each_with_index do |electric_row, row_index|
-      total_£_for_day_type = electric_row[3] + gas_table[row_index][3]
-      @daytype_breakdown_table.push(
-        [
-          electric_row[0], # day type string
-          # skip kWh (secondary energy, can only combine primary, so not additive in kWh)
-          total_£_for_day_type / @total_annual_£,
-          total_£_for_day_type
-        ]
-      )
-    end
-  end
-
-  private def strip_kwh_from_table(table)
-    @daytype_breakdown_table = []
-    table.each do |row|
-      @daytype_breakdown_table.push([row[0], row[2], row[3]])
     end
   end
 
