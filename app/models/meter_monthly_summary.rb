@@ -75,11 +75,12 @@ class MeterMonthlySummary < ApplicationRecord
 
   private_class_method def self.mains_meter_month_quality(month_start, month_readings)
     missing_days = calculate_missing_days(month_readings.to_set(&:date), month_start)
+    reading_types = month_readings.to_set(&:type)
     if missing_days.any?
       :incomplete
-    elsif month_readings.to_set(&:type) == %w[ORIG].to_set
+    elsif reading_types == %w[ORIG].to_set
       :actual
-    elsif month_readings.to_set(&:type) == %w[EST].to_set
+    elsif reading_types == %w[ORIG EST].to_set || reading_types == %w[EST].to_set
       :estimated
     else
       :corrected
