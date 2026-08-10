@@ -116,7 +116,7 @@ describe MeterMonthlySummary do
         expect_summaries(meter, ([0] * 4) + [4464, 432])
       end
 
-      def expect_summaries(meter, consumption) # rubocop:disable Metrics/AbcSize
+      def expect_summaries(meter, consumption)
         expect(meter.meter_monthly_summaries.reload).to contain_exactly(
           have_attributes(year: 2018, type: 'consumption', consumption:,
                           quality: ([nil] * 4) + %w[actual incomplete], total: consumption.sum),
