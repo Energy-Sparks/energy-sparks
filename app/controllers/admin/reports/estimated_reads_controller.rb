@@ -77,7 +77,7 @@ module Admin
       def filter_results(results)
         results = filter_by_meter_type(results)
         results = filter_by_group(results)
-        results = filter_by_admin(results)
+        filter_by_admin(results)
       end
 
       def filter_by_meter_type(results)
