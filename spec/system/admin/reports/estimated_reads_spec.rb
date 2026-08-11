@@ -27,9 +27,9 @@ describe 'Estimated Reads Report' do
     click_on page_title
   end
 
-  it_behaves_like 'an admin meter report', help: false do
+  it_behaves_like 'an admin meter report', help: true do
     let(:title) { page_title }
-    let(:description) { 'Lists all of the meters in the system that have one or more Estimated ("EST") data readings' }
+    let(:description) { 'Lists all active meters in the system that have one or more Estimated (EST) data readings' }
   end
 
   it_behaves_like 'it contains the expected data table', aligned: false do
@@ -37,13 +37,14 @@ describe 'Estimated Reads Report' do
     let(:expected_header) do
       [
         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name',
-         'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Admin Meter Status', 'Last Validated Date',
-         'Total', 'Recent']
+         'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Admin Meter Status',
+         'Last Validated Date', 'Last Estimated Read', 'Total', 'Recent']
       ]
     end
     let(:expected_rows) do
       [[school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s, meter.name,
-        '', 'NHH AMR', meter.supplier.name, meter.data_source.name, '', Time.zone.yesterday.iso8601, '60', '30']]
+        '', 'NHH AMR', meter.supplier.name, meter.data_source.name, '',
+        Time.zone.yesterday.iso8601, Time.zone.yesterday.iso8601, '60', '30']]
     end
   end
 

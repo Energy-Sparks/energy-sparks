@@ -25,49 +25,27 @@ module Admin
           Column.new(:admin_meter_status,
                      ->(meter) { meter.admin_meter_status_label }),
           Column.new(:last_validated_date,
-                     ->(meter) { meter.last_validated_reading&.iso8601 }),
+                     ->(meter) { meter.latest_reading_date&.iso8601 }),
+          Column.new(:last_estimated_read,
+                     ->(meter) { meter.latest_est_reading_date&.iso8601 }),
           Column.new(:total,
                      ->(meter) { meter.total }),
           Column.new(:recent,
-                     ->(meter) { meter.recent })
+                     ->(meter) { meter.recent_total })
         ]
       end
 
       def results
         30.days.ago
 
-        results = Meter.active
-                       .joins(:school)
-                       .joins(:amr_validated_readings)
-                       .where(amr_validated_readings: { status: 'EST' })
-                       .includes(:school, { school: :school_group })
-                       .group('school_groups.id', 'schools.id', 'meters.id')
-                       .select(
-                         'school_groups.*',
-                         'meters.*',
-                         'COUNT(amr_validated_readings.id) AS total',
-                         <<~SQL.squish
-                           SUM(
-                             CASE
-                               WHEN amr_validated_readings.reading_date > (
-                                 (
-                                   SELECT MAX(avr2.reading_date)
-                                   FROM amr_validated_readings AS avr2
-                                   WHERE avr2.meter_id = meters.id
-                                 ) - INTERVAL '30 days'
-                               )
-                               THEN 1 ELSE 0
-                             END
-                           ) AS recent
-                         SQL
-                       )
+        results = Meter.with_summary_of_estimated_data
 
         results = filter_results(results)
         results.order(count: :desc)
       end
 
       def description
-        'Lists all of active meters in the system that have one or more Estimated ("EST") data readings'
+        'Lists all active meters in the system that have one or more Estimated (EST) data readings'
       end
 
       def title
