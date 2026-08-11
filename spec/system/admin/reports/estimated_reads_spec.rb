@@ -12,8 +12,8 @@ describe 'Estimated Reads Report' do
   let!(:meter) do
     create(:gas_meter_with_validated_reading_dates,
            school: school,
-           start_date: Time.zone.today - 5,
-           end_date: Time.zone.today,
+           start_date: Time.zone.today - 60.days,
+           end_date: Time.zone.yesterday,
            data_source: create(:data_source),
            supplier: create(:supplier),
            status: 'EST')
@@ -37,12 +37,13 @@ describe 'Estimated Reads Report' do
     let(:expected_header) do
       [
         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name',
-         'Meter Type', 'Supplier', 'Data Source', 'Last Validated Date', 'Count']
+         'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Admin Meter Status', 'Last Validated Date',
+         'Total', 'Recent']
       ]
     end
     let(:expected_rows) do
       [[school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s, meter.name,
-        '', meter.supplier.name, meter.data_source.name, Time.zone.today.iso8601, '6']]
+        '', 'NHH AMR', meter.supplier.name, meter.data_source.name, '', Time.zone.yesterday.iso8601, '60', '30']]
     end
   end
 
