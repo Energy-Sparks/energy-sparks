@@ -9,10 +9,10 @@ namespace :after_party do
     # single status for whole day, values: A, E, -
     stark&.update!(reading_status_fields: ['Est'])
 
-    edf = AmrDataFeedConfig.find_by(identifier: 'edf')
-    # status per half hour, but column name is repeated so specify once. All values will be found.
-    # Actual values: Actual, Estimated
-    edf&.update!(reading_status_fields: ['Type'])
+    edf_configs = AmrDataFeedConfig.where(identifier: ['edf', 'edf-historic', 'edf-historic2'])
+    edf_configs.find_each do |config|
+      config.update!(reading_status_fields: ['Type'])
+    end
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
