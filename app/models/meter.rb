@@ -393,8 +393,8 @@ class Meter < ApplicationRecord
   private_class_method def self.latest_reading_date_sql
     <<~SQL.squish
       (SELECT MAX(avr.reading_date)
-      FROM amr_validated_readings AS avr
-      WHERE avr.meter_id = meters.id)
+       FROM amr_validated_readings AS avr
+       WHERE avr.meter_id = meters.id)
     SQL
   end
 
