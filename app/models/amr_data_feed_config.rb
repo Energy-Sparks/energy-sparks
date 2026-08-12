@@ -125,7 +125,15 @@ class AmrDataFeedConfig < ApplicationRecord
     header_array = this_header.split(',')
 
     reading_status_fields.flat_map do |field|
-      header_array.each_index.select { |i| header_array[i] == field }
+      all_indexes = header_array.each_index.select { |i| header_array[i] == field }
+
+      # for rare scenario where the reading fields and status fields have the same names
+      # first block of columns is reading, second block is status
+      if repeated_names
+        all_indexes.last
+      else
+        all_indexes
+      end
     end
   end
 

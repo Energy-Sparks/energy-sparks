@@ -144,8 +144,10 @@ module Amr
     def estimated?(amr_data_feed_row)
       return false unless @config.reading_status_fields.any?
 
+      flags = @config.estimate_flags.any? ? @config.estimate_flags : AmrDataFeedConfig::ESTIMATED_STATUS
+
       statuses = @config.reading_status_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
-      statuses.any? { |s| AmrDataFeedConfig::ESTIMATED_STATUS.include?(s) } # rubocop:disable Style/ArrayIntersect
+      statuses.any? { |s| flags.include?(s) } # rubocop:disable Style/ArrayIntersect
     end
   end
 end

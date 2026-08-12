@@ -370,6 +370,36 @@ describe Amr::DataFeedTranslator do
       # rubocop:enable RSpec/NestedGroups
 
       # rubocop:disable RSpec/NestedGroups
+      context 'with custom estimate flags' do
+        subject(:config) { create(:amr_data_feed_config, :with_single_status_field, estimate_flags: ['Yes']) }
+
+        context 'when Actual (A)' do
+          let(:reading) do
+            ['Meter 1', '2333300681718', '2026-08-07', 'No'] + Array.new(48) { |i| i + 1 }
+          end
+
+          it { expect(translated_row[:estimated]).to be false }
+        end
+
+        context 'when Estimated (E)' do
+          let(:reading) do
+            ['Meter 1', '2333300681718', '2026-08-07', 'Yes'] + Array.new(48) { |i| i + 1 }
+          end
+
+          it { expect(translated_row[:estimated]).to be true }
+        end
+
+        context 'when using a default value, it is ignored' do
+          let(:reading) do
+            ['Meter 1', '2333300681718', '2026-08-07', 'E'] + Array.new(48) { |i| i + 1 }
+          end
+
+          it { expect(translated_row[:estimated]).to be false }
+        end
+      end
+      # rubocop:enable RSpec/NestedGroups
+
+      # rubocop:disable RSpec/NestedGroups
       context 'with status per half hour' do
         subject(:config) { create(:amr_data_feed_config, :with_half_hourly_status_fields) }
 
