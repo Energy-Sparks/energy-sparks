@@ -5,9 +5,11 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
   task add_reading_status_fields_to_configs: :environment do # rubocop:disable Metrics/BlockLength
     puts "Running deploy task 'add_reading_status_fields_to_configs'"
 
-    british_gas_dc_da = AmrDataFeedConfig.find_by(identifier: 'british-gas-dc-da')
-    # interval_1_indicator...interval_48_indicator. Values: Empty, A, C, E
-    british_gas_dc_da&.update!(reading_status_fields: Array.new(48) { |i| "interval_#{i + 1}_indicator" })
+    british_gas_dc_da_configs = AmrDataFeedConfig.where(identifier: %w[british-gas-dc-da british-gas-dc-da-electricity])
+    british_gas_dc_da_configs.each do |config|
+      # interval_1_indicator...interval_48_indicator. Values: Empty, A, C, E
+      config.update!(reading_status_fields: Array.new(48) { |i| "interval_#{i + 1}_indicator" })
+    end
 
     brook_green_electricity = AmrDataFeedConfig.find_by(identifier: 'brook-green-electricity')
     brook_green_electricity&.update!(reading_status_fields: Array.new(48) { |i| "ReadTypeHH#{i + 1}" })
