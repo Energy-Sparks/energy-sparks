@@ -418,6 +418,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_091147) do
     t.boolean "delayed_reading", default: false, null: false
     t.text "description", null: false
     t.boolean "enabled", default: true, null: false
+    t.string "estimate_flags", default: [], null: false, array: true
     t.string "expected_units"
     t.enum "half_hourly_labelling", enum_type: "half_hourly_labelling"
     t.boolean "handle_off_by_one", default: false
@@ -437,6 +438,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_091147) do
     t.text "reading_fields", null: false, array: true
     t.string "reading_status_fields", default: [], null: false, array: true
     t.text "reading_time_field"
+    t.boolean "repeated_names", default: false, null: false
     t.boolean "row_per_reading", default: false, null: false
     t.integer "source_type", default: 0, null: false
     t.text "units_field"

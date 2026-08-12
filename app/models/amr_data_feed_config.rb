@@ -13,6 +13,7 @@
 #  delayed_reading         :boolean          default(FALSE), not null
 #  description             :text             not null
 #  enabled                 :boolean          default(TRUE), not null
+#  estimate_flags          :string           default([]), not null, is an Array
 #  expected_units          :string
 #  half_hourly_labelling   :enum
 #  handle_off_by_one       :boolean          default(FALSE)
@@ -31,6 +32,7 @@
 #  reading_fields          :text             not null, is an Array
 #  reading_status_fields   :string           default([]), not null, is an Array
 #  reading_time_field      :text
+#  repeated_names          :boolean          default(FALSE), not null
 #  row_per_reading         :boolean          default(FALSE), not null
 #  source_type             :integer          default(0), not null
 #  units_field             :text
