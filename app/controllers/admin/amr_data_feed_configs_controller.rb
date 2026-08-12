@@ -7,7 +7,9 @@ module Admin
       @configurations = AmrDataFeedConfig.allow_manual.order(:description)
     end
 
-    def show; end
+    def show
+      @configurations = AmrDataFeedConfig.allow_manual.order(:description)
+    end
 
     def edit; end
 
