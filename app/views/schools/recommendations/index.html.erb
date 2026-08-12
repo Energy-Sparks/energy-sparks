@@ -6,7 +6,7 @@
 <%= render 'schools/prompts/join_programme', school: @school, style: :compact %>
 <%= render 'schools/prompts/audit', school: @school, style: :compact %>
 
-<% display_options = { classes: 'pb-4', limit: 5, limit_lg: 3 } %>
+<% display_options = { classes: 'pb-4', limit: 4 } %>
 <% display_limit = display_options[:limit] %>
 
 <%= render PanelSwitcherComponent.new(
@@ -17,13 +17,13 @@
     ) do |switcher| %>
   <% switcher.with_panel(label: t('common.labels.pupil_activities'), name: 'pupil') do |panel| %>
     <%= render RecommendationsComponent.new(
-          recommendations: Recommendations::Activities.new(@school).based_on_energy_use(display_limit),
+          tasks: Recommendations::Activities.new(@school).based_on_energy_use(display_limit),
           **display_options
         ) %>
   <% end %>
   <% switcher.with_panel(label: t('common.labels.adult_actions'), name: 'adult') do |panel| %>
     <%= render RecommendationsComponent.new(
-          recommendations: Recommendations::Actions.new(@school).based_on_energy_use(display_limit),
+          tasks: Recommendations::Actions.new(@school).based_on_energy_use(display_limit),
           **display_options
         ) %>
   <% end %>
@@ -37,13 +37,13 @@
     ) do |switcher| %>
   <% switcher.with_panel(label: t('common.labels.pupil_activities'), name: 'pupil') do |panel| %>
     <%= render RecommendationsComponent.new(
-          recommendations: Recommendations::Activities.new(@school).based_on_recent_activity(display_limit),
+          tasks: Recommendations::Activities.new(@school).based_on_recent_activity(display_limit),
           **display_options
         ) %>
   <% end %>
   <% switcher.with_panel(label: t('common.labels.adult_actions'), name: 'adult') do |panel| %>
     <%= render RecommendationsComponent.new(
-          recommendations: Recommendations::Actions.new(@school).based_on_recent_activity(display_limit),
+          tasks: Recommendations::Actions.new(@school).based_on_recent_activity(display_limit),
           **display_options
         ) %>
   <% end %>
@@ -54,6 +54,7 @@
       description: t('schools.recommendations.more_ideas.description'),
       id: 'more-ideas', **display_options
     ) do |c| %>
+
   <% c.with_item(name: t('schools.recommendations.more_ideas.programme'), href: programme_types_path,
                  image: 'recommendations/get-energised.png') %>
   <% c.with_item(name: t('schools.recommendations.more_ideas.activities', count: ActivityType.count),

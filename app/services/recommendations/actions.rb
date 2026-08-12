@@ -7,11 +7,7 @@ module Recommendations
     end
 
     def audit_tasks
-      if Flipper.enabled?(:todos)
-        school.audit_intervention_type_tasks
-      else
-        school.audit_intervention_types
-      end
+      school.audit_intervention_type_tasks
     end
 
     def task_tasks(task)
