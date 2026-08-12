@@ -115,14 +115,12 @@ class AmrDataFeedConfig < ApplicationRecord
   end
 
   def reading_indexes(header = nil)
-    this_header = header || header_example
-    header_array = this_header.split(',')
+    header_array = header_array(header)
     reading_fields.map { |reading_header| header_array.find_index(reading_header) }
   end
 
   def reading_status_indexes(header = nil)
-    this_header = header || header_example
-    header_array = this_header.split(',')
+    header_array = header_array(header)
 
     reading_status_fields.flat_map do |field|
       all_indexes = header_array.each_index.select { |i| header_array[i] == field }
@@ -165,6 +163,11 @@ class AmrDataFeedConfig < ApplicationRecord
   end
 
   private
+
+  def header_array(header = nil)
+    this_header = header || header_example
+    this_header.split(',')
+  end
 
   def no_missing_reading_indexes
     return unless reading_indexes.include?(nil)
