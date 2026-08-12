@@ -5,23 +5,12 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
   task add_reading_status_fields_to_configs: :environment do # rubocop:disable Metrics/BlockLength
     puts "Running deploy task 'add_reading_status_fields_to_configs'"
 
-    stark = AmrDataFeedConfig.find_by(identifier: 'smartestenergy-stark')
-    # single status for whole day, values: A, E, -
-    stark&.update!(reading_status_fields: ['Est'])
-
-    edf_configs = AmrDataFeedConfig.where(identifier: %w[edf edf-historic edf-historic2])
-    edf_configs.find_each do |config|
-      # Repeated columns called 'Type'
-      config.update!(reading_status_fields: ['Type'])
-    end
-
-    edf_row_per_reading = AmrDataFeedConfig.find_by(identifier: 'edf-20260109')
-    # row per reading, each labelled as Actual or Estimated
-    edf_row_per_reading&.update!(reading_status_fields: ['ReadType'])
-
     british_gas_dc_da = AmrDataFeedConfig.find_by(identifier: 'british-gas-dc-da')
     # interval_1_indicator...interval_48_indicator. Values: Empty, A, C, E
     british_gas_dc_da&.update!(reading_status_fields: Array.new(48) { |i| "interval_#{i + 1}_indicator" })
+
+    brook_green_electricity = AmrDataFeedConfig.find_by(identifier: 'brook-green-electricity')
+    brook_green_electricity&.update!(reading_status_fields: Array.new(48) { |i| "ReadTypeHH#{i + 1}" })
 
     clarity_reporting = AmrDataFeedConfig.find_by(identifier: 'clarity-reporting')
     clarity_reporting&.update!(reading_status_fields: Array.new(48) do |hh|
@@ -34,6 +23,19 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
       crown_electricity.update!(reading_status_fields:)
     end
 
+    datavision_custom = AmrDataFeedConfig.find_by(identifier: 'datavision-custom')
+    datavision_custom&.update!(reading_status_fields: ['Data Quality'])
+
+    edf_configs = AmrDataFeedConfig.where(identifier: %w[edf edf-historic edf-historic2])
+    edf_configs.find_each do |config|
+      # Repeated columns called 'Type'
+      config.update!(reading_status_fields: ['Type'])
+    end
+
+    edf_row_per_reading = AmrDataFeedConfig.find_by(identifier: 'edf-20260109')
+    # row per reading, each labelled as Actual or Estimated
+    edf_row_per_reading&.update!(reading_status_fields: ['ReadType'])
+
     imserv_datavision = AmrDataFeedConfig.find_by(identifier: 'imserv-datavision')
     # single status for whole day, values: A, E, -
     imserv_datavision&.update!(reading_status_fields: ['DQ Flag'])
@@ -44,12 +46,20 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
       config.update!(reading_status_fields: ['Data Marker'])
     end
 
-    sse1 = AmrDataFeedConfig.find_by(identifier: 'sse1')
-    sse1&.update!(reading_status_fields: Array.new(48) { |hh| "#{TimeOfDay.time_of_day_from_halfhour_index(hh)} Flag" })
+    npower_eon = AmrDataFeedConfig.find_by(identifier: 'npower-eon')
+    npower_eon&.update!(reading_status_fields: ['colStatuskwh'])
 
     perse = AmrDataFeedConfig.find_by(identifier: 'perse')
     # UT1..UT48
     perse&.update!(reading_status_fields: Array.new(48) { |i| "UT#{i + 1}" })
+
+    sse1 = AmrDataFeedConfig.find_by(identifier: 'sse1')
+    sse1&.update!(reading_status_fields: Array.new(48) { |hh| "#{TimeOfDay.time_of_day_from_halfhour_index(hh)} Flag" })
+
+    stark_configs = AmrDataFeedConfig.where(identifier: %w[smartestenergy-stark stark-portal-electricity])
+    stark_configs.each do |config|
+      config.update!(reading_status_fields: ['Est'])
+    end
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).

@@ -50,7 +50,7 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
-  ESTIMATED_STATUS = Set['E', 'Estimated']
+  ESTIMATED_STATUS = Set['E', 'Estimate', 'Estimated']
 
   scope :enabled,           -> { where(enabled: true) }
   scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
