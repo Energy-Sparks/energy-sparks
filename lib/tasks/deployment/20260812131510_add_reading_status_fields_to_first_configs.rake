@@ -28,6 +28,11 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
     datavision_custom = AmrDataFeedConfig.find_by(identifier: 'datavision-custom')
     datavision_custom&.update!(reading_status_fields: ['Data Quality'])
 
+    drax_portal_new = AmrDataFeedConfig.find_by(identifier: 'drax-portal-new')
+    # CSV has 2 blocks of columns called HH1-HH48. First are readings, second are status flags
+    # Indicate use of repeated names
+    drax_portal_new&.update!(reading_status_fields: Array.new(48) { |i| "HH#{i + 1}" }, repeated_names: true)
+
     edf_configs = AmrDataFeedConfig.where(identifier: %w[edf edf-historic edf-historic2])
     edf_configs.find_each do |config|
       # Repeated columns called 'Type'
@@ -62,6 +67,10 @@ namespace :after_party do # rubocop:disable Metrics/BlockLength
     stark_configs.each do |config|
       config.update!(reading_status_fields: ['Est'])
     end
+
+    tgp_hh_manual = AmrDataFeedConfig.find_by(identifier: 'tgp-hh-manual')
+    # Override default checks to treat 'Yes' as estimated
+    tgp_hh_manual&.update!(reading_status_fields: ['Actual or Estimate'], estimate_flags: ['Yes'])
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
