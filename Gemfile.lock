@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/Energy-Sparks/mailchimp-marketing-ruby.git
+  revision: f4b25b4de7f42b874d8a39347596e157eb626bfa
+  branch: ldodds-patch-1
+  specs:
+    MailchimpMarketing (3.0.80)
+      excon (>= 1.5)
+      json (~> 2.1, >= 2.1.0)
+
+GIT
   remote: https://github.com/Energy-Sparks/roo.git
   revision: 058a8e3d1c711c04c59a686805bbe1962d2b2ed1
   branch: bug-fix-branch
@@ -49,9 +58,6 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    MailchimpMarketing (3.0.80)
-      excon (>= 0.76.0, < 1)
-      json (~> 2.1, >= 2.1.0)
     action_text-trix (2.1.18)
       railties
     actioncable (8.1.3.1)
@@ -275,7 +281,8 @@ GEM
       tzinfo
     eventbrite_sdk (3.6.0)
       rest-client (~> 2.0)
-    excon (0.112.0)
+    excon (1.7.0)
+      logger
     execjs (2.10.1)
     extendmatrix (0.4)
     factory_bot (6.5.5)
@@ -880,7 +887,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  MailchimpMarketing
+  MailchimpMarketing!
   active_storage_validations
   after_party
   annotaterb
