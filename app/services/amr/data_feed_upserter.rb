@@ -41,6 +41,7 @@ module Amr
             END)
           FROM generate_series(1, 48) AS s(i)
       ),
+      parsed_date = excluded.parsed_date,
       amr_data_feed_config_id = excluded.amr_data_feed_config_id,
       meter_id = excluded.meter_id,
       amr_data_feed_import_log_id = excluded.amr_data_feed_import_log_id,

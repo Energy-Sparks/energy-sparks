@@ -56,7 +56,7 @@ module Amr
         else
           readings = Array.new(48)
           readings[reading_index] = kwh
-          new_record = { reading_date:, readings:, mpan_mprn: reading[:mpan_mprn],
+          new_record = { reading_date:, parsed_date: reading_date, readings:, mpan_mprn: reading[:mpan_mprn],
                          amr_data_feed_config_id: reading[:amr_data_feed_config_id], meter_id: reading[:meter_id] }
           @results_array << new_record
         end

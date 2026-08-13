@@ -39,6 +39,7 @@ describe Amr::DataFeedTranslator do
       result = results.first
       expect(result[:mpan_mprn]).to eq('2333300681718')
       expect(result[:reading_date]).to eq('31/12/2019')
+      expect(result[:parsed_date]).to eq(Date.parse('31/12/2019'))
       expect(result[:readings].first).to eq('1.20800000')
       expect(result[:readings].last).to eq('1.17700000')
       expect(result[:units]).to eq('kwh')
@@ -92,11 +93,13 @@ describe Amr::DataFeedTranslator do
 
         expect(results.first[:mpan_mprn]).to eq('10070831')
         expect(results.first[:reading_date]).to eq('01/06/2023')
+        expect(results.first[:parsed_date]).to be_nil
         expect(results.first[:reading_time]).to eq('00:00')
         expect(results.first[:readings]).to eq(['0.001'])
 
         expect(results.last[:mpan_mprn]).to eq('10070831')
         expect(results.last[:reading_date]).to eq('02/06/2023')
+        expect(results.last[:parsed_date]).to be_nil
         expect(results.last[:reading_time]).to eq('23:30')
         expect(results.last[:readings]).to eq(['0.048'])
       end
@@ -294,6 +297,7 @@ describe Amr::DataFeedTranslator do
 
         it 'reformats the dates' do
           expect(results.first[:reading_date]).to eq('2023-09-11T01:05:02Z')
+          expect(results.first[:parsed_date]).to eq(Date.parse('2023-09-11'))
         end
       end
     end
