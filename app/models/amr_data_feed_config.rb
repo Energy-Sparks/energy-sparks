@@ -84,6 +84,16 @@ class AmrDataFeedConfig < ApplicationRecord
 
   BLANK_THRESHOLD = 1
 
+  def self.date_from_string_using_date_format(date_string, date_format)
+    Date.strptime(date_string, date_format)
+  rescue ArgumentError
+    begin
+      Date.parse(date_string)
+    rescue ArgumentError
+      nil
+    end
+  end
+
   def latest_reading_date
     amr_data_feed_readings.maximum(:updated_at)
   end

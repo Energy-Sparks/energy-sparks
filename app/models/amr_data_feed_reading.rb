@@ -13,6 +13,7 @@
 #  id                          :bigint(8)        not null, primary key
 #  meter_serial_number         :text
 #  mpan_mprn                   :text             not null
+#  parsed_date                 :date
 #  reading_date                :text             not null
 #  readings                    :text             not null, is an Array
 #  units                       :text
@@ -31,7 +32,6 @@
 #  index_amr_data_feed_readings_on_created_at_and_meter_id      (created_at,meter_id)
 #  index_amr_data_feed_readings_on_meter_id                     (meter_id)
 #  index_amr_data_feed_readings_on_mpan_mprn                    (mpan_mprn)
-#  unique_meter_readings                                        (mpan_mprn,reading_date) UNIQUE
 #
 # Foreign Keys
 #
