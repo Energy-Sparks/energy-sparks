@@ -85,7 +85,7 @@ class AmrDataFeedConfig < ApplicationRecord
   BLANK_THRESHOLD = 1
 
   def self.date_from_string_using_date_format(date_string, date_format)
-    return nil if data_string.blank?
+    return nil if date_string.blank?
 
     Date.strptime(date_string, date_format)
   rescue ArgumentError
