@@ -73,7 +73,7 @@ class AmrDataFeedReading < ApplicationRecord
     WHEN date_format='%e %b %Y %H:%M:%S' THEN to_date(reading_date, 'DD Mon YYYY HH24:MI::SS')
     WHEN date_format='%b %e %Y %I:%M%p' THEN to_date(reading_date, 'Mon DD YYYY HH12:MIam')
     ELSE NULL
-    END parsed_date
+    END db_parsed_date
   SQL
 
   def self.download_all_data
@@ -128,7 +128,7 @@ class AmrDataFeedReading < ApplicationRecord
       'amr_data_feed_configs.source_type', 'amr_uploaded_readings.imported',
       PARSED_DATE
     ).order(
-      parsed_date: :desc,
+      db_parsed_date: :desc,
       created_at: :desc
     )
   end
@@ -141,7 +141,7 @@ class AmrDataFeedReading < ApplicationRecord
     list_of_amr_data_feed_config_ids = amr_data_feed_config_ids.map { |m| "'#{m}'" }.join(',')
 
     <<~QUERY
-      SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
+      SELECT mpan_mprn, meter_id, identifier, description, MIN(db_parsed_date) as earliest_reading, MAX(db_parsed_date) as latest_reading FROM (
         SELECT mpan_mprn, meter_id, identifier, amr_data_feed_configs.description, reading_date,
         #{PARSED_DATE}
         FROM amr_data_feed_readings
