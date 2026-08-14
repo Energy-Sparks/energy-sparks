@@ -63,7 +63,7 @@ gem 'eventbrite_sdk' # Eventbrite for training page
 gem 'faraday'
 gem 'faraday-follow_redirects'
 gem 'faraday-retry'
-gem 'MailchimpMarketing', git: 'https://github.com/Energy-Sparks/mailchimp-marketing-ruby.git', branch: 'ldodds-patch-1'
+gem 'MailchimpMarketing', github: 'Energy-Sparks/mailchimp-marketing-ruby', branch: 'ldodds-patch-1'
 gem 'mailgun_rails' # Email service
 gem 'mechanize' # For GIAS data downloader
 gem 'net-sftp'
