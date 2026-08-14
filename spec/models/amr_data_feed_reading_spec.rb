@@ -157,7 +157,7 @@ describe AmrDataFeedReading do
         end
       end
 
-      context 'with an newer unused record' do
+      context 'with a newer unused record' do
         before { create(:amr_data_feed_reading, meter: nil, created_at: 3.years.ago + 1.day) }
 
         it 'does nothing' do

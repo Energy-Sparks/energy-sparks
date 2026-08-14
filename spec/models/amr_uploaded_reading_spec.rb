@@ -24,7 +24,7 @@ describe AmrUploadedReading do
       end
     end
 
-    context 'with an newer unused record' do
+    context 'with a newer unused record' do
       before { create(:amr_uploaded_reading, created_at: 3.years.ago + 1.day) }
 
       it 'does nothing' do
