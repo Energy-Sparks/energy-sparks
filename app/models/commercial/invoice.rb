@@ -29,6 +29,8 @@ module Commercial
 
     scope :by_date, -> { order(created_at: :asc) }
 
+    before_destroy :confirm_deletable
+
     belongs_to :contract, class_name: 'Commercial::Contract'
     belongs_to :created_by, class_name: 'User'
 
@@ -67,6 +69,15 @@ module Commercial
           private_account_fee: prices.sum(&:private_account_fee)
         )
       end
+    end
+
+    private
+
+    def confirm_deletable
+      return if contract.deletable?
+
+      errors.add(:base, 'Invoice is not deletable')
+      throw(:abort)
     end
   end
 end

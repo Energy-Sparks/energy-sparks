@@ -19,8 +19,8 @@
 
 class Email < ApplicationRecord
   belongs_to :contact
-  has_many   :alert_subscription_events
-  has_many   :alerts, through: :alert_subscription_events
+  has_many :alert_subscription_events
+  has_many :alerts, through: :alert_subscription_events
 
   def sent?
     ! sent_at.nil?
