@@ -52,6 +52,8 @@ module Commercial
 
     self.table_name = 'commercial_contracts'
 
+    before_destroy :confirm_deletable
+
     scope :by_name, -> { order(name: :asc) }
 
     scope :over_licensed, lambda {
@@ -111,7 +113,7 @@ module Commercial
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
     has_many :schools, -> { distinct }, through: :licences
     has_many :school_onboardings, dependent: :nullify
-    has_many :invoices, class_name: 'Commercial::Invoice', dependent: :restrict_with_error
+    has_many :invoices, class_name: 'Commercial::Invoice', dependent: :destroy
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
@@ -268,7 +270,7 @@ module Commercial
     end
 
     def deletable?
-      !invoiced?
+      (contract_holder.is_a?(School) && contract_holder.deletable?) || !invoiced?
     end
 
     def editable_attribute?(name)
@@ -308,8 +310,11 @@ module Commercial
 
     private
 
-    def destroy_error_message
-      'Cannot delete a contract with an invoiced licence'
+    def confirm_deletable
+      return if deletable?
+
+      errors.add(:base, 'Contract is not deletable')
+      throw(:abort)
     end
 
     def ensure_only_editable_attributes_changed

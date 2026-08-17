@@ -8,12 +8,12 @@ module Commercial
       has_many :contracts,
                as: :contract_holder,
                class_name: 'Commercial::Contract',
-               dependent: :restrict_with_error
+               dependent: :destroy
 
       has_many :contract_contacts,
                as: :contract_holder,
                class_name: 'Commercial::ContractContact',
-               dependent: :restrict_with_error
+               dependent: :destroy
 
       has_many :invoices, through: :contracts
 

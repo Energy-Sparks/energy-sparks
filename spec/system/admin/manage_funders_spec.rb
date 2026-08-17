@@ -63,13 +63,12 @@ describe 'manage funders' do
 
     it { expect { click_on 'Delete' }.to change(Funder, :count).by(-1) }
 
-    context 'when the funder has a contract' do
+    context 'when the funder has an invoiced contract' do
       before do
-        create(:commercial_contract, contract_holder: funder)
-        click_on 'Delete'
+        create(:commercial_invoice, contract: create(:commercial_contract, contract_holder: funder))
       end
 
-      it { expect(page).to have_text('Cannot delete record because dependent contracts exist') }
+      it { expect { click_on 'Delete' }.not_to change(Funder, :count) }
     end
   end
 
