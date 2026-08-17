@@ -84,18 +84,6 @@ class ContentBase
     formatted_template_variables(:html)
   end
 
-  #only called via the test framework
-  def format_variables_as_html
-    scalars, tables = variable_list(true, :html, true)
-
-    header  = ['Variable', 'Value']
-    units   = [String,     String ]
-
-    tb_format = tables.map { |k, t| "<h3>#{k}</h3>" + (t || "<b>Nil table</b>") }.join(' ')
-
-    HtmlTableFormatting.new(header, scalars.to_a, units).html + tb_format
-  end
-
   def text_template_variables
     formatted_template_variables(:text)
   end
@@ -155,7 +143,7 @@ class ContentBase
       }
       front_end_template[group_name] = {}
       variable_group.each do |type, data|
-        next if [:chart, :table, TrueClass].include?(data[:units])
+        next if [:chart, TrueClass].include?(data[:units])
         unless data[:units].is_a?(Symbol) || data[:units].is_a?(Hash)
           if map_types.key?(data[:units])
             data[:units] = map_types[data[:units]]
@@ -225,7 +213,7 @@ class ContentBase
     raw_data = raw_template_variables
 
     #generate formatted template variable values
-    list = text_template_variables.reject { |type, _value| [:chart, :table, TrueClass].include?(lookup[type][:units]) }
+    list = text_template_variables.reject { |type, _value| [:chart, TrueClass].include?(lookup[type][:units]) }
 
     #generates high/low value versions of some variables
     #e.g. end up with capital_cost, capital_cost_low, capital_cost_high
@@ -235,14 +223,14 @@ class ContentBase
   # Called by the application to save variables and values used for building reports,
   # e.g. for school benchmarking/comparisons.
   #
-  # Returns the unformatted values for all variables except those declared as tables or
-  # charts. Variables that are Ranges are 'flattened' into new variables, e.g.
+  # Returns the unformatted values for all variables except those declared as charts
+  # Variables that are Ranges are 'flattened' into new variables, e.g.
   # `cost = 100..200` becomes `cost_low=100, cost_high=200`.
   #
   # Unlike +front_end_template_data+ this does not strip boolean types
   def variables_for_reporting
     lookup = flatten_template_variables
-    raw_variables = raw_template_variables.reject { |type, _value| [:chart, :table].include?(lookup[type][:units]) }
+    raw_variables = raw_template_variables.reject { |type, _value| [:chart].include?(lookup[type][:units]) }
 
     variables = {}
     raw_variables.each do |name, value|
@@ -273,19 +261,6 @@ class ContentBase
       variable_short_code = self.class.benchmark_template_variables[key][:benchmark_code]
       ["#{self.class.short_code}_#{variable_short_code}".to_sym, value]
     end.to_h
-  end
-
-  protected def format_array_of_hashes_into_table(rows, keys, units, medium)
-    rows.map do |row|
-      keys.each_with_index.map do |key, column_number|
-        format_for_table(row[key], units[column_number], medium)
-      end
-    end
-  end
-
-  private def format_for_table(value, unit, medium)
-    return value if medium == :raw || unit == String
-    FormatUnit.format(unit, value, medium, false, true)
   end
 
   private def percent_change(old_value, new_value)
@@ -326,33 +301,13 @@ class ContentBase
       if data.is_a?(Range)
         raw[self.class.convert_range_symbol_to_low(type)] = data.first
         raw[self.class.convert_range_symbol_to_high(type)] = data.last
-      elsif data.is_a?(Array)
-        raw.merge!(flatten_table_for_saving(data))
-        raw.delete(type)
       end
     end
     raw.transform_keys{ |k| self.class.name + ':' + k.to_s }
   end
 
-  private def flatten_table_for_saving(table)
-    data = {}
-    header = table[0]
-    (1...table.length).each do |row_index|
-      (1...table[row_index].length).each do |column_index|
-        key = self.class.name + ':' + table[row_index][0].to_s + ':' + header[column_index]
-        value = table[row_index][column_index]
-        data[key] = value.is_a?(TimeOfDay) ? value.to_s : value
-      end
-    end
-    data
-  end
-
   public_class_method def self.front_end_template_charts
     self.template_variable_by_type(:chart)
-  end
-
-  public_class_method def self.front_end_template_tables
-    self.template_variable_by_type(:table)
   end
 
   def self.template_variable_by_type(var_type)
@@ -366,10 +321,6 @@ class ContentBase
   def front_end_template_chart_data
     charts = front_end_template_chart_data_by_type(:chart)
     charts.reject { |_name, definition| definition.empty? }
-  end
-
-  def front_end_template_table_data
-    front_end_template_chart_data_by_type(:table)
   end
 
   private def front_end_template_chart_data_by_type(var_type)
@@ -444,15 +395,12 @@ class ContentBase
     list
   end
 
-  private def variable_list(formatted, format = :text, split_out_tables = false)
+  private def variable_list(formatted, format = :text)
     list = {}
-    tables = {}
     flatten_template_variables.each do |type, data|
       begin
         if [TrueClass, FalseClass].include?(data[:units])
           list[type] = send(type) # don't reformat flags so can be bound in if tests
-        elsif data[:units] == :table
-          tables[type] = format_table(type, data, formatted, format)
         else
           if respond_to?(type, true)
             if formatted && send(type).nil?
@@ -471,7 +419,7 @@ class ContentBase
       end
     end
     missing_variable_summary
-    split_out_tables ? [list, tables] : list.merge(tables)
+    list
   end
 
   private def log_missing_variable(type)
@@ -483,38 +431,12 @@ class ContentBase
     # but overridden for energy alert benchmark
   end
 
-  # convert a table either into an html table, or a '|' bar seperated text table; can't use commas as contined in 1,234 numbers
-  private def format_table(type, data_description, formatted, format)
-    header, formatted_data = format_table_data(type, data_description, formatted, format)
-    return nil if formatted_data.nil?
-    table_formatter = AlertRenderTable.new(header, formatted_data)
-    table_formatter.render(format)
-  end
-
   protected def user_numeric_comprehension_level
     :ks2
   end
 
   protected def format(unit, value, format, in_table, level)
     FormatUnit.format(unit, value, format, true, in_table, level)
-  end
-
-  # convert the cells within a table into formatted html or text
-  private def format_table_data(type, data_description, formatted, format)
-    formatted_table = []
-    return [nil, nil] unless respond_to? type
-    table_data = send(type)
-    return [data_description[:header], nil] if table_data.nil?
-    column_formats = data_description[:column_types]
-    table_data.each do |row_data|
-      formatted_row = []
-      row_data.each_with_index do |val, index|
-        formatted_val = formatted ? format(column_formats[index], val, format, true, user_numeric_comprehension_level) : val
-        formatted_row.push(formatted_val)
-      end
-      formatted_table.push(formatted_row)
-    end
-    [data_description[:header], formatted_table]
   end
 
   def needs_gas_data?

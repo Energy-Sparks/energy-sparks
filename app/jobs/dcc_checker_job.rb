@@ -13,8 +13,20 @@ class DccCheckerJob < ApplicationJob
   def update_meters(meters)
     meters.filter_map do |meter|
       meter.update!(dcc_checked_at: Time.current, dcc_meter: Meters::N3rgyMeteringService.new(meter).type)
-      old_value, new_value = meter.saved_change_to_dcc_meter
-      meter.id if old_value == 'no' && new_value != 'no'
+
+      meter.id if notify_of_change?(meter)
+    end
+  end
+
+  def notify_of_change?(meter)
+    old_value, new_value = meter.saved_change_to_dcc_meter
+    case old_value
+    in 'no'
+      new_value != 'no'
+    in 'other'
+      new_value == 'smets2'
+    else
+      false
     end
   end
 end

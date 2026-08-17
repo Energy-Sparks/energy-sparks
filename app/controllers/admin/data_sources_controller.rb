@@ -6,12 +6,17 @@ module Admin
 
     load_and_authorize_resource
 
+    def index
+      @data_sources = @data_sources.order(:name)
+    end
+
     def show; end
 
     def deliver
       @data_source = DataSource.find(params[:data_source_id])
       SendDataSourceReportJob.perform_later(to: current_user.email, data_source_id: @data_source.id)
-      redirect_back fallback_location: admin_data_source_path(@data_source), notice: "Data source report for #{@data_source.name} requested to be sent to #{current_user.email}"
+      redirect_back_or_to(admin_data_source_path(@data_source),
+                          notice: "Data source report for #{@data_source.name} requested to be sent to #{current_user.email}")
     end
 
     def create
@@ -35,14 +40,26 @@ module Admin
       redirect_to admin_data_sources_path, notice: 'Data source was successfully deleted.'
     end
 
-    def index
-      @data_sources = @data_sources.order(:name)
-    end
-
     private
 
     def data_source_params
-      params.require(:data_source).permit(:name, :organisation_type, :owned_by_id, :contact_name, :contact_email, :loa_contact_details, :import_warning_days, :alerts_on, :alert_percentage_threshold, :data_prerequisites, :data_feed_type, :new_area_data_feed, :add_existing_data_feed, :data_issues_contact_details, :historic_data, :loa_expiry_procedure, :comments, :load_tariffs)
+      params.require(:data_source).permit(:add_existing_data_feed,
+                                          :alert_percentage_threshold,
+                                          :alerts_on,
+                                          :comments,
+                                          :contact_email,
+                                          :contact_name,
+                                          :data_feed_type,
+                                          :data_issues_contact_details,
+                                          :data_prerequisites,
+                                          :historic_data,
+                                          :import_warning_days,
+                                          :loa_contact_details,
+                                          :loa_expiry_procedure,
+                                          :name,
+                                          :new_area_data_feed,
+                                          :organisation_type,
+                                          :owned_by_id)
     end
   end
 end

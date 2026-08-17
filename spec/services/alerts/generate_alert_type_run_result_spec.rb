@@ -18,7 +18,6 @@ module Alerts
           relevance: :relevant,
           template_data: { template: 'variables' },
           chart_data: { chart: 'variables' },
-          table_data: { table: 'variables' },
           priority_data: { priority: 'variables' },
           benchmark_data: { benchmark: 'variables' }
         }

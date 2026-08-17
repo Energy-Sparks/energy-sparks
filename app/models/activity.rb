@@ -53,6 +53,7 @@ class Activity < ApplicationRecord
   has_many :observations, dependent: :destroy
 
   validates :happened_on, presence: true
+  validates :description, presence: true, on: :require_description
 
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
   scope :by_date, ->(order = :asc) { order(happened_on: order, id: order) }
