@@ -12,6 +12,19 @@ describe User do
     it { is_expected.to allow_value(create(:school_group)).for(:school_group) }
   end
 
+  describe '#disable!' do
+    it 'still disables invalid users' do
+      user = create(:user)
+      user.disable!
+      expect(user.reload.active).to be(false)
+      user = create(:user)
+      user.update_column(:email, 'invalid') # rubocop:disable Rails/SkipsModelValidations
+      expect(user.reload.valid?).to be(false)
+      user.disable!
+      expect(user.reload.active).to be(false)
+    end
+  end
+
   describe 'associations' do
     subject(:user) { build(:user) }
 

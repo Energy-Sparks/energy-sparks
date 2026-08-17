@@ -193,11 +193,13 @@ class User < ApplicationRecord
   end
 
   def disable!
-    update!(active: false)
+    self.active = false
+    save(validate: false)
   end
 
   def enable!
-    update!(active: true)
+    self.active = true
+    save(validate: false)
   end
 
   def default_scoreboard
