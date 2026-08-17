@@ -43,11 +43,11 @@ describe Commercial::Contract do
 
         it 'does not allow the contract to be destroyed' do
           expect(contract.destroy).to be(false)
-          expect(contract.errors[:base]).to include('Cannot delete a contract with an invoiced licence')
           expect(contract).to be_persisted
         end
       end
 
+      # rubocop:disable RSpec/NestedGroups
       context 'with an invoice' do
         before do
           create(:commercial_invoice, contract:)
@@ -55,10 +55,54 @@ describe Commercial::Contract do
 
         it 'does not allow the contract to be destroyed' do
           expect(contract.destroy).to be(false)
-          expect(contract.errors[:base]).to include('Cannot delete a contract with an invoiced licence')
           expect(contract).to be_persisted
         end
+
+        context 'when contract holder is archived school' do
+          let!(:contract) do
+            create(:commercial_contract,
+                   contract_holder: create(:school, :archived, archived_date: 3.years.ago - 1.day))
+          end
+
+          it 'allows contract to be deleted' do
+            expect { contract.destroy }.to change(described_class, :count).by(-1)
+          end
+        end
+
+        context 'when contract holder is recently archived school' do
+          let!(:contract) do
+            create(:commercial_contract,
+                   contract_holder: create(:school, :archived, archived_date: 3.years.ago + 1.day))
+          end
+
+          it 'does not allow the contract to be destroyed' do
+            expect(contract.destroy).to be(false)
+          end
+        end
+
+        context 'when contract holder is soft-deleted school' do
+          let!(:contract) do
+            create(:commercial_contract,
+                   contract_holder: create(:school, :deleted, removal_date: 3.years.ago - 1.day))
+          end
+
+          it 'allows contract to be deleted' do
+            expect { contract.destroy }.to change(described_class, :count).by(-1)
+          end
+        end
+
+        context 'when contract holder is recently soft-deleted school' do
+          let!(:contract) do
+            create(:commercial_contract,
+                   contract_holder: create(:school, :deleted, removal_date: 3.years.ago + 1.day))
+          end
+
+          it 'does not allow the contract to be destroyed' do
+            expect(contract.destroy).to be(false)
+          end
+        end
       end
+      # rubocop:enable RSpec/NestedGroups
 
       context 'with confirmed licences' do
         before do

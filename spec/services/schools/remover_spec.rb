@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe SchoolRemover, :schools, type: :service do
+# rubocop:disable RSpec/MultipleMemoizedHelpers
+describe Schools::Remover, :schools, type: :service do
   include ActiveJob::TestHelper
   include EmailHelpers
 
@@ -8,25 +11,25 @@ describe SchoolRemover, :schools, type: :service do
   let(:visible_school)           { create(:school, visible: true, number_of_pupils: 12) }
 
   let!(:school_admin)            { create(:school_admin, school: school) }
-  let!(:contact)                 { create(:contact_with_name_email_phone, school: school, user: school_admin) }
   let!(:school_admin_user)       { create(:school_admin, school: school) }
   let!(:staff_user)              { create(:staff, school: school) }
-  let!(:pupil_user)              { create(:pupil, school: school) }
 
   let!(:electricity_meter)       { create(:electricity_meter_with_validated_reading, school: school) }
   let!(:gas_meter)               { create(:gas_meter, :with_unvalidated_readings, school: school) }
   let!(:electricity_meter_issue) { create(:issue, school: school) }
   let!(:gas_meter_issue)         { create(:issue, school: school) }
-  let!(:school_issue)            { create(:issue, school: school) }
 
   let(:archive) { false }
-  let(:service) { SchoolRemover.new(school, archive: archive) }
+  let(:service) { described_class.new(school, archive: archive) }
 
   around do |example|
     ClimateControl.modify(SEND_AUTOMATED_EMAILS: 'true') { example.run }
   end
 
   before do
+    create(:contact_with_name_email_phone, school: school, user: school_admin)
+    create(:pupil, school: school)
+    create(:issue, school: school)
     electricity_meter_issue.meters << electricity_meter
     electricity_meter_issue.save!
     gas_meter_issue.meters << gas_meter
@@ -41,7 +44,7 @@ describe SchoolRemover, :schools, type: :service do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
         expect(school.users.count(&:active?)).to eq(0)
-        expect(service.users_ready?).to eq(true)
+        expect(service.users_ready?).to be(true)
       end
     end
 
@@ -55,7 +58,7 @@ describe SchoolRemover, :schools, type: :service do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
         expect(school.users.count(&:active?)).to eq(1)
-        expect(service.users_ready?).to eq(false)
+        expect(service.users_ready?).to be(false)
       end
     end
 
@@ -70,11 +73,11 @@ describe SchoolRemover, :schools, type: :service do
         expect(visible_school.cluster_users.count).to eq(1)
         expect(school.users.count).to eq(4)
         expect(school.users.count(&:active?)).to eq(1)
-        expect(service.users_ready?).to eq(true)
+        expect(service.users_ready?).to be(true)
       end
     end
 
-    context 'with two access locked users and two unlocked users, only one of which is associated with another school' do
+    context 'with two access locked users & two unlocked users, only one of which is associated with another school' do
       before do
         school.users.each(&:disable!)
         school.users.first.enable!
@@ -86,7 +89,7 @@ describe SchoolRemover, :schools, type: :service do
         expect(visible_school.cluster_users.count).to eq(1)
         expect(school.users.count).to eq(4)
         expect(school.users.count(&:active?)).to eq(2)
-        expect(service.users_ready?).to eq(false)
+        expect(service.users_ready?).to be(false)
       end
     end
   end
@@ -139,7 +142,7 @@ describe SchoolRemover, :schools, type: :service do
         it 'raises error' do
           expect do
             service.remove_school!
-          end.to raise_error(SchoolRemover::Error)
+          end.to raise_error(Schools::Remover::Error)
         end
       end
     end
@@ -210,7 +213,7 @@ describe SchoolRemover, :schools, type: :service do
         it 'raises error' do
           expect do
             service.remove_school!
-          end.to raise_error(SchoolRemover::Error)
+          end.to raise_error(Schools::Remover::Error)
         end
       end
     end
@@ -255,7 +258,7 @@ describe SchoolRemover, :schools, type: :service do
     end
 
     context 'when a user is not confirmed' do
-      let!(:unconfirmed) { create(:school_admin, school: school, confirmed_at: nil) }
+      before { create(:school_admin, school: school, confirmed_at: nil) }
 
       it 'removes the unconfirmed user' do
         remove
@@ -273,9 +276,9 @@ describe SchoolRemover, :schools, type: :service do
 
     it 'deactivates the meters' do
       electricity_meter.reload
-      expect(electricity_meter.active).to eq false
+      expect(electricity_meter.active).to be false
       gas_meter.reload
-      expect(gas_meter.active).to eq false
+      expect(gas_meter.active).to be false
     end
 
     it 'removes the validated data' do
@@ -302,3 +305,4 @@ describe SchoolRemover, :schools, type: :service do
   # remove onboarding?
   # remove calendars?
 end
+# rubocop:enable RSpec/MultipleMemoizedHelpers

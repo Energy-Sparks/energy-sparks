@@ -5,7 +5,7 @@ module Commercial
     extend ActiveSupport::Concern
 
     included do
-      has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_exception
+      has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
 
       scope :without_current_licence, lambda {
         where.not(

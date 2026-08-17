@@ -31,6 +31,8 @@ module Commercial
 
     self.table_name = 'commercial_line_items'
 
+    before_destroy :confirm_deletable
+
     belongs_to :invoice, class_name: 'Commercial::Invoice'
     belongs_to :licence, class_name: 'Commercial::Licence'
 
@@ -59,6 +61,15 @@ module Commercial
 
     def value
       Price.new(base_price:, metering_fee:, private_account_fee:)
+    end
+
+    private
+
+    def confirm_deletable
+      return if invoice.contract.deletable?
+
+      errors.add(:base, 'Invoice is not deletable')
+      throw(:abort)
     end
   end
 end

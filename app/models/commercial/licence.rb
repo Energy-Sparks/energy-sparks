@@ -44,6 +44,7 @@ module Commercial
     delegate :contract_holder, to: :contract
 
     before_save :move_to_pending_if_school_data_enabled
+    before_destroy :confirm_deletable
 
     LICENCE_STATUS = {
       provisional: 'provisional',
@@ -97,7 +98,7 @@ module Commercial
     end
 
     def deletable?
-      !invoiced?
+      contract.deletable? || !invoiced?
     end
 
     private_class_method def self.leap_days_between(period_start, period_end)
@@ -108,8 +109,11 @@ module Commercial
 
     private
 
-    def destroy_error_message
-      'Cannot delete an invoiced licence'
+    def confirm_deletable
+      return if deletable?
+
+      errors.add(:base, 'Licence is not deletable')
+      throw(:abort)
     end
 
     def move_to_pending_if_school_data_enabled

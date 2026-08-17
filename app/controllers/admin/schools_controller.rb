@@ -3,12 +3,12 @@ module Admin
     load_and_authorize_resource :school
 
     def removal
-      @school_remover = SchoolRemover.new(@school)
+      @school_remover = ::Schools::Remover.new(@school)
       render layout: Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
     end
 
     def deactivate_users
-      service = SchoolRemover.new(@school)
+      service = ::Schools::Remover.new(@school)
       service.remove_users!
       redirect_back fallback_location: root_path, notice: 'Users have been disabled'
     rescue => e
@@ -30,7 +30,7 @@ module Admin
     end
 
     def reenable
-      service = SchoolRemover.new(@school)
+      service = ::Schools::Remover.new(@school)
       service.reenable_school!
       redirect_back fallback_location: root_path, notice: 'School has been re-enabled'
     rescue => e
@@ -54,12 +54,12 @@ module Admin
     private
 
     def remove_school(archive: true)
-      service = SchoolRemover.new(@school, archive: archive)
+      service = ::Schools::Remover.new(@school, archive: archive)
       service.remove_school!
     end
 
     def remove_meters(archive: true)
-      service = SchoolRemover.new(@school, archive: archive)
+      service = ::Schools::Remover.new(@school, archive: archive)
       service.remove_meters!
     end
   end

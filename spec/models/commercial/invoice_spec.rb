@@ -3,6 +3,25 @@
 require 'rails_helper'
 
 describe Commercial::Invoice do
+  describe 'when destroying' do
+    let!(:invoice) { create(:commercial_invoice) }
+
+    it 'does not allow invoice to be destroyed' do
+      expect(invoice.destroy).to be(false)
+    end
+
+    context 'when contract is deletable' do
+      let!(:contract) do
+        create(:commercial_contract, contract_holder: create(:school, :archived, archived_date: 3.years.ago - 1.day))
+      end
+      let!(:invoice) { create(:commercial_invoice, contract:) }
+
+      it 'allows invoice to be deleted' do
+        expect { invoice.destroy }.to change(described_class, :count).by(-1)
+      end
+    end
+  end
+
   describe '.invoice_number' do
     subject(:invoice) { create(:commercial_invoice) }
 
