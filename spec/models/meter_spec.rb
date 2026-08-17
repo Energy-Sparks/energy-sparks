@@ -560,7 +560,7 @@ describe Meter, :meters do
     context 'when consent has not been granted, or already withdrawn' do
       let!(:meter) { create(:electricity_meter, consent_granted: false) }
 
-      it 'cannot be destroyed' do
+      it 'can be destroyed' do
         expect { meter.destroy }.to change(described_class, :count).by(-1)
       end
     end
