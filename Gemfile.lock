@@ -798,7 +798,7 @@ GEM
     simple_form (5.4.1)
       actionpack (>= 7.0)
       activemodel (>= 7.0)
-    simplecov (1.0.3)
+    simplecov (1.1.1)
     singleton (0.3.0)
     sitemap_generator (7.1.1)
       builder (~> 3.0)
