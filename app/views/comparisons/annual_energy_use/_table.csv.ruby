@@ -23,18 +23,18 @@ CSV.generate do |csv|
     csv << [
       result.school.name,
       recent,
-      format_unit(result.electricity_last_year_kwh, Float, true, :benchmark),
-      format_unit(result.electricity_last_year_gbp, Float, true, :benchmark),
-      format_unit(result.electricity_last_year_co2, Float, true, :benchmark),
-      format_unit(result.gas_last_year_kwh, Float, true, :benchmark),
-      format_unit(result.gas_last_year_gbp, Float, true, :benchmark),
-      format_unit(result.gas_last_year_co2, Float, true, :benchmark),
-      format_unit(result.storage_heaters_last_year_kwh, Float, true, :benchmark),
-      format_unit(result.storage_heaters_last_year_gbp, Float, true, :benchmark),
-      format_unit(result.storage_heaters_last_year_co2, Float, true, :benchmark),
+      format_unit(result.electricity_last_year_kwh, Float),
+      format_unit(result.electricity_last_year_gbp, Float),
+      format_unit(result.electricity_last_year_co2, Float),
+      format_unit(result.gas_last_year_kwh, Float),
+      format_unit(result.gas_last_year_gbp, Float),
+      format_unit(result.gas_last_year_co2, Float),
+      format_unit(result.storage_heaters_last_year_kwh, Float),
+      format_unit(result.storage_heaters_last_year_gbp, Float),
+      format_unit(result.storage_heaters_last_year_co2, Float),
       result.school_type_name,
-      format_unit(result.pupils, :pupils, true, :benchmark),
-      format_unit(result.floor_area, Float, true, :benchmark)
+      format_unit(result.pupils, :pupils),
+      format_unit(result.floor_area, Float)
     ]
   end
 end.html_safe
