@@ -76,7 +76,7 @@ class Meter < ApplicationRecord
   has_many :issues, through: :issue_meters
   has_many :meter_attributes, dependent: :destroy
   has_many :meter_monthly_summaries, dependent: :destroy
-  has_one :rtone_variant_installation, required: false
+  has_one :rtone_variant_installation, required: false, dependent: :destroy
   has_one :school_group, through: :school
 
   before_destroy :ensure_not_consented

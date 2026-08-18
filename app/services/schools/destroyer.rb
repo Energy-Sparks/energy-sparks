@@ -22,6 +22,7 @@ module Schools
           school.transaction do
             remover.remove_users! # deactivate users, remove association with school if user has multiple schools
             remover.remove_meters! # deactivate meters, removing consent via API call if needed
+            IssueMeter.where(meter: school.meters).delete_all
             school.destroy!
           end
         rescue StandardError => e
