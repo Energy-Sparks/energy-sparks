@@ -2,8 +2,8 @@
   <table class="table table-sm">
     <thead>
       <tr>
-        <th>Mpan (or Id)</th>
         <th>Site Id</th>
+        <th>Mpan (or Id)</th>
         <th>API Key</th>
         <th>Last updated</th>
         <th>Consented at</th>
@@ -13,8 +13,8 @@
     <tbody>
       <% solar_edge_installations.each do |installation| %>
         <tr>
-          <td><%= link_to installation.mpan, school_solar_edge_installation_path(school, installation) %></td>
           <td><%= installation.site_id %></td>
+          <td><%= link_to installation.mpan, school_solar_edge_installation_path(school, installation) %></td>
           <td><%= installation.api_key %></td>
           <td><%= nice_date_times(installation.updated_at) %></td>
           <td><%= nice_date_times(installation.consent_granted_at) if installation.consent_granted_at %></td>

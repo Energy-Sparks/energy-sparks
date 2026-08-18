@@ -59,6 +59,8 @@ Rails.application.routes.draw do
   get '/r/school(/*path)', to: 'redirects#school_page_redirect', as: :school_page_redirect, constraints: { path: /.*/ }
   get '/r/group(/*path)', to: 'redirects#group_page_redirect', as: :group_page_redirect, constraints: { path: /.*/ }
 
+  get '/oauth/solar-edge', to: 'solar_edge#callback'
+
   direct :cdn_link do |model, options|
     expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
     asset_host = ENV.fetch('ASSET_HOST', 'localhost:3000')

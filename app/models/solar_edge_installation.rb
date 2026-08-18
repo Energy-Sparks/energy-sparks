@@ -35,7 +35,7 @@ class SolarEdgeInstallation < ApplicationRecord
 
   has_many :meters, dependent: nil
 
-  validates :site_id, :mpan, :api_key, presence: true
+  validates :site_id, presence: true
   validate :site_id_unique_to_school
 
   scope :active, -> { where(active: true) }
