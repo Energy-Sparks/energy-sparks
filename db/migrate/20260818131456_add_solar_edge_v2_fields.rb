@@ -6,7 +6,7 @@ class AddSolarEdgeV2Fields < ActiveRecord::Migration[8.1]
       t.string :access_token
       t.datetime :access_token_expires_at
       t.datetime :consent_granted_at
-      t.string :renewal_token
+      t.string :refresh_token
     end
   end
 end

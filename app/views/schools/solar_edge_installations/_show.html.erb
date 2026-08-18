@@ -50,3 +50,25 @@
      current power flow between all elements of the site including PV array, storage (battery), loads (consumption) and
      grid.</li>
 </ul>
+
+<h2>Solar Edge v2 Debugging</h2>
+<table class="table">
+  <tbody>
+    <tr>
+      <td>Consent Granted At</td>
+      <td><%= nice_date_times(installation.consent_granted_at) if installation.consent_granted_at %></td>
+    </tr>
+    <tr>
+      <td>Access token</td>
+      <td><%= installation.access_token %></td>
+    </tr>
+    <tr>
+      <td>Refresh token</td>
+      <td><%= installation.refresh_token %></td>
+    </tr>
+    <tr>
+      <td>Access token expires</td>
+      <td><%= nice_date_times(installation.access_token_expires_at) if installation.access_token_expires_at %></td>
+    </tr>
+  </tbody>
+</table>

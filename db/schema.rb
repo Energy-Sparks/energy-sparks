@@ -2229,7 +2229,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_131456) do
     t.datetime "created_at", null: false
     t.json "information", default: {}
     t.text "mpan"
-    t.string "renewal_token"
+    t.string "refresh_token"
     t.bigint "school_id", null: false
     t.text "site_id"
     t.datetime "updated_at", null: false
