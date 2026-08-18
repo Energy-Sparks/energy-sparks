@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'Baseload advice page', type: :system do
+RSpec.describe 'Baseload advice page' do
   let(:key) { 'baseload' }
   let(:expected_page_title) { 'Baseload analysis' }
 
@@ -31,6 +33,22 @@ RSpec.describe 'Baseload advice page', type: :system do
 
         it_behaves_like 'an advice page NOT showing electricity data warning'
       end
+    end
+
+    def expect_how_have_we_analysed_your_data
+      expect(page).to have_text(
+        Regexp.new(
+          ['How have we analysed your data\?\n',
+           'School characteristics\n',
+           'Cost calculations\n',
+           'Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before ' \
+           'this date the average tariff was 15.40p/kWh, and since it is £3.07/kWh\. This will increase your ' \
+           'electricity costs by 1,890&percnt; going forwards\.',
+           'School comparisons\n',
+           '"Exemplar" schools represent the top 17\.5% of Energy Sparks schools'].join('.*'),
+          Regexp::MULTILINE
+        )
+      )
     end
 
     context 'when viewing the analysis' do
@@ -89,12 +107,7 @@ RSpec.describe 'Baseload advice page', type: :system do
 
       it 'shows the how have we analysed your data modal' do
         first(:link, 'How did we calculate these figures?').click
-        expect(page).to have_text('How have we analysed your data?')
-        expect(page).to have_text('School characteristics')
-        expect(page).to have_text('Cost calculations')
-        expect(page).to have_text('Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before this date the average tariff was 15p/kWh, and since it is £3.10/kWh. This will increase your electricity costs by 1,900&percnt; going forwards')
-        expect(page).to have_text('School comparisons')
-        expect(page).to have_text('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
+        expect_how_have_we_analysed_your_data
       end
 
       context 'with limited data' do
@@ -218,12 +231,7 @@ RSpec.describe 'Baseload advice page', type: :system do
       it 'shows the how have we analysed your data modal' do
         # expect(page).to have_content("How did we calculate these figures?")
         click_on 'How did we calculate these figures?'
-        expect(page).to have_text('How have we analysed your data?')
-        expect(page).to have_text('School characteristics')
-        expect(page).to have_text('Cost calculations')
-        expect(page).to have_text('Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before this date the average tariff was 15p/kWh, and since it is £3.10/kWh. This will increase your electricity costs by 1,900&percnt; going forwards')
-        expect(page).to have_text('School comparisons')
-        expect(page).to have_text('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
+        expect_how_have_we_analysed_your_data
       end
     end
   end
