@@ -26,4 +26,7 @@
   <p>This school has no Solar Edge sites</p>
 <% end %>
 
-<p><%= link_to 'New Solar Edge API feed', new_school_solar_edge_installation_path, class: 'btn' %></p>
+<p>
+  <%= link_to 'New Solar Edge API feed', new_school_solar_edge_installation_path, class: 'btn' %>
+  <%= link_to 'Connect SolarEdge Site', DataFeeds::SolarEdge::Api.authorize_url(school.id), class: 'btn' %>
+</p>
