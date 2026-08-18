@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_18_131456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2220,12 +2220,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
   end
 
   create_table "solar_edge_installations", force: :cascade do |t|
+    t.string "access_token"
+    t.datetime "access_token_expires_at"
     t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_key"
+    t.datetime "consent_granted_at"
     t.datetime "created_at", null: false
     t.json "information", default: {}
     t.text "mpan"
+    t.string "renewal_token"
     t.bigint "school_id", null: false
     t.text "site_id"
     t.datetime "updated_at", null: false
