@@ -1,12 +1,11 @@
 class HtmlTableFormatting
   include Logging
-  def initialize(header, rows, total_row = nil, row_units = nil, use_table_formats = nil, precision = :ks2)
+  def initialize(header, rows, total_row = nil, row_units = nil, use_table_formats = nil)
     @header = header
     @rows = rows
     @total_row = total_row
     @row_units = row_units
     @use_table_formats = use_table_formats
-    @precision = precision
   end
 
   def html(right_justified_columns: [1..1000], widths: nil, scrollable: false, column_groups: nil)
@@ -94,7 +93,7 @@ class HtmlTableFormatting
 
   private def format_value(val, column_number)
     table_format = @use_table_formats.nil? ? true : @use_table_formats[column_number]
-    @row_units.nil? ? val : FormatUnit.format(@row_units[column_number], val, :html, true, table_format, @precision)
+    @row_units.nil? ? val : FormatUnit.format(@row_units[column_number], val, :html, true, table_format)
   end
 
   private def column_td(column, right_justified_columns)
@@ -127,89 +126,5 @@ class HtmlTableFormatting
       logger.error "Error generating html for #{self.class.name}"
       '<div class="alert alert-danger" role="alert"><p>Error generating advice</p></div>'
     end
-  end
-end
-
-# this is a bit of a bodge for the moment to attempt to highlight cells in the front end
-# for the purposes of testing targetting and tracking - PH 6Jan2021
-class HtmlTableFormattingWithHighlightedCells < HtmlTableFormatting
-  def self.cell_highlight_style
-    %{
-      <style>
-        #energy_sparks_good_performance_cell
-        {
-          background-color: green; color:white; font-weight: bold; border-radius: 15px; border: 5px solid white
-        }
-        #energy_sparks_bad_performance_cell
-        {
-          background-color: red; color:white; font-weight: bold; border-radius: 15px; border: 5px solid white
-        }
-      </style>
-    }
-  end
-
-  private
-
-  def cell_format(_row_number, column_number, right_justified_columns, val)
-    template = %{
-      <%= column_td(column_number, right_justified_columns, val) %><%= format_value(val, column_number) %> </td>
-    }.gsub(/^  /, '')
-    generate_html(template, binding)
-  end
-
-  def column_td(column, right_justified_columns, val)
-    td_for_right_justified_column(is_right_justified_column(column, right_justified_columns), val)
-  end
-
-  def td_for_right_justified_column(right_justified, val)
-    element = right_justified ? '<td class="text-right"' : '<td'
-    element + ' ' + id(val) + '>'
-  end
-
-  def id(val)
-    if cell_positive?(val)
-      %q{ id ="energy_sparks_bad_performance_cell"}
-    elsif cell_negative?(val)
-      %q{ id ="energy_sparks_good_performance_cell"}
-    else
-      %q{ }
-    end
-  end
-
-  def cell_positive?(val)
-    val.include?('+')
-  end
-
-  def cell_negative?(val)
-    val.include?('-')
-  end
-end
-
-class HtmlTableFormattingWithHighlightedCellsEstimatedData < HtmlTableFormattingWithHighlightedCells
-  def initialize(header, rows, total_row = nil, row_units = nil, use_table_formats = nil, precision = :ks2, row_estimates: nil)
-    super(header, rows, total_row, row_units, use_table_formats, precision)
-    @row_estimates = row_estimates
-  end
-
-  def cell_format(row_number, column_number, right_justified_columns, val)
-    if highlight_estimate?(column_number - 1, row_number) # non html 5
-      highlight_start = '<font color="green"><b>'
-      highlight_end   = '</b></font>'
-    end
-
-    template = %{
-      <%= column_td(column_number, right_justified_columns, val) %>
-      <%= highlight_start %><%= format_value(val, column_number) %> <%= highlight_end %></td>
-    }.gsub(/^  /, '')
-
-    generate_html(template, binding)
-  end
-
-  def highlight_estimate?(data_column_number, row_number)
-    return false if @row_estimates.nil?
-
-    return false unless @row_estimates.key?(row_number)
-
-    @row_estimates[row_number][data_column_number] > 0.0
   end
 end

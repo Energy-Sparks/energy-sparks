@@ -43,9 +43,13 @@ module Dashboards
             number_of_schools: helpers.number_with_delimiter(summarised_alert.number_of_schools),
             schools: I18n.t('school_count', count: summarised_alert.number_of_schools),
             describe_schools: describe_school_count(summarised_alert.number_of_schools, @schools.count),
-            total_one_year_saving_kwh: helpers.format_unit(summarised_alert.total_one_year_saving_kwh.magnitude, :kwh, false),
-            total_average_one_year_saving_gbp: helpers.format_unit(summarised_alert.total_average_one_year_saving_gbp.magnitude, :£, false, :ks2, :text),
-            total_one_year_saving_co2: helpers.format_unit(summarised_alert.total_one_year_saving_co2.magnitude, :co2, false),
+            total_one_year_saving_kwh:
+              helpers.format_unit(summarised_alert.total_one_year_saving_kwh.magnitude, :kwh, false),
+            total_average_one_year_saving_gbp:
+              helpers.format_unit(summarised_alert.total_average_one_year_saving_gbp.magnitude, :£, false,
+                                  medium: :text),
+            total_one_year_saving_co2:
+              helpers.format_unit(summarised_alert.total_one_year_saving_co2.magnitude, :co2, false)
           }
         )
       end.sort_by(&:priority)

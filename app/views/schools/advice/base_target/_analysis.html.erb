@@ -60,8 +60,8 @@
              end %>
         <tr>
           <td><%= formatted_target_date(target) %></td>
-          <td><%= format_unit(current_consumption, :kwh, numeric_level: :target) %></td>
-          <td><%= format_unit(target_consumption, :kwh, numeric_level: :target) %></td>
+          <td><%= format_unit(current_consumption, :kwh) %></td>
+          <td><%= format_unit(target_consumption, :kwh) %></td>
           <td><%= formatted_target_change(current_consumption, comparison_consumption) unless current_consumption.nil? %></td>
           <td><%= formatted_target(target) %></td>
         </tr>
