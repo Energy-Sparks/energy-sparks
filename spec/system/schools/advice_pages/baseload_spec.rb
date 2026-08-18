@@ -35,19 +35,17 @@ RSpec.describe 'Baseload advice page' do
       end
     end
 
-    def expect_how_have_we_analysed_your_data
-      expect(page).to have_text(
-        Regexp.new(
-          ['How have we analysed your data\?\n',
-           'School characteristics\n',
-           'Cost calculations\n',
-           'Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before ' \
-           'this date the average tariff was 15.40p/kWh, and since it is £3.07/kWh\. This will increase your ' \
-           'electricity costs by 1,890&percnt; going forwards\.',
-           'School comparisons\n',
-           '"Exemplar" schools represent the top 17\.5% of Energy Sparks schools'].join('.*'),
-          Regexp::MULTILINE
-        )
+    def how_have_we_analysed_your_data_regex
+      Regexp.new(
+        ['How have we analysed your data\?\n',
+         'School characteristics\n',
+         'Cost calculations\n',
+         'Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before ' \
+         'this date the average tariff was 15.40p/kWh, and since it is £3.07/kWh\. This will increase your ' \
+         'electricity costs by 1,890&percnt; going forwards\.',
+         'School comparisons\n',
+         '"Exemplar" schools represent the top 17\.5% of Energy Sparks schools'].join('.*'),
+        Regexp::MULTILINE
       )
     end
 
@@ -107,7 +105,7 @@ RSpec.describe 'Baseload advice page' do
 
       it 'shows the how have we analysed your data modal' do
         first(:link, 'How did we calculate these figures?').click
-        expect_how_have_we_analysed_your_data
+        expect(page).to have_text(how_have_we_analysed_your_data_regex)
       end
 
       context 'with limited data' do
@@ -231,7 +229,7 @@ RSpec.describe 'Baseload advice page' do
       it 'shows the how have we analysed your data modal' do
         # expect(page).to have_content("How did we calculate these figures?")
         click_on 'How did we calculate these figures?'
-        expect_how_have_we_analysed_your_data
+        expect(page).to have_text(how_have_we_analysed_your_data_regex)
       end
     end
   end
