@@ -19,6 +19,7 @@ FactoryBot.define do
         start_date   { Date.yesterday - 7 }
         end_date     { Date.yesterday }
         kwh_data_x48 { nil }
+        random_generator { Random.new }
       end
 
       after(:build) do |amr_data, evaluator|
@@ -28,7 +29,8 @@ FactoryBot.define do
                           type: 'ORIG',
                           substitute_date: nil,
                           upload_datetime: DateTime.now,
-                          kwh_data_x48: (evaluator.kwh_data_x48 || Array.new(48) { rand.round(2) }).dup)
+                          kwh_data_x48: (evaluator.kwh_data_x48 ||
+                                           Array.new(48) { evaluator.random_generator.rand.round(2) }).dup)
           amr_data.add(date, reading)
         end
       end

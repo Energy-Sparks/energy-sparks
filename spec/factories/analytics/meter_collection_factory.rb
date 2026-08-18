@@ -129,7 +129,8 @@ FactoryBot.define do
                                       type: evaluator.fuel_type,
                                       start_date: evaluator.start_date,
                                       end_date: evaluator.end_date,
-                                      kwh_data_x48: evaluator.kwh_data_x48),
+                                      kwh_data_x48: evaluator.kwh_data_x48,
+                                      random_generator: evaluator.random_generator),
                       rates: evaluator.rates)
         meter_collection.send(evaluator.fuel_type == :electricity ? :add_electricity_meter : :add_heat_meter, meter)
         AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
