@@ -49,11 +49,9 @@
     </div>
     <div class="col">
       <% if @configurations.stopped_feeds.include?(@configuration) %>
-        <td>
-            <span class="badge rounded-pill bg-danger text-light">
-              Out of Date
-            </span>
-        </td>
+        <span class="badge rounded-pill bg-danger text-light">
+          Out of Date
+        </span>
       <% end %>
     </div>
   </div>
@@ -262,9 +260,11 @@
   <div class="row">
     <div class="col-3">Repeated names?</div>
     <div class="col-4"><%= checkmark(@configuration.repeated_names, off_class: 'text-muted') %></div>
+    <div class="col">
       <p class="text-muted">
         Set when the reading and reading status fields have the same names. Ensures that the statuses can be
         correctly extracted.
       </p>
+    </div>
   </div>
 </div>
