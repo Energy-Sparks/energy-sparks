@@ -75,7 +75,7 @@ class User < ApplicationRecord
   belongs_to :staff_role, optional: true
   belongs_to :school_group, optional: true
   belongs_to :created_by, class_name: :User, optional: true
-  has_many :contacts
+  has_many :contacts, dependent: :destroy
   has_many :consent_grants, inverse_of: :user, dependent: :nullify
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
   has_many :issues_admin_for, class_name: 'SchoolGroup', inverse_of: :default_issues_admin_user,
@@ -104,7 +104,8 @@ class User < ApplicationRecord
     SchoolOnboarding: :created,
     User: :created
 
-  has_and_belongs_to_many :cluster_schools, class_name: 'School', join_table: :cluster_schools_users
+  has_many :cluster_schools_users, dependent: :delete_all
+  has_many :cluster_schools, through: :cluster_schools_users, source: :school
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -192,11 +193,13 @@ class User < ApplicationRecord
   end
 
   def disable!
-    update!(active: false)
+    self.active = false
+    save(validate: false)
   end
 
   def enable!
-    update!(active: true)
+    self.active = true
+    save(validate: false)
   end
 
   def default_scoreboard

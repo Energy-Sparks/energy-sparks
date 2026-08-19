@@ -604,4 +604,23 @@ describe Meter, :meters do
       end
     end
   end
+
+  describe 'when destroying' do
+    context 'when consent has been granted' do
+      let!(:meter) { create(:electricity_meter, consent_granted: true) }
+
+      it 'cannot be destroyed' do
+        expect { meter.destroy }.not_to(change(described_class, :count))
+        expect(meter.errors[:base]).to include('Audit requirements mean consent must be withdrawn before removing meter')
+      end
+    end
+
+    context 'when consent has not been granted, or already withdrawn' do
+      let!(:meter) { create(:electricity_meter, consent_granted: false) }
+
+      it 'can be destroyed' do
+        expect { meter.destroy }.to change(described_class, :count).by(-1)
+      end
+    end
+  end
 end
