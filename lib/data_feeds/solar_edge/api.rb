@@ -31,7 +31,7 @@ module DataFeeds
                               'grant_type' => 'authorization_code',
                               'code' => code
                             })
-        response = @connection.post('/v2/oauth2/token', body, POST_HEADERS)
+        response = @connection.post('/v2/oauth2/token', body.to_json, POST_HEADERS)
         response.body
       end
 
@@ -41,7 +41,7 @@ module DataFeeds
                               'grant_type' => 'refresh_token',
                               'refresh_token' => refresh_token
                             })
-        response = @connection.post('/v2/oauth2/token', body, POST_HEADERS)
+        response = @connection.post('/v2/oauth2/token', body.to_json, POST_HEADERS)
         response.body
       end
 

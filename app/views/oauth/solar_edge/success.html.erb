@@ -1,0 +1,20 @@
+<% content_for :page_title, t('oauth.solar_edge.success.title') %>
+
+<div class="application container">
+  <div class="row">
+    <div class="col">
+      <h1><%= t('oauth.solar_edge.success.title') %></h1>
+      <p>
+        <%= t('oauth.solar_edge.success.description', site_id: @site_id, school_name: @school.name) %>
+      </p>
+      <p>
+        <%= t('oauth.solar_edge.success.next_steps') %>
+      </p>
+      <p>
+        <%= link_to t('oauth.solar_edge.success.view_dashboard'),
+                    school_path(@school),
+                    class: 'btn btn-primary' %>
+      </p>
+    </div>
+  </div>
+</div>
