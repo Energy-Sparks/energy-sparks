@@ -18,8 +18,8 @@
           <td><%= installation.api_key %></td>
           <td><%= nice_date_times(installation.updated_at) %></td>
           <td><%= nice_date_times(installation.consent_granted_at) if installation.consent_granted_at %></td>
-          <td><%= render 'actions', installation:, school:,
-                                    id_prefix: Schools::SolarEdgeInstallationsController::ID_PREFIX %></td>
+          <td><%= render 'schools/solar_edge_installations/actions', installation:, school:,
+                                                                     id_prefix: Schools::SolarEdgeInstallationsController::ID_PREFIX %></td>
         </tr>
       <% end %>
     </tbody>
