@@ -13,8 +13,8 @@
     <tbody>
       <% solar_edge_installations.each do |installation| %>
         <tr>
-          <td><%= installation.site_id %></td>
-          <td><%= link_to installation.mpan, school_solar_edge_installation_path(school, installation) %></td>
+          <td><%= link_to installation.site_id, school_solar_edge_installation_path(school, installation) %></td>
+          <td><%= installation.mpan %></td>
           <td><%= installation.api_key %></td>
           <td><%= nice_date_times(installation.updated_at) %></td>
           <td><%= nice_date_times(installation.consent_granted_at) if installation.consent_granted_at %></td>
