@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe 'SolarEdge Oauth workflow' do
+  include ActiveJob::TestHelper
+
   let!(:amr_data_feed_config) { create(:amr_data_feed_config, process_type: :solar_edge_api, source_type: :api) }
 
   shared_context 'with a successful token request' do
@@ -103,6 +105,15 @@ describe 'SolarEdge Oauth workflow' do
         )
         expect(SolarEdgeInstallation.first.consent_granted_at.to_date).to eq(Time.zone.today)
         expect(SolarEdgeInstallation.first.access_token_expires_at.to_date).to eq(Time.zone.today)
+      end
+
+      it 'sends an email' do
+        perform_enqueued_jobs
+        email = ActionMailer::Base.deliveries.first
+        expect(email.to).to include('operations@energysparks.uk')
+        expect(email.subject).to eq(
+          "[energy-sparks-unknown] Energy Sparks - SolarEdge Site Connected for #{installation.school.name}"
+        )
       end
     end
 

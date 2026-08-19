@@ -12,6 +12,7 @@ module Oauth
       @tokens = DataFeeds::SolarEdge::Api.new.retrieve_access_token(@code)
 
       update_installation(@installation, @tokens)
+      AdminMailer.solar_edge_site_connected(@installation).deliver_later
       render :success
     rescue StandardError => e
       handle_error(e)
