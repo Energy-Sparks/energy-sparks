@@ -39,11 +39,11 @@ describe DataFeeds::SolarEdge::Api do
       it 'returns the parsed response' do
         stubs.post('/v2/oauth2/token') do |env|
           expect(env.body).to eq({
-                                   'client_id' => 'solar_edge_client_id',
-                                   'client_secret' => 'solar_edge_secret',
-                                   'grant_type' => 'authorization_code',
-                                   'code' => 'TEMPORARY_TOKEN'
-                                 })
+            'grant_type' => 'authorization_code',
+            'code' => 'TEMPORARY_TOKEN',
+            'client_id' => 'solar_edge_client_id',
+            'client_secret' => 'solar_edge_secret'
+          }.to_json)
           [200, { 'Content-Type': 'application/json' }, expected_response.to_json]
         end
         response = described_class.new(stubs:).retrieve_access_token('TEMPORARY_TOKEN')
@@ -75,11 +75,11 @@ describe DataFeeds::SolarEdge::Api do
       it 'returns the parsed response' do
         stubs.post('/v2/oauth2/token') do |env|
           expect(env.body).to eq({
-                                   'client_id' => 'solar_edge_client_id',
-                                   'client_secret' => 'solar_edge_secret',
-                                   'grant_type' => 'refresh_token',
-                                   'refresh_token' => 'tGzv3JOkF0XG5Qx2TlKWIA'
-                                 })
+            'grant_type' => 'refresh_token',
+            'refresh_token' => 'tGzv3JOkF0XG5Qx2TlKWIA',
+            'client_id' => 'solar_edge_client_id',
+            'client_secret' => 'solar_edge_secret'
+          }.to_json)
           [200, { 'Content-Type': 'application/json' }, expected_response.to_json]
         end
         response = described_class.new(stubs:).refresh_access_token('tGzv3JOkF0XG5Qx2TlKWIA')
