@@ -36,10 +36,7 @@ module Admin
       end
 
       def results
-        30.days.ago
-
         results = Meter.with_summary_of_estimated_data
-
         results = filter_results(results)
         results.order(count: :desc)
       end

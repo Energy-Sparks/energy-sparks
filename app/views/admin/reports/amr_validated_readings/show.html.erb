@@ -56,7 +56,7 @@
           <li>
             <span style='background:<%= colour %>;'></span>
             <div class="description" style="font-size: 17px;">
-              <small><%= @amr_types[type][:name]).to_s + (type == 'MISSING' ? '' : "(#{type})" %></small>
+              <small><%= @amr_types[type][:name].to_s + (type == 'MISSING' ? '' : "(#{type})") %></small>
             </div>
           </li>
         <% end %>

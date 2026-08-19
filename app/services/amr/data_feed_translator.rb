@@ -147,7 +147,7 @@ module Amr
       flags = @config.estimate_flags.any? ? @config.estimate_flags : AmrDataFeedConfig::ESTIMATED_STATUS
 
       statuses = @config.reading_status_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
-      statuses.any? { |s| flags.include?(s) } # rubocop:disable Style/ArrayIntersect
+      statuses.intersect?(flags.to_a)
     end
   end
 end
