@@ -30,6 +30,11 @@ module Amr
     # Postgres has no built in functions to do this type of array merging. This approach also
     # avoids having to declare a custom function
     #
+    # The estimated attribute works similarly. This has to calculate whether the updated record
+    # should have an estimated status based on completeness of incoming data. If any stored reading
+    # survive the merge and the stored record was estimated and we haven't overrwritten all the data, then
+    # we have to retain the existing estimated status.
+    #
     # For all the other columns we just take the values from the incoming data.
     ON_DUPLICATE_UPDATE_CLAUSE = <<~SQL.squish
       readings = (
@@ -40,6 +45,21 @@ module Amr
               ELSE (excluded.readings)[s.i]
             END)
           FROM generate_series(1, 48) AS s(i)
+      ),
+      estimated = (
+        SELECT
+          CASE
+            WHEN EXISTS (
+              SELECT 1
+              FROM generate_series(1, 48) AS s(i)
+              WHERE
+                (excluded.readings)[s.i] IS NULL
+                AND (amr_data_feed_readings.readings)[s.i] IS NOT NULL
+                AND amr_data_feed_readings.estimated = TRUE
+            )
+            THEN TRUE
+            ELSE excluded.estimated
+          END
       ),
       parsed_date = excluded.parsed_date,
       amr_data_feed_config_id = excluded.amr_data_feed_config_id,

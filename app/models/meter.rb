@@ -65,17 +65,21 @@ class Meter < ApplicationRecord
   belongs_to :procurement_route, optional: true
   belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
-  has_one :rtone_variant_installation, required: false
-  has_one :school_group, through: :school
+  has_many :amr_data_feed_readings, inverse_of: :meter, dependent: :nullify
+  has_many :amr_validated_readings, inverse_of: :meter, dependent: :delete_all
 
-  has_many :amr_data_feed_readings,     inverse_of: :meter
-  has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
-  has_many :meter_attributes
+  has_many :energy_tariffs_meters, dependent: :delete_all
+  has_many :energy_tariffs,
+           through: :energy_tariffs_meters,
+           source: :energy_tariff
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
-  has_many :meter_monthly_summaries
+  has_many :meter_attributes, dependent: :destroy
+  has_many :meter_monthly_summaries, dependent: :destroy
+  has_one :rtone_variant_installation, required: false, dependent: :destroy
+  has_one :school_group, through: :school
 
-  has_and_belongs_to_many :energy_tariffs, inverse_of: :meters
+  before_destroy :ensure_not_consented
 
   CREATABLE_METER_TYPES = %i[electricity gas solar_pv exported_solar_pv].freeze
   MAIN_METER_TYPES = %i[electricity gas].freeze
@@ -144,6 +148,11 @@ class Meter < ApplicationRecord
   scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
 
   scope :main_meter_counts_by_school, -> { main_meter.active.group(:school_id) }
+
+  scope :with_validated_readings_of_type, lambda { |status|
+    joins(:amr_validated_readings)
+      .where(amr_validated_readings: { status: status })
+  }
 
   # If adding a new meter_type, add to the amr_validated_reading case statement for downloading data
   enum :meter_type, { electricity: 0, gas: 1, solar_pv: 2, exported_solar_pv: 3 }
@@ -221,7 +230,7 @@ class Meter < ApplicationRecord
 
     # find chunks where consecutive readings were all non-ORIG
     gaps = amr_validated_readings.since(since_date).by_date.select(:reading_date, :status).chunk_while do |r1, r2|
-      r1.status != 'ORIG' && r2.status != 'ORIG'
+      OneDayAMRReading::ORIGINAL.exclude?(r1.status) && OneDayAMRReading::ORIGINAL.exclude?(r2.status)
     end
     # return chunks of specified size or bigger
     gaps.select { |gap| gap.count >= gap_size }
@@ -356,6 +365,52 @@ class Meter < ApplicationRecord
                   .select('meters.*, reading_dates.*')
   end
 
+  def self.with_summary_of_estimated_data
+    latest_reading_date = latest_reading_date_sql
+    latest_estimated_date = latest_est_date_sql
+
+    select_fields = [
+      'school_groups.*',
+      'meters.*',
+      'COUNT(amr_validated_readings.id) AS total',
+      <<~SQL.squish,
+        SUM(
+          CASE
+            WHEN amr_validated_readings.reading_date >
+              ((#{latest_reading_date}) - INTERVAL '30 days')
+            THEN 1 ELSE 0
+          END
+        ) AS recent_total
+      SQL
+      "#{latest_reading_date} AS latest_reading_date",
+      "#{latest_estimated_date} AS latest_est_reading_date"
+    ]
+
+    Meter.active
+         .with_validated_readings_of_type('EST')
+         .joins(:school)
+         .includes(:school, { school: :school_group })
+         .group('school_groups.id', 'schools.id', 'meters.id')
+         .select(select_fields)
+  end
+
+  private_class_method def self.latest_reading_date_sql
+    <<~SQL.squish
+      (SELECT MAX(avr.reading_date)
+       FROM amr_validated_readings AS avr
+       WHERE avr.meter_id = meters.id)
+    SQL
+  end
+
+  private_class_method def self.latest_est_date_sql
+    <<~SQL.squish
+      (SELECT MAX(avr.reading_date)
+       FROM amr_validated_readings AS avr
+       WHERE avr.meter_id = meters.id
+         AND avr.status = 'EST')
+    SQL
+  end
+
   private
 
   def pseudo_mpan_mprn_not_changed
@@ -372,5 +427,12 @@ class Meter < ApplicationRecord
 
   def real_electric?
     !gas? && !pseudo?
+  end
+
+  def ensure_not_consented
+    return unless can_withdraw_consent?
+
+    errors.add(:base, 'Audit requirements mean consent must be withdrawn before removing meter')
+    throw(:abort)
   end
 end

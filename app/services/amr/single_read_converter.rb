@@ -37,7 +37,7 @@ module Amr
     #
     # Mapping from numbers periods is simple, for the others formats we have to interpret the time or timestamps
     # correctly
-    def perform
+    def perform # rubocop:todo Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       @single_reading_array.each do |reading|
         # ignore rows that dont have necessary information
         next unless reading[:reading_date].present? && reading[:mpan_mprn].present?
@@ -51,13 +51,17 @@ module Amr
 
         this_day = day_from_results(reading_date, reading[:mpan_mprn])
 
+        estimated = reading[:estimated] || false
+
         if this_day.present?
           this_day[:readings][reading_index] = kwh
+          this_day[:estimated] = this_day[:estimated] || estimated
         else
           readings = Array.new(48)
           readings[reading_index] = kwh
           new_record = { reading_date:, parsed_date: reading_date, readings:, mpan_mprn: reading[:mpan_mprn],
-                         amr_data_feed_config_id: reading[:amr_data_feed_config_id], meter_id: reading[:meter_id] }
+                         amr_data_feed_config_id: reading[:amr_data_feed_config_id],
+                         meter_id: reading[:meter_id], estimated: }
           @results_array << new_record
         end
       end

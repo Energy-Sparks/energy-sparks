@@ -32,6 +32,7 @@ module Amr
       end
 
       data_feed_reading_hash[:reading_time] = fetch_from_row(:reading_time_index, row) if @config.row_per_reading
+      data_feed_reading_hash[:estimated] = estimated?(row)
       data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
       data_feed_reading_hash[:readings] = readings_as_array(data_feed_reading_hash, row, meter)
       data_feed_reading_hash
@@ -75,7 +76,7 @@ module Amr
     end
 
     def readings_as_array(data_feed_reading_hash, amr_data_feed_row, meter)
-      array_of_readings = @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+      array_of_readings = @config.reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
       if array_of_readings.all?(&:present?) && @config.convert_to_kwh != 'no'
         unit = conversion_unit(data_feed_reading_hash, meter)
         if unit
@@ -145,6 +146,15 @@ module Amr
 
     def map_of_fields_to_indexes
       @map_of_fields_to_indexes ||= @config.map_of_fields_to_indexes
+    end
+
+    def estimated?(amr_data_feed_row)
+      return false unless @config.reading_status_fields.any?
+
+      flags = @config.estimate_flags.any? ? @config.estimate_flags : AmrDataFeedConfig::ESTIMATED_STATUS
+
+      statuses = @config.reading_status_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+      statuses.intersect?(flags.to_a)
     end
   end
 end

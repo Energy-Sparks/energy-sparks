@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: amr_data_feed_configs
@@ -11,6 +13,7 @@
 #  delayed_reading         :boolean          default(FALSE), not null
 #  description             :text             not null
 #  enabled                 :boolean          default(TRUE), not null
+#  estimate_flags          :string           default([]), not null, is an Array
 #  expected_units          :string
 #  half_hourly_labelling   :enum
 #  handle_off_by_one       :boolean          default(FALSE)
@@ -27,7 +30,9 @@
 #  process_type            :integer          default(0), not null
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
+#  reading_status_fields   :string           default([]), not null, is an Array
 #  reading_time_field      :text
+#  repeated_names          :boolean          default(FALSE), not null
 #  row_per_reading         :boolean          default(FALSE), not null
 #  source_type             :integer          default(0), not null
 #  units_field             :text
@@ -47,6 +52,8 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
+  ESTIMATED_STATUS = Set['E', 'Estimate', 'Estimated']
+
   scope :enabled,           -> { where(enabled: true) }
   scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
 
@@ -79,7 +86,7 @@ class AmrDataFeedConfig < ApplicationRecord
   validates :msn_field, presence: { if: :lookup_by_serial_number }
 
   validate :period_or_time_field, if: :positional_index
-  validate :no_nil_array_of_reading_indexes, if: :header_example
+  validate :no_missing_reading_indexes, if: :header_example
   validate :source_and_process_type
 
   BLANK_THRESHOLD = 1
@@ -119,10 +126,25 @@ class AmrDataFeedConfig < ApplicationRecord
     }
   end
 
-  def array_of_reading_indexes(header = nil)
-    this_header = header || header_example
-    header_array = this_header.split(',')
+  def reading_indexes(header = nil)
+    header_array = header_array(header)
     reading_fields.map { |reading_header| header_array.find_index(reading_header) }
+  end
+
+  def reading_status_indexes(header = nil)
+    header_array = header_array(header)
+
+    reading_status_fields.flat_map do |field|
+      all_indexes = header_array.each_index.select { |i| header_array[i] == field }
+
+      # for rare scenario where the reading fields and status fields have the same names
+      # first block of columns is reading, second block is status
+      if repeated_names
+        all_indexes.last
+      else
+        all_indexes
+      end
+    end
   end
 
   def header_first_thing
@@ -154,8 +176,13 @@ class AmrDataFeedConfig < ApplicationRecord
 
   private
 
-  def no_nil_array_of_reading_indexes
-    return unless array_of_reading_indexes.include?(nil)
+  def header_array(header = nil)
+    this_header = header || header_example
+    this_header.split(',')
+  end
+
+  def no_missing_reading_indexes
+    return unless reading_indexes.include?(nil)
 
     errors.add(:header_example, "can't find all reading_fields in header_example")
   end

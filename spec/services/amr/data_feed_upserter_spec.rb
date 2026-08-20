@@ -8,14 +8,15 @@ describe Amr::DataFeedUpserter do
   let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config) }
   let(:array_of_readings) { [] }
 
-  def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'), parsed_date: nil)
+  def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'), estimated: false, parsed_date: nil)
     {
       mpan_mprn: meter.mpan_mprn,
       meter_id: meter.id,
       reading_date: date,
       parsed_date:,
-      readings: readings,
-      amr_data_feed_config_id: amr_data_feed_config.id
+      readings:,
+      amr_data_feed_config_id: amr_data_feed_config.id,
+      estimated:
     }
   end
 
@@ -45,6 +46,17 @@ describe Amr::DataFeedUpserter do
           service.perform
           expect(meter.amr_data_feed_readings.first.created_at).not_to be_nil
           expect(meter.amr_data_feed_readings.first.updated_at).not_to be_nil
+        end
+
+        context 'with estimated reads' do
+          let(:array_of_readings) do
+            [create_reading(meter, Time.zone.today.iso8601, Array.new(48, '1.0'), estimated: true)]
+          end
+
+          it 'stores estimated status' do
+            service.perform
+            expect(meter.amr_data_feed_readings.first.estimated).to be true
+          end
         end
 
         it 'updates import log with statistics' do
@@ -166,6 +178,18 @@ describe Amr::DataFeedUpserter do
       expect(todays_reading.created_at).not_to be_nil
       expect(todays_reading.updated_at).not_to be_nil
     end
+
+    context 'with estimated reads' do
+      let(:array_of_readings) do
+        [create_reading(meter, Time.zone.today.iso8601, Array.new(48, '1.0'), estimated: true)]
+      end
+
+      it 'stores estimated status' do
+        service.perform
+        todays_reading.reload
+        expect(todays_reading.estimated).to be true
+      end
+    end
   end
 
   describe '#perform' do
@@ -212,65 +236,82 @@ describe Amr::DataFeedUpserter do
 
           context 'when the new partial readings do not overlap the existing' do
             let!(:existing) do
-              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) { |i| i < 2 ? '1.0' : nil })
+              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, estimated: true, readings: Array.new(48) { |i| i < 2 ? '1.0' : nil })
             end
 
             let(:array_of_readings) do
-              [create_reading(meter, Time.zone.today.iso8601, Array.new(48) { |i| i >= 2 ? '2.0' : nil })]
+              [create_reading(meter, Time.zone.today.iso8601, Array.new(48) { |i| i >= 2 ? '2.0' : nil }, estimated: false)]
             end
 
             it 'merges the readings' do
               expect { service.perform }.not_to change(AmrDataFeedReading, :count)
               existing.reload
               expect(existing.readings).to eq(Array.new(2, '1.0') + Array.new(46, '2.0'))
+              expect(existing.estimated).to be(true)
             end
           end
 
           context 'when the new partial readings partially overlap the existing' do
             let!(:existing) do
-              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) { |i| i < 3 ? '1.0' : nil })
+              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, estimated: true, readings: Array.new(48) { |i| i < 3 ? '1.0' : nil })
             end
 
             let(:array_of_readings) do
-              [create_reading(meter, Time.zone.today.iso8601, Array.new(48) { |i| i >= 2 ? '2.0' : nil })]
+              [create_reading(meter, Time.zone.today.iso8601, Array.new(48) { |i| i >= 2 ? '2.0' : nil }, estimated: false)]
             end
 
             it 'merges the readings, but overwrites the overlaps' do
               expect { service.perform }.not_to change(AmrDataFeedReading, :count)
               existing.reload
               expect(existing.readings).to eq(Array.new(2, '1.0') + Array.new(46, '2.0'))
+              expect(existing.estimated).to be(true)
             end
           end
 
           context 'with a full day of new readings' do
             let!(:existing) do
-              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) { |i| i < 2 ? '2.0' : nil })
+              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, estimated: true, readings: Array.new(48) { |i| i < 2 ? '2.0' : nil })
             end
 
             let(:array_of_readings) do
-              [create_reading(meter)]
+              [create_reading(meter, estimated: false)]
             end
 
             it 'overwrites the existing readings' do
               expect { service.perform }.not_to change(AmrDataFeedReading, :count)
               existing.reload
               expect(existing.readings).to eq(Array.new(48, '1.0'))
+              expect(existing.estimated).to be(false)
             end
           end
 
           context 'when there are still gaps in new data' do
             let!(:existing) do
-              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48) { |i| i < 2 ? '1.0' : nil })
+              create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, estimated: true, readings: Array.new(48) { |i| i < 2 ? '1.0' : nil })
             end
 
             let(:array_of_readings) do
-              [create_reading(meter, Time.zone.today.iso8601, Array.new(48) { |i| i >= 2 && i < 10 ? '2.0' : nil })]
+              [create_reading(meter, Time.zone.today.iso8601, Array.new(48) { |i| i >= 2 && i < 10 ? '2.0' : nil }, estimated: true)]
             end
 
             it 'merges the readings' do
               expect { service.perform }.not_to change(AmrDataFeedReading, :count)
               existing.reload
               expect(existing.readings).to eq(Array.new(2, '1.0') + Array.new(8, '2.0') + Array.new(38))
+              expect(existing.estimated).to be(true)
+            end
+
+            context 'with actual reads in database' do
+              let!(:existing) do
+                create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, estimated: false, readings: Array.new(48) { |i| i < 2 ? '1.0' : nil })
+              end
+
+              it 'merges the readings' do
+                expect { service.perform }.not_to change(AmrDataFeedReading, :count)
+                existing.reload
+                expect(existing.readings).to eq(Array.new(2, '1.0') + Array.new(8, '2.0') + Array.new(38))
+                expect(existing.estimated).to be(true)
+              end
             end
           end
         end

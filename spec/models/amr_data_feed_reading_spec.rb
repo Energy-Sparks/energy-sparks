@@ -143,5 +143,51 @@ describe AmrDataFeedReading do
                                                ])
       end
     end
+
+    describe '.delete_old_readings!' do
+      context 'with an old unused record' do
+        before { create(:amr_data_feed_reading, meter: nil, created_at: 3.years.ago) }
+
+        it 'deletes the record' do
+          expect { described_class.delete_old_readings! }.to change(described_class, :count).by(-1)
+        end
+
+        it 'cleans up the import log' do
+          expect { described_class.delete_old_readings! }.to change(AmrDataFeedImportLog, :count).by(-1)
+        end
+      end
+
+      context 'with a newer unused record' do
+        before { create(:amr_data_feed_reading, meter: nil, created_at: 3.years.ago + 1.day) }
+
+        it 'does nothing' do
+          expect { described_class.delete_old_readings! }.not_to change(described_class, :count)
+        end
+
+        it 'does not clean up the import log' do
+          expect { described_class.delete_old_readings! }.not_to change(AmrDataFeedImportLog, :count)
+        end
+      end
+
+      context 'with an old but in-use record' do
+        before { create(:amr_data_feed_reading, created_at: 3.years.ago) }
+
+        it 'does nothing' do
+          expect { described_class.delete_old_readings! }.not_to change(described_class, :count)
+        end
+
+        it 'does not clean up the import log' do
+          expect { described_class.delete_old_readings! }.not_to change(AmrDataFeedImportLog, :count)
+        end
+      end
+
+      context 'with an old, unused import log' do
+        before { create(:amr_data_feed_import_log) }
+
+        it 'cleans up the import log' do
+          expect { described_class.delete_old_readings! }.to change(AmrDataFeedImportLog, :count).by(-1)
+        end
+      end
+    end
   end
 end

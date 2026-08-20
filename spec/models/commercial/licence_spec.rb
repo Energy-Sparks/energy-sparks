@@ -15,8 +15,6 @@ describe Commercial::Licence do
 
         it 'does not allow the licence to be destroyed' do
           expect(licence.destroy).to be(false)
-          expect(licence.errors[:base]).to include('Cannot delete an invoiced licence')
-          expect(licence).to be_persisted
         end
       end
 

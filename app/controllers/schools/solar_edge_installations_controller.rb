@@ -41,6 +41,7 @@ module Schools
     def update
       if @installation.update(solar_edge_installation_params)
         Solar::SolarEdgeInstallationFactory.update_information(@installation)
+        Solar::SolarEdgeInstallationFactory.setup_meters(@installation)
         redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{NAME} was updated"
       else
         render :edit

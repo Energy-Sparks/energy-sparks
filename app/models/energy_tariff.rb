@@ -51,7 +51,10 @@ class EnergyTariff < ApplicationRecord
   has_many :energy_tariff_charges, inverse_of: :energy_tariff, dependent: :destroy
 
   # only populated if tariff_holder is school
-  has_and_belongs_to_many :meters, inverse_of: :energy_tariffs
+  has_many :energy_tariffs_meters, dependent: :delete_all
+  has_many :meters,
+           through: :energy_tariffs_meters,
+           source: :meter
 
   belongs_to :created_by, optional: true, class_name: 'User'
   belongs_to :updated_by, optional: true, class_name: 'User'

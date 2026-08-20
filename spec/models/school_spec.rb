@@ -12,6 +12,51 @@ describe School do
     expect(school).to be_valid
   end
 
+  describe 'when destroying' do
+    shared_examples 'a school that cannot be destroyed' do
+      it 'cannot be destroyed' do
+        expect { school.destroy }.not_to(change(described_class, :count))
+        expect(school.errors[:base]).to include('School cannot be removed while it is visible or active or has active meters or users')
+      end
+    end
+
+    context 'when school is visible and active' do
+      let!(:school) { create(:school, visible: true, active: true) }
+
+      it_behaves_like 'a school that cannot be destroyed'
+    end
+
+    context 'when school is active' do
+      let!(:school) { create(:school, visible: false, active: true) }
+
+      it_behaves_like 'a school that cannot be destroyed'
+    end
+
+    context 'when school is has active meter' do
+      let!(:school) { create(:school, visible: false, active: false) }
+
+      before { create(:electricity_meter, school:) }
+
+      it_behaves_like 'a school that cannot be destroyed'
+    end
+
+    context 'when school is has active user' do
+      let!(:school) { create(:school, visible: false, active: false) }
+
+      before { create(:school_admin, school:) }
+
+      it_behaves_like 'a school that cannot be destroyed'
+    end
+
+    context 'when school is eligible for removal' do
+      let!(:school) { create(:school, visible: false, active: false) }
+
+      it 'can be destroyed' do
+        expect { school.destroy }.to change(described_class, :count).by(-1)
+      end
+    end
+  end
+
   it 'builds a slug on create using :name' do
     expect(school.slug).to eq(school.name.parameterize)
   end
@@ -1391,7 +1436,7 @@ describe School do
 
     describe 'destroys school groupings' do
       before do
-        school.save
+        school.update!(visible: false, active: false)
         school.destroy
       end
 

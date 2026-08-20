@@ -1,0 +1,15 @@
+<% content_for :page_title, t('oauth.solar_edge.error.title') %>
+
+<div class="application container">
+  <div class="row">
+    <div class="col">
+      <h1><%= t('oauth.solar_edge.error.title') %></h1>
+      <p>
+        <%= t('oauth.solar_edge.error.description', site_id: @site_id, school_id: @school_id) %>
+      </p>
+      <p>
+        <%= t('oauth.solar_edge.error.notified_html') %>
+      </p>
+    </div>
+  </div>
+</div>
