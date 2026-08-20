@@ -1,0 +1,86 @@
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Request SolarEdgeConnection" do %>
+
+<h1>Request SolarEdge Connection</h1>
+
+<div class="row">
+  <div class="col">
+    <p>
+      Send an email to one or more users at <%= @school.name %> to request that they connect their SolarEdge
+      monitoring system to Energy Sparks.
+    </p>
+    <p>
+      You can also <%= link_to 'copy this link', DataFeeds::SolarEdge::Api.authorize_url(@school.id) %>
+      and share it with someone directly.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <h4>The process</h4>
+    <p>
+      The link shared with users is specific to this school, but does not require the user to login to Energy Sparks
+      to complete the process.
+    </p>
+    <p>
+      The link does not specify which site should be connected because the SolarEdge system does not
+      let us do that.
+    </p>
+    <p>
+      If a school has multiple SolarEdge sites the user may need to repeat this process multiple times.
+    </p>
+    <p>
+      If a user has access to multiple SolarEdge sites for different schools they will need to use different
+      links for each school. You may be better off sending them a specific email with individual links.
+    </p>
+    <p>
+      The ops team admin for the school will be notified when a site is successfully connected.
+    </p>
+  </div>
+</div>
+
+<h4>Send email</h4>
+
+<div class="row">
+  <div class="col">
+    <%= simple_form_for :request_connection, url: request_connection_school_solar_edge_installations_path(@school) do |f| %>
+      <div class="row mb-1">
+        <div class="col">
+          <h5>Which School/Group user(s) should be emailed?</h5>
+          <% if @users.any? %>
+            <div class="form-check">
+              <%= f.collection_check_boxes(:user_ids, @users, :id, :email) do |b| %>
+                <div class="control-group">
+                  <%= b.check_box(class: 'form-check-input') %>
+                  <%= b.label(class: 'form-check-label') do %>
+                    <%= b.object.name %> (<%= user_school_role(b.object) %>)
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p>The school has no staff, school admin or group admin users</p>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h5>Specific an additional email</h5>
+          <%= f.input :email,
+                      required: false,
+                      hint: 'Add an email address for someone without a user account for this school' %>
+        </div>
+      </div>
+
+      <div class="row mt-1">
+        <div class="col">
+            <%= f.button :submit, 'Request connection', "data-confirm": 'Are you sure?' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% end %>
