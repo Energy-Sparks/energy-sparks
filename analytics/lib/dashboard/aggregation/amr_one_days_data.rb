@@ -6,6 +6,7 @@ class OneDayAMRReading
   attr_reader :date, :type, :substitute_date, :upload_datetime, :one_day_kwh, :kwh_data_x48
 
   ZERO_X48 = Array.new(48, 0.0).freeze
+  ORIGINAL = ['ORIG', 'EST'].freeze
 
   def initialize(date, type, substitute_date, upload_datetime, kwh_data_x48)
     unless AMR_TYPE_SET.include?(type)
@@ -67,6 +68,10 @@ class OneDayAMRReading
 
   def set_type(type)
     @type = type
+  end
+
+  def original?
+    ORIGINAL.include?(type)
   end
 
   def to_s

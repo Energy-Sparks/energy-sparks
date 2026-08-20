@@ -511,7 +511,7 @@ module Aggregation
         num_zero_values = days_kwh_x48.count(missing_data_value)
         next unless num_zero_values.positive? && num_zero_values <= max_missing_readings
 
-        type = if @amr_data[date].type == 'ORIG'
+        type = if @amr_data[date].original?
                  (@meter.dcc_meter ? 'DMP' : 'CMP') + num_zero_values.to_s
                else
                  @amr_data[date].type
@@ -537,7 +537,7 @@ module Aggregation
         if updated_one_day_reading.nil?
           logger.debug { "Unable to override partial/missing data for #{@meter_id} on #{date}" }
         else
-          updated_one_day_reading.set_type(type == 'ORIG' ? 'CMPH' : type)
+          updated_one_day_reading.set_type(OneDayAMRReading::ORIGINAL.include?(type) ? 'CMPH' : type)
           @amr_data.add(date, updated_one_day_reading.deep_dup)
         end
       end
@@ -924,7 +924,7 @@ module Aggregation
     def original_matching_substitute_date?(date, substitute_date)
       @amr_data.date_exists?(substitute_date) &&
         daytype(substitute_date) == daytype(date) &&
-        @amr_data.substitution_type(substitute_date) == 'ORIG'
+        @amr_data[substitute_date].original?
     end
 
     #

@@ -35,6 +35,7 @@
   <div class="legend-scale vertical col-md-4">
     <ul class='legend-labels'>
       <li><span style='background:#5cb85c;'></span><div class="description" style="font-size: 17px;"><small>Original uncorrected good data (ORIG)</small></div></li>
+      <li><span style='background:#10bca2;'></span><div class="description" style="font-size: 17px;"><small>Original estimated data (EST)</small></div></li>
       <li><span style='background:#3f7d69;'></span><div class="description" style="font-size: 17px;"><small>Corrected/modified data (not ORIG)</small></div></li>
       <li><span style='background:#5297c6;'></span><div class="description" style="font-size: 17px;"><small>Zero usage, uncorrected original data (ORIG)</small></div></li>
       <li><span style='background:#fcac21;'></span><div class="description" style="font-size: 17px;"><small>Zero usage, corrected/modified data (not ORIG)</small></div></li>
@@ -55,7 +56,7 @@
           <li>
             <span style='background:<%= colour %>;'></span>
             <div class="description" style="font-size: 17px;">
-              <small><%= (@amr_types[type][:name]).to_s + (type == 'MISSING' ? '' : "(#{type})") %></small>
+              <small><%= @amr_types[type][:name].to_s + (type == 'MISSING' ? '' : "(#{type})") %></small>
             </div>
           </li>
         <% end %>

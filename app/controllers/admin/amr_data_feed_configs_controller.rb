@@ -3,9 +3,9 @@
 module Admin
   class AmrDataFeedConfigsController < AdminController
     load_and_authorize_resource instance_name: :configuration
-    def index
-      @configurations = AmrDataFeedConfig.allow_manual.order(:description)
-    end
+    before_action :load_configurations
+
+    def index; end
 
     def show; end
 
@@ -20,6 +20,10 @@ module Admin
     end
 
     private
+
+    def load_configurations
+      @configurations = AmrDataFeedConfig.allow_manual.order(:description)
+    end
 
     def amr_data_feed_config_params
       params.require(:amr_data_feed_config)

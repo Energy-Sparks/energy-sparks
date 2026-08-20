@@ -534,8 +534,18 @@ RSpec.describe 'Admin dashboard' do
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/manual_reads?admin=#{user.id}")
             end
           end
-        end
 
+          describe 'estimated data' do
+            before do
+              click_on 'Estimated data'
+            end
+
+            it 'links to the estimated data report filtered by user' do
+              expect(page).to have_link('View all estimated reads', href: admin_reports_estimated_reads_path)
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/estimated_reads?admin=#{user.id}")
+            end
+          end
+        end
         # rubocop:enable RSpec/NestedGroups
       end
 
