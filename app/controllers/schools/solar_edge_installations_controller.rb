@@ -65,7 +65,7 @@ module Schools
         redirect_back_or_to(school_solar_feeds_configuration_index_path(@school),
                             notice: 'Connection has been requested') # rubocop:disable Rails/I18nLocaleTexts
       else
-        redirect_to school_solar_feeds_configuration_index_path(@school),
+        redirect_to connect_school_solar_edge_installations_path(@school),
                     notice: 'You must choose at least one user or specify an email address' # rubocop:disable Rails/I18nLocaleTexts
       end
     end

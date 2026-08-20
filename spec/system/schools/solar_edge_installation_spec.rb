@@ -197,6 +197,12 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
           end
         end
 
+        context 'when no user specified' do
+          before { click_on 'Request connection' }
+
+          it { expect(page).to have_text('You must choose at least one user or specify an email address') }
+        end
+
         context 'when emailing a user' do
           before do
             find(:css, "#request_connection_user_ids_#{school_admin.id}").set(true)

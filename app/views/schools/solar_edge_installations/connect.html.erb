@@ -6,8 +6,8 @@
 <div class="row">
   <div class="col">
     <p>
-      Send an email to one or more users at <%= @school.name %> to request that they connect their SolarEdge
-      monitoring system to Energy Sparks.
+      Send an email to one or more users at <%= @school.name %>, their school group, or another email contact,
+      to request that they give consent for us to access their SolarEdge monitoring system.
     </p>
     <p>
       You can also <%= link_to 'copy this link', DataFeeds::SolarEdge::Api.authorize_url(@school.id) %>
@@ -20,8 +20,7 @@
   <div class="col">
     <h4>The process</h4>
     <p>
-      The link shared with users is specific to this school, but does not require the user to login to Energy Sparks
-      to complete the process.
+      The link shared with users is specific to this school. The user does not need an Energy Sparks account.
     </p>
     <p>
       The link does not specify which site should be connected because the SolarEdge system does not
