@@ -42,7 +42,7 @@ describe Amr::SingleReadConverter do
     # Matches the EDF format
     # So 26 Aug 2019 00:00 means usage FROM midnight to 00:30am on the 26th August
     # So 26 Aug 2019 23:30 means usage FROM 23:30 to midnight on the 26th August
-    context 'with readings labelled at start of the half hour, so 00:00 is start of the day (%H:%M:%s) and correct config' do
+    context 'with reading labels at start of the half hour, so 00:00 is start of day (%H:%M:%s) and correct config' do
       let(:config) do
         create(:amr_data_feed_config, :with_row_per_reading, half_hourly_labelling: :start,
                                                              date_format: '%d %b %Y %H:%M')
@@ -76,9 +76,8 @@ describe Amr::SingleReadConverter do
         end
 
         let(:expected_output) do
-          [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) do |i|
-            i + 1
-          end, parsed_date: Date.parse(reading_date), estimated: true)]
+          [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) { |i| i + 1 },
+                          parsed_date: Date.parse(reading_date), estimated: true)]
         end
 
         context 'when whole day is estimated' do
