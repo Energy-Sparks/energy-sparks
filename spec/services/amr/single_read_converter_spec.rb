@@ -76,7 +76,9 @@ describe Amr::SingleReadConverter do
         end
 
         let(:expected_output) do
-          [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) { |i| i + 1 }, estimated: true)]
+          [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) do |i|
+            i + 1
+          end, parsed_date: Date.parse(reading_date), estimated: true)]
         end
 
         context 'when whole day is estimated' do
