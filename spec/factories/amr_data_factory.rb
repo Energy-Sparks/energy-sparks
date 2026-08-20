@@ -19,13 +19,14 @@ FactoryBot.define do
         start_date   { Date.yesterday - 7 }
         end_date     { Date.yesterday }
         kwh_data_x48 { nil }
+        reading_type { 'ORIG' }
       end
 
       after(:build) do |amr_data, evaluator|
         (evaluator.start_date..evaluator.end_date).each do |date|
           reading = build(:one_day_amr_reading,
                           date: date,
-                          type: 'ORIG',
+                          type: evaluator.reading_type,
                           substitute_date: nil,
                           upload_datetime: DateTime.now,
                           kwh_data_x48: (evaluator.kwh_data_x48 || Array.new(48) { rand.round(2) }).dup)

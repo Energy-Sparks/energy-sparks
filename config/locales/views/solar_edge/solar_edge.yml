@@ -1,0 +1,15 @@
+---
+en:
+  oauth:
+    solar_edge:
+      error:
+        description: We were unable to connect your SolarEdge site (%{site_id}) to your school (%{school_id}) on Energy Sparks.
+        notified_html: |-
+          The Energy Sparks team have been notified of the error.
+          If this problem persists please contact us at <a href="mailto:support@energysparks.uk">support@energysparks.uk</a>
+        title: Unable to connect SolarEdge site
+      success:
+        description: We have successfully connected your SolarEdge site (%{site_id}) to %{school_name}% on Energy Sparks.
+        next_steps: With access to the data from your SolarEdge monitoring system, our team can now complete the process of setting up the solar data analysis for your school.
+        title: SolarEdge site connected
+        view_dashboard: View school dashboard

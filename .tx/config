@@ -925,6 +925,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-solar_edge-solar_edge-yml]
+file_filter  = config/locales/<lang>/views/solar_edge/solar_edge.yml
+source_file  = config/locales/views/solar_edge/solar_edge.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-tasks-tasks-yml]
 file_filter  = config/locales/<lang>/views/tasks/tasks.yml
 source_file  = config/locales/views/tasks/tasks.yml
