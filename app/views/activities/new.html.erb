@@ -3,4 +3,4 @@
 <% content_for :main_classes, 'bg-yellow-very-pale' %>
 <%= render Tasks::Header.new(recording: @activity) %>
 
-<%= render 'form', activity: @activity %>
+<%= render 'form', activity: @activity, school: @school %>

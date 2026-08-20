@@ -8,6 +8,7 @@ module Admin
         def raise_invoice
           @licences = @contract.licences.includes(school: :school_group).pending_invoice.by_start_date
           @prices = ::Commercial::ContractPriceCalculator.new(@contract).per_school
+          @overlapping_licences = ::Commercial::Licence.overlapping.where(contract_id: @contract.id)
         end
 
         def new

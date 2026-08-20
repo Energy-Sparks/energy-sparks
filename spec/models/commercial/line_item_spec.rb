@@ -7,6 +7,25 @@ describe Commercial::LineItem do
   it { is_expected.to validate_presence_of(:metering_fee) }
   it { is_expected.to validate_presence_of(:private_account_fee) }
 
+  describe 'when destroying' do
+    let!(:line_item) { create(:commercial_line_item) }
+
+    it 'does not allow line item to be destroyed' do
+      expect(line_item.destroy).to be(false)
+    end
+
+    context 'when contract is deletable' do
+      let!(:contract) do
+        create(:commercial_contract, contract_holder: create(:school, :archived, archived_date: 3.years.ago - 1.day))
+      end
+      let!(:line_item) { create(:commercial_line_item, invoice: create(:commercial_invoice, contract:)) }
+
+      it 'allows line item to be deleted' do
+        expect { line_item.destroy }.to change(described_class, :count).by(-1)
+      end
+    end
+  end
+
   describe '.to_csv' do
     subject(:csv) { CSV.parse(described_class.to_csv) }
 

@@ -82,7 +82,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :created_by, class_name: 'User', optional: true
   belongs_to :contract, class_name: 'Commercial::Contract', optional: true
 
-  has_many :events, class_name: 'SchoolOnboardingEvent'
+  has_many :events, class_name: 'SchoolOnboardingEvent', dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
 
   scope :by_name, -> { order(school_name: :asc) }

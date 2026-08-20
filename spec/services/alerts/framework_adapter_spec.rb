@@ -13,7 +13,6 @@ describe Alerts::FrameworkAdapter do
       enough_data: :enough,
       template_data: { template: 'variables' },
       chart_data: { chart: 'variables' },
-      table_data: { table: 'variables' },
       priority_data: { priority: 'variables' }
     )
   end
@@ -26,7 +25,6 @@ describe Alerts::FrameworkAdapter do
       relevance: :relevant,
       template_data: { template: 'variables' },
       chart_data: { chart: 'variables' },
-      table_data: { table: 'variables' },
       priority_data: { priority: 'variables' },
       benchmark_data: {} # System alerts don't create benchmark data
     )

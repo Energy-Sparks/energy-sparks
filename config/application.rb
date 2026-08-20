@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module EnergySparks
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.2
+    config.load_defaults 8.1
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -46,7 +46,6 @@ module EnergySparks
     config.active_storage.content_types_to_serve_as_binary.delete("image/svg+xml")
     config.active_storage.variant_processor = :mini_magick # keep old default for now, breaks validation
 
-    config.active_support.cache_format_version = 7.1
     config.autoload_lib(ignore: %w(generators))
     # compiles all public (names don't start with an underscore) Sass files
     config.dartsass.builds = { '.' => '.' }
@@ -60,10 +59,7 @@ module EnergySparks
     config.good_job.cleanup_preserved_jobs_before_seconds_ago = 30.days.to_i # default 14 days
 
     config.i18n.available_locales = [:en, :cy]
-    config.i18n.default_locale = :en
-    config.i18n.enforce_available_locales = true
     config.i18n.fallbacks = true
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
 
     require_relative '../lib/mailchimp_client'
     config.mailchimp_client = MailchimpClient.create

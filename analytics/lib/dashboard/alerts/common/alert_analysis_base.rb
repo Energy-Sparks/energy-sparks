@@ -13,7 +13,7 @@ class AlertAnalysisBase < ContentBase
 
   ALERT_HELP_URL = 'https://blog.energysparks.uk/alerts'.freeze
 
-  attr_reader :status, :rating, :term, :default_summary, :default_content, :analysis_date, :max_asofdate,
+  attr_reader :status, :rating, :term, :analysis_date, :max_asofdate,
               :calculation_worked, :capital_cost, :one_year_saving_£, :ten_year_saving_£, :payback_years, :one_year_saving_co2, :ten_year_saving_co2, :one_year_saving_kwh, :average_capital_cost, :average_one_year_saving_£, :average_payback_years, :average_ten_year_saving_£, :error_message, :backtrace, :time_of_year_relevance
 
   def initialize(school, _report_type)
@@ -74,46 +74,12 @@ class AlertAnalysisBase < ContentBase
     { 'Common' => TEMPLATE_VARIABLES }
   end
 
-  def summary_wording(format = :html)
-    return nil if default_summary.nil? # remove once all new style alerts implemeted TODO(PH,13Mar2019)
-
-    summary = AlertTemplateBinding.new(default_summary, formatted_template_variables(format), format)
-    summary.bind
-  end
-
-  def content_wording(format = :html)
-    return nil if default_content.nil? # remove once all new style alerts implemeted TODO(PH,13Mar2019)
-
-    content = AlertTemplateBinding.new(default_content, formatted_template_variables(format), format)
-    content.bind
-  end
-
   TEMPLATE_VARIABLES = {
-    relevance: {
-      description: 'Relevance of a alert to a school at this point in time',
-      units: :relevance
-    },
-    analysis_date: {
-      description: 'Latest date on which the alert data is based',
-      units: :date
-    },
-    status: {
-      description: 'Status: good, bad, failed',
-      units: Symbol
-    },
     rating: {
       description: 'Rating out of 10',
       units: Float,
       priority_code: 'RATE',
       benchmark_code: 'ratg'
-    },
-    term: {
-      description: 'long term or short term',
-      units: Symbol
-    },
-    max_asofdate: {
-      description: 'The latest date on which an alert can be run given the available data',
-      units: :date
     },
     pupils: {
       description: 'Number of pupils for relevant part of school on this date',
@@ -122,26 +88,6 @@ class AlertAnalysisBase < ContentBase
     floor_area: {
       description: 'Floor area of relevant part of school',
       units: :m2
-    },
-    school_type: {
-      description: 'Primary or Secondary',
-      units: :school_type
-    },
-    school_name: {
-      description: 'Name of school',
-      units: String
-    },
-    school_activation_date: {
-      description: 'Date school activated on Energy Sparks',
-      units: Date
-    },
-    school_creation_date: {
-      description: 'Date school created on Energy Sparks',
-      units: Date
-    },
-    urn: {
-      description: 'School URN',
-      units: Integer
     },
     one_year_saving_kwh: {
       description: 'Estimated one year kwh reduction range',
@@ -221,20 +167,6 @@ class AlertAnalysisBase < ContentBase
 
   def valid_alert?
     valid_content? && meter_readings_up_to_date_enough?
-  end
-
-  # unused method?
-  def self.print_all_formatted_template_variable_values
-    puts 'Available variables and values:'
-    template_variables.each do |group_name, variable_group|
-      puts "  #{group_name}"
-      variable_group.each do |type, data|
-        # next if data[:units] == :table
-        value = send(type)
-        formatted_value = format(data[:units], value, :html, false, user_numeric_comprehension_level)
-        puts format('    %-40.40s %-20.20s', type, formatted_value) + ' ' + data.to_s
-      end
-    end
   end
 
   protected

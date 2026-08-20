@@ -20,7 +20,7 @@
 
 class AmrDataFeedImportLog < ApplicationRecord
   has_many :amr_data_feed_readings
-  has_many :amr_reading_warnings
+  has_many :amr_reading_warnings, dependent: :delete_all
   has_many :meters, -> { distinct }, through: :amr_data_feed_readings
 
   belongs_to :amr_data_feed_config
@@ -30,6 +30,10 @@ class AmrDataFeedImportLog < ApplicationRecord
   scope :with_warnings, -> { where(id: AmrReadingWarning.select(:amr_data_feed_import_log_id)) }
 
   scope :since, ->(date) { where('import_time >= ?', date) }
+
+  scope :unused, lambda {
+    where.missing(:amr_data_feed_readings)
+  }
 
   def errors?
     error_messages.present?

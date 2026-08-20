@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_18_131456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -396,7 +396,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.integer "reporting_period"
     t.date "run_on"
     t.bigint "school_id", null: false
-    t.json "table_data", default: {}
     t.json "template_data", default: {}
     t.json "template_data_cy", default: {}
     t.datetime "updated_at", precision: nil, null: false
@@ -419,13 +418,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.boolean "delayed_reading", default: false, null: false
     t.text "description", null: false
     t.boolean "enabled", default: true, null: false
+    t.string "estimate_flags", default: [], null: false, array: true
     t.string "expected_units"
     t.enum "half_hourly_labelling", enum_type: "half_hourly_labelling"
     t.boolean "handle_off_by_one", default: false
     t.text "header_example"
     t.text "identifier", null: false
     t.boolean "lookup_by_serial_number", default: false
-    t.text "meter_description_field"
     t.integer "missing_reading_window", default: 5
     t.integer "missing_readings_limit"
     t.text "mpan_mprn_field", null: false
@@ -434,15 +433,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.bigint "owned_by_id"
     t.string "period_field"
     t.boolean "positional_index", default: false, null: false
-    t.text "postcode_field"
     t.integer "process_type", default: 0, null: false
-    t.text "provider_id_field"
     t.text "reading_date_field", null: false
     t.text "reading_fields", null: false, array: true
+    t.string "reading_status_fields", default: [], null: false, array: true
     t.text "reading_time_field"
+    t.boolean "repeated_names", default: false, null: false
     t.boolean "row_per_reading", default: false, null: false
     t.integer "source_type", default: 0, null: false
-    t.text "total_field"
     t.text "units_field"
     t.datetime "updated_at", precision: nil, null: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
@@ -467,18 +465,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.bigint "amr_data_feed_config_id", null: false
     t.bigint "amr_data_feed_import_log_id", null: false
     t.datetime "created_at", precision: nil, null: false
-    t.text "description"
+    t.boolean "estimated", default: false, null: false
     t.bigint "meter_id"
     t.text "meter_serial_number"
     t.text "mpan_mprn", null: false
-    t.text "postcode"
-    t.text "provider_record_id"
     t.text "reading_date", null: false
-    t.text "reading_time"
     t.text "readings", null: false, array: true
-    t.text "school"
-    t.text "total"
-    t.text "type"
     t.text "units"
     t.datetime "updated_at", precision: nil, null: false
     t.index ["amr_data_feed_config_id", "updated_at"], name: "idx_readings_config_id_updated_at"
@@ -803,7 +795,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
   end
 
   create_table "commercial_xero_account_codes", force: :cascade do |t|
-    t.integer "code", null: false
+    t.string "code"
     t.datetime "created_at", null: false
     t.string "label", null: false
     t.datetime "updated_at", null: false
@@ -988,7 +980,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
     t.integer "import_warning_days", default: 7
     t.text "loa_contact_details"
     t.text "loa_expiry_procedure"
-    t.boolean "load_tariffs", default: true, null: false
     t.string "name", null: false
     t.text "new_area_data_feed"
     t.integer "organisation_type"
@@ -2233,12 +2224,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_20_100515) do
   end
 
   create_table "solar_edge_installations", force: :cascade do |t|
+    t.string "access_token"
+    t.datetime "access_token_expires_at"
     t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_key"
+    t.datetime "consent_granted_at"
     t.datetime "created_at", null: false
     t.json "information", default: {}
     t.text "mpan"
+    t.string "refresh_token"
     t.bigint "school_id", null: false
     t.text "site_id"
     t.datetime "updated_at", null: false

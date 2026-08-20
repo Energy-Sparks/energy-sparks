@@ -59,6 +59,8 @@ Rails.application.routes.draw do
   get '/r/school(/*path)', to: 'redirects#school_page_redirect', as: :school_page_redirect, constraints: { path: /.*/ }
   get '/r/group(/*path)', to: 'redirects#group_page_redirect', as: :group_page_redirect, constraints: { path: /.*/ }
 
+  get '/oauth/solar-edge', to: 'oauth/solar_edge#callback'
+
   direct :cdn_link do |model, options|
     expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
     asset_host = ENV.fetch('ASSET_HOST', 'localhost:3000')
@@ -600,6 +602,7 @@ Rails.application.routes.draw do
       resources :new_data_inactive_meter_report, module: :dashboard
       resources :admin_user_meter_report, module: :dashboard
       resources :baseload_anomaly, module: :dashboard
+      resources :estimated_reads, module: :dashboard
       resources :manual_reads, module: :dashboard
       resources :pupil_number_updates, module: :dashboard
     end
@@ -878,6 +881,8 @@ Rails.application.routes.draw do
       resources :community_use, only: [:index]
       resources :data_loads, only: :index
       resources :dcc_status, only: [:index]
+
+      resources :estimated_reads, only: [:index]
       resources :images, only: :index
 
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs

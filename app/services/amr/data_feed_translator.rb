@@ -22,14 +22,12 @@ module Amr
     def translate_row_to_hash(row)
       meter, data_feed_reading_hash = meter_details_from_row(row)
       data_feed_reading_hash[:amr_data_feed_config_id] = @config.id
-      data_feed_reading_hash[:reading_date] = reading_date(row)
-      data_feed_reading_hash[:reading_time] = fetch_from_row(:reading_time_index, row)
-      data_feed_reading_hash[:postcode] = fetch_from_row(:postcode_index, row)
-      data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
-      data_feed_reading_hash[:description] = fetch_from_row(:description_index, row)
-      data_feed_reading_hash[:provider_record_id] = fetch_from_row(:provider_record_id_index, row)
-      data_feed_reading_hash[:readings] = readings_as_array(data_feed_reading_hash, row, meter)
       data_feed_reading_hash[:period] = fetch_from_row(:period_index, row) if @config.positional_index
+      data_feed_reading_hash[:reading_date] = reading_date(row)
+      data_feed_reading_hash[:reading_time] = fetch_from_row(:reading_time_index, row) if @config.row_per_reading
+      data_feed_reading_hash[:estimated] = estimated?(row)
+      data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
+      data_feed_reading_hash[:readings] = readings_as_array(data_feed_reading_hash, row, meter)
       data_feed_reading_hash
     end
 
@@ -71,7 +69,7 @@ module Amr
     end
 
     def readings_as_array(data_feed_reading_hash, amr_data_feed_row, meter)
-      array_of_readings = @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+      array_of_readings = @config.reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
       if array_of_readings.all?(&:present?) && @config.convert_to_kwh != 'no'
         unit = conversion_unit(data_feed_reading_hash, meter)
         if unit
@@ -141,6 +139,15 @@ module Amr
 
     def map_of_fields_to_indexes
       @map_of_fields_to_indexes ||= @config.map_of_fields_to_indexes
+    end
+
+    def estimated?(amr_data_feed_row)
+      return false unless @config.reading_status_fields.any?
+
+      flags = @config.estimate_flags.any? ? @config.estimate_flags : AmrDataFeedConfig::ESTIMATED_STATUS
+
+      statuses = @config.reading_status_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
+      statuses.intersect?(flags.to_a)
     end
   end
 end

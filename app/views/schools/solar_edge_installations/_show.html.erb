@@ -13,40 +13,64 @@
   <p>There is no cached copy of the site metadata</p>
 <% end %>
 
-<h2>Developer Debug links</h2>
+<% if installation.api_key.present? %>
+  <h2>Developer Debug links</h2>
 
-<p>
-  The following URLs provide direct access to some of the data from the Solar Edge API. We only currently load the
-  metered data. The other links are useful for debugging and helping with setup.
-</p>
+  <p>
+    The following URLs provide direct access to some of the data from the Solar Edge API. We only currently load the
+    metered data. The other links are useful for debugging and helping with setup.
+  </p>
 
-<ul>
- <li><%= link_to 'Site Details', "#{DataFeeds::SolarEdgeApi::BASE_URL}/sites/list?#{@api_params.to_query}" %> - live
-     version of the above <code>site_details</code> data. Summarises all sites for which this API key has access</li>
- <% site_url = "#{DataFeeds::SolarEdgeApi::BASE_URL}/site/#{installation.site_id}" %>
- <li><%= link_to 'Data Period', "#{site_url}/dataPeriod?#{@api_params.to_query}" %> - live version of the above
- <code>dates</code>. Returns the dates of earliest and latest readings</li>
- <li><%= link_to 'Site Overview', "#{site_url}/overview?#{@api_params.to_query}" %> - The current power and daily,
-     monthly, yearly and life time energy production for this specific site id</li>
- <% equipment_url = "#{DataFeeds::SolarEdgeApi::BASE_URL}/equipment/#{installation.site_id}" %>
- <li><%= link_to 'Components List', "#{equipment_url}/list?#{@api_params.to_query}" %> - return a list of the
-     inverters/SMIs for this site</li>
+  <ul>
+  <li><%= link_to 'Site Details', "#{DataFeeds::SolarEdgeApi::BASE_URL}/sites/list?#{@api_params.to_query}" %> - live
+      version of the above <code>site_details</code> data. Summarises all sites for which this API key has access</li>
+  <% site_url = "#{DataFeeds::SolarEdgeApi::BASE_URL}/site/#{installation.site_id}" %>
+  <li><%= link_to 'Data Period', "#{site_url}/dataPeriod?#{@api_params.to_query}" %> - live version of the above
+  <code>dates</code>. Returns the dates of earliest and latest readings</li>
+  <li><%= link_to 'Site Overview', "#{site_url}/overview?#{@api_params.to_query}" %> - The current power and daily,
+      monthly, yearly and life time energy production for this specific site id</li>
+  <% equipment_url = "#{DataFeeds::SolarEdgeApi::BASE_URL}/equipment/#{installation.site_id}" %>
+  <li><%= link_to 'Components List', "#{equipment_url}/list?#{@api_params.to_query}" %> - return a list of the
+      inverters/SMIs for this site</li>
 
- <li><%= link_to 'Inventory', "#{site_url}/inventory?#{@api_params.to_query}" %> - return the inventory of SolarEdge
-     equipment for this site id, including inverters/SMIs, batteries, meters, gateways and sensors. Indicates whether
-     meters are real or virtual (calculated from other meters)</li>
+  <li><%= link_to 'Inventory', "#{site_url}/inventory?#{@api_params.to_query}" %> - return the inventory of SolarEdge
+      equipment for this site id, including inverters/SMIs, batteries, meters, gateways and sensors. Indicates whether
+      meters are real or virtual (calculated from other meters)</li>
 
- <% if @reading_params.present? %>
-   <li><%= link_to 'Readings', "#{site_url}/energyDetails?#{@reading_params.to_query}" %> - return the readings for the
-       latest date (based on cached date)</li>
-   <li><%= link_to 'Meter data', "#{site_url}/meters?#{@reading_params.merge({ timeUnit: 'DAY' }).to_query}" %> -
-       lifetime energy reading for each meter and the device its connected to</li>
- <% end %>
+  <% if @reading_params.present? %>
+    <li><%= link_to 'Readings', "#{site_url}/energyDetails?#{@reading_params.to_query}" %> - return the readings for the
+        latest date (based on cached date)</li>
+    <li><%= link_to 'Meter data', "#{site_url}/meters?#{@reading_params.merge({ timeUnit: 'DAY' }).to_query}" %> -
+        lifetime energy reading for each meter and the device its connected to</li>
+  <% end %>
 
- <li><%= link_to 'Environmental Benefits', "#{site_url}/envBenefits?#{@api_params.to_query}" %> - returns all
-     environmental benefits for this site id, e.g. CO2 emissions saved, equivalent trees planted, and light bulbs
-     powered for a day.</li>
- <li><%= link_to 'Current Power Flow', "#{site_url}/currentPowerFlow?#{@api_params.to_query}" %> - retrieves the
-     current power flow between all elements of the site including PV array, storage (battery), loads (consumption) and
-     grid.</li>
-</ul>
+  <li><%= link_to 'Environmental Benefits', "#{site_url}/envBenefits?#{@api_params.to_query}" %> - returns all
+      environmental benefits for this site id, e.g. CO2 emissions saved, equivalent trees planted, and light bulbs
+      powered for a day.</li>
+  <li><%= link_to 'Current Power Flow', "#{site_url}/currentPowerFlow?#{@api_params.to_query}" %> - retrieves the
+      current power flow between all elements of the site including PV array, storage (battery), loads (consumption) and
+      grid.</li>
+  </ul>
+<% end %>
+
+<h2>Solar Edge v2 Debugging</h2>
+<table class="table">
+  <tbody>
+    <tr>
+      <td>Consent Granted At</td>
+      <td><%= nice_date_times(installation.consent_granted_at) if installation.consent_granted_at %></td>
+    </tr>
+    <tr>
+      <td>Access token</td>
+      <td><%= installation.access_token %></td>
+    </tr>
+    <tr>
+      <td>Refresh token</td>
+      <td><%= installation.refresh_token %></td>
+    </tr>
+    <tr>
+      <td>Access token expires</td>
+      <td><%= nice_date_times(installation.access_token_expires_at) if installation.access_token_expires_at %></td>
+    </tr>
+  </tbody>
+</table>

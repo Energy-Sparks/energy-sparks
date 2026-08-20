@@ -61,7 +61,7 @@ RSpec.shared_examples 'a meter with a half hourly meter system' do |meter_type, 
   end
 end
 
-describe 'Meter', :meters do
+describe Meter, :meters do
   describe 'meter attributes' do
     let(:meter) { create(:electricity_meter, meter_system: :nhh_amr) }
 
@@ -79,7 +79,7 @@ describe 'Meter', :meters do
       let!(:exported_solar_pv_meter) { create(:exported_solar_pv_meter) }
 
       it 'main_meters is only real gas and electricity' do
-        expect(Meter.main_meter).to contain_exactly(gas_meter, electricity_meter)
+        expect(described_class.main_meter).to contain_exactly(gas_meter, electricity_meter)
       end
     end
 
@@ -98,7 +98,7 @@ describe 'Meter', :meters do
       end
 
       it 'awaiting_trusted_consent is only dcc meters with reviews' do
-        expect(Meter.awaiting_trusted_consent).to match_array(electricity_meters_reviewed)
+        expect(described_class.awaiting_trusted_consent).to match_array(electricity_meters_reviewed)
       end
     end
 
@@ -121,11 +121,11 @@ describe 'Meter', :meters do
       end
 
       it 'returns a collection of reviewed meters' do
-        expect(Meter.reviewed_dcc_meter).to match_array(electricity_meters_reviewed)
+        expect(described_class.reviewed_dcc_meter).to match_array(electricity_meters_reviewed)
       end
 
       it 'returns a collection of unreviewed meters' do
-        expect(Meter.unreviewed_dcc_meter).to match_array(electricity_meters_not_reviewed)
+        expect(described_class.unreviewed_dcc_meter).to match_array(electricity_meters_not_reviewed)
       end
     end
 
@@ -133,18 +133,18 @@ describe 'Meter', :meters do
       it 'checks main meters' do
         meter = create(:electricity_meter, dcc_meter: :no)
         create(:electricity_meter, dcc_meter: :smets2)
-        expect(Meter.meters_to_check_against_dcc.first).to eq(meter)
+        expect(described_class.meters_to_check_against_dcc.first).to eq(meter)
       end
 
       it 'does not check recently checked meters' do
         create(:electricity_meter, dcc_meter: :no, dcc_checked_at: 6.days.ago)
         create(:electricity_meter, dcc_meter: :smets2)
-        expect(Meter.meters_to_check_against_dcc).to eq([])
+        expect(described_class.meters_to_check_against_dcc).to eq([])
       end
 
       it 'does not check meters for archived schools' do
         create(:electricity_meter, dcc_meter: :no, school: create(:school, active: false, removal_date: 1.month.ago))
-        expect(Meter.meters_to_check_against_dcc).to eq([])
+        expect(described_class.meters_to_check_against_dcc).to eq([])
       end
     end
 
@@ -157,17 +157,20 @@ describe 'Meter', :meters do
 
       it 'returns active meters from active schools' do
         active_meter = create(:electricity_meter, school: create(:school))
-        expect(Meter.active_for_active_schools).to contain_exactly(active_meter)
+        expect(described_class.active_for_active_schools).to contain_exactly(active_meter)
       end
     end
 
     context 'when finding meters with stale readings' do
       it 'returns only active meters with stale readings' do
         data_source = create(:data_source)
-        create(:gas_meter_with_validated_reading_dates, active: false, data_source:, school: create(:school, active: true))
-        stale_meter = create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, data_source:, school: create(:school, active: true))
-        create(:gas_meter_with_validated_reading_dates, end_date: 2.days.ago, data_source:, school: create(:school, active: true))
-        expect(Meter.with_stale_readings).to contain_exactly(stale_meter)
+        create(:gas_meter_with_validated_reading_dates, active: false, data_source:,
+                                                        school: create(:school, active: true))
+        stale_meter = create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, data_source:,
+                                                                      school: create(:school, active: true))
+        create(:gas_meter_with_validated_reading_dates, end_date: 2.days.ago, data_source:,
+                                                        school: create(:school, active: true))
+        expect(described_class.with_stale_readings).to contain_exactly(stale_meter)
       end
     end
   end
@@ -194,25 +197,25 @@ describe 'Meter', :meters do
         let(:attributes) { attributes_for(:electricity_meter) }
 
         it 'is valid with a 13 digit number' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 1_098_598_765_437))
+          meter = described_class.new(attributes.merge(mpan_mprn: 1_098_598_765_437))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
         it 'is valid with a 15 digit number' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 991_098_598_765_437))
+          meter = described_class.new(attributes.merge(mpan_mprn: 991_098_598_765_437))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
         it 'is invalid with a 16 digit number' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 9_991_098_598_765_437))
+          meter = described_class.new(attributes.merge(mpan_mprn: 9_991_098_598_765_437))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
 
         it 'is invalid with a number less than 13 digits' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 123))
+          meter = described_class.new(attributes.merge(mpan_mprn: 123))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
@@ -223,32 +226,32 @@ describe 'Meter', :meters do
         let!(:school)    { create(:school) }
 
         it 'is valid with a 14 digit number' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 91_098_598_765_437))
+          meter = described_class.new(attributes.merge(mpan_mprn: 91_098_598_765_437))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
         it 'is valid with non-standard 13 digit part' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 90_000_000_000_037))
+          meter = described_class.new(attributes.merge(mpan_mprn: 90_000_000_000_037))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
         it 'is invalid with a number less than 14 digits' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 1234))
+          meter = described_class.new(attributes.merge(mpan_mprn: 1234))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
 
         it 'is invalid with a 14 digit number not beginning with 6,7,9' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 11_098_598_765_437))
+          meter = described_class.new(attributes.merge(mpan_mprn: 11_098_598_765_437))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
 
         it 'validates meter type is not changed when there is an update' do
-          meter = Meter.new(attributes.merge(pseudo: true, mpan_mprn: 91_098_598_765_437, meter_type: 'electricity',
-                                             school:))
+          meter = described_class.new(attributes.merge(pseudo: true, mpan_mprn: 91_098_598_765_437, meter_type: 'electricity',
+                                                       school:))
           meter.valid?
           expect(meter.errors[:meter_type]).to be_empty
           meter.save!
@@ -262,8 +265,8 @@ describe 'Meter', :meters do
         end
 
         it 'validates mpan mprn is not changed when there is an update' do
-          meter = Meter.new(attributes.merge(pseudo: true, mpan_mprn: 91_098_598_765_437, meter_type: 'electricity',
-                                             school:))
+          meter = described_class.new(attributes.merge(pseudo: true, mpan_mprn: 91_098_598_765_437, meter_type: 'electricity',
+                                                       school:))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
           meter.save!
@@ -281,25 +284,25 @@ describe 'Meter', :meters do
         let(:attributes) { attributes_for(:solar_pv_meter) }
 
         it 'is valid with a 14 digit number' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 12_345_678_901_234))
+          meter = described_class.new(attributes.merge(mpan_mprn: 12_345_678_901_234))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
         it 'is valid with a 15 digit number' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 123_456_789_012_345))
+          meter = described_class.new(attributes.merge(mpan_mprn: 123_456_789_012_345))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
         it 'is invalid with a number less than 13 digits' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 123_456_789_012))
+          meter = described_class.new(attributes.merge(mpan_mprn: 123_456_789_012))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
 
         it 'is invalid with a number more than 15 digits' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 1_234_567_890_123_456))
+          meter = described_class.new(attributes.merge(mpan_mprn: 1_234_567_890_123_456))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
@@ -309,13 +312,13 @@ describe 'Meter', :meters do
         let(:attributes) { attributes_for(:exported_solar_pv_meter) }
 
         it 'is valid with a 14 digit number' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 61_098_598_765_437))
+          meter = described_class.new(attributes.merge(mpan_mprn: 61_098_598_765_437))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
         it 'is invalid with a number less than 13 digits' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 123_456_789_012))
+          meter = described_class.new(attributes.merge(mpan_mprn: 123_456_789_012))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
@@ -325,13 +328,13 @@ describe 'Meter', :meters do
         let(:attributes) { attributes_for(:gas_meter) }
 
         it 'is valid with a 10 digit number' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 1_098_598_765))
+          meter = described_class.new(attributes.merge(mpan_mprn: 1_098_598_765))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to be_empty
         end
 
         it 'is invalid with a number longer than 15 digits' do
-          meter = Meter.new(attributes.merge(mpan_mprn: 1_234_567_890_123_456))
+          meter = described_class.new(attributes.merge(mpan_mprn: 1_234_567_890_123_456))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).not_to be_empty
         end
@@ -362,27 +365,27 @@ describe 'Meter', :meters do
 
   describe 'correct_mpan_check_digit?' do
     it 'returns true if the check digit matches' do
-      meter = Meter.new(meter_type: :electricity, mpan_mprn: 2_040_015_001_169)
+      meter = described_class.new(meter_type: :electricity, mpan_mprn: 2_040_015_001_169)
       expect(meter.correct_mpan_check_digit?).to be(true)
     end
 
     it 'returns true if the check digit matches ignoring prepended digit for electricity meters' do
-      meter = Meter.new(meter_type: :electricity, mpan_mprn: 92_040_015_001_169)
+      meter = described_class.new(meter_type: :electricity, mpan_mprn: 92_040_015_001_169)
       expect(meter.correct_mpan_check_digit?).to be(true)
     end
 
     it 'returns true if the check digit matches ignoring 2 prepended digits for electricity meters' do
-      meter = Meter.new(meter_type: :electricity, mpan_mprn: 992_040_015_001_169)
+      meter = described_class.new(meter_type: :electricity, mpan_mprn: 992_040_015_001_169)
       expect(meter.correct_mpan_check_digit?).to be(true)
     end
 
     it 'returns false if the check digit does not match' do
-      meter = Meter.new(meter_type: :electricity, mpan_mprn: 2_040_015_001_165)
+      meter = described_class.new(meter_type: :electricity, mpan_mprn: 2_040_015_001_165)
       expect(meter.correct_mpan_check_digit?).to be(false)
     end
 
     it 'returns false if the mpan is short' do
-      meter = Meter.new(meter_type: :electricity, mpan_mprn: 2_040_015_165)
+      meter = described_class.new(meter_type: :electricity, mpan_mprn: 2_040_015_165)
       expect(meter.correct_mpan_check_digit?).to be(false)
     end
   end
@@ -524,7 +527,7 @@ describe 'Meter', :meters do
     let!(:meter) { create(:electricity_meter) }
 
     context 'with no array' do
-      it { expect(meter.has_solar_array?).to eq(false) }
+      it { expect(meter.has_solar_array?).to be(false) }
     end
 
     context 'with metered solar' do
@@ -532,7 +535,7 @@ describe 'Meter', :meters do
         create(:solar_pv_mpan_meter_mapping, meter: meter)
       end
 
-      it { expect(meter.has_solar_array?).to eq(true) }
+      it { expect(meter.has_solar_array?).to be(true) }
     end
 
     context 'with estimated solar' do
@@ -540,7 +543,84 @@ describe 'Meter', :meters do
         create(:solar_pv_attribute, meter: meter)
       end
 
-      it { expect(meter.has_solar_array?).to eq(true) }
+      it { expect(meter.has_solar_array?).to be(true) }
+    end
+  end
+
+  describe '.with_summary_of_estimated_data' do
+    subject(:meters_with_summary) { described_class.with_summary_of_estimated_data }
+
+    let!(:meter) do
+      create(:gas_meter_with_validated_reading_dates,
+             start_date: Time.zone.today - 60.days,
+             end_date: Time.zone.yesterday,
+             data_source: create(:data_source),
+             supplier: create(:supplier))
+    end
+
+    it { expect(meters_with_summary).to be_empty }
+
+    context 'with estimated reads' do
+      let!(:meter) do
+        create(:gas_meter_with_validated_reading_dates,
+               start_date: Time.zone.today - 60.days,
+               end_date: Time.zone.yesterday,
+               data_source: create(:data_source),
+               supplier: create(:supplier),
+               status: 'EST')
+      end
+
+      it 'returns the meter and summary' do
+        expect(meters_with_summary.first).to eq(meter)
+        expect(meters_with_summary.first).to have_attributes(
+          latest_reading_date: Time.zone.yesterday,
+          latest_est_reading_date: Time.zone.yesterday,
+          total: 60,
+          recent_total: 30
+        )
+      end
+
+      context 'when none are recent' do
+        let!(:meter) do
+          meter = create(:gas_meter_with_validated_reading_dates,
+                         start_date: 60.days.ago,
+                         end_date: 31.days.ago,
+                         data_source: create(:data_source),
+                         supplier: create(:supplier),
+                         status: 'EST')
+          create(:amr_validated_reading, meter:, reading_date: Time.zone.yesterday)
+          meter
+        end
+
+        it 'returns the meter and summary' do
+          expect(meters_with_summary.first).to eq(meter)
+          expect(meters_with_summary.first).to have_attributes(
+            latest_reading_date: Time.zone.yesterday,
+            latest_est_reading_date: 31.days.ago.to_date,
+            total: 30,
+            recent_total: 0
+          )
+        end
+      end
+    end
+  end
+
+  describe 'when destroying' do
+    context 'when consent has been granted' do
+      let!(:meter) { create(:electricity_meter, consent_granted: true) }
+
+      it 'cannot be destroyed' do
+        expect { meter.destroy }.not_to(change(described_class, :count))
+        expect(meter.errors[:base]).to include('Audit requirements mean consent must be withdrawn before removing meter')
+      end
+    end
+
+    context 'when consent has not been granted, or already withdrawn' do
+      let!(:meter) { create(:electricity_meter, consent_granted: false) }
+
+      it 'can be destroyed' do
+        expect { meter.destroy }.to change(described_class, :count).by(-1)
+      end
     end
   end
 end

@@ -4,7 +4,7 @@ require_relative './electricity_cost_co2_mixin.rb'
 
 class AlertOutOfHoursElectricityUsage < AlertOutOfHoursBaseUsage
   include ElectricityCostCo2Mixin
-  attr_reader :daytype_breakdown_table
+
   def initialize(school)
     super(
       school,

@@ -50,9 +50,10 @@ class Activity < ApplicationRecord
 
   # Probably should be a has_one relationship
   # At last check, activities had one obsevation each (with four having none)
-  has_many :observations
+  has_many :observations, dependent: :destroy
 
   validates :happened_on, presence: true
+  validates :description, presence: true, on: :require_description
 
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
   scope :by_date, ->(order = :asc) { order(happened_on: order, id: order) }

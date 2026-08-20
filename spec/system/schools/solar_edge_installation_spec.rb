@@ -88,7 +88,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
       end
 
       it 'allows viewing' do
-        click_on(installation.mpan)
+        click_on(installation.site_id)
         expect(page).to have_text('site_details')
         expect(page).to have_text('dates')
         expect(page).to have_link('Data Period')

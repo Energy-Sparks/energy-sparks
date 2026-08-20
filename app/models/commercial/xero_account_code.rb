@@ -5,7 +5,7 @@
 # Table name: commercial_xero_account_codes
 #
 #  id         :bigint(8)        not null, primary key
-#  code       :integer          not null
+#  code       :string
 #  label      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -20,7 +20,8 @@ module Commercial
 
     self.table_name = 'commercial_xero_account_codes'
 
-    validates :code, presence: true, uniqueness: true
+    validates :code, presence: true
+    validates :code, uniqueness: { case_sensitive: false }
     validates :label, presence: true
 
     scope :by_code, -> { order(:code) }

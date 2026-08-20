@@ -33,7 +33,8 @@ module EnergySparksDataHelpers
     # whereas going through active record, would return 1234.567890
     # The gsub trims the trailing zero where appropriate
     formatted_date_time_stamp = amr.updated_at.strftime('%Y-%m-%d %H:%M:%S.%6N').gsub(/0+$/, '')
-    "#{meter.school.urn},#{meter.school.name},#{meter.mpan_mprn},#{meter.meter_type.titleize},#{amr.reading_date},#{amr.amr_data_feed_import_log.amr_data_feed_config.date_format},#{formatted_date_time_stamp},#{amr.readings.join(',')}"
+    estimated = amr.estimated ? 'Yes' : 'No'
+    "#{meter.school.urn},#{meter.school.name},#{meter.mpan_mprn},#{meter.meter_type.titleize},#{amr.reading_date},#{amr.amr_data_feed_import_log.amr_data_feed_config.date_format},#{formatted_date_time_stamp},#{estimated},#{amr.readings.join(',')}"
   end
 end
 
