@@ -147,11 +147,13 @@ class SyntheticAMRDataCalculator # rubocop:todo Metrics/ClassLength
   # for interpolation purposes add a month on and start and end of a year so the data wraps around for interpolation,
   # rather than the interpolation being truncated
   #
-  # 2026-07 used to substitute August with July due to large number of Scottish schools with high usage skewing figures
-  # but now have few schools in Scotland.
+  # substitute August with July. Original rationale was issues with Scottish schools skewing figures, but still seeing
+  # anomlies in August only so remove for now.
   def configure_14_months(months_data)
     months_data[0]  = months_data[12]
     months_data[13] = months_data[0]
+
+    months_data[8] = months_data[7]
     months_data.sort.to_h
   end
 
