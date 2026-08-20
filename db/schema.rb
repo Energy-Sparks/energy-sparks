@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_18_131456) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_20_134134) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -517,6 +517,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_131456) do
     t.date "substitute_date"
     t.datetime "upload_datetime", precision: nil
     t.index ["meter_id", "one_day_kwh"], name: "index_amr_validated_readings_on_meter_id_and_one_day_kwh"
+    t.index ["meter_id", "status"], name: "idx_amr_validated_reading_meter_status"
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
     t.unique_constraint ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings"
   end
