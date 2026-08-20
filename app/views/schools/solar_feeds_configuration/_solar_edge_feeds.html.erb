@@ -2,22 +2,24 @@
   <table class="table table-sm">
     <thead>
       <tr>
-        <th>Mpan (or Id)</th>
         <th>Site Id</th>
+        <th>Mpan (or Id)</th>
         <th>API Key</th>
         <th>Last updated</th>
+        <th>Consented at</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <% solar_edge_installations.each do |installation| %>
         <tr>
-          <td><%= link_to installation.mpan, school_solar_edge_installation_path(school, installation) %></td>
-          <td><%= installation.site_id %></td>
+          <td><%= link_to installation.site_id, school_solar_edge_installation_path(school, installation) %></td>
+          <td><%= installation.mpan %></td>
           <td><%= installation.api_key %></td>
           <td><%= nice_date_times(installation.updated_at) %></td>
-          <td><%= render 'actions', installation:, school:,
-                                    id_prefix: Schools::SolarEdgeInstallationsController::ID_PREFIX %></td>
+          <td><%= nice_date_times(installation.consent_granted_at) if installation.consent_granted_at %></td>
+          <td><%= render 'schools/solar_edge_installations/actions', installation:, school:,
+                                                                     id_prefix: Schools::SolarEdgeInstallationsController::ID_PREFIX %></td>
         </tr>
       <% end %>
     </tbody>
@@ -26,4 +28,7 @@
   <p>This school has no Solar Edge sites</p>
 <% end %>
 
-<p><%= link_to 'New Solar Edge API feed', new_school_solar_edge_installation_path, class: 'btn' %></p>
+<p>
+  <%= link_to 'New Solar Edge API feed', new_school_solar_edge_installation_path, class: 'btn' %>
+  <%= link_to 'Connect SolarEdge Site', DataFeeds::SolarEdge::Api.authorize_url(school.id), class: 'btn' %>
+</p>

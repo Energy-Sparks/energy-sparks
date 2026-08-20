@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AdminMailer < ApplicationMailer
+class AdminMailer < ApplicationMailer # rubocop:todo Metrics/ClassLength
   helper :application
   helper :issues
 
@@ -114,5 +114,11 @@ class AdminMailer < ApplicationMailer
     @errors = errors
     mail(to: 'operations@energysparks.uk', subject: admin_subject('Regeneration Errors'))
     prevent_delivery_from_test
+  end
+
+  def solar_edge_site_connected(installation)
+    @installation = installation
+    email = @installation.school&.default_issues_admin_user&.email || 'operations@energysparks.uk'
+    mail(to: email, subject: admin_subject("SolarEdge Site Connected for #{@installation.school.name}"))
   end
 end
