@@ -20,9 +20,8 @@ module Admin
 
     def results
       results = Meter.active
+                     .with_validated_readings_of_type('PROB')
                      .joins(:school)
-                     .joins(:amr_validated_readings)
-                     .where(amr_validated_readings: { status: 'PROB' })
                      .includes(:school, { school: :school_group })
                      .group('school_groups.id', 'schools.id', 'meters.id')
                      .select('school_groups.*, meters.*, count(amr_validated_readings.id) as count')

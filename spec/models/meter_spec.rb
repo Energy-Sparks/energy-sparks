@@ -547,6 +547,64 @@ describe Meter, :meters do
     end
   end
 
+  describe '.with_summary_of_estimated_data' do
+    subject(:meters_with_summary) { described_class.with_summary_of_estimated_data }
+
+    let!(:meter) do
+      create(:gas_meter_with_validated_reading_dates,
+             start_date: Time.zone.today - 60.days,
+             end_date: Time.zone.yesterday,
+             data_source: create(:data_source),
+             supplier: create(:supplier))
+    end
+
+    it { expect(meters_with_summary).to be_empty }
+
+    context 'with estimated reads' do
+      let!(:meter) do
+        create(:gas_meter_with_validated_reading_dates,
+               start_date: Time.zone.today - 60.days,
+               end_date: Time.zone.yesterday,
+               data_source: create(:data_source),
+               supplier: create(:supplier),
+               status: 'EST')
+      end
+
+      it 'returns the meter and summary' do
+        expect(meters_with_summary.first).to eq(meter)
+        expect(meters_with_summary.first).to have_attributes(
+          latest_reading_date: Time.zone.yesterday,
+          latest_est_reading_date: Time.zone.yesterday,
+          total: 60,
+          recent_total: 30
+        )
+      end
+
+      context 'when none are recent' do
+        let!(:meter) do
+          meter = create(:gas_meter_with_validated_reading_dates,
+                         start_date: 60.days.ago,
+                         end_date: 31.days.ago,
+                         data_source: create(:data_source),
+                         supplier: create(:supplier),
+                         status: 'EST')
+          create(:amr_validated_reading, meter:, reading_date: Time.zone.yesterday)
+          meter
+        end
+
+        it 'returns the meter and summary' do
+          expect(meters_with_summary.first).to eq(meter)
+          expect(meters_with_summary.first).to have_attributes(
+            latest_reading_date: Time.zone.yesterday,
+            latest_est_reading_date: 31.days.ago.to_date,
+            total: 30,
+            recent_total: 0
+          )
+        end
+      end
+    end
+  end
+
   describe 'when destroying' do
     context 'when consent has been granted' do
       let!(:meter) { create(:electricity_meter, consent_granted: true) }

@@ -600,6 +600,7 @@ Rails.application.routes.draw do
       resources :new_data_inactive_meter_report, module: :dashboard
       resources :admin_user_meter_report, module: :dashboard
       resources :baseload_anomaly, module: :dashboard
+      resources :estimated_reads, module: :dashboard
       resources :manual_reads, module: :dashboard
       resources :pupil_number_updates, module: :dashboard
     end
@@ -878,6 +879,8 @@ Rails.application.routes.draw do
       resources :community_use, only: [:index]
       resources :data_loads, only: :index
       resources :dcc_status, only: [:index]
+
+      resources :estimated_reads, only: [:index]
       resources :images, only: :index
 
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
