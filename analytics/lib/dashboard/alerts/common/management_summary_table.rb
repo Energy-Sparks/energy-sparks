@@ -136,7 +136,7 @@ class ManagementSummaryTable < ContentBase
 
   def difference_to_exemplar_£(actual_£, fuel_type)
     return nil if actual_£.nil?
-    examplar = BenchmarkMetrics.exemplar_£(@school, fuel_type, nil, nil)
+    examplar = BenchmarkMetrics.exemplar_gbp(@school, fuel_type, nil, nil)
     return nil if examplar.nan?
     [actual_£ - examplar, 0.0].max
   end

@@ -3,60 +3,116 @@
 require 'rails_helper'
 
 describe Baseload::BaseloadBenchmarkingService, type: :service do
-  let(:asof_date)      { Date.new(2022, 2, 1) }
-  let(:service)        { described_class.new(@acme_academy, asof_date) }
+  subject(:service) { described_class.new(meter_collection, asof_date) }
 
-  # using before(:all) here to avoid slow loading of YAML and then
-  # running the aggregation code for each test.
-  before(:all) do
-    @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy')
+  let(:asof_date) { Date.new(2025, 12, 31) }
+
+  # using fixed generation (from context) and consumption to simplify calculating expected values
+  let(:consumption_x48) { [*([0.1] * 10), *([0.005] * 10), *([0.4] * 8), *([0.25] * 10), *([0.01] * 10)] }
+
+  include_context 'with an aggregated meter with tariffs and school times' do
+    let(:amr_start_date)  { Date.new(2024, 1, 1) }
+    let(:amr_end_date)    { asof_date }
+
+    let(:amr_data) do
+      build(:amr_data, :with_date_range, :with_grid_carbon_intensity,
+            grid_carbon_intensity: grid_carbon_intensity,
+            start_date: amr_start_date,
+            end_date: amr_end_date,
+            kwh_data_x48: consumption_x48)
+    end
   end
 
   describe '#average_baseload_kw' do
-    it 'calculates baseload for a benchmark school' do
-      # numbers taken from running the AlertElectricityBaseloadVersusBenchmark alert
-      expect(service.average_baseload_kw(compare: :benchmark_school)).to be_within(0.01).of(18.76)
+    context 'with a well managed benchmark' do
+      let(:expected_baseload) do
+        BenchmarkMetrics.recommended_baseload_for_pupils(pupils: 1000,
+                                                         school_type: :primary,
+                                                         heat_pump: false)
+      end
+
+      it 'calculates baseload for a benchmark school' do
+        expect(service.average_baseload_kw(compare: :benchmark_school)).to be_within(0.01).of(expected_baseload)
+      end
     end
 
-    it 'calculated baseload for an exemplar school' do
-      # numbers taken from running the AlertElectricityBaseloadVersusBenchmark alert
-      expect(service.average_baseload_kw(compare: :exemplar_school)).to be_within(0.01).of(11.26)
+    context 'with an exemplar benchmark' do
+      let(:expected_baseload) do
+        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils: 1000,
+                                                      school_type: :primary,
+                                                      heat_pump: false)
+      end
+
+      it 'calculates baseload for a benchmark school' do
+        expect(service.average_baseload_kw(compare: :exemplar_school)).to be_within(0.01).of(expected_baseload)
+      end
     end
   end
 
   describe '#baseload_usage' do
-    it 'calculates usage for a benchmark school' do
-      # numbers taken from running the AlertElectricityBaseloadVersusBenchmark alert
-      usage = service.baseload_usage(compare: :benchmark_school)
-      expect(usage.kwh).to be_within(0.01).of(164_328.84)
-      expect(usage.£).to be_within(0.01).of(19_232.10)
-      expect(usage.co2).to be_within(0.01).of(27_455.47)
+    context 'with a well managed benchmark' do
+      subject(:usage) { service.baseload_usage(compare: :benchmark_school) }
+
+      let(:expected_baseload_kwh) do
+        BenchmarkMetrics.recommended_baseload_for_pupils(pupils: 1000, school_type: :primary,
+                                                         heat_pump: false) * 365 * 24
+      end
+
+      it 'calculates usage' do
+        expect(usage.kwh).to be_within(0.01).of(expected_baseload_kwh)
+        expect(usage.£).to be_within(0.01).of(expected_baseload_kwh * flat_rate) # rubocop:disable Naming/AsciiIdentifiers
+        expect(usage.co2).to be_within(0.01).of(expected_baseload_kwh * carbon_intensity)
+      end
     end
 
-    it 'calculates usage for an exemplar school' do
-      # numbers taken from running the AlertElectricityBaseloadVersusBenchmark alert
-      usage = service.baseload_usage(compare: :exemplar_school)
-      expect(usage.kwh).to be_within(0.01).of(98_597.3)
-      expect(usage.£).to be_within(0.01).of(11_539.26)
-      expect(usage.co2).to be_within(0.01).of(16_473.28)
+    context 'with an exemplar benchmark' do
+      subject(:usage) { service.baseload_usage(compare: :exemplar_school) }
+
+      let(:expected_baseload_kwh) do
+        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils: 1000, school_type: :primary, heat_pump: false) * 365 * 24
+      end
+
+      it 'calculates usage' do
+        expect(usage.kwh).to be_within(0.01).of(expected_baseload_kwh)
+        expect(usage.£).to be_within(0.01).of(expected_baseload_kwh * flat_rate) # rubocop:disable Naming/AsciiIdentifiers
+        expect(usage.co2).to be_within(0.01).of(expected_baseload_kwh * carbon_intensity)
+      end
     end
   end
 
   describe '#estimated_savings' do
-    it 'calculates savings vs benchmark school' do
-      # numbers taken from running the AlertElectricityBaseloadVersusBenchmark alert
-      usage = service.estimated_savings(versus: :benchmark_school)
-      expect(usage.kwh).to be_within(0.01).of(48_672.96)
-      expect(usage.£).to be_within(0.01).of(5696.40)
-      expect(usage.co2).to be_within(0.01).of(8132.10)
+    let(:expected_savings_kwh) do
+      actual_baseload_kwh = 0.01 * 365 * 24 # 0.01 is baseload from consumption_x48
+      actual_baseload_kwh - expected_baseload_kwh
     end
 
-    it 'calculates savings vs exemplar school' do
-      # numbers taken from running the AlertElectricityBaseloadVersusBenchmark alert
-      usage = service.estimated_savings(versus: :exemplar_school)
-      expect(usage.kwh).to be_within(0.01).of(114_404.5)
-      expect(usage.£).to be_within(0.01).of(13_389.24)
-      expect(usage.co2).to be_within(0.01).of(19_114.29)
+    context 'with a well managed benchmark' do
+      subject(:usage) { service.estimated_savings(versus: :benchmark_school) }
+
+      let(:expected_baseload_kwh) do
+        BenchmarkMetrics.recommended_baseload_for_pupils(pupils: 1000, school_type: :primary,
+                                                         heat_pump: false) * 365 * 24
+      end
+
+      it 'calculates savings' do
+        expect(usage.kwh).to be_within(0.01).of(expected_savings_kwh)
+        expect(usage.£).to be_within(0.01).of(expected_savings_kwh * flat_rate) # rubocop:disable Naming/AsciiIdentifiers
+        expect(usage.co2).to be_within(0.01).of(expected_savings_kwh * carbon_intensity)
+      end
+    end
+
+    context 'with an exemplar benchmark' do
+      subject(:usage) { service.estimated_savings(versus: :exemplar_school) }
+
+      let(:expected_baseload_kwh) do
+        BenchmarkMetrics.exemplar_baseload_for_pupils(pupils: 1000, school_type: :primary, heat_pump: false) * 365 * 24
+      end
+
+      it 'calculates savings' do
+        expect(usage.kwh).to be_within(0.01).of(expected_savings_kwh)
+        expect(usage.£).to be_within(0.01).of(expected_savings_kwh * flat_rate) # rubocop:disable Naming/AsciiIdentifiers
+        expect(usage.co2).to be_within(0.01).of(expected_savings_kwh * carbon_intensity)
+      end
     end
   end
 
@@ -64,17 +120,16 @@ describe Baseload::BaseloadBenchmarkingService, type: :service do
     context 'when theres is a years worth' do
       it 'returns true' do
         expect(service.enough_data?).to be true
-        expect(service.data_available_from).to be nil
+        expect(service.data_available_from).to be_nil
       end
     end
 
     context 'when theres is limited data' do
-      # acme academy has data starting in 2019-01-13
-      let(:asof_date) { Date.new(2019, 1, 21) }
+      let(:asof_date) {  Date.new(2024, 1, 13) }
 
       it 'returns false' do
         expect(service.enough_data?).to be false
-        expect(service.data_available_from).not_to be nil
+        expect(service.data_available_from).not_to be_nil
       end
     end
   end
