@@ -86,11 +86,11 @@ module Schools
     def email_users(users, email)
       # Email users in preferred locale, others in English
       if users.any?
-        SolarEdgeMailer.with_user_locales(users:, school: @school) do |mailer|
+        ::SolarEdgeMailer.with_user_locales(users:, school: @school) do |mailer|
           mailer.request_connection.deliver_now
         end
       end
-      SolarEdgeMailer.with(email:, school: @school).request_connection.deliver_now if email.present?
+      ::SolarEdgeMailer.with(email:, school: @school).request_connection.deliver_now if email.present?
     end
 
     def request_connection_params
