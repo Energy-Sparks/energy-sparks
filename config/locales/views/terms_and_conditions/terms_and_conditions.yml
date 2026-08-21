@@ -2,7 +2,7 @@
 en:
   terms_and_conditions:
     final_html: "<p> Energy Sparks is a registered charity in England and Wales, registration 1189273. Registered address&#58; Fairlawn, Park Corner, Freshford, Bath, BA2 7UP. hello@energysparks.uk. 01225 723924 Data protection officer - dpo@energysparks.uk </p>"
-    revised: 'Revision date: 10th November 2025'
+    revised: 'Revision date: 21st August 2026'
     sections:
       eight_html: |-
         <h2>8. Third party service providers</h2>
@@ -105,6 +105,8 @@ en:
           </li>
           <li>6.5 Users are referred to Energy Sparks privacy and cookie policy at <a href=%{privacy_and_cookie_policy_url}>%{privacy_and_cookie_policy_url}</a> </li>
           <li>6.6 If a participating school or school user chooses to submit images, videos or attributed quotes of pupils to the Energy Sparks website, the school user will ensure that the school has the necessary parental permission for the pupil’s image or name to be shared.</li>
+          <li>Please avoid sharing full pupil names. Where possible, choose photographs that illustrate the activity without clearly identifying individual pupils. Images showing pupils from behind, in groups, or focusing on the activity itself are often just as effective.</li>
+          <li>Photographs uploaded to the Energy Sparks website may also be reproduced in our newsletters, blog posts, and social media, and shared with Energy Sparks' funders and the DfE if relevant.</li>
           <li>6.7 If a school stops using Energy Sparks' services, their Energy Sparks account can be archived or deleted. An account can be archived if there is a reasonable likelihood that the school’s account will be reactivated in the next 18 months. This includes when the school is no longer eligible for a funded account but wants to remain on the waiting list should further funding become available in future. An account can also be archived if the school does not have capacity to engage with Energy Sparks at the present time, but hopes to re-engage within the next 18 months. Energy Sparks will also archive a school’s account should their funded access end and the school provides no further instructions on whether they wish to pay for their account.  Accounts will be fully deleted on request from a school or after they have been archived for more than 3 years.</li>
           <li>An archived school account will not be publicly visible nor visible to logged in school users, but Energy Sparks will save the school’s account details including meter numbers, historic data and confirmed user details. Any unconfirmed user invitations will be deleted from the school’s records when the account is archived. A deleted school account will delete the school’s meter numbers, historic data and user information.</li>
         </ul>
