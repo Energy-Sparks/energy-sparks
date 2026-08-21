@@ -117,7 +117,12 @@ class AmrDataFeedConfig < ApplicationRecord # rubocop:todo Metrics/ClassLength
     safe_parse_date(date_string, date_format)
   rescue ArgumentError
     begin
-      Date.parse(date_string)
+      if date_string.match(TWO_DIGIT_YEAR) # Avoid ruby default of assuming year/month/day order
+        format = date_string.include?('/') ? '%d/%m/%y' : '%d-%m-%y'
+        Date.strptime(date_string, format)
+      else
+        Date.parse(date_string)
+      end
     rescue ArgumentError
       nil
     end
