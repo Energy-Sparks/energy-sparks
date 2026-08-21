@@ -1,33 +1,270 @@
-<h1><%= @configuration.description %> - data feed config</h1>
-<p><%= link_to 'Back to AMR Data Feed Configurations', admin_amr_data_feed_configs_path %></p>
-<p>
-  <%= link_to('Upload file', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@configuration),
-              class: 'btn btn-sm') %>
-  <%= link_to('Edit', edit_admin_amr_data_feed_config_path(@configuration), class: 'btn btn-sm') %>
-</p>
-<table class="table table-striped">
-  <tbody>
-    <% @configuration.attributes.except('id', 'created_at', 'updated_at', 'owned_by_id').sort.each do |key, value| %>
-      <tr>
-        <td><%= key.humanize.capitalize %></td>
-        <td><%= value %></td>
-      </tr>
-    <% end %>
-    <tr>
-      <td>Owned by</td>
-      <td><%= @configuration.owned_by&.name %></td>
-    </tr>
-    <tr>
-      <td>Notes</td>
-      <td><%= @configuration.notes %></td>
-    </tr>
-    <tr>
-      <td>Created</td>
-      <td><%= nice_dates(@configuration.created_at) %></td>
-    </tr>
-    <tr>
-      <td>Updated</td>
-      <td><%= nice_dates(@configuration.updated_at) %></td>
-    </tr>
-  </tbody>
-</table>
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @configuration.description %>
+  <% header_nav.with_button 'All Configs', admin_amr_data_feed_configs_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to('Upload file', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@configuration),
+                  class: 'btn btn-sm btn-primary') %>
+      <%= link_to('Edit', edit_admin_amr_data_feed_config_path(@configuration), class: 'btn btn-sm') %>
+    </p>
+  </div>
+</div>
+
+<div class="col-12 mb-4 bg-light rounded-2 pb-3">
+  <h3>Basic metadata</h3>
+  <div class="row">
+    <div class="col-3">Enabled</div>
+    <div class="col-4"><%= checkmark(@configuration.enabled, off_class: 'text-muted') %></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Identifier</div>
+    <div class="col-4"><code><%= @configuration.identifier %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Notes</div>
+    <div class="col-4"><%= @configuration.notes %></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Source type</div>
+    <div class="col-4">
+      <%= case @configuration.source_type
+          when 'email'
+            'Email or manual'
+          when 'manual'
+            'Manual'
+          when 'SFTP'
+            'SFTP'
+          else
+            'API'
+          end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Latest Reading Date</div>
+    <div class="col-4">
+      <%= nice_date_times(@configuration.latest_reading_date) %>
+    </div>
+    <div class="col">
+      <% if @configurations.stopped_feeds.include?(@configuration) %>
+        <span class="badge rounded-pill bg-danger text-light">
+          Out of Date
+        </span>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Missing Reading Window</div>
+    <div class="col-4"><%= @configuration.missing_reading_window %></div>
+    <div class="col">
+      <span class="text-muted">Number of days after which we have not having received readings to trigger a warning email</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Owned By</div>
+    <div class="col-4"><%= @configuration.owned_by&.name %></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Created</div>
+    <div class="col-4"><%= nice_dates(@configuration.created_at) %></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Last Updated</div>
+    <div class="col-4"><%= nice_dates(@configuration.updated_at) %></div>
+  </div>
+</div>
+
+<div class="col-12 mb-4 bg-light rounded-2 pb-3">
+  <h3>Inserting readings</h3>
+  <div class="row">
+    <div class="col-3">Allow merging
+    </div>
+    <div class="col-4"><%= checkmark(@configuration.allow_merging, off_class: 'text-muted') %></div>
+    <div class="col">
+      <span class="text-muted">Indicates if format supports inserting partial readings</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Missing readings limit</div>
+    <div class="col-4"><%= @configuration.missing_readings_limit %></div>
+    <div class="col">
+      <p class="text-muted">
+        This is the maximum number of missing data points allowed in a day, above which the entire day will be
+        ignored (without reporting). For row per reading formats this will currently always be set to 1
+        unless a number is configured here. If the format supports merging, then partial days will always be
+        inserted.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="col-12 mb-4 bg-light rounded-2 pb-3">
+  <h3>CSV Format</h3>
+  <div class="row">
+    <div class="col-3">Row per day?</div>
+    <div class="col-4"><%= checkmark(!@configuration.row_per_reading, off_class: 'text-muted') %></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Number of rows before data</div>
+    <div class="col-4"><%= @configuration.number_of_header_rows %></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Header</div>
+    <div class="col-9 text-wrap text-break"><code><%= @configuration.header_example %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Column separator</div>
+    <div class="col-4"><%= @configuration.column_separator %></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Column row filters</div>
+    <div class="col-4"><%= @configuration.column_row_filters %></div>
+    <div class="col">
+      <p class="text-muted">If configured, then rows that match the provided filter will be rejected before loading.</p>
+    </div>
+  </div>
+</div>
+
+<div class="col-12 mb-4 bg-light rounded-2 pb-3">
+  <h3>Meter Lookup</h3>
+  <div class="row">
+    <div class="col-3">MPXN field</div>
+    <div class="col-4"><code><%= @configuration.mpan_mprn_field %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Lookup by serial number?</div>
+    <div class="col-4">
+      <code><%= checkmark(@configuration.lookup_by_serial_number, off_class: 'text-muted') %></code>
+    </div>
+    <div class="col">
+      <p class="text-muted">
+        Does the format lookup meters by serial number rather than mpxn? If so, serial numbers must be added to
+        meters BEFORE loading, otherwise data will not be loaded
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Serial number field</div>
+    <div class="col-9 text-wrap text-break"><code><%= @configuration.msn_field %></code></div>
+  </div>
+</div>
+
+<div class="col-12 mb-4 bg-light rounded-2 pb-3">
+  <h3>Date and Time handling</h3>
+  <div class="row">
+    <div class="col-3">Reading date field</div>
+    <div class="col-4"><code><%= @configuration.reading_date_field %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Date format</div>
+    <div class="col-4"><code><%= @configuration.date_format %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Reading time field</div>
+    <div class="col-4"><code><%= @configuration.reading_time_field %></code></div>
+    <div class="col">
+      <p class="text-muted">
+        Indicated if reading time is specified in a separate column. Only used for row per reading formats.
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Half hourly labelling</div>
+    <div class="col-4"><%= @configuration.half_hourly_labelling %></div>
+    <div class="col">
+      <p class="text-muted">
+        Are the reading times in the file the start or end of the half-hour to which the reading applies?
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Positional index?</div>
+    <div class="col-4"><%= checkmark(@configuration.positional_index, off_class: 'text-muted') %></div>
+    <div class="col">
+      <p class="text-muted">
+        Indicates if reading times are specified by position. If so, then the field holding the period numbers will be
+        specified in the below field.
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Period field</div>
+    <div class="col-4"><code><%= @configuration.period_field %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Delayed reading?</div>
+    <div class="col-4"><%= checkmark(@configuration.delayed_reading, off_class: 'text-muted') %></div>
+    <div class="col">
+      <p class="text-muted">
+        A delayed reading config means the date/date-time column is when the readings
+        where collected, rather than the date the energy was consumed. For now
+        this only appears in one config where the readings are collected a day later
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Half hourly readings off by one half hour?</div>
+    <div class="col-4"><%= checkmark(@configuration.handle_off_by_one, off_class: 'text-muted') %></div>
+    <div class="col">
+      <p class="text-muted">
+        First reading of each row/day is for the previous day
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="col-12 mb-4 bg-light rounded-2 pb-3">
+  <h3>Parsing readings</h3>
+  <div class="row">
+    <div class="col-3">Reading fields</div>
+    <div class="col-9 text-wrap text-break"><code><%= @configuration.reading_fields %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Convert to kwh?</div>
+    <div class="col-4"><%= @configuration.convert_to_kwh %></div>
+    <div class="col">
+      <p class="text-muted">
+        Whether to convert the readings to kWh. "No" means no conversation, "M3" means only convert readings
+        reported as being in "m3" in the Units field. "Meter" indicates to apply setting from the meter
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Units field</div>
+    <div class="col-4"><code><%= @configuration.units_field %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Expected units</div>
+    <div class="col-4"><%= @configuration.expected_units %></div>
+  </div>
+</div>
+
+<div class="col-12 mb-4 bg-light rounded-2 pb-3">
+  <h3>Estimated data</h3>
+  <div class="row">
+    <div class="col-3">Reading status fields</div>
+    <div class="col-9 text-wrap text-break"><code><%= @configuration.reading_status_fields %></code></div>
+  </div>
+  <div class="row">
+    <div class="col-3">Estimated data flags</div>
+    <div class="col-4"><code><%= @configuration.estimate_flags %></code></div>
+    <div class="col">
+      <p class="text-muted">
+        Status flags of "E", "Estimate" and "Estimated" are treated as estimated data by default. If present
+        this configures an alternate set of flags
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">Repeated names?</div>
+    <div class="col-4"><%= checkmark(@configuration.repeated_names, off_class: 'text-muted') %></div>
+    <div class="col">
+      <p class="text-muted">
+        Set when the reading and reading status fields have the same names. Ensures that the statuses can be
+        correctly extracted.
+      </p>
+    </div>
+  </div>
+</div>

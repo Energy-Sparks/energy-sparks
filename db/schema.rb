@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_18_131456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -418,6 +418,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
     t.boolean "delayed_reading", default: false, null: false
     t.text "description", null: false
     t.boolean "enabled", default: true, null: false
+    t.string "estimate_flags", default: [], null: false, array: true
     t.string "expected_units"
     t.enum "half_hourly_labelling", enum_type: "half_hourly_labelling"
     t.boolean "handle_off_by_one", default: false
@@ -435,7 +436,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
     t.integer "process_type", default: 0, null: false
     t.text "reading_date_field", null: false
     t.text "reading_fields", null: false, array: true
+    t.string "reading_status_fields", default: [], null: false, array: true
     t.text "reading_time_field"
+    t.boolean "repeated_names", default: false, null: false
     t.boolean "row_per_reading", default: false, null: false
     t.integer "source_type", default: 0, null: false
     t.text "units_field"
@@ -462,6 +465,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
     t.bigint "amr_data_feed_config_id", null: false
     t.bigint "amr_data_feed_import_log_id", null: false
     t.datetime "created_at", precision: nil, null: false
+    t.boolean "estimated", default: false, null: false
     t.bigint "meter_id"
     t.text "meter_serial_number"
     t.text "mpan_mprn", null: false
@@ -2220,12 +2224,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_05_145141) do
   end
 
   create_table "solar_edge_installations", force: :cascade do |t|
+    t.string "access_token"
+    t.datetime "access_token_expires_at"
     t.boolean "active", default: true, null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_key"
+    t.datetime "consent_granted_at"
     t.datetime "created_at", null: false
     t.json "information", default: {}
     t.text "mpan"
+    t.string "refresh_token"
     t.bigint "school_id", null: false
     t.text "site_id"
     t.datetime "updated_at", null: false

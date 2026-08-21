@@ -3,6 +3,7 @@
 class OneDayAMRReading
   AMR_TYPES = {
     'ORIG' => { name: 'Original - uncorrected good data' },
+    'EST' => { name: 'Original - supplier estimated data' },
     'LGAP' => { name: 'Too much missing data prior to this date' },
     'CMP1' => { name: 'Correct partially missing (zero) data on this date - 1 missing' },
     'CMP2' => { name: 'Correct partially missing (zero) data on this date - 2 missing' },

@@ -1,0 +1,21 @@
+<h1>SolarEdge Site Connected</h1>
+
+<p>
+  Consent has been given for us to access data for the SolarEdge monitoring system with
+  site id <%= @installation.site_id %> for <%= @installation.school.name %>
+</p>
+
+<% if @installation.api_key.present? %>
+  <p>
+    This is an existing SolarEdge site using the v1 API. Nothing else needs to be done at this time.
+  </p>
+<% else %>
+  <p>
+    This is an new SolarEdge site without an API key. We will start loading data for this site once we have implemented
+    v2 of the Solar Edge API.
+  </p>
+<% end %>
+
+<p>
+  <%= link_to 'View solar feeds', school_solar_feeds_configuration_index_url(@installation.school) %>
+</p>

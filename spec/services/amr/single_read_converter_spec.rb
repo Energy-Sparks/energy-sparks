@@ -17,13 +17,14 @@ describe Amr::SingleReadConverter do
     Array.new(48) { |i| (i + 1).to_f }
   end
 
-  def create_reading(config, mpan_mprn, reading_date, readings, meter_id: nil)
+  def create_reading(config, mpan_mprn, reading_date, readings, estimated: false, meter_id: nil) # rubocop:disable Metrics/ParameterLists
     {
       amr_data_feed_config_id: config.id,
       meter_id:,
       mpan_mprn:,
       reading_date:,
-      readings:
+      readings:,
+      estimated:
     }
   end
 
@@ -60,6 +61,49 @@ describe Amr::SingleReadConverter do
 
       it 'converts correctly' do
         expect(converter.perform).to eq expected_output
+      end
+
+      context 'when the format has status fields' do
+        let(:config) do
+          create(:amr_data_feed_config,
+                 :with_row_per_reading,
+                 half_hourly_labelling: :start,
+                 date_format: '%d %b %Y %H:%M',
+                 header_example: 'MPRN,Date,KWH,Est',
+                 reading_status_fields: ['Est'])
+        end
+
+        let(:expected_output) do
+          [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) { |i| i + 1 }, estimated: true)]
+        end
+
+        context 'when whole day is estimated' do
+          let(:readings) do
+            Array.new(48) do |hh|
+              hh_time = TimeOfDay.time_of_day_from_halfhour_index(hh).to_s
+              create_reading(config, mpan_mprn, "#{reading_date} #{hh_time}:00", [(hh + 1).to_s], estimated: true)
+            end
+          end
+
+          it 'sets estimated status' do
+            expect(converter.perform).to eq expected_output
+          end
+        end
+
+        context 'with single reading estimated' do
+          let(:readings) do
+            readings = Array.new(48) do |hh|
+              hh_time = TimeOfDay.time_of_day_from_halfhour_index(hh).to_s
+              create_reading(config, mpan_mprn, "#{reading_date} #{hh_time}:00", [(hh + 1).to_s])
+            end
+            readings.last[:estimated] = true
+            readings
+          end
+
+          it 'sets estimated status' do
+            expect(converter.perform).to eq expected_output
+          end
+        end
       end
     end
 
@@ -163,7 +207,7 @@ describe Amr::SingleReadConverter do
         # create test data that consists of 2 days readings for 2 different meters
         two_meters_worth_of_readings = readings + readings.map do |r|
           { amr_data_feed_config_id: 6, mpan_mprn: '123456789012', reading_date: r[:reading_date],
-            reading_time: r[:reading_time], readings: r[:readings] }
+            reading_time: r[:reading_time], readings: r[:readings], estimated: false }
         end
 
         results = described_class.new(config, two_meters_worth_of_readings).perform
@@ -171,7 +215,7 @@ describe Amr::SingleReadConverter do
         # create expected output: 2 x 2 days readings for 2 meters
         expected_results = expected_output + expected_output.map do |r|
           { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012', reading_date: r[:reading_date],
-            readings: r[:readings] }
+            readings: r[:readings], estimated: false }
         end
 
         expect(results).to eq expected_results
@@ -227,7 +271,7 @@ describe Amr::SingleReadConverter do
       # create test data that consists of 2 days readings for 2 different meters
       two_meters_worth_of_readings = readings + readings.map do |r|
         { amr_data_feed_config_id: 6, mpan_mprn: '123456789012', reading_date: r[:reading_date], period: r[:period],
-          readings: r[:readings] }
+          readings: r[:readings], estimated: false }
       end
 
       results = described_class.new(config, two_meters_worth_of_readings).perform
@@ -235,7 +279,7 @@ describe Amr::SingleReadConverter do
       # create expected output: 2 x 2 days readings for 2 meters
       expected_results = expected_output + expected_output.map do |r|
         { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012', reading_date: r[:reading_date],
-          readings: r[:readings] }
+          readings: r[:readings], estimated: false }
       end
 
       expect(results).to eq expected_results

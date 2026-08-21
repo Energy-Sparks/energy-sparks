@@ -47,22 +47,25 @@ module Admin
     private
 
       def summary_hash(status, one_day_kwh)
-        if status == 'ORIG'
-          description = 'ORIG, uncorrected good data'
-          colour = Colours.chart_green
+        if one_day_kwh == 0
+          case status
+          when 'ORIG'
+            return { description: 'Zero usage, uncorrected original data', colour: '#5297c6' }
+          when 'EST'
+            return { description: 'Zero usage, original estimated data', colour: Colours.solar_dark }
+          else
+            return { description: 'Zero usage, corrected/modified data', colour: '#fcac21' }
+          end
+        end
+
+        case status
+        when 'ORIG'
+          { description: 'ORIG, uncorrected good data', colour: Colours.chart_green }
+        when 'EST'
+          { description: 'EST, original estimated data', colour: Colours.solar_dark }
         else
-          description = 'Corrected/modified data'
-          colour = '#3f7d69'
+          { description: 'Corrected/modified data', colour: '#3f7d69' }
         end
-        if one_day_kwh == 0 && status == 'ORIG'
-          description = 'Zero usage, uncorrected original data'
-          colour = '#5297c6'
-        end
-        if one_day_kwh == 0 && status != 'ORIG'
-          description = 'Zero usage, corrected/modified data'
-          colour = '#fcac21'
-        end
-        { description: description, colour: colour }
       end
 
       def validated_reading_hash(status, substitute_date)
