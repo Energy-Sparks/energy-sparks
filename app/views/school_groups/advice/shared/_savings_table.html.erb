@@ -37,13 +37,13 @@
           </td>
           <% if category != :exemplar_school && alert.variables['one_year_saving_kwh']&.positive? %>
             <td class="text-right" data-order="<%= alert.variables['one_year_saving_kwh'] %>">
-              <%= format_unit(alert.variables['one_year_saving_kwh'], :kwh, true, :benchmark) %>
+              <%= format_unit(alert.variables['one_year_saving_kwh'], :kwh) %>
             </td>
             <td class="text-right" data-order="<%= alert.variables['average_one_year_saving_gbp'] %>">
-              <%= format_unit(alert.variables['average_one_year_saving_gbp'], :£, true, :benchmark) %>
+              <%= format_unit(alert.variables['average_one_year_saving_gbp'], :£) %>
             </td>
             <td class="text-right" data-order="<%= alert.variables['one_year_saving_co2'] %>">
-              <%= format_unit(alert.variables['one_year_saving_co2'], :co2, true, :benchmark) %>
+              <%= format_unit(alert.variables['one_year_saving_co2'], :co2) %>
             </td>
           <% else %>
             <td class="text-right" data-order="0">-</td>

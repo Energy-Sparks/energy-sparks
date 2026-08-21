@@ -51,7 +51,7 @@ module Schools
         end
 
         change = EnergySparks::Calculator.percent_change(previous_consumption.to_f, current_consumption)
-        up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
+        up_downify(format_unit(change, :relative_percent), sanitize: false)
       end
       helper_method :formatted_target_change
     end

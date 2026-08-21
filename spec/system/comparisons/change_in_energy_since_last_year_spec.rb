@@ -5,17 +5,17 @@ require 'rails_helper'
 describe 'change_in_energy_since_last_year' do
   let!(:school) { create(:school, :with_fuel_configuration) }
   let!(:alerts) do
-    alert_run = create(:alert_generation_run, school: school)
+    alert_generation_run = create(:alert_generation_run, school:)
 
     alert_type = create(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark')
-    create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+    create(:alert, school: school, alert_generation_run:, alert_type:, variables:)
 
     alert_type = create(:alert_type, class_name: 'AlertAdditionalPrioritisationData')
     create(
       :alert,
-      school: school,
-      alert_generation_run: alert_run,
-      alert_type: alert_type,
+      school:,
+      alert_generation_run:,
+      alert_type:,
       variables: {
         electricity_economic_tariff_changed_this_year: true,
         gas_economic_tariff_changed_this_year: true

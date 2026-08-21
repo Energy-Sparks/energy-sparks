@@ -4,8 +4,7 @@ module TargetsHelper
   def estimated_usage_for(school, fuel_type)
     return nil unless school.configuration.estimated_consumption_for_fuel_type(fuel_type).present?
 
-    FormatUnit.format(:kwh, school.configuration.estimated_consumption_for_fuel_type(fuel_type), :html, false, true,
-                      :target)
+    FormatUnit.format(:kwh, school.configuration.estimated_consumption_for_fuel_type(fuel_type), :html, false, true)
   end
 
   def estimate_to_low?(school, value, fuel_type)

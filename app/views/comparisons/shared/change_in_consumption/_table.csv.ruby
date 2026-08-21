@@ -5,9 +5,9 @@ CSV.generate do |csv|
   @results.each do |result|
     row = [
       result.school.name,
-      format_unit(result.difference_percent * 100, Float, true, :benchmark),
-      format_unit(result.difference_gbpcurrent, Float, true, :benchmark),
-      format_unit(result.difference_kwh, Float, true, :benchmark)
+      format_unit(result.difference_percent * 100, Float),
+      format_unit(result.difference_gbpcurrent, Float),
+      format_unit(result.difference_kwh, Float)
     ]
     if @headers.length > 4
       row += [

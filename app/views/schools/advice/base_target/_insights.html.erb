@@ -34,8 +34,8 @@
          end %>
       <td><%= format_date_range([@target.start_date, Date.new(last_month[:year], last_month[:month]).end_of_month]) %>
       </td>
-      <td><%= format_unit(current || @consumption.current_consumption, :kwh, numeric_level: :target) %></td>
-      <td><%= format_unit(target || @consumption.target_consumption, :kwh, numeric_level: :target) %></td>
+      <td><%= format_unit(current || @consumption.current_consumption, :kwh) %></td>
+      <td><%= format_unit(target || @consumption.target_consumption, :kwh) %></td>
       <td td class="text-right">
         <%= formatted_target_change(@consumption.current_consumption,
                                     @consumption.non_missing.pluck(:previous_consumption).sum) %>

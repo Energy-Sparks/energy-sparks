@@ -21,10 +21,9 @@ CSV.generate do |csv|
     fields << (gas_or_electricity_data_stale?(result) ? I18n.t('common.labels.no_label') : I18n.t('common.labels.yes_label'))
 
     %i[kwh co2 £].each do |unit|
-      fields << format_unit(
-              result.total_previous_period(unit: unit), Float, true, :benchmark)
-      fields << format_unit( result.total_current_period(unit: unit), Float, true, :benchmark)
-      fields << format_unit( result.total_percentage_change(unit: unit)&.*(100), Float, true, :benchmark)
+      fields << format_unit(result.total_previous_period(unit: unit), Float)
+      fields << format_unit(result.total_current_period(unit: unit), Float)
+      fields << format_unit(result.total_percentage_change(unit: unit)&.*(100), Float)
     end
 
     csv << fields
