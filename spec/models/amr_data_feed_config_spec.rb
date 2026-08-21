@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AmrDataFeedReading do
+describe AmrDataFeedConfig do
   context 'when validating' do
     it { expect(build(:amr_data_feed_config)).to be_valid }
 
@@ -45,10 +45,17 @@ describe AmrDataFeedReading do
       end
 
       let(:reading_fields) do
-        '[00:30],[01:00],[01:30],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00]'.split(',')
+        '[00:30],[01:00],[01:30],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],' \
+        '[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],' \
+        '[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],' \
+        '[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00]'.split(',')
       end
       let(:header_example) do
-        'ID,Date,Location,Type,PostCode,Units,Total Units,[00:30],[01:30],[01:00],[02:00],[02:30],[03:00],[03:30],[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],[23:30],[24:00],M1_Code1,M1_Code2'
+        'ID,Date,Location,Type,PostCode,Units,Total Units,[00:30],[01:30],[01:00],[02:00],[02:30],[03:00],[03:30],' \
+          '[04:00],[04:30],[05:00],[05:30],[06:00],[06:30],[07:00],[07:30],[08:00],[08:30],[09:00],[09:30],[10:00],' \
+          '[10:30],[11:00],[11:30],[12:00],[12:30],[13:00],[13:30],[14:00],[14:30],[15:00],[15:30],[16:00],[16:30],' \
+          '[17:00],[17:30],[18:00],[18:30],[19:00],[19:30],[20:00],[20:30],[21:00],[21:30],[22:00],[22:30],[23:00],' \
+          '[23:30],[24:00],M1_Code1,M1_Code2'
       end
 
       it 'correctly identifies the indexes of the half-hourly readings when out of order' do
@@ -136,6 +143,37 @@ describe AmrDataFeedReading do
 
       it 'correctly identifies the reading status indexes' do
         expect(amr_data_feed_config.reading_status_indexes).to eq((0..47).map { |i| 52 + i })
+      end
+    end
+  end
+
+  describe '.date_from_string_using_date_format' do
+    let(:expected_date) { Date.new(2022, 5, 12) }
+
+    context 'when date matches format' do
+      it 'parses against format' do
+        expect(described_class.date_from_string_using_date_format('12/05/2022', '%d/%m/%Y')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('2022-05-12', '%Y-%m-%d')).to eq(expected_date)
+      end
+    end
+
+    context 'when date doesnt match format' do
+      it 'defaults to Date.parse' do
+        expect(described_class.date_from_string_using_date_format('12/05/2022', '%d-%m-%Y')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('2022-05-12',
+                                                                  '%d %b %Y %H:%M:%S')).to eq(expected_date)
+      end
+
+      it 'defaults to Date.parse but handles two digit years' do
+        expect(described_class.date_from_string_using_date_format('12-05-22',
+                                                                  '%d %b %Y %H:%M:%S')).to eq(expected_date)
+      end
+
+      it 'parses dates that would be misinterpreted by Date.strptime' do
+        expect(described_class.date_from_string_using_date_format('12-05-2022', '%Y-%m-%d')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('12/05/2022', '%Y/%m/%d')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('12/05/22', '%d/%m/%Y')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('12-05-22', '%d-%m-%Y')).to eq(expected_date)
       end
     end
   end

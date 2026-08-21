@@ -93,16 +93,7 @@ module Amr
     end
 
     def date_from_string_using_date_format(reading)
-      date_format = @feed_configs[reading[0]].date_format
-      begin
-        Date.strptime(reading[1], date_format)
-      rescue ArgumentError
-        begin
-          Date.parse(reading[1])
-        rescue ArgumentError
-          nil
-        end
-      end
+      AmrDataFeedConfig.date_from_string_using_date_format(reading[1], @feed_configs[reading[0]].date_format)
     end
   end
 end

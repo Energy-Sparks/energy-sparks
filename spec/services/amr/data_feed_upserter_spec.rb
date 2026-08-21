@@ -8,11 +8,12 @@ describe Amr::DataFeedUpserter do
   let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config) }
   let(:array_of_readings) { [] }
 
-  def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'), estimated: false)
+  def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'), estimated: false, parsed_date: nil)
     {
       mpan_mprn: meter.mpan_mprn,
       meter_id: meter.id,
       reading_date: date,
+      parsed_date:,
       readings:,
       amr_data_feed_config_id: amr_data_feed_config.id,
       estimated:
@@ -67,12 +68,15 @@ describe Amr::DataFeedUpserter do
 
         context 'with multiple rows' do
           let(:array_of_readings) do
-            [create_reading(meter, '2024-01-01'), create_reading(meter, '2024-01-02')]
+            [create_reading(meter, '2024-01-01', parsed_date: Date.parse('2024-01-01')),
+             create_reading(meter, '2024-01-02', parsed_date: Date.parse('2024-01-02'))]
           end
 
           it 'inserts new records' do
             expect { service.perform }.to change(AmrDataFeedReading, :count).by(2)
             expect(AmrDataFeedReading.all.pluck(:reading_date)).to match_array(%w[2024-01-01 2024-01-02])
+            expect(AmrDataFeedReading.all.pluck(:parsed_date)).to contain_exactly(Date.parse('2024-01-01'),
+                                                                                  Date.parse('2024-01-02'))
           end
         end
       end
@@ -84,7 +88,7 @@ describe Amr::DataFeedUpserter do
       let!(:todays_reading) { create(:amr_data_feed_reading, reading_date: Time.zone.today.iso8601, readings: Array.new(48, '2.0')) }
 
       let(:array_of_readings) do
-        [create_reading(meter)]
+        [create_reading(meter, parsed_date: Time.zone.today)]
       end
 
       it 'inserts new records' do
@@ -92,6 +96,7 @@ describe Amr::DataFeedUpserter do
         todays_reading.reload
         expect(todays_reading.readings).to eq(Array.new(48, '2.0'))
         expect(meter.amr_data_feed_readings.first.readings).to eq(Array.new(48, '1.0'))
+        expect(meter.amr_data_feed_readings.first.parsed_date).not_to be_nil
       end
 
       it 'updates import log with statistics' do
@@ -111,14 +116,16 @@ describe Amr::DataFeedUpserter do
       end
 
       let(:array_of_readings) do
-        [create_reading(meter)]
+        [create_reading(meter, parsed_date: Time.zone.today)]
       end
 
       it 'inserts new records' do
         expect { service.perform }.to change(AmrDataFeedReading, :count).by(1)
         todays_reading.reload
         expect(todays_reading.readings).to eq(Array.new(48, '2.0'))
-        expect(AmrDataFeedReading.all.order(:updated_at).last.readings).to eq(Array.new(48, '1.0'))
+        inserted_reading = AmrDataFeedReading.all.order(:updated_at).last
+        expect(inserted_reading.readings).to eq(Array.new(48, '1.0'))
+        expect(inserted_reading.parsed_date).to eq(Time.zone.today)
       end
 
       it 'updates import log with statistics' do
@@ -134,11 +141,15 @@ describe Amr::DataFeedUpserter do
     let!(:todays_reading) { create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: Time.zone.today.iso8601, readings: Array.new(48, 2.0)) }
 
     let(:array_of_readings) do
-      [create_reading(meter)]
+      [create_reading(meter, parsed_date: Time.zone.today)] # will update todays_reading
     end
 
     before do
-      create(:amr_data_feed_reading, mpan_mprn: meter.mpan_mprn, reading_date: '2024-01-01', readings: Array.new(48, '2.0'))
+      create(:amr_data_feed_reading,
+             mpan_mprn: meter.mpan_mprn,
+             reading_date: '2024-01-01',
+             parsed_date: Date.parse('2024-01-01'),
+             readings: Array.new(48, '2.0'))
     end
 
     it 'does not insert new data' do
@@ -161,6 +172,7 @@ describe Amr::DataFeedUpserter do
     it 'updates the other attributes' do
       service.perform
       todays_reading.reload
+      expect(todays_reading.parsed_date).to eq(Time.zone.today)
       expect(todays_reading.amr_data_feed_config).to eq(amr_data_feed_config)
       expect(todays_reading.amr_data_feed_import_log).to eq(amr_data_feed_import_log)
       expect(todays_reading.created_at).not_to be_nil

@@ -91,7 +91,7 @@ describe AmrDataFeedReading do
       it 'returns the selected columns' do
         expect(results.size).to eq(1)
         expect(results.first.file_name).to eq(reading.amr_data_feed_import_log.file_name)
-        expect(results.first.parsed_date).to eq(Date.parse('2024-12-25'))
+        expect(results.first.db_parsed_date).to eq(Date.parse('2024-12-25'))
         expect(results.first.identifier).to eq(reading.amr_data_feed_config.identifier)
         expect(results.first.imported).to be_nil
       end
@@ -130,11 +130,11 @@ describe AmrDataFeedReading do
       it 'sorts by the dates' do
         expect(results.size).to eq(3)
 
-        expect(results.map(&:parsed_date)).to eq([
-                                                   Date.parse(reading.reading_date),
-                                                   Date.parse(duplicate.reading_date),
-                                                   Date.parse(earlier.reading_date)
-                                                 ])
+        expect(results.map(&:db_parsed_date)).to eq([
+                                                      Date.parse(reading.reading_date),
+                                                      Date.parse(duplicate.reading_date),
+                                                      Date.parse(earlier.reading_date)
+                                                    ])
 
         expect(results.map(&:file_name)).to eq([
                                                  reading.amr_data_feed_import_log.file_name,
