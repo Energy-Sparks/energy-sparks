@@ -21,7 +21,7 @@ class FormatUnit
   end
 
   def self.format(unit, value, medium = :text, convert_missing_types_to_strings = false, in_table = false,
-                  user_numeric_comprehension_level = :ks2)
+                  user_numeric_comprehension_level = :default)
     unit, unit_options = process_unit(unit)
     format_private(unit, value, medium, convert_missing_types_to_strings, in_table, user_numeric_comprehension_level,
                    unit_options)
@@ -191,8 +191,7 @@ class FormatUnit
       I18n.t(MONTHS, count: months_from_years(years))
     elsif years < 5.0
       y = years.floor
-      I18n.t(YEARS, count: y) + ' ' +
-        I18n.t(MONTHS, count: months_from_years(years - y))
+      "#{I18n.t(YEARS, count: y)} #{I18n.t(MONTHS, count: months_from_years(years - y))}"
     else
       I18n.t(YEARS, count: Kernel.format('%.0f', years))
     end
@@ -230,7 +229,7 @@ class FormatUnit
   private_class_method def self.check_units(unit)
     return if known_unit?(unit)
 
-    raise EnergySparksUnexpectedStateException.new("Unexpected unit #{unit}")
+    raise EnergySparksUnexpectedStateException, "Unexpected unit #{unit}"
   end
 
   private_class_method def self.plus_minus_infinity_value(value)
@@ -243,7 +242,7 @@ class FormatUnit
     end
   end
 
-  def self.scale_num(value, in_pounds = false, user_numeric_comprehension_level = :ks2)
+  def self.scale_num(value, in_pounds = false, user_numeric_comprehension_level = :default)
     return plus_minus_infinity_value(value) unless value.infinite?.nil?
     return I18n.t(NAN) if value.is_a?(Float) && value.nan?
 
@@ -272,22 +271,13 @@ class FormatUnit
 
   private_class_method def self.user_numeric_comprehension_level(user_type)
     case user_type
-      # :no_decimals and :to_pence are also valid, but dealt with outwith the significant figures handling
-    when :ks2
-      2
-    when :benchmark, :target
-      3
+    # :no_decimals and :to_pence are also valid, but dealt with outwith the significant figures handling
     when :approx_accountant
       4
-    when :accountant, :energy_expert
-      10
+    when nil
+      raise EnergySparksUnexpectedStateException, 'Unexpected nil user_type for user_numeric_comprehension_level'
     else
-      if user_type.nil?
-        raise EnergySparksUnexpectedStateException.new('Unexpected nil user_type for user_numeric_comprehension_level')
-      end
-      if user_type.nil?
-        raise EnergySparksUnexpectedStateException.new("Unexpected nil user_type #{user_type} for user_numeric_comprehension_level")
-      end
+      3
     end
   end
 
