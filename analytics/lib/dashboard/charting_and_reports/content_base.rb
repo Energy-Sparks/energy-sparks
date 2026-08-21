@@ -432,7 +432,7 @@ class ContentBase
   end
 
   protected def user_numeric_comprehension_level
-    :ks2
+    :default
   end
 
   protected def format(unit, value, format, in_table, level)

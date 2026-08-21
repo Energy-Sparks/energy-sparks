@@ -9,7 +9,7 @@ describe FormatUnit, :aggregate_failures do
     [
       { units: :£_0dp, expected: '&pound;114', medium: :html, type: String },
       { units: :£_0dp, expected: '£114',       medium: :text, type: String },
-      { units: :£,     expected: '&pound;110', medium: :html, type: String },
+      { units: :£,     expected: '&pound;114', medium: :html, type: String },
       { units: :£,     expected: 113.66216439927433, medium: :raw,  type: Float }
     ].each do |config|
       it "formats value as #{config[:units]} to #{config[:medium]} as expected" do
@@ -29,21 +29,6 @@ describe FormatUnit, :aggregate_failures do
     ].each do |config|
       it "formats value as #{config[:units]} to #{config[:medium]} as expected" do
         result = described_class.format(config[:units], value, config[:medium], false, false, :benchmark)
-        expect(result).to eq config[:expected]
-        expect(result.class).to eq config[:type]
-      end
-    end
-  end
-
-  context 'with energy expert formatting' do
-    [
-      { units: :£_0dp, expected: '&pound;114', medium: :html, type: String },
-      { units: :£_0dp, expected: '£114',       medium: :text, type: String },
-      { units: :£,     expected: '&pound;113.6621644', medium: :html, type: String },
-      { units: :£,     expected: 113.66216439927433, medium: :raw, type: Float }
-    ].each do |config|
-      it "formats value as #{config[:units]} to #{config[:medium]} as expected" do
-        result = described_class.format(config[:units], value, config[:medium], false, false, :energy_expert)
         expect(result).to eq config[:expected]
         expect(result.class).to eq config[:type]
       end
@@ -84,12 +69,12 @@ describe FormatUnit, :aggregate_failures do
 
     context 'with :relative_percent' do
       it 'formats correctly' do
-        expect(described_class.format(:relative_percent, -0.1188911792177762)).to eq('-12%')
-        expect(described_class.format(:relative_percent, 0.1188911792177762)).to eq('+12%')
-        expect(described_class.format(:relative_percent, -0.1188911792177762, :text)).to eq('-12%')
-        expect(described_class.format(:relative_percent, 0.1188911792177762, :text)).to eq('+12%')
-        expect(described_class.format(:relative_percent, -0.1188911792177762, :html)).to eq('-12&percnt;')
-        expect(described_class.format(:relative_percent, 0.1188911792177762, :html)).to eq('+12&percnt;')
+        expect(described_class.format(:relative_percent, -0.1188911792177762)).to eq('-11.9%')
+        expect(described_class.format(:relative_percent, 0.1188911792177762)).to eq('+11.9%')
+        expect(described_class.format(:relative_percent, -0.1188911792177762, :text)).to eq('-11.9%')
+        expect(described_class.format(:relative_percent, 0.1188911792177762, :text)).to eq('+11.9%')
+        expect(described_class.format(:relative_percent, -0.1188911792177762, :html)).to eq('-11.9&percnt;')
+        expect(described_class.format(:relative_percent, 0.1188911792177762, :html)).to eq('+11.9&percnt;')
       end
     end
 
@@ -107,7 +92,7 @@ describe FormatUnit, :aggregate_failures do
     context 'with :relative_percent no scale' do
       it 'formats correctly' do
         expect(described_class.format({ units: :relative_percent, options: { scale: false } },
-                                      -11.8891179217)).to eq('-12%')
+                                      -11.8891179217)).to eq('-11.9%')
       end
     end
 
@@ -117,7 +102,7 @@ describe FormatUnit, :aggregate_failures do
         expect(described_class.format(:comparison_percent, 0.1)).to eq('+10%')
         expect(described_class.format(:comparison_percent, -0.5)).to eq('-50%')
         expect(described_class.format(:comparison_percent, 10)).to eq('+1,000%')
-        expect(described_class.format(:comparison_percent, 4.125)).to eq('+410%')
+        expect(described_class.format(:comparison_percent, 4.125)).to eq('+412%')
         expect(described_class.format(:comparison_percent, 0.005, :text)).to eq('+0.5%')
         expect(described_class.format(:comparison_percent, 0.005, :html)).to eq('+0.5&percnt;')
         expect(described_class.format(:comparison_percent, 0.0004, :html)).to eq('0.0&percnt;')
@@ -267,9 +252,9 @@ describe FormatUnit, :aggregate_failures do
     context 'with :£_range' do
       it 'formats correctly' do
         expect(described_class.format(:£_range, 730.0..740.0)).to eq '£730'
-        expect(described_class.format(:£_range, 730.0..2190.0)).to eq '£730 to £2,200'
-        expect(described_class.format(:£_range, -2190.0..2190.0)).to eq '-£2,200 to £2,200'
-        expect(described_class.format(:£_range, 0..2190.0)).to eq '0p to £2,200'
+        expect(described_class.format(:£_range, 730.0..2190.0)).to eq '£730 to £2,190'
+        expect(described_class.format(:£_range, -2190.0..2190.0)).to eq '-£2,190 to £2,190'
+        expect(described_class.format(:£_range, 0..2190.0)).to eq '0p to £2,190'
       end
     end
   end
