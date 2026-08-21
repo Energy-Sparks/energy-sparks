@@ -157,6 +157,11 @@ describe AmrDataFeedConfig do
                                                                   '%d %b %Y %H:%M:%S')).to eq(expected_date)
       end
 
+      it 'defaults to Date.parse but handles two digit years' do
+        expect(described_class.date_from_string_using_date_format('12-05-22',
+                                                                  '%d %b %Y %H:%M:%S')).to eq(expected_date)
+      end
+
       it 'parses dates that would be misinterpreted by Date.strptime' do
         expect(described_class.date_from_string_using_date_format('12-05-2022', '%Y-%m-%d')).to eq(expected_date)
         expect(described_class.date_from_string_using_date_format('12/05/2022', '%Y/%m/%d')).to eq(expected_date)
