@@ -1,0 +1,51 @@
+
+<h1 class="mb-3"><%= t('solar_edge_mailer.request_connection.title') %></h1>
+
+<div class="s-3"></div>
+
+<p>
+  <%= t('solar_edge_mailer.request_connection.introduction_html', school_name: @school.name) %>
+</p>
+
+<div class="s-3"></div>
+
+<p>
+  <%= t('solar_edge_mailer.request_connection.request') %>
+</p>
+
+<div class="s-3"></div>
+
+<p>
+  <%= t('solar_edge_mailer.request_connection.with_login') %>
+</p>
+
+<div class="s-3"></div>
+
+<a href="<%= DataFeeds::SolarEdge::Api.authorize_url(@school.id) %>"
+   class='btn btn-primary mt-3 mb-3'>
+  <%= t('solar_edge_mailer.request_connection.link') %>
+</a>
+
+<div class="s-3"></div>
+
+<p>
+  <%= t('solar_edge_mailer.request_connection.no_account') %>
+</p>
+
+<div class="s-3"></div>
+
+<p>
+  <%= t('solar_edge_mailer.request_connection.about_the_link', school_name: @school.name) %>
+</p>
+
+<div class="s-3"></div>
+
+<p>
+  <%= t('solar_edge_mailer.request_connection.without_login', school_name: @school.name) %>
+</p>
+
+<div class="s-3"></div>
+
+<p>
+  <%= t('solar_edge_mailer.request_connection.questions_html', school_name: @school.name) %>
+</p>
