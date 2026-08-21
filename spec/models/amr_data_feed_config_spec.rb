@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AmrDataFeedReading do
+describe AmrDataFeedConfig do
   context 'when validating' do
     it { expect(build(:amr_data_feed_config)).to be_valid }
 
@@ -136,6 +136,32 @@ describe AmrDataFeedReading do
 
       it 'correctly identifies the reading status indexes' do
         expect(amr_data_feed_config.reading_status_indexes).to eq((0..47).map { |i| 52 + i })
+      end
+    end
+  end
+
+  describe '.date_from_string_using_date_format' do
+    let(:expected_date) { Date.new(2022, 5, 12) }
+
+    context 'when date matches format' do
+      it 'parses against format' do
+        expect(described_class.date_from_string_using_date_format('12/05/2022', '%d/%m/%Y')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('2022-05-12', '%Y-%m-%d')).to eq(expected_date)
+      end
+    end
+
+    context 'when date doesnt match format' do
+      it 'defaults to Date.parse' do
+        expect(described_class.date_from_string_using_date_format('12/05/2022', '%d-%m-%Y')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('2022-05-12',
+                                                                  '%d %b %Y %H:%M:%S')).to eq(expected_date)
+      end
+
+      it 'parses dates that would be misinterpreted by Date.strptime' do
+        expect(described_class.date_from_string_using_date_format('12-05-2022', '%Y-%m-%d')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('12/05/2022', '%Y/%m/%d')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('12/05/22', '%d/%m/%Y')).to eq(expected_date)
+        expect(described_class.date_from_string_using_date_format('12-05-22', '%d-%m-%Y')).to eq(expected_date)
       end
     end
   end

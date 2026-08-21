@@ -51,7 +51,7 @@
 #  fk_rails_...  (owned_by_id => users.id)
 #
 
-class AmrDataFeedConfig < ApplicationRecord
+class AmrDataFeedConfig < ApplicationRecord # rubocop:disable Metrics/ClassLength
   ESTIMATED_STATUS = Set['E', 'Estimate', 'Estimated']
 
   scope :enabled,           -> { where(enabled: true) }
@@ -90,6 +90,51 @@ class AmrDataFeedConfig < ApplicationRecord
   validate :source_and_process_type
 
   BLANK_THRESHOLD = 1
+  YEAR_MONTH_DAY_FORMATS = ['%Y-%m-%d', '%Y/%m/%d'].freeze
+  DAY_MONTH_YEAR_FORMATS = ['%d/%m/%Y', '%d-%m-%Y'].freeze
+  FOUR_DIGIT_YEAR = %r{\A\d{2}(?:-|/)\d{2}(?:-|/)\d{4}\z}
+  TWO_DIGIT_YEAR  = %r{\A\d{2}(?:-|/)\d{2}(?:-|/)\d{2}\z}
+
+  # Turns a formatted date into a Date.
+  #
+  # In general we parse according to the specified date format. But in some cases the format of the strings
+  # changes in the received data, or a user uploads data using an incorrect format. So the formats may not
+  # match.
+  #
+  # This can lead to two problems:
+  #
+  # 1. Date.strptime parses date_string without error, but the date is wrong
+  # 2. Date.strptime fails to parse data_string, throwing an error.
+  #
+  # To handle the first scenario to look for two specific cases where the interpretation can go wrong and
+  # parse the dates differently.
+  #
+  # In the second we fallback to Date.parse
+  def self.date_from_string_using_date_format(date_string, date_format)
+    return nil if date_string.blank?
+
+    safe_parse_date(date_string, date_format)
+  rescue ArgumentError
+    begin
+      Date.parse(date_string)
+    rescue ArgumentError
+      nil
+    end
+  end
+
+  private_class_method def self.safe_parse_date(date_string, date_format)
+    # Avoids this: Date.strptime('12-05-2022', "%Y-%m-%d") => Fri, 20 May 0012
+    return Date.parse(date_string) if YEAR_MONTH_DAY_FORMATS.include?(date_format) && date_string.match(FOUR_DIGIT_YEAR)
+
+    # Avoids this: Date.strptime('12-05-22', "%d-%m-%Y") => Fri, 20 May 0012
+    # And this: Date.parse('12-05-22') => Tue, 22 May 2012
+    if DAY_MONTH_YEAR_FORMATS.include?(date_format) && date_string.match(TWO_DIGIT_YEAR)
+      format = date_string.include?('/') ? '%d/%m/%y' : '%d-%m-%y'
+      return Date.strptime(date_string, format)
+    end
+
+    Date.strptime(date_string, date_format)
+  end
 
   def latest_reading_date
     amr_data_feed_readings.maximum(:updated_at)
