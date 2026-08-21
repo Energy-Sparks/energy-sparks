@@ -3,13 +3,33 @@
 <div class="application container">
   <div class="row justify-content-md-center">
     <div class="col col-md-10 col-lg-8 terms-and-conditions">
-      <%= t('terms_and_conditions.content_html',
+      <h1 class="pt-3"><%= t('terms_and_conditions.terms_title') %></h1>
+      <p><%= t('terms_and_conditions.revised') %></p>
+
+      <%= t('terms_and_conditions.sections.one_html') %>
+      <%= t('terms_and_conditions.sections.two_html') %>
+      <%= t('terms_and_conditions.sections.three_html') %>
+      <%= t('terms_and_conditions.sections.four_html',
             programme_types_url: programme_types_url,
-            intervention_type_groups_url: intervention_type_groups_url,
-            privacy_and_cookie_policy_url: privacy_and_cookie_policy_url,
-            attribution_url: attribution_url,
-            child_safeguarding_policy_url: child_safeguarding_policy_url,
+            intervention_type_groups_url: intervention_type_groups_url) %>
+      <%= t('terms_and_conditions.sections.five_html',
             pricing_url: pricing_url) %>
+      <%= t('terms_and_conditions.sections.six_html',
+            privacy_and_cookie_policy_url: privacy_and_cookie_policy_url) %>
+      <%= t('terms_and_conditions.sections.seven_html',
+            pricing_url: pricing_url) %>
+      <%= t('terms_and_conditions.sections.eight_html',
+            attribution_url: attribution_url) %>
+      <%= t('terms_and_conditions.sections.nine_html') %>
+      <%= t('terms_and_conditions.sections.ten_html',
+            child_safeguarding_policy_url: child_safeguarding_policy_url) %>
+      <%= t('terms_and_conditions.sections.eleven_html') %>
+      <%= t('terms_and_conditions.sections.twelve_html') %>
+      <%= t('terms_and_conditions.sections.thirteen_html') %>
+      <%= t('terms_and_conditions.sections.fourteen_html') %>
+      <%= t('terms_and_conditions.sections.fifteen_html') %>
+
+      <%= t('terms_and_conditions.final_html') %>
     </div>
   </div>
 </div>
