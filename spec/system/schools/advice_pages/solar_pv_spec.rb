@@ -91,8 +91,7 @@ RSpec.describe 'solar pv advice page', :aggregate_failures do
 
         expect(page).to have_text('What is solar PV?')
         expect(page).to have_text('Your solar energy production')
-        expect(page).to have_text('Total consumption')
-        expect(page).to have_text('61,000')
+        expect(page).to have_text('Total consumption 61,100')
         expect(page).to have_text('How do you compare?')
         expect(page).to \
           have_text("based on usage between #{start_date.to_fs(:es_short)} and #{end_date.to_fs(:es_short)}")
@@ -133,10 +132,10 @@ RSpec.describe 'solar pv advice page', :aggregate_failures do
         expect(page).to have_text('Benefits of having installed solar panels')
         within('#investment-returns') do
           expect(page).to have_text('Before April 2019')
-          expect(page).to have_text('14,000 kWh')
+          expect(page).to have_text('14,200 kWh')
           expect(page).to have_text('After April 2019')
           expect(page).to have_text("#{BenchmarkMetrics.pricing.solar_export_price * 100}p per kWh")
-          expect(page).to have_text('£65')
+          expect(page).to have_text('£64.80')
         end
         expect(page).to have_css('#chart_wrapper_solar_pv_group_by_month')
         expect(page).to have_css('#chart_wrapper_solar_pv_last_7_days_by_submeter')
