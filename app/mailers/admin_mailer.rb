@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AdminMailer < ApplicationMailer
+class AdminMailer < ApplicationMailer # rubocop:todo Metrics/ClassLength
   helper :application
   helper :issues
 

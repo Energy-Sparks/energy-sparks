@@ -5,10 +5,14 @@
 # Table name: solar_edge_installations
 #
 #  id                      :bigint(8)        not null, primary key
+#  access_token            :string
+#  access_token_expires_at :datetime
 #  active                  :boolean          default(TRUE), not null
 #  api_key                 :text
+#  consent_granted_at      :datetime
 #  information             :json
 #  mpan                    :text
+#  refresh_token           :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  amr_data_feed_config_id :bigint(8)        not null
@@ -31,7 +35,7 @@ class SolarEdgeInstallation < ApplicationRecord
 
   has_many :meters, dependent: nil
 
-  validates :site_id, :mpan, :api_key, presence: true
+  validates :site_id, presence: true
   validate :site_id_unique_to_school
 
   scope :active, -> { where(active: true) }

@@ -43,7 +43,8 @@ module Amr
                :amr_data_feed_config_id,
                :reading_date,
                :created_at,
-               :readings
+               :readings,
+               :estimated
              )
 
       rows.group_by { |meter_id, *_| meter_id }
@@ -54,8 +55,8 @@ module Amr
     end
 
     def build_meter_data(active_record_meter)
-      readings = readings_for_meter(active_record_meter).map do |(_, config_id, reading_date, created_at, values)|
-        reading = [config_id, reading_date, created_at, values]
+      readings = readings_for_meter(active_record_meter).map do |(_, config_id, date, created_at, readings, estimated)|
+        reading = [config_id, date, created_at, readings, estimated]
         reading_if_valid(active_record_meter.mpan_mprn, reading)
       end
 
@@ -70,7 +71,7 @@ module Amr
 
       OneDayAMRReading.new(
         reading_date,
-        'ORIG',
+        reading[4] ? 'EST' : 'ORIG',
         nil,
         reading[2],
         reading[3].map(&:to_f)
@@ -93,15 +94,7 @@ module Amr
 
     def date_from_string_using_date_format(reading)
       date_format = @feed_configs[reading[0]].date_format
-      begin
-        Date.strptime(reading[1], date_format)
-      rescue ArgumentError
-        begin
-          Date.parse(reading[1])
-        rescue ArgumentError
-          nil
-        end
-      end
+      AmrDataFeedConfig.date_from_string_using_date_format(reading[1], date_format)
     end
   end
 end

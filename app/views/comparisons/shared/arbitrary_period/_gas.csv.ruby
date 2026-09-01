@@ -7,15 +7,15 @@ CSV.generate do |csv|
       result.school.name,
       result.activation_date.iso8601,
       @include_previous_period_unadjusted && \
-        format_unit(result.gas_previous_period_kwh_unadjusted, Float, true, :benchmark),
-      format_unit(result.gas_previous_period_kwh, Float, true, :benchmark),
-      format_unit(result.gas_current_period_kwh, Float, true, :benchmark),
+        format_unit(result.gas_previous_period_kwh_unadjusted, Float),
+      format_unit(result.gas_previous_period_kwh, Float),
+      format_unit(result.gas_current_period_kwh, Float),
       format_csv_percent_change(result.gas_previous_period_kwh, result.gas_current_period_kwh),
-      format_unit(result.gas_previous_period_co2, Float, true, :benchmark),
-      format_unit(result.gas_current_period_co2, Float, true, :benchmark),
+      format_unit(result.gas_previous_period_co2, Float),
+      format_unit(result.gas_current_period_co2, Float),
       format_csv_percent_change(result.gas_previous_period_co2, result.gas_current_period_co2),
-      format_unit(result.gas_previous_period_gbp, Float, true, :benchmark),
-      format_unit(result.gas_current_period_gbp, Float, true, :benchmark),
+      format_unit(result.gas_previous_period_gbp, Float),
+      format_unit(result.gas_current_period_gbp, Float),
       format_csv_percent_change(result.gas_previous_period_gbp, result.gas_current_period_gbp)
     ].select(&:itself)
   end

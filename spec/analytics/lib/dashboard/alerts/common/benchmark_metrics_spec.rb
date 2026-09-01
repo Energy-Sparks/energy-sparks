@@ -6,16 +6,27 @@ require 'dashboard'
 describe BenchmarkMetrics do
   describe '.benchmark_annual_electricity_usage_kwh' do
     let(:pupils) { 10 }
+    let(:heat_pump) { false }
     let(:annual_usage_kwh) do
-      stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 219)
-      BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type, pupils)
+      stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 229)
+      stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP', 335)
+      BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type:, pupils:, heat_pump:)
     end
 
     context 'with a primary school' do
       let(:school_type) { :primary }
 
       it 'returns the expected value' do
-        expect(annual_usage_kwh).to eq pupils * 219
+        expect(annual_usage_kwh).to eq pupils * 229
+      end
+    end
+
+    context 'with a primary school with a heat pump' do
+      let(:school_type) { :primary }
+      let(:heat_pump) { true }
+
+      it 'returns the expected value' do
+        expect(annual_usage_kwh).to eq pupils * 335
       end
     end
 
@@ -23,7 +34,16 @@ describe BenchmarkMetrics do
       let(:school_type) { :secondary }
 
       it 'returns the expected value' do
-        expect(annual_usage_kwh).to eq pupils * 219.0 * 1.7
+        expect(annual_usage_kwh).to eq pupils * 229.0 * 1.6
+      end
+    end
+
+    context 'with a secondary school with a heat pump' do
+      let(:school_type) { :secondary }
+      let(:heat_pump) { true }
+
+      it 'returns the expected value' do
+        expect(annual_usage_kwh).to eq pupils * 335.0 * 1.1
       end
     end
 
@@ -31,8 +51,18 @@ describe BenchmarkMetrics do
       let(:school_type) { :special }
 
       it 'returns the expected value' do
-        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL', 868)
-        expect(annual_usage_kwh).to eq pupils * 868
+        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL', 966)
+        expect(annual_usage_kwh).to eq pupils * 966
+      end
+    end
+
+    context 'with a special school with a heat pump' do
+      let(:school_type) { :special }
+      let(:heat_pump) { true }
+
+      it 'returns the standard value' do
+        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL', 966)
+        expect(annual_usage_kwh).to eq pupils * 966
       end
     end
 
@@ -47,16 +77,27 @@ describe BenchmarkMetrics do
 
   describe '.exemplar_annual_electricity_usage_kwh' do
     let(:pupils) { 10 }
+    let(:heat_pump) { false }
     let(:annual_usage_kwh) do
-      stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 196)
-      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type, pupils)
+      stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 195)
+      stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP', 273)
+      BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type:, pupils:, heat_pump:)
     end
 
     context 'with a primary school' do
       let(:school_type) { :primary }
 
       it 'returns the expected value' do
-        expect(annual_usage_kwh).to eq pupils * 196
+        expect(annual_usage_kwh).to eq pupils * 195
+      end
+    end
+
+    context 'with a primary school with a heat pump' do
+      let(:school_type) { :primary }
+      let(:heat_pump) { true }
+
+      it 'returns the expected value' do
+        expect(annual_usage_kwh).to eq pupils * 273
       end
     end
 
@@ -64,7 +105,16 @@ describe BenchmarkMetrics do
       let(:school_type) { :secondary }
 
       it 'returns the expected value' do
-        expect(annual_usage_kwh).to eq pupils * 196 * 1.7
+        expect(annual_usage_kwh).to eq pupils * 195 * 1.6
+      end
+    end
+
+    context 'with a secondary school with a heat pump' do
+      let(:school_type) { :secondary }
+      let(:heat_pump) { true }
+
+      it 'returns the expected value' do
+        expect(annual_usage_kwh).to eq pupils * 273 * 1.1
       end
     end
 
@@ -72,8 +122,18 @@ describe BenchmarkMetrics do
       let(:school_type) { :special }
 
       it 'returns the expected value' do
-        stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL', 663)
-        expect(annual_usage_kwh).to eq pupils * 663
+        stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL', 857)
+        expect(annual_usage_kwh).to eq pupils * 857
+      end
+    end
+
+    context 'with a special school with a heat pump' do
+      let(:school_type) { :special }
+      let(:heat_pump) { true }
+
+      it 'returns the standard value' do
+        stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL', 857)
+        expect(annual_usage_kwh).to eq pupils * 857
       end
     end
 
@@ -122,6 +182,33 @@ describe BenchmarkMetrics do
           # EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL * the flat rate above
           stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 196)
           expect(energy_usage_£_per_pupil).to be_within(0.1).of(196.0 * 0.1)
+        end
+      end
+    end
+
+    context 'when only electricity requested, with a heat pump' do
+      before do
+        stub_const('BenchmarkMetrics::RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE_HEAT_PUMP', 1.1)
+
+        allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(meter)
+        allow(meter_collection).to receive(:heat_pump?).and_return(true)
+      end
+
+      let(:list_of_fuels) { [:electricity] }
+
+      it 'returns the benchmark value' do
+        # BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP * the flat rate above
+        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP', 335)
+        expect(energy_usage_£_per_pupil).to be_within(0.1).of(335.0 * 0.1)
+      end
+
+      context 'with :exemplar benchmark' do
+        let(:benchmark_type) { :exemplar }
+
+        it 'returns the exemplar benchmark value' do
+          # EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP * the flat rate above
+          stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_HEAT_PUMP', 273)
+          expect(energy_usage_£_per_pupil).to be_within(0.1).of(273.0 * 0.1)
         end
       end
     end

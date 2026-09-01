@@ -4,8 +4,13 @@
 
 <% if analysis_dates.one_years_data? %>
   <p>
-    <%= t("advice_pages.#{fuel_type}_long_term.insights.comparison.how_do_you_compare",
-          school_type: t("common.school_types.#{school.school_type}")) %>
+    <% if fuel_type == :electricity && @school.heat_pump? %>
+        <%= t('advice_pages.electricity_long_term.insights.comparison.how_do_you_compare_heat_pump',
+              school_type: t("common.school_types.#{school.school_type}")) %>
+    <% else %>
+      <%= t("advice_pages.#{fuel_type}_long_term.insights.comparison.how_do_you_compare",
+            school_type: t("common.school_types.#{school.school_type}")) %>
+    <% end %>
   </p>
 
   <div class="col">

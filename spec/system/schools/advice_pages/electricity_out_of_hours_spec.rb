@@ -74,7 +74,7 @@ RSpec.describe 'electricity out of hours advice page', type: :system do
 
           expect(page).to have_text('As we have less than a years worth of data for your school we are not yet able to benchmark your out of hours electricity consumption against other schools.')
 
-          well_managed = BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY * 100
+          well_managed = (BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY * 100).round(0)
 
           expect(page).to have_text("In a year a well managed school will use less than #{well_managed.to_i}&percnt; of its electricity out of hours.")
 

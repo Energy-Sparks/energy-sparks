@@ -58,7 +58,7 @@ class HolidayUsageTableComponent < ViewComponent::Base
   end
 
   def format_value(value, unit = :kwh)
-    format_unit(value, unit, true, :target)
+    format_unit(value, unit)
   end
 
   def current_holiday_row(holiday)

@@ -1,0 +1,3 @@
+<%= render 'filter', field: :meter_type,
+                     options: options_for_select(Meter.meter_types.to_a, params[:meter_type]),
+                     blank: 'Any Meter Type' %>

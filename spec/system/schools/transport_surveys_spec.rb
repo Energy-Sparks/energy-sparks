@@ -69,10 +69,10 @@ describe 'TransportSurveys', :include_application_helper, type: :system do
           let(:categories) { [:car] }
           let(:journey_minutes) { 5 }
 
-          it { expect(page).to have_text("That's the same as charging 112 smart phones 📱!") }
+          it { expect(page).to have_text("That's the same as charging 106 smart phones 📱!") }
           it { expect(page).to have_text("That's the same as 1 veggie dinner 🥗!") }
-          it { expect(page).to have_text("That's the same as 56 hours of TV 📺!") }
-          it { expect(page).to have_text("That's the same as playing 11 hours of computer games 🎮!") }
+          it { expect(page).to have_text("That's the same as 65 hours of TV 📺!") }
+          it { expect(page).to have_text("That's the same as playing 19 hours of computer games 🎮!") }
           it { expect(page).to have_no_text('would absorb this amount of CO2 in 1 day 🌳!') }
           it { expect(page).to have_no_text('meat dinner') }
           it { expect(page).to have_no_text("That's Carbon Neutral 🌳!") }
@@ -112,11 +112,11 @@ describe 'TransportSurveys', :include_application_helper, type: :system do
           let(:journey_minutes) { 5 }
 
           it { expect(page).to have_text('1 tree would absorb this amount of CO2 in 1 day 🌳!') }
-          it { expect(page).to have_text("That's the same as charging 558 smart phones 📱!") }
+          it { expect(page).to have_text("That's the same as charging 531 smart phones 📱!") }
           it { expect(page).to have_text("That's the same as 2 meat dinners 🍲!") }
           it { expect(page).to have_text("That's the same as 5 veggie dinners 🥗!") }
-          it { expect(page).to have_text("That's the same as 279 hours of TV 📺!") }
-          it { expect(page).to have_text("That's the same as playing 56 hours of computer games 🎮!") }
+          it { expect(page).to have_text("That's the same as 323 hours of TV 📺!") }
+          it { expect(page).to have_text("That's the same as playing 97 hours of computer games 🎮!") }
           it { expect(page).to have_no_text("That's Carbon Neutral 🌳!") }
 
           it { expect(page).to have_text('5 pupils and staff included in this survey generated 2.29kg carbon by travelling to school') }

@@ -4,6 +4,8 @@ require 'rails_helper'
 require 'dashboard'
 
 RSpec.describe 'Solar edge installation management', :solar_edge_installations do
+  include ActiveJob::TestHelper
+
   let!(:admin)  { create(:admin) }
   let!(:school) { create(:school) }
 
@@ -88,7 +90,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
       end
 
       it 'allows viewing' do
-        click_on(installation.mpan)
+        click_on(installation.site_id)
         expect(page).to have_text('site_details')
         expect(page).to have_text('dates')
         expect(page).to have_link('Data Period')
@@ -155,6 +157,88 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         expect { click_on 'Delete' }.to change(Meter, :count).by(-3)
                                     .and change(SolarEdgeInstallation, :count).by(-1)
                                     .and change(AmrValidatedReading, :count).by(-3)
+      end
+    end
+
+    context 'when requesting a connection' do
+      let!(:school) { create(:school, :with_trust) }
+
+      let!(:school_admin) { create(:school_admin, school:) }
+      let!(:staff) { create(:staff, school:) }
+      let!(:group_admin) { create(:group_admin, school_group: school.organisation_group) }
+
+      before { click_on 'Solar Feeds' }
+
+      it 'has link to request connection' do
+        expect(page).to have_link('Request SolarEdge Connection',
+                                  href: connect_school_solar_edge_installations_path(school))
+      end
+
+      context 'when viewing form' do
+        before { click_on 'Request SolarEdge Connection' }
+
+        it 'displays school and group users' do
+          expect(page).to have_text(staff.name)
+          expect(page).to have_text(staff.staff_role.title)
+          expect(page).to have_text(school_admin.name)
+          expect(page).to have_text(school_admin.staff_role.title)
+          expect(page).to have_text(group_admin.name)
+        end
+
+        shared_examples 'it sends the email request' do
+          before { perform_enqueued_jobs }
+
+          let(:email) { ActionMailer::Base.deliveries.first }
+
+          it 'sends correct email' do
+            expect(page).to have_text('Connection has been requested')
+            expect(email.to).to include(email_address)
+            expect(email.subject).to eq('Request for access to data from your SolarEdge monitoring system')
+          end
+        end
+
+        context 'when no user specified' do
+          before { click_on 'Request connection' }
+
+          it { expect(page).to have_text('You must choose at least one user or specify an email address') }
+        end
+
+        context 'when emailing a user' do
+          before do
+            find(:css, "#request_connection_user_ids_#{school_admin.id}").set(true)
+            click_on 'Request connection'
+          end
+
+          it_behaves_like 'it sends the email request' do
+            let(:email_address) { school_admin.email }
+          end
+        end
+
+        context 'when specifying an email address' do
+          before do
+            fill_in 'Email', with: 'user@example.org'
+            click_on 'Request connection'
+          end
+
+          it_behaves_like 'it sends the email request' do
+            let(:email_address) { 'user@example.org' }
+          end
+        end
+
+        context 'when specifying multiple contacts' do
+          before do
+            find(:css, "#request_connection_user_ids_#{school_admin.id}").set(true)
+            fill_in 'Email', with: 'user@example.org'
+
+            click_on 'Request connection'
+          end
+
+          it 'sends separate emails' do
+            perform_enqueued_jobs
+            recipients = ActionMailer::Base.deliveries.map(&:to).flatten
+            expect(recipients).to contain_exactly(school_admin.email, 'user@example.org')
+          end
+        end
       end
     end
   end

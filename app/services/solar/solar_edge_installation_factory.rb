@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Solar
@@ -29,6 +31,13 @@ module Solar
                                          dates: solar_edge_api.site_start_end_dates(installation.site_id) })
     end
 
+    def self.setup_meters(installation)
+      return if installation.mpan.blank?
+      return if installation.meters.any?
+
+      new(installation, AmrDataFeedConfig.solar_edge_api.first).download_initial_readings(installation)
+    end
+
     def perform
       installation = SolarEdgeInstallation
                      .where(school_id: @installation.school.id,
@@ -38,9 +47,20 @@ module Solar
                             amr_data_feed_config: @amr_data_feed_config).first_or_create! do |installation|
         installation.active = @installation.active
       end
-      self.class.update_installation_information(installation, solar_edge_api)
-      download_initial_readings(installation)
+      if installation.mpan.present?
+        self.class.update_installation_information(installation, solar_edge_api)
+        self.class.setup_meters(installation)
+      end
       installation
+    end
+
+    def download_initial_readings(installation)
+      # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
+      return unless first_reading_date
+
+      SolarEdgeDownloadAndUpsert.new(installation:,
+                                     start_date: first_reading_date,
+                                     end_date: first_reading_date + 1.day).perform
     end
 
     private
@@ -51,15 +71,6 @@ module Solar
 
     def first_reading_date
       @first_reading_date ||= solar_edge_api.site_start_end_dates(@installation.site_id).first
-    end
-
-    def download_initial_readings(installation)
-      # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
-      return unless first_reading_date
-
-      SolarEdgeDownloadAndUpsert.new(installation:,
-                                     start_date: first_reading_date,
-                                     end_date: first_reading_date + 1.day).perform
     end
   end
 end

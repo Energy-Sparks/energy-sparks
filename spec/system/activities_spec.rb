@@ -25,6 +25,14 @@ describe 'viewing and recording activities' do
   let(:school) { create_active_school(data_enabled: school_data_enabled, scoreboard:, template_calendar: calendar) }
   let!(:setup_data) {}
 
+  # rubocop:disable RSpecRails/TravelAround
+  around do |example|
+    travel_to Date.new(2026, 4, 1) do
+      example.run
+    end
+  end
+  # rubocop:enable RSpecRails/TravelAround
+
   before do
     SiteSettings.create!(audit_activities_bonus_points: 50)
     create(:national_calendar, title: 'England and Wales') # required for podium to show national placing
@@ -124,7 +132,8 @@ describe 'viewing and recording activities' do
 
         it 'shows prompt to add detail' do
           expect(page).to have_text(I18n.t('activities.form.tell_us_more_label'))
-          expect(page).to have_link(I18n.t('activities.actions.edit'), href: edit_school_activity_path(school, activity))
+          expect(page).to have_link(I18n.t('activities.actions.edit'),
+                                    href: edit_school_activity_path(school, activity))
         end
       end
 
