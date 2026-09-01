@@ -485,6 +485,12 @@ Rails.application.routes.draw do
             post :check
             post :submit_job
           end
+          if installation == :solar_edge_installations
+            collection do
+              get :connect
+              post :request_connection
+            end
+          end
         end
       end
 

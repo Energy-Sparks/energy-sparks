@@ -30,5 +30,5 @@
 
 <p>
   <%= link_to 'New Solar Edge API feed', new_school_solar_edge_installation_path, class: 'btn' %>
-  <%= link_to 'Connect SolarEdge Site', DataFeeds::SolarEdge::Api.authorize_url(school.id), class: 'btn' %>
+  <%= link_to 'Request SolarEdge Connection', connect_school_solar_edge_installations_path(@school), class: 'btn' %>
 </p>

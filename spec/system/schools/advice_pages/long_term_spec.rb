@@ -105,9 +105,9 @@ shared_examples 'a long term advice page' do
 
         it 'includes expected data' do
           if fuel_type == :gas
-            expect(page).to have_text('130,000kWh of gas')
+            expect(page).to have_text('123,000kWh of gas')
           else
-            expect(page).to have_text('220kWh of electricity')
+            expect(page).to have_text('229kWh of electricity')
           end
         end
 
@@ -152,8 +152,8 @@ shared_examples 'a long term advice page' do
         end
 
         it 'includes expected data' do
-          expect(page).to have_text("Exemplar\n<#{{ gas: '100,000', electricity: '200' }[fuel_type]} kWh")
-          expect(page).to have_text("Well managed\n<#{{ gas: '130,000', electricity: '220' }[fuel_type]} kWh")
+          expect(page).to have_text("Exemplar\n<#{{ gas: '105,000', electricity: '195' }[fuel_type]} kWh")
+          expect(page).to have_text("Well managed\n<#{{ gas: '123,000', electricity: '229' }[fuel_type]} kWh")
         end
 
         it 'includes the comparison' do
@@ -302,10 +302,10 @@ shared_examples 'a long term advice page' do
 
           it_behaves_like 'it contains the monthly consumption table' do
             let(:expected_consumption_rows) do
-              rows = [['January', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,070 m', '2,430', '-21%'],
-                      ['February', '15,000 m', '13,900', '-7.2%', '-', '£1,390', '-', '3,070 m', '2,270', '-26%'],
-                      ['March', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,070 m', '2,430', '-21%'],
-                      ['April', '15,000 m', '14,400', '-4%', '-', '£1,440', '-', '3,070 m', '2,350', '-24%'],
+              rows = [['January', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,070 m', '2,430', '-21.1%'],
+                      ['February', '15,000 m', '13,900', '-7.2%', '-', '£1,390', '-', '3,070 m', '2,270', '-26.2%'],
+                      ['March', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,070 m', '2,430', '-21.1%'],
+                      ['April', '15,000 m', '14,400', '-4%', '-', '£1,440', '-', '3,070 m', '2,350', '-23.7%'],
                       ['May', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
                       ['June', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
                       ['July', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
@@ -315,10 +315,10 @@ shared_examples 'a long term advice page' do
                       ['November', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
                       ['December', '14,900', '480 i', '-', '£1,490', '£48 i', '-', '2,440', '78.2 i', '-']]
               if fuel_type == :gas
-                [['2,740 m', '2,720', '-0.82%'],
-                 ['2,740 m', '2,540', '-7.2%'],
-                 ['2,740 m', '2,720', '-0.82%'],
-                 ['2,740 m', '2,630', '-4%'],
+                [['2,740 m', '2,720', '-0.816%'],
+                 ['2,740 m', '2,540', '-7.22%'],
+                 ['2,740 m', '2,720', '-0.816%'],
+                 ['2,740 m', '2,630', '-4.02%'],
                  ['-', '2,720'],
                  ['-', '2,630'],
                  ['-', '2,720'],
@@ -343,7 +343,8 @@ shared_examples 'a long term advice page' do
         it_behaves_like 'it contains the monthly consumption table' do
           let(:expected_consumption_rows) do
             rows = [['January', '14,900', '14,900', '0%', '£1,490', '£1,490', '0%', '2,440', '2,430', '-0.67%'],
-                    ['February', '13,400', '13,900', '+3.6%', '£1,340', '£1,390', '+3.6%', '2,210', '2,270', '+2.9%'],
+                    ['February', '13,400', '13,900', '+3.57%', '£1,340', '£1,390', '+3.57%', '2,210', '2,270',
+                     '+2.88%'],
                     ['March', '14,900', '14,900', '0%', '£1,490', '£1,490', '0%', '2,440', '2,430', '-0.67%'],
                     ['April', '14,400', '14,400', '0%', '£1,440', '£1,440', '0%', '2,360', '2,350', '-0.67%'],
                     ['May', '14,900', '14,900', '0%', '£1,490', '£1,490', '0%', '2,440', '2,430', '-0.67%'],
@@ -356,7 +357,7 @@ shared_examples 'a long term advice page' do
                     ['December', '14,900', '480 i', '-', '£1,490', '£48 i', '-', '2,440', '78.2 i', '-']]
             if fuel_type == :gas
               [['2,720', '2,720', '0%'],
-               ['2,450', '2,540', '+3.6%'],
+               ['2,450', '2,540', '+3.57%'],
                ['2,720', '2,720', '0%'],
                ['2,630', '2,630', '0%'],
                ['2,720', '2,720', '0%'],

@@ -31,7 +31,7 @@
         <% %i[kwh gbp co2].each do |type| %>
           <% %i[previous current].each do |period| %>
             <td class="text-end">
-              <%= format_unit(consumption[period][type], type, dash_if_nil: true, numeric_level: :target) %>
+              <%= format_unit(consumption[period][type], type, dash_if_nil: true) %>
               <% if consumption[period][type].present? %>
                 <% if consumption[period][:missing] %>
                   <% missing_footnote = true %>

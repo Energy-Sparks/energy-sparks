@@ -22,6 +22,14 @@ describe 'viewing and recording action' do
 
   let!(:setup_data) {}
 
+  # rubocop:disable RSpecRails/TravelAround
+  around do |example|
+    travel_to Date.new(2026, 4, 1) do
+      example.run
+    end
+  end
+  # rubocop:enable RSpecRails/TravelAround
+
   context 'as a public user' do
     it 'there is a top-level navigation item' do
       visit root_path
@@ -213,7 +221,8 @@ describe 'viewing and recording action' do
 
         it 'shows prompt to add detail' do
           expect(page).to have_text(I18n.t('activities.form.tell_us_more_label'))
-          expect(page).to have_link(I18n.t('activities.actions.edit'), href: edit_school_intervention_path(school, observation))
+          expect(page).to have_link(I18n.t('activities.actions.edit'),
+                                    href: edit_school_intervention_path(school, observation))
         end
       end
 
