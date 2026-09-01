@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :analytics_school, class: 'Dashboard::School' do
     transient do
-      sequence(:id)    { |n| n }
+      sequence(:id) { |n| n }
       sequence(:name)  { |n| "test #{n} school" }
       address          { '1 Station Road' }
       floor_area       { 5000 }
@@ -14,19 +14,20 @@ FactoryBot.define do
       postcode         { 'ab1 2cd' }
       country          { :england }
       funding_status   { :state }
-      activation_date  { Date.today }
-      created_at       { Date.today }
+      activation_date  { Time.zone.today }
+      created_at       { Time.zone.today }
       latitude         { 51.509865 }
       longitude        { -0.118092 }
       data_enabled     { true }
       school_times     { [] }
       community_use_times { [] }
+      heat_pump { false }
     end
 
     initialize_with do
       new(id:, name:, address:, floor_area:, number_of_pupils:, school_type:, area_name:, urn:, postcode:, country:,
           funding_status:, activation_date:, created_at:, location: [latitude, longitude], data_enabled:, school_times:,
-          community_use_times:)
+          community_use_times:, heat_pump:)
     end
   end
 end

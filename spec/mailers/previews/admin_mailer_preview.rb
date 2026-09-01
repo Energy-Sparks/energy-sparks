@@ -41,8 +41,4 @@ class AdminMailerPreview < ActionMailer::Preview
                                      '(2025-10-01) unable to aggregate data')
     end)
   end
-
-  def solar_edge_site_connected
-    AdminMailer.solar_edge_site_connected(SolarEdgeInstallation.all.sample)
-  end
 end

@@ -133,7 +133,7 @@ class ComparisonTableComponent < ApplicationComponent
       return content_tag(:td, content, attributes) if content?
 
       # Otherwise format and present data values
-      formatted_value = helpers.format_unit(@val, @unit, true, :benchmark)
+      formatted_value = helpers.format_unit(@val, @unit)
 
       # Wrap columns showing percentage change in up/down indicator
       # Don't sanitize values, as values can already be sanitized (e.g. '20&percnt;')

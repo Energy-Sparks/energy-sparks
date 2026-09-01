@@ -51,7 +51,7 @@
 #  fk_rails_...  (owned_by_id => users.id)
 #
 
-class AmrDataFeedConfig < ApplicationRecord # rubocop:todo Metrics/ClassLength
+class AmrDataFeedConfig < ApplicationRecord # rubocop:disable Metrics/ClassLength
   ESTIMATED_STATUS = Set['E', 'Estimate', 'Estimated']
 
   scope :enabled,           -> { where(enabled: true) }
@@ -90,7 +90,6 @@ class AmrDataFeedConfig < ApplicationRecord # rubocop:todo Metrics/ClassLength
   validate :source_and_process_type
 
   BLANK_THRESHOLD = 1
-
   YEAR_MONTH_DAY_FORMATS = ['%Y-%m-%d', '%Y/%m/%d'].freeze
   DAY_MONTH_YEAR_FORMATS = ['%d/%m/%Y', '%d-%m-%Y'].freeze
   FOUR_DIGIT_YEAR = %r{\A\d{2}(?:-|/)\d{2}(?:-|/)\d{4}\z}
@@ -117,9 +116,8 @@ class AmrDataFeedConfig < ApplicationRecord # rubocop:todo Metrics/ClassLength
     safe_parse_date(date_string, date_format)
   rescue ArgumentError
     begin
-      if date_string.match(TWO_DIGIT_YEAR) # Avoid ruby default of assuming year/month/day order
-        format = date_string.include?('/') ? '%d/%m/%y' : '%d-%m-%y'
-        Date.strptime(date_string, format)
+      if date_string.match?(TWO_DIGIT_YEAR) # Avoid ruby default of assuming year/month/day order
+        normalise_and_parse_two_digit_year(date_string)
       else
         Date.parse(date_string)
       end
@@ -130,16 +128,22 @@ class AmrDataFeedConfig < ApplicationRecord # rubocop:todo Metrics/ClassLength
 
   private_class_method def self.safe_parse_date(date_string, date_format)
     # Avoids this: Date.strptime('12-05-2022', "%Y-%m-%d") => Fri, 20 May 0012
-    return Date.parse(date_string) if YEAR_MONTH_DAY_FORMATS.include?(date_format) && date_string.match(FOUR_DIGIT_YEAR)
+    if YEAR_MONTH_DAY_FORMATS.include?(date_format) && date_string.match?(FOUR_DIGIT_YEAR)
+      return Date.parse(date_string)
+    end
 
     # Avoids this: Date.strptime('12-05-22', "%d-%m-%Y") => Fri, 20 May 0012
     # And this: Date.parse('12-05-22') => Tue, 22 May 2012
-    if DAY_MONTH_YEAR_FORMATS.include?(date_format) && date_string.match(TWO_DIGIT_YEAR)
-      format = date_string.include?('/') ? '%d/%m/%y' : '%d-%m-%y'
-      return Date.strptime(date_string, format)
+    if DAY_MONTH_YEAR_FORMATS.include?(date_format) && date_string.match?(TWO_DIGIT_YEAR)
+      return normalise_and_parse_two_digit_year(date_string)
     end
 
     Date.strptime(date_string, date_format)
+  end
+
+  private_class_method def self.normalise_and_parse_two_digit_year(date_string)
+    format = date_string.include?('/') ? '%d/%m/%y' : '%d-%m-%y'
+    Date.strptime(date_string, format)
   end
 
   def latest_reading_date

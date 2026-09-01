@@ -23,9 +23,8 @@ module AdvicePageHelper
     I18n.t(key, **vars, scope: [:advice_pages]).html_safe
   end
 
-  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html,
-                  numeric_level: nil, dash_if_nil: false)
-    user_numeric_comprehension_level = numeric_level unless numeric_level.nil?
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level: :default, medium: :html,
+                  dash_if_nil: false)
     # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and
     # not -4.7e-15)
     begin
