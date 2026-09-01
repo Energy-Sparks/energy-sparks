@@ -7,7 +7,7 @@ CSV.generate do |csv|
       result.school.name,
       result.avg_week_start_time_to_time_of_day,
       result.average_start_time_hh_mm_to_time_of_day,
-      format_unit(result.one_year_optimum_start_saving_gbpcurrent, Float, true, :benchmark)
+      format_unit(result.one_year_optimum_start_saving_gbpcurrent, Float)
     ]
   end
 end.html_safe

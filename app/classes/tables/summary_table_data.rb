@@ -154,7 +154,7 @@ module Tables
     def format_number(value, units, medium = :html)
       return '' if value.nil?
       if Float(value)
-        FormatUnit.format(units, value.to_f, medium, false, true, :target).html_safe
+        FormatUnit.format(units, value.to_f, medium, false, true).html_safe
       end
     rescue
       I18n.t("classes.tables.summary_table_data.#{value}", default: value)

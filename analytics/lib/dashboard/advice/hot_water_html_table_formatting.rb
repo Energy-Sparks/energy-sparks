@@ -1,7 +1,7 @@
 class HotWaterFormattingBase
-  private def format(unit, value, medium, comprehension = :ks2)
+  private def format(unit, value, medium)
     return nil if value.nil?
-    medium.nil? ? value : FormatUnit.format(unit, value, medium, false, true, comprehension)
+    medium.nil? ? value : FormatUnit.format(unit, value, medium, false, true)
   end
 
   def self.formatted_pound(medium)

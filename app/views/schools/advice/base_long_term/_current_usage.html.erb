@@ -41,7 +41,7 @@
         <td><%= format_date_range(date_range) %></td>
         <% %i[kwh co2 gbp].each do |type| %>
           <td class="text-right">
-            <%= format_unit(usage.dig(:current, type), type, dash_if_nil: true, numeric_level: :target) %>
+            <%= format_unit(usage.dig(:current, type), type, dash_if_nil: true) %>
             <% if usage.dig(:current, :manual) && usage.dig(:current, type).present? %>
               <% additional_notice_text =
                    "#{t('advice_pages.electricity_long_term.analysis.consumption_by_month.manual_html')}<br>" %>
