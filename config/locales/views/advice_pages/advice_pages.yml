@@ -59,6 +59,7 @@ en:
           value: Value
         rows:
           floor_area: Floor area
+          heat_pump: Heat pump
           location: Location
           pupils: Pupils
           type: Type

@@ -2,8 +2,13 @@
                                            section_title: t('advice_pages.baseload.comparison.title') %>
 
 <p>
-  <%= t('advice_pages.baseload.comparison.how_do_you_compare',
-        school_type: t("common.school_types.#{school.school_type}")) %>
+  <% if @school.heat_pump? %>
+    <%= t('advice_pages.baseload.comparison.how_do_you_compare_heat_pump',
+          school_type: t("common.school_types.#{school.school_type}")) %>
+  <% else %>
+    <%= t('advice_pages.baseload.comparison.how_do_you_compare',
+          school_type: t("common.school_types.#{school.school_type}")) %>
+  <% end %>
 </p>
 
 <div class="col">

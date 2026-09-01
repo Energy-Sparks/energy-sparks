@@ -59,6 +59,8 @@ class MeterCollection
 
   delegate :area_name, to: :@school
 
+  delegate :heat_pump?, to: :@school
+
   def default_energy_purchaser
     # use the area name for the moment
     @school.area_name
