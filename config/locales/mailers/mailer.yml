@@ -228,7 +228,7 @@ en:
         possible we aim to integrate solar generation and export data for solar panels installed at the school.
       link: Grant access
       no_account: You do not need an Energy Sparks account to complete this process. You only need access to the relevant SolarEdge monitoring system.
-      questions_html: If you have any questions about this process or email, please contact us at <a href="mailto:">support@energysparks.uk</a>.
+      questions_html: If you have any questions about this process or email, please contact us at <a href="mailto:support@energysparks.uk">support@energysparks.uk</a>.
       request: We believe this school has a SolarEdge monitoring system which can provide us with access to the necessary data. We are contacting you to request consent to access that data.
       subject: Request for access to data from your SolarEdge monitoring system
       title: Request for access to SolarEdge data
