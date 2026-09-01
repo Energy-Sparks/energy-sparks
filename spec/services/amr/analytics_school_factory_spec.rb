@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Amr::AnalyticsSchoolFactory do
-  let(:school) { create(:school, data_enabled: true) }
+  let(:school) { create(:school, data_enabled: true, heating_air_source_heat_pump: true) }
   let(:factory) { described_class.new(school) }
 
   it 'populates fields' do
@@ -21,6 +21,7 @@ describe Amr::AnalyticsSchoolFactory do
     expect(data[:created_at]).to eql(school.created_at)
     expect(data[:location]).to eql([school.latitude, school.longitude])
     expect(data[:data_enabled]).to eql(school.data_enabled)
+    expect(data[:heat_pump]).to eql(school.heat_pump?)
   end
 
   it 'returns expected funding status' do

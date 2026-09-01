@@ -105,9 +105,9 @@ shared_examples 'a long term advice page' do
 
         it 'includes expected data' do
           if fuel_type == :gas
-            expect(page).to have_text('125,000kWh of gas')
+            expect(page).to have_text('123,000kWh of gas')
           else
-            expect(page).to have_text('221kWh of electricity')
+            expect(page).to have_text('229kWh of electricity')
           end
         end
 
@@ -152,8 +152,8 @@ shared_examples 'a long term advice page' do
         end
 
         it 'includes expected data' do
-          expect(page).to have_text("Exemplar\n<#{{ gas: '103,000', electricity: '196' }[fuel_type]} kWh")
-          expect(page).to have_text("Well managed\n<#{{ gas: '125,000', electricity: '221' }[fuel_type]} kWh")
+          expect(page).to have_text("Exemplar\n<#{{ gas: '105,000', electricity: '195' }[fuel_type]} kWh")
+          expect(page).to have_text("Well managed\n<#{{ gas: '123,000', electricity: '229' }[fuel_type]} kWh")
         end
 
         it 'includes the comparison' do
