@@ -76,10 +76,12 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
     build(:solar_pv, :with_days, start_date: amr_start_date, end_date: amr_end_date, data_x48: days_solar_pv_yield)
   end
 
+  let(:extra_school_attributes) { {} }
+
   # TODO: add temperatures
   let(:meter_collection) do
     build(:meter_collection,
-          school: build(:analytics_school, school_times:, community_use_times:),
+          school: build(:analytics_school, school_times:, community_use_times:, **extra_school_attributes),
           holidays:,
           solar_pv:)
   end
@@ -87,6 +89,7 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
   # Configure objects as if we've run the aggregation process
   before do
     meter_collection.set_aggregate_meter(fuel_type, aggregate_meter)
+    meter_collection.update_electricity_meters([aggregate_meter]) if fuel_type == :electricity
     aggregate_meter.amr_data.open_close_breakdown = CommunityUseBreakdown.new(aggregate_meter, open_close_times)
     aggregate_meter.set_tariffs
   end

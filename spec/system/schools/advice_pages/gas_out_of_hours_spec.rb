@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'gas out of hours advice page', type: :system do
+describe 'gas out of hours advice page' do
   let(:reading_start_date) { 1.year.ago }
   let(:reading_end_date) { Time.zone.today }
   let(:school) do
@@ -22,7 +24,7 @@ RSpec.describe 'gas out of hours advice page', type: :system do
   end
 
   it_behaves_like 'it responds to HEAD requests' do
-    let(:advice_page) { AdvicePage.find_by_key(:gas_out_of_hours) }
+    let(:advice_page) { AdvicePage.find_by(key: :gas_out_of_hours) }
   end
 
   context 'as school admin' do
@@ -164,7 +166,8 @@ RSpec.describe 'gas out of hours advice page', type: :system do
 
         # 8 weekend days, usage from factorybot is 0.5 kWh per half-hour. So 8 * 48 * 0.5 = 192 kWh
         it 'has potential savings figures in by day section' do
-          expect(page).to have_text('By eliminating weekend gas consumption at your school you could save up to £19 (190kWh) per year.')
+          expect(page).to have_text('By eliminating weekend gas consumption at your school you could save up to ' \
+                                    '£19.20 (192kWh) per year.')
         end
 
         it 'does not have a holiday usage section' do
@@ -195,7 +198,8 @@ RSpec.describe 'gas out of hours advice page', type: :system do
               # create a number of holidays outside usage period
               calendar = create(:school_calendar, :with_terms_and_holidays, term_start_date: Date.new(2022, 1, 1))
               # but ensure there's one holiday within the period to confirm table displays
-              create(:calendar_event_holiday, calendar: calendar, start_date: Date.new(2024, 1, 6), end_date: Date.new(2024, 1, 13))
+              create(:calendar_event_holiday, calendar: calendar, start_date: Date.new(2024, 1, 6),
+                                              end_date: Date.new(2024, 1, 13))
               create(:school, :with_basic_configuration_single_meter_and_tariffs,
                      fuel_type: :gas,
                      reading_start_date: reading_start_date,

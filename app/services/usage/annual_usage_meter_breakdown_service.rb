@@ -175,7 +175,7 @@ module Usage
     def validate_meter_collection
       meters = underlying_meters
       raise EnergySparksUnexpectedStateException, 'Unexpected fuel type' if meters.nil?
-      raise EnergySparksUnexpectedStateException, "School does not have #{fuel_type} meters" if meters.empty?
+      raise EnergySparksUnexpectedStateException, "School does not have #{@fuel_type} meters" if meters.empty?
     end
   end
 end

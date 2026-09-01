@@ -16,7 +16,8 @@ module Amr
                          funding_status:,
                          school_times: @active_record_school.school_times_to_analytics,
                          community_use_times: @active_record_school.community_use_times_to_analytics,
-                         location:
+                         location:,
+                         heat_pump: @active_record_school.heat_pump?
                        })
     end
 

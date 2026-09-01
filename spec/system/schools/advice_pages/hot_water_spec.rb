@@ -147,7 +147,7 @@ RSpec.describe 'hot water advice page', type: :system do
       it 'shows expected content' do
         expect(page).to have_text('Your hot water use')
         expect(page).to have_text('How do you compare?')
-        expect(page).to have_text('70,000') # 69_893  annual efficiency kwh total
+        expect(page).to have_text('69,900') # 69_893  annual efficiency kwh total
         expect(page).to have_text('£2,100') # 2096    annual efficiency £ total
       end
 
@@ -167,12 +167,19 @@ RSpec.describe 'hot water advice page', type: :system do
         end
       end
 
+      def table_below_text(percent)
+        "The table below shows that #{percent}&percnt; of the energy used to heat your hot water is used outside " \
+          'of school opening times. Adjusting your boiler settings to ensure that you are only heating water when ' \
+          'it is needed could save you £594 per year'
+      end
+
       context 'for a investment_choices.gas_better_control.saving_£_percent including and above 10 percent' do
         let(:saving_£_percent) { 0.10 }
 
         it 'shows below table content' do
-          expect(page).to have_text('The table below shows that 10&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
-          expect(page).to have_text('Or you could investigate replacing your current hot water system with point of use electric heaters.')
+          expect(page).to have_text(table_below_text(10))
+          expect(page).to have_text('Or you could investigate replacing your current hot water system with point of ' \
+                                    'use electric heaters.')
         end
       end
 
@@ -180,8 +187,9 @@ RSpec.describe 'hot water advice page', type: :system do
         let(:saving_£_percent) { 0.99 }
 
         it 'shows below table content' do
-          expect(page).to have_text('The table below shows that 99&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
-          expect(page).to have_text('Or you could investigate replacing your current hot water system with point of use electric heaters.')
+          expect(page).to have_text(table_below_text(99))
+          expect(page).to have_text('Or you could investigate replacing your current hot water system with point of ' \
+                                    'use electric heaters.')
         end
       end
     end
@@ -193,8 +201,9 @@ RSpec.describe 'hot water advice page', type: :system do
 
       it 'shows expected content' do
         expect(page).to have_text('Hot water efficiency improvement options')
-        expect(page).to have_text('How does Energy Sparks calculate the efficiency and potential savings of a school’s hot water system?')
-        expect(page).to have_text('£20,000') # 19,600  point_of_use_electric capex
+        expect(page).to have_text('How does Energy Sparks calculate the efficiency and potential savings of a ' \
+                                  'school’s hot water system?')
+        expect(page).to have_text('£19,600') # 19,600  point_of_use_electric capex
 
         expect(page).to have_css('#chart_wrapper_hotwater')
       end
