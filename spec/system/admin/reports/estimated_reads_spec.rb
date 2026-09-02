@@ -37,13 +37,13 @@ describe 'Estimated Reads Report' do
     let(:expected_header) do
       [
         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name',
-         'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Admin Meter Status',
+         'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Admin Meter Status', 'Manual Reads',
          'Last Validated Date', 'Last Estimated Read', 'Total', 'Recent']
       ]
     end
     let(:expected_rows) do
       [[school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s, meter.name,
-        '', 'NHH AMR', meter.supplier.name, meter.data_source.name, '',
+        '', 'NHH AMR', meter.supplier.name, meter.data_source.name, '', 'N',
         Time.zone.yesterday.iso8601, Time.zone.yesterday.iso8601, '60', '30']]
     end
   end
@@ -53,9 +53,9 @@ describe 'Estimated Reads Report' do
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
       eq('School Group,Admin,School,Meter,Meter Name,Meter Type,Meter System,Supplier,Data Source,Admin Meter Status,' \
-         "Last Validated Date,Last Estimated Read,Total,Recent\n" \
+         "Manual Reads,Last Validated Date,Last Estimated Read,Total,Recent\n" \
          "#{meter.school_group.name},#{meter.school_group&.default_issues_admin_user&.name},#{meter.school.name}," \
          "#{meter.mpan_mprn},#{meter.name},gas,#{meter.t_meter_system},#{meter.supplier.name}," \
-         "#{meter.data_source.name},,#{Time.zone.yesterday.iso8601},#{Time.zone.yesterday.iso8601},60,30\n")
+         "#{meter.data_source.name},,N,#{Time.zone.yesterday.iso8601},#{Time.zone.yesterday.iso8601},60,30\n")
   end
 end
