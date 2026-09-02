@@ -871,7 +871,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
 
     context 'when viewing users' do
-      let!(:user) { create(:school_admin, school: create(:school, school_group:)) }
+      let!(:user) { create(:group_admin, school_group:) }
 
       it_behaves_like 'a downloadable csv of users is available'
     end
