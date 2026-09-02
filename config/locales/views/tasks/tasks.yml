@@ -50,8 +50,8 @@ en:
     completed_on: Completed on %{date}
     download_resources: Download resources
     form:
-      photo_guidance: Where possible, please choose photographs that illustrate the activity without clearly identifying individual pupils. Images showing pupils from behind, in groups, or focusing on the activity itself are often just as effective. Only upload photographs where you have appropriate consent for public publication
-      photo_reproduction_guidance: Please note that photographs uploaded to the Energy Sparks website may also be reproduced in our newsletters, blog posts, and social media, and shared with Energy Sparks' funders and the DfE if relevant
+      photo_guidance: Please only upload photographs where you have consent for public publication. Where possible, choose images that do not clearly identify individual pupils. Photos uploaded to Energy Sparks may also be used in our newsletters, blog, social media and reports to funders
+      photo_guidance_link: See our Help pages for full guidance on using photographs
     login_to_record:
       are_you_an_energy_sparks_user: Are you an Energy Sparks user?
     points:

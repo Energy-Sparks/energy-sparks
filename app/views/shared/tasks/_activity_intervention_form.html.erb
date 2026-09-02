@@ -82,9 +82,14 @@
         </p>
         <p class='small'>
             <%= t('tasks.form.photo_guidance') %>.
-        </p>
-        <p class='small'>
-            <%= t('tasks.form.photo_reproduction_guidance') %>.
+            <% guidance_link = if activity
+                                 category_page_path('engaging-the-school-community', 'educational-activities',
+                                                    anchor: 'sharing-photographs-of-your-activities')
+                               elsif observation
+                                 category_page_path('engaging-the-school-community', 'energy-saving-actions',
+                                                    anchor: 'sharing-photographs-of-your-actions')
+                               end %>
+            <%= link_to t('tasks.form.photo_guidance_link'), guidance_link %>.
         </p>
         <p class='small text-muted'>
             <% if activity %>
