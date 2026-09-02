@@ -823,7 +823,7 @@ GEM
     sqlite3 (2.9.6-x86_64-linux-gnu)
     ssrf_filter (1.5.0)
     stateful_enum (0.9.0)
-    terminal-notifier (2.0.0)
+    terminal-notifier (3.0.0)
     terminal-notifier-guard (1.7.0)
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
