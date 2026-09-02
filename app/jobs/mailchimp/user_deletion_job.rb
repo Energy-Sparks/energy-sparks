@@ -8,6 +8,8 @@ module Mailchimp
       contact = Mailchimp::Contact.from_params({ email_address:, name:, school:, interests: {} })
       audience_manager = AudienceManager.new
       mailchimp_member = audience_manager.update_contact(contact)
+      return unless mailchimp_member
+
       audience_manager.remove_tags_from_contact(email_address, tags_to_remove(mailchimp_member))
     rescue => e
       EnergySparks::Log.exception(e, job: :user_deletion)

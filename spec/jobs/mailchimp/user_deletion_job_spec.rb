@@ -60,5 +60,16 @@ describe Mailchimp::UserDeletionJob do
       expect(double).to receive(:remove_tags_from_contact).with(email_address, %w[FSM30 school-of-hard-knocks])
       job.perform(email_address:, name:, school:)
     end
+
+    context 'when user is not in mailchimp' do
+      before do
+        allow(double).to receive(:update_contact).and_return(nil)
+      end
+
+      it 'does not try to remove tags' do
+        expect(double).not_to receive(:remove_tags_from_contact)
+        job.perform(email_address:, name:, school:)
+      end
+    end
   end
 end
