@@ -26,6 +26,7 @@ AllCops:
     - config/puma.rb
     - config/routes.rb
     - db/migrate/202604211056*.rb # goodjob migrations
+  UseProjectIndex: true
 
 plugins:
   - rubocop-capybara
