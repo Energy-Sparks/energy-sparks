@@ -8,14 +8,14 @@
 #  allow_merging           :boolean          default(FALSE), not null
 #  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
-#  convert_to_kwh          :enum             default("no")
+#  convert_to_kwh          :enum             default("no"), enum_type: amr_data_feed_config_convert_to_kwh
 #  date_format             :text             not null
 #  delayed_reading         :boolean          default(FALSE), not null
 #  description             :text             not null
 #  enabled                 :boolean          default(TRUE), not null
 #  estimate_flags          :string           default([]), not null, is an Array
 #  expected_units          :string
-#  half_hourly_labelling   :enum
+#  half_hourly_labelling   :enum             enum_type: half_hourly_labelling
 #  handle_off_by_one       :boolean          default(FALSE)
 #  header_example          :text
 #  identifier              :text             not null
@@ -49,6 +49,11 @@
 # Foreign Keys
 #
 #  fk_rails_...  (owned_by_id => users.id)
+#
+# Enums
+#
+#  amr_data_feed_config_convert_to_kwh  no, m3, meter
+#  half_hourly_labelling                start, end
 #
 
 class AmrDataFeedConfig < ApplicationRecord # rubocop:disable Metrics/ClassLength

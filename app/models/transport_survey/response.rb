@@ -7,7 +7,7 @@
 #  passengers          :integer          default(1), not null
 #  run_identifier      :string           not null
 #  surveyed_at         :datetime         not null
-#  weather             :integer          default("sun"), not null
+#  weather             :integer          default(0), not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  transport_survey_id :bigint(8)        not null

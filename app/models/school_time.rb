@@ -3,11 +3,11 @@
 # Table name: school_times
 #
 #  id              :bigint(8)        not null, primary key
-#  calendar_period :integer          default("term_times"), not null
+#  calendar_period :integer          default(0), not null
 #  closing_time    :integer          default(1520)
 #  day             :integer
 #  opening_time    :integer          default(850)
-#  usage_type      :integer          default("school_day"), not null
+#  usage_type      :integer          default(0), not null
 #  school_id       :bigint(8)        not null
 #
 # Indexes
