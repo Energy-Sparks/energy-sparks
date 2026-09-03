@@ -5,7 +5,7 @@
 #  id          :bigint(8)        not null, primary key
 #  description :text
 #  position    :integer          default(0), not null
-#  role        :integer          default("staff"), not null
+#  role        :integer          default(0), not null
 #  title       :string           not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

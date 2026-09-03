@@ -3,16 +3,16 @@
 # Table name: energy_tariffs
 #
 #  id                 :bigint(8)        not null, primary key
-#  applies_to         :integer          default("both")
+#  applies_to         :integer          default(0)
 #  ccl                :boolean          default(FALSE)
 #  enabled            :boolean          default(TRUE)
 #  end_date           :date
-#  meter_type         :integer          default("electricity"), not null
+#  meter_type         :integer          default(0), not null
 #  name               :text             not null
-#  source             :integer          default("manually_entered"), not null
+#  source             :integer          default(0), not null
 #  start_date         :date
 #  tariff_holder_type :string
-#  tariff_type        :integer          default("flat_rate"), not null
+#  tariff_type        :integer          default(0), not null
 #  tnuos              :boolean          default(FALSE)
 #  vat_rate           :integer
 #  created_at         :datetime         not null

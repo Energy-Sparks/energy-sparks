@@ -3,10 +3,10 @@
 # Table name: alert_subscription_events
 #
 #  id                                   :bigint(8)        not null, primary key
-#  communication_type                   :integer          default("email"), not null
+#  communication_type                   :integer          default(0), not null
 #  message                              :text
 #  priority                             :decimal(, )      default(0.0), not null
-#  status                               :integer          default("pending"), not null
+#  status                               :integer          default(0), not null
 #  unsubscription_uuid                  :string
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null

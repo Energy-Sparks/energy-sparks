@@ -4,11 +4,11 @@
 #
 #  id             :bigint(8)        not null, primary key
 #  fuel_type      :integer
-#  issue_type     :integer          default("issue"), not null
+#  issue_type     :integer          default(0), not null
 #  issueable_type :string
 #  pinned         :boolean          default(FALSE)
 #  review_date    :date
-#  status         :integer          default("open"), not null
+#  status         :integer          default(0), not null
 #  title          :string           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
