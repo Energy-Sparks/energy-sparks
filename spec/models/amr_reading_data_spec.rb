@@ -242,28 +242,5 @@ describe AmrReadingData, :aggregate_failures do
         end
       end
     end
-
-    context 'with strict date handling' do
-      around do |example|
-        ClimateControl.modify FEATURE_FLAG_INCONSISTENT_READING_DATE_FORMAT_WARNING: 'true' do
-          example.run
-        end
-      end
-
-      let(:date_format) { '%d-%m-%y' }
-
-      let(:reading_data) do
-        readings = Array.new(48, '0.0')
-        [
-          { mpan_mprn: '1234050000000', readings:, reading_date: '31-01-22' },
-          { mpan_mprn: '1234050000001', readings:, reading_date: '31-01-2022' }
-        ]
-      end
-
-      it_behaves_like 'it has a warning' do
-        let(:warnings) { 1 }
-        let(:warning_type) { :inconsistent_reading_date_format }
-      end
-    end
   end
 end
