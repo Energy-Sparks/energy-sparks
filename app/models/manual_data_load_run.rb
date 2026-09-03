@@ -3,7 +3,7 @@
 # Table name: manual_data_load_runs
 #
 #  id                      :bigint(8)        not null, primary key
-#  status                  :integer          default("pending"), not null
+#  status                  :integer          default(0), not null
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  amr_uploaded_reading_id :bigint(8)        not null

@@ -4,9 +4,9 @@
 #
 #  id                       :bigint(8)        not null, primary key
 #  contact_email            :string           not null
-#  country                  :integer          default("england"), not null
-#  data_sharing             :enum             default("public"), not null
-#  default_chart_preference :integer          default("default"), not null
+#  country                  :integer          default(0), not null
+#  data_sharing             :enum             default("public"), not null, enum_type: data_sharing
+#  default_chart_preference :integer          default(0), not null
 #  full_school              :boolean          default(TRUE)
 #  notes                    :text
 #  school_name              :string           not null
@@ -54,6 +54,10 @@
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
 #  fk_rails_...  (template_calendar_id => calendars.id) ON DELETE => nullify
+#
+# Enums
+#
+#  data_sharing  public, within_group, private
 #
 
 class SchoolOnboarding < ApplicationRecord

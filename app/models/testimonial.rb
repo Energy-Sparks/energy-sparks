@@ -6,7 +6,7 @@
 #
 #  id            :bigint(8)        not null, primary key
 #  active        :boolean          default(FALSE), not null
-#  category      :integer          default("default"), not null
+#  category      :integer          default(0), not null
 #  name          :string
 #  organisation  :string
 #  created_at    :datetime         not null

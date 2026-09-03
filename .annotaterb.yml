@@ -5,3 +5,4 @@
 :exclude_tests: true
 :sort: true
 :hide_limit_column_types: 'integer,boolean'
+:show_enums: true

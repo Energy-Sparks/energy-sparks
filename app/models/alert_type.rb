@@ -9,11 +9,11 @@
 #  enabled         :boolean          default(TRUE), not null
 #  frequency       :integer
 #  fuel_type       :integer
-#  group           :integer          default("advice"), not null
+#  group           :integer          default(0), not null
 #  has_ratings     :boolean          default(TRUE)
-#  link_to         :integer          default("insights_page"), not null
+#  link_to         :integer          default(0), not null
 #  link_to_section :string
-#  source          :integer          default("analytics"), not null
+#  source          :integer          default(0), not null
 #  sub_category    :integer
 #  title           :text
 #  user_restricted :boolean          default(FALSE), not null

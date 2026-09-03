@@ -3,7 +3,7 @@
 # Table name: equivalence_types
 #
 #  id          :bigint(8)        not null, primary key
-#  image_name  :integer          default("no_image"), not null
+#  image_name  :integer          default(0), not null
 #  meter_type  :integer          not null
 #  time_period :integer          not null
 #  created_at  :datetime         not null

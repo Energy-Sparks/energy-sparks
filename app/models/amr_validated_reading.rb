@@ -24,7 +24,6 @@
 #  idx_amr_validated_reading_meter_status                    (meter_id,status)
 #  index_amr_validated_readings_on_meter_id_and_one_day_kwh  (meter_id,one_day_kwh)
 #  index_amr_validated_readings_on_reading_date              (reading_date)
-#  unique_amr_meter_validated_readings                       (meter_id,reading_date) UNIQUE
 #
 # Foreign Keys
 #

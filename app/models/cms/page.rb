@@ -3,7 +3,7 @@
 # Table name: cms_pages
 #
 #  id            :bigint(8)        not null, primary key
-#  audience      :enum             default("anyone"), not null
+#  audience      :enum             default("anyone"), not null, enum_type: audience
 #  published     :boolean          default(FALSE), not null
 #  slug          :string           not null
 #  created_at    :datetime         not null
@@ -23,6 +23,10 @@
 #  fk_rails_...  (category_id => cms_categories.id)
 #  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (updated_by_id => users.id) ON DELETE => nullify
+#
+# Enums
+#
+#  audience  anyone, school_users, school_admins, group_admins
 #
 module Cms
   class Page < Cms::Base
