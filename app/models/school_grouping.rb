@@ -3,7 +3,7 @@
 # Table name: school_groupings
 #
 #  id              :bigint(8)        not null, primary key
-#  role            :enum             not null
+#  role            :enum             not null, enum_type: school_grouping_role
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  school_group_id :bigint(8)        not null
@@ -19,6 +19,10 @@
 #
 #  fk_rails_...  (school_group_id => school_groups.id)
 #  fk_rails_...  (school_id => schools.id)
+#
+# Enums
+#
+#  school_grouping_role  organisation, area, project, diocese
 #
 class SchoolGrouping < ApplicationRecord
   belongs_to :school

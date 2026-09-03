@@ -6,9 +6,9 @@
 #
 #  id          :bigint(8)        not null, primary key
 #  consumption :float            not null, is an Array
-#  quality     :enum             not null, is an Array
+#  quality     :enum             not null, is an Array, enum_type: meter_monthly_summary_quality
 #  total       :float            not null
-#  type        :enum             not null
+#  type        :enum             not null, enum_type: meter_monthly_summary_type
 #  year        :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -18,6 +18,11 @@
 #
 #  index_meter_monthly_summaries_on_meter_id                    (meter_id)
 #  index_meter_monthly_summaries_on_meter_id_and_year_and_type  (meter_id,year,type) UNIQUE
+#
+# Enums
+#
+#  meter_monthly_summary_quality  incomplete, actual, estimated, corrected
+#  meter_monthly_summary_type     consumption, generation, self_consume, export
 #
 class MeterMonthlySummary < ApplicationRecord
   belongs_to :meter

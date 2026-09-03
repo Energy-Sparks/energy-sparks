@@ -15,7 +15,7 @@
 #  cooks_dinners_onsite                    :boolean          default(FALSE), not null
 #  country                                 :integer          default(0), not null
 #  data_enabled                            :boolean          default(FALSE)
-#  data_sharing                            :enum             default("public"), not null
+#  data_sharing                            :enum             default("public"), not null, enum_type: data_sharing
 #  enable_targets_feature                  :boolean          default(TRUE)
 #  floor_area                              :decimal(, )
 #  full_school                             :boolean          default(TRUE)
@@ -69,7 +69,7 @@
 #  public                                  :boolean          default(TRUE)
 #  region                                  :integer
 #  removal_date                            :date
-#  renewal_behaviour                       :enum             default("renew"), not null
+#  renewal_behaviour                       :enum             default("renew"), not null, enum_type: renewal_behaviour
 #  school_type                             :integer          not null
 #  serves_dinners                          :boolean          default(FALSE), not null
 #  slug                                    :string
@@ -111,6 +111,11 @@
 #  fk_rails_...  (school_group_cluster_id => school_group_clusters.id) ON DELETE => nullify
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
+#
+# Enums
+#
+#  data_sharing       public, within_group, private
+#  renewal_behaviour  renew, archive, waitlist
 #
 
 require 'securerandom'

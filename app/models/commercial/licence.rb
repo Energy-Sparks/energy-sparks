@@ -8,7 +8,7 @@
 #  invoice_reference     :string
 #  school_specific_price :decimal(10, 2)
 #  start_date            :date             not null
-#  status                :enum             default("provisional"), not null
+#  status                :enum             default("provisional"), not null, enum_type: licence_status
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  contract_id           :bigint(8)        not null
@@ -28,6 +28,10 @@
 #  fk_rails_...  (contract_id => commercial_contracts.id)
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (updated_by_id => users.id)
+#
+# Enums
+#
+#  licence_status  provisional, confirmed, pending_invoice, invoiced
 #
 module Commercial
   class Licence < ApplicationRecord

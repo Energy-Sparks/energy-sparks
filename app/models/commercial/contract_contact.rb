@@ -4,7 +4,7 @@
 #
 #  id                   :bigint(8)        not null, primary key
 #  comments             :text
-#  contact_type         :enum             not null
+#  contact_type         :enum             not null, enum_type: contract_contact_type
 #  contract_holder_type :string           not null
 #  email                :string           not null
 #  name                 :string           not null
@@ -26,6 +26,10 @@
 #
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (updated_by_id => users.id)
+#
+# Enums
+#
+#  contract_contact_type  procurement, invoicing, loa, renewals
 #
 module Commercial
   class ContractContact < ApplicationRecord
