@@ -5,7 +5,7 @@
 #  id                :bigint(8)        not null, primary key
 #  ended_on          :date
 #  started_on        :date             not null
-#  status            :integer          default("started"), not null
+#  status            :integer          default(0), not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  programme_type_id :bigint(8)        not null

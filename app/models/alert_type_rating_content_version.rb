@@ -3,7 +3,7 @@
 # Table name: alert_type_rating_content_versions
 #
 #  id                                    :bigint(8)        not null, primary key
-#  colour                                :integer          default("negative"), not null
+#  colour                                :integer          default(0), not null
 #  email_end_date                        :date
 #  email_start_date                      :date
 #  email_title                           :string

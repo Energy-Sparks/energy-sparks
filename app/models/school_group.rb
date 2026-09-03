@@ -3,11 +3,11 @@
 # Table name: school_groups
 #
 #  id                                       :bigint(8)        not null, primary key
-#  default_chart_preference                 :integer          default("default"), not null
-#  default_country                          :integer          default("england"), not null
+#  default_chart_preference                 :integer          default(0), not null
+#  default_country                          :integer          default(0), not null
 #  description                              :string
 #  dfe_code                                 :string
-#  group_type                               :integer          default("general")
+#  group_type                               :integer          default(0)
 #  mailchimp_fields_changed_at              :datetime
 #  name                                     :string           not null
 #  public                                   :boolean          default(TRUE)

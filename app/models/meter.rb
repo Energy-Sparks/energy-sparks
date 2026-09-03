@@ -6,15 +6,15 @@
 #  active                         :boolean          default(TRUE)
 #  consent_granted                :boolean          default(FALSE)
 #  dcc_checked_at                 :datetime
-#  dcc_meter                      :enum             default("no"), not null
-#  gas_unit                       :enum
+#  dcc_meter                      :enum             default("no"), not null, enum_type: dcc_meter
+#  gas_unit                       :enum             enum_type: gas_unit
 #  manual_reads                   :boolean          default(FALSE), not null
 #  meter_serial_number            :text
-#  meter_system                   :integer          default("nhh_amr")
+#  meter_system                   :integer          default(0)
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
-#  perse_api                      :enum
+#  perse_api                      :enum             enum_type: meter_perse_api
 #  pseudo                         :boolean          default(FALSE)
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
@@ -51,6 +51,12 @@
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (solar_edge_installation_id => solar_edge_installations.id) ON DELETE => cascade
 #  fk_rails_...  (solis_cloud_installation_id => solis_cloud_installations.id) ON DELETE => cascade
+#
+# Enums
+#
+#  dcc_meter        no, smets2, other
+#  gas_unit         kwh, m3, ft3, hcf
+#  meter_perse_api  half_hourly
 #
 
 class Meter < ApplicationRecord

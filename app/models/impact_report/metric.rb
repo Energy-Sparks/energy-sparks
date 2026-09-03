@@ -8,10 +8,10 @@
 #  id                   :bigint(8)        not null, primary key
 #  enough_data          :boolean          default(FALSE), not null
 #  fuel_type            :integer
-#  metric_category      :enum             not null
-#  metric_type          :enum             not null
+#  metric_category      :enum             not null, enum_type: impact_report_metric_categories
+#  metric_type          :enum             not null, enum_type: impact_report_metric_types
 #  number_of_schools    :integer
-#  unit                 :enum
+#  unit                 :enum             enum_type: impact_report_metric_units
 #  value                :integer
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
@@ -25,6 +25,12 @@
 # Foreign Keys
 #
 #  fk_rails_...  (impact_report_run_id => impact_report_runs.id)
+#
+# Enums
+#
+#  impact_report_metric_categories  overview, energy_efficiency, engagement, potential_savings
+#  impact_report_metric_types       actions, active_users, activities, annual_saving, baseload, data_visible_schools, enrolled_schools, enrolling_schools, heating_control, heating_down, heating_early, heating_off, holiday_previous, holiday_previous_year, insulate_pipes, long_term, out_of_hours, peak, points, pupils, solar_panels, targets, thermostatic_control, use, users, visible_schools
+#  impact_report_metric_units       kwh, co2, gbp
 #
 # rubocop:enable Layout/LineLength
 

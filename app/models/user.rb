@@ -17,7 +17,7 @@
 #  last_sign_in_ip             :inet
 #  locked_at                   :datetime
 #  mailchimp_fields_changed_at :datetime
-#  mailchimp_status            :enum
+#  mailchimp_status            :enum             enum_type: mailchimp_status
 #  mailchimp_updated_at        :datetime
 #  name                        :string
 #  operations                  :boolean          default(FALSE), not null
@@ -26,7 +26,7 @@
 #  remember_created_at         :datetime
 #  reset_password_sent_at      :datetime
 #  reset_password_token        :string
-#  role                        :integer          default("guest"), not null
+#  role                        :integer          default(0), not null
 #  sign_in_count               :integer          default(0), not null
 #  terms_accepted              :boolean          default(FALSE)
 #  unlock_token                :string
@@ -53,6 +53,10 @@
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (staff_role_id => staff_roles.id) ON DELETE => restrict
+#
+# Enums
+#
+#  mailchimp_status  subscribed, unsubscribed, cleaned, nonsubscribed, archived
 #
 
 class User < ApplicationRecord

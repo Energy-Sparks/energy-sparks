@@ -9,14 +9,14 @@
 #  comments              :text
 #  contract_holder_type  :string           not null
 #  end_date              :date             not null
-#  invoice_terms         :enum             default("pro_rata"), not null
-#  licence_period        :enum             default("contract"), not null
+#  invoice_terms         :enum             default("pro_rata"), not null, enum_type: contract_invoice_terms
+#  licence_period        :enum             default("contract"), not null, enum_type: contract_licence_period
 #  licence_years         :decimal(4, 2)
 #  name                  :string           not null
 #  number_of_schools     :integer          not null
 #  purchase_order_number :string
 #  start_date            :date             not null
-#  status                :enum             default("provisional"), not null
+#  status                :enum             default("provisional"), not null, enum_type: contract_status
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  contract_holder_id    :bigint(8)        not null
@@ -40,6 +40,12 @@
 #  fk_rails_...  (product_id => commercial_products.id)
 #  fk_rails_...  (updated_by_id => users.id)
 #  fk_rails_...  (xero_account_code_id => commercial_xero_account_codes.id)
+#
+# Enums
+#
+#  contract_invoice_terms   pro_rata, full
+#  contract_licence_period  contract, custom
+#  contract_status          provisional, confirmed
 #
 module Commercial
   class Contract < ApplicationRecord # rubocop:disable Metrics/ClassLength
