@@ -212,7 +212,7 @@ describe 'viewing and recording activities' do
         visit activity_type_path(activity_type)
       end
 
-      context with_feature: :todos do
+      context 'when school has an audit' do # needed for task_completed page to show audit prompt
         let(:audit) { create(:audit, :with_todos, school:) }
 
         before do
@@ -221,6 +221,12 @@ describe 'viewing and recording activities' do
 
         it 'shows score and threshold' do
           expect(page).to have_text('Completing this activity up to 10 times this academic year will earn you 25 points')
+        end
+
+        it 'links to help page' do
+          expect(page).to have_link('See our Help pages for full guidance on using photographs',
+                                    href: category_page_path('engaging-the-school-community', 'educational-activities',
+                                                             anchor: 'sharing-photographs-of-your-activities'))
         end
 
         context 'with non-custom activity' do
@@ -371,7 +377,7 @@ describe 'viewing and recording activities' do
       end
     end
 
-    context 'when recording an activity', toggle_feature: :todos do
+    context 'when recording an activity' do
       before do
         select other_school.name, from: :school_id
         click_on 'Record this activity'
@@ -420,7 +426,7 @@ describe 'viewing and recording activities' do
     let!(:school_1)   { create(:school) }
     let!(:school_2)   { create(:school) }
 
-    context 'viewing an activity type', toggle_feature: :todos do
+    context 'viewing an activity type' do
       before do
         sign_in(admin)
         visit activity_type_path(activity_type)
@@ -448,7 +454,7 @@ describe 'viewing and recording activities' do
   context 'as a pupil' do
     let(:pupil) { create(:pupil, school:) }
 
-    context 'viewing an activity type', toggle_feature: :todos do
+    context 'viewing an activity type' do
       before do
         sign_in(pupil)
         visit activity_type_path(activity_type)

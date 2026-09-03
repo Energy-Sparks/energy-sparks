@@ -4,7 +4,7 @@
 #
 #  id                   :bigint(8)        not null, primary key
 #  alias                :text
-#  analytics_event_type :integer          default("term_time"), not null
+#  analytics_event_type :integer          default(0), not null
 #  bank_holiday         :boolean          default(FALSE)
 #  colour               :text
 #  description          :text
