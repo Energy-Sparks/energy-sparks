@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
+# rubocop:disable-next Metrics/BlockLength
 namespace :database do
   desc 'Populate parsed_date in amr_data_feed_readings'
   task populate_parsed_date: :environment do
@@ -44,4 +44,3 @@ namespace :database do
     EnergySparks::Log.exception(e, job: :populate_parsed_date)
   end
 end
-# rubocop:enable Metrics/BlockLength
