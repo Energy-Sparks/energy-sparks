@@ -11,6 +11,7 @@ class AmrReadingData
   WARNING_MISSING_READINGS = 'Missing readings (should be 48)'.freeze
   WARNING_DUPLICATE_READING = 'Another reading exists for the same Mpan or MPRN for the same date'.freeze
   WARNING_INVALID_NON_NUMERIC_MPAN_MPRN = 'MPAN or MPRN field must be numeric'.freeze
+  WARNING_READING_TOO_EARLY = 'Reading date is before 1900'.freeze
 
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
   ERROR_NO_VALID_READINGS = 'No valid readings in file'.freeze
@@ -23,8 +24,11 @@ class AmrReadingData
     invalid_reading_date: WARNING_BAD_DATE_FORMAT,
     future_reading_date: WARNING_READING_FUTURE_DATE,
     duplicate_reading: WARNING_DUPLICATE_READING,
-    invalid_non_numeric_mpan_mprn: WARNING_INVALID_NON_NUMERIC_MPAN_MPRN
+    invalid_non_numeric_mpan_mprn: WARNING_INVALID_NON_NUMERIC_MPAN_MPRN,
+    early_reading_date: WARNING_READING_TOO_EARLY
   }.freeze
+
+  EARLY_DATE = Date.new(1900).freeze
 
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
   validate :any_valid_readings?
@@ -47,11 +51,11 @@ class AmrReadingData
   end
 
   def warnings
-    @reading_data.select { |reading| reading.key?(:warnings) }
+    @warnings ||= @reading_data.select { |reading| reading.key?(:warnings) }
   end
 
   def valid_records
-    @reading_data.reject { |reading| reading.key?(:warnings) }
+    @valid_records ||= @reading_data.reject { |reading| reading.key?(:warnings) }
   end
 
   def valid_reading_count
@@ -90,25 +94,15 @@ class AmrReadingData
       warnings << :missing_reading_date if reading_date.blank?
       warnings << :duplicate_reading if duplicate_reading?(reading, @reading_data[index + 1..-1])
 
-      if reading_date.present? && valid_reading_date?(reading_date)
-        warnings << :future_reading_date if future_reading_date?(reading_date)
+      if reading_date.present? && valid_reading_date?(reading)
+        warnings << :future_reading_date if future_reading_date?(reading)
+        warnings << :early_reading_date if date_too_early?(reading)
       else
         warnings << :invalid_reading_date
       end
 
       reading[:warnings] = warnings if warnings.any?
     end
-  end
-
-  def inconsistent_reading_date_format?(reading_date)
-    return false if reading_date.is_a? Date
-
-    formatted_date = Date.strptime(reading_date, @date_format)
-    return false if formatted_date.strftime(@date_format) == reading_date
-
-    true
-  rescue ArgumentError
-    true
   end
 
   # Are there any missing readings for this row of data?
@@ -125,23 +119,16 @@ class AmrReadingData
     readings.compact.count {|reading| reading.present? && reading != '-'} < (48 - @missing_reading_limit)
   end
 
-  def valid_reading_date?(reading_date)
-    parse_date(reading_date).present?
+  def valid_reading_date?(reading)
+    reading[:parsed_date].present?
   end
 
-  def future_reading_date?(reading_date)
-    parse_date(reading_date) > @today
+  def future_reading_date?(reading)
+    reading[:parsed_date] > @today
   end
 
-  def parse_date(reading_date)
-    return reading_date if reading_date.is_a? Date
-    Date.strptime(reading_date, @date_format)
-  rescue ArgumentError
-    begin
-      Date.parse(reading_date)
-    rescue ArgumentError
-      nil
-    end
+  def date_too_early?(reading)
+    reading[:parsed_date] <= EARLY_DATE
   end
 
   def duplicate_reading?(reading, remainder)
