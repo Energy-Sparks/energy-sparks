@@ -64,39 +64,44 @@
         <%= render 'shared/tasks/bonus_points', type: %>
       </h4>
       <div>
-        <small>
-          <% if activity %>
-            <%= t('activities.form.tell_us_more_message') %>
-          <% elsif observation %>
-            <%= t('interventions.form.adding_some_background_detail_label') %>.
-          <% end %>
-        </small>
-        <% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
-          <small>
-            <%= t("#{type}.form.bonus_points_message") %>
-            <strong>
-              <%= SiteSettings.current.photo_bonus_points %>
-              <%# i18n-tasks-use t("activities.form.bonus_points") %>
-              <%# i18n-tasks-use t("interventions.form.bonus_points") %>
-              <%= t("#{type}.form.bonus_points", count: SiteSettings.current.photo_bonus_points) %>.
+        <p class='small'>
+            <% if activity %>
+              <%= t('activities.form.tell_us_more_message') %>
+            <% elsif observation %>
+              <%= t('interventions.form.adding_some_background_detail_label') %>.
+            <% end %>
+          <% if SiteSettings.current&.photo_bonus_points&.nonzero? %>
+              <%= t("#{type}.form.bonus_points_message") %>
+              <strong>
+                <%= SiteSettings.current.photo_bonus_points %>
+                <%# i18n-tasks-use t("activities.form.bonus_points") %>
+                <%# i18n-tasks-use t("interventions.form.bonus_points") %>
+                <%= t("#{type}.form.bonus_points", count: SiteSettings.current.photo_bonus_points) %>.
               </strong>
-            </small>
-        <% end %>
-      </div>
-      <p>
-        <small class="text-muted">
-          <% if activity %>
-              <%= t('activities.form.tell_us_more_formatting_message') %>.
-          <% elsif observation %>
-            <%= t('interventions.form.you_can_add_formatting_label') %>.
           <% end %>
-        </small>
-      </p>
-
-      <div class="mt-4">
+        </p>
+        <p class='small'>
+            <%= t('tasks.form.photo_guidance') %>.
+            <% guidance_link = if activity
+                                 category_page_path('engaging-the-school-community', 'educational-activities',
+                                                    anchor: 'sharing-photographs-of-your-activities')
+                               elsif observation
+                                 category_page_path('engaging-the-school-community', 'energy-saving-actions',
+                                                    anchor: 'sharing-photographs-of-your-actions')
+                               end %>
+            <%= link_to t('tasks.form.photo_guidance_link'), guidance_link %>.
+        </p>
+        <p class='small text-muted'>
+            <% if activity %>
+                <%= t('activities.form.tell_us_more_formatting_message') %>.
+            <% elsif observation %>
+              <%= t('interventions.form.you_can_add_formatting_label') %>.
+            <% end %>
+        </p>
+      </div>
+      <div>
         <%= render(Forms::TrixComponent.new(form: f, field: :description, button_size: :default, controls: :simple)) %>
       </div>
-
       <hr class="my-4">
       <div class="d-flex justify-content-end gap-2">
         <% if activity

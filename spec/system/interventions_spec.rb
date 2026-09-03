@@ -256,6 +256,12 @@ describe 'viewing and recording action' do
         expect(page).to have_text('Completing this action up to 10 times this academic year will earn you 30 points')
       end
 
+      it 'links to help page' do
+        expect(page).to have_link('See our Help pages for full guidance on using photographs',
+                                  href: category_page_path('engaging-the-school-community', 'energy-saving-actions',
+                                                           anchor: 'sharing-photographs-of-your-actions'))
+      end
+
       context "when time isn't provided" do
         before do
           fill_in 'observation_at', with: ''
@@ -265,7 +271,7 @@ describe 'viewing and recording action' do
         it { expect(page).to have_text("can't be blank") }
       end
 
-      context with_feature: :todos do
+      context 'when school has an audit' do # needed for task_completed page to show audit prompt
         let!(:audit) { create(:audit, :with_todos, school:) }
 
         context 'when time is in previous academic year' do
