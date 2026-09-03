@@ -380,10 +380,10 @@ GEM
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
     hashdiff (1.2.1)
-    herb (0.10.1-aarch64-linux-gnu)
-    herb (0.10.1-arm64-darwin)
-    herb (0.10.1-x86_64-darwin)
-    herb (0.10.1-x86_64-linux-gnu)
+    herb (0.10.3-aarch64-linux-gnu)
+    herb (0.10.3-arm64-darwin)
+    herb (0.10.3-x86_64-darwin)
+    herb (0.10.3-x86_64-linux-gnu)
     highline (3.1.2)
       reline
     htmlbeautifier (1.4.3)
@@ -746,12 +746,13 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
       rubocop-rspec (~> 3.5)
-    rubocop-view_component (0.6.0)
+    rubocop-view_component (0.7.0)
       activesupport
       herb
       lint_roller (~> 1.1)
       parser
-      rubocop (>= 1.72.2)
+      rubocop (>= 1.89.0)
+      rubydex
     ruby-limiter (2.3.0)
     ruby-ole (1.2.13.1)
     ruby-prof (2.0.5)
@@ -762,6 +763,10 @@ GEM
     ruby_parser (3.21.1)
       racc (~> 1.5)
       sexp_processor (~> 4.16)
+    rubydex (0.4.0-aarch64-linux)
+    rubydex (0.4.0-arm64-darwin)
+    rubydex (0.4.0-x86_64-darwin)
+    rubydex (0.4.0-x86_64-linux)
     rubyntlm (0.6.5)
       base64
     rubyvis (0.7.0)
