@@ -44,12 +44,12 @@ module Admin
       end
 
       def filter_results(results)
-        # results = results.preload(:school,
-        #                           { school: { school_group: :default_issues_admin_user } },
-        #                           :supplier,
-        #                           :data_source,
-        #                           :procurement_route,
-        #                           :admin_meter_status)
+        results = results.preload(:school,
+                                  { school: { school_group: :default_issues_admin_user } },
+                                  :supplier,
+                                  :data_source,
+                                  :procurement_route,
+                                  :admin_meter_status)
         results = filter_by_meter_type(results)
         results = filter_by_admin(results)
         results = filter_by_school_group(results)
