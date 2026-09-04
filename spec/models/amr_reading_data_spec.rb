@@ -45,12 +45,14 @@ describe AmrReadingData, :aggregate_failures do
     end
   end
 
-  def create_one_invalid_reading(mpan_mprn: '1234050000001', reading_date: '2022-01-01', readings: Array.new(48, '0.0'))
+  def create_one_invalid_reading(mpan_mprn: '1234050000001', reading_date: '2022-01-01',
+                                 readings: Array.new(48, '0.0'), parsed_date: Date.parse(reading_date))
     [
-      { mpan_mprn:, reading_date:, readings: }, # invalid
+      { mpan_mprn:, reading_date:, parsed_date:, readings: }, # invalid
       {
         mpan_mprn: '1234050000000',
         reading_date: '2022-01-01',
+        parsed_date: Date.parse('2022-01-01'),
         readings: Array.new(48, '0.0')
       }
     ]
@@ -62,8 +64,8 @@ describe AmrReadingData, :aggregate_failures do
         mpan_mprn = '1234050000000'
         readings = Array.new(48, '0.0')
         [
-          { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-01') },
-          { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-02') }
+          { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-01'), parsed_date: Date.parse('2019-01-01') },
+          { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-02'), parsed_date: Date.parse('2019-01-02') }
         ]
       end
 
@@ -75,8 +77,8 @@ describe AmrReadingData, :aggregate_failures do
         mpan_mprn = '1234050000000'
         readings = Array.new(48, '0.0')
         [
-          { mpan_mprn:, readings:, reading_date: '2019-01-01' },
-          { mpan_mprn:, readings:, reading_date: '2019-01-02' }
+          { mpan_mprn:, readings:, reading_date: '2019-01-01', parsed_date: Date.parse('2019-01-01') },
+          { mpan_mprn:, readings:, reading_date: '2019-01-02', parsed_date: Date.parse('2019-01-02') }
         ]
       end
 
@@ -90,8 +92,8 @@ describe AmrReadingData, :aggregate_failures do
         mpan_mprn = '1234050000000'
         readings = Array.new(48, '0.0')
         [
-          { mpan_mprn:, readings:, reading_date: '2022-01-01' },
-          { mpan_mprn:, readings:, reading_date: '2022-01-02' }
+          { mpan_mprn:, readings:, reading_date: '2022-01-01', parsed_date: Date.parse('2022-01-01') },
+          { mpan_mprn:, readings:, reading_date: '2022-01-02', parsed_date: Date.parse('2022-01-02') }
         ]
       end
 
@@ -104,8 +106,8 @@ describe AmrReadingData, :aggregate_failures do
       mpan_mprn = nil
       readings = Array.new(48, '0.0')
       [
-        { mpan_mprn:, readings:, reading_date: '2019-01-01' },
-        { mpan_mprn:, readings:, reading_date: '2019-01-02' }
+        { mpan_mprn:, readings:, reading_date: '2019-01-01', parsed_date: Date.parse('2019-01-01') },
+        { mpan_mprn:, readings:, reading_date: '2019-01-02', parsed_date: Date.parse('2019-01-02') }
       ]
     end
 
@@ -144,8 +146,8 @@ describe AmrReadingData, :aggregate_failures do
         mpan_mprn = '1234050000000'
         readings = Array.new(48, '0.0')
         [
-          { mpan_mprn:, readings:, reading_date: '2019-01-01' },
-          { mpan_mprn:, readings:, reading_date: '2019-01-01' }
+          { mpan_mprn:, readings:, reading_date: '2019-01-01', parsed_date: Date.parse('2019-01-01') },
+          { mpan_mprn:, readings:, reading_date: '2019-01-01', parsed_date: Date.parse('2019-01-01') }
         ]
       end
 
@@ -157,7 +159,7 @@ describe AmrReadingData, :aggregate_failures do
 
     context 'with missing reading date' do
       let(:reading_data) do
-        create_one_invalid_reading(reading_date: nil)
+        create_one_invalid_reading(reading_date: nil, parsed_date: nil)
       end
 
       it_behaves_like 'it has a warning' do
@@ -167,7 +169,7 @@ describe AmrReadingData, :aggregate_failures do
 
     context 'with reading date in the future' do
       let(:reading_data) do
-        create_one_invalid_reading(reading_date: Time.zone.today + 1)
+        create_one_invalid_reading(reading_date: Time.zone.today + 1, parsed_date: Time.zone.today + 1)
       end
 
       it_behaves_like 'it has a warning' do
@@ -175,9 +177,19 @@ describe AmrReadingData, :aggregate_failures do
       end
     end
 
+    context 'with reading date that is too early' do
+      let(:reading_data) do
+        create_one_invalid_reading(reading_date: '0020-01-01', parsed_date: Date.new(20, 1, 1))
+      end
+
+      it_behaves_like 'it has a warning' do
+        let(:warning_type) { :early_reading_date }
+      end
+    end
+
     context 'with unparseable date' do
       let(:reading_data) do
-        create_one_invalid_reading(reading_date: 'AAAAA')
+        create_one_invalid_reading(reading_date: 'AAAAA', parsed_date: nil)
       end
 
       it_behaves_like 'it has a warning' do
@@ -240,29 +252,6 @@ describe AmrReadingData, :aggregate_failures do
         it_behaves_like 'it has a warning' do
           let(:warning_type) { :missing_readings }
         end
-      end
-    end
-
-    context 'with strict date handling' do
-      around do |example|
-        ClimateControl.modify FEATURE_FLAG_INCONSISTENT_READING_DATE_FORMAT_WARNING: 'true' do
-          example.run
-        end
-      end
-
-      let(:date_format) { '%d-%m-%y' }
-
-      let(:reading_data) do
-        readings = Array.new(48, '0.0')
-        [
-          { mpan_mprn: '1234050000000', readings:, reading_date: '31-01-22' },
-          { mpan_mprn: '1234050000001', readings:, reading_date: '31-01-2022' }
-        ]
-      end
-
-      it_behaves_like 'it has a warning' do
-        let(:warnings) { 1 }
-        let(:warning_type) { :inconsistent_reading_date_format }
       end
     end
   end
