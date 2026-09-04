@@ -35,19 +35,15 @@ module Navigation
     end
 
     def my_meters_section
+      admin = current_user.id
+      dashboard_id = current_user
       [
-        { name: 'Baseload anomalies', classes: 'small',
-          path: admin_dashboard_baseload_anomaly_index_path(dashboard_id: current_user,
-                                                            admin: current_user.id) },
-        { name: 'Estimated data', classes: 'small',
-          path: admin_dashboard_estimated_reads_path(dashboard_id: current_user,
-                                                     admin: current_user.id) },
-        { name: 'Manually read meters', classes: 'small',
-          path: admin_dashboard_manual_reads_path(dashboard_id: current_user,
-                                                  admin: current_user.id) },
-        { name: 'New data for inactive meters', classes: 'small',
-          path: admin_dashboard_new_data_inactive_meter_report_index_path(dashboard_id: current_user,
-                                                                          admin: current_user.id) }
+        { name: 'Baseload anomalies', path: admin_dashboard_baseload_anomaly_index_path(dashboard_id:, admin:) },
+        { name: 'Estimated data', path: admin_dashboard_estimated_reads_path(dashboard_id:, admin:) },
+        { name: 'Manually read meters', path: admin_dashboard_manual_reads_path(dashboard_id:, admin:) },
+        { name: 'New data for inactive meters',
+          path: admin_dashboard_new_data_inactive_meter_report_index_path(dashboard_id:, admin: current_user.id) },
+        { name: 'Limited data meters', path: admin_dashboard_limited_data_path(dashboard_id:, admin:) }
       ]
     end
   end
