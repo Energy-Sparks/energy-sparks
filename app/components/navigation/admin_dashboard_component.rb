@@ -47,7 +47,10 @@ module Navigation
                                                   admin: current_user.id) },
         { name: 'New data for inactive meters', classes: 'small',
           path: admin_dashboard_new_data_inactive_meter_report_index_path(dashboard_id: current_user,
-                                                                          admin: current_user.id) }
+                                                                          admin: current_user.id) },
+        { name: 'Limited data meters',
+          path: admin_dashboard_limited_data_path(dashboard_id: current_user, admin: current_user.id) }
+
       ]
     end
   end

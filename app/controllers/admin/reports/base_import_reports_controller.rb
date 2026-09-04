@@ -44,22 +44,47 @@ module Admin
       end
 
       def filter_results(results)
-        results = results.where(meter_type: params[:meter_type]) if params[:meter_type].present?
-        if params[:admin].present?
-          results = results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(params[:admin]) } })
-        end
-        if params[:school_group].present?
-          results = results.where(schools: { school_group: SchoolGroup.find(params[:school_group]) })
-        end
-        if params[:admin_meter_status].present?
-          results = results.where(admin_meter_status: AdminMeterStatus.find(params[:admin_meter_status]))
-        end
-        results
+        results = results.preload(:school,
+                                  { school: { school_group: :default_issues_admin_user } },
+                                  :supplier,
+                                  :data_source,
+                                  :procurement_route,
+                                  :admin_meter_status)
+        results = filter_by_meter_type(results)
+        results = filter_by_admin(results)
+        results = filter_by_school_group(results)
+        filter_by_admin_meter_status(results)
       end
 
-      def container_class
-        'container-fluid'
+      def filter_by_meter_type(results)
+        apply_filter(results, :meter_type) do |results, meter_type|
+          results.where(meter_type:)
+        end
       end
+
+      def filter_by_admin(results)
+        apply_filter(results, :admin) do |results, admin_id|
+          results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(admin_id) } })
+        end
+      end
+
+      def filter_by_school_group(results)
+        apply_filter(results, :school_group) do |results, school_group_id|
+          results.where(schools: { school_group: SchoolGroup.find(school_group_id) })
+        end
+      end
+
+      def filter_by_admin_meter_status(results)
+        apply_filter(results, :admin_meter_status) do |results, status_id|
+          results.where(admin_meter_status: AdminMeterStatus.find(status_id))
+        end
+      end
+
+      def apply_filter(results, key)
+        params[key].present? ? yield(results, params[key]) : results
+      end
+
+      def container_class = 'container-fluid'
     end
   end
 end
