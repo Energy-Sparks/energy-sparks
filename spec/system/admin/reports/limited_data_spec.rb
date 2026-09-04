@@ -5,12 +5,9 @@ require 'rails_helper'
 describe 'Limited data report' do
   let(:school) { create(:school, :with_school_group) }
   let!(:meter) do
-    # meter = create(:electricity_meter)
-    create(:electricity_meter_with_validated_reading, school:, data_source: create(:data_source), supplier: create(:supplier),
-                                                      admin_meter_status: create(:admin_meter_status))
-    # create(:solar_pv_mpan_meter_mapping, meter:, export_mpan: '55555')
-    # create(:solar_pv_attribute, meter:)
-    # meter
+    create(:electricity_meter_with_validated_reading,
+           school:, data_source: create(:data_source), supplier: create(:supplier), admin_meter_status:
+           create(:admin_meter_status))
   end
 
   before do

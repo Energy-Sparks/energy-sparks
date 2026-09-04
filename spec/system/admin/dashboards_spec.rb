@@ -70,7 +70,6 @@ RSpec.describe 'Admin dashboard' do
         it { expect(page).to have_css('.navigation-admin-dashboard-component') }
 
         # rubocop:disable RSpec/NestedGroups
-
         describe 'my school groups' do
           let!(:user_school_group) { create(:school_group, default_issues_admin_user: user) }
           let!(:non_user_school_group) { create(:school_group) }
@@ -499,6 +498,7 @@ RSpec.describe 'Admin dashboard' do
             end
           end
         end
+        # rubocop:enable RSpec/NestedGroups
       end
 
       describe 'quick links' do
