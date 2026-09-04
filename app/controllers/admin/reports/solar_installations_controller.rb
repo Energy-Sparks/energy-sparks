@@ -44,11 +44,12 @@ module Admin
       end
 
       def filter_results(results)
-        filtered = super
+        results = filter_by_admin(results)
+        results = filter_by_school_group(results)
         if params[:installation_type].present? && TYPES.key?(params[:installation_type])
-          filtered = filtered.where(where_solar_installation(TYPES[params[:installation_type]]))
+          results = filtered.where(where_solar_installation(TYPES[params[:installation_type]]))
         end
-        filtered
+        results
       end
 
       def where_solar_installation(model) = "#{join_alias(model)}.total > 0"
