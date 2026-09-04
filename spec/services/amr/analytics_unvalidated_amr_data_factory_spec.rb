@@ -45,7 +45,7 @@ module Amr
           create(:amr_data_feed_reading,
                  meter: e_meter,
                  readings: Array.new(48, rand),
-                 reading_date: Date.tomorrow.strftime('%d/%m/%Y'),
+                 parsed_date: Date.tomorrow,
                  mpan_mprn: e_meter.mpan_mprn)
         end
 
@@ -61,7 +61,7 @@ module Amr
           create(:amr_data_feed_reading,
                  meter: e_meter,
                  readings: Array.new(48, rand),
-                 reading_date: 'baddate',
+                 parsed_date: nil,
                  mpan_mprn: e_meter.mpan_mprn)
         end
 
@@ -76,7 +76,7 @@ module Amr
           create(:amr_data_feed_reading,
                  meter: e_meter,
                  readings: Array.new(48, nil),
-                 reading_date: Date.tomorrow.strftime('%b %e %Y'),
+                 parsed_date: Date.tomorrow,
                  mpan_mprn: e_meter.mpan_mprn)
         end
 
@@ -96,7 +96,7 @@ module Amr
                  meter: e_meter,
                  amr_data_feed_config: amr_data_feed_config,
                  readings: [1.23] + Array.new(47, nil),
-                 reading_date: Date.tomorrow.strftime('%b %e %Y'),
+                 parsed_date: Date.tomorrow,
                  mpan_mprn: e_meter.mpan_mprn)
         end
 
