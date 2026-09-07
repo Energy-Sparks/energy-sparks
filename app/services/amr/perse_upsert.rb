@@ -15,6 +15,7 @@ module Amr
       reading_hashes = process_data(data).map do |reading_date, readings|
         { mpan_mprn: meter.mpan_mprn,
           reading_date:,
+          parsed_date: reading_date,
           readings:,
           amr_data_feed_config_id: @config.id,
           meter_id: meter.id }
