@@ -47,7 +47,7 @@ module Admin
         results = filter_by_admin(results)
         results = filter_by_school_group(results)
         if params[:installation_type].present? && TYPES.key?(params[:installation_type])
-          results = filtered.where(where_solar_installation(TYPES[params[:installation_type]]))
+          results = results.where(where_solar_installation(TYPES[params[:installation_type]]))
         end
         results
       end

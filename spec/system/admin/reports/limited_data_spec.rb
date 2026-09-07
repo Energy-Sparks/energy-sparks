@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Limited data report' do
   let(:school) { create(:school, :with_school_group) }
   let!(:meter) do
-    create(:electricity_meter_with_validated_reading,
+    create(:electricity_meter_with_validated_reading_dates,
            school:, data_source: create(:data_source), supplier: create(:supplier), admin_meter_status:
            create(:admin_meter_status))
   end
@@ -26,7 +26,7 @@ describe 'Limited data report' do
     let(:expected_rows) do
       [[school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s, meter.name,
         '', 'NHH AMR', meter.supplier.name, meter.data_source.name, '', meter.admin_meter_status.label,
-        'N', 3.days.ago.to_fs(:es_full), '']]
+        'N', Date.new(2019, 6, 2).to_fs(:es_full), '']]
     end
   end
 
@@ -40,7 +40,7 @@ describe 'Limited data report' do
           'Admin Meter Status', 'Manual Reads', 'Last Validated Date', 'Issues', 'Notes'],
          [school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s,
           meter.name, 'electricity', 'NHH AMR', meter.supplier.name, meter.data_source.name, nil,
-          meter.admin_meter_status.label, 'N', 4.days.ago.to_date.iso8601, '0', '0']]
+          meter.admin_meter_status.label, 'N', Date.new(2019, 6, 2).iso8601, '0', '0']]
       )
     end
   end
