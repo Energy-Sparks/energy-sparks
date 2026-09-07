@@ -1,0 +1,7 @@
+<% if @existing %>
+  <div class="text-warning">
+    <%= t('activities.form.duplicate_warning') %>:
+    <%= link_to 'view activity', school_activity_path(@school, @existing), target: '_blank', rel: 'noopener' %>.
+    <%= t('activities.form.duplicate_warning_explain') %>
+  </div>
+<% end %>

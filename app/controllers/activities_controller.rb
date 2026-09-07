@@ -52,13 +52,13 @@ class ActivitiesController < ApplicationController
   def completed; end
 
   def duplicate_warning
-    date = Date.strptime(params[:date], '%d/%m/%Y')
+    date = Date.strptime(params[:date], TempusDominusDateInput::DATE_FORMAT)
     @existing = @school.activities
                        .where(happened_on: date, activity_type_id: params[:activity_type_id])
                        .where.not(id: params[:id])
                        .first
 
-    render partial: 'duplicate_warning', layout: false
+    render 'duplicate_warning', layout: false
   end
 
   private

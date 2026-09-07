@@ -13,6 +13,8 @@ en:
       completing_this_activity:
         one: Completing this action up to %{maximum} times this academic year will earn you 1 point
         other: Completing this action up to %{maximum} times this academic year  will earn you %{count} points
+      duplicate_warning: This action has already been recorded for your school on this date
+      duplicate_warning_explain: If this is a different instance of the action, please explain how it differs from the one already recorded (for example, it was completed by a different class or year group)
       exceeded_maximum_in_year: You have already completed this action %{maximum} times this academic year. You will not score additional points for recording it
       previous_years: Actions recorded in previous academic years do not score points
       pupil_count_hint: If you're not sure of the exact number, your best estimate is perfect or you can leave this blank
