@@ -1,7 +1,7 @@
 <% if @existing %>
-  <div class="text-warning">
+  <%= render PromptComponent.new(icon: 'circle-exclamation', status: :none, classes: 'my-2') do |prompt| %>
     <%= t('interventions.form.duplicate_warning') %>:
     <%= link_to 'view action', school_intervention_path(@school, @existing), target: '_blank', rel: 'noopener' %>.
     <%= t('interventions.form.duplicate_warning_explain') %>
-  </div>
+  <% end %>
 <% end %>
