@@ -204,7 +204,7 @@ describe 'viewing and recording activities' do
       end
     end
 
-    context 'when recording an activity' do
+    context 'when recording a new activity' do
       let(:activity_description) { 'What we did' }
       let(:today) { Time.zone.today }
 
@@ -306,6 +306,39 @@ describe 'viewing and recording activities' do
 
           it 'shows message about exceeded threshold' do
             expect(page).to have_text('You have already completed this activity 10 times this academic year. You will not score additional points for recording it')
+          end
+        end
+
+        context 'with a previous recording on the same date', :js do
+          let!(:existing_activity) { create(:activity, school:, activity_type:, happened_on: today) }
+
+          before do
+            fill_in :activity_happened_on, with: '' # needed due to interaction with tempus dominus date picker
+            fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
+          end
+
+          it 'shows duplicate warning' do
+            expect(page).to have_text(I18n.t('activities.form.duplicate_warning'))
+          end
+
+          it 'shows link to existing activity' do
+            expect(page).to have_link('view activity', href: school_activity_path(school, existing_activity))
+          end
+        end
+
+        context 'with a previous recording on the same date but different activity type', :js do
+          let!(:other_activity_type) { create(:activity_type, name: 'Other activity') }
+          let!(:existing_activity) do
+            create(:activity, school:, activity_type: other_activity_type, happened_on: today)
+          end
+
+          before do
+            fill_in :activity_happened_on, with: '' # needed due to interaction with tempus dominus date picker
+            fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
+          end
+
+          it 'does not show duplicate warning' do
+            expect(page).to have_no_text(I18n.t('activities.form.duplicate_warning'))
           end
         end
 
