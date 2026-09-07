@@ -55,3 +55,8 @@ cy:
     view:
       action: Gweld gweithred
       activity: Gweld gweithgaredd
+    form:
+      how_many_pupils_were_involved_in_this_activity: Faint o ddisgyblion a gymerodd ran yn y gweithgaredd hwn?
+      tell_us_more: Dywedwch ragor wrthym am yr hyn a wnaethoch
+      you_can_add_formatting: Gallwch ychwanegu fformatio, dolenni ac atodi lluniau gan ddefnyddio'r bar offer isod. Gallwch hofran dros bob eicon i ddysgu beth mae'n ei wneud
+

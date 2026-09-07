@@ -49,6 +49,16 @@ module Schools
 
     def completed; end
 
+    def duplicate_warning
+      date = Date.strptime(params[:date], '%d/%m/%Y')
+      @existing = @school.observations.intervention
+                         .where(at: date, intervention_type_id: params[:intervention_type_id])
+                         .where.not(id: params[:id])
+                         .first
+
+      render partial: 'duplicate_warning', layout: false
+    end
+
     private
 
     def observation_params

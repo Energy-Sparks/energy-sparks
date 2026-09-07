@@ -17,10 +17,8 @@ en:
       previous_years: Actions recorded in previous academic years do not score points
       pupil_count_hint: If you're not sure of the exact number, your best estimate is perfect or you can leave this blank
       record_action: Record action
-      tell_us_more: Tell us more about what you did
       update_action: Update action
       when_did_you_complete_this_action: When did you complete this action?
-      you_can_add_formatting_label: You can add formatting, links and attach images using the toolbar below. Hover over each icon to learn what it does
       you_can_record_label: You can record both recent and older actions to build up a complete record of all of the energy saving activities you've carried out as a school
     new:
       page_title: Record energy saving action

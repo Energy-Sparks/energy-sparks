@@ -18,8 +18,6 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  def completed; end
-
   def new
     return if params[:activity_type_id].blank?
 
@@ -49,6 +47,18 @@ class ActivitiesController < ApplicationController
     @activity.observations.each { |observation| ObservationRemoval.new(observation).process }
     @activity.destroy
     redirect_to school_activities_path(@school), notice: I18n.t('activities.notices.removed')
+  end
+
+  def completed; end
+
+  def duplicate_warning
+    date = Date.strptime(params[:date], '%d/%m/%Y')
+    @existing = @school.activities
+                       .where(happened_on: date, activity_type_id: params[:activity_type_id])
+                       .where.not(id: params[:id])
+                       .first
+
+    render partial: 'duplicate_warning', layout: false
   end
 
   private

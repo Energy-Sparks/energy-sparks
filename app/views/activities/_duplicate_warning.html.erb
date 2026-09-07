@@ -1,0 +1,9 @@
+<% if @existing %>
+  <div class="text-warning">
+    This activity has already been recorded for your school on this date:
+    <%= link_to 'view activity', school_activity_path(@school, @existing), target: '_blank', rel: 'noopener' %>.
+    If this is a different instance of the activity, please explain how it
+    differs from the one already recorded (for example, it was completed by
+    a different class or year group).
+  </div>
+<% end %>
