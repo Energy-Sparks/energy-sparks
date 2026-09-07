@@ -78,6 +78,8 @@ class AmrReadingData
   end
 
   def invalid_row_check
+    create_duplicate_checking_index
+
     @reading_data.each_with_index do |reading, index|
       reading_date = reading[:reading_date]
       readings = reading[:readings]
@@ -88,7 +90,7 @@ class AmrReadingData
       warnings << :missing_mpan_mprn if reading[:mpan_mprn].blank?
       warnings << :invalid_non_numeric_mpan_mprn if invalid_non_numeric_mpan_mprn?(reading[:mpan_mprn])
       warnings << :missing_reading_date if reading_date.blank?
-      warnings << :duplicate_reading if duplicate_reading?(reading, @reading_data[index + 1..-1])
+      warnings << :duplicate_reading if duplicate_reading?(reading, index)
 
       if reading_date.present? && valid_reading_date?(reading_date)
         warnings << :future_reading_date if future_reading_date?(reading_date)
@@ -147,10 +149,19 @@ class AmrReadingData
     end
   end
 
-  def duplicate_reading?(reading, remainder)
-    remainder.any? do |other_reading|
-      other_reading[:mpan_mprn] == reading[:mpan_mprn] &&
-        other_reading[:reading_date] == reading[:reading_date]
+  # Where there are duplicates we do not add a warning to the last occurence. Only that one will be inserted.
+  def duplicate_reading?(reading, index)
+    key = [reading[:mpan_mprn], reading[:reading_date]]
+
+    @occurrences[key].length > 1 && index != @occurrences[key].last
+  end
+
+  def create_duplicate_checking_index
+    @occurrences = Hash.new { |h, k| h[k] = [] }
+
+    @reading_data.each_with_index do |r, idx|
+      key = [r[:mpan_mprn], r[:reading_date]]
+      @occurrences[key] << idx
     end
   end
 end
