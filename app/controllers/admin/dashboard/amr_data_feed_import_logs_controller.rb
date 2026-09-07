@@ -6,13 +6,22 @@ module Admin
       include AdminDashboard
 
       before_action :set_user
+      before_action :set_log_counts
 
       def index
-        super
+        @amr_data_feed_configs = AmrDataFeedConfig.enabled.where(owned_by: @dashboard_user).order(:description)
         build_breadcrumbs([
                             { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
                             { name: 'Data feed import logs' }
                           ])
+      end
+
+      def set_log_counts
+        amr_data_feed_config = AmrDataFeedConfig.enabled.where(owned_by: @dashboard_user)
+        since = SUMMARY_PERIOD_IN_DAYS.days.ago
+        @successes_count = AmrDataFeedImportLog.where(amr_data_feed_config:).successful.since(since).count
+        @warnings_count = AmrDataFeedImportLog.where(amr_data_feed_config:).with_warnings.since(since).count
+        @errors_count = AmrDataFeedImportLog.where(amr_data_feed_config:).errored.since(since).count
       end
     end
   end

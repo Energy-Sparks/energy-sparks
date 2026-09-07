@@ -1,4 +1,18 @@
 <h1>Data Feed Import Logs</h1>
 <%= render 'tabs' %>
+<div class="row">
+  <div class="col">
+    <p>
+    <% case action_name %>
+      <% when 'errors' %>
+        <%= 'The following data loads failed to complete' %>
+      <% when 'warnings' %>
+        <%= 'The following data loads completed but some or all of the data was rejected as invalid' %>
+      <% else %>
+        <%= 'The following data loads completed successfully/' %>
+    <% end %>
+    </p>
+  </div>
+</div>
 <%= render 'search' %>
 <%= render 'log_table' %>

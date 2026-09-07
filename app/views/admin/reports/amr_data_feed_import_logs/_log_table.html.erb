@@ -8,15 +8,14 @@
       <th class="no-sort">Feed</th>
       <th class="no-sort">File name</th>
       <th>Import Time</th>
+      <% if ['warnings', 'errors'].include?(action_name) %>
+        <th class="no-sort">Summary</th>
+      <% end %>
+      <th class="no-sort">Imported</th>
+      <th class="no-sort">Updated</th>
       <% if action_name == 'warnings' %>
-        <th class="no-sort">Warnings count</th>
-        <th class="no-sort">Warnings summary</th>
+        <th class="no-sort">Rejected</th>
       <% end %>
-      <% if action_name == 'errors' %>
-        <th class="no-sort">Errors summary</th>
-      <% end %>
-      <th class="no-sort">Records imported</th>
-      <th class="no-sort">Records updated</th>
     </tr>
   </thead>
   <tbody>
@@ -24,16 +23,18 @@
       <tr>
         <td><%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %></td>
         <td><%= log.file_name %></td>
-        <td data-order="<%= log.import_time&.strftime('%Y-%m-%d') %>"><%= nice_date_times log.import_time %></td>
+        <td><%= log.import_time&.strftime('%Y-%m-%d %H:%M') %></td>
         <% if action_name == 'warnings' %>
-          <td><%= log.amr_reading_warnings.count %></td>
-          <td><%= log.amr_reading_warnings.map(&:messages).uniq.to_sentence %></td>
+          <td><%= log.amr_reading_warnings.map(&:messages).flatten.sort.uniq.to_sentence %></td>
         <% end %>
         <% if action_name == 'errors' %>
           <td><%= log.error_messages %></td>
         <% end %>
         <td><%= log.records_imported %></td>
         <td><%= log.records_updated %></td>
+        <% if action_name == 'warnings' %>
+          <td><%= log.amr_reading_warnings.count %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
