@@ -21,6 +21,11 @@
 
 class AmrUploadedReading < ApplicationRecord
   belongs_to :amr_data_feed_config
+  belongs_to :amr_data_feed_import_log,
+             primary_key: :file_name,
+             foreign_key: :file_name,
+             inverse_of: :amr_uploaded_reading
+
   has_one :manual_data_load_run, dependent: :destroy
 
   validates :file_name, presence: true

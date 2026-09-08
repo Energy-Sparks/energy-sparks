@@ -25,7 +25,7 @@ module Admin
       private
 
       def render_for(page)
-        log = AmrDataFeedImportLog.send(page).order(import_time: :desc)
+        log = AmrDataFeedImportLog.send(page).since(SUMMARY_PERIOD_IN_DAYS.days.ago).order(import_time: :desc)
         log = log.where('file_name ILIKE ?', "%#{params[:search]}%") if params[:search]
         config_id = params.dig(:config, :config_id)
         log = log.where(amr_data_feed_config_id: config_id) if config_id.present?

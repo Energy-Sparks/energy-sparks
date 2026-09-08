@@ -35,6 +35,11 @@ class AmrDataFeedImportLog < ApplicationRecord
     where.missing(:amr_data_feed_readings)
   }
 
+  has_one :amr_uploaded_reading,
+          primary_key: :file_name,
+          foreign_key: :file_name,
+          inverse_of: :amr_data_feed_import_log
+
   def errors?
     error_messages.present?
   end

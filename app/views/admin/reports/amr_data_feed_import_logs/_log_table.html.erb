@@ -21,19 +21,43 @@
   <tbody>
     <% @logs.each do |log| %>
       <tr>
-        <td><%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %></td>
-        <td><%= log.file_name %></td>
-        <td><%= log.import_time&.strftime('%Y-%m-%d %H:%M') %></td>
+        <td>
+          <%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %>
+        </td>
+        <td>
+          <% if log.amr_data_feed_config.api? %>
+            <%= log.file_name %>
+          <% elsif log.amr_uploaded_reading&.imported %>
+            <%= link_to log.file_name,
+                        admin_amr_data_feed_config_amr_uploaded_reading_path(log.amr_data_feed_config,
+                                                                             log.amr_uploaded_reading) %>
+          <% else %>
+            <%= link_to log.file_name, s3_csv_download_url(log.amr_data_feed_config.identifier, log.file_name) %>
+          <% end %>
+        </td>
+        <td>
+          <%= log.import_time&.strftime('%Y-%m-%d %H:%M') %>
+        </td>
         <% if action_name == 'warnings' %>
-          <td><%= log.amr_reading_warnings.map(&:messages).flatten.sort.uniq.to_sentence %></td>
+          <td>
+            <%= log.amr_reading_warnings.map(&:messages).flatten.sort.uniq.to_sentence %>
+          </td>
         <% end %>
         <% if action_name == 'errors' %>
-          <td><%= log.error_messages %></td>
+          <td>
+            <%= log.error_messages %>
+          </td>
         <% end %>
-        <td><%= log.records_imported %></td>
-        <td><%= log.records_updated %></td>
+        <td>
+          <%= log.records_imported %>
+        </td>
+        <td>
+          <%= log.records_updated %>
+        </td>
         <% if action_name == 'warnings' %>
-          <td><%= log.amr_reading_warnings.count %></td>
+          <td>
+            <%= log.amr_reading_warnings.count %>
+          </td>
         <% end %>
       </tr>
     <% end %>
