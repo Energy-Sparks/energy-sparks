@@ -51,6 +51,7 @@ module Solar
           meter_id: meter_id,
           mpan_mprn: mpan_mprn,
           reading_date: reading_date,
+          parsed_date: reading_date,
           readings: kwh_data_x48
         }
       end

@@ -41,7 +41,7 @@
       <% @results.each do |result| %>
         <tr>
           <td><%= result.created_at.iso8601 %></td>
-          <td><%= result.parsed_date %></td>
+          <td><%= result.db_parsed_date %></td>
           <td>
             <% if result.imported || result.source_type == 2 %>
               <%= result.file_name %>

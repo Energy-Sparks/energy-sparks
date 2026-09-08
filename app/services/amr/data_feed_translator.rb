@@ -23,7 +23,14 @@ module Amr
       meter, data_feed_reading_hash = meter_details_from_row(row)
       data_feed_reading_hash[:amr_data_feed_config_id] = @config.id
       data_feed_reading_hash[:period] = fetch_from_row(:period_index, row) if @config.positional_index
-      data_feed_reading_hash[:reading_date] = reading_date(row)
+
+      reading_date = reading_date(row)
+      data_feed_reading_hash[:reading_date] = reading_date
+      unless @config.row_per_reading
+        data_feed_reading_hash[:parsed_date] = AmrDataFeedConfig.date_from_string_using_date_format(reading_date,
+                                                                                                    @config.date_format)
+      end
+
       data_feed_reading_hash[:reading_time] = fetch_from_row(:reading_time_index, row) if @config.row_per_reading
       data_feed_reading_hash[:estimated] = estimated?(row)
       data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
