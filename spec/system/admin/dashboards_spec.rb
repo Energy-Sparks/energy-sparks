@@ -76,7 +76,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_school_group) { create(:school_group) }
 
           before do
-            click_on 'My School Groups'
+            click_on 'School Groups'
           end
 
           it 'has the correct path' do
@@ -101,7 +101,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_project_group) { create(:school_group, group_type: 'project') }
 
           before do
-            click_on 'My Project Groups'
+            click_on 'Project Groups'
           end
 
           it 'has the correct path' do
@@ -129,7 +129,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_school_group) { create(:school_group, :with_active_schools, count: 2) }
 
           before do
-            click_on 'My Impact Reports'
+            click_on 'Impact Reports'
           end
 
           it 'has the correct path' do
@@ -154,7 +154,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_data_source) { create(:data_source) }
 
           before do
-            click_on 'My Data Sources'
+            click_on 'Data Sources'
           end
 
           it 'has the correct path' do
@@ -179,7 +179,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_supplier) { create(:data_source, name: 'non user supplier') }
 
           before do
-            click_on 'My Suppliers'
+            click_on 'Suppliers'
           end
 
           it 'has the correct path' do
@@ -204,7 +204,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_data_feed) { create(:amr_data_feed_config) }
 
           before do
-            click_on 'My Data Feeds'
+            click_on 'Data Feeds'
           end
 
           it 'has the correct path' do
@@ -261,7 +261,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_school_group) { create(:school_group) }
 
           before do
-            click_on 'My Energy Tariffs'
+            click_on 'Energy Tariffs'
           end
 
           it 'has the correct path' do

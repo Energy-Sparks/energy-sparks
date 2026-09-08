@@ -13,11 +13,11 @@ describe AmrReadingWarning, :include_application_helper, type: :system do
     click_on 'Reports'
   end
 
-  it 'shows a benchmark result run and allows the user to drill down' do
+  it 'shows the imports with rejections' do
     click_on 'Data feed import logs'
-    click_on 'Warnings'
+    click_on 'Rejections'
 
-    expect(page).to have_text('Warnings')
-    expect(page).to have_text(nice_date_times(log.import_time))
+    expect(page).to have_text('Rejections')
+    expect(page).to have_text(log.import_time&.strftime('%Y-%m-%d %H:%M'))
   end
 end
