@@ -19,7 +19,7 @@
       <ul>
         <% @schools.each do |school| %>
           <li>
-            <%= link_to school.name, school_redirect_path(school, @path) %>
+            <%= link_to school.name, school_switcher_path(school_id: school.id, path: '/users'), method: :post %>
           </li>
         <% end %>
       </ul>
