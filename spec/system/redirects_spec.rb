@@ -158,9 +158,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
     end
 
-    context 'when logged in as a cluster admin user' do
-      let!(:user) { create(:school_admin, :with_cluster_schools) }
-
+    shared_examples 'a user who must choose a school' do
       before do
         sign_in(user)
         visit path
@@ -169,24 +167,26 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       it 'prompts user to choose' do
         expect(page).to have_text(I18n.t('redirects.choose_school.title'))
         expect(page).to have_text(I18n.t('redirects.choose_school.intro'))
-        expect(page).to have_link(user.cluster_schools.first.name,
-                                  href: school_advice_path(user.cluster_schools.first))
+        expect(page).to have_link(first_school.name, href: school_switcher_path(school_id: first_school.id,
+                                                                                path: 'advice'))
+      end
+    end
+
+    context 'when logged in as a cluster admin user' do
+      let!(:user) { create(:school_admin, :with_cluster_schools) }
+
+      it_behaves_like 'a user who must choose a school' do
+        let(:first_school) { user.cluster_schools.first }
       end
     end
 
     context 'when logged in as a group admin user' do
-      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_active_schools)) }
-
-      before do
-        sign_in(user)
-        visit path
+      let!(:user) do
+        create(:group_admin, school_group: create(:school_group, :with_active_schools))
       end
 
-      it 'prompts user to choose' do
-        expect(page).to have_text(I18n.t('redirects.choose_school.title'))
-        expect(page).to have_text(I18n.t('redirects.choose_school.intro'))
-        expect(page).to have_link(user.school_group.schools.first.name,
-                                  href: school_advice_path(user.school_group.schools.first))
+      it_behaves_like 'a user who must choose a school' do
+        let(:first_school) { user.school_group.schools.first }
       end
     end
   end
