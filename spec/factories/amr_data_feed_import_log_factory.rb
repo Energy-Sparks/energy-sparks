@@ -4,5 +4,19 @@ FactoryBot.define do
     sequence(:file_name)  {|n| "import-#{n}.csv"}
     import_time           { 1.day.ago }
     records_imported      { rand(100) }
+
+    trait :with_errors do
+      error_messages { 'oh no!' }
+    end
+
+    trait :with_warnings do
+      transient do
+        warning_types { AmrReadingData::WARNINGS.keys.sample(1) }
+      end
+
+      after(:create) do |amr_data_feed_import_log, evaluator|
+        create(:amr_reading_warning, amr_data_feed_import_log:, warning_types: evaluator.warning_types)
+      end
+    end
   end
 end

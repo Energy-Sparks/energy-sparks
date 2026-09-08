@@ -1,21 +1,22 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe AmrDataFeedImportLog, :include_application_helper, type: :system do
-  let!(:admin)            { create(:admin) }
-  let!(:config)           { create(:amr_data_feed_config) }
-  let!(:disabled_config)  { create(:amr_data_feed_config, description: 'Disabled', enabled: false) }
-  let!(:import_log_1)     do
-    create(:amr_data_feed_import_log, amr_data_feed_config: config, error_messages: 'oh no!', import_time: 1.day.ago)
-  end
-  let!(:import_log_2) do
-    create(:amr_data_feed_import_log, amr_data_feed_config: config, records_imported: 200, import_time: 1.day.ago)
-  end
-  let!(:import_log_3) do
-    create(:amr_data_feed_import_log, amr_data_feed_config: config, records_imported: 200, import_time: 31.days.ago)
-  end
+describe AmrDataFeedImportLog, :include_application_helper do
+  let!(:amr_data_feed_config) { create(:amr_data_feed_config) }
+
+  let!(:disabled_config) { create(:amr_data_feed_config, description: 'Unused', enabled: false) }
 
   before do
-    sign_in(admin)
+    # 3 successes, 1 warning, 2 errors
+    create_list(:amr_data_feed_import_log, 3, amr_data_feed_config:, records_imported: 200, import_time: 1.day.ago)
+    create(:amr_data_feed_import_log, :with_warnings, amr_data_feed_config:, import_time: 1.day.ago)
+    create_list(:amr_data_feed_import_log, 2, :with_errors, amr_data_feed_config:, import_time: 1.day.ago)
+
+    # 1 outside query window
+    create(:amr_data_feed_import_log, amr_data_feed_config:, records_imported: 200, import_time: 31.days.ago)
+
+    sign_in(create(:admin))
     visit root_path
     click_on 'Manage'
     click_on 'Reports'
@@ -28,21 +29,37 @@ describe AmrDataFeedImportLog, :include_application_helper, type: :system do
 
     it 'has the expected title' do
       expect(page).to have_text('Data Feed Import Logs')
-      expect(page).to have_text('Summary of the last 30 days')
+      expect(page).to have_text('Summary of all data loads completed since')
     end
 
-    it 'includes summary counts in tabs' do
-      within '.nav-tabs' do
-        expect(page).to have_text('Successes 1')
-        expect(page).to have_text('Warnings 0')
-        expect(page).to have_text('Errors 1')
+    it_behaves_like 'it contains the expected data table', aligned: false, tfoot: true do
+      let(:table_id) { '#import-summary-table' }
+      let(:expected_header) do
+        [
+          ['', 'Successes', 'Rejections', 'Errors', ''],
+          ['Feed', 'Total', 'Last 24 hours', 'Previous 24 hours',
+           'Total', 'Last 24 hours', 'Previous 24 hours', 'Total', 'Total']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          [amr_data_feed_config.description, '3', '0', '1', '1', '0', '2', '2', '6'],
+          [disabled_config.description, '0', '0', '0', '0', '0', '0', '0', '0']
+        ]
+      end
+      let(:expected_footer_rows) do
+        [
+          ['All Feeds', '3', '', '', '1', '', '', '2', '6']
+        ]
       end
     end
 
-    it 'lists all the configs' do
-      within '#import-summary-table' do
-        expect(page).to have_text(config.description)
-        expect(page).to have_text(disabled_config.description)
+    it 'shows tabs with links to other reports' do
+      within '.nav-tabs' do
+        expect(page).to have_text('Summary')
+        expect(page).to have_text('Successes')
+        expect(page).to have_text('Rejections')
+        expect(page).to have_text('Errors')
       end
     end
 

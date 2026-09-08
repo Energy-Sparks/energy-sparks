@@ -151,6 +151,34 @@ class AmrDataFeedConfig < ApplicationRecord # rubocop:disable Metrics/ClassLengt
     Date.strptime(date_string, format)
   end
 
+  def recent_log_stats(period = 30.days)
+    logs = amr_data_feed_import_logs.where(import_time: period.ago..)
+
+    logs
+      .left_outer_joins(:amr_reading_warnings)
+      .select(<<~SQL.squish)
+        COUNT(DISTINCT amr_data_feed_import_logs.id) AS total_count,
+
+        COUNT(DISTINCT amr_data_feed_import_logs.id)
+          FILTER (
+            WHERE amr_data_feed_import_logs.error_messages IS NULL
+              AND amr_reading_warnings.id IS NULL
+          ) AS successful_count,
+
+        COUNT(DISTINCT amr_data_feed_import_logs.id)
+          FILTER (
+            WHERE amr_data_feed_import_logs.error_messages IS NULL
+              AND amr_reading_warnings.id IS NOT NULL
+          ) AS with_warnings_count,
+
+        COUNT(DISTINCT amr_data_feed_import_logs.id)
+          FILTER (
+            WHERE amr_data_feed_import_logs.error_messages IS NOT NULL
+          ) AS error_count
+      SQL
+      .take
+  end
+
   def latest_reading_date
     amr_data_feed_readings.maximum(:updated_at)
   end

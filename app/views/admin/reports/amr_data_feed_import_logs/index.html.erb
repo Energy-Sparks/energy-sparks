@@ -13,8 +13,8 @@
   <%= render 'tabs' %>
 <% end %>
 
-<p>Summary of all data loads completed over the last
-  <%= Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS %> days.
+<p>Summary of all data loads completed since
+  <%= AmrDataFeedImportLog::SUMMARY_PERIOD_IN_DAYS.ago.strftime('%Y-%m-%d %H:%M') %>.
 </p>
 
 <table class="table table-bordered table-sorted" id="import-summary-table">
@@ -40,45 +40,48 @@
   </thead>
   <tbody>
   <% @amr_data_feed_configs.each do |config| %>
-    <tr class="<%= 'table-warning' unless config.enabled %>">
-    <% import_logs = config.amr_data_feed_import_logs
-                           .since(Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS.days.ago) %>
+    <tr id="<%= config.identifier %>" class="<%= 'table-warning' unless config.enabled %>">
+    <% stats = config.recent_log_stats %>
     <td class='text-start'>
       <%= link_to config.description, admin_amr_data_feed_config_path(config) %>
     </td>
     <td class="text-end">
-      <%= link_to import_logs.successful.count,
+      <%= link_to stats.successful_count,
                   admin_reports_amr_data_feed_import_logs_successes_path({ config: { config_id: config.id } }) %>
     </td>
 
     <td class="text-end">
-      <%= import_logs.with_warnings.where(import_time: 24.hours.ago..Time.zone.now).count %>
+      <%= config.amr_data_feed_import_logs.with_warnings.where(import_time: 24.hours.ago..Time.zone.now).count %>
     </td>
     <td class="text-end">
-      <%= import_logs.with_warnings.where(import_time: 48.hours.ago..24.hours.ago).count %>
+      <%= config.amr_data_feed_import_logs.with_warnings.where(import_time: 48.hours.ago..24.hours.ago).count %>
     </td>
     <td class="text-end">
-      <%= link_to import_logs.with_warnings.count,
+      <%= link_to stats.with_warnings_count,
                   admin_reports_amr_data_feed_import_logs_warnings_path({ config: { config_id: config.id } }) %>
     </td>
 
     <td class="text-end">
-      <%= import_logs.where.not(error_messages: nil).where(import_time: 24.hours.ago..Time.zone.now).count %>
+      <%= config.amr_data_feed_import_logs.where.not(error_messages: nil).where(
+            import_time: 24.hours.ago..Time.zone.now
+          ).count %>
     </td>
     <td class="text-end">
-      <%= import_logs.where.not(error_messages: nil).where(import_time: 48.hours.ago..24.hours.ago).count %>
+      <%= config.amr_data_feed_import_logs.where.not(error_messages: nil).where(
+            import_time: 48.hours.ago..24.hours.ago
+          ).count %>
     </td>
     <td class="text-end">
-      <%= link_to import_logs.where.not(error_messages: nil).count,
+      <%= link_to stats.error_count,
                   admin_reports_amr_data_feed_import_logs_errors_path({ config: { config_id: config.id } }) %>
     </td>
     <td class="text-end">
-      <%= import_logs.count %>
+      <%= stats.total_count %>
     </td>
     </tr>
   <% end %>
   </tbody>
-  <tfooter>
+  <tfoot>
     <tr>
       <td>All Feeds</td>
       <td class="text-end"><%= @successes_count %></td>
@@ -88,7 +91,7 @@
       <td></td>
       <td></td>
       <td class="text-end"><%= @errors_count %></td>
-      <td class="text-end"><%= @successes_count + @errors_count %></td>
+      <td class="text-end"><%= @successes_count + @warnings_count + @errors_count %></td>
     </tr>
-  </tfooter>
+  </tfoot>
 </table>

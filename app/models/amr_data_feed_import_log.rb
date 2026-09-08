@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: amr_data_feed_import_logs
@@ -19,6 +21,8 @@
 #
 
 class AmrDataFeedImportLog < ApplicationRecord
+  SUMMARY_PERIOD_IN_DAYS = 30.days
+
   has_many :amr_data_feed_readings
   has_many :amr_reading_warnings, dependent: :delete_all
   has_many :meters, -> { distinct }, through: :amr_data_feed_readings
@@ -26,10 +30,15 @@ class AmrDataFeedImportLog < ApplicationRecord
   belongs_to :amr_data_feed_config
 
   scope :errored,       -> { where.not(error_messages: nil) }
-  scope :successful,    -> { where(error_messages: nil) }
-  scope :with_warnings, -> { where(id: AmrReadingWarning.select(:amr_data_feed_import_log_id)) }
+  scope :with_warnings, lambda {
+    joins(:amr_reading_warnings).distinct
+  }
+  scope :without_warnings, lambda {
+    where.missing(:amr_reading_warnings)
+  }
+  scope :successful, -> { where(error_messages: nil).without_warnings }
 
-  scope :since, ->(date) { where('import_time >= ?', date) }
+  scope :recent, ->(date = SUMMARY_PERIOD_IN_DAYS.ago) { where(import_time: date..) }
 
   scope :unused, lambda {
     where.missing(:amr_data_feed_readings)
