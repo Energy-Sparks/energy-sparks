@@ -17,12 +17,13 @@ describe Amr::SingleReadConverter do
     Array.new(48) { |i| (i + 1).to_f }
   end
 
-  def create_reading(config, mpan_mprn, reading_date, readings, estimated: false, meter_id: nil) # rubocop:disable Metrics/ParameterLists
+  def create_reading(config, mpan_mprn, reading_date, readings, parsed_date: nil, estimated: false, meter_id: nil) # rubocop:disable Metrics/ParameterLists
     {
       amr_data_feed_config_id: config.id,
       meter_id:,
       mpan_mprn:,
       reading_date:,
+      parsed_date:,
       readings:,
       estimated:
     }
@@ -41,7 +42,7 @@ describe Amr::SingleReadConverter do
     # Matches the EDF format
     # So 26 Aug 2019 00:00 means usage FROM midnight to 00:30am on the 26th August
     # So 26 Aug 2019 23:30 means usage FROM 23:30 to midnight on the 26th August
-    context 'with readings labelled at start of the half hour, so 00:00 is start of the day (%H:%M:%s) and correct config' do
+    context 'with reading labels at start of the half hour, so 00:00 is start of day (%H:%M:%s) and correct config' do
       let(:config) do
         create(:amr_data_feed_config, :with_row_per_reading, half_hourly_labelling: :start,
                                                              date_format: '%d %b %Y %H:%M')
@@ -56,7 +57,8 @@ describe Amr::SingleReadConverter do
         end
       end
       let(:expected_output) do
-        [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) { |i| i + 1 })]
+        [create_reading(config, mpan_mprn,
+                        Date.parse(reading_date), Array.new(48) { |i| i + 1 }, parsed_date: Date.parse(reading_date))]
       end
 
       it 'converts correctly' do
@@ -74,7 +76,8 @@ describe Amr::SingleReadConverter do
         end
 
         let(:expected_output) do
-          [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) { |i| i + 1 }, estimated: true)]
+          [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) { |i| i + 1 },
+                          parsed_date: Date.parse(reading_date), estimated: true)]
         end
 
         context 'when whole day is estimated' do
@@ -126,7 +129,7 @@ describe Amr::SingleReadConverter do
         end
 
         let(:expected_output) do
-          [create_reading(config, mpan_mprn, reading_date, create_hh_readings)]
+          [create_reading(config, mpan_mprn, reading_date, create_hh_readings, parsed_date: reading_date)]
         end
 
         it 'converts correctly' do
@@ -137,7 +140,8 @@ describe Amr::SingleReadConverter do
           let(:meter_id) { 1 }
 
           let(:expected_output) do
-            [create_reading(config, mpan_mprn, reading_date, create_hh_readings, meter_id: meter_id)]
+            [create_reading(config, mpan_mprn, reading_date, create_hh_readings,
+                            meter_id: meter_id, parsed_date: reading_date)]
           end
 
           it 'preserves the ids' do
@@ -160,7 +164,8 @@ describe Amr::SingleReadConverter do
         end
 
         let(:expected_output) do
-          [create_reading(config, mpan_mprn, reading_date.to_date, create_hh_readings)]
+          [create_reading(config, mpan_mprn, reading_date.to_date, create_hh_readings,
+                          parsed_date: reading_date.to_date)]
         end
 
         it 'converts correctly' do
@@ -177,7 +182,8 @@ describe Amr::SingleReadConverter do
     let(:reading_date) { '26 Aug 2019' }
 
     let(:expected_output) do
-      [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) { |i| i + 1 })]
+      [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) { |i| i + 1 },
+                      parsed_date: Date.parse(reading_date))]
     end
 
     context 'with times formatted as %H:%M' do
@@ -214,7 +220,8 @@ describe Amr::SingleReadConverter do
 
         # create expected output: 2 x 2 days readings for 2 meters
         expected_results = expected_output + expected_output.map do |r|
-          { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012', reading_date: r[:reading_date],
+          { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012',
+            reading_date: r[:reading_date], parsed_date: r[:reading_date],
             readings: r[:readings], estimated: false }
         end
 
@@ -244,7 +251,8 @@ describe Amr::SingleReadConverter do
       end
 
       it 'converts correctly' do
-        expect(converter.perform.pluck(:reading_date, :readings)).to eq([[Date.new(2026), [1, *[nil] * 45, 2, nil]]])
+        expected = [[Date.new(2026), Date.new(2026), [1, *[nil] * 45, 2, nil]]]
+        expect(converter.perform.pluck(:reading_date, :parsed_date, :readings)).to eq(expected)
       end
     end
   end
@@ -260,7 +268,8 @@ describe Amr::SingleReadConverter do
     end
 
     let(:expected_output) do
-      [create_reading(config, mpan_mprn, Date.parse(reading_date), create_hh_readings)]
+      [create_reading(config, mpan_mprn, Date.parse(reading_date), create_hh_readings,
+                      parsed_date: Date.parse(reading_date))]
     end
 
     it 'converts correctly' do
@@ -278,7 +287,8 @@ describe Amr::SingleReadConverter do
 
       # create expected output: 2 x 2 days readings for 2 meters
       expected_results = expected_output + expected_output.map do |r|
-        { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012', reading_date: r[:reading_date],
+        { amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: '123456789012',
+          reading_date: r[:reading_date], parsed_date: r[:reading_date],
           readings: r[:readings], estimated: false }
       end
 
@@ -336,7 +346,7 @@ describe Amr::SingleReadConverter do
         let(:expected_output) do
           [create_reading(config, mpan_mprn, Date.parse(reading_date), Array.new(48) do |i|
             i < 44 ? (i + 1).to_f : nil
-          end)]
+          end, parsed_date: Date.parse(reading_date))]
         end
 
         it 'does not reject the row' do
