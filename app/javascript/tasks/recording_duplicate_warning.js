@@ -1,9 +1,10 @@
 "use strict";
 
-// Checks whether an activity or action has already been recorded for the selected date.
+// Checks whether an activity or action has already been recorded for the selected date
 //
 // Makes a call to a controller method which returns a duplicate warning
-// if there has already been a recording made on that date.
+// if there has already been a recording made on that date
+
 document.addEventListener("DOMContentLoaded", () => {
   const tempus_dominus_date = document.querySelector(".tempus-dominus-date");
   if (!tempus_dominus_date) return;
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Use jQuery to listen for the datetimepicker change event, no other way
   // to do this without upgrading Tempus Dominus to v6 (also no longer being maintained)
   window.jQuery(tempus_dominus_date).on("change.datetimepicker", checkDuplicate);
+
   // Also listen for input events in case the user types in a date manually
   input.addEventListener("input", checkDuplicate);
 
