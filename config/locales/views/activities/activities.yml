@@ -20,6 +20,7 @@ en:
       duplicate_warning: This activity has already been recorded for your school on this date
       duplicate_warning_explain: If this is a different instance of the activity, please explain how it differs from the one already recorded (for example, it was completed by a different class or year group)
       exceeded_maximum_in_year: You have already completed this activity %{maximum} times this academic year. You will not score additional points for recording it
+      how_many_pupils_were_involved_in_this_activity: How many pupils were involved in this activity?
       how_would_you_describe_this_activity: How would you describe this activity
       not_a_standard_activity_message: As you're not recording one of our standard activities, you need to supply a title. Choose a clear title which will make others want to read about your activity
       other: Other

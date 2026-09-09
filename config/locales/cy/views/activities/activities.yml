@@ -21,6 +21,7 @@ cy:
         many: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} phwynt i chi
         other: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} pwynt i chi
       exceeded_maximum_in_year: Rydych chi eisoes wedi cwblhau'r gweithgaredd hwn %{maximum} o weithiau yn y flwyddyn academaidd hon. Ni fyddwch yn sgorio pwyntiau ychwanegol am ei gofnodi
+      how_many_pupils_were_involved_in_this_activity: Faint o ddisgyblion a gymerodd ran yn y gweithgaredd hwn?
       how_would_you_describe_this_activity: Sut byddech chi'n disgrifio'r gweithgaredd hwn
       not_a_standard_activity_message: Gan nad ydych chi'n recordio un o'n gweithgareddau safonol, mae angen i chi ddarparu teitl. Dewiswch deitl clir a fydd yn annog eraill i ddarllen am eich gweithgaredd
       other: Arall
