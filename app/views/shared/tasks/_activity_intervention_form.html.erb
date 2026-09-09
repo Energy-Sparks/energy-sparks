@@ -122,16 +122,23 @@
              field_name = :activity_type_id
              value = activity.activity_type.id
              cancel_path = activity_type_path(activity.activity_type)
-             submit = t("activities.form.#{activity.persisted? ? 'update' : 'save'}_activity")
+             submit = t("activities.form.#{activity.persisted? ? 'update' : 'record'}_activity")
+             submit_duplicate = t("activities.form.#{activity.persisted? ? 'update' : 'record'}_duplicate_activity")
            elsif observation
              field_name = :intervention_type_id
              value = observation.intervention_type.id
              cancel_path = intervention_type_path(observation.intervention_type)
              submit = t("interventions.form.#{observation.persisted? ? 'update' : 'record'}_action")
+             submit_duplicate = t("interventions.form.#{observation.persisted? ? 'update' : 'record'}_duplicate_action")
            end %>
         <%= f.hidden_field field_name, value:, required: true %>
         <%= link_to t('common.labels.cancel'), cancel_path, class: 'btn btn-secondary' %>
-        <%= f.submit submit, class: 'btn btn-primary' %>
+        <%= f.submit submit,
+                     class: 'btn btn-primary',
+                     data: {
+                       original_text: submit,
+                       duplicate_text: submit_duplicate
+                     } %>
       </div>
     </div>
   </div>

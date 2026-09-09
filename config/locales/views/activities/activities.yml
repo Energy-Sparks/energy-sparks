@@ -24,10 +24,13 @@ en:
       not_a_standard_activity_message: As you're not recording one of our standard activities, you need to supply a title. Choose a clear title which will make others want to read about your activity
       other: Other
       previous_years: Activities recorded in previous academic years do not score points
+      record_activity: Record activity
+      record_duplicate_activity: Record duplicate activity
       save_activity: Save activity
       tell_us_more_label: Tell us more about what you did
       tell_us_more_message: Tell us a bit more about your activity. What did you do? What did you learn? What could you do next to build on this task?
       update_activity: Update activity
+      update_duplicate_activity: Update duplicate activity
       when_did_you_complete_this_activity: When did you complete this activity?
     new:
       page_title: Record activity

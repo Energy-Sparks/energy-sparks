@@ -431,6 +431,10 @@ describe 'viewing and recording action' do
           expect(page).to have_text(I18n.t('interventions.form.duplicate_warning'))
         end
 
+        it 'updates button text' do
+          expect(page).to have_button(I18n.t('interventions.form.record_duplicate_action'))
+        end
+
         it 'shows link to existing action' do
           expect(page).to have_link('view action', href: school_intervention_path(school, existing_activity))
         end
@@ -449,6 +453,10 @@ describe 'viewing and recording action' do
 
         it 'does not show duplicate warning' do
           expect(page).to have_no_text(I18n.t('interventions.form.duplicate_warning'))
+        end
+
+        it 'does not update button text' do
+          expect(page).to have_button(I18n.t('interventions.form.record_action'))
         end
       end
     end

@@ -233,7 +233,7 @@ describe 'viewing and recording activities' do
           before do
             fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
             fill_in_trix with: 'description'
-            click_on 'Save activity'
+            click_on 'Record activity'
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity
@@ -258,7 +258,7 @@ describe 'viewing and recording activities' do
           before do
             fill_in :activity_happened_on, with: future_date.strftime('%d/%m/%Y')
             fill_in_trix with: 'description'
-            click_on 'Save activity'
+            click_on 'Record activity'
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity do
@@ -277,7 +277,7 @@ describe 'viewing and recording activities' do
             fill_in_trix with: activity_description
             fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
 
-            click_on 'Save activity'
+            click_on 'Record activity'
           end
 
           it_behaves_like 'a task completed page', points: 25, task_type: :activity
@@ -321,6 +321,10 @@ describe 'viewing and recording activities' do
             expect(page).to have_text(I18n.t('activities.form.duplicate_warning'))
           end
 
+          it 'updates button text' do
+            expect(page).to have_button(I18n.t('activities.form.record_duplicate_activity'))
+          end
+
           it 'shows link to existing activity' do
             expect(page).to have_link('view activity', href: school_activity_path(school, existing_activity))
           end
@@ -340,6 +344,10 @@ describe 'viewing and recording activities' do
           it 'does not show duplicate warning' do
             expect(page).to have_no_text(I18n.t('activities.form.duplicate_warning'))
           end
+
+          it 'does not update button text' do
+            expect(page).to have_button(I18n.t('activities.form.record_activity'))
+          end
         end
 
         context 'on the podium' do
@@ -351,7 +359,7 @@ describe 'viewing and recording activities' do
             click_on 'Record this activity'
             fill_in :activity_happened_on, with: time.strftime('%d/%m/%Y')
             fill_in_trix with: 'description'
-            click_on 'Save activity'
+            click_on 'Record activity'
           end
 
           context '0 points' do
@@ -419,7 +427,7 @@ describe 'viewing and recording activities' do
       end
 
       it 'associates activity with correct school from group' do
-        expect { click_on 'Save activity' }.to change(other_school.activities, :count).by(1)
+        expect { click_on 'Record activity' }.to change(other_school.activities, :count).by(1)
         expect(page).to have_text('Congratulations!')
         expect(other_school.activities.most_recent.first.happened_on).to eq(Time.zone.today)
         expect(other_school.activities.most_recent.first.created_by).to eq(group_user)
@@ -433,7 +441,7 @@ describe 'viewing and recording activities' do
       it 'does not allow recording an activity' do
         visit new_school_activity_path(school_not_in_group, activity_type_id: activity_type.id)
         expect(page).to have_text('You are not authorized to access this page')
-        expect(page).to have_no_button('Save activity')
+        expect(page).to have_no_button('Record activity')
       end
     end
   end
