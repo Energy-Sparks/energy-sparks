@@ -159,6 +159,8 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     end
 
     shared_examples 'a user who must choose a school' do
+      let(:first_school) { schools.first }
+
       before do
         sign_in(user)
         visit path
@@ -175,7 +177,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       let!(:user) { create(:school_admin, :with_cluster_schools) }
 
       it_behaves_like 'a user who must choose a school' do
-        let(:first_school) { user.cluster_schools.first }
+        let(:schools) { user.cluster_schools }
         let(:href) { school_switcher_path(school_id: first_school.id, path: 'advice') }
       end
     end
@@ -186,7 +188,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
 
       it_behaves_like 'a user who must choose a school' do
-        let(:first_school) { user.school_group.schools.first }
+        let(:schools) { user.school_group.schools }
         let(:href) { school_advice_path(first_school) }
       end
     end
