@@ -16,7 +16,7 @@
                     options: { match_controller: false } do |s| %>
     <% my_groups_section.each do |item| %>
       <% s.with_item(name: item[:name],
-                     classes: item[:classes],
+                     classes: item[:classes] || 'small',
                      href: item[:path]) %>
     <% end %>
   <% end %>
@@ -34,7 +34,7 @@
                     options: { match_controller: false } do |s| %>
     <% my_data_section.each do |item| %>
       <% s.with_item(name: item[:name],
-                     classes: item[:classes],
+                     classes: item[:classes] || 'small',
                      href: item[:path]) %>
     <% end %>
   <% end %>

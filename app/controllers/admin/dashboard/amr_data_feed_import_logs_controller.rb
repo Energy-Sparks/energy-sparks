@@ -18,10 +18,9 @@ module Admin
 
       def set_log_counts
         amr_data_feed_config = AmrDataFeedConfig.enabled.where(owned_by: @dashboard_user)
-        since = SUMMARY_PERIOD_IN_DAYS.days.ago
-        @successes_count = AmrDataFeedImportLog.where(amr_data_feed_config:).successful.since(since).count
-        @warnings_count = AmrDataFeedImportLog.where(amr_data_feed_config:).with_warnings.since(since).count
-        @errors_count = AmrDataFeedImportLog.where(amr_data_feed_config:).errored.since(since).count
+        @successes_count = AmrDataFeedImportLog.where(amr_data_feed_config:).successful.recent.count
+        @warnings_count = AmrDataFeedImportLog.where(amr_data_feed_config:).with_warnings.recent.count
+        @errors_count = AmrDataFeedImportLog.where(amr_data_feed_config:).errored.recent.count
       end
     end
   end
