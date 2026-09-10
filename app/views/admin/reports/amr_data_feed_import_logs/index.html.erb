@@ -41,7 +41,7 @@
   <tbody>
   <% @amr_data_feed_configs.each do |config| %>
     <tr id="<%= config.identifier %>" class="<%= 'table-warning' unless config.enabled %>">
-    <% stats = config.recent_log_stats %>
+    <% stats = config.recent_import_stats %>
     <td class='text-start'>
       <%= link_to config.description, admin_amr_data_feed_config_path(config) %>
     </td>

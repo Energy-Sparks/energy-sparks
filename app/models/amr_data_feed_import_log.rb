@@ -70,17 +70,17 @@ class AmrDataFeedImportLog < ApplicationRecord
       .from(<<~SQL.squish)
         (
           SELECT
-            l.id,
-            l.error_messages,
+            logs.id,
+            logs.error_messages,
             EXISTS (
               SELECT 1
-              FROM amr_reading_warnings w
-              WHERE w.amr_data_feed_import_log_id = l.id
+              FROM amr_reading_warnings warnings
+              WHERE warnings.amr_data_feed_import_log_id = logs.id
               LIMIT 1
             ) AS has_warnings
-          FROM amr_data_feed_import_logs l
-          WHERE l.amr_data_feed_config_id = #{config_id}
-            AND l.import_time >= '#{cutoff}'
+          FROM amr_data_feed_import_logs logs
+          WHERE logs.amr_data_feed_config_id = #{config_id}
+            AND logs.import_time >= '#{cutoff}'
         ) AS logs
       SQL
       .take
