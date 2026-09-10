@@ -1,15 +1,18 @@
-<%= render 'admin/school_groups/report_button', school_group:,
-                                                class: local_assigns[:class],
-                                                button: "#{fa_icon('envelope')} Meter report".html_safe,
-                                                title: 'Email school group meter report & csv',
-                                                name: 'meter report' do %>
-  <strong>Include:</strong>
-  <div class="form-check">
-    <%= radio_button_tag :all_meters, '', true, id: "#{school_group.id}-active", class: 'form-check-input' %>
-    <%= label_tag "#{school_group.id}-active", 'Only active meters', class: 'form-check-label' %>
-  </div>
-  <div class="form-check">
-    <%= radio_button_tag :all_meters, 'true', false, id: "#{school_group.id}-all", class: 'form-check-input' %>
-    <%= label_tag "#{school_group.id}-all", 'Active and inactive meters', class: 'form-check-label' %>
+<%= render Forms::EmailReportButtonComponent.new(
+      local_assigns[:path] || deliver_admin_school_group_meter_report_path(school_group),
+      local_assigns[:label] || 'Meter report',
+      modal_title: local_assigns[:modal_title] || 'Email School Group Meter Report & CSV',
+      button_class: local_assigns[:class],
+      current_user:,
+      school_group: local_assigns[:school_group]) do %>
+  <div class="pt-2">
+    <strong>Include:</strong>
+    <% [[:active, 'Only active meters'], [:all, 'Active and inactive meters']].each do |type, label| %>
+      <% id = "email-report-#{type}" %>
+      <div class="form-check">
+        <%= radio_button_tag :all_meters, type, type == :active, id:, class: 'form-check-input' %>
+        <%= label_tag id, label, class: 'form-check-label' %>
+      </div>
+    <% end %>
   </div>
 <% end %>
