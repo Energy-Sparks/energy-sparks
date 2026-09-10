@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :amr_data_feed_reading do
-    reading_date  { parsed_date.strftime('%b %e %Y %I:%M%p') }
+    reading_date  { Date.yesterday.strftime('%b %e %Y %I:%M%p') }
     parsed_date { Date.yesterday }
     readings      { Array.new(48, rand) }
     association :meter, factory: :gas_meter
