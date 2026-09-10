@@ -392,8 +392,6 @@ Rails.application.routes.draw do
       get :settings
     end
 
-    resources :activities, except: [:index], concerns: :recordable
-
     concerns :tariff_holder
     concerns :timelineable
 
@@ -503,6 +501,7 @@ Rails.application.routes.draw do
 
       resources :alerts, only: [:show]
 
+      resources :activities, except: [:index], concerns: :recordable
       resources :interventions, except: [:index], concerns: :recordable
 
       resources :alert_reports, only: %i[index show]
