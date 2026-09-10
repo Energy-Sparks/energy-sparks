@@ -49,6 +49,43 @@ class AmrDataFeedImportLog < ApplicationRecord
           foreign_key: :file_name,
           inverse_of: :amr_data_feed_import_log
 
+  def self.recent_import_stats_for_config(config_id, cutoff = SUMMARY_PERIOD_IN_DAYS.ago)
+    select(<<~SQL.squish)
+      COUNT(*) AS total_count,
+
+      COUNT(*) FILTER (
+        WHERE logs.error_messages IS NULL
+          AND logs.has_warnings = false
+      ) AS successful_count,
+
+      COUNT(*) FILTER (
+        WHERE logs.error_messages IS NULL
+          AND logs.has_warnings = true
+      ) AS with_warnings_count,
+
+      COUNT(*) FILTER (
+        WHERE logs.error_messages IS NOT NULL
+      ) AS error_count
+    SQL
+      .from(<<~SQL.squish)
+        (
+          SELECT
+            l.id,
+            l.error_messages,
+            EXISTS (
+              SELECT 1
+              FROM amr_reading_warnings w
+              WHERE w.amr_data_feed_import_log_id = l.id
+              LIMIT 1
+            ) AS has_warnings
+          FROM amr_data_feed_import_logs l
+          WHERE l.amr_data_feed_config_id = #{config_id}
+            AND l.import_time >= '#{cutoff}'
+        ) AS logs
+      SQL
+      .take
+  end
+
   def errors?
     error_messages.present?
   end
