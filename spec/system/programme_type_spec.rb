@@ -6,8 +6,6 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
   before { Flipper.enable(:todos) }
 
   let!(:school) { create(:school) }
-  #### TESTS START HERE #####
-
   let!(:programme_type_1) { create(:programme_type, :with_todos) }
   let!(:programme_type_2) { create(:programme_type, :with_todos, active: false) }
   let!(:programme_type_3) { create(:programme_type, :with_todos) }
