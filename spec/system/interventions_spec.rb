@@ -418,6 +418,47 @@ describe 'viewing and recording action' do
           expect(page).to have_text('You have already completed this action 10 times this academic year. You will not score additional points for recording it')
         end
       end
+
+      context 'with a previous recording on the same date', :js do
+        let!(:existing_activity) { create(:observation, :intervention, intervention_type:, school:, at: today) }
+
+        before do
+          fill_in 'observation_at', with: ''  # needed due to interaction with tempus dominus date picker
+          fill_in 'observation_at', with: today.strftime('%d/%m/%Y')
+        end
+
+        it 'shows duplicate warning' do
+          expect(page).to have_text(I18n.t('interventions.form.duplicate_warning'))
+        end
+
+        it 'updates button text' do
+          expect(page).to have_button(I18n.t('interventions.form.record_duplicate_action'))
+        end
+
+        it 'shows link to existing action' do
+          expect(page).to have_link('view action', href: school_intervention_path(school, existing_activity))
+        end
+      end
+
+      context 'with a previous recording on the same date but different intervention type', :js do
+        let!(:other_intervention_type) { create(:intervention_type, name: 'Other action') }
+        let!(:existing_activity) do
+          create(:observation, :intervention, intervention_type: other_intervention_type, school:, at: today)
+        end
+
+        before do
+          fill_in 'observation_at', with: ''  # needed due to interaction with tempus dominus date picker
+          fill_in 'observation_at', with: today.strftime('%d/%m/%Y')
+        end
+
+        it 'does not show duplicate warning' do
+          expect(page).to have_no_text(I18n.t('interventions.form.duplicate_warning'))
+        end
+
+        it 'does not update button text' do
+          expect(page).to have_button(I18n.t('interventions.form.record_action'))
+        end
+      end
     end
 
     context 'editing an action' do

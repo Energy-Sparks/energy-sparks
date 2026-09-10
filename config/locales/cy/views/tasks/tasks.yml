@@ -55,3 +55,7 @@ cy:
     view:
       action: Gweld gweithred
       activity: Gweld gweithgaredd
+    form:
+      tell_us_more: Dywedwch ragor wrthym am yr hyn a wnaethoch
+      you_can_add_formatting: Gallwch ychwanegu fformatio, dolenni ac atodi lluniau gan ddefnyddio'r bar offer isod. Gallwch hofran dros bob eicon i ddysgu beth mae'n ei wneud
+

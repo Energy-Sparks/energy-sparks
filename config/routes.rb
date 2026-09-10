@@ -116,6 +116,11 @@ Rails.application.routes.draw do
     get :unlisted, on: :collection, defaults: { format: 'js' }
   end
 
+  concern :recordable do
+    get :completed, on: :member
+    get :duplicate_warning, on: :collection
+  end
+
   get '/support', to: redirect('/support/categories')
   get '/support/search', to: 'cms/pages#search', as: :search
   scope module: 'cms', path: 'support' do
@@ -387,11 +392,7 @@ Rails.application.routes.draw do
       get :settings
     end
 
-    resources :activities, except: [:index] do
-      member do
-        get :completed
-      end
-    end
+    resources :activities, except: [:index], concerns: :recordable
 
     concerns :tariff_holder
     concerns :timelineable
@@ -502,11 +503,7 @@ Rails.application.routes.draw do
 
       resources :alerts, only: [:show]
 
-      resources :interventions, except: [:index] do
-        member do
-          get :completed
-        end
-      end
+      resources :interventions, except: [:index], concerns: :recordable
 
       resources :alert_reports, only: %i[index show]
       resources :content_reports, only: %i[index show]
@@ -584,33 +581,36 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :dashboards, only: %i[show index] do
-      resources :school_groups, module: :dashboard
-      resources :engaged_groups, module: :dashboard
-      resources :activations, module: :dashboard
-      resources :impact_reports, module: :dashboard
-      resources :data_sources, module: :dashboard
-      resources :suppliers, module: :dashboard
-      resources :amr_data_feed_configs, module: :dashboard
-      resources :issues, module: :dashboard
-      resources :school_onboardings, path: 'school_setup', module: :dashboard do
-        collection do
-          get 'completed'
+      scope module: :dashboard do
+        resources :school_groups
+        resources :engaged_groups
+        resources :activations
+        resources :impact_reports
+        resources :data_sources
+        resources :suppliers
+        resources :amr_data_feed_configs
+        resources :issues
+        resources :school_onboardings, path: 'school_setup' do
+          collection do
+            get 'completed'
+          end
         end
-      end
-      resources :missing_alert_contacts, module: :dashboard
-      resources :limited_users, module: :dashboard
-      resources :activities, module: :dashboard
-      resources :interventions, module: :dashboard
-      resources :energy_tariffs, module: :dashboard
+        resources :missing_alert_contacts
+        resources :limited_users
+        resources :activities
+        resources :interventions
+        resources :energy_tariffs
 
-      resources :amr_data_feed_import_logs, module: :dashboard
-      resources :blank_readings, :lagging_meters, :zero_readings, module: :dashboard
-      resources :new_data_inactive_meter_report, module: :dashboard
-      resources :admin_user_meter_report, module: :dashboard
-      resources :baseload_anomaly, module: :dashboard
-      resources :estimated_reads, module: :dashboard
-      resources :manual_reads, module: :dashboard
-      resources :pupil_number_updates, module: :dashboard
+        resources :amr_data_feed_import_logs
+        resources :blank_readings, :lagging_meters, :zero_readings
+        resources :new_data_inactive_meter_report
+        resources :admin_user_meter_report
+        resources :baseload_anomaly
+        resources :estimated_reads
+        resources :manual_reads
+        resources :pupil_number_updates
+        resources :limited_data
+      end
     end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
@@ -930,6 +930,7 @@ Rails.application.routes.draw do
       resources :metered_solar, only: :index
       resources :modelled_solar, only: :index
       resources :solar_installations, only: :index
+      resources :limited_data, only: :index
     end
 
     resource :settings, only: %i[show update]

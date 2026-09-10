@@ -21,7 +21,7 @@ describe Amr::PerseUpsert do
                    headers: { 'content-type': 'application/json' })
       upserter.perform(meter)
       expect(AmrDataFeedReading.where(meter: meter).count).to eq(331)
-      expect(AmrDataFeedReading.where(meter: meter, reading_date: '2024-12-01').pluck(:readings)).to eq(
+      expect(AmrDataFeedReading.where(meter: meter, parsed_date: '2024-12-01').pluck(:readings)).to eq(
         [
           [
             17.4, 17.7, 17.5, 17.9, 17.9, 17.0, 17.1, 17.9, 18.0, 16.6,
