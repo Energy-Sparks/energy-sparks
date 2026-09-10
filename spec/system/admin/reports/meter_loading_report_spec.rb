@@ -1,12 +1,13 @@
 require 'rails_helper'
 
 describe 'meter loading report' do
-  let!(:admin)       { create(:admin) }
-  let!(:reading)     { create(:amr_data_feed_reading, reading_date: '2024-12-25') }
+  let!(:reading) do
+    create(:amr_data_feed_reading, reading_date: '2024-12-25', parsed_date: Date.parse('2024-12-25'))
+  end
 
   before do
     allow_any_instance_of(S3Helper).to receive(:s3_csv_download_url).and_return('https://example.org')
-    sign_in(admin)
+    sign_in(create(:admin))
     visit root_path
     click_on('Reports')
     click_on('Meter loading report')

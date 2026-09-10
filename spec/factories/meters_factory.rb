@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :gas_meter, class: 'Meter' do
     school
@@ -18,7 +20,8 @@ FactoryBot.define do
 
       after(:create) do |meter, evaluator|
         (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
-          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.log)
+          create(:amr_data_feed_reading,
+                 meter:, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), parsed_date: this_date, amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.log)
         end
       end
     end
@@ -52,13 +55,13 @@ FactoryBot.define do
       after(:create) do |meter, evaluator|
         (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
           create(:amr_validated_reading,
-            meter: meter,
-            reading_date: this_date,
-            upload_datetime: evaluator.upload_datetime,
-            status: evaluator.status,
-            kwh_data_x48: evaluator.kwh_data_x48,
-            one_day_kwh: evaluator.one_day_kwh,
-            substitute_date: evaluator.substitute_date)
+                 meter: meter,
+                 reading_date: this_date,
+                 upload_datetime: evaluator.upload_datetime,
+                 status: evaluator.status,
+                 kwh_data_x48: evaluator.kwh_data_x48,
+                 one_day_kwh: evaluator.one_day_kwh,
+                 substitute_date: evaluator.substitute_date)
         end
       end
     end
@@ -66,7 +69,7 @@ FactoryBot.define do
 
   factory :electricity_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn) { |n| "10#{sprintf('%011d', n)}" }
+    sequence(:mpan_mprn) { |n| "10#{format('%011d', n)}" }
     sequence(:name, 'Meter AAAAA1')
     meter_type            { :electricity }
     active                { true }
@@ -84,7 +87,8 @@ FactoryBot.define do
         end_date = Date.parse('01/06/2019')
         start_date = end_date - (evaluator.reading_count - 1).days
         (start_date..end_date).each do |this_date|
-          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime(evaluator.reading_date_format),
+          create(:amr_data_feed_reading, meter:, parsed_date: this_date,
+                                         reading_date: this_date.strftime(evaluator.reading_date_format),
                                          readings: evaluator.readings, amr_data_feed_config: evaluator.config)
         end
       end
@@ -118,7 +122,7 @@ FactoryBot.define do
 
   factory :exported_solar_pv_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn)  { |n| "91#{sprintf('%012d', n)}" }
+    sequence(:mpan_mprn)  { |n| "91#{format('%012d', n)}" }
     meter_type            { :exported_solar_pv }
     active                { true }
     meter_system          { :nhh_amr }
@@ -134,7 +138,9 @@ FactoryBot.define do
 
       after(:create) do |meter, evaluator|
         (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
-          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.import_log)
+          create(:amr_data_feed_reading, meter:, parsed_date: this_date,
+                                         reading_date: this_date.strftime('%b %e %Y %I:%M%p'),
+                                         amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.import_log)
         end
       end
     end
@@ -142,7 +148,7 @@ FactoryBot.define do
 
   factory :solar_pv_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn) { |n| "71#{sprintf('%012d', n)}" }
+    sequence(:mpan_mprn) { |n| "71#{format('%012d', n)}" }
     sequence(:name, 'Meter AAAAA1')
     meter_type            { :solar_pv }
     active                { true }
@@ -159,7 +165,9 @@ FactoryBot.define do
 
       after(:create) do |meter, evaluator|
         (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
-          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.log)
+          create(:amr_data_feed_reading, meter:, parsed_date: this_date,
+                                         reading_date: this_date.strftime('%b %e %Y %I:%M%p'),
+                                         amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.log)
         end
       end
     end
