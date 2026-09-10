@@ -13,14 +13,16 @@ en:
       completing_this_activity:
         one: Completing this action up to %{maximum} times this academic year will earn you 1 point
         other: Completing this action up to %{maximum} times this academic year  will earn you %{count} points
+      duplicate_warning: This action has already been recorded for your school on this date
+      duplicate_warning_explain: If this is a different instance of the action, please explain how it differs from the one already recorded (for example, it was completed by a different class or year group)
       exceeded_maximum_in_year: You have already completed this action %{maximum} times this academic year. You will not score additional points for recording it
       previous_years: Actions recorded in previous academic years do not score points
       pupil_count_hint: If you're not sure of the exact number, your best estimate is perfect or you can leave this blank
       record_action: Record action
-      tell_us_more: Tell us more about what you did
+      record_duplicate_action: Record duplicate action
       update_action: Update action
+      update_duplicate_action: Update duplicate action
       when_did_you_complete_this_action: When did you complete this action?
-      you_can_add_formatting_label: You can add formatting, links and attach images using the toolbar below. Hover over each icon to learn what it does
       you_can_record_label: You can record both recent and older actions to build up a complete record of all of the energy saving activities you've carried out as a school
     new:
       page_title: Record energy saving action

@@ -49,6 +49,17 @@ module Schools
 
     def completed; end
 
+    def duplicate_warning
+      date = Date.strptime(params[:date], TempusDominusDateInput::DATE_FORMAT)
+      @existing = @school.observations.intervention
+                         .where(at: date.all_day)
+                         .where(intervention_type_id: params[:intervention_type_id])
+                         .where.not(id: params[:id])
+                         .first
+
+      render 'duplicate_warning', layout: false
+    end
+
     private
 
     def observation_params
@@ -67,7 +78,6 @@ module Schools
     def set_breadcrumbs
       return unless intervention_type
 
-      intervention_type.category
       @breadcrumbs = [
         { name: t('common.labels.adult_actions'), href: intervention_type_groups_path },
         { name: intervention_type.name, href: intervention_type_path(intervention_type) },
