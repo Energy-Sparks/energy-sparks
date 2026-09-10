@@ -11,7 +11,7 @@ module Solar
     let(:readings)      do
       {
         mpan_mprn: meter.mpan_mprn,
-        readings: { start_date: OneDayAMRReading.new(start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
+        readings: { start_date => OneDayAMRReading.new(start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
         missing_readings: []
       }
     end

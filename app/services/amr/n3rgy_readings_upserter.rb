@@ -29,6 +29,7 @@ module Amr
           meter_id: @meter.id,
           mpan_mprn: @meter.mpan_mprn,
           reading_date: reading_date.strftime('%Y-%m-%d'),
+          parsed_date: reading_date,
           readings: one_day_amr_reading.kwh_data_x48
         }
       end

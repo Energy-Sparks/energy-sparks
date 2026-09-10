@@ -35,7 +35,8 @@ class AmrReadingWarning < ApplicationRecord
     3 => :missing_reading_date,
     4 => :invalid_reading_date,
     5 => :future_reading_date,
-    6 => :duplicate_reading
+    6 => :duplicate_reading,
+    7 => :early_reading_date
   }.freeze
 
   enum :warning, { blank_readings: 0, missing_readings: 1, missing_mpan_mprn: 2, missing_reading_date: 3,

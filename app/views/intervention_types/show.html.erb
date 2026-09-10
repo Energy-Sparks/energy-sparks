@@ -1,15 +1,21 @@
-<% cache_if current_user.nil?, [@intervention_type, I18n.locale], expires_in: 1.hour do %>
-  <% content_for :page_title do %>
+<% content_for :page_title do %>
+  <% cache_if current_user.nil?, [@intervention_type, I18n.locale, :page_title], expires_in: 1.hour do %>
     <%= @intervention_type.name %>
   <% end %>
-  <% content_for :header do %>
+<% end %>
+<% content_for :header do %>
+  <% cache_if current_user.nil?, [@intervention_type, I18n.locale, :header], expires_in: 1.hour do %>
     <%= render Tasks::Header.new(task: @intervention_type) %>
   <% end %>
-  <% content_for :rightcol do %>
+<% end %>
+<% content_for :rightcol do %>
+  <% cache_if current_user.nil?, [@intervention_type, I18n.locale, :rightcol], expires_in: 1.hour do %>
     <%= render 'shared/tasks/rightcol/download_links', task: @intervention_type %>
     <%= render 'shared/tasks/rightcol/category', task: @intervention_type %>
     <%= render 'shared/tasks/rightcol/programmes', task: @intervention_type %>
   <% end %>
+<% end %>
+<% cache_if current_user.nil?, [@intervention_type, I18n.locale], expires_in: 1.hour do %>
   <% if current_user_school && @intervention_type.actions_for_school(current_user_school).any? %>
     <%= render 'shared/tasks/prompts/previous_records',
                recordings: @intervention_type.actions_for_school(current_user_school),
