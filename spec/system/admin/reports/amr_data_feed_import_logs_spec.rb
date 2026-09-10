@@ -8,13 +8,7 @@ describe AmrDataFeedImportLog, :include_application_helper do
   let!(:disabled_config) { create(:amr_data_feed_config, description: 'Unused', enabled: false) }
 
   before do
-    # 3 successes, 1 warning, 2 errors
-    create_list(:amr_data_feed_import_log, 3, amr_data_feed_config:, records_imported: 200, import_time: 1.day.ago)
-    create(:amr_data_feed_import_log, :with_warnings, amr_data_feed_config:, import_time: 1.day.ago)
-    create_list(:amr_data_feed_import_log, 2, :with_errors, amr_data_feed_config:, import_time: 1.day.ago)
-
-    # 1 outside query window
-    create(:amr_data_feed_import_log, amr_data_feed_config:, records_imported: 200, import_time: 31.days.ago)
+    allow(S3Helper).to receive(:s3_csv_download_url).and_return('https://example.org')
 
     sign_in(create(:admin))
     visit root_path
@@ -24,6 +18,14 @@ describe AmrDataFeedImportLog, :include_application_helper do
 
   context 'when viewing summary report' do
     before do
+      # 3 successes, 1 warning, 2 errors
+      create_list(:amr_data_feed_import_log, 3, amr_data_feed_config:, records_imported: 200, import_time: 1.day.ago)
+      create(:amr_data_feed_import_log, :with_warnings, amr_data_feed_config:, import_time: 1.day.ago)
+      create_list(:amr_data_feed_import_log, 2, :with_errors, amr_data_feed_config:, import_time: 1.day.ago)
+
+      # 1 outside query window
+      create(:amr_data_feed_import_log, amr_data_feed_config:, records_imported: 200, import_time: 31.days.ago)
+
       click_on 'Data feed import logs'
     end
 
@@ -67,6 +69,24 @@ describe AmrDataFeedImportLog, :include_application_helper do
       within '#import-summary-table tbody tr.table-warning' do
         expect(page).to have_text(disabled_config.description)
       end
+    end
+  end
+
+  context 'when viewing recent rejections' do
+    let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log) }
+    let!(:warning) do
+      AmrReadingWarning.create(amr_data_feed_import_log:,
+                               warning_types: [AmrReadingWarning::WARNINGS.key(:missing_readings)])
+    end
+
+    before do
+      click_on 'Data feed import logs'
+      click_on 'Rejections'
+    end
+
+    it 'shows the rejections' do
+      expect(page).to have_text('Rejections')
+      expect(page).to have_text(amr_data_feed_import_log.import_time&.strftime('%Y-%m-%d %H:%M'))
     end
   end
 end
