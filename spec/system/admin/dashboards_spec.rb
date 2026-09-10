@@ -223,6 +223,32 @@ RSpec.describe 'Admin dashboard' do
           end
         end
 
+        describe 'my import log' do
+          let!(:user_data_feed) { create(:amr_data_feed_config, owned_by: user) }
+          let!(:non_user_data_feed) { create(:amr_data_feed_config) }
+
+          before do
+            create(:amr_data_feed_import_log, amr_data_feed_config: user_data_feed, import_time: 1.day.ago)
+            click_on 'Import Logs'
+          end
+
+          it 'has the correct path' do
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/amr_data_feed_import_logs")
+          end
+
+          it 'links to the data feeds page' do
+            expect(page).to have_link('View all imports', href: admin_reports_amr_data_feed_import_logs_path)
+          end
+
+          it 'displays data feeds belonging to the user' do
+            expect(page).to have_text(user_data_feed.description)
+          end
+
+          it 'does not display data feeds which do not belong to the user' do
+            expect(page).to have_no_text(non_user_data_feed.description)
+          end
+        end
+
         describe 'my issues' do
           let!(:user_issue) { create(:issue, owned_by: user) }
           let!(:non_user_issue) { create(:issue) }

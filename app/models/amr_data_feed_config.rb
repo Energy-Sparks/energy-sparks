@@ -152,7 +152,7 @@ class AmrDataFeedConfig < ApplicationRecord # rubocop:disable Metrics/ClassLengt
   end
 
   def recent_import_stats
-    AmrDataFeedImportLog.recent_import_stats_for_config(id)
+    AmrDataFeedImportLog.recent_import_stats_for_config(self)
   end
 
   def latest_reading_date

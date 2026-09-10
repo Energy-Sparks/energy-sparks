@@ -49,7 +49,7 @@ class AmrDataFeedImportLog < ApplicationRecord
           foreign_key: :file_name,
           inverse_of: :amr_data_feed_import_log
 
-  def self.recent_import_stats_for_config(config_id, cutoff = SUMMARY_PERIOD_IN_DAYS.ago)
+  def self.recent_import_stats_for_config(amr_data_feed_config, cutoff = SUMMARY_PERIOD_IN_DAYS.ago)
     select(<<~SQL.squish)
       COUNT(*) AS total_count,
 
@@ -79,7 +79,7 @@ class AmrDataFeedImportLog < ApplicationRecord
               LIMIT 1
             ) AS has_warnings
           FROM amr_data_feed_import_logs logs
-          WHERE logs.amr_data_feed_config_id = #{config_id}
+          WHERE logs.amr_data_feed_config_id = #{amr_data_feed_config.id}
             AND logs.import_time >= '#{cutoff}'
         ) AS logs
       SQL

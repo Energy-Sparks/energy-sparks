@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 describe AmrDataFeedImportLog, :include_application_helper do
-  let!(:amr_data_feed_config) { create(:amr_data_feed_config) }
-
-  let!(:disabled_config) { create(:amr_data_feed_config, description: 'Unused', enabled: false) }
-
   before do
     # Can't figure out how to stub out the helper method any other way here to avoid making call to S3
     #
@@ -20,6 +16,9 @@ describe AmrDataFeedImportLog, :include_application_helper do
   end
 
   context 'when viewing summary report' do
+    let!(:amr_data_feed_config) { create(:amr_data_feed_config) }
+    let!(:disabled_config) { create(:amr_data_feed_config, description: 'Unused', enabled: false) }
+
     before do
       # 3 successes, 1 warning, 2 errors
       create_list(:amr_data_feed_import_log, 3, amr_data_feed_config:, records_imported: 200, import_time: 1.day.ago)
@@ -76,21 +75,98 @@ describe AmrDataFeedImportLog, :include_application_helper do
   end
 
   context 'when viewing recent rejections' do
-    let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log) }
-    let!(:warning) do
-      AmrReadingWarning.create(amr_data_feed_import_log:,
-                               warning_types: [AmrReadingWarning::WARNINGS.key(:missing_readings)])
-    end
+    let!(:warning) { create(:amr_data_feed_import_log, :with_warnings, types: [2], import_time: 1.day.ago) }
 
     before do
       click_on 'Data feed import logs'
       click_on 'Rejections'
     end
 
-    it 'shows the rejections' do
-      expect(page).to have_text('Rejections')
-      expect(page).to have_link(href: 'https://example.org/s3')
-      expect(page).to have_text(amr_data_feed_import_log.import_time&.strftime('%Y-%m-%d %H:%M'))
+    it_behaves_like 'it contains the expected data table', aligned: false do
+      let(:table_id) { '#warnings' }
+      let(:expected_header) do
+        [
+          ['Feed', 'File name', 'Import Time', 'Summary', 'Imported', 'Updated', 'Rejected']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          [warning.amr_data_feed_config.description,
+           warning.file_name,
+           warning.import_time&.strftime('%Y-%m-%d %H:%M'),
+           AmrReadingData::WARNING_MISSING_MPAN_MPRN,
+           warning.records_imported.to_s,
+           warning.records_updated.to_s,
+           warning.amr_reading_warnings.count.to_s]
+        ]
+      end
+    end
+
+    it 'links to download the CSV' do
+      expect(page).to have_link(warning.file_name, href: 'https://example.org/s3')
+    end
+  end
+
+  context 'when viewing recent errors' do
+    let!(:error) { create(:amr_data_feed_import_log, :with_errors, import_time: 1.day.ago) }
+
+    before do
+      click_on 'Data feed import logs'
+      click_on 'Errors'
+    end
+
+    it_behaves_like 'it contains the expected data table', aligned: false do
+      let(:table_id) { '#errors' }
+      let(:expected_header) do
+        [
+          ['Feed', 'File name', 'Import Time', 'Summary', 'Imported', 'Updated']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          [error.amr_data_feed_config.description,
+           error.file_name,
+           error.import_time&.strftime('%Y-%m-%d %H:%M'),
+           error.error_messages,
+           error.records_imported.to_s,
+           error.records_updated.to_s]
+        ]
+      end
+    end
+
+    it 'links to download the CSV' do
+      expect(page).to have_link(error.file_name, href: 'https://example.org/s3')
+    end
+  end
+
+  context 'when viewing recent successes' do
+    let!(:success) { create(:amr_data_feed_import_log, import_time: 1.day.ago) }
+
+    before do
+      click_on 'Data feed import logs'
+      click_on 'Successes'
+    end
+
+    it_behaves_like 'it contains the expected data table', aligned: false do
+      let(:table_id) { '#successes' }
+      let(:expected_header) do
+        [
+          ['Feed', 'File name', 'Import Time', 'Imported', 'Updated']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          [success.amr_data_feed_config.description,
+           success.file_name,
+           success.import_time&.strftime('%Y-%m-%d %H:%M'),
+           success.records_imported.to_s,
+           success.records_updated.to_s]
+        ]
+      end
+    end
+
+    it 'links to download the CSV' do
+      expect(page).to have_link(success.file_name, href: 'https://example.org/s3')
     end
   end
 end
