@@ -2,7 +2,13 @@
   <%= fa_icon('envelope') %> <%= @label %>
 <% end %>
 <%= form_tag @path, method: :post, style: 'display: inline-block !important;' do %>
-  <%= button_tag(class: @button_class, **@button_attributes) do %>
+  <% button_attributes = { class: @button_class }
+     if content?
+       button_attributes.merge!(type: :button,
+                               'data-toggle': :modal, 'data-bs-toggle': :modal,
+                               'data-target': "##{@modal_id}", 'data-bs-target': "##{@modal_id}")
+     end %>
+  <%= button_tag(**button_attributes) do %>
     <%= label %>
   <% end %>
   <% if content? %>
@@ -22,6 +28,9 @@
                 <%= @current_user.email %>
               </span>
             </div>
+            <% if @school_group %>
+              <div><strong>Group: </strong><%= @school_group.name %></div>
+            <% end %>
             <%= content %>
           </div>
           <div class="modal-footer">

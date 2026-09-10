@@ -34,19 +34,10 @@
     <%= render 'admin/issues/issueable', issueable: @data_source %>
     <span class="badge text-bg-info"><%= @data_source.organisation_type.try(:humanize) %></span>
     <span class="float-end pe-2">
-      <%= render Forms::EmailReportButtonComponent.new(admin_data_source_deliver_path(@data_source),
-                                                       'Email Data Source Report',
-                                                       button_class: 'btn btn-secondary btn-sm',
-                                                       current_user:) do %>
-        <strong class="pt-2">Include:</strong>
-        <% [[:active, 'Only active meters'], [:all, 'Active and inactive meters']].each do |type, label| %>
-          <% id = "email-report-#{type}" %>
-          <div class="form-check">
-            <%= radio_button_tag :all_meters, type, type == :active, id:, class: 'form-check-input' %>
-            <%= label_tag id, label, class: 'form-check-label' %>
-          </div>
-        <% end %>
-      <% end %>
+      <%= render 'admin/shared/email_meter_report_button', path: admin_data_source_deliver_path(@data_source),
+                                                           label: 'Email Data Source Report',
+                                                           class: 'btn btn-secondary btn-sm',
+                                                           current_user: %>
       <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: 'btn btn-secondary btn-sm' %>
       <%= link_to 'Delete', admin_data_source_path(@data_source), method: :delete, data: { confirm: 'Are you sure?' },
                                                                   class: 'btn btn-sm btn-danger' %>
