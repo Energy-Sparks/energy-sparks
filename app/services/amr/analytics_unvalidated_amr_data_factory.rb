@@ -41,7 +41,7 @@ module Amr
              .pluck(
                :meter_id,
                :amr_data_feed_config_id,
-               :reading_date,
+               :parsed_date,
                :created_at,
                :readings,
                :estimated
@@ -66,7 +66,7 @@ module Amr
     def reading_if_valid(_meter_id, reading)
       return if reading_invalid?(reading)
 
-      reading_date = date_from_string_using_date_format(reading)
+      reading_date = reading[1]
       return if reading_date.nil?
 
       OneDayAMRReading.new(
@@ -90,10 +90,6 @@ module Amr
       else
         false
       end
-    end
-
-    def date_from_string_using_date_format(reading)
-      AmrDataFeedConfig.date_from_string_using_date_format(reading[1], @feed_configs[reading[0]].date_format)
     end
   end
 end

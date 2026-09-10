@@ -17,17 +17,21 @@ en:
       completing_this_activity:
         one: Completing this activity up to %{maximum} times this academic year will earn you 1 point
         other: Completing this activity up to %{maximum} times this academic year  will earn you %{count} points
+      duplicate_warning: This activity has already been recorded for your school on this date
+      duplicate_warning_explain: If this is a different instance of the activity, please explain how it differs from the one already recorded (for example, it was completed by a different class or year group)
       exceeded_maximum_in_year: You have already completed this activity %{maximum} times this academic year. You will not score additional points for recording it
       how_many_pupils_were_involved_in_this_activity: How many pupils were involved in this activity?
       how_would_you_describe_this_activity: How would you describe this activity
       not_a_standard_activity_message: As you're not recording one of our standard activities, you need to supply a title. Choose a clear title which will make others want to read about your activity
       other: Other
       previous_years: Activities recorded in previous academic years do not score points
+      record_activity: Record activity
+      record_duplicate_activity: Record duplicate activity
       save_activity: Save activity
-      tell_us_more_formatting_message: You can add formatting, links to your school website and attach images using the toolbar below. Hover over each icon to learn what it does
       tell_us_more_label: Tell us more about what you did
       tell_us_more_message: Tell us a bit more about your activity. What did you do? What did you learn? What could you do next to build on this task?
       update_activity: Update activity
+      update_duplicate_activity: Update duplicate activity
       when_did_you_complete_this_activity: When did you complete this activity?
     new:
       page_title: Record activity

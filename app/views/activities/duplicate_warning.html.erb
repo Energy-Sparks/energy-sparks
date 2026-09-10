@@ -1,0 +1,7 @@
+<% if @existing %>
+  <%= render PromptComponent.new(icon: 'circle-exclamation', status: :none, classes: 'my-2') do |prompt| %>
+    <%= t('activities.form.duplicate_warning') %>:
+    <%= link_to 'view activity', school_activity_path(@school, @existing), target: '_blank', rel: 'noopener' %>.
+    <%= t('activities.form.duplicate_warning_explain') %>
+  <% end %>
+<% end %>
