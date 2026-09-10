@@ -17,6 +17,14 @@
   <%= AmrDataFeedImportLog::SUMMARY_PERIOD_IN_DAYS.ago.strftime('%Y-%m-%d %H:%M') %>.
 </p>
 
+<p>
+  <ul>
+    <li><strong>Successes</strong> - Load completed successfully. All data was processed</li>
+    <li><strong>Rejections</strong> - Load completed but some invalid or incomplete data was rejected from the file</li>
+    <li><strong>Errors</strong> - Load failed to complete properly</li>
+  </ul>
+</p>
+
 <table class="table table-bordered table-sorted" id="import-summary-table">
   <thead>
     <tr>
