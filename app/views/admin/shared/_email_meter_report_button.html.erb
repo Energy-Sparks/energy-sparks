@@ -2,6 +2,7 @@
       local_assigns[:path] || deliver_admin_school_group_meter_report_path(school_group),
       local_assigns[:label] || 'Meter report',
       modal_title: local_assigns[:modal_title] || 'Email School Group Meter Report & CSV',
+      modal_label: local_assigns[:label] || 'Email Meter Report',
       button_class: local_assigns[:class],
       current_user:,
       school_group: local_assigns[:school_group]) do %>

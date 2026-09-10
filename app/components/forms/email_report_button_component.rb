@@ -8,6 +8,7 @@ module Forms
       @label = label
       @button_class = button_class
       @modal_title = kwargs[:modal_title]
+      @modal_label = kwargs[:modal_label] || @label
       id = label.parameterize(separator: '_')
       @modal_id = "email_report_button_modal-#{id}"
       @label_id = "email_report_button_label-#{id}"
