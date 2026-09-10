@@ -1,7 +1,10 @@
 class TempusDominusDateInput < SimpleForm::Inputs::Base
+  DATE_FORMAT = '%d/%m/%Y'.freeze
+
   def input(wrapper_options)
     merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
-    template.content_tag(:div, class: "input-group date #{input_group_class}", data: { target_input: 'nearest' }, id: wrapper_id) do
+    template.content_tag(:div, class: "input-group date #{input_group_class}", data: { target_input: 'nearest' },
+                               id: wrapper_id) do
       template.concat @builder.text_field(attribute_name, merged_input_options)
       template.concat button
     end
@@ -20,7 +23,7 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_value_format
-    '%d/%m/%Y'.freeze
+    DATE_FORMAT
   end
 
   def input_value

@@ -12,3 +12,5 @@ pin 'transport_surveys/handlebars_helpers', preload: false
 pin 'transport_surveys/helpers', preload: false
 
 pin_all_from 'app/javascript/commercial', under: 'commercial', preload: false
+
+pin_all_from 'app/javascript/tasks', under: 'tasks', preload: false
