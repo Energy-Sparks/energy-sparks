@@ -116,6 +116,11 @@ Rails.application.routes.draw do
     get :unlisted, on: :collection, defaults: { format: 'js' }
   end
 
+  concern :recordable do
+    get :completed, on: :member
+    get :duplicate_warning, on: :collection
+  end
+
   get '/support', to: redirect('/support/categories')
   get '/support/search', to: 'cms/pages#search', as: :search
   scope module: 'cms', path: 'support' do
@@ -387,11 +392,7 @@ Rails.application.routes.draw do
       get :settings
     end
 
-    resources :activities, except: [:index] do
-      member do
-        get :completed
-      end
-    end
+    resources :activities, except: [:index], concerns: :recordable
 
     concerns :tariff_holder
     concerns :timelineable
@@ -502,11 +503,7 @@ Rails.application.routes.draw do
 
       resources :alerts, only: [:show]
 
-      resources :interventions, except: [:index] do
-        member do
-          get :completed
-        end
-      end
+      resources :interventions, except: [:index], concerns: :recordable
 
       resources :alert_reports, only: %i[index show]
       resources :content_reports, only: %i[index show]
