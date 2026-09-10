@@ -8,7 +8,10 @@ describe AmrDataFeedImportLog, :include_application_helper do
   let!(:disabled_config) { create(:amr_data_feed_config, description: 'Unused', enabled: false) }
 
   before do
-    allow(S3Helper).to receive(:s3_csv_download_url).and_return('https://example.org')
+    # Can't figure out how to stub out the helper method any other way here to avoid making call to S3
+    #
+    # rubocop:disable-next RSpec/AnyInstance
+    allow_any_instance_of(S3Helper).to receive(:s3_csv_download_url).and_return('https://example.org/s3')
 
     sign_in(create(:admin))
     visit root_path
@@ -86,6 +89,7 @@ describe AmrDataFeedImportLog, :include_application_helper do
 
     it 'shows the rejections' do
       expect(page).to have_text('Rejections')
+      expect(page).to have_link(href: 'https://example.org/s3')
       expect(page).to have_text(amr_data_feed_import_log.import_time&.strftime('%Y-%m-%d %H:%M'))
     end
   end
