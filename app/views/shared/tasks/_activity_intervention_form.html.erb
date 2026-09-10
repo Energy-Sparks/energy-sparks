@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_import_module_tag 'tasks/recording_duplicate_warning' %>
+<% end %>
+
 <%= simple_form_for(form_target, html: { class: 'bg-white px-5 pt-5 pb-4 rounded-3' }, **form_kwargs) do |f| %>
   <h2 class="pt-0 pb-4">
     <% if activity&.persisted? %>
@@ -29,16 +33,35 @@
            date_field = :happened_on
            label = t('activities.form.when_did_you_complete_this_activity')
            hint = t('activities.form.build_a_record_message')
+           duplicate_check_url = duplicate_warning_school_activities_path(
+             @school,
+             activity_type_id: activity.activity_type.id,
+             id: activity.id
+           )
          elsif observation
            date_field = :at
            label = t('interventions.form.when_did_you_complete_this_action')
            hint = t('interventions.form.you_can_record_label')
+           duplicate_check_url = duplicate_warning_school_interventions_path(
+             @school,
+             intervention_type_id: observation.intervention_type.id,
+             id: observation.id
+           )
          end %>
-      <%= f.input date_field, as: :tempus_dominus_date,
-                              label:,
-                              label_html: { class: 'fw-semibold mb-1' },
-                              input_html: { placeholder: t('common.select_date') },
-                              hint: %>
+        <% hint_content = capture do %>
+          <div data-duplicate-task-warning></div>
+          <%= hint %>
+        <% end %>
+      <%= f.input date_field,
+                  as: :tempus_dominus_date,
+                  label:,
+                  label_html: { class: 'fw-semibold mb-1' },
+                  input_html: {
+                    placeholder: t('common.select_date'),
+                    data: { duplicate_check_url: duplicate_check_url }
+                  },
+                  hint: hint_content %>
+
     </div>
     <div class="col-lg-6">
       <%= f.input :pupil_count, as: :numeric,
@@ -46,7 +69,6 @@
                                 label_html: { class: 'fw-semibold  mb-1' },
                                 placeholder: t('common.enter_number'),
                                 hint: t('interventions.form.pupil_count_hint') %>
-
     </div>
   </div>
   <div class="row">
@@ -54,11 +76,7 @@
       <hr>
       <h4 class="d-flex align-items-center">
         <%= f.label :description, for: :description do %>
-          <% if activity %>
-            <%= t('activities.form.tell_us_more_label') %>
-          <% elsif observation %>
-            <%= t('interventions.form.tell_us_more') %>
-          <% end %>
+          <%= t('tasks.form.tell_us_more') %>
           <%== SimpleForm::Inputs::StringInput.translate_required_html %>
         <% end %>
         <%= render 'shared/tasks/bonus_points', type: %>
@@ -92,11 +110,7 @@
             <%= link_to t('tasks.form.photo_guidance_link'), guidance_link %>.
         </p>
         <p class='small text-muted'>
-            <% if activity %>
-                <%= t('activities.form.tell_us_more_formatting_message') %>.
-            <% elsif observation %>
-              <%= t('interventions.form.you_can_add_formatting_label') %>.
-            <% end %>
+          <%= t('tasks.form.you_can_add_formatting') %>
         </p>
       </div>
       <div>
@@ -108,16 +122,23 @@
              field_name = :activity_type_id
              value = activity.activity_type.id
              cancel_path = activity_type_path(activity.activity_type)
-             submit = t("activities.form.#{activity.persisted? ? 'update' : 'save'}_activity")
+             submit = t("activities.form.#{activity.persisted? ? 'update' : 'record'}_activity")
+             submit_duplicate = t("activities.form.#{activity.persisted? ? 'update' : 'record'}_duplicate_activity")
            elsif observation
              field_name = :intervention_type_id
              value = observation.intervention_type.id
              cancel_path = intervention_type_path(observation.intervention_type)
              submit = t("interventions.form.#{observation.persisted? ? 'update' : 'record'}_action")
+             submit_duplicate = t("interventions.form.#{observation.persisted? ? 'update' : 'record'}_duplicate_action")
            end %>
         <%= f.hidden_field field_name, value:, required: true %>
         <%= link_to t('common.labels.cancel'), cancel_path, class: 'btn btn-secondary' %>
-        <%= f.submit submit, class: 'btn btn-primary' %>
+        <%= f.submit submit,
+                     class: 'btn btn-primary',
+                     data: {
+                       original_text: submit,
+                       duplicate_text: submit_duplicate
+                     } %>
       </div>
     </div>
   </div>
