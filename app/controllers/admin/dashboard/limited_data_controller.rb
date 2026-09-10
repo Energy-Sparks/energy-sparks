@@ -11,15 +11,12 @@ module Admin
 
       def index
         super
-        build_breadcrumbs([
-                            { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
-                            { name: 'Limited data' }
-                          ])
+        build_breadcrumbs([{ name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
+                           { name: 'Limited data' }])
       end
 
       def index_button
-        { text: 'View all limited data meters',
-          path: admin_reports_limited_data_path }
+        { text: 'View all limited data meters', path: admin_reports_limited_data_path }
       end
     end
   end
