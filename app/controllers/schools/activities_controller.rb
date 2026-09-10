@@ -83,7 +83,6 @@ module Schools
     def set_breadcrumbs
       return unless activity_type
 
-      activity_type.category
       @breadcrumbs = [
         { name: t('common.labels.pupil_activities'), href: activity_categories_path },
         { name: activity_type.name, href: activity_type_path(activity_type) },
