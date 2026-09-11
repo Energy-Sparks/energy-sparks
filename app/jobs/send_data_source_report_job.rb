@@ -5,7 +5,7 @@ class SendDataSourceReportJob < ApplicationJob
     5
   end
 
-  def perform(to:, data_source_id:)
-    AdminMailer.with(to: to, data_source_id: data_source_id).school_data_source_report.deliver
+  def perform(to, data_source_id, active_only)
+    AdminMailer.school_data_source_report(to, data_source_id, active_only).deliver
   end
 end

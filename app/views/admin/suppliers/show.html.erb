@@ -5,8 +5,14 @@
 <div class="bg-light border rounded py-2 mb-2">
   <div class="col-12 clearfix">
     <%= render 'admin/issues/issueable', issueable: @supplier %>
-    <span class='float-end pe-2'>
-      <%= render 'email_report_button', supplier: @supplier, class: 'btn btn-secondary btn-sm' %>
+    <span class="float-end pe-2">
+      <%= render Forms::EmailReportButtonComponent.new(deliver_admin_supplier_path(@supplier),
+                                                       'Email Supplier Report',
+                                                       button_class: 'btn btn-secondary btn-sm',
+                                                       modal_title: 'Email Supplier Report & CSV',
+                                                       current_user:) do %>
+        <div class="pb-2"><strong>Supplier: </strong><%= @supplier.name %></div>
+      <% end %>
       <%= link_to 'Edit', edit_admin_supplier_path(@supplier), class: 'btn btn-secondary btn-sm' %>
       <%= link_to 'Delete', admin_supplier_path(@supplier), method: :delete, data: { confirm: 'Are you sure?' },
                                                             class: 'btn btn-sm btn-danger' %>
@@ -23,7 +29,7 @@
     <% else %>
       <div class="bg-light p-2">No issues for <%= @supplier.name %>.</div>
     <% end %>
-    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @supplier %></div>
+    <div class="pt-3"><%= render 'admin/issues/issues_links', issueable: @supplier %></div>
   <% end %>
 
   <% component.with_tab(name: :meter_issues,
@@ -34,6 +40,6 @@
     <% else %>
       <div class="bg-light p-2">No meter issues for <%= @supplier.name %>.</div>
     <% end %>
-    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @supplier %></div>
+    <div class="pt-3"><%= render 'admin/issues/issues_links', issueable: @supplier %></div>
   <% end %>
 <% end %>
