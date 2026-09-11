@@ -16,6 +16,8 @@ module Admin
                           ])
       end
 
+      private
+
       def set_log_counts
         amr_data_feed_config = AmrDataFeedConfig.enabled.where(owned_by: @dashboard_user)
         @successes_count = AmrDataFeedImportLog.where(amr_data_feed_config:).successful.recent.count
