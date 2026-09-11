@@ -1,16 +1,22 @@
 <%= tag.div id: id, class: classes do %>
   <table id="unlicensed-schools" class="table table-sorted table-sm advice-table">
       <thead>
-      <tr>
-          <th>School Group</th>
-          <th>School</th>
-          <th class="text-end">Visible?</th>
-          <th class="text-end">Data visible?</th>
-          <th class="text-end">Expired Licence?</th>
-          <th class="text-end">Licensed for Current Academic Year?</th>
-          <th class="text-end">Licensed for Next Academic Year?</th>
-          <th class="text-end"></th>
-      </tr>
+        <tr>
+            <th colspan="5"></th>
+            <th colspan="3" class="text-center">Licensed for</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>School Group</th>
+            <th>School</th>
+            <th class="text-end">Visible?</th>
+            <th class="text-end">Data visible?</th>
+            <th class="text-end">Expired Licence?</th>
+            <th class="text-end">Previous Academic Year?</th>
+            <th class="text-end">Current Academic Year?</th>
+            <th class="text-end">Next Academic Year?</th>
+            <th class="text-end"></th>
+        </tr>
       </thead>
       <tbody>
           <% @schools.each do |school| %>
@@ -29,6 +35,9 @@
                   </td>
                   <td class="text-end">
                       <%= checkmark(school.licences.expired.any?) %>
+                  </td>
+                  <td class="text-end">
+                      <%= render(badge(school, @academic_year.previous_year)) %>
                   </td>
                   <td class="text-end">
                       <%= render(badge(school)) %>
