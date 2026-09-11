@@ -98,7 +98,6 @@ cy:
         completed_message: Llongyfarchiadau, gwnaethoch chi gwblhau'r holl gamau a gweithgareddau a argymhellwyd ar %{date}!
         completed_on: Cwblhawyd ar
         completed_points: Bydd cwblhau'r holl dasgau hyn yn eich gwobrwyo
-        completing_all_of_these_activities_will_award_you: Bydd cwblhau'r holl weithgareddau hyn yn rhoi
         download_report: Lawrlwytho adroddiad
         points:
           one: un pwynt i chi

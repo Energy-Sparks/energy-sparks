@@ -75,7 +75,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_school_group) { create(:school_group) }
 
           before do
-            click_on 'My School Groups'
+            click_on 'School Groups'
           end
 
           it 'has the correct path' do
@@ -100,7 +100,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_project_group) { create(:school_group, group_type: 'project') }
 
           before do
-            click_on 'My Project Groups'
+            click_on 'Project Groups'
           end
 
           it 'has the correct path' do
@@ -128,7 +128,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_school_group) { create(:school_group, :with_active_schools, count: 2) }
 
           before do
-            click_on 'My Impact Reports'
+            click_on 'Impact Reports'
           end
 
           it 'has the correct path' do
@@ -153,7 +153,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_data_source) { create(:data_source) }
 
           before do
-            click_on 'My Data Sources'
+            click_on 'Data Sources'
           end
 
           it 'has the correct path' do
@@ -178,7 +178,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_supplier) { create(:data_source, name: 'non user supplier') }
 
           before do
-            click_on 'My Suppliers'
+            click_on 'Suppliers'
           end
 
           it 'has the correct path' do
@@ -203,7 +203,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_data_feed) { create(:amr_data_feed_config) }
 
           before do
-            click_on 'My Data Feeds'
+            click_on 'Data Feeds'
           end
 
           it 'has the correct path' do
@@ -212,6 +212,32 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the data feeds page' do
             expect(page).to have_link('View all data feed configurations', href: admin_amr_data_feed_configs_path)
+          end
+
+          it 'displays data feeds belonging to the user' do
+            expect(page).to have_text(user_data_feed.description)
+          end
+
+          it 'does not display data feeds which do not belong to the user' do
+            expect(page).to have_no_text(non_user_data_feed.description)
+          end
+        end
+
+        describe 'my import log' do
+          let!(:user_data_feed) { create(:amr_data_feed_config, owned_by: user) }
+          let!(:non_user_data_feed) { create(:amr_data_feed_config) }
+
+          before do
+            create(:amr_data_feed_import_log, amr_data_feed_config: user_data_feed, import_time: 1.day.ago)
+            click_on 'Import Logs'
+          end
+
+          it 'has the correct path' do
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/amr_data_feed_import_logs")
+          end
+
+          it 'links to the data feeds page' do
+            expect(page).to have_link('View all imports', href: admin_reports_amr_data_feed_import_logs_path)
           end
 
           it 'displays data feeds belonging to the user' do
@@ -260,7 +286,7 @@ RSpec.describe 'Admin dashboard' do
           let!(:non_user_school_group) { create(:school_group) }
 
           before do
-            click_on 'My Energy Tariffs'
+            click_on 'Energy Tariffs'
           end
 
           it 'has the correct path' do

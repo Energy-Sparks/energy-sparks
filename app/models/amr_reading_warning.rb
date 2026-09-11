@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: amr_reading_warnings
@@ -36,17 +38,18 @@ class AmrReadingWarning < ApplicationRecord
     4 => :invalid_reading_date,
     5 => :future_reading_date,
     6 => :duplicate_reading,
-    7 => :early_reading_date
+    7 => :early_reading_date,
+    8 => :invalid_non_numeric_mpan_mprn
   }.freeze
 
   enum :warning, { blank_readings: 0, missing_readings: 1, missing_mpan_mprn: 2, missing_reading_date: 3,
                    invalid_reading_date: 4 }
 
   def messages
-    warning_symbols.map { |warning_symbol| AmrReadingData::WARNINGS[warning_symbol] }.join(', ')
+    warning_symbols.map { |warning_symbol| AmrReadingData::WARNINGS[warning_symbol] }
   end
 
   def warning_symbols
-    warning_types.map { |warning_type| WARNINGS[warning_type] }
+    warning_types.filter_map { |warning_type| WARNINGS[warning_type] }
   end
 end
