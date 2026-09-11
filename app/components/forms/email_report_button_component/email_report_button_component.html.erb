@@ -1,5 +1,5 @@
 <%= form_tag @path, method: :post, style: 'display: inline-block !important;' do %>
-  <% button_attributes = { class: @button_class }
+  <% button_attributes = { type: :submit, class: @button_class }
      if content?
        button_attributes.merge!(type: :button,
                                'data-toggle': :modal, 'data-bs-toggle': :modal,

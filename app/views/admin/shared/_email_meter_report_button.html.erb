@@ -5,11 +5,11 @@
       modal_label: local_assigns[:label] || 'Email Meter Report',
       button_class: local_assigns[:class],
       current_user:,
-      school_group: local_assigns[:school_group]) do %>
+      school_group: local_assigns[:school_group]) do |component| %>
   <div class="pt-2">
     <strong>Include:</strong>
     <% [[:active, 'Only active meters'], [:all, 'Active and inactive meters']].each do |type, label| %>
-      <% id = "email-report-#{type}" %>
+      <% id = "#{component.label_id}-#{type}" %>
       <div class="form-check">
         <%= radio_button_tag :all_meters, type, type == :active, id:, class: 'form-check-input' %>
         <%= label_tag id, label, class: 'form-check-label' %>

@@ -2,6 +2,8 @@
 
 module Forms
   class EmailReportButtonComponent < ApplicationComponent
+    attr_reader :label_id
+
     def initialize(path, label, button_class: 'btn btn-sm', **kwargs)
       super
       @path = path

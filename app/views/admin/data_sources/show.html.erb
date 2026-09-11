@@ -34,7 +34,7 @@
     <%= render 'admin/issues/issueable', issueable: @data_source %>
     <span class="badge text-bg-info"><%= @data_source.organisation_type.try(:humanize) %></span>
     <span class="float-end pe-2">
-      <%= render 'admin/shared/email_meter_report_button', path: admin_data_source_deliver_path(@data_source),
+      <%= render 'admin/shared/email_meter_report_button', path: deliver_admin_data_source_path(@data_source),
                                                            label: 'Email Data Source Report',
                                                            class: 'btn btn-secondary btn-sm',
                                                            current_user: %>

@@ -19,7 +19,7 @@ module Admin
           AdminMailer.school_group_meter_data_export(@school_group, current_user.email).deliver_later
         else
           SchoolGroupMeterReportJob.perform_later(to: current_user.email, school_group: @school_group,
-                                                  all_meters: params[:all_meters].present?)
+                                                  all_meters: all_meters?)
         end
         redirect_back fallback_location: admin_school_group_path(@school_group),
                       notice: "Meter report for #{@school_group.name} requested to be sent to #{current_user.email}"
@@ -28,8 +28,10 @@ module Admin
       private
 
       def meter_report
-        @meter_report ||= ::SchoolGroups::MeterReport.new(@school_group, all_meters: params[:all_meters].present?)
+        @meter_report ||= ::SchoolGroups::MeterReport.new(@school_group, all_meters: all_meters?)
       end
+
+      def all_meters? = params[:all_meters] == 'all'
     end
   end
 end

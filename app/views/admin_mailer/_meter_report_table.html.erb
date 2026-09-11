@@ -24,12 +24,12 @@
       <tr>
         <td>
           <% if meter.school&.school_group %>
-            <%= link_to meter.school&.school_group&.name, school_group_url(meter.school&.school_group) %>
+            <%= link_to meter.school.school_group.name, school_group_url(meter.school.school_group) %>
           <% end %>
         </td>
         <td>
           <% if meter.school&.name %>
-            <%= link_to meter.school&.name, school_url(meter.school) %>
+            <%= link_to meter.school.name, school_url(meter.school) %>
           <% end %>
         </td>
         <td>
