@@ -1,27 +1,23 @@
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <%= link_to admin_reports_amr_data_feed_import_logs_path,
-                class: "nav-link #{action_name == 'index' ? 'active' : ''}" do %>
-      Summary
-    <% end %>
+    <%= link_to 'Summary',
+                admin_reports_amr_data_feed_import_logs_path,
+                class: "nav-link #{action_name == 'index' ? 'active' : ''}" %>
   </li>
   <li class="nav-item">
-    <%= link_to admin_reports_amr_data_feed_import_logs_successes_path,
-                class: "nav-link #{action_name == 'successes' ? 'active' : ''}" do %>
-      Successes <span class="badge rounded-pill text-bg-success"><%= @successes_count %></span>
-    <% end %>
+    <%= link_to 'Successes',
+                admin_reports_amr_data_feed_import_logs_successes_path,
+                class: "nav-link #{action_name == 'successes' ? 'active' : ''}" %>
   </li>
   <li class="nav-item">
-    <%= link_to admin_reports_amr_data_feed_import_logs_warnings_path,
-                class: "nav-link #{action_name == 'warnings' ? 'active' : ''}" do %>
-      Warnings <span class="badge rounded-pill text-bg-warning"><%= @warnings_count %></span>
-    <% end %>
+    <%= link_to 'Rejections',
+                admin_reports_amr_data_feed_import_logs_warnings_path,
+                class: "nav-link #{action_name == 'warnings' ? 'active' : ''}" %>
   </li>
   <li class="nav-item">
-    <%= link_to admin_reports_amr_data_feed_import_logs_errors_path,
-                class: "nav-link #{action_name == 'errors' ? 'active' : ''}" do %>
-      Errors <span class="badge rounded-pill text-bg-danger"><%= @errors_count %></span>
-    <% end %>
+    <%= link_to 'Errors',
+                admin_reports_amr_data_feed_import_logs_errors_path,
+                class: "nav-link #{action_name == 'errors' ? 'active' : ''}" %>
   </li>
 </ul>
 <br>

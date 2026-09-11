@@ -7,19 +7,21 @@
       years.
     </p>
     <p>
+      Between September and end of February the table and emailable summary will show the previous and current academic year.
+      From March onwards they will show the current and next academic year.
+    </p>
+    <p>
       The table below lists all schools in this group along with an indication of whether:
     </p>
     <ul>
-      <li>For the current academic year
-          (<%= short_dates(@current_year.start_date) %> - <%= short_dates(@current_year.end_date) %>).
+      <li>For <%= short_dates(@current_year.start_date) %> - <%= short_dates(@current_year.end_date) %>.
           <ul>
             <li>Whether they are licensed for that period</li>
             <li>The contract holder(s) for those licences that cover that period</li>
             <li>The start and end dates for the first licence the school holds for that period (there may be several)</li>
           </ul>
       </li>
-      <li>For the next academic year
-          (<%= short_dates(@next_year.start_date) %> - <%= short_dates(@next_year.end_date) %>).
+      <li>For <%= short_dates(@next_year.start_date) %> - <%= short_dates(@next_year.end_date) %>.
           <ul>
             <li>Whether they are licensed for that period</li>
             <li>The contract holder(s) for those licences that cover that period</li>
@@ -41,7 +43,7 @@
     <%= render Commercial::RangeFundingSummaryComponent.new(
           school_group: @school_group,
           range: @next_year.start_date..@next_year.end_date,
-          range_label: 'the next academic year'
+          range_label: "#{short_dates(@next_year.start_date)} - #{short_dates(@next_year.end_date)}"
         ) %>
     <%= link_to 'Emailable summary',
                 admin_school_group_licence_summaries_path(@school_group, format: :text),

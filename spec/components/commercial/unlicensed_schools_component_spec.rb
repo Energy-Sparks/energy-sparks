@@ -16,6 +16,10 @@ RSpec.describe Commercial::UnlicensedSchoolsComponent, type: :component do
            calendar:,
            start_date: academic_year.end_date + 1.day,
            end_date: academic_year.end_date + 1.year)
+    create(:academic_year,
+           calendar:,
+           start_date: academic_year.start_date - 1.year,
+           end_date: academic_year.start_date - 1.day)
     render_inline described_class.new(schools: [school])
   end
 
@@ -23,13 +27,14 @@ RSpec.describe Commercial::UnlicensedSchoolsComponent, type: :component do
     let(:table_id) { '#unlicensed-schools' }
     let(:expected_header) do
       [
+        ['', 'Licensed for', ''],
         ['School Group', 'School', 'Visible?', 'Data visible?', 'Expired Licence?',
-         'Licensed for Current Academic Year?', 'Licensed for Next Academic Year?', '']
+         'Previous Academic Year?', 'Current Academic Year?', 'Next Academic Year?', '']
       ]
     end
     let(:expected_rows) do
       [
-        [school.organisation_group.name, school.name, '', '', '', 'No', 'No', 'Licences']
+        [school.organisation_group.name, school.name, '', '', '', 'No', 'No', 'No', 'Licences']
       ]
     end
   end

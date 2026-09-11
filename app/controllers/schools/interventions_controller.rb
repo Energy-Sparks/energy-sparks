@@ -78,7 +78,6 @@ module Schools
     def set_breadcrumbs
       return unless intervention_type
 
-      intervention_type.category
       @breadcrumbs = [
         { name: t('common.labels.adult_actions'), href: intervention_type_groups_path },
         { name: intervention_type.name, href: intervention_type_path(intervention_type) },

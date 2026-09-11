@@ -43,9 +43,6 @@ cy:
         many: Rydych wedi cwblhau %{count} o dasgauo sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
         other: Rydych wedi cwblhau %{count} o dasgau sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
     show:
-      activities: Gweithgareddau
-      completed_on: Cwblhawyd ar
-      current_progress: Cynnydd Presennol
       download: Lawrlwytho
       overview: Trosolwg
       view_all_programmes: Gweld pob rhaglen

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ActivitiesController do
+RSpec.describe Schools::ActivitiesController do
   let(:school) { create(:school) }
   let(:different_school) { create(:school) }
   let!(:activity_category) { create(:activity_category) }
@@ -112,7 +112,7 @@ RSpec.describe ActivitiesController do
   end
 
   describe 'GET #new' do
-    context 'As an admin user' do
+    context 'with an admin user' do
       before do
         sign_in_user(:admin)
       end
