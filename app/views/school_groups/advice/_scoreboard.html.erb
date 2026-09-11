@@ -22,7 +22,7 @@
   </div>
 </div>
 
-<div class='text-right pt-3'>
+<div class='text-end pt-3'>
   <% previous_year = academic_year == current_year ? nil : true %>
   <%= link_to t('school_groups.download_as_csv'),
               polymorphic_path(path, params: { previous_year: previous_year, format: :csv }),
@@ -45,7 +45,7 @@
       <% schools.each do |school| %>
         <tr>
           <td>
-            <span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span>
+            <span class="badge text-bg-primary"><%= '=' if schools.size > 1 %><%= position %></span>
           </td>
           <td><%= link_to school.name, school_path(school) %></td>
           <% if include_clusters?(school_group) %>
@@ -53,7 +53,7 @@
           <% end %>
           <td>
             <%= link_to school.sum_points, school_timeline_path(school, academic_year: academic_year),
-                        class: 'badge badge-success' %>
+                        class: 'badge text-bg-success' %>
             &nbsp;
             <% if school.recent_points&.positive? %>
               <i class="fa fa-arrow-up" data-toggle="tooltip" title="<%= t('scoreboard.score_tooltip') %>"></i>
@@ -64,12 +64,12 @@
     <% end %>
     <% scored_schools.without_points.each do |school| %>
       <tr>
-        <td><span class="badge badge-secondary">-</span></td>
+        <td><span class="badge text-bg-secondary">-</span></td>
         <td><%= link_to school.name, school_path(school) %></td>
         <% if include_clusters?(school_group) %>
           <td><%= school.school_group_cluster_name %></td>
         <% end %>
-        <td><span class="badge badge-secondary">0</span></td>
+        <td><span class="badge text-bg-secondary">0</span></td>
       </tr>
     <% end %>
   </tbody>
