@@ -49,6 +49,7 @@ class AmrDataFeedImportLog < ApplicationRecord
           foreign_key: :file_name,
           inverse_of: :amr_data_feed_import_log
 
+  # rubocop:disable-next Metrics/MethodLength
   def self.recent_import_stats_for_config(amr_data_feed_config, cutoff = SUMMARY_PERIOD_IN_DAYS.ago)
     select(<<~SQL.squish)
       COUNT(*) AS total_count,
@@ -67,22 +68,30 @@ class AmrDataFeedImportLog < ApplicationRecord
         WHERE logs.error_messages IS NOT NULL
       ) AS error_count
     SQL
-      .from(<<~SQL.squish)
-        (
-          SELECT
-            logs.id,
-            logs.error_messages,
-            EXISTS (
-              SELECT 1
-              FROM amr_reading_warnings warnings
-              WHERE warnings.amr_data_feed_import_log_id = logs.id
-              LIMIT 1
-            ) AS has_warnings
-          FROM amr_data_feed_import_logs logs
-          WHERE logs.amr_data_feed_config_id = #{amr_data_feed_config.id}
-            AND logs.import_time >= '#{cutoff}'
-        ) AS logs
-      SQL
+      .from(
+        sanitize_sql_array(
+          [
+            <<~SQL.squish,
+              (
+                SELECT
+                  logs.id,
+                  logs.error_messages,
+                  EXISTS (
+                    SELECT 1
+                    FROM amr_reading_warnings warnings
+                    WHERE warnings.amr_data_feed_import_log_id = logs.id
+                    LIMIT 1
+                  ) AS has_warnings
+                FROM amr_data_feed_import_logs logs
+                WHERE logs.amr_data_feed_config_id = ?
+                  AND logs.import_time >= ?
+              ) AS logs
+            SQL
+            amr_data_feed_config.id,
+            cutoff
+          ]
+        )
+      )
       .take
   end
 
