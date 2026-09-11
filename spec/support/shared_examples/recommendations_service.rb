@@ -68,7 +68,7 @@ RSpec.shared_examples 'a service making recommendations based on recent activity
   end
 end
 
-RSpec.shared_examples 'a service making recommendations based on energy use' do |with_todos: false|
+RSpec.shared_examples 'a service making recommendations based on energy use' do
   let!(:alert_generation_run) { create(:alert_generation_run, school: school)}
   let!(:alert_type_elec) { create(:alert_type, fuel_type: :electricity)}
   let!(:alert_type_gas) { create(:alert_type, fuel_type: :gas)}
@@ -193,19 +193,11 @@ RSpec.shared_examples 'a service making recommendations based on energy use' do 
 
     context 'when school has suggested actions from an audit' do
       let!(:audit) do
-        if with_todos
-          create(:audit, school: school, "#{task_type}_todos": create_list("#{task_type}_todo", 6))
-        else
-          create(:audit, school: school, "#{task_types}": create_list(task_type, 6))
-        end
+        create(:audit, school: school, "#{task_type}_todos": create_list("#{task_type}_todo", 6))
       end
 
       let(:audit_task_types) do
-        if with_todos
-          audit.send("#{task_type}_tasks")
-        else
-          audit.send(task_types)
-        end
+        audit.send("#{task_type}_tasks")
       end
 
       it 'tops up from them' do
