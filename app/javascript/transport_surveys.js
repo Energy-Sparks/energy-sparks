@@ -257,16 +257,16 @@ $(document).ready(function() {
   function disableFinishAndSaveButton() {
     $('#save-results').prop("disabled", true);
     let badge = $('#unsaved-responses-count');
-    badge.removeClass("badge-primary");
-    badge.addClass("badge-light");
+    badge.removeClass("text-bg-primary");
+    badge.addClass("text-bg-light");
   }
 
   function enableFinishAndSaveButton() {
     if (storage.getResponsesCount(config.runOn) > 0) {
       $('#save-results').prop("disabled", false);
       let badge = $('#unsaved-responses-count');
-      badge.removeClass("badge-light");
-      badge.addClass("badge-primary");
+      badge.removeClass("text-bg-light");
+      badge.addClass("text-bg-primary");
     }
   }
 

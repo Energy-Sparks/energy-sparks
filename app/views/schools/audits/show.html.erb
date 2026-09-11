@@ -51,7 +51,7 @@
   <% if @audit.has_todos? %>
     <p>
       <%= t('schools.audits.show.completed_points') %>
-      <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
+      <span class="badge text-bg-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
       <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
     </p>
   <% end %>
@@ -111,7 +111,7 @@
       <h3><%= t('schools.audits.show.recommended_pupil_lead_activities') %></h3>
       <p>
         <%= t('schools.audits.show.completing_all_of_these_activities_will_award_you') %>
-        <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
+        <span class="badge text-bg-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
         <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
       </p>
 

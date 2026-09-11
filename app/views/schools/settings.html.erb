@@ -33,7 +33,7 @@
         <%= t('schools.settings.settings.edit_school_times') %>
         <% unless @school.school_times.community_use.any? %>
           <% p.with_pill do %>
-            <span class="badge badge-warning">
+            <span class="badge text-bg-warning">
               <%= t('schools.settings.settings.add_community_use') %>
             </span>
           <% end %>
@@ -65,21 +65,21 @@
         <%= t('schools.settings.users.manage_users') %>
         <% unless @school.users.pupil.any? %>
           <% p.with_pill do %>
-            <span class="badge badge-warning">
+            <span class="badge text-bg-warning">
               <%= t('schools.settings.users.add_pupil_login') %>
             </span>
           <% end %>
         <% end %>
         <% unless @school.users.alertable.any? %>
           <% p.with_pill do %>
-            <span class="badge badge-danger">
+            <span class="badge text-bg-danger">
               <%= t('schools.settings.users.add_users') %>
             </span>
           <% end %>
         <% end %>
         <% unless @school.contacts.any? %>
           <% p.with_pill do %>
-            <span class="badge badge-danger">
+            <span class="badge text-bg-danger">
               <%= t('schools.settings.users.add_alert_contacts') %>
             </span>
           <% end %>
