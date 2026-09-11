@@ -13,7 +13,7 @@ module Admin
     def show; end
 
     def deliver
-      SendDataSourceReportJob.perform_later(current_user.email, @data_source.id, params[:all_meters] == 'active')
+      SendDataSourceReportJob.perform_later(current_user.email, @data_source.id, params[:all_meters].present?)
       redirect_back_or_to(admin_data_source_path(@data_source),
                           notice: "Data source report for #{@data_source.name} requested to be sent to " \
                                   "#{current_user.email}")

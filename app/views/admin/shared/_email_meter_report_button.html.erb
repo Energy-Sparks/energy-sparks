@@ -11,7 +11,7 @@
     <% [[:active, 'Only active meters'], [:all, 'Active and inactive meters']].each do |type, label| %>
       <% id = "#{component.label_id}-#{type}" %>
       <div class="form-check">
-        <%= radio_button_tag :all_meters, type, type == :active, id:, class: 'form-check-input' %>
+        <%= radio_button_tag :all_meters, type == :active ? 'true' : '', type == :active, id:, class: 'form-check-input' %>
         <%= label_tag id, label, class: 'form-check-label' %>
       </div>
     <% end %>
