@@ -4,7 +4,7 @@ class AdminMailerPreview < ActionMailer::Preview
   def school_data_source_report
     data_source_id = DataSource.where(name: 'Ecotricity').first.id
     # Used Ecotricity as example because it has inactive and active meters, plus archived and non-archived schools
-    AdminMailer.with(to: 'operations@energysparks.uk', data_source_id:).school_data_source_report
+    AdminMailer.school_data_source_report('operations@energysparks.uk', data_source_id, false)
   end
 
   def school_supplier_report

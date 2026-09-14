@@ -13,10 +13,10 @@ module Admin
     def show; end
 
     def deliver
-      @data_source = DataSource.find(params[:data_source_id])
-      SendDataSourceReportJob.perform_later(to: current_user.email, data_source_id: @data_source.id)
+      SendDataSourceReportJob.perform_later(current_user.email, @data_source.id, params[:all_meters].present?)
       redirect_back_or_to(admin_data_source_path(@data_source),
-                          notice: "Data source report for #{@data_source.name} requested to be sent to #{current_user.email}")
+                          notice: "Data source report for #{@data_source.name} requested to be sent to " \
+                                  "#{current_user.email}")
     end
 
     def create
@@ -43,23 +43,23 @@ module Admin
     private
 
     def data_source_params
-      params.require(:data_source).permit(:add_existing_data_feed,
-                                          :alert_percentage_threshold,
-                                          :alerts_on,
-                                          :comments,
-                                          :contact_email,
-                                          :contact_name,
-                                          :data_feed_type,
-                                          :data_issues_contact_details,
-                                          :data_prerequisites,
-                                          :historic_data,
-                                          :import_warning_days,
-                                          :loa_contact_details,
-                                          :loa_expiry_procedure,
-                                          :name,
-                                          :new_area_data_feed,
-                                          :organisation_type,
-                                          :owned_by_id)
+      params.expect(data_source: %i[add_existing_data_feed
+                                    alert_percentage_threshold
+                                    alerts_on
+                                    comments
+                                    contact_email
+                                    contact_name
+                                    data_feed_type
+                                    data_issues_contact_details
+                                    data_prerequisites
+                                    historic_data
+                                    import_warning_days
+                                    loa_contact_details
+                                    loa_expiry_procedure
+                                    name
+                                    new_area_data_feed
+                                    organisation_type
+                                    owned_by_id])
     end
   end
 end
