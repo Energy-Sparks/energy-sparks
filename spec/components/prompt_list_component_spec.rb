@@ -9,7 +9,7 @@ RSpec.describe PromptListComponent, :include_application_helper, type: :componen
   let(:params) { all_params }
   let(:title) { 'Title' }
   let(:prompt_text) { 'Prompt text' }
-  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning') }
+  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge text-bg-warning') }
   let(:link) { ActionController::Base.helpers.link_to 'Link text', 'href' }
 
   context 'with all params' do
