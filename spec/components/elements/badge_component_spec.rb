@@ -26,7 +26,7 @@ RSpec.describe Elements::BadgeComponent, :include_application_helper, type: :com
     end
 
     it { expect(html).to have_css('span.badge.text-dark') }
-    it { expect(html).to have_no_css('span.badge.badge-primary') }
+    it { expect(html).to have_no_css('span.badge.text-bg-primary') }
     it { expect(html).to have_text('text') }
   end
 
