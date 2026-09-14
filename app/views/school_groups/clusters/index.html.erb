@@ -22,7 +22,7 @@
                 role="button"
                 aria-expanded="true"
                 aria-controls="cluster-<%= cluster.id %>"
-                class="badge badge-light toggler text-decoration-none">
+                class="badge text-bg-light toggler text-decoration-none">
             <%= toggler %>
           </span>
           <%= fa_icon 'users' %> <%= t('school_groups.clusters.index.cluster', cluster: cluster.name) %>
@@ -34,7 +34,7 @@
                       school_group_cluster_path(@school_group, cluster),
                       method: :delete, data: { confirm: t('common.confirm') },
                       class: 'ml-1 btn btn-sm btn-danger' %>
-          <div class="float-right">
+          <div class="float-end">
             <%= submit_tag t('school_groups.clusters.index.unassign_selected'), class: 'btn btn-sm',
                                                                                 disabled: cluster.schools.none? %>
           </div>
@@ -55,12 +55,12 @@
   <div class="row pb-2 px-2">
     <div class="standout secondary col rounded">
       <h4>
-        <span data-toggle="collapse" href="#cluster-unassigned" role="button" aria-expanded="true" aria-controls="cluster-unassigned" class="badge badge-light toggler  text-decoration-none">
+        <span data-toggle="collapse" href="#cluster-unassigned" role="button" aria-expanded="true" aria-controls="cluster-unassigned" class="badge text-bg-light toggler  text-decoration-none">
           <%= toggler %>
         </span>
         <%= fa_icon 'users-slash' %> <%= t('school_groups.clusters.index.unassigned_title') %>
         <%= render 'schools_count', count: @school_group.assigned_schools.active.by_name.not_in_cluster.count %>
-        <div class="float-right form-inline">
+        <div class="float-end form-inline">
           <small>
             <%= t('school_groups.clusters.index.move_selected') %>
             <%= select_tag :id, options_from_collection_for_select(@school_group.clusters.by_name, :id, :name),

@@ -20,7 +20,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="transport_survey_modal_label"><%= t('schools.transport_surveys.edit.title') %></h1>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><h1>&times;</h1></span>
         </button>
       </div>
@@ -140,7 +140,7 @@
                         transport: '<span id="display-transport"></span>'.html_safe) %></h2>
               <hr>
               <h2><%= t('schools.transport_surveys.edit.steps.carbon_html',
-                        carbon: '<span id="display-carbon" class="badge badge-secondary"></span>'.html_safe) %></h2>
+                        carbon: '<span id="display-carbon" class="badge text-bg-secondary"></span>'.html_safe) %></h2>
               <hr>
               <h2 class="mb-0"><span id="display-carbon-equivalent"></span></h2>
               <p><%= button_tag t('schools.transport_surveys.edit.buttons.next_pupil'),

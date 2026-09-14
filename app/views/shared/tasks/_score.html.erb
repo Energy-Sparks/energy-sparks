@@ -1,8 +1,8 @@
 <% if task.score %>
-  <span class='float-right'>
+  <span class='float-end'>
     <%= t('common.points_html',
           count: tag.span(task.score,
-                          class: 'badge badge-success',
+                          class: 'badge text-bg-success',
                           data: { toggle: 'tooltip',
                                   placement: 'bottom' },
                           title: t("tasks.score.#{task.public_type}")).html_safe) %>
