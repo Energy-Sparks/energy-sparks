@@ -77,7 +77,7 @@ en:
         add_action: Add action
         add_activity: Add activity
         audit_points_message: 'Note: once created the school will automatically be awarded points for having received this audit.'
-        audit_points_message_html: If pupils were involved when you carried out your audit then the school will score <span class="badge badge-success">%{audit_points}</span> points
+        audit_points_message_html: If pupils were involved when you carried out your audit then the school will score <span class="badge text-bg-success">%{audit_points}</span> points
         current_file: Current file
         description: Description
         no_file_attached_yet: No file attached yet
@@ -99,7 +99,6 @@ en:
         completed_message: Congratulations, you completed all recommended actions and activities on %{date}!
         completed_on: Completed on
         completed_points: Completing all of these tasks will award you
-        completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
         points:
           one: point

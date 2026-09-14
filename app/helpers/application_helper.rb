@@ -478,7 +478,7 @@ module ApplicationHelper
     else
       title = 'Dashboard message is not set for '
       title += who
-      tag.span class: 'badge badge-grey-light', title: title.to_s do
+      tag.span class: 'badge bg-grey-light', title: title.to_s do
         fa_icon(:info)
       end
     end

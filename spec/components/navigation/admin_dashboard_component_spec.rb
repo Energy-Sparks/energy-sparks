@@ -21,43 +21,52 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
     it { expect(page).to have_link('Dashboard Home', href: admin_dashboard_path(current_user)) }
 
     describe 'my x links' do
-      it 'links to school groups' do
-        expect(page).to have_link('My School Groups',
-                                  href: admin_dashboard_school_groups_path(current_user))
-      end
-
-      it 'links to project groups' do
-        expect(page).to have_link('My Project Groups',
-                                  href: admin_dashboard_school_groups_path(current_user, group_type: 'project'))
-      end
-
-      it 'links to impact reports' do
-        expect(page).to have_link('My Impact Reports',
-                                  href: admin_dashboard_impact_reports_path(current_user))
-      end
-
-      it 'links to data sources' do
-        expect(page).to have_link('My Data Sources',
-                                  href: admin_dashboard_data_sources_path(current_user))
-      end
-
-      it 'links to suppliers' do
-        expect(page).to have_link('My Suppliers',
-                                  href: admin_dashboard_suppliers_path(current_user))
-      end
-
-      it 'links to data feeds' do
-        expect(page).to have_link('My Data Feeds',
-                                  href: admin_dashboard_amr_data_feed_configs_path(current_user))
-      end
-
       it 'links to issues' do
         expect(page).to have_link('My Issues',
                                   href: admin_dashboard_issues_path(current_user))
       end
+    end
+
+    describe 'my data section' do
+      it 'links to data sources' do
+        expect(page).to have_link('Data Sources',
+                                  href: admin_dashboard_data_sources_path(current_user))
+      end
+
+      it 'links to suppliers' do
+        expect(page).to have_link('Suppliers',
+                                  href: admin_dashboard_suppliers_path(current_user))
+      end
+
+      it 'links to data feeds' do
+        expect(page).to have_link('Data Feeds',
+                                  href: admin_dashboard_amr_data_feed_configs_path(current_user))
+      end
+
+      it 'links to import logs' do
+        expect(page).to have_link('Import Logs',
+                                  href: admin_dashboard_amr_data_feed_import_logs_path(current_user))
+      end
+    end
+
+    describe 'my groups section' do
+      it 'links to school groups' do
+        expect(page).to have_link('School Groups',
+                                  href: admin_dashboard_school_groups_path(current_user))
+      end
+
+      it 'links to project groups' do
+        expect(page).to have_link('Project Groups',
+                                  href: admin_dashboard_school_groups_path(current_user, group_type: 'project'))
+      end
+
+      it 'links to impact reports' do
+        expect(page).to have_link('Impact Reports',
+                                  href: admin_dashboard_impact_reports_path(current_user))
+      end
 
       it 'links to energy tariffs' do
-        expect(page).to have_link('My Energy Tariffs',
+        expect(page).to have_link('Energy Tariffs',
                                   href: admin_dashboard_energy_tariffs_path(current_user))
       end
     end

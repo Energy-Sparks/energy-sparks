@@ -76,7 +76,7 @@ cy:
         add_action: Ychwanegu gweithred
         add_activity: Ychwanegu gweithgaredd
         audit_points_message: 'Sylwer: unwaith y caiff ei chreu bydd yr ysgol yn derbyn pwyntiau yn awtomatig am fod wedi derbyn yr archwiliad hwn.'
-        audit_points_message_html: Os oedd disgyblion yn cymryd rhan pan wnaethoch chi eich archwiliad yna bydd yr ysgol yn sgorio <span class="badge badge-success">%{audit_points}</span> o bwyntiau
+        audit_points_message_html: Os oedd disgyblion yn cymryd rhan pan wnaethoch chi eich archwiliad yna bydd yr ysgol yn sgorio <span class="badge text-bg-success">%{audit_points}</span> o bwyntiau
         current_file: Ffeil bresennol
         description: Disgrifiad
         no_file_attached_yet: Dim ffeil wedi'i hatodi eto
@@ -98,7 +98,6 @@ cy:
         completed_message: Llongyfarchiadau, gwnaethoch chi gwblhau'r holl gamau a gweithgareddau a argymhellwyd ar %{date}!
         completed_on: Cwblhawyd ar
         completed_points: Bydd cwblhau'r holl dasgau hyn yn eich gwobrwyo
-        completing_all_of_these_activities_will_award_you: Bydd cwblhau'r holl weithgareddau hyn yn rhoi
         download_report: Lawrlwytho adroddiad
         points:
           one: un pwynt i chi

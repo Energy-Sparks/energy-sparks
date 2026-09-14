@@ -4,7 +4,6 @@ module Admin
       include Pagy::Method
 
       before_action :set_log_counts
-      SUMMARY_PERIOD_IN_DAYS = 30
 
       def warnings
         render_for(:with_warnings)
@@ -25,7 +24,8 @@ module Admin
       private
 
       def render_for(page)
-        log = AmrDataFeedImportLog.send(page).order(import_time: :desc)
+        log = AmrDataFeedImportLog.send(page).includes(:amr_data_feed_config, :amr_reading_warnings)
+        log = log.recent.order(import_time: :desc)
         log = log.where('file_name ILIKE ?', "%#{params[:search]}%") if params[:search]
         config_id = params.dig(:config, :config_id)
         log = log.where(amr_data_feed_config_id: config_id) if config_id.present?
@@ -34,9 +34,9 @@ module Admin
       end
 
       def set_log_counts
-        @successes_count = AmrDataFeedImportLog.successful.since(SUMMARY_PERIOD_IN_DAYS.days.ago).count
-        @warnings_count = AmrDataFeedImportLog.with_warnings.since(SUMMARY_PERIOD_IN_DAYS.days.ago).count
-        @errors_count = AmrDataFeedImportLog.errored.since(SUMMARY_PERIOD_IN_DAYS.days.ago).count
+        @successes_count = AmrDataFeedImportLog.successful.recent.count
+        @warnings_count = AmrDataFeedImportLog.with_warnings.recent.count
+        @errors_count = AmrDataFeedImportLog.errored.recent.count
       end
     end
   end

@@ -151,6 +151,10 @@ class AmrDataFeedConfig < ApplicationRecord # rubocop:disable Metrics/ClassLengt
     Date.strptime(date_string, format)
   end
 
+  def recent_import_stats
+    AmrDataFeedImportLog.recent_import_stats_for_config(self)
+  end
+
   def latest_reading_date
     amr_data_feed_readings.maximum(:updated_at)
   end

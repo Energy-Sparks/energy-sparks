@@ -87,7 +87,7 @@
           <% Issue.statuses.keys.each do |status, status_id| %>
             <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status),
                               id: status,
-                              class: "badge badge-pill-toggle-#{Issue.status_classes[status.to_sym]}") %>
+                              class: "badge badge-toggle-rounded-#{Issue.status_classes[status.to_sym]}") %>
             <%= label_tag status, status.capitalize,
                           data: { bs_toggle: 'tooltip', bs_placement: 'bottom',
                                   bs_delay: { "show": 500, "hide": 100 } },
