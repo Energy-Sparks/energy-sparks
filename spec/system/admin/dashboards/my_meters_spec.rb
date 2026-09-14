@@ -51,15 +51,22 @@ describe 'Admin dashboard - My Meters' do
       expect(page).to have_link('View all limited data meters', href: admin_reports_limited_data_path)
     end
 
-    it_behaves_like 'it contains the expected data table', aligned: false do
-      let(:link) { 'Limited data meters' }
-      let(:table_id) { '.advice-table' }
-      let(:expected_header) do
-        [['School Group', 'Admin', 'School', 'Meter', 'Meter Name',
-          'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Procurement Route', 'Admin Meter Status',
-          'Manual Reads', 'Last Validated Date', 'Issues & Notes']]
-      end
-      let(:expected_rows) { [] }
+    it_behaves_like 'an admin meter import report', data: false do
+      let(:link) { 'Limited data meter' }
+    end
+  end
+
+  describe 'Stale data meters' do
+    it 'has the correct path' do
+      expect(page).to have_current_path("/admin/dashboards/#{user.id}/stale_data?admin=#{user.id}")
+    end
+
+    it 'links to the reports' do
+      expect(page).to have_link('View all stale data meters', href: admin_reports_stale_data_path)
+    end
+
+    it_behaves_like 'an admin meter import report', data: false do
+      let(:link) { 'Stale data meter' }
     end
   end
 end
