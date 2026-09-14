@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Limited data report' do
+describe 'State data report' do
   let(:school) { create(:school, :with_school_group) }
   let!(:meter) do
     create(:gas_meter_with_validated_reading_dates,
@@ -13,12 +13,12 @@ describe 'Limited data report' do
   before do
     sign_in(create(:admin))
     visit admin_reports_path
-    click_on 'Meters with limited data'
+    click_on 'Meters with stale data'
   end
 
   it_behaves_like 'an admin meter report', help: false do
-    let(:title) { 'Meters with limited data' }
-    let(:description) { 'List of active meters for which we have less than 7 days validated readings' }
+    let(:title) { 'Meters with stale data' }
+    let(:description) { 'List of active meters where validated data is more than 30 days old' }
   end
 
   it_behaves_like 'an admin meter import report' do
