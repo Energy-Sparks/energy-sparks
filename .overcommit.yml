@@ -60,3 +60,7 @@ PreCommit:
     enabled: true
     description: 'Check for needed changes in components scss index'
     command: ['bin/rake', 'scss:components[check]']
+  HerbLint:
+    enabled: true
+    command: ['npx', '@herb-tools/linter']
+    required_executable: 'npx'
