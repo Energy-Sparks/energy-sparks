@@ -55,7 +55,7 @@
     <ul>
       <li><%= link_to 'Community use', admin_reports_community_use_index_path %></li>
       <li><%= link_to 'Heating Types', admin_reports_heating_types_path %></li>
-      <li><%= link_to 'Issues & Notes', admin_issues_path %></li>
+      <li><%= link_to 'Issues &amp; Notes', admin_issues_path %></li>
       <li><%= link_to 'Recent audits', admin_reports_recent_audits_path %></li>
       <li><%= link_to 'School targets', admin_reports_school_targets_path %></li>
       <li><%= link_to 'Pupil Number Updates', admin_reports_pupil_number_updates_path %></li>
@@ -78,7 +78,6 @@
       <li><%= link_to 'Recent manual imports', admin_reports_data_loads_path %></li>
       <li><%= link_to 'School group meter reports', admin_reports_meter_reports_path %></li>
       <li><%= link_to 'Unvalidated readings', admin_reports_unvalidated_readings_path %></li>
-      <li><%= link_to 'Limited data meters', admin_reports_limited_data_path %></li>
     </ul>
 
     <h3>Meters &amp; readings</h3>
@@ -97,6 +96,8 @@
           <li><%= link_to 'Modelled', admin_reports_modelled_solar_index_path %></li>
         </ul>
       </li>
+      <li><%= link_to 'Meters with limited data', admin_reports_limited_data_path %></li>
+      <li><%= link_to 'Meters with stale data', admin_reports_stale_data_path %></li>
     </ul>
 
     <h3>Tariffs</h3>
