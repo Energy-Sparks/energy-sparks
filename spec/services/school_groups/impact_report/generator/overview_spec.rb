@@ -12,7 +12,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
   describe '#metrics' do
     subject(:metrics) do
       overview.metrics.index_by { |metric| metric[:metric_type] }
-                      .transform_values { |u| u.except(:metric_type) }
+              .transform_values { |u| u.except(:metric_type) }
     end
 
     def expected(**)
@@ -104,7 +104,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
 
     context 'with enrolled_schools' do
       context 'with onboardings completed within the last 12 months' do
-        before { create(:school_onboarding, :with_completed, school_group:) }
+        before { create(:school_onboarding, :with_completed, school:) }
 
         it 'counts correctly' do
           expect(metrics[:enrolled_schools]).to eq(expected)
@@ -112,7 +112,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
       end
 
       context 'with onboardings completed more than 12 months ago' do
-        before { create(:school_onboarding, :with_completed, school_group:, completed_on: 13.months.ago) }
+        before { create(:school_onboarding, :with_completed, school:, completed_on: 13.months.ago) }
 
         it 'is zero' do
           expect(metrics[:enrolled_schools]).to eq(expected(value: 0))
@@ -122,7 +122,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
 
     context 'with enrolling_schools' do
       context 'with onboardings that are still incomplete' do
-        before { create(:school_onboarding, school_group:) }
+        before { create(:school_onboarding, school:) }
 
         it 'counts correctly' do
           expect(metrics[:enrolling_schools]).to eq({ enough_data: true, fuel_type: nil, metric_category: :overview,
