@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: update_brook_green_gas_config'
   task update_brook_green_gas_config: :environment do
