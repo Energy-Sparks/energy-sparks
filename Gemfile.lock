@@ -561,9 +561,9 @@ GEM
     pg (1.6.3-arm64-darwin)
     pg (1.6.3-x86_64-darwin)
     pg (1.6.3-x86_64-linux)
-    pg_search (2.3.8)
-      activerecord (>= 7.2)
-      activesupport (>= 7.2)
+    pg_search (2.4.0)
+      activerecord (>= 8.0)
+      activesupport (>= 8.0)
     popper_js (2.11.8)
     pp (0.6.4)
       prettyprint
