@@ -60,9 +60,10 @@ RSpec.shared_examples 'an admin meter import report', :include_application_helpe
             'Meter Name', 'Meter Type', 'Meter System', 'Supplier', 'Data Source', 'Procurement Route',
             'Admin Meter Status', 'Manual Reads', 'Last Validated Date', 'Issues', 'Notes']]
     if data
+      school = meter.school
       csv << [school.school_group.name, school.default_issues_admin_user.name, school.name, meter.mpan_mprn.to_s,
               meter.name, 'gas', meter.t_meter_system, meter.supplier.name, meter.data_source.name, nil,
-              meter.admin_meter_status.label, 'N', end_date.to_date.iso8601, '0', '0']
+              meter.admin_meter_status&.label, 'N', end_date.to_date.iso8601, '0', '0']
     end
     expect(CSV.parse(page.body)).to eq(csv)
   end
