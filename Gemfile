@@ -26,7 +26,7 @@ gem 'wisper' # publish subscribe for ruby objects
 
 # Database/Data
 gem 'after_party' # load data after deploy
-gem 'auto_strip_attributes', '~> 2.5'
+gem 'auto_strip_attributes', '~> 3.0'
 gem 'closed_struct'
 gem 'pg'
 gem 'pg_search'
