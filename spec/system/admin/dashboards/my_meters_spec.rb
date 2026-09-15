@@ -52,7 +52,7 @@ describe 'Admin dashboard - My Meters' do
     end
 
     it_behaves_like 'an admin meter import report', data: false do
-      let(:link) { 'Limited data meter' }
+      let(:link) { 'Limited data meters' }
     end
   end
 
@@ -66,7 +66,7 @@ describe 'Admin dashboard - My Meters' do
     end
 
     it_behaves_like 'an admin meter import report', data: false do
-      let(:link) { 'Stale data meter' }
+      let(:link) { 'Stale data meters' }
     end
   end
 end

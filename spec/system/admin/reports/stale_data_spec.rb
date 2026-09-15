@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'State data report' do
+describe 'Stale data report' do
   let(:school) { create(:school, :with_school_group) }
   let!(:meter) do
     create(:gas_meter_with_validated_reading_dates,
