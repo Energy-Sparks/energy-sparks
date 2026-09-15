@@ -8,19 +8,19 @@
         <%= link_to @school.name, school_path(@school) %>, <%= @observation.at.strftime('%A, %d %B %Y') %>
       </span>
       <br>
-      <span class="badge badge-success"
+      <span class="badge text-bg-success"
             data-toggle="tooltip"
             data-placement="bottom" title="<%= t('activities.show.score_awarded_for_this_activity') %>">
             <%= t('common.points_html', count: @observation.points) %>
       </span>
       <% if @observation.pupil_count %>
-        <span class="badge badge-info"
+        <span class="badge text-bg-info"
               data-toggle="tooltip"
               data-placement="bottom" title="<%= t('interventions.show.pupils_involved_in_this_activity') %>">
               <%= t('common.pupil_count', count: @observation.pupil_count) %>
         </span>
       <% end %>
-      <span class="badge badge-secondary"
+      <span class="badge text-bg-secondary"
             data-toggle="tooltip"
             data-placement="bottom" title="<%= t('activities.show.category_of_activity') %>">
             <%= @observation.intervention_type.intervention_type_group.name %>

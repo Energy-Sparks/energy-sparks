@@ -11,7 +11,7 @@ RSpec.describe PromptComponent, :include_application_helper, type: :component do
   let(:content) { '<p>Content</p>' }
   let(:title) { 'Title' }
   let(:icon) { 'calendar' }
-  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge badge-warning') }
+  let(:pill) { ActionController::Base.helpers.content_tag(:span, 'Warning', class: 'badge text-bg-warning') }
   let(:link) { ActionController::Base.helpers.link_to 'Link text', 'href' }
   let(:always_render) { false }
 

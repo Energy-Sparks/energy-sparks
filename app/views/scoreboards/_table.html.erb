@@ -11,7 +11,7 @@
       <% schools.each do |school| %>
         <tr>
           <td scope="row">
-            <h2><span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span></h2>
+            <h2><span class="badge text-bg-primary"><%= '=' if schools.size > 1 %><%= position %></span></h2>
           </td>
           <td>
             <h2><%= link_to school.name, school_path(school) %></h2>
@@ -22,7 +22,7 @@
                           school_timeline_path(
                             school, ({ academic_year: @academic_year } unless @scoreboard.national?)
                           ),
-                          class: 'badge badge-success' %>
+                          class: 'badge text-bg-success' %>
               &nbsp;
               <% if school.recent_points&.positive? %>
                 <i class="fa fa-arrow-up" data-toggle="tooltip" title="<%= t('scoreboard.score_tooltip') %>"></i>
@@ -34,11 +34,11 @@
     <% end %>
     <% schools.without_points.each do |school| %>
       <tr>
-        <td><h2><span class="badge badge-secondary">-</span></h2></td>
+        <td><h2><span class="badge text-bg-secondary">-</span></h2></td>
         <td>
           <h2><%= link_to school.name, school_path(school) %></h2>
         </td>
-        <td><h2><span class="badge badge-secondary">0</span></h2></td>
+        <td><h2><span class="badge text-bg-secondary">0</span></h2></td>
       </tr>
     <% end %>
   </tbody>
