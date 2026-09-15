@@ -10,11 +10,7 @@ module Admin
       def title = 'Meters with stale data'
 
       def results
-        filter_results(Meter.active
-                            .joins(:amr_validated_readings, school: :school_group)
-                            .group('meters.id', 'schools.id')
-                            .having("MAX(amr_validated_readings.reading_date) < CURRENT_DATE - INTERVAL '30 days'")
-                            .where(schools: { active: true }))
+        filter_results(Meter.with_stale_readings(30).joins(school: :school_group))
       end
     end
   end

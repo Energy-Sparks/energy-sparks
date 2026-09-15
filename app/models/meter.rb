@@ -128,7 +128,12 @@ class Meter < ApplicationRecord
       )
   }
 
-  scope :with_stale_readings, lambda {
+  scope :with_stale_readings, lambda { |days = nil|
+    interval = if days.nil?
+                 "data_sources.import_warning_days * INTERVAL '1 day'"
+               else
+                 "INTERVAL '#{days} days'"
+               end
     left_outer_joins(:data_source)
       .merge(Meter.active_for_active_schools)
       .joins(<<~SQL.squish)
@@ -140,7 +145,7 @@ class Meter < ApplicationRecord
           LIMIT 1
         ) AS max_reading ON true
       SQL
-      .where("reading_date < CURRENT_DATE - (data_sources.import_warning_days * INTERVAL '1 day')")
+      .where("reading_date < CURRENT_DATE - (#{interval})")
   }
 
   scope :with_active_meter_attributes, lambda { |attribute_type|
