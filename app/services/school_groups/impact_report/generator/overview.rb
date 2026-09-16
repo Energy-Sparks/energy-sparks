@@ -31,7 +31,7 @@ module SchoolGroups
 
         # schools enrolled in the last 12 months
         def enrolled_schools
-          school_group.schools.joins(school_onboarding: :events)
+          school_group.assigned_schools.joins(school_onboarding: :events)
                       .where(school_onboarding_events: {
                                event: SchoolOnboardingEvent.events[:onboarding_complete],
                                created_at: twelve_months_ago..
@@ -41,7 +41,9 @@ module SchoolGroups
         end
 
         # schools still enrolling
-        def enrolling_schools = school_group.schools.joins(:school_onboarding).merge(SchoolOnboarding.incomplete).count
+        def enrolling_schools
+          school_group.assigned_schools.joins(:school_onboarding).merge(SchoolOnboarding.incomplete).count
+        end
 
         def users_scope
           schools = visible_schools
