@@ -31,6 +31,7 @@ module SchoolGroups
 
         # schools enrolled in the last 12 months
         def enrolled_schools
+          # go via school to onboarding as school group does not always seem to be populated
           school_group.assigned_schools.joins(school_onboarding: :events)
                       .where(school_onboarding_events: {
                                event: SchoolOnboardingEvent.events[:onboarding_complete],
