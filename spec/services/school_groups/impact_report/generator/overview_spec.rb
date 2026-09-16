@@ -122,7 +122,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
 
     context 'with enrolling_schools' do
       context 'with onboardings that are still incomplete' do
-        before { create(:school_onboarding, school:) }
+        before { create(:school_onboarding, school_group:) }
 
         it 'counts correctly' do
           expect(metrics[:enrolling_schools]).to eq({ enough_data: true, fuel_type: nil, metric_category: :overview,
