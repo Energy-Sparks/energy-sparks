@@ -41,9 +41,7 @@ module SchoolGroups
         end
 
         # schools still enrolling
-        def enrolling_schools
-          school_group.assigned_schools.joins(:school_onboarding).merge(SchoolOnboarding.incomplete).count
-        end
+        def enrolling_schools = school_group.onboardings_for_group.incomplete.count
 
         def users_scope
           schools = visible_schools
