@@ -47,6 +47,16 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
       it { expect(page).to have_text('recorded 1 pupil activity in the last 12 months') }
     end
 
+    context 'with an action this academic year and an activity in a previous academic year but in the last 12 months' do
+      before do
+        create_list(:observation, 1, :intervention, school: school, at: yesterday)
+        create_list(:activity, 1, school: school, happened_on: 11.months.ago)
+        render_inline(described_class.new(school_group: school_group))
+      end
+
+      it { expect(page).to have_text('recorded 1 pupil activity and 1 adult action in the last 12 months') }
+    end
+
     context 'with no points' do
       before do
         render_inline(described_class.new(school_group: school_group))
