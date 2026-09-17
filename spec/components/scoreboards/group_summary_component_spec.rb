@@ -33,7 +33,8 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
 
     it 'shows podium correctly' do
       podium = page.find('.scoreboards-podium-component')
-      expect(podium).to have_text('Your highest scoring school holds 1st place nationally')
+      expect(podium)
+        .to have_text('Your highest scoring school holds 1st place on the national scoreboard for this academic year')
       expect(podium).to have_link('highest scoring school', href: scores_school_group_advice_path(school_group))
     end
 
