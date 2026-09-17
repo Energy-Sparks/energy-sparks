@@ -31,17 +31,15 @@ module SchoolGroups
 
         # schools enrolled in the last 12 months
         def enrolled_schools
-          school_group
-            .onboardings_for_group
-            .joins(:events)
-            .where(
-              school_onboarding_events: {
-                event: SchoolOnboardingEvent.events[:onboarding_complete],
-                created_at: twelve_months_ago..
-              }
-            )
-            .distinct
-            .count
+          # via school_groupings → school → onboarding, as school_onboardings.school_group_id can be
+          # nil even when the school belongs to the group
+          school_group.assigned_schools.joins(school_onboarding: :events)
+                      .where(school_onboarding_events: {
+                               event: SchoolOnboardingEvent.events[:onboarding_complete],
+                               created_at: twelve_months_ago..
+                             })
+                      .distinct
+                      .count
         end
 
         # schools still enrolling
