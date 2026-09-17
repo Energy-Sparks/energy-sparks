@@ -12,7 +12,7 @@ module ImpactReports
       end
 
       def default_school
-        @default_school ||= @school_group.scored_schools.first
+        @default_school ||= @school_group.scored_schools(recent_boundary: 12.months.ago, academic_year: nil).first
       end
 
       def school
