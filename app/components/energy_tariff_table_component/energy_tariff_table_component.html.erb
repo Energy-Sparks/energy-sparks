@@ -36,7 +36,7 @@
         <% if show_prices? %>
           <td class="text-right">
             <ul style="list-style: none; padding-left: 0px;">
-              <% energy_tariff.energy_tariff_prices.order(start_time: :asc).each do |price| %>
+              <% energy_tariff.energy_tariff_prices.by_start_time.each do |price| %>
                 <li>
                   <% if energy_tariff.differential? %>
                     <%= t('schools.user_tariffs.tariff_partial.price_from_to', price_start_time: start_time(price),

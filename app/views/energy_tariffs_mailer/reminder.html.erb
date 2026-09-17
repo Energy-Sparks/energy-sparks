@@ -1,0 +1,27 @@
+<div class="space-y-4">
+  <% if @user.group_admin?
+       type = :group
+       organisation = @user.school_group
+     else
+       type = :school
+       organisation = @user.school
+     end %>
+  <p>
+    <%= t("energy_tariffs_mailer.reminder.thank_you_#{type}",
+          fuel_types: t_fuels_as_sentence(organisation.energy_tariffs.enabled.current.pluck(:meter_type).uniq)) %>
+    <%= t("energy_tariffs_mailer.reminder.update_your_tariff") %>
+  </p>
+  <% url = if @user.group_admin?
+             school_group_energy_tariffs_url(@user.school_group)
+           else
+             school_energy_tariffs_url(@user.school)
+           end %>
+  <p><%= t('energy_tariffs_mailer.reminder.to_do_this_html', url:) %></p>
+  <p>
+    <%= t("energy_tariffs_mailer.reminder.if_not_updated_#{type}",
+          electricity: format_target(SiteSettings.current_prices.electricity_price, :£),
+          gas: format_target(SiteSettings.current_prices.gas_price, :£)) %>
+  </p>
+  <p><%= t('energy_tariffs_mailer.reminder.if_you_are_planning_html',
+           email: organisation.default_issues_admin_user&.email) %></p>
+</div>

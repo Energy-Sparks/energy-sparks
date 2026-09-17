@@ -1,4 +1,20 @@
+# frozen_string_literal: true
+
 class EnergyTariffsMailer < LocaleMailer
+  helper ApplicationHelper
+  helper LocaleHelper
+  helper EnergyTariffsHelper
+
+  def reminder(user)
+    @user = user
+    name = user.group_admin? ? user.school_group.name : user.school.name
+    locale = user.preferred_locale
+    make_bootstrap_mail(to: user.email,
+                        subject: I18n.t('energy_tariffs_mailer.reminder.subject', name:, locale:),
+                        locale:)
+    prevent_delivery_from_test
+  end
+
   def group_admin_review_group_tariffs_reminder
     @school_group = SchoolGroup.find(params[:school_group_id])
 
@@ -7,7 +23,8 @@ class EnergyTariffsMailer < LocaleMailer
 
       make_bootstrap_mail(
         to: group_admin.email,
-        subject: I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.subject', school_group_name: @school_group.name, locale: params[:locale]),
+        subject: I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.subject',
+                        school_group_name: @school_group.name, locale: params[:locale]),
         locale: params[:locale]
       )
     end
@@ -23,7 +40,8 @@ class EnergyTariffsMailer < LocaleMailer
 
       make_bootstrap_mail(
         to: school_admin.email,
-        subject: I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject', school_name: @school.name, locale: params[:locale]),
+        subject: I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject',
+                        school_name: @school.name, locale: params[:locale]),
         locale: params[:locale]
       )
     end
