@@ -31,7 +31,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
 
     context 'with a single action and no activities recorded' do
       before do
-        create_list(:observation, 1, :intervention, school: school, at: yesterday)
+        create(:observation, :intervention, school: school, at: yesterday)
         render_inline(described_class.new(school_group: school_group))
       end
 
@@ -40,7 +40,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
 
     context 'with a single activity and no actions recorded' do
       before do
-        create_list(:activity, 1, school: school, happened_on: yesterday)
+        create(:activity, school: school, happened_on: yesterday)
         render_inline(described_class.new(school_group: school_group))
       end
 
@@ -49,8 +49,8 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
 
     context 'with an action this academic year and an activity in a previous academic year but in the last 12 months' do
       before do
-        create_list(:observation, 1, :intervention, school: school, at: yesterday)
-        create_list(:activity, 1, school: school, happened_on: 11.months.ago)
+        create(:observation, :intervention, school: school, at: yesterday)
+        create(:activity, school: school, happened_on: 11.months.ago)
         render_inline(described_class.new(school_group: school_group))
       end
 
