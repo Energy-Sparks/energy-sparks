@@ -1,0 +1,20 @@
+
+<% content_for :page_title, t('activities.index.title') %>
+<% @audience = :pupil_tasks # triggers change in colour to header %>
+
+<%= content_for :header do %>
+  <%= render Layout::GridComponent.new(cols: 2, cell_classes: 'my-auto', id: 'hero') do |grid| %>
+
+    <% grid.with_feature_card size: :lg do |feature| %>
+      <%= feature.with_header title: 'Explore energy saving activities', classes: '' %>
+      <%= feature.with_description do %>
+        <p><%= t('activities.index.description') %>.</p>
+        <p><%= t('activities.index.description_action_html', count: ActivityType.active_and_not_custom.count) %>.</p>
+      <% end %>
+    <% end %>
+
+    <%= grid.with_image rounded: :all, fit: false, collapse: true, width: '350px', classes: 'ms-auto',
+                        src: cdn_link_url('recommendations/opt-in.png'), placeholder: 'replaceme' %>
+    <%= grid.with_placeholder label: 'Placeholder image', placement: :right %>
+  <% end %>
+<% end %>

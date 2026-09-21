@@ -82,7 +82,7 @@
 
 <%= render 'admin/shared/dashboard_message', messageable: @school_group %>
 
-<%= render 'button_panel' %>
+<%= render 'button_panel', school_group: @school_group %>
 
 <%= render TabsComponent.new(classes: 'preserve-tab-link') do |component| %>
   <% component.with_tab(name: :active, label: 'Active') do %>
