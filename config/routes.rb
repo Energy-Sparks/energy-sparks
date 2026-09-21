@@ -837,7 +837,7 @@ Rails.application.routes.draw do
       post :deliver
     end
     resources :data_sources do
-      post :deliver
+      post :deliver, on: :member
       scope module: :data_sources do
         concerns :issueable
       end
