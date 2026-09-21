@@ -89,6 +89,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :activities, only: [:index]
+
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
       get 'more-information', as: :more_information
