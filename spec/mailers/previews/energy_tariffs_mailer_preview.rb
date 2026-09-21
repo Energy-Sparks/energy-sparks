@@ -7,6 +7,14 @@ class EnergyTariffsMailerPreview < ActionMailer::Preview
     EnergyTariffsMailer.with(school_id: School.first.id).school_admin_review_school_tariffs_reminder
   end
 
+  def reminder_with_tariff
+    EnergyTariffsMailer.reminder(User.school_admin.sample, true)
+  end
+
+  def reminder_without_tariff
+    EnergyTariffsMailer.reminder(User.school_admin.sample, false)
+  end
+
   private
 
   def locale

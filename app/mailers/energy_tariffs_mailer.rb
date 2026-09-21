@@ -5,12 +5,14 @@ class EnergyTariffsMailer < LocaleMailer
   helper LocaleHelper
   helper EnergyTariffsHelper
 
-  def reminder(user)
+  def reminder(user, current_tariff)
     @user = user
-    name = user.group_admin? ? user.school_group.name : user.school.name
+    @current_tariff = current_tariff
+    @is_group_admin = user.group_admin?
+    @organisation = @is_group_admin ? @user.school_group : @user.school
     locale = user.preferred_locale
     make_bootstrap_mail(to: user.email,
-                        subject: I18n.t('energy_tariffs_mailer.reminder.subject', name:, locale:),
+                        subject: I18n.t('energy_tariffs_mailer.reminder.subject', name: @organisation.name, locale:),
                         locale:)
     prevent_delivery_from_test
   end
