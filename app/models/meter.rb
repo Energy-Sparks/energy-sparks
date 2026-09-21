@@ -132,7 +132,7 @@ class Meter < ApplicationRecord
     interval = if days.nil?
                  "data_sources.import_warning_days * INTERVAL '1 day'"
                else
-                 "INTERVAL '#{days} days'"
+                 "INTERVAL '#{days.to_i} days'"
                end
     left_outer_joins(:data_source)
       .merge(Meter.active_for_active_schools)
