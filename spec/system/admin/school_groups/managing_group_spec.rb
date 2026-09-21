@@ -412,7 +412,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         travel_to Date.new(2025, 9, 1)
         create(:amr_validated_reading, meter: meter, reading_date: Date.yesterday, reading: 1.0)
         click_on 'Meter data export'
-        click_on 'Email meter data export'
+        click_on 'Email Meter Data Export'
         perform_enqueued_jobs
       end
 
