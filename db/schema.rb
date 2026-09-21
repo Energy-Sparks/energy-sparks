@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_20_134134) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_161847) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -115,12 +115,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_134134) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
+  create_table "activity_subject_areas", force: :cascade do |t|
+    t.bigint "country_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_activity_subject_areas_on_country_id"
+  end
+
   create_table "activity_timings", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.boolean "include_lower", default: false
     t.string "name", null: false
     t.integer "position", default: 0
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "activity_topics", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "activity_type_impacts", id: false, force: :cascade do |t|
@@ -933,6 +945,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_134134) do
     t.index ["school_id"], name: "index_content_generation_runs_on_school_id"
   end
 
+  create_table "countries", force: :cascade do |t|
+  end
+
   create_table "dark_sky_temperature_readings", force: :cascade do |t|
     t.bigint "area_id", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -1418,6 +1433,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_134134) do
   create_table "key_stages", force: :cascade do |t|
     t.string "name"
     t.index ["name"], name: "index_key_stages_on_name", unique: true
+  end
+
+  create_table "learning_stages", force: :cascade do |t|
+    t.bigint "country_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_learning_stages_on_country_id"
   end
 
   create_table "link_rewrites", force: :cascade do |t|
@@ -2523,6 +2545,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_134134) do
   add_foreign_key "activities", "schools", on_delete: :cascade
   add_foreign_key "activities", "users", column: "created_by_id"
   add_foreign_key "activities", "users", column: "updated_by_id"
+  add_foreign_key "activity_subject_areas", "countries"
   add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
   add_foreign_key "activity_type_key_stages", "activity_types", on_delete: :cascade
@@ -2643,6 +2666,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_134134) do
   add_foreign_key "issues", "users", column: "created_by_id"
   add_foreign_key "issues", "users", column: "owned_by_id"
   add_foreign_key "issues", "users", column: "updated_by_id"
+  add_foreign_key "learning_stages", "countries"
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "schools", on_delete: :cascade
