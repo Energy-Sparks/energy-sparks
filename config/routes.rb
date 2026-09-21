@@ -610,7 +610,8 @@ Rails.application.routes.draw do
         resources :estimated_reads
         resources :manual_reads
         resources :pupil_number_updates
-        resources :limited_data
+        resources :limited_data, only: [:index]
+        resources :stale_data, only: [:index]
       end
     end
     resources :mailer_previews, only: [:index]
@@ -932,6 +933,7 @@ Rails.application.routes.draw do
       resources :modelled_solar, only: :index
       resources :solar_installations, only: :index
       resources :limited_data, only: :index
+      resources :stale_data, only: :index
     end
 
     resource :settings, only: %i[show update]
