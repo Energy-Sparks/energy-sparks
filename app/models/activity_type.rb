@@ -51,11 +51,15 @@ class ActivityType < ApplicationRecord
   alias category activity_category
 
   t_has_one_attached :image
-  has_and_belongs_to_many :key_stages, join_table: :activity_type_key_stages
+
+  #### to be removed when we have fully moved over to new classifications
+  # may rename these so we can start a fresh with the new relationships
+  has_and_belongs_to_many :key_stages, join_table: :activity_types_key_stages
   has_and_belongs_to_many :impacts, join_table: :activity_type_impacts
   has_and_belongs_to_many :subjects, join_table: :activity_type_subjects
   has_and_belongs_to_many :topics, join_table: :activity_type_topics
   has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
+  ####
 
   scope :active, -> { where(active: true) }
   scope :not_custom, -> { where(custom: false) }
