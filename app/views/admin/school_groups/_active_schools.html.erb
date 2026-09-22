@@ -1,17 +1,57 @@
-<table class="table">
-  <% school_group.assigned_schools.active.by_name.each do |school| %>
-    <tr class="bg-light">
-      <td><%= link_to school.name, school_path(school) %> <%= link_to(dashboard_message_icon(school),
-                                                                      edit_admin_school_dashboard_message_path(school)) %></td>
-      <td><%= school.summarised_current_contract_holder_name %></td>
-      <td><%= render 'shared/school_status_buttons', school: school %></td>
-      <td class="nowrap text-end">
-        <%= link_to issue_type_icons(school.issues, label: 'Issues'), admin_school_issues_path(school),
-                    class: 'btn btn-default btn-sm' %>
-        <%= link_to 'Edit', edit_school_path(school), class: 'btn btn-default btn-sm' %>
-        <%= link_to 'Users', school_users_path(school), class: 'btn btn-default btn-sm' %>
-        <%= link_to 'Meters', school_meters_path(school), class: 'btn btn-default btn-sm' %>
-      </td>
+<table class="table table-sm table-striped table-sorted">
+  <thead>
+    <tr>
+      <th>School</th>
+      <% if school_group.project? %>
+        <th>Admin</th>
+      <% end %>
+      <th>Contract holder</th>
+      <th class="no-sort"></th>
+      <th class="no-sort"></th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% school_group.assigned_schools.active.by_name.each do |school| %>
+      <tr>
+        <td>
+          <%= link_to school.name, school_path(school) %>
+          <%= link_to(dashboard_message_icon(school), edit_admin_school_dashboard_message_path(school)) %>
+        </td>
+        <% if school_group.project? %>
+          <td>
+              <% if school.default_issues_admin_user %>
+                <span class="badge border rounded-pill border-secondary fw-normal">
+                  <%= link_to (if school.default_issues_admin_user == current_user
+                                 'You'
+                               else
+                                 school.default_issues_admin_user.display_name
+                               end),
+                              polymorphic_path([:admin, Issue], user: school.default_issues_admin_user),
+                              class: 'text-decoration-none' %>
+                </span>
+              <% end %>
+          </td>
+        <% end %>
+        <td>
+          <%= school.summarised_current_contract_holder_name %>
+        </td>
+        <td class="nowrap">
+          <%= render 'shared/school_status_buttons', school: school %>
+        </td>
+        <td class="nowrap text-end">
+          <%= link_to issue_type_icons(school.issues, label: 'Issues'), admin_school_issues_path(school),
+                      class: 'btn btn-default btn-sm' %>
+          <%= link_to edit_school_path(school), class: 'btn btn-default btn-sm', title: 'Edit' do %>
+            <i class="fas fa-pen-to-square"></i>
+          <% end %>
+          <%= link_to school_users_path(school), class: 'btn btn-default btn-sm', title: 'Users' do %>
+            <i class="fas fa-users"></i>
+          <% end %>
+          <%= link_to school_meters_path(school), class: 'btn btn-default btn-sm', title: 'Meters' do %>
+            <i class="fas fa-gauge"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
