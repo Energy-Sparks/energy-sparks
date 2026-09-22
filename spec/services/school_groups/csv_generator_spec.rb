@@ -15,9 +15,9 @@ RSpec.describe SchoolGroups::CsvGenerator do
   context 'with school group data' do
     subject(:data) { SchoolGroups::CsvGenerator.new(school_groups).export_detail }
 
-    let(:school_groups) { 2.times.collect { create(:school_group) } }
+    let(:school_groups) { 2.times.collect { create(:school_group, default_issues_admin_user: create(:admin)) } }
     let(:line_count) { 1 + (School.school_types.length * school_groups.length) + school_groups.length + 1 }
-    let(:header) { 'School group,Group type,School type,Onboarding,Active,Data visible,Invisible,Removed' }
+    let(:header) { 'School group,Group type,Group admin,School type,Onboarding,Active,Data visible,Invisible,Removed' }
 
     before do
       create_data_for_school_groups(school_groups)
@@ -30,15 +30,17 @@ RSpec.describe SchoolGroups::CsvGenerator do
       i = 1
       school_groups.each do |school_group|
         School.school_types.each_key do |school_type|
-          expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize, school_type.humanize,
+          expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize,
+                                             school_group.default_issues_admin_user.display_name, school_type.humanize,
                                              1, 1, 1, 1, 1].join(','))
           i += 1
         end
-        expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize, 'All school types', 7,
-                                           7, 7, 7, 7].join(','))
+        expect(data.lines[i].chomp).to eq([school_group.name, school_group.group_type.humanize,
+                                           school_group.default_issues_admin_user.display_name, 'All school types',
+                                           7, 7, 7, 7, 7].join(','))
         i += 1
       end
-      expect(data.lines[i].chomp).to eq(['All Energy Sparks schools', 'All', 'All school types', 14, 14, 14, 14,
+      expect(data.lines[i].chomp).to eq(['All Energy Sparks schools', 'All', '-', 'All school types', 14, 14, 14, 14,
                                          14].join(','))
     end
   end
