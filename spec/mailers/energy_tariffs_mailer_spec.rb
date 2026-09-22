@@ -6,7 +6,7 @@ describe EnergyTariffsMailer, :include_application_helper do
   include EmailHelpers
 
   # before { stub_const('ENV', ENV.to_h.merge('WELSH_APPLICATION_HOST' => 'cy.localhost')) }
-  before { stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true')) }
+  before { stub_env(SEND_AUTOMATED_EMAILS: true) }
 
   # around do |example|
   #   ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
@@ -22,6 +22,11 @@ describe EnergyTariffsMailer, :include_application_helper do
 
   def expected_subject(name)
     "It's time to review the energy tariffs for #{name} on Energy Sparks"
+  end
+
+  def deliver(user, accessor, tariff)
+    described_class.reminder_deliver_later_per_locale(user.public_send(accessor), [user], tariff)
+    perform_enqueued_jobs
   end
 
   context 'with tariff set' do
@@ -74,10 +79,8 @@ describe EnergyTariffsMailer, :include_application_helper do
     end
   end
 
-  fcontext 'with no tariff set' do
-    before do
-      described_class.reminder(user, false).deliver_now
-    end
+  context 'with no tariff set' do
+    let!(:tariff) { nil }
 
     def expected_body(organisation)
       url = if organisation.is_a?(School)
@@ -106,15 +109,27 @@ describe EnergyTariffsMailer, :include_application_helper do
     context 'with a school admin' do
       let(:user) { create(:school_admin, school:) }
 
+      before { deliver(user, :school, tariff) }
+
       it 'sends the expected email' do
         expect(last_email.subject).to eq(expected_subject(school.name))
         expect(bootstrap_email_body_to_markdown(last_email)).to eq(expected_body(school))
       end
+
+      # fcontext 'with an expired tariff' do
+      #   let(:tariff) { create(:energy_tariff, tariff_holder: user.school, end_date: 1.day.ago) }
+
+      #   it 'sends the expected email' do
+      #     expect(last_email.subject).to eq(expected_subject(school.name))
+      #     expect(bootstrap_email_body_to_markdown(last_email)).to eq(expected_body(school))
+      #   end
+      # end
     end
 
     context 'with a group admin' do
       let(:user) { create(:group_admin, school_group: school.school_group) }
-      # let(:tariff_holder) { user.school_group }
+
+      before { deliver(user, :school_group, nil) }
 
       it 'sends the expected email' do
         expect(last_email.subject).to eq(expected_subject(school.school_group.name))

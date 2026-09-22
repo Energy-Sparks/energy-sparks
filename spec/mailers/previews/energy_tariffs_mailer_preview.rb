@@ -1,4 +1,4 @@
-class EnergyTariffsMailerPreview < ActionMailer::Preview
+class EnergyTariffsMailerPreview < BasePreview
   def group_admin_review_group_tariffs_reminder
     EnergyTariffsMailer.with(school_group_id: SchoolGroup.first.id).group_admin_review_group_tariffs_reminder
   end
@@ -8,16 +8,22 @@ class EnergyTariffsMailerPreview < ActionMailer::Preview
   end
 
   def reminder_with_tariff
-    EnergyTariffsMailer.reminder(User.school_admin.sample, true)
+    school = School.active.sample
+    EnergyTariffsMailer.reminder(school, school.school_admin, true, locale)
   end
 
   def reminder_without_tariff
-    EnergyTariffsMailer.reminder(User.school_admin.sample, false)
+    school = School.active.sample
+    EnergyTariffsMailer.reminder(school, school.school_admin, false, locale)
   end
 
-  private
+  def reminder_with_tariff_group
+    group = User.group_admin.active.sample.school_group
+    EnergyTariffsMailer.reminder(group, group.users.group_admin, true, locale)
+  end
 
-  def locale
-    @params['locale'].present? ? @params['locale'] : 'en'
+  def reminder_without_tariff_group
+    group = User.group_admin.active.sample.school_group
+    EnergyTariffsMailer.reminder(group, group.users.group_admin, false, locale)
   end
 end
