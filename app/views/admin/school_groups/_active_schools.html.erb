@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th>School</th>
-      <% if school_group.project? %>
+      <% unless school_group.organisation? %>
         <th>Admin</th>
       <% end %>
       <th>Contract holder</th>
@@ -17,7 +17,7 @@
           <%= link_to school.name, school_path(school) %>
           <%= link_to(dashboard_message_icon(school), edit_admin_school_dashboard_message_path(school)) %>
         </td>
-        <% if school_group.project? %>
+        <% unless school_group.organisation? %>
           <td>
               <% if school.default_issues_admin_user %>
                 <span class="badge border rounded-pill border-secondary fw-normal">
