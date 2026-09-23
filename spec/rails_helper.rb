@@ -96,7 +96,7 @@ RSpec.configure do |config|
   config.include ShowMeTheCookies, type: :system
 
   config.expect_with :rspec do |expectations|
-    expectations.max_formatted_output_length = 500
+    expectations.max_formatted_output_length = 5000
   end
 end
 

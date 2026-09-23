@@ -3,21 +3,22 @@
 namespace :schools do
   task send_expiring_tariff_reminders: :environment do
     def expiring_soon(organisation)
-      organisation.energy_tariffs.enabled.current.find { |tariff| tariff.end_date == 30.days.ago }
+      organisation.energy_tariffs.enabled.current.find { |tariff| tariff.end_date == 30.days.from_now.to_date } &&
+        organisation.energy_tariffs.enabled.where(start_date: Date.current..).none?
     end
 
     begin
       School.active.find_each do |school|
         current_tariff = expiring_soon(school)
         if current_tariff
-          EnergyTariffsMailer.reminder_deliver_later_per_locale(school, school.school_admins, current_tariff)
+          EnergyTariffsMailer.reminder_deliver_later_per_locale(school, school.school_admin, current_tariff)
         end
       end
 
       SchoolGroup.find_each do |school_group|
         current_tariff = expiring_soon(school_group)
         if current_tariff
-          EnergyTariffsMailer.reminder_deliver_later_per_locale(school_group, school_groups.users.group_admin, current_tariff)
+          EnergyTariffsMailer.reminder_deliver_later_per_locale(school_group, school_group.users.group_admin, current_tariff)
         end
       end
     rescue StandardError => e

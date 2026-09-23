@@ -20,6 +20,7 @@ RSpec.describe 'schools:send_expiring_tariff_reminders' do # rubocop:disable RSp
   shared_examples 'it sends the expected email' do
     it 'sends the expected email' do
       expect(last_email.subject).to eq(I18n.t('energy_tariffs_mailer.reminder.subject', name: organisation.name))
+      expect(last_email.text_part.decoded).to include('Thank you for updating')
     end
   end
 

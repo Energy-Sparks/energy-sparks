@@ -7,36 +7,54 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
   include EmailHelpers
   include ActiveJob::TestHelper
 
-  before { stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true')) }
+  let!(:organisation) { create(:school_admin).school }
+  let(:tariff) { nil }
 
-  context 'with no tariff' do
+  before do
+    tariff
+    stub_env(SEND_AUTOMATED_EMAILS: true)
+    task.invoke
+    perform_enqueued_jobs
+  end
+
+  shared_examples 'it sends the expected email' do
     it 'sends the expected email' do
-      school = create(:school_admin).school
-      # create(:school)
-      task.invoke
-      perform_enqueued_jobs
-      expect(last_email.subject).to eq(I18n.t('energy_tariffs_mailer.reminder.subject', name: school.name))
+      expect(last_email.subject).to eq(I18n.t('energy_tariffs_mailer.reminder.subject', name: organisation.name))
+      expect(last_email.text_part.decoded).to include('To help Energy Sparks to provide')
     end
   end
 
-  # context 'when tariff has expired' do
-  # end
+  shared_examples 'it sends reminders correctly' do
+    context 'with no tariff' do
+      it_behaves_like 'it sends the expected email'
+    end
 
-  # context 'with a tariff set a year ago with no end date' do
-  # end
+    context 'when tariff has expired' do
+      let(:tariff) { create(:energy_tariff, tariff_holder: organisation) }
 
-  context 'with a tariff' do
-    it "doesn't send an email" do
-      school = create(:school_admin).school
-      # create(:school)
-      task.invoke
-      perform_enqueued_jobs
-      expect(last_email.subject).to eq(I18n.t('energy_tariffs_mailer.reminder.subject', name: school.name))
+      it_behaves_like 'it sends the expected email'
+    end
+
+    context 'with a tariff set a year ago with no end date' do
+      let(:tariff) { create(:energy_tariff, tariff_holder: organisation, start_date: 1.year.ago - 1.day, end_date: nil) }
+
+      it_behaves_like 'it sends the expected email'
+    end
+
+    context 'with a current tariff' do
+      let(:tariff) { create(:energy_tariff, tariff_holder: organisation, start_date: 1.day.ago, end_date: nil) }
+
+      it_behaves_like 'it sends no email'
     end
   end
-  
-  context 'with a tariff already set after the current one' do
 
+  context 'with a school' do
+    it_behaves_like 'it sends reminders correctly'
   end
 
+  context 'with a school group' do
+    let(:organisation) { create(:group_admin).school_group }
+
+    it_behaves_like 'it sends reminders correctly'
+  end
 end
