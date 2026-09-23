@@ -2,70 +2,27 @@
 
 namespace :schools do
   task send_expiring_tariff_reminders: :environment do
-    def expiring_soon(organisation)
-      organisation.energy_tariffs.enabled.current.find { |tariff| tariff.end_date == 30.days.from_now.to_date } &&
-        organisation.energy_tariffs.enabled.where(start_date: Date.current..).none?
+    today = Date.current
+    end_date = today + 30.days
+    expiring_soon = lambda do |organisation|
+      tariffs = organisation.energy_tariffs.enabled.current.where(end_date:)
+      tariffs.exists? && tariffs.all? do |tariff|
+        organisation.energy_tariffs.enabled.where(start_date: today.., meter_type: tariff.meter_type).none?
+      end
     end
-
-    begin
-      School.active.find_each do |school|
-        current_tariff = expiring_soon(school)
-        if current_tariff
-          EnergyTariffsMailer.reminder_deliver_later_per_locale(school, school.school_admin, current_tariff)
-        end
-      end
-
-      SchoolGroup.find_each do |school_group|
-        current_tariff = expiring_soon(school_group)
-        if current_tariff
-          EnergyTariffsMailer.reminder_deliver_later_per_locale(school_group, school_group.users.group_admin, current_tariff)
-        end
-      end
+    send = lambda do |organisation, users|
+      EnergyTariffsMailer.reminder_deliver_later_per_locale(organisation, users, true)
     rescue StandardError => e
-      EnergySparks::Log.exception(e, { job: :send_tariff_reminders })
+      EnergySparks::Log.exception(e, { job: :send_expiring_tariff_reminders, organisation: })
+    end
+    expiring_tariff_holder = lambda do |model|
+      model.joins(:energy_tariffs).merge(EnergyTariff.enabled.current.where(end_date:)).distinct
+    end
+    expiring_tariff_holder.call(School.active).find_each do |school|
+      expiring_soon.call(school) && send.call(school, school.school_admin)
+    end
+    expiring_tariff_holder.call(SchoolGroup).find_each do |school_group|
+      expiring_soon.call(school_group) && send.call(school_group, school_group.users.group_admin)
     end
   end
 end
-
-  #   School.active.find_each do |school|
-  #     # next if EnergyTariffReminder.exists?(school: school, tariff: nil)
-
-  #     current_tariffs = school.energy_tariffs.enabled.current
-  #     if current_tariffs.empty? ||
-  #        current_tariffs.any? { |tariff| tariff.end_date.nil? && tariff.start_date > 1.year.ago }
-  #       school.school_admins.find_each do |user|
-  #         EnergyTariffsMailer.reminder_deliver_later_per_locale(user, false).deliver_later
-  #       end
-  #     end
-  #   end
-
-  #   #  unless user.energy_tariff_reminder_sent_at.present?
-
-  #   current_tariff = school.energy_tariffs.enabled.current.find { |tariff| tariff.end_date == 30.days.ago }
-  #   if current_tariff
-  #     EnergyTariffsMailer.reminder_deliver_later_per_locale(school, school.school_admins, current_tariff)
-  #   end
-
-
-
-
-  #     school.school_admins.find_each do |user|
-  #       EnergyTariffsMailer.reminder(user).deliver_later
-  #     end
-  #   end
-  # end
-
-  # SchoolGroup.find_each do |school_group|
-  #   school_group.energy_tariffs.enabled.current.any?
-
-  #   # User.school_admin
-
-  #   begin
-  #     SendReviewSchoolTariffsReminderJob.perform_later
-  #   rescue StandardError => e
-  #     error_message = "Exception: an email to school group admins to review the information we have about their school group's energy tariffs: #{e.class} #{e.message}"
-  #     puts error_message
-  #     Rails.logger.error error_message
-  #     Rails.logger.error e.backtrace.join("\n")
-  #     Rollbar.error(e, job: :send_review_school_tariffs_reminder)
-  #   end

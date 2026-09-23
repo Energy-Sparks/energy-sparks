@@ -2,26 +2,22 @@
 
 namespace :schools do
   task send_tariff_reminders: :environment do
-    def send_tariff_setup_email(organisation)
-      current_tariffs = organisation.energy_tariffs.enabled.current
-      current_tariffs.empty? ||
-        current_tariffs.any? { |tariff| tariff.end_date.nil? && tariff.start_date < 1.year.ago.to_date }
+    send = lambda do |organisation, users|
+      EnergyTariffsMailer.reminder_deliver_later_per_locale(organisation, users, false)
+    rescue StandardError => e
+      EnergySparks::Log.exception(e, { job: :send_tariff_reminders, organisation: })
+    end
+    need_tariff_reminder = lambda do |model, join|
+      model.where.not(id: model.joins(:energy_tariffs).merge(EnergyTariff.enabled.current))
+           .or(model.where(id: EnergyTariff.enabled.current.joins(join)
+                                           .where(end_date: nil, start_date: ..1.year.ago).select(:tariff_holder_id)))
     end
 
-    begin
-      School.active.find_each do |school|
-        if send_tariff_setup_email(school)
-          EnergyTariffsMailer.reminder_deliver_later_per_locale(school, school.school_admin, nil)
-        end
-      end
-
-      SchoolGroup.find_each do |school_group|
-        if send_tariff_setup_email(school_group)
-          EnergyTariffsMailer.reminder_deliver_later_per_locale(school_group, school_group.users.group_admin, nil)
-        end
-      end
-    rescue StandardError => e
-      EnergySparks::Log.exception(e, { job: :send_tariff_reminders })
+    need_tariff_reminder.call(School.active, :school).find_each do |school|
+      send.call(school, school.school_admin)
+    end
+    need_tariff_reminder.call(SchoolGroup, :school_group).find_each do |school_group|
+      send.call(school_group, school_group.users.group_admin)
     end
   end
 end
