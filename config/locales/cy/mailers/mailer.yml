@@ -92,7 +92,6 @@ cy:
       message: Rhaid i'ch ysgol ddiweddaru ei chaniatâd i ganiatáu i Sbarcynni barhau i gasglu, prosesu ac arddangos eich data ynni.
       subject: Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol
       view_school_account: gweld eich cyfrif ysgol
-  energy_tariffs_mailer:
   mailer:
     get_in_touch: Cysylltwch
   onboarding_mailer:

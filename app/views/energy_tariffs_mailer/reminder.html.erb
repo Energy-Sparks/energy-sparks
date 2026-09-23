@@ -9,7 +9,7 @@
     <p><%= t('energy_tariffs_mailer.reminder.thank_you',
              school_or_group: t("energy_tariffs_mailer.reminder.#{type}"),
              fuel_types: t_fuels_as_sentence(@organisation.energy_tariffs.enabled.current.pluck(:meter_type).uniq)) %>
-       <%= t('energy_tariffs_mailer.reminder.update_your_tariff'j) %></p>
+       <%= t('energy_tariffs_mailer.reminder.update_your_tariff') %></p>
     <p><%= t('energy_tariffs_mailer.reminder.to_do_this_html', url: tariff_url) %></p>
     <p><%= t('energy_tariffs_mailer.reminder.if_not_updated',
              account_type: t("energy_tariffs_mailer.reminder.account_#{type}"),
