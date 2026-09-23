@@ -6,9 +6,10 @@
                         end %>
   <% email = @organisation.default_issues_admin_user&.email || 'hello@energysparks.uk' %>
   <% if @has_tariff %>
-    <p><%= t('energy_tariffs_mailer.reminder.thank_you', school_or_group: t("energy_tariffs_mailer.reminder.#{type}"),
+    <p><%= t('energy_tariffs_mailer.reminder.thank_you',
+             school_or_group: t("energy_tariffs_mailer.reminder.#{type}"),
              fuel_types: t_fuels_as_sentence(@organisation.energy_tariffs.enabled.current.pluck(:meter_type).uniq)) %>
-       <%= t("energy_tariffs_mailer.reminder.update_your_tariff") %></p>
+       <%= t('energy_tariffs_mailer.reminder.update_your_tariff'j) %></p>
     <p><%= t('energy_tariffs_mailer.reminder.to_do_this_html', url: tariff_url) %></p>
     <p><%= t('energy_tariffs_mailer.reminder.if_not_updated',
              account_type: t("energy_tariffs_mailer.reminder.account_#{type}"),
@@ -16,12 +17,12 @@
              gas: format_target(SiteSettings.current_prices.gas_price, :£)) %></p>
     <p><%= t('energy_tariffs_mailer.reminder.if_you_are_planning_html', email:) %></p>
   <% else %>
-    <p><%= t("energy_tariffs_mailer.reminder.ask_for_tariffs", name: @organisation.name) %></p>
+    <p><%= t('energy_tariffs_mailer.reminder.ask_for_tariffs', name: @organisation.name) %></p>
     <% if @organisation.is_a?(SchoolGroup) %>
-      <p><%= t("energy_tariffs_mailer.reminder.average_tariff", name: @organisation.name) %></p>
+      <p><%= t('energy_tariffs_mailer.reminder.average_tariff', name: @organisation.name) %></p>
     <% end %>
-    <p><%= t("energy_tariffs_mailer.reminder.review_current_html", url: tariff_url) %></p>
-    <p><%= t("energy_tariffs_mailer.reminder.best_to_update_html",
+    <p><%= t('energy_tariffs_mailer.reminder.review_current_html', url: tariff_url) %></p>
+    <p><%= t('energy_tariffs_mailer.reminder.best_to_update_html',
              email:,
              school_or_group: t("energy_tariffs_mailer.reminder.#{type}")) %></p>
   <% end %>
