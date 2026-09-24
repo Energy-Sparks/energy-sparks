@@ -146,7 +146,7 @@ RSpec.shared_examples 'target advice page' do
       def not_set_content(revise_text)
         <<~CONTENT.chomp
           No current target set
-          Your school doesn't have a current target for #{fuel_string} use so we can't generate a progress report.
+          Your school does not have a current target for #{fuel_string} use so we can't generate a progress report.
           #{revise_text}
           In the meantime you can learn more about this topic.
         CONTENT
