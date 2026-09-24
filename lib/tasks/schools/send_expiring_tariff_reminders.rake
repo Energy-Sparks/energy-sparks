@@ -6,7 +6,7 @@ namespace :schools do
     end_date = today + 30.days
     expiring_soon = lambda do |organisation|
       tariffs = organisation.energy_tariffs.enabled.current.where(end_date:)
-      tariffs.exists? && tariffs.all? do |tariff|
+      tariffs.exists? && tariffs.any? do |tariff|
         organisation.energy_tariffs.enabled.where(start_date: today.., meter_type: tariff.meter_type).none?
       end
     end
