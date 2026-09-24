@@ -40,7 +40,7 @@ RSpec.describe SchoolGroups::CsvGenerator do
                                            7, 7, 7, 7, 7].join(','))
         i += 1
       end
-      expect(data.lines[i].chomp).to eq(['All Energy Sparks schools', 'All', '-', 'All school types', 14, 14, 14, 14,
+      expect(data.lines[i].chomp).to eq(['All Energy Sparks schools', 'All', '', 'All school types', 14, 14, 14, 14,
                                          14].join(','))
     end
   end
