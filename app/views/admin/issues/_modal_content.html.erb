@@ -1,6 +1,14 @@
 <div class="modal-header">
-  <h5 class="modal-title" id="meter-issues-<%= @meter.id %>-title"><%= t("schools.meters.meter_issues.title", name: @meter.display_name) %></h5>
-  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  <h5 class="modal-title"
+      id="meter-issues-<%= @meter.id %>-title">
+      <%= t('schools.meters.meter_issues.title', name: @meter.display_name) %>
+  </h5>
+  <button
+    type="button"
+    class="btn-close"
+    data-dismiss="modal"
+    data-bs-dismiss="modal"
+    aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -11,11 +19,21 @@
         <%= render 'admin/issues/issue', issue: issue, expand: true %>
       <% end %>
     <% else %>
-      <%= t("schools.meters.meter_issues.no_meter_issues") %>
+      <%= t('schools.meters.meter_issues.no_meter_issues') %>
     <% end %>
   </div>
 </div>
 <div class="modal-footer">
-  <%= render 'admin/issues/issues_links', issueable: @meter.school, meter_ids: [@meter.id] unless local_assigns[:view_mode] %>
-  <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><%= t('common.labels.close') %></button>
+  <%= unless local_assigns[:view_mode]
+        render 'admin/issues/issues_links',
+               issueable: @meter.school,
+               meter_ids: [@meter.id]
+      end %>
+  <button
+    type="button"
+    class="btn btn-secondary btn-sm"
+    data-dismiss="modal"
+    data-bs-dismiss="modal">
+    <%= t('common.labels.close') %>
+  </button>
 </div>
