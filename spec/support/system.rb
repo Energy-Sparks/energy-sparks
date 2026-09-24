@@ -92,4 +92,6 @@ RSpec.configure do |config|
       retry
     end
   end
+
+  def stub_env(**kwargs) = stub_const('ENV', ENV.to_h.merge(**kwargs.stringify_keys.transform_values(&:to_s)))
 end
