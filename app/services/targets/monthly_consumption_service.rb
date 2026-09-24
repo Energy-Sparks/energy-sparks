@@ -12,12 +12,6 @@ module Targets
       @non_missing = @consumption&.reject { |month| month[:missing] }
     end
 
-    def self.any_missing?(target)
-      SchoolTarget::FUEL_TYPES.any? do |fuel_type|
-        !target&.public_send(fuel_type).nil? && new(target, fuel_type).any_missing?
-      end
-    end
-
     def current_consumption
       sum_non_missing(:current_consumption)
     end

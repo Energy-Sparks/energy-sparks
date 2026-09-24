@@ -56,8 +56,6 @@ module Schools
       @target.present?
     end
 
-    private
-
     def school_configuration_indicates_readings_required?
       @school.configuration.aggregate_meter_dates.empty? ||
         @fuel_types.map { |fuel_type| @school.configuration.meter_dates(fuel_type) }
@@ -67,6 +65,8 @@ module Schools
                        dates[:end_date] - MONTHS_REQUIRED < dates[:start_date]
                    end
     end
+
+    private
 
     def required_months_and_fuel_types(aggregate_school)
       @fuel_types.each do |fuel_type|
