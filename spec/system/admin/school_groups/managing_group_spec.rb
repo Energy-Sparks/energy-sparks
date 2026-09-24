@@ -299,9 +299,9 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     it 'has action buttons' do
       within '#active' do
         expect(page).to have_link('Issues')
-        expect(page).to have_link('Edit')
-        expect(page).to have_link('Users')
-        expect(page).to have_link('Meters')
+        expect(page).to have_link(href: edit_school_path(school))
+        expect(page).to have_link(href: school_users_path(school))
+        expect(page).to have_link(href: school_meters_path(school))
       end
     end
 
@@ -323,36 +323,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       end
 
       it { expect(page).to have_current_path(admin_school_issues_path(school)) }
-    end
-
-    context "when clicking 'Edit'" do
-      before do
-        within '#active' do
-          click_link 'Edit'
-        end
-      end
-
-      it { expect(page).to have_current_path(edit_school_path(school)) }
-    end
-
-    context "when clicking 'Users'" do
-      before do
-        within '#active' do
-          click_link 'User'
-        end
-      end
-
-      it { expect(page).to have_current_path(school_users_path(school)) }
-    end
-
-    context "when clicking 'Meters'" do
-      before do
-        within '#active' do
-          click_link 'Meters'
-        end
-      end
-
-      it { expect(page).to have_current_path(school_meters_path(school)) }
     end
   end
 
@@ -546,8 +516,16 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     describe 'Active schools tab' do
       context 'when there are active schools' do
+        let(:project_school) do
+          create(:school, :with_project, :with_school_group, default_issues_admin_user: create(:admin), active: true,
+                                                             group: school_group)
+        end
+
         it_behaves_like 'an Active schools tab' do
-          let(:school) { create(:school, :with_project, :with_school_group, active: true, group: school_group) }
+          let(:school) { project_school }
+        end
+        it 'includes the name of the admin' do
+          expect(page).to have_text(project_school.default_issues_admin_user.display_name)
         end
       end
 
