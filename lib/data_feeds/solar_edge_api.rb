@@ -156,10 +156,10 @@ module DataFeeds
     def solar_edge_meter_type_map
       {
         'Production' => :solar_pv,
-        'Consumption' => :electricity,
+        'Consumption' => nil, # 'Purchased' + 'SelfConsumption'
         'SelfConsumption' => nil,
         'FeedIn' => :exported_solar_pv,
-        'Purchased' => nil # seems to be 'Consumption' + 'SelfConsumption'
+        'Purchased' => :electricity
       }
     end
 
