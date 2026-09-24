@@ -8,8 +8,14 @@ module Commercial
     def self.licence_dates(contract, base_date: Time.zone.today)
       case contract.licence_period
       when 'contract'
-        # for pro_rata contracts, once first invoiced generated then all other licences are pro_rata
-        start_date = contract.invoiced? && contract.pro_rata? ? Time.zone.today : contract.start_date
+        # for pro_rata contracts, once first invoice is generated then all other licences are pro_rata, so start
+        # from today. Allows for edge case where we're invoicing for future contract, so start date is clamped to
+        # contract start as a minimum.
+        start_date = if contract.invoiced? && contract.pro_rata?
+                       [Time.zone.today, contract.start_date].max
+                     else
+                       contract.start_date
+                     end
         end_date = contract.end_date
       else # custom
         start_date = base_date
@@ -40,7 +46,7 @@ module Commercial
     end
 
     def school_made_data_enabled
-      licence = @school.licences.current.first
+      licence = @school.licences.current_and_future.by_start_date.first
       return unless licence
       return licence if licence.invoiced? # no changes once invoiced
 
