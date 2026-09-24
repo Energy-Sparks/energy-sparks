@@ -86,10 +86,10 @@ describe EnergyTariffsMailer, :include_application_helper do
             'schools can add their own tariff information.'
         end),
        'To review your current tariffs and to add or update the information based on your latest contract, please ' \
-       "visit your [Manage tariffs](#{url(organisation)}) page. For more details about how to set up tariffs, please see the " \
-       '[Tariff Editor User guide](https://energysparks.uk/resources/28/inline).',
+       "visit your [Manage tariffs](#{url(organisation)}) page. For more details about how to set up tariffs, please " \
+       'see the [Tariff Editor User guide](https://energysparks.uk/resources/28/inline).',
        "It's best to update your tariffs on Energy Sparks when you change supply contract. Don't forget, if your " \
-       "#{type} is planning to switch suppliers when you change supply contract, please inform us by your " \
+       "#{type} is planning to switch suppliers when you change supply contract, please inform us by emailing your " \
        "[Energy Sparks account manager](mailto:#{organisation.default_issues_admin_user.email}) as we will need to " \
        'contact your new supplier(s) to maintain data access.'].compact.join("\n\n")
     end
