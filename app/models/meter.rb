@@ -10,7 +10,7 @@
 #  gas_unit                       :enum             enum_type: gas_unit
 #  manual_reads                   :boolean          default(FALSE), not null
 #  meter_serial_number            :text
-#  meter_system                   :integer          default(0)
+#  meter_system                   :integer          default("nhh_amr")
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
