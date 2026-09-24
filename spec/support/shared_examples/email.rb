@@ -19,7 +19,7 @@ RSpec.shared_examples 'it has a csv attachment' do
   end
 end
 
-shared_examples 'it sends no email' do
+shared_examples 'no email is sent' do
   it "doesn't send an email" do
     expect(ActionMailer::Base.deliveries.length).to eq(0)
   end

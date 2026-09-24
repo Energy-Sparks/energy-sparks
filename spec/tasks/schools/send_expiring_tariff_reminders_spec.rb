@@ -38,7 +38,7 @@ RSpec.describe 'schools:send_expiring_tariff_reminders' do # rubocop:disable RSp
           create(:energy_tariff, tariff_holder:, start_date: 30.days.from_now, end_date: nil)
         end
 
-        it_behaves_like 'it sends no email'
+        it_behaves_like 'no email is sent'
       end
 
       context 'and another tariff after with a different meter type' do
@@ -65,7 +65,7 @@ RSpec.describe 'schools:send_expiring_tariff_reminders' do # rubocop:disable RSp
     context 'when tariff is expiring in 29 days' do
       let(:tariff) { create(:energy_tariff, tariff_holder:, end_date: 29.days.from_now) }
 
-      it_behaves_like 'it sends no email'
+      it_behaves_like 'no email is sent'
     end
 
     context 'with a tariff set a year ago with no end date' do
@@ -73,7 +73,7 @@ RSpec.describe 'schools:send_expiring_tariff_reminders' do # rubocop:disable RSp
         create(:energy_tariff, tariff_holder:, start_date: 1.year.ago - 1.day, end_date: nil)
       end
 
-      it_behaves_like 'it sends no email'
+      it_behaves_like 'no email is sent'
     end
   end
 
