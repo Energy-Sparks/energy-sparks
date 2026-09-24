@@ -53,7 +53,7 @@ module SchoolGroups
     end
 
     def export_totals(csv)
-      csv << (['All Energy Sparks schools', 'All', '',
+      csv << (['All Energy Sparks schools', 'All', nil,
                'All school types', SchoolOnboarding.incomplete.count] +
               School.all.status_counts.slice(*self.class.count_fields).values)
     end
