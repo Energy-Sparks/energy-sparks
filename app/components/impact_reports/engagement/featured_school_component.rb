@@ -61,8 +61,15 @@ module ImpactReports
                                 .count
       end
 
+      def podium_school
+        # this is the same as school group dashboard, which has a recent_boundary of 1 month ago
+        # i.e. with the default:
+        # scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
+        @school_group.scored_schools.first
+      end
+
       def podium
-        @podium ||= Podium.create(school: school, scoreboard: @school_group)
+        @podium ||= Podium.create(school: podium_school, scoreboard: @school_group)
       end
 
       def image
@@ -70,7 +77,7 @@ module ImpactReports
       end
 
       def render?
-        override? ? override_school : (default_school && podium.school_has_points?)
+        override? ? override_school : (default_school && podium_school)
       end
     end
   end
