@@ -18,13 +18,13 @@ module Admin
     def users_to_display
       if @users&.any?
         @users.each do |user|
-          yield user
+          yield user, user.school
         end
       else
         @schools.each do |school|
           school_users = (school.users + school.cluster_users).uniq.sort_by(&:email)
           school_users.each do |user|
-            yield user
+            yield user, school
           end
         end
       end
