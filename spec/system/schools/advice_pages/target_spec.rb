@@ -78,10 +78,20 @@ RSpec.shared_examples 'target advice page' do
     CONTENT
   end
 
-  def waiting_for_data_text
+  def waiting_for_data_content
     'You have reached your target date but we are still waiting for more data ' \
       'to complete your final progress report. You can set a new target now or ' \
       "wait for your progress report to be complete.\n"
+  end
+
+  def meeting_prompt_content(meeting_prompt, expired)
+    return unless meeting_prompt
+
+    if expired
+      "Unfortunately you have not meeting your target to reduce your #{fuel_string} usage\n"
+    else
+      "Unfortunately you are not meeting your target to reduce your #{fuel_string} usage\n"
+    end
   end
 
   context 'with the Insights tab' do
@@ -89,18 +99,21 @@ RSpec.shared_examples 'target advice page' do
 
     target_shared_examples('Insights')
 
+    def expired_and_complete_prompt_content(expired: true)
+      "You have reached your target date and is it complete. You can set a new target now.\n" if expired
+    end
+
     def insight_content(expired: true, can_revise: false, expired_text: nil, table_text: nil, meeting_prompt: true)
       <<~CONTENT
-        #{expired_text}\
-        #{"You have reached your target date and is it complete. You can set a new target now.\n" if expired
-        }What is your target?
+        #{expired_text.presence || expired_and_complete_prompt_content(expired:)}\
+        What is your target?
         Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target.
         Your school has set a target to reduce its #{fuel_string} use by 4&percnt; before January 2025.
         #{"You can revise your target.\n" if can_revise}Learn more
-        Your current progress
+        #{expired ? 'Your progress against your last target' : 'Your current progress'}
         Back to top
-        #{"Unfortunately you are not meeting your target to reduce your #{fuel_string} usage\n" if meeting_prompt
-        }Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
+        #{meeting_prompt_content(meeting_prompt, expired)}\
+        Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
         #{table_text || '01 Jan 2024 - 31 Dec 2024 12,120 12,000 -0.98&percnt;'}
         How did we calculate these figures?
         #{if fuel_type == :storage_heater
@@ -166,8 +179,7 @@ RSpec.shared_examples 'target advice page' do
       create_target(current_missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to \
-        eq(insight_content(expired_text: waiting_for_data_text,
-                           expired: false,
+        eq(insight_content(expired_text: waiting_for_data_content,
                            table_text: '01 Jan 2024 - 30 Nov 2024 11,110 11,000 -0.98&percnt;'))
     end
 
@@ -193,7 +205,7 @@ RSpec.shared_examples 'target advice page' do
         expect(content(tab)).to \
           eq(insight_content(expired_text: "We have not received data for your #{fuel_string} usage for over thirty " \
                                            'days. As a result your analysis will be out of date and may not reflect ' \
-                                           "recent changes in your school.\n",
+                                           "recent changes in your school.\n#{expired_and_complete_prompt_content}",
                              meeting_prompt: false,
                              table_text: '01 Jan 2024 - 31 Dec 2024 12,120 12,000 -'))
       end
@@ -205,12 +217,12 @@ RSpec.shared_examples 'target advice page' do
 
     target_shared_examples('Analysis')
 
-    def expected_content(extra_contents = '', year = 2024)
+    def expected_content(extra_contents = '', year: 2024, expired: true)
       <<~CONTENT
         Progress report
         The following sections provide more detailed analysis of your school's #{fuel_string} target throughout the target period.
         Monthly progress Cumulative progress#{extra_contents}
-        Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
+        #{meeting_prompt_content(true, expired)}\
         Monthly progress
         Back to top
         This table summarises your progress to reduce your #{fuel_string} use by 4&percnt; on a month by month basis. Each entry in the table shows the target and actual consumption for every month in the target period. This table can be helpful in identifying which months have you have made the most savings or where your energy use has exceeded the target.
@@ -263,7 +275,7 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: Date.new(2024, 1, 1),
                     "#{fuel_type}_progress": { 'usage' => 11_000, 'target' => 10_000 }, target: 5)
       visit_tab(tab)
-      expect(content(tab)).to eq(expected_content(' Historical progress', 2026) + <<~CONTENT)
+      expect(content(tab)).to eq(expected_content(' Historical progress', year: 2026, expired: false) + <<~CONTENT)
         Historical progress
         Back to top
         The following table shows your previous progress towards reducing your #{fuel_string} usage
@@ -295,7 +307,7 @@ RSpec.shared_examples 'target advice page' do
     it 'target not yet complete' do
       create_target(current_missing: [*[false] * 11, true])
       visit_tab(tab)
-      expect(content(tab)).to start_with(waiting_for_data_text)
+      expect(content(tab)).to start_with(waiting_for_data_content)
     end
 
     it 'has correct cumulative with zero in a month' do

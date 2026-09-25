@@ -15,7 +15,7 @@
 <% end %>
 <%= render 'schools/advice/section_title',
            section_id: 'progress',
-           section_title: t("advice_pages.target.insights.your_current_progress.title#{@target.expired? && :_expired}") %>
+           section_title: t("advice_pages.target.insights.your_current_progress.title#{(:_expired if @target.expired?)}") %>
 <%= render 'meeting_target_prompt', consumption: @consumption, target: @target, fuel_type: @fuel_type %>
 <table class="mt-2 table table-sm advice-table">
   <thead>
