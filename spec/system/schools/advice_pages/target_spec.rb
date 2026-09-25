@@ -127,7 +127,8 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'missing previous years data' do
-      create_target(previous_consumption: nil, target_consumption: nil, previous_missing: true)
+      create_target(start_date: 6.months.ago,
+                    previous_consumption: nil, target_consumption: nil, previous_missing: true)
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
@@ -144,8 +145,8 @@ RSpec.shared_examples 'target advice page' do
 
       def not_set_content(revise_text)
         <<~CONTENT.chomp
-          No target set
-          Your school has not set a target for #{fuel_string} use so we can't generate a progress report.
+          No current target set
+          Your school does not have a current target for #{fuel_string} use so we can't generate a progress report.
           #{revise_text}
           In the meantime you can learn more about this topic.
         CONTENT
@@ -281,13 +282,15 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'missing previous years data' do
-      create_target(target_consumption: nil, previous_consumption: nil, previous_missing: true)
+      create_target(start_date: 6.months.ago,
+                    target_consumption: nil, previous_consumption: nil, previous_missing: true)
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
 
     it 'missing any previous years data' do
-      create_target(previous_consumption: [nil, *[1020] * 11], previous_missing: [true, *[false] * 11])
+      create_target(start_date: 6.months.ago,
+                    previous_consumption: [nil, *[1020] * 11], previous_missing: [true, *[false] * 11])
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
