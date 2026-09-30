@@ -10,11 +10,11 @@ module Comparisons
       def set_headers(include_previous_period_unadjusted: true, holiday_name: false)
         super()
         @include_previous_period_unadjusted = include_previous_period_unadjusted
-        electricity_groups = header_groups(fuel: false, holiday_name: holiday_name)
+        electricity_groups = header_groups(fuel: false, holiday_name:)
         @electricity_colgroups = colgroups(groups: electricity_groups)
         @electricity_headers = headers(groups: electricity_groups)
         heating_groups = header_groups(fuel: false, previous_period_unadjusted: @include_previous_period_unadjusted,
-                                       holiday_name: holiday_name)
+                                       holiday_name:)
         @heating_colgroups = colgroups(groups: heating_groups)
         @heating_headers = headers(groups: heating_groups)
         @period_type_string = I18n.t('comparisons.period_types.periods')
@@ -25,6 +25,7 @@ module Comparisons
           { label: '',
             headers: [
               t('analytics.benchmarking.configuration.column_headings.school'),
+              request.format.csv? && t('onboarding.completion.new.school_details_section.urn'),
               fuel && t('analytics.benchmarking.configuration.column_headings.fuel'),
               t('activerecord.attributes.school.activation_date'),
               holiday_name && t('analytics.benchmarking.configuration.column_headings.most_recent_holiday')

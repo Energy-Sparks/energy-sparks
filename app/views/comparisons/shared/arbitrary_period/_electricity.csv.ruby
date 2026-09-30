@@ -5,6 +5,7 @@ CSV.generate do |csv|
     next if result.electricity_current_period_kwh.blank?
     csv << [
       result.school.name,
+      (result.school.urn if result.school.full_school),
       result.activation_date.iso8601,
       format_unit(result.electricity_previous_period_kwh, Float),
       format_unit(result.electricity_current_period_kwh, Float),
