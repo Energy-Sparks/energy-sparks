@@ -108,7 +108,7 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            generate_csv_header_groups(fuel: true),
+            generate_csv_header_groups(fuel: true, urn: true),
             generate_headers(fuel: true, urn: true),
             [
               school.name,
@@ -166,7 +166,7 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            generate_csv_header_groups,
+            generate_csv_header_groups(urn: true),
             generate_headers(urn: true),
             [school.name,
              school.urn.to_s,
@@ -221,7 +221,7 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            generate_csv_header_groups,
+            generate_csv_header_groups(urn: true),
             generate_headers(urn: true),
             [school.name,
              school.urn.to_s,
@@ -276,7 +276,7 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            generate_csv_header_groups,
+            generate_csv_header_groups(urn: true),
             generate_headers(urn: true),
             [school.name,
              school.urn.to_s,
