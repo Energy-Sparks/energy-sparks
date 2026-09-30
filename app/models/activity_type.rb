@@ -42,10 +42,10 @@ class ActivityType < ApplicationRecord
   translates :download_links, backend: :action_text
 
   TX_ATTRIBUTE_MAPPING = {
-    school_specific_description: { templated: true },
+    school_specific_description: { templated: true }
   }.freeze
 
-  TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
+  TX_REWRITEABLE_FIELDS = %i[description_cy school_specific_description_cy download_links_cy].freeze
 
   belongs_to :activity_category
   alias category activity_category
@@ -53,13 +53,23 @@ class ActivityType < ApplicationRecord
   t_has_one_attached :image
 
   #### to be removed when we have fully moved over to new classifications
-  # may rename these so we can start a fresh with the new relationships
   has_and_belongs_to_many :key_stages, join_table: :activity_types_key_stages
   has_and_belongs_to_many :impacts, join_table: :activity_type_impacts
   has_and_belongs_to_many :subjects, join_table: :activity_type_subjects
-  has_and_belongs_to_many :topics, join_table: :activity_type_topics
   has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
   ####
+
+  has_many :activity_type_aims, class_name: 'Tasks::ActivityTypeAim', dependent: :destroy
+  has_many :activity_type_durations, class_name: 'Tasks::ActivityTypeDuration', dependent: :destroy
+  has_many :activity_type_learning_stages, class_name: 'Tasks::ActivityTypeLearningStages', dependent: :destroy
+  has_many :activity_type_subject_areas, class_name: 'Tasks::ActivityTypeSubjectAreas', dependent: :destroy
+  has_many :activity_type_topics, class_name: 'Tasks::ActivityTypeTopics', dependent: :destroy
+
+  has_many :aims, through: :activity_type_aims
+  has_many :durations, through: :activity_type_durations
+  has_many :learning_stages, through: :activity_type_learning_stages
+  has_many :subject_areas, through: :activity_type_subject_areas
+  has_many :topics, through: :activity_type_topics # replaces old / unused topics relationship
 
   scope :active, -> { where(active: true) }
   scope :not_custom, -> { where(custom: false) }
@@ -77,8 +87,8 @@ class ActivityType < ApplicationRecord
   scope :not_including, ->(records = []) { where.not(id: records) }
   scope :tx_resources, -> { active.order(:id) }
 
-  validates_presence_of :name, :activity_category_id, :score
-  validates_uniqueness_of :name, scope: :activity_category_id
+  validates :name, :score, presence: true
+  validates :name, uniqueness: { scope: :activity_category_id } # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :all_fuel_types_are_in_valid_fuel_types_list
 
@@ -99,9 +109,13 @@ class ActivityType < ApplicationRecord
 
   has_many :link_rewrites, as: :rewriteable
 
-  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes|
+    attributes[:source].blank?
+  }, allow_destroy: true
 
-  accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes|
+    attributes[:suggested_type_id].blank?
+  }, allow_destroy: true
 
   before_save :copy_searchable_attributes
 
@@ -110,7 +124,9 @@ class ActivityType < ApplicationRecord
   end
 
   def referenced_from_find_out_mores
-    AlertTypeRating.joins(:alert_type_rating_activity_types).where('alert_type_rating_activity_types.activity_type_id = ?', id)
+    AlertTypeRating.joins(:alert_type_rating_activity_types).where(
+      'alert_type_rating_activity_types.activity_type_id = ?', id
+    )
   end
 
   def key_stage_list
@@ -122,12 +138,10 @@ class ActivityType < ApplicationRecord
   end
 
   def school_specific_description_or_fallback
-    school_specific_description.blank? ? description : school_specific_description
+    school_specific_description.presence || description
   end
 
-  def activities_for_school(school)
-    activities.for_school(school)
-  end
+  delegate :for_school, to: :activities, prefix: true
 
   def grouped_school_count
     activities.group(:school).count
@@ -144,7 +158,7 @@ class ActivityType < ApplicationRecord
 
   def count_existing_for_academic_year(school, academic_year)
     school.observations.joins(:activity).where(activities: { activity_type: self })
-      .in_academic_year(academic_year).with_points.distinct.count(:activity_id)
+          .in_academic_year(academic_year).with_points.distinct.count(:activity_id)
   end
 
   def public_type
@@ -154,7 +168,7 @@ class ActivityType < ApplicationRecord
   private
 
   def copy_searchable_attributes
-    self.write_attribute(:name, self.name(locale: :en))
+    self[:name] = name(locale: :en)
   end
 
   class << self
@@ -164,7 +178,7 @@ class ActivityType < ApplicationRecord
       if show_all
         %|"#{table_name}"."active" in ('true', 'false') AND "#{table_name}"."custom" = 'false'|
       else
-        %|"#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'|
+        %("#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false')
       end
     end
 
