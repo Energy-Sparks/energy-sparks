@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Comparisons
   class HolidayAndTermController < Shared::ArbitraryPeriodController
     private
 
     def set_headers(include_previous_period_unadjusted: true)
-      super(include_previous_period_unadjusted: include_previous_period_unadjusted, holiday_name: true)
+      super(include_previous_period_unadjusted: include_previous_period_unadjusted, holiday_name: true, urn: false)
     end
 
     def key

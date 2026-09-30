@@ -4,7 +4,8 @@ CSV.generate do |csv|
   csv << csv_colgroups(@colgroups)
   csv << @headers
   @results.each do |result|
-    data = [result.school.name, (result.school.urn if result.school.full_school)]
+    data = [result.school.name]
+    data << (result.school.full_school ? result.school.urn : '') if @urn
     data << result.fuel_type_names
     data << result.activation_date.iso8601
     %i[kwh co2 £].each do |unit|

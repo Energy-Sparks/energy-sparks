@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'arbitary_period_helpers'
 
 describe 'configurable_period' do
+  include ArbitaryPeriodHelpers
+
   let!(:schools) { create_list(:school, 6) }
   let!(:alerts) do
     create(:alert_type, class_name: AlertAdditionalPrioritisationData.name)
@@ -72,25 +75,6 @@ describe 'configurable_period' do
     I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
     I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
   ].freeze
-
-  def generate_headers(fuel:, unadjusted:, urn: false)
-    [
-      I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-      urn && 'URN',
-      fuel && I18n.t('analytics.benchmarking.configuration.column_headings.fuel'),
-      I18n.t('activerecord.attributes.school.activation_date'),
-      unadjusted && I18n.t('comparisons.column_headings.previous_period_unadjusted'),
-      I18n.t('comparisons.column_headings.previous_period'),
-      I18n.t('comparisons.column_headings.current_period'),
-      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-      I18n.t('comparisons.column_headings.previous_period'),
-      I18n.t('comparisons.column_headings.current_period'),
-      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-      I18n.t('comparisons.column_headings.previous_period'),
-      I18n.t('comparisons.column_headings.current_period'),
-      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-    ].select(&:itself)
-  end
 
   context 'when viewing report' do
     it_behaves_like 'a school comparison report' do
@@ -166,8 +150,8 @@ describe 'configurable_period' do
         end
         let(:expected_csv) do
           [
-            ['', '', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            generate_headers(fuel: true, unadjusted: false, urn: true),
+            generate_csv_header_groups(fuel: true, urn: true),
+            generate_headers(fuel: true, urn: true),
             [schools[0].name, schools[0].urn.to_s,
              'Electricity;Gas;Storage heaters',
              '2023-01-01',

@@ -1,6 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
+require_relative 'arbitary_period_helpers'
 
 describe 'holiday_and_term' do
+  include ArbitaryPeriodHelpers
+
   let!(:school) { create(:school) }
   let!(:alerts) do
     alert_run = create(:alert_generation_run, school: school)
@@ -104,27 +109,11 @@ describe 'holiday_and_term' do
             I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
           ]
         end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.fuel'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
 
         let(:expected_table) do
           [
             colgroups,
-            headers,
+            generate_headers(fuel: true),
             ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}] [#{gas_change_rows[:label]}]",
              '',
              'Jan 2023',
@@ -143,8 +132,8 @@ describe 'holiday_and_term' do
 
         let(:expected_csv) do
           [
-            ['', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
+            generate_csv_header_groups(fuel: true),
+            generate_headers(fuel: true),
             [
               school.name,
               'Electricity;Gas;Storage heaters',
@@ -181,27 +170,11 @@ describe 'holiday_and_term' do
             I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
           ]
         end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
 
         let(:expected_table) do
           [
             colgroups,
-            headers,
+            generate_headers(recent_holiday: true),
             ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
              'Easter 2023',
@@ -220,8 +193,8 @@ describe 'holiday_and_term' do
 
         let(:expected_csv) do
           [
-            ['', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
+            generate_csv_header_groups(recent_holiday: true),
+            generate_headers(recent_holiday: true),
             [school.name,
              '2023-01-01',
              'Easter 2023',
@@ -254,28 +227,11 @@ describe 'holiday_and_term' do
             I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
           ]
         end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
-            I18n.t('comparisons.column_headings.previous_period_unadjusted'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
 
         let(:expected_table) do
           [
             colgroups,
-            headers,
+            generate_headers(recent_holiday: true, unadjusted: true),
             ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
              'Easter 2023',
@@ -295,8 +251,8 @@ describe 'holiday_and_term' do
 
         let(:expected_csv) do
           [
-            ['', '', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
+            generate_csv_header_groups(recent_holiday: true, unadjusted: true),
+            generate_headers(recent_holiday: true, unadjusted: true),
             [school.name,
              '2023-01-01',
              'Easter 2023',
@@ -330,28 +286,11 @@ describe 'holiday_and_term' do
             I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
           ]
         end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.most_recent_holiday'),
-            I18n.t('comparisons.column_headings.previous_period_unadjusted'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
 
         let(:expected_table) do
           [
             colgroups,
-            headers,
+            generate_headers(recent_holiday: true, unadjusted: true),
             ["#{school.name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
              'Easter 2023',
@@ -365,14 +304,16 @@ describe 'holiday_and_term' do
              '£4,000',
              '£2,000',
              '-50&percnt;'],
-            ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two periods.\n[5] The tariff has changed during the last year for this school. Savings are calculated using the latest tariff but other £ values are calculated using the relevant tariff at the time"]
+            ["Notes\n[1] the comparison has been adjusted because the number of pupils have changed between the two " \
+             "periods.\n[5] The tariff has changed during the last year for this school. Savings are calculated " \
+             'using the latest tariff but other £ values are calculated using the relevant tariff at the time']
           ]
         end
 
         let(:expected_csv) do
           [
-            ['', '', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
+            generate_csv_header_groups(recent_holiday: true, unadjusted: true),
+            generate_headers(recent_holiday: true, unadjusted: true),
             [school.name,
              '2023-01-01',
              'Easter 2023',

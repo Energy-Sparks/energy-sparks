@@ -7,7 +7,8 @@ module Comparisons
 
       private
 
-      def set_headers(include_previous_period_unadjusted: true, holiday_name: false)
+      def set_headers(include_previous_period_unadjusted: true, holiday_name: false, urn: true)
+        @urn = urn
         super()
         @include_previous_period_unadjusted = include_previous_period_unadjusted
         electricity_groups = header_groups(fuel: false, holiday_name:)
@@ -25,31 +26,37 @@ module Comparisons
           { label: '',
             headers: [
               t('analytics.benchmarking.configuration.column_headings.school'),
-              request.format.csv? && t('onboarding.completion.new.school_details_section.urn'),
+              request.format.csv? && @urn && t('onboarding.completion.new.school_details_section.urn'),
               fuel && t('analytics.benchmarking.configuration.column_headings.fuel'),
               t('activerecord.attributes.school.activation_date'),
               holiday_name && t('analytics.benchmarking.configuration.column_headings.most_recent_holiday')
             ] },
-          { label: t('analytics.benchmarking.configuration.column_groups.kwh'),
-            headers: [
-              previous_period_unadjusted && t('comparisons.column_headings.previous_period_unadjusted'),
-              t('comparisons.column_headings.previous_period'),
-              t('comparisons.column_headings.current_period'),
-              t('analytics.benchmarking.configuration.column_headings.change_pct')
-            ], },
-          { label: t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-            headers: [
-              t('comparisons.column_headings.previous_period'),
-              t('comparisons.column_headings.current_period'),
-              t('analytics.benchmarking.configuration.column_headings.change_pct')
-            ] },
-          { label: t('analytics.benchmarking.configuration.column_groups.gbp'),
-            headers: [
-              t('comparisons.column_headings.previous_period'),
-              t('comparisons.column_headings.current_period'),
-              t('analytics.benchmarking.configuration.column_headings.change_pct')
-            ] }
+          kwh_headers(previous_period_unadjusted),
+          kg_headers,
+          gbp_headers
         ]
+      end
+
+      def kwh_headers(previous_period_unadjusted)
+        { label: t('analytics.benchmarking.configuration.column_groups.kwh'),
+          headers: [previous_period_unadjusted && t('comparisons.column_headings.previous_period_unadjusted'),
+                    t('comparisons.column_headings.previous_period'),
+                    t('comparisons.column_headings.current_period'),
+                    t('analytics.benchmarking.configuration.column_headings.change_pct')] }
+      end
+
+      def kg_headers
+        { label: t('analytics.benchmarking.configuration.column_groups.co2_kg'),
+          headers: [t('comparisons.column_headings.previous_period'),
+                    t('comparisons.column_headings.current_period'),
+                    t('analytics.benchmarking.configuration.column_headings.change_pct')] }
+      end
+
+      def gbp_headers
+        { label: t('analytics.benchmarking.configuration.column_groups.gbp'),
+          headers: [t('comparisons.column_headings.previous_period'),
+                    t('comparisons.column_headings.current_period'),
+                    t('analytics.benchmarking.configuration.column_headings.change_pct')] }
       end
 
       def table_configuration

@@ -1,6 +1,9 @@
 require 'rails_helper'
+require_relative 'arbitary_period_helpers'
 
 describe 'change_in_energy_use_since_joined_energy_sparks' do
+  include ArbitaryPeriodHelpers
+
   let!(:school) { create(:school) }
   let(:key) { :change_in_energy_use_since_joined_energy_sparks }
 
@@ -83,27 +86,11 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
             I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
           ]
         end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.fuel'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
 
         let(:expected_table) do
           [
             colgroups,
-            headers,
+            generate_headers(fuel: true),
             [school.name,
              '',
              'Jan 2023',
@@ -121,10 +108,11 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            ['', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
+            generate_csv_header_groups(fuel: true),
+            generate_headers(fuel: true, urn: true),
             [
               school.name,
+              school.urn.to_s,
               'Electricity;Gas;Storage heaters',
               '2023-01-01',
               '6,000',
@@ -157,26 +145,11 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
             I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
           ]
         end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
 
         let(:expected_table) do
           [
             colgroups,
-            headers,
+            generate_headers,
             [school.name,
              'Jan 2023',
              '2,000',
@@ -193,9 +166,10 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
+            generate_csv_header_groups,
+            generate_headers(urn: true),
             [school.name,
+             school.urn.to_s,
              '2023-01-01',
              '2,000',
              '1,000',
@@ -226,26 +200,11 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
             I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
           ]
         end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
 
         let(:expected_table) do
           [
             colgroups,
-            headers,
+            generate_headers,
             [school.name,
              'Jan 2023',
              '2,000',
@@ -262,9 +221,10 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
+            generate_csv_header_groups,
+            generate_headers(urn: true),
             [school.name,
+             school.urn.to_s,
              '2023-01-01',
              '2,000',
              '1,000',
@@ -295,26 +255,11 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
             I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
           ]
         end
-        let(:headers) do
-          [
-            I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-            I18n.t('activerecord.attributes.school.activation_date'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-            I18n.t('comparisons.column_headings.previous_period'),
-            I18n.t('comparisons.column_headings.current_period'),
-            I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ]
-        end
 
         let(:expected_table) do
           [
             colgroups,
-            headers,
+            generate_headers,
             [school.name,
              'Jan 2023',
              '2,000',
@@ -331,9 +276,10 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
+            generate_csv_header_groups,
+            generate_headers(urn: true),
             [school.name,
+             school.urn.to_s,
              '2023-01-01',
              '2,000',
              '1,000',
