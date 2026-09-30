@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '~> 3.4.8'
 
-gem 'rails', '~> 8.1.2'
+gem 'rails', '~> 8.1.4'
 
 # Core
 gem 'awesome_print'
