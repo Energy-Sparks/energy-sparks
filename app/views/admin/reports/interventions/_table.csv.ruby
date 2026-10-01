@@ -4,7 +4,7 @@ CSV.generate do |csv|
   @observations.each do |observation|
     csv << [
       observation.school.school_group&.name,
-      observation.school.school_group&.default_issues_admin_user.name,
+      observation.school.school_group&.default_issues_admin_user&.name,
       observation.school.name,
       observation.created_by&.name,
       observation.created_by&.role&.humanize,
