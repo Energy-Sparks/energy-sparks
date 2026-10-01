@@ -66,16 +66,6 @@ module Comparisons
       def render_csv
         table_name = filter[:table_name].to_sym
         csv = CSV.generate do |csv|
-          # colgroups, headers = case table_name
-          #                      when :gas, :storage_heater
-          #                        [@heating_colgroups, @heating_headers]
-          #                      when :electricity
-          #                        [@electricity_colgroups, @electricity_headers]
-          #                      when :total
-          #                        [@colgroups, @headers]
-          #                      else
-          #                        raise "unknown table_name #{fuel_type}"
-          #                      end
           csv << csv_colgroups(@colgroups[table_name])
           csv << @headers[table_name]
           @results.each do |result|
@@ -111,7 +101,11 @@ module Comparisons
           percent_change(result_value(result, table_name, :previous_period, unit),
                          result_value(result, table_name, :current_period, unit))
         else
-          unit_suffix, kwargs = table_name == :total ? [nil, { unit: }] : [unit.nil? ? nil : "_#{unit}", {}]
+          unit_suffix, kwargs = if table_name == :total
+                                  [nil, { unit: }]
+                                else
+                                  [unit.nil? ? nil : "_#{unit}", {}]
+                                end
           result.public_send("#{table_name}_#{period}#{unit_suffix}", **kwargs)
         end
       end
@@ -122,21 +116,6 @@ module Comparisons
 
         result.school.full_school ? result.school.urn : ''
       end
-
-      # class Result
-      #   def initialize(result)
-      #     @result = result
-      #   end
-
-      #   def value(table_name, *arg)
-      #   end
-      # end
-
-      # def set_results
-      #   super
-
-      #   @results.map! { |result| Result.new(result) }
-      # end
     end
   end
 end

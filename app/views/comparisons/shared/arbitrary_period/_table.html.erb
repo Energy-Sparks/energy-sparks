@@ -1,6 +1,6 @@
 <%= render ComparisonTableComponent.new(report:, advice_page:, table_name:, index_params:,
                                         headers: @headers[table_name], colgroups: @colgroups[table_name],
-                                        advice_page_tab:, advice_page_anchor: local_assigns[:'advice_page_anchor']) do
+                                        advice_page_tab:, advice_page_anchor: local_assigns[:advice_page_anchor]) do
                                           |component| %>
   <% results.each do |result| %>
     <% next if table_name != :total && result_value(result, table_name, :previous_period, :kwh).blank? %>
