@@ -5,7 +5,18 @@ module Comparisons
     private
 
     def set_headers(include_previous_period_unadjusted: true)
-      super(include_previous_period_unadjusted: include_previous_period_unadjusted, holiday_name: true, urn: false)
+      super(include_previous_period_unadjusted: include_previous_period_unadjusted, holiday_name: true)
+    end
+
+    def render_csv_row(result, table_name)
+      row = super
+      if table_name != :total
+        row.insert(2, holiday_name(result_table_name_value(result, table_name, :current_period, :type),
+                                   result_table_name_value(result, table_name, :current_period, :start_date),
+                                   result_table_name_value(result, table_name, :current_period, :end_date),
+                                   partial: result_table_name_value(result, table_name, :truncated, :current_period)))
+      end
+      row
     end
 
     def key

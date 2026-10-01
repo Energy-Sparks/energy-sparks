@@ -25,4 +25,11 @@ module ArbitaryPeriodHelpers
     ['', ('' if urn), ('' if fuel), '', ('' if recent_holiday),
      'kWh', ('' if unadjusted), '', '', 'CO2 (kg)', '', '', '£', '', ''].compact
   end
+
+  def column_groups
+    ['',
+     I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
+     I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
+     I18n.t('analytics.benchmarking.configuration.column_groups.gbp')].freeze
+  end
 end

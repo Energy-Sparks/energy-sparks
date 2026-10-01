@@ -78,18 +78,9 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :total }
 
-        let(:colgroups) do
-          [
-            '',
-            I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-          ]
-        end
-
         let(:expected_table) do
           [
-            colgroups,
+            column_groups,
             generate_headers(fuel: true),
             [school.name,
              '',
@@ -108,11 +99,10 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
 
         let(:expected_csv) do
           [
-            generate_csv_header_groups(fuel: true, urn: true),
-            generate_headers(fuel: true, urn: true),
+            generate_csv_header_groups(fuel: true),
+            generate_headers(fuel: true),
             [
               school.name,
-              school.urn.to_s,
               'Electricity;Gas;Storage heaters',
               '2023-01-01',
               '6,000',
@@ -130,6 +120,38 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
       end
     end
 
+    def generate_expected_table
+      [column_groups,
+       generate_headers,
+       [school.name,
+        'Jan 2023',
+        '2,000',
+        '1,000',
+        '-50&percnt;',
+        '200',
+        '100',
+        '-50&percnt;',
+        '£4,000',
+        '£2,000',
+        '-50&percnt;'].compact]
+    end
+
+    def generate_expected_csv
+      [generate_csv_header_groups,
+       generate_headers,
+       [school.name,
+        '2023-01-01',
+        '2,000',
+        '1,000',
+        '-50',
+        '200',
+        '100',
+        '-50',
+        '4,000',
+        '2,000',
+        '-50'].compact]
+    end
+
     context 'with an electricity table' do
       it_behaves_like 'a school comparison report with a table' do
         let(:expected_report) { report }
@@ -137,51 +159,9 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
         let(:advice_page_path) { school_advice_path(school) }
         let(:table_name) { :electricity }
 
-        let(:colgroups) do
-          [
-            '',
-            I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-          ]
-        end
+        let(:expected_table) { generate_expected_table }
 
-        let(:expected_table) do
-          [
-            colgroups,
-            generate_headers,
-            [school.name,
-             'Jan 2023',
-             '2,000',
-             '1,000',
-             '-50&percnt;',
-             '200',
-             '100',
-             '-50&percnt;',
-             '£4,000',
-             '£2,000',
-             '-50&percnt;']
-          ]
-        end
-
-        let(:expected_csv) do
-          [
-            generate_csv_header_groups(urn: true),
-            generate_headers(urn: true),
-            [school.name,
-             school.urn.to_s,
-             '2023-01-01',
-             '2,000',
-             '1,000',
-             '-50',
-             '200',
-             '100',
-             '-50',
-             '4,000',
-             '2,000',
-             '-50']
-          ]
-        end
+        let(:expected_csv) { generate_expected_csv }
       end
     end
 
@@ -192,51 +172,9 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
         let(:advice_page_path) { school_advice_path(school) }
         let(:table_name) { :gas }
 
-        let(:colgroups) do
-          [
-            '',
-            I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-          ]
-        end
+        let(:expected_table) { generate_expected_table }
 
-        let(:expected_table) do
-          [
-            colgroups,
-            generate_headers,
-            [school.name,
-             'Jan 2023',
-             '2,000',
-             '1,000',
-             '-50&percnt;',
-             '200',
-             '100',
-             '-50&percnt;',
-             '£4,000',
-             '£2,000',
-             '-50&percnt;']
-          ]
-        end
-
-        let(:expected_csv) do
-          [
-            generate_csv_header_groups(urn: true),
-            generate_headers(urn: true),
-            [school.name,
-             school.urn.to_s,
-             '2023-01-01',
-             '2,000',
-             '1,000',
-             '-50',
-             '200',
-             '100',
-             '-50',
-             '4,000',
-             '2,000',
-             '-50']
-          ]
-        end
+        let(:expected_csv) { generate_expected_csv }
       end
     end
 
@@ -247,51 +185,9 @@ describe 'change_in_energy_use_since_joined_energy_sparks' do
         let(:advice_page_path) { school_advice_path(school) }
         let(:table_name) { :storage_heater }
 
-        let(:colgroups) do
-          [
-            '',
-            I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-            I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-          ]
-        end
+        let(:expected_table) { generate_expected_table }
 
-        let(:expected_table) do
-          [
-            colgroups,
-            generate_headers,
-            [school.name,
-             'Jan 2023',
-             '2,000',
-             '1,000',
-             '-50&percnt;',
-             '200',
-             '100',
-             '-50&percnt;',
-             '£4,000',
-             '£2,000',
-             '-50&percnt;']
-          ]
-        end
-
-        let(:expected_csv) do
-          [
-            generate_csv_header_groups(urn: true),
-            generate_headers(urn: true),
-            [school.name,
-             school.urn.to_s,
-             '2023-01-01',
-             '2,000',
-             '1,000',
-             '-50',
-             '200',
-             '100',
-             '-50',
-             '4,000',
-             '2,000',
-             '-50']
-          ]
-        end
+        let(:expected_csv) { generate_expected_csv }
       end
     end
 

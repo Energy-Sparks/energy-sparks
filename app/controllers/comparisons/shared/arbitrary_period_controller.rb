@@ -4,10 +4,12 @@ module Comparisons
   module Shared
     class ArbitraryPeriodController < BaseController
       include MultipleTableComparison
+      include ComparisonsHelper
+      include AdvicePageHelper
 
       private
 
-      def set_headers(include_previous_period_unadjusted: true, holiday_name: false, urn: true)
+      def set_headers(include_previous_period_unadjusted: true, holiday_name: false, urn: false)
         @urn = urn
         super()
         @include_previous_period_unadjusted = include_previous_period_unadjusted
@@ -70,6 +72,64 @@ module Comparisons
 
       def create_charts(_results)
         create_single_number_chart(@results, :total_percentage_change_kwh, 100.0, :change_kwh, :percent)
+      end
+
+      def render_csv
+        table_name = filter[:table_name].to_sym
+        csv = CSV.generate do |csv|
+          colgroups, headers = case table_name
+                               when :gas, :storage_heater
+                                 [@heating_colgroups, @heating_headers]
+                               when :electricity
+                                 [@electricity_colgroups, @electricity_headers]
+                               when :total
+                                 [@colgroups, @headers]
+                               else
+                                 raise "unknown table_name #{fuel_type}"
+                               end
+          csv << csv_colgroups(colgroups)
+          csv << headers
+          @results.each do |result|
+            next if result_table_name_value(result, table_name, :current_period, :kwh).blank?
+
+            csv << render_csv_row(result, table_name)
+          end
+        end
+        render plain: csv
+      end
+
+      def render_csv_row(result, table_name)
+        [result.school.name,
+         render_csv_urn(result),
+         table_name == :total ? result.fuel_type_names : nil,
+         result.activation_date.iso8601,
+         if @include_previous_period_unadjusted && %i[gas storage_heater].include?(table_name)
+           format_unit(result_table_name_value(result, table_name, :previous_period, :kwh_unadjusted), Float)
+         end,
+         *render_csv_block(result, table_name, :kwh),
+         *render_csv_block(result, table_name, :co2),
+         *render_csv_block(result, table_name, :gbp)].compact
+      end
+
+      def render_csv_block(result, table_name, type)
+        [format_unit(result_table_name_value(result, table_name, :previous_period, type), Float),
+         format_unit(result_table_name_value(result, table_name, :current_period, type), Float),
+         format_csv_percent_change(result_table_name_value(result, table_name, :previous_period, type),
+                                   result_table_name_value(result, table_name, :current_period, type))]
+      end
+
+      def result_table_name_value(result, table_name, period, unit)
+        if table_name == :total
+          result.public_send("total_#{period}", unit:)
+        else
+          result.public_send("#{table_name}_#{period}_#{unit}")
+        end
+      end
+
+      def render_csv_urn(result)
+        return unless @urn
+
+        result.school.full_school ? result.school.urn : ''
       end
     end
   end
