@@ -516,7 +516,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     describe 'Active schools tab' do
       context 'when there are active schools' do
-        let(:project_school) do
+        let!(:project_school) do
           create(:school, :with_project, :with_school_group, default_issues_admin_user: create(:admin), active: true,
                                                              group: school_group)
         end
@@ -524,6 +524,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         it_behaves_like 'an Active schools tab' do
           let(:school) { project_school }
         end
+
         it 'includes the name of the admin' do
           expect(page).to have_text(project_school.default_issues_admin_user.display_name)
         end
