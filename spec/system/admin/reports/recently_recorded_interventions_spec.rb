@@ -163,7 +163,7 @@ describe 'Recently recorded interventions report' do
              "#{other_admin_observation.intervention_type.name},false\n")
       end
 
-      context 'when no issues admin is set for an activity -> school -> school group' do
+      context 'when no issues admin is set for an observation -> school -> school group' do
         before do
           user_school_group.update(default_issues_admin_user: nil)
           click_on 'CSV'
