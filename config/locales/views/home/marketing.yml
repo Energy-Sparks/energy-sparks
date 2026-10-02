@@ -176,6 +176,9 @@ en:
         - title_html: Participate in our competitions and events
           starter_icon: xmark
           standard_icon: circle-check
+        - title_html: Opportunities for students to use Energy Sparks to complete their <a href="/support/categories/engaging-the-school-community/duke-of-edinburgh-s-award-volunteering-section">Duke of Edinburgh’s Award volunteering section</a>.
+          starter_icon: xmark
+          standard_icon: circle-check
       - title: Energy management tool
         features:
         - title_html: User accounts
