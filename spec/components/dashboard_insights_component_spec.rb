@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :component do
   subject(:component) { described_class.new(**params) }
 
-  let(:school) { create(:school) }
+  let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates, reading_start_date: 2.years.ago) }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:user) { create(:school_admin, school: school) }
@@ -87,21 +87,19 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
     end
   end
 
-  def div_text
-    html.css('div').last.text.strip.gsub(/  +/, '')
+  def alerts_text
+    html
+    page.all('#adult-alerts div.prompt-component').map { |div| div.text.strip.gsub(/  +/, '') }
   end
 
   context 'with a target monthly summary' do
-    let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates) }
-
     context 'when electricity target failing' do
       before { create(:school_target, :with_monthly_consumption, school:) }
 
       it 'displays a negative electricity prompt' do
-        expect(div_text).to eq(
-          "Unfortunately you are not meeting your target to reduce your electricity usage\n\nReview progress"
-        )
-        expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/electricity_target")
+        expect(alerts_text).to \
+          eq(["Unfortunately you are not meeting your target to reduce your electricity usage\n\nReview progress"])
+        expect(page).to have_link('Review progress', href: "/schools/#{school.slug}/advice/electricity_target")
       end
     end
 
@@ -111,47 +109,43 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
       end
 
       it 'displays nothing' do
-        expect(div_text).to eq('')
+        expect(alerts_text).to eq([])
       end
     end
 
     context 'when gas target passing' do
-      let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates, fuel_type: :gas) }
+      let(:school) do
+        create(:school, :with_fuel_configuration, :with_meter_dates, reading_start_date: 2.years.ago, fuel_type: :gas)
+      end
 
       before { create(:school_target, :with_monthly_consumption, school:, fuel_type: :gas, current_consumption: 1000) }
 
       it 'displays a positive gas prompt' do
-        expect(div_text).to eq(
+        expect(alerts_text).to contain_exactly(
           "Well done, you are making progress towards achieving your target to reduce your gas usage!\n\n" \
           'Review progress'
         )
-        expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/gas_target")
+        expect(page).to have_link('Review progress', href: "/schools/#{school.slug}/advice/gas_target")
       end
     end
   end
 
   context 'with manual readings' do
-    before do
-      Flipper.enable(:manual_readings)
-      create(:school_target, :with_monthly_consumption, school:, gas: nil, storage_heaters: nil,
-                                                        previous_missing: missing)
-    end
-
     context 'when some readings missing' do
-      let(:missing) { true }
+      let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates) }
 
       it 'shows the prompt' do
-        expect(div_text).to eq('We have limited energy data for your school. You can enter monthly consumption data ' \
-                               'to show progress against any targets set or observe changes in consumption over a ' \
-                               "longer period of time.\n\nSupply historical manual readings")
+        expect(alerts_text).to contain_exactly(
+          'We have limited energy data for your school. You can enter monthly consumption data to show progress ' \
+          "against any targets set or observe changes in consumption over a longer period of time.\n\nSupply " \
+          'historical manual readings'
+        )
       end
     end
 
     context 'when complete' do
-      let(:missing) { false }
-
       it 'shows nothing' do
-        expect(div_text).to eq('')
+        expect(alerts_text).to eq([])
       end
     end
   end
