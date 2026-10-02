@@ -176,24 +176,5 @@ module Admin
     def breadcrumbs
       build_breadcrumbs([{ name: t('school_groups.titles.issues') }]) if @issueable.is_a?(SchoolGroup)
     end
-
-    def sort_link(label, column = nil, default_order = :asc)
-      column = (column || label.downcase).to_s
-      query = request.query_parameters.merge(sort: column, direction: sort_link_direction(column, default_order),
-                                             page: 1)
-      link_to "#{label}#{sort_link_arrow}", "#{request.path}?#{query.to_query}"
-    end
-    helper_method :sort_link
-
-    def sort_link_direction(column, default_order)
-      second_order = default_order == :asc ? :desc : :asc
-      params[:sort] == column && params[:direction] == default_order.to_s ? second_order : default_order
-    end
-
-    def sort_link_arrow
-      return unless params[:sort] == column
-
-      params[:direction] == 'asc' ? ' ↑' : ' ↓'
-    end
   end
 end

@@ -116,7 +116,7 @@
         <% end %>
       </div>
     <% else %>
-      <%= render 'issues_list', issues: @issues %>
+      <%= render 'issues_list', issues: @issues, sort: true %>
     <% end %>
     <%= render 'shared/pagy_footer' %>
   <% else %>
