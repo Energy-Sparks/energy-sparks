@@ -4,6 +4,7 @@ module Admin
   class IssuesController < AdminController
     include Pagy::Method
     include SchoolGroupBreadcrumbs
+    include ActionView::Helpers::UrlHelper
 
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
@@ -109,7 +110,8 @@ module Admin
     def format
       respond_to do |format|
         format.html do
-          @pagy, @issues = pagy(@issues.by_priority_order)
+          params[:order]
+          @pagy, @issues = pagy(sorted_issues)
           if @issueable.is_a?(SchoolGroup)
             breadcrumbs
             render :index, layout: 'group_settings'
@@ -121,6 +123,15 @@ module Admin
           send_data issues.to_csv,
                     filename: EnergySparks::Filenames.csv('issues')
         end
+      end
+    end
+
+    def sorted_issues
+      if params[:sort]
+        column = params[:sort]&.presence_in(Issue.column_names)
+        @issues.order(Arel.sql("#{column} #{params[:direction]&.presence_in(%w[asc desc])} NULLS LAST"))
+      else
+        @issues.by_priority_order
       end
     end
 

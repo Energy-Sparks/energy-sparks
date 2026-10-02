@@ -1,16 +1,17 @@
-<table class="table table-sorted">
+<% sort = local_assigns[:sort] %>
+<table class="table <%= 'table-sorted' unless local_assigns[:sort] %>">
   <thead>
     <tr>
       <th class="no-sort"></th>
-      <th>Title</th>
-      <th>Fuel</th>
-      <th class="nowrap">Created by</th>
+      <th><%= sort_link(sort, :Title) %></th>
+      <th><%= sort_link(sort, :Fuel, :fuel_type) %></th>
+      <th class="nowrap"><%= sort_link(sort, 'Created by', :created_by_id) %></th>
       <% unless @dashboard_user %>
-        <th class="nowrap">Assigned to</th>
+        <th class="nowrap"><%= sort_link(sort, 'Assigned to', :owned_by_id) %></th>
       <% end %>
-      <th>Status</th>
-      <th>Updated</th>
-      <th class="nowrap">Next review</th>
+      <th><%= sort_link(sort, :Status) %></th>
+      <th><%= sort_link(sort, :Updated, :updated_at, :desc) %></th>
+      <th class="nowrap"><%= sort_link(sort, 'Next review', :review_date, :desc) %></th>
       <th class="no-sort"></th>
     </tr>
   </thead>
