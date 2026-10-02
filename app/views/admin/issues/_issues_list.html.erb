@@ -1,16 +1,16 @@
-<table class="table table-sorted">
+<table class="table">
   <thead>
     <tr>
       <th class="no-sort"></th>
-      <th>Title</th>
-      <th>Fuel</th>
-      <th class="nowrap">Created by</th>
+      <th><%= sort_link(:Title) %></th>
+      <th><%= sort_link(:Fuel, :fuel_type) %></th>
+      <th class="nowrap"><%= sort_link('Created by', :created_by_id) %></th>
       <% unless @dashboard_user %>
-        <th class="nowrap">Assigned to</th>
+        <th class="nowrap"><%= sort_link('Assigned to', :owned_by_id) %></th>
       <% end %>
-      <th>Status</th>
-      <th>Updated</th>
-      <th class="nowrap">Next review</th>
+      <th><%= sort_link(:Status) %></th>
+      <th><%= sort_link(:Updated, :updated_at, :desc) %></th>
+      <th class="nowrap"><%= sort_link('Next review', :review_date, :desc) %></th>
       <th class="no-sort"></th>
     </tr>
   </thead>
