@@ -2,15 +2,15 @@
 
 # == Schema Information
 #
-# Table name: tasks_durations
+# Table name: activities_aims
 #
 #  id         :bigint(8)        not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-module Tasks
-  class Duration < ApplicationRecord
-    self.table_name = 'tasks_durations'
+module Activities
+  class Aim < ApplicationRecord
+    self.table_name = 'activities_aims'
 
     extend Mobility
 

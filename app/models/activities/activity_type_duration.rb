@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: tasks_activity_type_durations
+# Table name: activities_activity_type_durations
 #
 #  id               :bigint(8)        not null, primary key
 #  created_at       :datetime         not null
@@ -12,18 +12,18 @@
 #
 # Indexes
 #
-#  idx_on_activity_type_id_duration_id_c8f1e9eba3           (activity_type_id,duration_id) UNIQUE
-#  index_tasks_activity_type_durations_on_activity_type_id  (activity_type_id)
-#  index_tasks_activity_type_durations_on_duration_id       (duration_id)
+#  idx_on_activity_type_id_duration_id_1f107c7df1                (activity_type_id,duration_id) UNIQUE
+#  index_activities_activity_type_durations_on_activity_type_id  (activity_type_id)
+#  index_activities_activity_type_durations_on_duration_id       (duration_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (activity_type_id => activity_types.id)
-#  fk_rails_...  (duration_id => tasks_durations.id)
+#  fk_rails_...  (duration_id => activities_durations.id)
 #
-module Tasks
+module Activities
   class ActivityTypeDuration < ApplicationRecord
-    self.table_name = 'tasks_activity_type_durations'
+    self.table_name = 'activities_activity_type_durations'
 
     belongs_to :activity_type
     belongs_to :duration

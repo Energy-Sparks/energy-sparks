@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_18_161847) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -103,6 +103,87 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_161847) do
     t.index ["created_by_id"], name: "index_activities_on_created_by_id"
     t.index ["school_id"], name: "index_activities_on_school_id"
     t.index ["updated_by_id"], name: "index_activities_on_updated_by_id"
+  end
+
+  create_table "activities_activity_type_aims", force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.bigint "aim_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_type_id", "aim_id"], name: "idx_on_activity_type_id_aim_id_3867f63bb2", unique: true
+    t.index ["activity_type_id"], name: "index_activities_activity_type_aims_on_activity_type_id"
+    t.index ["aim_id"], name: "index_activities_activity_type_aims_on_aim_id"
+  end
+
+  create_table "activities_activity_type_durations", force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "duration_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_type_id", "duration_id"], name: "idx_on_activity_type_id_duration_id_1f107c7df1", unique: true
+    t.index ["activity_type_id"], name: "index_activities_activity_type_durations_on_activity_type_id"
+    t.index ["duration_id"], name: "index_activities_activity_type_durations_on_duration_id"
+  end
+
+  create_table "activities_activity_type_learning_stages", force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "learning_stage_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_type_id", "learning_stage_id"], name: "idx_on_activity_type_id_learning_stage_id_5abbf592b6", unique: true
+    t.index ["activity_type_id"], name: "idx_on_activity_type_id_56a8687290"
+    t.index ["learning_stage_id"], name: "idx_on_learning_stage_id_81e969d401"
+  end
+
+  create_table "activities_activity_type_subject_areas", force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "subject_area_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_type_id", "subject_area_id"], name: "idx_on_activity_type_id_subject_area_id_1830e25d8f", unique: true
+    t.index ["activity_type_id"], name: "idx_on_activity_type_id_e4890ca96a"
+    t.index ["subject_area_id"], name: "idx_on_subject_area_id_e66245bb54"
+  end
+
+  create_table "activities_activity_type_topics", force: :cascade do |t|
+    t.bigint "activity_type_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "topic_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_type_id", "topic_id"], name: "idx_on_activity_type_id_topic_id_450ba51c43", unique: true
+    t.index ["activity_type_id"], name: "index_activities_activity_type_topics_on_activity_type_id"
+    t.index ["topic_id"], name: "index_activities_activity_type_topics_on_topic_id"
+  end
+
+  create_table "activities_aims", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "activities_durations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "activities_intervention_type_aims", force: :cascade do |t|
+    t.bigint "aim_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "intervention_type_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["aim_id"], name: "index_activities_intervention_type_aims_on_aim_id"
+    t.index ["intervention_type_id", "aim_id"], name: "idx_on_intervention_type_id_aim_id_9fe98d157d", unique: true
+    t.index ["intervention_type_id"], name: "idx_on_intervention_type_id_e093609ee8"
+  end
+
+  create_table "activities_subject_areas", force: :cascade do |t|
+    t.enum "country", default: "england", null: false, enum_type: "country"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "activities_topics", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "activity_categories", force: :cascade do |t|
@@ -1227,6 +1308,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_161847) do
     t.index ["finished_at"], name: "index_good_jobs_jobs_on_finished_at_only", where: "(finished_at IS NOT NULL)"
     t.index ["finished_at"], name: "index_good_jobs_on_discarded", order: :desc, where: "((finished_at IS NOT NULL) AND (error IS NOT NULL))"
     t.index ["id"], name: "index_good_jobs_on_unfinished_or_errored", where: "((finished_at IS NULL) OR (error IS NOT NULL))"
+    t.index ["job_class", "finished_at"], name: "index_good_jobs_on_discarded_job_class", where: "((finished_at IS NOT NULL) AND (error IS NOT NULL))"
     t.index ["job_class"], name: "index_good_jobs_on_job_class"
     t.index ["labels"], name: "index_good_jobs_on_labels", where: "(labels IS NOT NULL)", using: :gin
     t.index ["locked_by_id"], name: "index_good_jobs_on_locked_by_id", where: "(locked_by_id IS NOT NULL)"
@@ -2332,77 +2414,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_161847) do
     t.string "version", null: false
   end
 
-  create_table "tasks_activity_type_aims", force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.bigint "aim_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_type_id", "aim_id"], name: "index_tasks_activity_type_aims_on_activity_type_id_and_aim_id", unique: true
-    t.index ["activity_type_id"], name: "index_tasks_activity_type_aims_on_activity_type_id"
-    t.index ["aim_id"], name: "index_tasks_activity_type_aims_on_aim_id"
-  end
-
-  create_table "tasks_activity_type_durations", force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.datetime "created_at", null: false
-    t.bigint "duration_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_type_id", "duration_id"], name: "idx_on_activity_type_id_duration_id_c8f1e9eba3", unique: true
-    t.index ["activity_type_id"], name: "index_tasks_activity_type_durations_on_activity_type_id"
-    t.index ["duration_id"], name: "index_tasks_activity_type_durations_on_duration_id"
-  end
-
-  create_table "tasks_activity_type_learning_stages", force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.datetime "created_at", null: false
-    t.bigint "learning_stage_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_type_id", "learning_stage_id"], name: "idx_on_activity_type_id_learning_stage_id_752d89db99", unique: true
-    t.index ["activity_type_id"], name: "index_tasks_activity_type_learning_stages_on_activity_type_id"
-    t.index ["learning_stage_id"], name: "index_tasks_activity_type_learning_stages_on_learning_stage_id"
-  end
-
-  create_table "tasks_activity_type_subject_areas", force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.datetime "created_at", null: false
-    t.bigint "subject_area_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_type_id", "subject_area_id"], name: "idx_on_activity_type_id_subject_area_id_7ee6044b0b", unique: true
-    t.index ["activity_type_id"], name: "index_tasks_activity_type_subject_areas_on_activity_type_id"
-    t.index ["subject_area_id"], name: "index_tasks_activity_type_subject_areas_on_subject_area_id"
-  end
-
-  create_table "tasks_activity_type_topics", force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.datetime "created_at", null: false
-    t.bigint "topic_id", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_type_id", "topic_id"], name: "idx_on_activity_type_id_topic_id_eb90e9c10e", unique: true
-    t.index ["activity_type_id"], name: "index_tasks_activity_type_topics_on_activity_type_id"
-    t.index ["topic_id"], name: "index_tasks_activity_type_topics_on_topic_id"
-  end
-
-  create_table "tasks_aims", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tasks_durations", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tasks_subject_areas", force: :cascade do |t|
-    t.enum "country", default: "england", null: false, enum_type: "country"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tasks_topics", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "team_members", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
@@ -2601,6 +2612,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_161847) do
   add_foreign_key "activities", "schools", on_delete: :cascade
   add_foreign_key "activities", "users", column: "created_by_id"
   add_foreign_key "activities", "users", column: "updated_by_id"
+  add_foreign_key "activities_activity_type_aims", "activities_aims", column: "aim_id"
+  add_foreign_key "activities_activity_type_aims", "activity_types"
+  add_foreign_key "activities_activity_type_durations", "activities_durations", column: "duration_id"
+  add_foreign_key "activities_activity_type_durations", "activity_types"
+  add_foreign_key "activities_activity_type_learning_stages", "activity_types"
+  add_foreign_key "activities_activity_type_learning_stages", "learning_stages"
+  add_foreign_key "activities_activity_type_subject_areas", "activities_subject_areas", column: "subject_area_id"
+  add_foreign_key "activities_activity_type_subject_areas", "activity_types"
+  add_foreign_key "activities_activity_type_topics", "activities_topics", column: "topic_id"
+  add_foreign_key "activities_activity_type_topics", "activity_types"
+  add_foreign_key "activities_intervention_type_aims", "activities_aims", column: "aim_id"
+  add_foreign_key "activities_intervention_type_aims", "intervention_types"
   add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
   add_foreign_key "activity_type_key_stages", "activity_types", on_delete: :cascade
@@ -2813,16 +2836,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_161847) do
   add_foreign_key "solis_cloud_installation_schools", "solis_cloud_installations"
   add_foreign_key "solis_cloud_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
-  add_foreign_key "tasks_activity_type_aims", "activity_types"
-  add_foreign_key "tasks_activity_type_aims", "tasks_aims", column: "aim_id"
-  add_foreign_key "tasks_activity_type_durations", "activity_types"
-  add_foreign_key "tasks_activity_type_durations", "tasks_durations", column: "duration_id"
-  add_foreign_key "tasks_activity_type_learning_stages", "activity_types"
-  add_foreign_key "tasks_activity_type_learning_stages", "learning_stages"
-  add_foreign_key "tasks_activity_type_subject_areas", "activity_types"
-  add_foreign_key "tasks_activity_type_subject_areas", "tasks_subject_areas", column: "subject_area_id"
-  add_foreign_key "tasks_activity_type_topics", "activity_types"
-  add_foreign_key "tasks_activity_type_topics", "tasks_topics", column: "topic_id"
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "transifex_load_errors", "transifex_loads"

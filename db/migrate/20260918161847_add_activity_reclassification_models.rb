@@ -8,20 +8,16 @@ class AddActivityReclassificationModels < ActiveRecord::Migration[8.1]
     # but we should move to this? or a countries table
     create_enum :country, %w[england scotland wales]
     # create_table :country do |t|
-    ## in model if we were to use this method
+    ## in model if we were going to have countries in a table
     ## translates :name, type: :string, fallbacks: { cy: :en }
     ## translates :abbreviation, type: :string, fallbacks: { cy: :en }
     # t.timestamps
     # end
 
-    # In the spirit of trying to group tables / models together,
-    # keep everything namespaced under /tasks (/activities felt too confusing)
-    # Is still a bit of a mounthfull but this is the best option I have come up with at the mo
+    create_table :activities_aims, &:timestamps
+    create_table :activities_durations, &:timestamps
 
-    create_table :tasks_aims, &:timestamps
-    create_table :tasks_durations, &:timestamps
-
-    # Not always activity specific. so keep out of tasks module
+    # Should be more widely used, so keep out of activities module
     create_table :learning_stages do |t|
       t.enum 'country', default: 'england', null: false, enum_type: 'country'
       # t.references :country, null: false, foreign_key: { to_table: :countries }
@@ -29,34 +25,44 @@ class AddActivityReclassificationModels < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    create_table :tasks_subject_areas do |t|
+    create_table :activities_subject_areas do |t|
       t.enum 'country', default: 'england', null: false, enum_type: 'country'
       # t.references :country, null: false, foreign_key: { to_table: :countries }
 
       t.timestamps
     end
 
-    create_table :tasks_topics, &:timestamps
+    create_table :activities_topics, &:timestamps
 
-    create_table :tasks_activity_type_aims do |t|
+    # Both activities and actions can have aims. Option to be polymorphic
+    create_table :activities_activity_type_aims do |t|
       t.references :activity_type, null: false,
                                    foreign_key: { to_table: :activity_types }
       t.references :aim, null: false,
-                         foreign_key: { to_table: :tasks_aims }
+                         foreign_key: { to_table: :activities_aims }
       t.timestamps
       t.index %i[activity_type_id aim_id], unique: true
     end
 
-    create_table :tasks_activity_type_durations do |t|
+    create_table :activities_intervention_type_aims do |t|
+      t.references :intervention_type, null: false,
+                                       foreign_key: { to_table: :intervention_types }
+      t.references :aim, null: false,
+                         foreign_key: { to_table: :activities_aims }
+      t.timestamps
+      t.index %i[intervention_type_id aim_id], unique: true
+    end
+
+    create_table :activities_activity_type_durations do |t|
       t.references :activity_type, null: false,
                                    foreign_key: { to_table: :activity_types }
       t.references :duration, null: false,
-                              foreign_key: { to_table: :tasks_durations }
+                              foreign_key: { to_table: :activities_durations }
       t.timestamps
       t.index %i[activity_type_id duration_id], unique: true
     end
 
-    create_table :tasks_activity_type_learning_stages do |t|
+    create_table :activities_activity_type_learning_stages do |t|
       t.references :activity_type, null: false,
                                    foreign_key: { to_table: :activity_types }
       t.references :learning_stage, null: false,
@@ -65,23 +71,24 @@ class AddActivityReclassificationModels < ActiveRecord::Migration[8.1]
       t.index %i[activity_type_id learning_stage_id], unique: true
     end
 
-    create_table :tasks_activity_type_subject_areas do |t|
+    create_table :activities_activity_type_subject_areas do |t|
       t.references :activity_type, null: false,
                                    foreign_key: { to_table: :activity_types }
       t.references :subject_area, null: false,
-                                  foreign_key: { to_table: :tasks_subject_areas }
+                                  foreign_key: { to_table: :activities_subject_areas }
       t.timestamps
       t.index %i[activity_type_id subject_area_id], unique: true
     end
 
-    create_table :tasks_activity_type_topics do |t|
+    create_table :activities_activity_type_topics do |t|
       t.references :activity_type, null: false,
                                    foreign_key: { to_table: :activity_types }
       t.references :topic, null: false,
-                           foreign_key: { to_table: :tasks_topics }
+                           foreign_key: { to_table: :activities_topics }
       t.timestamps
       t.index %i[activity_type_id topic_id], unique: true
     end
   end
 end
+
 # rubocop:enable Metrics/AbcSize, Metrics/MethodLength

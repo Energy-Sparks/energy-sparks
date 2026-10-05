@@ -59,11 +59,11 @@ class ActivityType < ApplicationRecord
   has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
   ####
 
-  has_many :activity_type_aims, class_name: 'Tasks::ActivityTypeAim', dependent: :destroy
-  has_many :activity_type_durations, class_name: 'Tasks::ActivityTypeDuration', dependent: :destroy
-  has_many :activity_type_learning_stages, class_name: 'Tasks::ActivityTypeLearningStages', dependent: :destroy
-  has_many :activity_type_subject_areas, class_name: 'Tasks::ActivityTypeSubjectAreas', dependent: :destroy
-  has_many :activity_type_topics, class_name: 'Tasks::ActivityTypeTopics', dependent: :destroy
+  has_many :activity_type_aims, class_name: 'Activities::ActivityTypeAim', dependent: :destroy
+  has_many :activity_type_durations, class_name: 'Activities::ActivityTypeDuration', dependent: :destroy
+  has_many :activity_type_learning_stages, class_name: 'Activities::ActivityTypeLearningStages', dependent: :destroy
+  has_many :activity_type_subject_areas, class_name: 'Activities::ActivityTypeSubjectAreas', dependent: :destroy
+  has_many :activity_type_topics, class_name: 'Activities::ActivityTypeTopics', dependent: :destroy
 
   has_many :aims, through: :activity_type_aims
   has_many :durations, through: :activity_type_durations

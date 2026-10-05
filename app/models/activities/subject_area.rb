@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: tasks_subject_areas
+# Table name: activities_subject_areas
 #
 #  id         :bigint(8)        not null, primary key
 #  country    :enum             default("england"), not null, enum_type: country
@@ -13,9 +13,9 @@
 #
 #  country  england, scotland, wales
 #
-module Tasks
+module Activities
   class SubjectArea < ApplicationRecord
-    self.table_name = 'tasks_subject_areas'
+    self.table_name = 'activities_subject_areas'
     extend Mobility
 
     include Enums::Country
