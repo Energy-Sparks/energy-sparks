@@ -14,9 +14,6 @@ RSpec.describe ActivityTypeFilter, type: :service do
   let!(:reducing_gas) { Impact.create(name: 'Reducing gas') }
   let!(:reducing_electricity) { Impact.create(name: 'Reducing electricity') }
 
-  let!(:pie_charts) { Topic.create(name: 'Pie charts') }
-  let!(:energy) { Topic.create(name: 'Energy') }
-
   let!(:activity_category_1) { create(:activity_category, name: 'cat1') }
   let!(:activity_category_2) { create(:activity_category, name: 'cat2') }
   let!(:activity_type_1) do
@@ -37,7 +34,6 @@ RSpec.describe ActivityTypeFilter, type: :service do
       key_stages: [ks3],
       subjects: [science, maths],
       activity_timings: [hour],
-      topics: [energy],
       impacts: [reducing_gas]
     )
   end
@@ -48,7 +44,6 @@ RSpec.describe ActivityTypeFilter, type: :service do
       key_stages: [ks3],
       subjects: [maths],
       activity_timings: [half_hour],
-      topics: [pie_charts],
       impacts: [reducing_gas]
     )
   end
@@ -92,27 +87,11 @@ RSpec.describe ActivityTypeFilter, type: :service do
     end
   end
 
-  describe '#selected_topics' do
-    context 'when no parameters are passed in' do
-      it 'uses none' do
-        service = ActivityTypeFilter.new
-        expect(service.selected_topics).to be_empty
-      end
-    end
-
-    context 'when parameters are passed in' do
-      it 'loads the topics from the ids' do
-        service = ActivityTypeFilter.new(query: { topic_ids: [pie_charts.id] })
-        expect(service.selected_topics).to contain_exactly(pie_charts)
-      end
-    end
-  end
-
   describe '#selected_activity_timings' do
     context 'when no parameters are passed in' do
       it 'uses none' do
         service = ActivityTypeFilter.new
-        expect(service.selected_topics).to be_empty
+        expect(service.selected_activity_timings).to be_empty
       end
     end
 
@@ -158,12 +137,6 @@ RSpec.describe ActivityTypeFilter, type: :service do
       let(:query) { { subject_ids: maths.id } }
 
       it { is_expected.to contain_exactly(activity_type_2, activity_type_3) }
-    end
-
-    context 'when a topic is selected' do
-      let(:query) { { topic_ids: pie_charts.id } }
-
-      it { is_expected.to contain_exactly(activity_type_3) }
     end
 
     context 'when a timing is selected' do
