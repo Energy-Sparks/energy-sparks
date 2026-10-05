@@ -69,7 +69,7 @@ module Rack
       end
     end
 
-    # seeing repeated requests causing us to hit mailchimp API rate limit - multiple IPs used by > 10 from each one
+    # seeing repeated requests causing us to hit mailchimp API rate limit - multiple IPs used but > 10 from each one
     throttle('mailchimp_signups/ip', limit: 5, period: 20.seconds) do |req|
       req.ip if req.path == '/mailchimp_signups/new'
     end
