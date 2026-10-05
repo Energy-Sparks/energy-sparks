@@ -127,9 +127,9 @@ module Admin
     end
 
     def sorted_issues
-      if params[:sort]
-        column = params[:sort]&.presence_in(Issue.column_names)
-        @issues.order(Arel.sql("#{column} #{params[:direction]&.presence_in(%w[asc desc])} NULLS LAST"))
+      column = params[:sort]&.presence_in(Issue.column_names)
+      if column
+        @issues.order(Issue.arel_table[column].public_send(params[:direction]&.presence_in(%w[asc desc])).nulls_last)
       else
         @issues.by_priority_order
       end
