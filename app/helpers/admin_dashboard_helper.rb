@@ -26,5 +26,4 @@ module AdminDashboardHelper
 
     params[:direction] == 'asc' ? ' ↑' : ' ↓'
   end
-
 end
