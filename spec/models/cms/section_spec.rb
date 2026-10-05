@@ -8,22 +8,23 @@ describe Cms::Section do
     let(:show_all) { false }
 
     context 'when escaping the query' do
-      let(:query) { 'Lorem ipsum?' }
-
-      it 'finds results in title' do
-        section = create(:section, title: query, published: true)
-        expect(results.first).to eq(section)
+      ['Lorem ipsum?',
+       '20%'].each do |query|
+        it "finds results for #{query.inspect}" do
+          section = create(:section, title: query, published: true)
+          expect(described_class.search(query:)).to contain_exactly(section)
+        end
       end
     end
 
     it 'finds results in title' do
       section = create(:section, title: query, published: true)
-      expect(results.first).to eq(section)
+      expect(results).to contain_exactly(section)
     end
 
     it 'finds results in body' do
       section = create(:section, body: query, published: true)
-      expect(results.first).to eq(section)
+      expect(results).to contain_exactly(section)
     end
 
     it 'ignores unpublished' do
@@ -46,7 +47,7 @@ describe Cms::Section do
 
       it 'finds results' do
         section = create(:section, title: query, published: true)
-        expect(results.first).to eq(section)
+        expect(results).to contain_exactly(section)
       end
     end
   end

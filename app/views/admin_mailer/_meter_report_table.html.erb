@@ -18,32 +18,34 @@
     </tr>
   </thead>
   <tbody>
-    <% provider.meters.from_active_schools.each do |meter| %>
+    <% meters = provider.meters.from_active_schools
+       meters = meters.active if local_assigns[:active_only]
+       meters.each do |meter| %>
       <tr>
         <td>
-          <% if meter&.school&.school_group %>
-            <%= link_to meter&.school&.school_group&.name, school_group_url(meter&.school&.school_group) %>
+          <% if meter.school&.school_group %>
+            <%= link_to meter.school.school_group.name, school_group_url(meter.school.school_group) %>
           <% end %>
         </td>
         <td>
-          <% if meter&.school&.name %>
-            <%= link_to meter&.school&.name, school_url(meter&.school) %>
+          <% if meter.school&.name %>
+            <%= link_to meter.school.name, school_url(meter.school) %>
           <% end %>
         </td>
         <td>
-          <% if meter&.mpan_mprn %>
-            <%= link_to meter&.mpan_mprn, school_meter_url(meter&.school, meter) %>
+          <% if meter.mpan_mprn %>
+            <%= link_to meter.mpan_mprn, school_meter_url(meter.school, meter) %>
           <% end %>
         </td>
-        <td><%= meter&.meter_type&.humanize %></td>
-        <td><%= meter&.supplier&.name %></td>
-        <td><%= meter&.data_source&.name %></td>
-        <td><%= meter&.active %></td>
+        <td><%= meter.meter_type&.humanize %></td>
+        <td><%= meter.supplier&.name %></td>
+        <td><%= meter.data_source&.name %></td>
+        <td><%= meter.active %></td>
         <td><%= meter.t_meter_system %></td>
-        <td><%= meter&.first_validated_reading %></td>
-        <td><%= meter&.last_validated_reading %></td>
-        <td><%= meter&.admin_meter_status_label %></td>
-        <td><%= meter&.open_issues_count %></td>
+        <td><%= meter.first_validated_reading %></td>
+        <td><%= meter.last_validated_reading %></td>
+        <td><%= meter.admin_meter_status_label %></td>
+        <td><%= meter.open_issues_count %></td>
       </tr>
     <% end %>
   </tbody>

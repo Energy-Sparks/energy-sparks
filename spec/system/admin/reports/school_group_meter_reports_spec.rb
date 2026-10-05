@@ -29,7 +29,7 @@ describe 'school group meter reports', type: :system do
       before do
         click_on 'Meter report'
         accept_alert do
-          click_on 'Email meter report'
+          click_on 'Email Meter Report'
         end
       end
 

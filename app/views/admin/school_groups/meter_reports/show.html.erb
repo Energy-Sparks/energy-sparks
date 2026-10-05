@@ -6,7 +6,7 @@
 
 <h2>Downloads</h2>
 <p>You can request this school group meter report, including a CSV</p>
-<%= render 'admin/school_groups/email_meter_report_button', school_group: @school_group, class: 'btn btn-sm' %>
+<%= render 'admin/shared/email_meter_report_button', school_group: @school_group, class: 'btn btn-sm' %>
 
 <% unless params[:all_meters] %>
   <h2>Meters</h2>

@@ -159,6 +159,17 @@ describe 'Recently recorded activities report' do
              "#{other_admin_activity.created_by.staff_role.title},#{other_admin_activity.created_at.to_date.iso8601}," \
              "#{other_admin_activity.happened_on.to_date.iso8601},#{other_admin_activity.title},false\n")
       end
+
+      context 'when no issues admin is set for an activity -> school -> school group' do
+        before do
+          user_school_group.update(default_issues_admin_user: nil)
+          click_on 'CSV'
+        end
+
+        it 'does not error' do
+          expect(page).to have_http_status(:ok)
+        end
+      end
     end
 
     context 'with a filter' do

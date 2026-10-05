@@ -9,7 +9,7 @@
 #  enough_data             :integer
 #  priority_data           :json
 #  rating                  :decimal(, )
-#  relevance               :integer          default(0)
+#  relevance               :integer          default("relevant")
 #  reporting_period        :integer
 #  run_on                  :date
 #  template_data           :json

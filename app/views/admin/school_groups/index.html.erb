@@ -91,7 +91,7 @@
                   <% end %>
                 </td>
               <% end %>
-              <td class="text-end">
+              <td class="text-end" data-order="<%= school_group.next_group_review&.review_date&.iso8601 %>">
                 <% if school_group.next_group_review %>
                   <%= link_to review_date_badge(school_group.next_group_review, label: false),
                               admin_issue_path(school_group.next_group_review) %>

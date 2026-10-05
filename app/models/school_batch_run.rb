@@ -3,7 +3,7 @@
 # Table name: school_batch_runs
 #
 #  id         :bigint(8)        not null, primary key
-#  status     :integer          default(0), not null
+#  status     :integer          default("pending"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  school_id  :bigint(8)

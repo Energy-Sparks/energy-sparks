@@ -89,6 +89,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :activities, only: [:index]
+
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
       get 'more-information', as: :more_information
@@ -608,7 +610,8 @@ Rails.application.routes.draw do
         resources :estimated_reads
         resources :manual_reads
         resources :pupil_number_updates
-        resources :limited_data
+        resources :limited_data, only: [:index]
+        resources :stale_data, only: [:index]
       end
     end
     resources :mailer_previews, only: [:index]
@@ -834,7 +837,7 @@ Rails.application.routes.draw do
       post :deliver
     end
     resources :data_sources do
-      post :deliver
+      post :deliver, on: :member
       scope module: :data_sources do
         concerns :issueable
       end
@@ -930,6 +933,7 @@ Rails.application.routes.draw do
       resources :modelled_solar, only: :index
       resources :solar_installations, only: :index
       resources :limited_data, only: :index
+      resources :stale_data, only: :index
     end
 
     resource :settings, only: %i[show update]

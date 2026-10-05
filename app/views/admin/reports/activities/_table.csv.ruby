@@ -4,7 +4,7 @@ CSV.generate do |csv|
   @activities.each do |activity|
     csv << [
       activity.school.school_group&.name,
-      activity.school.school_group&.default_issues_admin_user.name,
+      activity.school.school_group&.default_issues_admin_user&.name,
       activity.school.name,
       activity.observation_user&.name,
       activity.observation_user&.role&.humanize,

@@ -33,10 +33,11 @@
     </span>
     <%= render 'admin/issues/issueable', issueable: @data_source %>
     <span class="badge text-bg-info"><%= @data_source.organisation_type.try(:humanize) %></span>
-    <span class='float-end pe-2'>
-      <%= render Forms::EmailReportButtonComponent.new(admin_data_source_deliver_path(@data_source),
-                                                       'Email Data Source Report',
-                                                       button_class: 'btn btn-secondary btn-sm') %>
+    <span class="float-end pe-2">
+      <%= render 'admin/shared/email_meter_report_button', path: deliver_admin_data_source_path(@data_source),
+                                                           label: 'Email Data Source Report',
+                                                           class: 'btn btn-secondary btn-sm',
+                                                           current_user: %>
       <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: 'btn btn-secondary btn-sm' %>
       <%= link_to 'Delete', admin_data_source_path(@data_source), method: :delete, data: { confirm: 'Are you sure?' },
                                                                   class: 'btn btn-sm btn-danger' %>
@@ -64,6 +65,6 @@
     <% else %>
       <div class="bg-light p-2">No meter issues for <%= @data_source.name %>.</div>
     <% end %>
-    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @data_source %></div>
+    <div class="pt-3"><%= render 'admin/issues/issues_links', issueable: @data_source %></div>
   <% end %>
 <% end %>

@@ -1,5 +1,47 @@
 <%= form_tag @path, method: :post, style: 'display: inline-block !important;' do %>
-  <%= button_tag(type: 'submit', class: @button_class) do %>
+  <% button_attributes = { type: :submit, class: @button_class }
+     if content?
+       button_attributes.merge!(type: :button,
+                               'data-toggle': :modal, 'data-bs-toggle': :modal,
+                               'data-target': "##{@modal_id}", 'data-bs-target': "##{@modal_id}")
+     end %>
+  <%= button_tag(**button_attributes) do %>
     <%= fa_icon('envelope') %> <%= @label %>
   <% end %>
+  <% if content? %>
+    <div class="modal fade" id="<%= @modal_id %>" tabindex="-1" aria-labelledby="<%= @label_id %>" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="<%= @label_id %>"><%= @modal_title || @label %></h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <strong>To: </strong>
+              <span class="badge border text-dark rounded-pill border-secondary fw-normal">
+                <%= @current_user.email %>
+              </span>
+            </div>
+            <% if @school_group %>
+              <div><strong>Group: </strong><%= @school_group.name %></div>
+            <% end %>
+            <%= content %>
+          </div>
+          <div class="modal-footer">
+            <%= button_tag(
+                  type: 'submit',
+                  class: 'btn btn-secondary btn-sm',
+                  data: { confirm: "Are you sure you want to send the #{@label} to #{@current_user.email}?" }
+                ) do %>
+              <%= fa_icon('envelope') %> <%= @modal_label %>
+            <% end %>
+            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
 <% end %>

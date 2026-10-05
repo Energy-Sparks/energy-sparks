@@ -33,6 +33,10 @@ en:
       update_activity: Update activity
       update_duplicate_activity: Update duplicate activity
       when_did_you_complete_this_activity: When did you complete this activity?
+    index:
+      description: Energy Sparks provides extensive support to teachers and pupils when learning about energy and climate change within the context of your own school
+      description_action_html: Use the links below to explore <strong>%{count}</strong> freely available activities
+      title: Explore energy saving activities
     new:
       page_title: Record activity
       record_a_new_activity: Record a new energy saving activity for your school

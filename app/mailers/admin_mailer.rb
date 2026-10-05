@@ -6,13 +6,13 @@ class AdminMailer < ApplicationMailer # rubocop:todo Metrics/ClassLength
 
   layout 'admin_mailer'
 
-  def school_data_source_report
-    to, data_source_id = params.values_at(:to, :data_source_id)
+  def school_data_source_report(to, data_source_id, active_only)
+    @active_only = active_only
     @data_source = DataSource.find(data_source_id)
     title = "#{t('common.application')}-#{@data_source.name}-meters-#{Time.zone.now.iso8601}".parameterize
     attachments["#{title}.csv"] = { mime_type: 'text/csv', content: @data_source.to_csv }
 
-    mail(to: to, subject: admin_subject(title))
+    mail(to:, subject: admin_subject(title))
   end
 
   def school_supplier_report
