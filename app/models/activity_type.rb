@@ -53,7 +53,7 @@ class ActivityType < ApplicationRecord
   t_has_one_attached :image
 
   #### to be removed when we have fully moved over to new classifications
-  has_and_belongs_to_many :key_stages, join_table: :activity_types_key_stages
+  has_and_belongs_to_many :key_stages, join_table: :activity_type_key_stages
   has_and_belongs_to_many :impacts, join_table: :activity_type_impacts
   has_and_belongs_to_many :subjects, join_table: :activity_type_subjects
   has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
@@ -61,15 +61,15 @@ class ActivityType < ApplicationRecord
 
   has_many :activity_type_aims, class_name: 'Activities::ActivityTypeAim', dependent: :destroy
   has_many :activity_type_durations, class_name: 'Activities::ActivityTypeDuration', dependent: :destroy
-  has_many :activity_type_learning_stages, class_name: 'Activities::ActivityTypeLearningStages', dependent: :destroy
-  has_many :activity_type_subject_areas, class_name: 'Activities::ActivityTypeSubjectAreas', dependent: :destroy
-  has_many :activity_type_topics, class_name: 'Activities::ActivityTypeTopics', dependent: :destroy
+  has_many :activity_type_learning_stages, class_name: 'Activities::ActivityTypeLearningStage', dependent: :destroy
+  has_many :activity_type_subject_areas, class_name: 'Activities::ActivityTypeSubjectArea', dependent: :destroy
+  has_many :activity_type_topics, class_name: 'Activities::ActivityTypeTopic', dependent: :destroy
 
-  has_many :aims, through: :activity_type_aims
-  has_many :durations, through: :activity_type_durations
+  has_many :aims, through: :activity_type_aims, class_name: 'Activities::Aim'
+  has_many :durations, through: :activity_type_durations, class_name: 'Activities::Duration'
   has_many :learning_stages, through: :activity_type_learning_stages
-  has_many :subject_areas, through: :activity_type_subject_areas
-  has_many :topics, through: :activity_type_topics # replaces old / unused topics relationship
+  has_many :subject_areas, through: :activity_type_subject_areas, class_name: 'Activities::SubjectArea'
+  has_many :topics, through: :activity_type_topics, class_name: 'Activities::Topic' # replaces old / unused topics relationship
 
   scope :active, -> { where(active: true) }
   scope :not_custom, -> { where(custom: false) }

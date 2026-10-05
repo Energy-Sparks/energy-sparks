@@ -13,6 +13,14 @@ describe 'InterventionType' do
     expect(type.errors[:score]).to include('must be greater than or equal to 0')
   end
 
+  describe 'relationships' do
+    subject(:intervention_type) { create(:intervention_type) }
+
+    it { expect(intervention_type).to have_many(:intervention_type_aims).dependent(:destroy) }
+
+    it { expect(intervention_type).to have_many(:aims).through(:intervention_type_aims) }
+  end
+
   it 'validates every fuel type is valid' do
     intervention_type = build(:intervention_type)
 

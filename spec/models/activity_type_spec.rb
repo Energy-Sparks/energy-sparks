@@ -40,6 +40,22 @@ describe 'ActivityType' do
     expect(ActivityType.live_data).to contain_exactly(activity_type_1)
   end
 
+  describe 'relationships' do
+    subject(:activity_type) { create(:activity_type) }
+
+    it { expect(activity_type).to have_many(:activity_type_aims).dependent(:destroy) }
+    it { expect(activity_type).to have_many(:activity_type_durations).dependent(:destroy) }
+    it { expect(activity_type).to have_many(:activity_type_learning_stages).dependent(:destroy) }
+    it { expect(activity_type).to have_many(:activity_type_subject_areas).dependent(:destroy) }
+    it { expect(activity_type).to have_many(:activity_type_topics).dependent(:destroy) }
+
+    it { expect(activity_type).to have_many(:aims).through(:activity_type_aims) }
+    it { expect(activity_type).to have_many(:durations).through(:activity_type_durations) }
+    it { expect(activity_type).to have_many(:learning_stages).through(:activity_type_learning_stages) }
+    it { expect(activity_type).to have_many(:subject_areas).through(:activity_type_subject_areas) }
+    it { expect(activity_type).to have_many(:topics).through(:activity_type_topics) }
+  end
+
   context 'when translations are being applied' do
     let(:old_name) { 'old-name' }
     let(:new_name) { 'new-name' }

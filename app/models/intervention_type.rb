@@ -54,7 +54,7 @@ class InterventionType < ApplicationRecord
   has_many :alert_type_ratings, through: :alert_type_rating_intervention_types
 
   has_many :intervention_type_aims, class_name: 'Activities::InterventionTypeAim', dependent: :destroy
-  has_many :aims, through: :intervention_type_aims
+  has_many :aims, through: :intervention_type_aims, class_name: 'Activities::Aim'
 
   # old relationships to be removed when todos feature removed
   has_many :audit_intervention_types, dependent: nil
