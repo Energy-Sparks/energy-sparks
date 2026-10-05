@@ -110,7 +110,6 @@ module Admin
     def format
       respond_to do |format|
         format.html do
-          params[:order]
           @pagy, @issues = pagy(sorted_issues)
           if @issueable.is_a?(SchoolGroup)
             breadcrumbs
