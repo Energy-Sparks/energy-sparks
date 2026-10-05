@@ -69,6 +69,11 @@ module Rack
       end
     end
 
+    # seeing repeated requests causing us to hit mailchimp API rate limit - multiple IPs used by > 10 from each one
+    throttle('mailchimp_signups/ip', limit: 5, period: 20.seconds) do |req|
+      req.ip if req.path == '/mailchimp_signups/new'
+    end
+
     ### Custom Throttle Response ###
 
     # By default, Rack::Attack returns an HTTP 429 for throttled responses,
