@@ -5,29 +5,21 @@
 class AddActivityReclassificationModels < ActiveRecord::Migration[8.1]
   def change
     # school and school group already use an integer enum for country
-    # but we should move to this? or a countries table
+    # but we want to use a string enum for the new models
     create_enum :country, %w[england scotland wales]
-    # create_table :country do |t|
-    ## in model if we were going to have countries in a table
-    ## translates :name, type: :string, fallbacks: { cy: :en }
-    ## translates :abbreviation, type: :string, fallbacks: { cy: :en }
-    # t.timestamps
-    # end
-
     create_table :activities_aims, &:timestamps
     create_table :activities_durations, &:timestamps
 
     # Should be more widely used, so keep out of activities module
+    # Look to using this in School model in the future
     create_table :learning_stages do |t|
       t.enum 'country', default: 'england', null: false, enum_type: 'country'
-      # t.references :country, null: false, foreign_key: { to_table: :countries }
 
       t.timestamps
     end
 
     create_table :activities_subject_areas do |t|
       t.enum 'country', default: 'england', null: false, enum_type: 'country'
-      # t.references :country, null: false, foreign_key: { to_table: :countries }
 
       t.timestamps
     end
