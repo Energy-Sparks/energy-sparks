@@ -56,7 +56,7 @@ describe 'group contracts and licences', :include_application_helper do
     }
   end
 
-  context 'when in September is still reports as if in previous year' do
+  context 'when in September it still reports as if in previous year' do
     let(:today) { Date.new(2026, 9, 1) }
 
     before do

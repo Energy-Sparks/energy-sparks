@@ -11,7 +11,6 @@ describe 'school group meter reports', type: :system do
 
   before do
     sign_in(admin)
-    visit admin_reports_path
   end
 
   context 'when viewing a school group meter report page' do
