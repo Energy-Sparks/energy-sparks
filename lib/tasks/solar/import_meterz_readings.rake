@@ -6,9 +6,9 @@ namespace :solar do
     start_date = args[:start_date]&.to_date
     end_date = args[:end_date]&.to_date
     MeterZInstallation.active.find_each do |installation|
-      Solar::MeterZDownloadAndUpsert.new(installation:, start_date:, end_date:).perform
-    rescue StandardError => e
-      EnergySparks::Log.exception(e, job: :import_meterz_readings, installation_id: installation.id)
+      Solar::MeterZDownloadAndUpsert.new(installation: installation, start_date:, end_date:).perform
     end
+  rescue StandardError => e
+    EnergySparks::Log.exception(e, job: :import_meterz_readings)
   end
 end

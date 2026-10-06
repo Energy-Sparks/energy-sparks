@@ -23,9 +23,12 @@ module Solar
     end
 
     def download
-      @installation.meters.map do |meter|
-        readings = @installation.readings(meter.meter_serial_number, start_date(meter:))
+      @installation.meters.filter_map do |meter|
+        start_date = start_date(meter:)
+        readings = @installation.readings(meter.meter_serial_number, start_date)
         [:solar_pv, { meter_id: meter.meter_serial_number, readings: convert_readings(readings) }]
+      rescue StandardError => e
+        log_exception(e, school: meter.school.slug, meter_serial_number: meter.meter_serial_number, start_date:)
       end
     end
 
