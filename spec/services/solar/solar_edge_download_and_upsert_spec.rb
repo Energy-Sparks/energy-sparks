@@ -119,7 +119,5 @@ module Solar
         upserter.perform
       end
     end
-
-    context 'when the'
   end
 end
