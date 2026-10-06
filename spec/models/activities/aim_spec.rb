@@ -11,9 +11,5 @@ describe Activities::Aim do
     it 'can be assigned to an activity type' do
       expect(create(:activity_type, aims: [aim]).aims).to contain_exactly(aim)
     end
-
-    it 'can be assigned to an intervention type' do
-      expect(create(:intervention_type, aims: [aim]).aims).to contain_exactly(aim)
-    end
   end
 end

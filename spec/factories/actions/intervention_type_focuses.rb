@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :intervention_type_aim, class: 'Activities::InterventionTypeAim' do
+  factory :intervention_type_focus, class: 'Actions::InterventionTypeFocus' do
     intervention_type factory: %i[intervention_type]
-    aim factory: %i[aim]
+    focus factory: %i[focus]
   end
 end

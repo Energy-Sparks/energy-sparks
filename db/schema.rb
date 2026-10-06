@@ -58,6 +58,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
     t.index ["record_type", "record_id", "name", "locale"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
+  create_table "actions_focuses", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "actions_intervention_type_focuses", force: :cascade do |t|
+    t.bigint "intervention_type_id", null: false
+    t.bigint "focus_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["focus_id"], name: "index_actions_intervention_type_focuses_on_focus_id"
+    t.index ["intervention_type_id", "focus_id"], name: "idx_on_intervention_type_id_focus_id_a6fdf69984", unique: true
+    t.index ["intervention_type_id"], name: "idx_on_intervention_type_id_6a1ee4b473"
+  end
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -163,16 +178,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
   create_table "activities_durations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "activities_intervention_type_aims", force: :cascade do |t|
-    t.bigint "intervention_type_id", null: false
-    t.bigint "aim_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["aim_id"], name: "index_activities_intervention_type_aims_on_aim_id"
-    t.index ["intervention_type_id", "aim_id"], name: "idx_on_intervention_type_id_aim_id_9fe98d157d", unique: true
-    t.index ["intervention_type_id"], name: "idx_on_intervention_type_id_e093609ee8"
   end
 
   create_table "activities_subject_areas", force: :cascade do |t|
@@ -2605,6 +2610,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
   end
 
   add_foreign_key "academic_years", "calendars", on_delete: :restrict
+  add_foreign_key "actions_intervention_type_focuses", "actions_focuses", column: "focus_id"
+  add_foreign_key "actions_intervention_type_focuses", "intervention_types"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
@@ -2622,8 +2629,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
   add_foreign_key "activities_activity_type_subject_areas", "activity_types"
   add_foreign_key "activities_activity_type_topics", "activities_topics", column: "topic_id"
   add_foreign_key "activities_activity_type_topics", "activity_types"
-  add_foreign_key "activities_intervention_type_aims", "activities_aims", column: "aim_id"
-  add_foreign_key "activities_intervention_type_aims", "intervention_types"
   add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
   add_foreign_key "activity_type_key_stages", "activity_types", on_delete: :cascade

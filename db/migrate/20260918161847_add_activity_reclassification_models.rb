@@ -44,15 +44,6 @@ class AddActivityReclassificationModels < ActiveRecord::Migration[8.1]
       t.index %i[activity_type_id aim_id], unique: true
     end
 
-    create_table :activities_intervention_type_aims do |t|
-      t.references :intervention_type, null: false,
-                                       foreign_key: { to_table: :intervention_types }
-      t.references :aim, null: false,
-                         foreign_key: { to_table: :activities_aims }
-      t.timestamps
-      t.index %i[intervention_type_id aim_id], unique: true
-    end
-
     create_table :activities_activity_type_durations do |t|
       t.references :activity_type, null: false,
                                    foreign_key: { to_table: :activity_types }
@@ -88,6 +79,16 @@ class AddActivityReclassificationModels < ActiveRecord::Migration[8.1]
       t.timestamps
       t.index %i[activity_type_id topic_id], unique: true
     end
+  end
+
+  create_table :actions_focuses, &:timestamps
+  create_table :actions_intervention_type_focuses do |t|
+    t.references :intervention_type, null: false,
+                                     foreign_key: { to_table: :intervention_types }
+    t.references :focus, null: false,
+                         foreign_key: { to_table: :actions_focuses }
+    t.timestamps
+    t.index %i[intervention_type_id focus_id], unique: true
   end
 end
 
