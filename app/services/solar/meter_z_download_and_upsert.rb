@@ -29,6 +29,7 @@ module Solar
         [:solar_pv, { meter_id: meter.meter_serial_number, readings: convert_readings(readings) }]
       rescue StandardError => e
         log_exception(e, school: meter.school.slug, meter_serial_number: meter.meter_serial_number, start_date:)
+        nil
       end
     end
 

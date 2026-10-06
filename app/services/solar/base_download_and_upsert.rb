@@ -15,8 +15,8 @@ module Solar
       log_exception(e)
     ensure
       if @error_messages.present?
-        import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date}: " \
-                                           "#{@error_messages.join(', ')}")
+        import_log.update!(error_messages: "Exception: downloading solar data from #{start_date || :nil} to " \
+                                           "#{end_date || :nil}: #{@error_messages.join(', ')}")
       end
     end
 
