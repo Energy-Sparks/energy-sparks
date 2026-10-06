@@ -95,6 +95,18 @@ module Solar
           upserter.perform
         end
       end
+
+      context 'with reload flag set' do
+        let(:upserter) { Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, reload: true, start_date: nil, end_date: nil) }
+        let(:reading_date)  { Date.yesterday }
+
+        let(:expected_start) { nil }
+        let(:expected_end) { nil }
+
+        it 'reloads all data' do
+          upserter.perform
+        end
+      end
     end
 
     context 'when there are no readings' do
@@ -107,5 +119,7 @@ module Solar
         upserter.perform
       end
     end
+
+    context 'when the'
   end
 end
