@@ -237,6 +237,17 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
       it { expect(page).to have_current_path(admin_school_group_issues_path(school_group, all: true, format: :csv)) }
     end
+
+    context 'when clicking on the email meter report link', :js do
+      before do
+        click_on 'Meter report'
+        accept_alert do
+          click_on 'Email Meter Report'
+        end
+      end
+
+      it { expect(page).to have_text "Meter report for #{school_group.name} requested to be sent to #{admin.email}" }
+    end
   end
 
   shared_examples 'an organisation button panel' do

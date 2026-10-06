@@ -35,12 +35,17 @@ class DashboardInsightsComponent < ApplicationComponent
 
   # display the alert column if the the school is data enabled and we have any content for that column
   def displaying_alerts?
-    data_enabled? && (alerts.any? || any_targets?)
+    data_enabled? && (alerts.any? || any_targets? || manual_readings_required?)
   end
 
   def any_targets?
     [@target&.electricity_monthly_consumption,
      @target&.gas_monthly_consumption,
      @target&.storage_heater_monthly_consumption].any?
+  end
+
+  def manual_readings_required?
+    @manual_readings_required ||=
+      Schools::ManualReadingsService.new(school).school_configuration_indicates_readings_required?
   end
 end
