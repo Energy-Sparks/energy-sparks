@@ -912,7 +912,6 @@ Rails.application.routes.draw do
       resources :mailchimp_status, only: [:index]
       resources :manual_reads, only: [:index]
       resources :meter_loading_reports, only: :index
-      resources :meter_reports, only: :index
       resources :missing_alert_contacts, only: [:index]
       resources :limited_users, only: [:index]
       resources :new_data_inactive_meter_report, only: [:index]
