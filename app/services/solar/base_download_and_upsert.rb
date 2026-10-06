@@ -14,7 +14,7 @@ module Solar
     rescue StandardError => e
       log_exception(e)
     ensure
-      if @error_messages.any?
+      if @error_messages.present?
         import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date}: " \
                                            "#{@error_messages.join(', ')}")
       end
@@ -68,7 +68,7 @@ module Solar
     def log_exception(exception, context = {})
       EnergySparks::Log.exception(exception, { job:, school: school&.name, start_date:, end_date:,
                                                installation_id: @installation.id }.merge(context))
-      error_messages << context.map { |key, value| "#{key} #{value}" }.join(' ')
+      @error_messages << context.map { |key, value| "#{key} #{value}" }.join(' ')
     end
   end
 end
