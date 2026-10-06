@@ -30,7 +30,7 @@ describe Solar::MeterZDownloadAndUpsert do
     end
   end
 
-  fcontext 'when meterz errors' do
+  context 'when meterz errors' do
     before do
       travel_to(Date.new(2026))
       stub_request(:get, 'https://api.meterz.co.uk/v1/organisations/organisation_id/sites/site_id/meters/123' \
