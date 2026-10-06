@@ -29,4 +29,23 @@ describe Solar::MeterZDownloadAndUpsert do
       expect(meter.amr_data_feed_readings.map(&:readings)).to eq([['1.0'] * 48] * 5)
     end
   end
+
+  fcontext 'when meterz errors' do
+    before do
+      travel_to(Date.new(2026))
+      stub_request(:get, 'https://api.meterz.co.uk/v1/organisations/organisation_id/sites/site_id/meters/123' \
+                         '/readings?start_datetime=2026-01-02&items_per_page=1000')
+        .to_return(status: 404)
+      allow(Rollbar).to receive(:error)
+      download_and_upsert.perform
+    end
+
+    it 'creates the correct readings' do
+      expect(Rollbar).to have_received(:error)
+      installation.amr_data_feed_config.amr_data_feed_import_logs
+      expect(installation.amr_data_feed_config.amr_data_feed_import_logs.first.error_messages).to \
+        eq('Exception: downloading solar data from nil to 2025-12-31: school school-aaaaa1 meter_serial_number 123 ' \
+           'start_date ')
+    end
+  end
 end
