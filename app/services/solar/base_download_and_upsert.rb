@@ -6,15 +6,18 @@ module Solar
       @requested_start_date = start_date
       @requested_end_date = end_date
       @installation = installation
+      @error_messages = []
     end
 
     def perform
       download_and_upsert
     rescue StandardError => e
-      EnergySparks::Log.exception(e, job: job, school: school&.name, start_date:, end_date:,
-                                     installation_id: @installation.id)
-      import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date} : " \
-                                         "#{e.class} #{e.message}")
+      log_exception(e)
+    ensure
+      if @error_messages.present?
+        import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date}: " \
+                                           "#{@error_messages.join(', ')}")
+      end
     end
 
     def import_log
@@ -60,6 +63,12 @@ module Solar
     def hh_index(time)
       total_minutes = (time.hour * 60) + time.min
       total_minutes / 30
+    end
+
+    def log_exception(exception, context = {})
+      EnergySparks::Log.exception(exception, { job:, school: school&.name, start_date:, end_date:,
+                                               installation_id: @installation.id }.merge(context))
+      @error_messages << context.map { |key, value| "#{key} #{value}" }.join(' ')
     end
   end
 end
