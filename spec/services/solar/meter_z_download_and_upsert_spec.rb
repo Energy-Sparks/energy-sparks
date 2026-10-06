@@ -44,7 +44,7 @@ describe Solar::MeterZDownloadAndUpsert do
       expect(Rollbar).to have_received(:error)
       installation.amr_data_feed_config.amr_data_feed_import_logs
       expect(installation.amr_data_feed_config.amr_data_feed_import_logs.first.error_messages).to \
-        eq('Exception: downloading solar data from nil to 2025-12-31: school school-aaaaa1 meter_serial_number 123 ' \
+        eq("Exception: downloading solar data from nil to 2025-12-31: school #{school.slug} meter_serial_number 123 " \
            'start_date ')
     end
   end
