@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'arbitary_period_helpers'
 
 describe 'configurable_period' do
+  include ArbitaryPeriodHelpers
+
   let!(:schools) { create_list(:school, 6) }
   let!(:alerts) do
     create(:alert_type, class_name: AlertAdditionalPrioritisationData.name)
@@ -66,31 +69,6 @@ describe 'configurable_period' do
     end
   end
 
-  self::COL_GROUPS = [ # -- shouldn't leak because of self?
-    '',
-    I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
-    I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-    I18n.t('analytics.benchmarking.configuration.column_groups.gbp')
-  ].freeze
-
-  def generate_headers(fuel:, unadjusted:)
-    [
-      I18n.t('analytics.benchmarking.configuration.column_headings.school'),
-      fuel && I18n.t('analytics.benchmarking.configuration.column_headings.fuel'),
-      I18n.t('activerecord.attributes.school.activation_date'),
-      unadjusted && I18n.t('comparisons.column_headings.previous_period_unadjusted'),
-      I18n.t('comparisons.column_headings.previous_period'),
-      I18n.t('comparisons.column_headings.current_period'),
-      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-      I18n.t('comparisons.column_headings.previous_period'),
-      I18n.t('comparisons.column_headings.current_period'),
-      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct'),
-      I18n.t('comparisons.column_headings.previous_period'),
-      I18n.t('comparisons.column_headings.current_period'),
-      I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
-    ].select(&:itself)
-  end
-
   context 'when viewing report' do
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { reports[0] }
@@ -115,14 +93,12 @@ describe 'configurable_period' do
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :total }
-        let(:colgroups) { self.class::COL_GROUPS }
-        let(:headers) { generate_headers(fuel: true, unadjusted: false) }
         let(:expected_table) do
           footnotes =
             "[#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}] [#{gas_change_rows[:label]}]"
           [
-            colgroups,
-            headers,
+            column_groups,
+            generate_headers(fuel: true, unadjusted: false),
             ["#{schools[0].name} #{footnotes}",
              '',
              'Jan 2023',
@@ -165,33 +141,33 @@ describe 'configurable_period' do
         end
         let(:expected_csv) do
           [
-            ['', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
-            [schools[0].name,
+            generate_csv_header_groups(fuel: true, urn: true),
+            generate_headers(fuel: true, urn: true),
+            [schools[0].name, schools[0].urn.to_s,
              'Electricity;Gas;Storage heaters',
              '2023-01-01',
              '6,000', '3,000', '-50',
              '600', '300', '-50',
              '12,000', '6,000', '-50'],
-            [schools[2].name,
+            [schools[2].name, schools[2].urn.to_s,
              'Gas',
              '2023-03-01',
              '2,000', '1,000', '-50',
              '200', '100', '-50',
              '4,000', '2,000', '-50'],
-            [schools[3].name,
+            [schools[3].name, schools[3].urn.to_s,
              'Electricity',
              '2023-04-01',
              '2,000', '1,000', '-50',
              '200', '100', '-50',
              '4,000', '2,000', '-50'],
-            [schools[4].name,
+            [schools[4].name, schools[4].urn.to_s,
              'Electricity;Gas',
              '2023-05-01',
              '4,000', '2,000', '-50',
              '400', '200', '-50',
              '8,000', '4,000', '-50'],
-            [schools[5].name,
+            [schools[5].name, schools[5].urn.to_s,
              'Electricity;Storage heaters',
              '2023-06-01',
              '4,000', '2,000', '-50',
@@ -209,11 +185,10 @@ describe 'configurable_period' do
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :electricity }
-        let(:colgroups) { self.class::COL_GROUPS }
         let(:headers) { generate_headers(fuel: false, unadjusted: false) }
         let(:expected_table) do
           [
-            colgroups,
+            column_groups,
             headers,
             ["#{schools[0].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
@@ -244,24 +219,24 @@ describe 'configurable_period' do
         end
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
-            [schools[0].name,
+            ['', '', '', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            generate_headers(fuel: false, unadjusted: false, urn: true),
+            [schools[0].name, schools[0].urn.to_s,
              '2023-01-01',
              '2,000', '1,000', '-50',
              '200', '100', '-50',
              '4,000', '2,000', '-50'],
-            [schools[3].name,
+            [schools[3].name, schools[3].urn.to_s,
              '2023-04-01',
              '2,000', '1,000', '-50',
              '200', '100', '-50',
              '4,000', '2,000', '-50'],
-            [schools[4].name,
+            [schools[4].name, schools[4].urn.to_s,
              '2023-05-01',
              '2,000', '1,000', '-50',
              '200', '100', '-50',
              '4,000', '2,000', '-50'],
-            [schools[5].name,
+            [schools[5].name, schools[5].urn.to_s,
              '2023-06-01',
              '2,000', '1,000', '-50',
              '200', '100', '-50',
@@ -278,12 +253,10 @@ describe 'configurable_period' do
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :gas }
-        let(:colgroups) { self.class::COL_GROUPS }
-        let(:headers) { generate_headers(fuel: false, unadjusted: true) }
         let(:expected_table) do
           [
-            colgroups,
-            headers,
+            column_groups,
+            generate_headers(fuel: false, unadjusted: true),
             ["#{schools[0].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
              '1,800', '2,000', '1,000', '-50&percnt;',
@@ -308,19 +281,19 @@ describe 'configurable_period' do
         end
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
-            [schools[0].name,
+            ['', '', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            generate_headers(fuel: false, unadjusted: true, urn: true),
+            [schools[0].name, schools[0].urn.to_s,
              '2023-01-01',
              '1,800', '2,000', '1,000', '-50',
              '200', '100', '-50',
              '4,000', '2,000', '-50'],
-            [schools[2].name,
+            [schools[2].name, schools[2].urn.to_s,
              '2023-03-01',
              '1,800', '2,000', '1,000', '-50',
              '200', '100', '-50',
              '4,000', '2,000', '-50'],
-            [schools[4].name,
+            [schools[4].name, schools[4].urn.to_s,
              '2023-05-01',
              '1,800', '2,000', '1,000', '-50',
              '200', '100', '-50',
@@ -337,12 +310,10 @@ describe 'configurable_period' do
         let(:expected_school) { schools[0] }
         let(:advice_page_path) { school_advice_path(expected_school) }
         let(:table_name) { :storage_heater }
-        let(:colgroups) { self.class::COL_GROUPS }
-        let(:headers) { generate_headers(fuel: false, unadjusted: true) }
         let(:expected_table) do
           [
-            colgroups,
-            headers,
+            column_groups,
+            generate_headers(fuel: false, unadjusted: true),
             ["#{schools[0].name} [#{tariff_changed_last_year[:label]}] [#{electricity_change_rows[:label]}]",
              'Jan 2023',
              '1,800', '2,000', '1,000', '-50&percnt;',
@@ -362,14 +333,14 @@ describe 'configurable_period' do
         end
         let(:expected_csv) do
           [
-            ['', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
-            headers,
-            [schools[0].name,
+            ['', '', '', 'kWh', '', '', '', 'CO2 (kg)', '', '', '£', '', ''],
+            generate_headers(fuel: false, unadjusted: true, urn: true),
+            [schools[0].name, schools[0].urn.to_s,
              '2023-01-01',
              '1,800', '2,000', '1,000', '-50',
              '200', '100', '-50',
              '4,000', '2,000', '-50'],
-            [schools[5].name,
+            [schools[5].name, schools[5].urn.to_s,
              '2023-06-01',
              '1,800', '2,000', '1,000', '-50',
              '200', '100', '-50',
