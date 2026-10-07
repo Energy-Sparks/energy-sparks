@@ -13,6 +13,13 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: exception.message
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    locale = LocaleFinder.new(params, request).locale
+    I18n.with_locale(locale) do
+      route_not_found
+    end
+  end
+
   def after_sign_in_path_for(user)
     subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
     root_url(subdomain: subdomain).chomp('/') + session.fetch(:user_return_to, '/')
