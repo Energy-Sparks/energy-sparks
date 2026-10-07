@@ -28,4 +28,6 @@ class LearningStage < ApplicationRecord
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :abbreviation, type: :string, fallbacks: { cy: :en }
+  validates :name, presence: true, uniqueness: { scope: :country }
+  validates :abbreviation, presence: true, uniqueness: { scope: :country }
 end

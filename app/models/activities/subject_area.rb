@@ -21,5 +21,6 @@ module Activities
     include Enums::Country
 
     translates :name, type: :string, fallbacks: { cy: :en }
+    validates :name, presence: true, uniqueness: { scope: :country }
   end
 end

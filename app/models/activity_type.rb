@@ -59,17 +59,13 @@ class ActivityType < ApplicationRecord
   has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
   ####
 
-  has_many :activity_type_aims, class_name: 'Activities::ActivityTypeAim', dependent: :destroy
-  has_many :activity_type_durations, class_name: 'Activities::ActivityTypeDuration', dependent: :destroy
   has_many :activity_type_learning_stages, class_name: 'Activities::ActivityTypeLearningStage', dependent: :destroy
   has_many :activity_type_subject_areas, class_name: 'Activities::ActivityTypeSubjectArea', dependent: :destroy
-  has_many :activity_type_topics, class_name: 'Activities::ActivityTypeTopic', dependent: :destroy
 
-  has_many :aims, through: :activity_type_aims, class_name: 'Activities::Aim'
-  has_many :durations, through: :activity_type_durations, class_name: 'Activities::Duration'
   has_many :learning_stages, through: :activity_type_learning_stages
   has_many :subject_areas, through: :activity_type_subject_areas, class_name: 'Activities::SubjectArea'
-  has_many :topics, through: :activity_type_topics, class_name: 'Activities::Topic' # replaces old / unused topics relationship
+
+  label_types :aim, :duration, :topic
 
   scope :active, -> { where(active: true) }
   scope :not_custom, -> { where(custom: false) }

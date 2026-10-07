@@ -16,8 +16,9 @@ describe 'InterventionType' do
   describe 'relationships' do
     subject(:intervention_type) { create(:intervention_type) }
 
-    it { expect(intervention_type).to have_many(:intervention_type_focuses).dependent(:destroy) }
-    it { expect(intervention_type).to have_many(:focuses).through(:intervention_type_focuses) }
+    it { expect(intervention_type).to have_many(:label_items).dependent(:destroy) }
+    it { expect(intervention_type).to have_many(:focuses).through(:label_items) }
+    it { expect(intervention_type).to have_many(:labels).through(:label_items) }
   end
 
   it 'validates every fuel type is valid' do

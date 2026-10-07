@@ -40,6 +40,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
   create_enum "meter_perse_api", ["half_hourly"]
   create_enum "renewal_behaviour", ["renew", "archive", "waitlist"]
   create_enum "school_grouping_role", ["organisation", "area", "project", "diocese"]
+  create_enum "task_label_types", ["aim", "duration", "topic", "focus"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -56,21 +57,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "locale", default: "en", null: false
     t.index ["record_type", "record_id", "name", "locale"], name: "index_action_text_rich_texts_uniqueness", unique: true
-  end
-
-  create_table "actions_focuses", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "actions_intervention_type_focuses", force: :cascade do |t|
-    t.bigint "intervention_type_id", null: false
-    t.bigint "focus_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["focus_id"], name: "index_actions_intervention_type_focuses_on_focus_id"
-    t.index ["intervention_type_id", "focus_id"], name: "idx_on_intervention_type_id_focus_id_a6fdf69984", unique: true
-    t.index ["intervention_type_id"], name: "idx_on_intervention_type_id_6a1ee4b473"
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -120,26 +106,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
     t.index ["updated_by_id"], name: "index_activities_on_updated_by_id"
   end
 
-  create_table "activities_activity_type_aims", force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.bigint "aim_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_type_id", "aim_id"], name: "idx_on_activity_type_id_aim_id_3867f63bb2", unique: true
-    t.index ["activity_type_id"], name: "index_activities_activity_type_aims_on_activity_type_id"
-    t.index ["aim_id"], name: "index_activities_activity_type_aims_on_aim_id"
-  end
-
-  create_table "activities_activity_type_durations", force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.bigint "duration_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_type_id", "duration_id"], name: "idx_on_activity_type_id_duration_id_1f107c7df1", unique: true
-    t.index ["activity_type_id"], name: "index_activities_activity_type_durations_on_activity_type_id"
-    t.index ["duration_id"], name: "index_activities_activity_type_durations_on_duration_id"
-  end
-
   create_table "activities_activity_type_learning_stages", force: :cascade do |t|
     t.bigint "activity_type_id", null: false
     t.bigint "learning_stage_id", null: false
@@ -160,33 +126,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
     t.index ["subject_area_id"], name: "idx_on_subject_area_id_e66245bb54"
   end
 
-  create_table "activities_activity_type_topics", force: :cascade do |t|
-    t.bigint "activity_type_id", null: false
-    t.bigint "topic_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["activity_type_id", "topic_id"], name: "idx_on_activity_type_id_topic_id_450ba51c43", unique: true
-    t.index ["activity_type_id"], name: "index_activities_activity_type_topics_on_activity_type_id"
-    t.index ["topic_id"], name: "index_activities_activity_type_topics_on_topic_id"
-  end
-
-  create_table "activities_aims", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "activities_durations", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "activities_subject_areas", force: :cascade do |t|
     t.enum "country", default: "england", null: false, enum_type: "country"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "activities_topics", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -2415,6 +2356,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "task_label_items", force: :cascade do |t|
+    t.string "task_type", null: false
+    t.bigint "task_id", null: false
+    t.bigint "label_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["label_id"], name: "index_task_label_items_on_label_id"
+    t.index ["task_type", "task_id", "label_id"], name: "index_task_label_items_on_task_type_and_task_id_and_label_id", unique: true
+    t.index ["task_type", "task_id"], name: "index_task_label_items_on_task"
+  end
+
+  create_table "task_labels", force: :cascade do |t|
+    t.enum "label_type", null: false, enum_type: "task_label_types"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "task_records", id: false, force: :cascade do |t|
     t.string "version", null: false
   end
@@ -2610,8 +2568,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
   end
 
   add_foreign_key "academic_years", "calendars", on_delete: :restrict
-  add_foreign_key "actions_intervention_type_focuses", "actions_focuses", column: "focus_id"
-  add_foreign_key "actions_intervention_type_focuses", "intervention_types"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
@@ -2619,16 +2575,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
   add_foreign_key "activities", "schools", on_delete: :cascade
   add_foreign_key "activities", "users", column: "created_by_id"
   add_foreign_key "activities", "users", column: "updated_by_id"
-  add_foreign_key "activities_activity_type_aims", "activities_aims", column: "aim_id"
-  add_foreign_key "activities_activity_type_aims", "activity_types"
-  add_foreign_key "activities_activity_type_durations", "activities_durations", column: "duration_id"
-  add_foreign_key "activities_activity_type_durations", "activity_types"
   add_foreign_key "activities_activity_type_learning_stages", "activity_types"
   add_foreign_key "activities_activity_type_learning_stages", "learning_stages"
   add_foreign_key "activities_activity_type_subject_areas", "activities_subject_areas", column: "subject_area_id"
   add_foreign_key "activities_activity_type_subject_areas", "activity_types"
-  add_foreign_key "activities_activity_type_topics", "activities_topics", column: "topic_id"
-  add_foreign_key "activities_activity_type_topics", "activity_types"
   add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
   add_foreign_key "activity_type_key_stages", "activity_types", on_delete: :cascade
@@ -2841,6 +2791,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_074012) do
   add_foreign_key "solis_cloud_installation_schools", "solis_cloud_installations"
   add_foreign_key "solis_cloud_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
+  add_foreign_key "task_label_items", "task_labels", column: "label_id"
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
   add_foreign_key "transifex_load_errors", "transifex_loads"
