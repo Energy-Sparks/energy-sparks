@@ -16,13 +16,13 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: :electricity, learn_more: learn_more) }
 
   context 'when requesting analysis for missing/removed school' do
-    context 'when visiting advice index' do
+    context 'when visiting the advice index' do
       before { visit school_advice_path(school_id: '123') }
 
       it_behaves_like 'a 404 error page'
     end
 
-    context 'when visting advice page' do
+    context 'when visiting an advice page' do
       before { visit school_advice_baseload_path(school_id: '123') }
 
       it_behaves_like 'a 404 error page'
