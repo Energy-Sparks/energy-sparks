@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: exception.message
   end
 
-  rescue_from ActiveRecord::RecordNotFound do |exception|
+  rescue_from ActiveRecord::RecordNotFound do
     locale = LocaleFinder.new(params, request).locale
     I18n.with_locale(locale) do
       route_not_found
