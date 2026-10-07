@@ -41,8 +41,7 @@ module Schools
       end
 
       rescue_from ActiveRecord::RecordNotFound do
-        locale = LocaleFinder.new(params, request).locale
-        I18n.with_locale(locale) do
+        switch_locale do
           route_not_found
         end
       end
