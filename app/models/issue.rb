@@ -93,7 +93,7 @@ class Issue < ApplicationRecord
   enum :status, { open: 0, closed: 1 }, prefix: true, default: :open
 
   validates :issue_type, :status, :title, :description, presence: true
-  validate :school_issue_meters_only
+  # validate :school_issue_meters_only
 
   before_save :remove_review_date, if: -> { status_changed?(to: 'closed') }
 

@@ -57,11 +57,14 @@ module Admin
       @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable, meter_ids: params[:meter_ids])
     end
 
-    def edit; end
+    def edit
+      @custom_mpans = @issue.meters.pluck(:mpan_mprn).join(' ')
+    end
 
     def create
       @issue.attributes = { created_by: current_user, updated_by: current_user }
       if @issue.save
+        process_affected_meters
         redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully created')
       else
         render :new
@@ -70,6 +73,7 @@ module Admin
 
     def update
       if @issue.update(issue_params.merge(updated_by: current_user))
+        process_affected_meters
         redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully updated')
       else
         render :edit
@@ -174,6 +178,15 @@ module Admin
 
     def breadcrumbs
       build_breadcrumbs([{ name: t('school_groups.titles.issues') }]) if @issueable.is_a?(SchoolGroup)
+    end
+
+    def process_affected_meters
+      meter_ids = Set.new
+      params[:all_meter_ids]&.each do |type|
+        meter_ids += @issue.issueable.meters.active.select(:id).public_send(type).pluck(:id)
+      end
+      meter_ids += Meter.where(mpan_mprn: params[:custom_mpans].delete(',').split).pluck(:id)
+      @issue.meter_ids = meter_ids if @issue.meter_ids.to_set != meter_ids
     end
   end
 end
