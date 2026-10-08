@@ -15,12 +15,10 @@ module Task
 
   class_methods do
     def label_types(*types)
-      return @label_types || [] if types.empty?
+      return @label_types ||= [] if types.empty?
 
-      @label_types = types.map(&:to_s)
-
-      types.each do |type|
-        has_many type.to_s.pluralize.to_sym, -> { where(label_type: type) }, through: :label_items, source: :label
+      @label_types = types.map(&:to_s).each do |type|
+        has_many type.pluralize.to_sym, -> { where(label_type: type) }, through: :label_items, source: :label
       end
     end
   end
