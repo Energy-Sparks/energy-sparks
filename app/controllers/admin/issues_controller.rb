@@ -19,6 +19,11 @@ module Admin
 
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
 
+    ALL_METER_TYPES = { fuel: %i[electricity gas solar_pv], system: %i[nhh_amr nhh hh smets2_smart] }
+                      .flat_map { |type, subtypes| subtypes.map { |subtype| [type, subtype] } }
+    ALLOWED_ALL_METER_TYPES = ALL_METER_TYPES.map { |_type, subtype| subtype.to_s }
+    private_constant :ALLOWED_ALL_METER_TYPES
+
     def index
       params[:issue_types] ||= Issue.issue_types.keys
       params[:statuses] ||= Issue.statuses.keys
@@ -42,7 +47,7 @@ module Admin
             @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now,
                                     7.days.from_now)
           end
-          @issues = @issues.where('review_date <= ?', Time.zone.now) if params[:review_date] == 'review_overdue'
+          @issues = @issues.where(review_date: ..Time.zone.now) if params[:review_date] == 'review_overdue'
         end
       end
 
@@ -65,6 +70,7 @@ module Admin
       @issue.attributes = { created_by: current_user, updated_by: current_user }
       if @issue.save
         process_affected_meters
+        # debugger
         redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully created')
       else
         render :new
@@ -105,7 +111,7 @@ module Admin
     end
 
     def meter_issues
-      @meter = Meter.find(params[:meter_id])
+      @meter = Meter.find(params.expect(:meter_id))
       respond_to(&:js)
     end
 
@@ -181,12 +187,17 @@ module Admin
     end
 
     def process_affected_meters
-      meter_ids = Set.new
-      params[:all_meter_ids]&.each do |type|
-        meter_ids += @issue.issueable.meters.active.select(:id).public_send(type).pluck(:id)
-      end
-      meter_ids += Meter.where(mpan_mprn: params[:custom_mpans].delete(',').split).pluck(:id)
+      return if params[:issue][:meter_ids]
+
+      meter_ids = process_all_meter_ids.to_set
+      meter_ids += Meter.where(mpan_mprn: params[:custom_mpans].delete(',').split).pluck(:id) if params[:custom_mpans]
       @issue.meter_ids = meter_ids if @issue.meter_ids.to_set != meter_ids
+    end
+
+    def process_all_meter_ids
+      (params[:all_meter_ids] || []).flat_map do |type|
+        @issue.issueable.meters.active.public_send(type).pluck(:id) if ALLOWED_ALL_METER_TYPES.include?(type)
+      end
     end
   end
 end

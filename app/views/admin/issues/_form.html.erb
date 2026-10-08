@@ -31,9 +31,7 @@
       <fieldset class="mb-3 check_boxes optional">
         <legend class="col-form-label pt-0">Affected meters</legend>
         <% if issue.new_record? %>
-          <% collection = { fuel: %i[electricity gas solar_pv], system: %i[nhh_amr nhh hh smets2_smart] }
-                          .flat_map { |type, subtypes| subtypes.map { |subtype| [type, subtype] } }
-                          .each do |type, subtype| %>
+          <% Admin::IssuesController::ALL_METER_TYPES.each do |type, subtype| %>
             <div class="form-check">
               <% id = "all_meter_ids_#{subtype}" %>
               <%= check_box_tag('all_meter_ids[]', subtype, false, id:,
@@ -45,7 +43,7 @@
             </div>
           <% end %>
         <% end %>
-        <p>Paste MPANs here to associate with the issue.</p>
+        <i>Paste MPANs here to associate with the issue.</i>
         <%= text_area_tag :custom_mpans, @custom_mpans, class: 'form-control is-valid string optional' %>
       </fieldset>
     <% end %>

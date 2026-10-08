@@ -93,7 +93,6 @@ class Issue < ApplicationRecord
   enum :status, { open: 0, closed: 1 }, prefix: true, default: :open
 
   validates :issue_type, :status, :title, :description, presence: true
-  # validate :school_issue_meters_only
 
   before_save :remove_review_date, if: -> { status_changed?(to: 'closed') }
 
@@ -179,11 +178,5 @@ class Issue < ApplicationRecord
 
   def remove_review_date
     self.review_date = nil
-  end
-
-  def school_issue_meters_only
-    return unless meters.any? && !issueable.is_a?(School)
-
-    errors.add(:base, 'Only school issues can have associated meters')
   end
 end
