@@ -8,7 +8,7 @@
     <li><%= link_to(t('advice_pages.target.analysis.historical_progress.title'), '#historical-progress') %></li>
   <% end %>
 </ul>
-<%= render 'meeting_target_prompt' %>
+<%= render 'meeting_target_prompt', consumption: @consumption, target: @target, fuel_type: @fuel_type %>
 <%= render 'schools/advice/section_title',
            section_id: 'monthly-progress',
            section_title: t('advice_pages.target.analysis.monthly_progress.title') %>
