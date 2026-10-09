@@ -26,7 +26,8 @@ describe Task::Label do
 
   describe 'relationships' do
     it 'can be assigned to an activity type as an aim' do
-      expect(create(:activity_type, aims: [label]).aims).to contain_exactly(label)
+      aim = create(:label, label_type: :aim)
+      expect(create(:activity_type, aims: [aim]).aims).to contain_exactly(aim)
     end
 
     it 'can be assigned to an activity type as a duration' do
