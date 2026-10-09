@@ -220,14 +220,6 @@ describe OnboardingMailer, :aggregate_failures do
     end
   end
 
-  # let(:school) { create_school }
-  # let(:preferred_locale) { :en }
-  # let(:user) { create(:onboarding_user, school:, preferred_locale:) }
-
-  # before do
-  #   create(:school_onboarding, school_name: 'Test School', created_by: user, school:, country: 'wales')
-  # end
-
   def create_school(**)
     create(:school, name: 'Test School', school_group: create(:school_group), **)
   end

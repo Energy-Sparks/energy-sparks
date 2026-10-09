@@ -1,4 +1,4 @@
-class AlertMailerPreview < ActionMailer::Preview
+class AlertMailerPreview < BasePreview
   def alert_email
     if @params[:email].present?
       AlertMailer.with(**preview_existing_email).alert_email
@@ -16,10 +16,6 @@ class AlertMailerPreview < ActionMailer::Preview
   end
 
   private
-
-  def locale
-    @params['locale'].present? ? @params['locale'] : 'en'
-  end
 
   def include_target_prompt_in_email?(school)
     Targets::SchoolTargetService.targets_enabled?(school) && Targets::SchoolTargetService.new(school).enough_data?

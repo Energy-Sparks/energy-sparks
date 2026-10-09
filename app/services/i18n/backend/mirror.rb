@@ -78,7 +78,7 @@ module I18n
 
       def find_and_mirror_entry_for(key, options)
         entry = lookup('en', key, options[:scope], options)
-        entry = entry.dup if entry.is_a?(String)
+        entry = entry.dup if entry.is_a?(String) || entry.is_a?(Hash)
 
         entry = pluralize('en', entry, options[:count]) if options[:count]
 
