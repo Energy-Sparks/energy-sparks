@@ -86,7 +86,6 @@ module Admin
           key_stage_ids: [],
           impact_ids: [],
           subject_ids: [],
-          topic_ids: [],
           activity_timing_ids: [],
           fuel_type: [],
           link_rewrites_attributes: link_rewrites_params,
@@ -104,7 +103,6 @@ module Admin
     def load_filters
       @key_stages = KeyStage.order(:name)
       @subjects = Subject.order(:name)
-      @topics = Topic.order(:name)
       @impacts = ::Impact.order(:name)
       @activity_timings = ActivityTiming.order(:position)
     end
