@@ -199,4 +199,48 @@ describe DataFeeds::SolarEdge::SiteApi do
              )).to eq(response)
     end
   end
+
+  describe '#all_meter_data' do
+    before do
+      production = {
+        'resolution' => 'QUARTER_HOUR',
+        'values' => [{ 'timestamp' => '2024-01-01T00:00:00+01:00', 'value' => 111.11 }]
+      }
+      stub_request(path: '/energy', params: {
+                     'resolution' => 'QUARTER_HOUR',
+                     'unit' => 'KWH',
+                     'from' => DateTime.new(2024, 1, 1).iso8601,
+                     'to' => DateTime.new(2024, 1, 2).iso8601
+                   }, response: production)
+
+      telemetry = {
+        'meters' => {
+          '5118719' => {
+            'importEnergy' => {
+              'unit' => 'WH',
+              'values' => [{ 'timestamp' => '2024-01-01T00:00:00+01:00', 'value' => 123.4 }]
+            },
+            'exportEnergy' => {
+              'unit' => 'WH',
+              'values' => [{ 'timestamp' => '2024-01-01T00:00:00+01:00', 'value' => 567.8 }]
+            }
+          }
+        }
+      }
+
+      stub_request(path: '/meters/telemetry', params: {
+                     'resolution' => 'QUARTER_HOUR',
+                     'from' => DateTime.new(2024, 1, 1).iso8601,
+                     'to' => DateTime.new(2024, 1, 2).iso8601
+                   }, response: telemetry)
+    end
+
+    it 'returns the data for all three meters' do
+      day = Date.new(2024, 1, 1)
+      data = api.all_meter_data(start_date: day, end_date: day)
+      expect(data[:solar_pv][:readings][day][0]).to eq(111.11)
+      expect(data[:electricity][:readings][day][0]).to be_within(0.0001).of(123.4 / 1000.0)
+      expect(data[:exported_solar_pv][:readings][day][0]).to be_within(0.0001).of(567.8 / 1000.0)
+    end
+  end
 end

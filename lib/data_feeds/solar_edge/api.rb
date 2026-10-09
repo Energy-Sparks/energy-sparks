@@ -5,17 +5,12 @@ module DataFeeds
     class Api < Base
       class TokenExchangeFailure < StandardError; end
 
-      CONNECT_BASE = 'https://connect.solaredge.com'
-
       def initialize(client_id: ENV.fetch('SOLAR_EDGE_CLIENT_ID', nil),
                      client_secret: ENV.fetch('SOLAR_EDGE_CLIENT_SECRET', nil),
                      stubs: nil)
         @client_id = client_id
         @client_secret = client_secret
-        @connection = FaradayHelper.connection(url: API_BASE, retry_options: { retry_statuses: [429] }) do |f|
-          f.adapter(:test, stubs) if stubs
-          f.response :json
-        end
+        @connection = build_connection(url: API_BASE, stubs: stubs)
       end
 
       # Create user facing URL to start OAuth workflow

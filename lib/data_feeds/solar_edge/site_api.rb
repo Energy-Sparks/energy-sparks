@@ -6,6 +6,7 @@ module DataFeeds
     class SiteApi < Base
       MAX_QUARTER_HOUR_PERIOD = 7 # days according to API response, although docs say 12 hours.
 
+      # Usage tier is 25 CPM.
       RETRY_OPTIONS = {
         retry_statuses: [429],
         max: 5,
@@ -17,12 +18,12 @@ module DataFeeds
       def initialize(site_id:, access_token:, stubs: nil)
         @site_id = site_id
         @access_token = access_token
-        @connection = FaradayHelper.connection(url: "#{API_BASE}/sites/#{@site_id}",
-                                               headers: auth_headers,
-                                               retry_options: RETRY_OPTIONS) do |f|
-          f.adapter(:test, stubs) if stubs
-          f.response :json
-        end
+        @connection = build_connection(
+          url: "#{API_BASE}/sites/#{@site_id}",
+          headers: auth_headers,
+          retry_options: RETRY_OPTIONS,
+          stubs: stubs
+        )
       end
 
       def details
@@ -88,7 +89,7 @@ module DataFeeds
       end
 
       # Backwards compatible with v1 client
-      def smart_meter_data(start_date: nil, end_date: nil)
+      def all_meter_data(start_date: nil, end_date: nil)
         import_and_export = import_and_export(start_date:, end_date:)
         {
           solar_pv: { readings: production(start_date:, end_date:) },
@@ -115,7 +116,7 @@ module DataFeeds
       end
 
       def request_period(start_date, end_date)
-        (start_date..end_date) if start_date && end_date
+        return (start_date..end_date) if start_date && end_date
 
         dates = date_range
         (start_date || dates[:from].to_date)..(end_date || dates[:to].to_date)
