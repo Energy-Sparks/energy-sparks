@@ -175,5 +175,22 @@ module Admin
     def breadcrumbs
       build_breadcrumbs([{ name: t('school_groups.titles.issues') }]) if @issueable.is_a?(SchoolGroup)
     end
+<<<<<<< Updated upstream
+=======
+
+    def process_affected_meters
+      return if params[:issue][:meter_ids]
+
+      meter_ids = process_all_meter_ids.to_set
+      meter_ids += Meter.where(mpan_mprn: params[:custom_mpans].delete(',').split).pluck(:id) if params[:custom_mpans]
+      @issue.meter_ids = meter_ids if @issue.meter_ids.to_set != meter_ids
+    end
+
+    def process_all_meter_ids
+      ((params[:all_meter_ids] || []) & ALLOWED_ALL_METER_TYPES).flat_map do |type|
+        @issue.issueable.meters.active.public_send(type).pluck(:id)
+      end
+    end
+>>>>>>> Stashed changes
   end
 end

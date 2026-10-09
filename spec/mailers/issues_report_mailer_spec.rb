@@ -6,20 +6,21 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
   include EmailHelpers
 
   let(:email) { last_email }
+  let(:admin) { create(:admin) }
+  let(:body) { email.html_part.body.raw_source }
 
-  before { stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true', 'ENVIRONMENT_IDENTIFIER' => 'unknown')) }
+  before { stub_env(SEND_AUTOMATED_EMAILS: true) }
+
+  def create_issue(**)
+    create(:issue, :with_tags, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago,
+                               created_by: admin, review_date: 1.week.from_now, **)
+  end
 
   describe '#issues_report' do
-    def create_issue(**)
-      create(:issue, :with_tags, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago,
-                                 created_by: admin, review_date: 1.week.from_now, **)
-    end
-
     def create_inactive_school_issue
       create_issue(issueable: create(:school, active: false), tag_labels: ['inactive schools'])
     end
 
-    let(:admin) { create(:admin) }
     let(:issue) do
       create_issue(review_date: 1.day.ago, tag_labels: ['generic tag'], issueable: create(:school, :with_school_group))
     end
@@ -125,6 +126,34 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
                    'Edit' => "http://localhost/admin/schools/#{issue.issueable.slug}/issues/#{issue.id}/edit" }
           [hash.keys.join(','), hash.values.join(',')]
         end
+      end
+    end
+  end
+
+  describe 'admin_meter_report' do
+    let(:school) { create(:school, :with_school_group) }
+    let(:issue) do
+      issue = create_issue(review_date: 1.day.ago, tag_labels: ['generic tag'], issueable: create(:supplier))
+      issue.meters << create(:gas_meter, school:)
+      issue
+    end
+
+    before do
+      travel_to(Date.new(2026))
+      # debugger
+      described_class.admin_meter_report(issue.meters.first.school.default_issues_admin_user).deliver
+    end
+
+    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      let(:page) { Capybara.string(body) }
+      let(:table_id) { '.table' }
+      let(:expected_header) do
+        [['', 'Issue For', 'Group', 'Title', 'Tags', 'Fuel', 'Next Review Date', 'Created By',
+          'Created', 'Updated By', 'Updated', 'Edit', '']]
+      end
+      let(:expected_rows) do
+        [['', "#{issue.issueable.name} new!", '', issue.title, 'generic tag', 'Gas', '31 Dec 2025', 'Admin',
+          '27 Dec 2025', issue.updated_by.name, '01 Jan 2026', 'Edit']]
       end
     end
   end

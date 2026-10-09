@@ -18,6 +18,18 @@ class IssuesReportMailer < ApplicationMailer
     prevent_delivery_from_test
   end
 
+  def admin_meter_report(user)
+    @user = user
+    @issues = admin_meter_issues(user)
+    # debugger
+    return if @issues.empty?
+
+    @columns = columns
+    attachments['admin_meter_issues_report.csv'] = { mime_type: 'text/csv', content: csv_report(@columns, @issues) }
+    mail(to: @user.email, subject: admin_subject('Daily Meter Issues'))
+    prevent_delivery_from_test
+  end
+
   private
 
   def active_issues(user)
@@ -25,6 +37,11 @@ class IssuesReportMailer < ApplicationMailer
     issues.where(review_date: ..Date.current)
           .or(issues.where(review_date: Date.current..1.week.from_now))
           .or(issues.where(created_at: 1.week.ago.to_date..))
+  end
+
+  def admin_meter_issues(user)
+    Issue.joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': user)
+         .active.status_open.issue.where(updated_at: Date.current.prev_day..)
   end
 
   def columns # rubocop:disable Metrics/AbcSize -- breaking up seems to make more complex
