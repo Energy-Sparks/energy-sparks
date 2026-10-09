@@ -17,7 +17,8 @@ module Task
     def label_types(*types)
       return @label_types ||= [] if types.empty?
 
-      @label_types = types.map(&:to_s).each do |type|
+      @label_types = types.map(&:to_s)
+      @label_types.each do |type|
         has_many type.pluralize.to_sym, -> { where(label_type: type) }, through: :label_items, source: :label
       end
     end
