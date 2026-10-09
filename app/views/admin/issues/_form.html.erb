@@ -27,6 +27,25 @@
                   input_html: { multiple: true },
                   label: "Affected meters #{link_to(fa_icon('external-link-alt'), school_meters_path(issue.school),
                                                     title: 'School meters', data: { toggle: 'tooltip' })}".html_safe %>
+    <% else %>
+      <fieldset class="mb-3 check_boxes optional">
+        <legend class="col-form-label pt-0">Affected meters</legend>
+        <% if issue.new_record? %>
+          <% Admin::IssuesController::ALL_METER_TYPES.each do |type, subtype| %>
+            <div class="form-check">
+              <% id = "all_meter_ids_#{subtype}" %>
+              <%= check_box_tag('all_meter_ids[]', subtype, false, id:,
+                                                                   class: 'form-check-input check_boxes optional') %>
+              <%= label_tag(id, class: 'form-check-label collection_check_boxes') do %>
+                <%= fa_icon(fuel_type_icon(subtype)) if type == :fuel %>
+                All <%= t(type == :fuel ? "common.#{subtype}" : "meter.meter_system.#{subtype}") %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+        <i>Paste MPANs here to associate with the issue.</i>
+        <%= text_area_tag :custom_mpans, @custom_mpans, class: 'form-control is-valid string optional' %>
+      </fieldset>
     <% end %>
     <%= f.input :status, collection: Issue.statuses.keys, label_method: :humanize, include_blank: false %>
     <% unless issue.new_record? %>
