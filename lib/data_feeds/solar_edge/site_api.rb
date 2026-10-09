@@ -6,12 +6,20 @@ module DataFeeds
     class SiteApi < Base
       MAX_QUARTER_HOUR_PERIOD = 7 # days according to API response, although docs say 12 hours.
 
+      RETRY_OPTIONS = {
+        retry_statuses: [429],
+        max: 5,
+        interval: 2.5,
+        interval_randomness: 0.5,
+        backoff_factor: 2
+      }.freeze
+
       def initialize(site_id:, access_token:, stubs: nil)
         @site_id = site_id
         @access_token = access_token
         @connection = FaradayHelper.connection(url: "#{API_BASE}/sites/#{@site_id}",
                                                headers: auth_headers,
-                                               retry_options: { retry_statuses: [429] }) do |f|
+                                               retry_options: RETRY_OPTIONS) do |f|
           f.adapter(:test, stubs) if stubs
           f.response :json
         end
