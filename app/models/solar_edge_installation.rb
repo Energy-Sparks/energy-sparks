@@ -79,6 +79,12 @@ class SolarEdgeInstallation < ApplicationRecord
     refresh_api_tokens!
   end
 
+  def site_api!
+    refresh_tokens_if_needed!
+
+    DataFeeds::SolarEdge::SiteApi.new(site_id:, access_token:)
+  end
+
   # We use UTC for expiry timestamp to avoid issues with BST/GMT changeover.
   def refresh_api_tokens!
     return if refresh_token.blank?

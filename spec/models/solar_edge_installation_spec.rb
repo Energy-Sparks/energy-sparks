@@ -3,11 +3,7 @@
 require 'rails_helper'
 
 describe SolarEdgeInstallation do
-  around do |example|
-    ClimateControl.modify SOLAR_EDGE_CLIENT_ID: 'solar_edge_client_id', SOLAR_EDGE_CLIENT_SECRET: 'solar_edge_secret' do
-      example.run
-    end
-  end
+  include_context 'with SolarEdge credentials'
 
   describe '#electricity_meter' do
     subject(:solar_edge_installation) { create(:solar_edge_installation) }

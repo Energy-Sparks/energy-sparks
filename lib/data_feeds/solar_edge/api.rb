@@ -2,12 +2,10 @@
 
 module DataFeeds
   module SolarEdge
-    class Api
+    class Api < Base
       class TokenExchangeFailure < StandardError; end
 
       CONNECT_BASE = 'https://connect.solaredge.com'
-      API_BASE = 'https://monitoringapi.solaredge.com/v2'
-      POST_HEADERS = { 'Content-Type' => 'application/json' }.freeze
 
       def initialize(client_id: ENV.fetch('SOLAR_EDGE_CLIENT_ID', nil),
                      client_secret: ENV.fetch('SOLAR_EDGE_CLIENT_SECRET', nil),
