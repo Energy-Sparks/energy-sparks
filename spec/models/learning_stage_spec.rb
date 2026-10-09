@@ -8,6 +8,7 @@ describe LearningStage do
   it { expect(learning_stage).to be_valid }
 
   describe 'validations' do
+    it { expect(learning_stage).to validate_presence_of(:country) }
     it { expect(learning_stage).to validate_presence_of(:name) }
     it { expect(learning_stage).to validate_uniqueness_of(:name).scoped_to(:country) }
     it { expect(learning_stage).to validate_presence_of(:abbreviation) }

@@ -8,6 +8,7 @@ describe Activities::SubjectArea do
   it { expect(subject_area).to be_valid }
 
   describe 'validations' do
+    it { expect(subject_area).to validate_presence_of(:country) }
     it { expect(subject_area).to validate_presence_of(:name) }
     it { expect(subject_area).to validate_uniqueness_of(:name).scoped_to(:country) }
   end
