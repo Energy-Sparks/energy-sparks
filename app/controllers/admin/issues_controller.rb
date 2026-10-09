@@ -195,7 +195,6 @@ module Admin
     end
 
     def process_all_meter_ids
-      debugger
       ((params[:all_meter_ids] || []) & ALLOWED_ALL_METER_TYPES).flat_map do |type|
         @issue.issueable.meters.active.public_send(type).pluck(:id)
       end

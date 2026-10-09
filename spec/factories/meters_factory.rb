@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :gas_meter, class: 'Meter' do
     school
-    sequence(:mpan_mprn) { |n| 10_000_000 + n }
+    sequence(:mpan_mprn, 10_000_001) { |n| n }
     sequence(:name, 'Meter AAAAA1')
     meter_type            { :gas }
     active                { true }
