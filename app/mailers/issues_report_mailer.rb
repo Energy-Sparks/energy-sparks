@@ -21,7 +21,6 @@ class IssuesReportMailer < ApplicationMailer
   def admin_meter_report(user, since: nil)
     @user = user
     @issues = admin_meter_issues(user, since)
-    # debugger
     return if @issues.empty?
 
     @columns = columns
@@ -41,7 +40,8 @@ class IssuesReportMailer < ApplicationMailer
 
   def admin_meter_issues(user, since)
     Issue.joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': user)
-         .active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..).includes(:issue_tags, :created_by, :updated_by, :issueable)
+         .active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..)
+         .includes(:issue_tags, :created_by, :updated_by, :issueable)
   end
 
   def columns # rubocop:disable Metrics/AbcSize -- breaking up seems to make more complex
