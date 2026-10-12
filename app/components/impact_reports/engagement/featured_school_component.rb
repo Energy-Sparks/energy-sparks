@@ -12,7 +12,9 @@ module ImpactReports
       end
 
       def default_school
-        @default_school ||= @school_group.scored_schools(recent_boundary: 12.months.ago, academic_year: nil).first
+        @default_school ||= @school_group
+                            .scored_schools(recent_boundary: twelve_months_ago, academic_year: nil)
+                            .top_by_recent_points
       end
 
       def school
@@ -24,20 +26,9 @@ module ImpactReports
       end
 
       def default_description
-        key = if activity_count.zero?
-                'actions'
-              else
-                action_count.zero? ? 'activities' : 'both'
-              end
-
-        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.actions')
-        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.activities')
-        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.both')
-
-        impact_t("engagement.featured.description.#{key}",
+        impact_t('engagement.featured.description',
                  school: school.name,
-                 activities: impact_t('engagement.featured.activities', count: activity_count),
-                 actions: impact_t('engagement.featured.actions', count: action_count))
+                 count: school.recent_points)
       end
 
       def now
@@ -48,24 +39,10 @@ module ImpactReports
         @twelve_months_ago ||= now - 12.months
       end
 
-      def activity_count
-        @activity_count ||= school.activities
-                                  .between(twelve_months_ago, now)
-                                  .count
-      end
-
-      def action_count
-        @action_count ||= school.observations
-                                .intervention
-                                .between(twelve_months_ago, now)
-                                .count
-      end
-
       def podium_school
         # this is the same as school group dashboard, which has a recent_boundary of 1 month ago
-        # i.e. with the default:
-        # scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
-        @school_group.scored_schools.first
+        school = @school_group.scored_schools.first
+        school if school&.sum_points&.positive?
       end
 
       def podium

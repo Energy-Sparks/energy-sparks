@@ -29,6 +29,12 @@ class ScoredSchoolsList
     self.class.new(@scored_schools - with_points.to_a)
   end
 
+  def top_by_recent_points
+    @scored_schools
+      .select { |scored_school| scored_school.recent_points.to_i.positive? }
+      .max_by { |scored_school| scored_school.recent_points.to_i }
+  end
+
   def index(school)
     @scored_schools.index(school)
   end

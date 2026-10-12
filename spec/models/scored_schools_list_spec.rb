@@ -63,4 +63,23 @@ describe ScoredSchoolsList do
       end
     end
   end
+
+  describe '#top_by_recent_points' do
+    let(:school_a) { double(:school, recent_points: 4) }
+    let(:school_b) { double(:school, recent_points: 10) }
+    let(:school_c) { double(:school, recent_points: nil) }
+    let(:school_d) { double(:school, recent_points: 0) }
+
+    it 'returns the school with the most recent points' do
+      list = ScoredSchoolsList.new([school_a, school_b, school_c, school_d])
+
+      expect(list.top_by_recent_points).to eq(school_b)
+    end
+
+    it 'returns nil when no school has recent points' do
+      list = ScoredSchoolsList.new([school_c, school_d])
+
+      expect(list.top_by_recent_points).to be_nil
+    end
+  end
 end
