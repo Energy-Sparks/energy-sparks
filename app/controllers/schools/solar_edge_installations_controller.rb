@@ -6,17 +6,7 @@ module Schools
     NAME = 'SolarEdge API feed'
     JOB_CLASS = Solar::SolarEdgeLoaderJob
 
-    def show
-      @api_params = { api_key: @installation.api_key, format: :json }
-
-      return unless @installation.cached_api_information?
-
-      latest_date = @installation.api_latest_data_date
-      start_time = (latest_date - 1.day).strftime('%Y-%m-%d 00:00:00')
-      end_time = latest_date.strftime('%Y-%m-%d 00:00:00')
-      @reading_params = @api_params.merge({ timeUnit: 'QUARTER_OF_AN_HOUR', startTime: start_time,
-                                            endTime: end_time })
-    end
+    def show; end
 
     def new; end
 
