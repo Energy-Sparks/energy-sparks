@@ -40,8 +40,7 @@ module ImpactReports
       end
 
       def podium_school
-        # this is the same as school group dashboard, which has a recent_boundary of 1 month ago
-        school = @school_group.scored_schools.first
+        school = @school_group.scored_schools.first # this is the same as school group dashboard
         school if school&.sum_points&.positive?
       end
 
