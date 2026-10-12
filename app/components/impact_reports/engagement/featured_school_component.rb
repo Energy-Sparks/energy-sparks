@@ -12,8 +12,7 @@ module ImpactReports
       end
 
       def default_school
-        @default_school ||= @school_group
-                            .scored_schools(recent_boundary: twelve_months_ago, academic_year: nil).top_by_recent_points
+        @default_school ||= @school_group.top_scoring_school(period: twelve_months_ago..now)
       end
 
       def school
@@ -27,7 +26,7 @@ module ImpactReports
       def default_description
         impact_t('engagement.featured.description',
                  school: school.name,
-                 count: school.recent_points)
+                 count: school.sum_points)
       end
 
       def now
