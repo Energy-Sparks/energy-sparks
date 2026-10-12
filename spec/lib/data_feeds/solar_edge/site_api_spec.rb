@@ -60,7 +60,7 @@ describe DataFeeds::SolarEdge::SiteApi do
   describe '#energy' do
     let(:response) do
       {
-        'period' => { 'from' => '2024-01-01T00:00:00+01:00', 'to' => '2024-01-02T13:43:01.713+01:00' },
+        'period' => { 'from' => '2024-01-01T00:00:00+00:00', 'to' => '2024-01-01T12:00:00+00:00' },
         'unit' => 'KWH',
         'resolution' => 'TOTAL',
         'values' => [{ 'timestamp' => '2026-10-08T00:00:00+01:00', 'value' => 314.27 }]
@@ -71,16 +71,16 @@ describe DataFeeds::SolarEdge::SiteApi do
       stub_request(path: '/energy', params: {
                      'resolution' => 'TOTAL',
                      'unit' => 'KWH',
-                     'from' => DateTime.new(2024, 1, 1).iso8601,
-                     'to' => DateTime.new(2024, 1, 2).iso8601
+                     'from' => '2024-01-01T00:00:00+00:00',
+                     'to' => '2024-01-01T12:00:00+00:00'
                    }, response:)
     end
 
     it 'returns the parsed response' do
       expect(api.energy(
                resolution: 'TOTAL',
-               from: DateTime.new(2024, 1, 1),
-               to: DateTime.new(2024, 1, 2)
+               from: DateTime.parse('2024-01-01T00:00:00'),
+               to: DateTime.parse('2024-01-01T12:00:00')
              )).to eq(response)
     end
   end
@@ -88,7 +88,7 @@ describe DataFeeds::SolarEdge::SiteApi do
   describe '#date_range' do
     let(:response) do
       {
-        'period' => { 'from' => '2024-01-01T00:00:00+01:00', 'to' => '2024-01-02T13:43:01.713+01:00' },
+        'period' => { 'from' => '2024-01-01T00:00:00+01:00', 'to' => '2026-01-02T13:43:01.713+01:00' },
         'unit' => 'KWH',
         'resolution' => 'TOTAL',
         'values' => [{ 'timestamp' => '2026-10-08T00:00:00+01:00', 'value' => 314.27 }]
@@ -106,7 +106,7 @@ describe DataFeeds::SolarEdge::SiteApi do
     it 'returns the parsed dates' do
       expect(api.date_range).to eq({
                                      from: DateTime.parse('2024-01-01T00:00:00+01:00'),
-                                     to: DateTime.parse('2024-01-02T13:43:01.713+01:00')
+                                     to: DateTime.parse('2026-01-02T13:43:01.713+01:00')
                                    })
     end
   end
@@ -204,25 +204,32 @@ describe DataFeeds::SolarEdge::SiteApi do
     before do
       production = {
         'resolution' => 'QUARTER_HOUR',
-        'values' => [{ 'timestamp' => '2024-01-01T00:00:00+01:00', 'value' => 111.11 }]
+        'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 111.11 }]
       }
       stub_request(path: '/energy', params: {
                      'resolution' => 'QUARTER_HOUR',
                      'unit' => 'KWH',
-                     'from' => DateTime.new(2024, 1, 1).iso8601,
-                     'to' => DateTime.new(2024, 1, 2).iso8601
+                     'from' => '2026-08-01T00:00:00+01:00',
+                     'to' => '2026-08-01T12:00:00+01:00'
                    }, response: production)
+
+      stub_request(path: '/energy', params: {
+                     'resolution' => 'QUARTER_HOUR',
+                     'unit' => 'KWH',
+                     'from' => '2026-08-01T12:00:00+01:00',
+                     'to' => '2026-08-02T00:00:00+01:00'
+                   }, response: { 'values' => [] })
 
       telemetry = {
         'meters' => {
           '5118719' => {
             'importEnergy' => {
               'unit' => 'WH',
-              'values' => [{ 'timestamp' => '2024-01-01T00:00:00+01:00', 'value' => 123.4 }]
+              'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 123.4 }]
             },
             'exportEnergy' => {
               'unit' => 'WH',
-              'values' => [{ 'timestamp' => '2024-01-01T00:00:00+01:00', 'value' => 567.8 }]
+              'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 567.8 }]
             }
           }
         }
@@ -230,13 +237,26 @@ describe DataFeeds::SolarEdge::SiteApi do
 
       stub_request(path: '/meters/telemetry', params: {
                      'resolution' => 'QUARTER_HOUR',
-                     'from' => DateTime.new(2024, 1, 1).iso8601,
-                     'to' => DateTime.new(2024, 1, 2).iso8601
+                     'from' => '2026-08-01T00:00:00+01:00',
+                     'to' => '2026-08-01T12:00:00+01:00'
                    }, response: telemetry)
+
+      stub_request(path: '/meters/telemetry', params: {
+                     'resolution' => 'QUARTER_HOUR',
+                     'from' => '2026-08-01T12:00:00+01:00',
+                     'to' => '2026-08-02T00:00:00+01:00'
+                   }, response: {
+                     'meters' => {
+                       '5118719' => {
+                         'importEnergy' => { 'values' => [] },
+                         'exportEnergy' => { 'values' => [] }
+                       }
+                     }
+                   })
     end
 
     it 'returns the data for all three meters' do
-      day = Date.new(2024, 1, 1)
+      day = Date.new(2026, 8, 1)
       data = api.all_meter_data(start_date: day, end_date: day)
       expect(data[:solar_pv][:readings][day][0]).to eq(111.11)
       expect(data[:electricity][:readings][day][0]).to be_within(0.0001).of(123.4 / 1000.0)

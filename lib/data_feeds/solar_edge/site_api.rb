@@ -67,7 +67,7 @@ module DataFeeds
 
       def production(start_date: nil, end_date: nil)
         readings = []
-        windowed_request(start_date, end_date, MAX_QUARTER_HOUR_PERIOD) do |from, to|
+        windowed_request(start_date, end_date) do |from, to|
           response = energy(from:, to:)
           readings.concat(response.fetch('values'))
         end
@@ -79,7 +79,7 @@ module DataFeeds
           exported_solar_pv: [],
           electricity: []
         }
-        windowed_request(start_date, end_date, MAX_QUARTER_HOUR_PERIOD) do |from, to|
+        windowed_request(start_date, end_date) do |from, to|
           readings = meters_telemetry(from:, to:)
           _, meter_data = readings.fetch('meters').sole
           import_and_export[:exported_solar_pv] += telemetry_for(meter_data, 'exportEnergy')
@@ -104,10 +104,16 @@ module DataFeeds
         wh_to_kwh(meter_data.fetch(meter_type).fetch('values'))
       end
 
-      def windowed_request(start_date, end_date, slice)
-        request_period(start_date, end_date).each_slice(slice) do |window|
-          yield(midnight_in_europe_london(window.first),
-                midnight_in_europe_london(window.last + 1.day))
+      def windowed_request(start_date, end_date, window_size: 12.hours)
+        from = midnight_in_europe_london(start_date)
+        to   = midnight_in_europe_london(end_date + 1.day)
+
+        while from < to
+          window_end = [from + window_size, to].min
+
+          yield(from, window_end)
+
+          from = window_end
         end
       end
 
