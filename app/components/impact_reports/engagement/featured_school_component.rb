@@ -13,8 +13,7 @@ module ImpactReports
 
       def default_school
         @default_school ||= @school_group
-                            .scored_schools(recent_boundary: twelve_months_ago, academic_year: nil)
-                            .top_by_recent_points
+                            .scored_schools(recent_boundary: twelve_months_ago, academic_year: nil).top_by_recent_points
       end
 
       def school
