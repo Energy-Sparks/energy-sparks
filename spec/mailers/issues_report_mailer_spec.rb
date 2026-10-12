@@ -16,6 +16,23 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
                                created_by: admin, review_date: 1.week.from_now, **)
   end
 
+  shared_examples 'it has the expected issue report table' do
+    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      let(:page) { Capybara.string(body) }
+      let(:table_id) { '.table' }
+      let(:expected_header) do
+        [['', 'Issue For', 'Group', 'Title', 'Tags', 'Fuel',
+          'Next Review Date', 'Created By', 'Created', 'Updated By',
+          'Updated', 'Edit', '']]
+      end
+      let(:expected_rows) do
+        [['', "#{issue.issueable.name} new!", issue.school_group&.name.to_s, issue.title, 'generic tag', 'Gas',
+          short_dates(issue.review_date), 'Admin', short_dates(issue.created_at), issue.updated_by.name,
+          short_dates(issue.updated_at), 'Edit']]
+      end
+    end
+  end
+
   describe '#issues_report' do
     def create_inactive_school_issue
       create_issue(issueable: create(:school, active: false), tag_labels: ['inactive schools'])
@@ -32,27 +49,20 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
         someone_elses_issue: create_issue(owned_by: create(:admin), tag_labels: ['someone else']),
         inactive_school_issue: create_inactive_school_issue }
     end
-    let(:body) { email.html_part.body.raw_source }
+    # let(:body) { email.html_part.body.raw_source }
 
     before do
       described_class.with(user: admin).issues_report.deliver
     end
 
     context 'when showing only open issues for user' do
+      it_behaves_like 'it has the expected issue report table'
+
       it {
         expect(email.subject).to eq("[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}")
       }
 
       it { expect(body).to have_link(issue.title, href: admin_school_issue_url(issue.issueable, issue)) }
-      it { expect(body).to have_text(issue.school_group.name) }
-      it { expect(body).to have_text(issue.issue_tags.first.label) }
-      it { expect(body).to have_text(issue.fuel_type.capitalize) }
-      it { expect(body).to have_text(issue.issueable.name) }
-      it { expect(body).to have_text(short_dates(issue.review_date)) }
-      it { expect(body).to have_text(issue.created_by.display_name) }
-      it { expect(body).to have_text(short_dates(issue.created_at)) }
-      it { expect(body).to have_text(issue.updated_by.display_name) }
-      it { expect(body).to have_text(short_dates(issue.updated_at)) }
       it { expect(body).to have_link('Edit', href: edit_admin_school_issue_url(issue.issueable, issue)) }
 
       it {
@@ -130,7 +140,7 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
     end
   end
 
-  describe 'admin_meter_report' do
+  describe '#admin_meter_report' do
     let(:school) { create(:school, :with_school_group) }
     let(:issue) do
       issue = create_issue(review_date: 1.day.ago, tag_labels: ['generic tag'], issueable: create(:supplier))
@@ -139,22 +149,9 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
     end
 
     before do
-      travel_to(Date.new(2026))
-      # debugger
       described_class.admin_meter_report(issue.meters.first.school.default_issues_admin_user).deliver
     end
 
-    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
-      let(:page) { Capybara.string(body) }
-      let(:table_id) { '.table' }
-      let(:expected_header) do
-        [['', 'Issue For', 'Group', 'Title', 'Tags', 'Fuel', 'Next Review Date', 'Created By',
-          'Created', 'Updated By', 'Updated', 'Edit', '']]
-      end
-      let(:expected_rows) do
-        [['', "#{issue.issueable.name} new!", '', issue.title, 'generic tag', 'Gas', '31 Dec 2025', 'Admin',
-          '27 Dec 2025', issue.updated_by.name, '01 Jan 2026', 'Edit']]
-      end
-    end
+    it_behaves_like 'it has the expected issue report table'
   end
 end
