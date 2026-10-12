@@ -16,9 +16,6 @@ describe 'activity type', type: :system do
   let!(:reducing_gas) { Impact.create(name: 'Reducing gas') }
   let!(:reducing_electricity) { Impact.create(name: 'Reducing electricity') }
 
-  let!(:pie_charts) { Topic.create(name: 'Pie charts') }
-  let!(:energy) { Topic.create(name: 'Energy') }
-
   describe 'when not logged in' do
     it 'does not authorise viewing' do
       visit admin_activity_types_path
@@ -76,7 +73,6 @@ describe 'activity type', type: :system do
         check('Science')
         check('30 mins')
         check('Reducing electricity')
-        check('Energy')
 
         click_on('Create Activity type')
 
@@ -86,8 +82,7 @@ describe 'activity type', type: :system do
         expect(activity_type.key_stages).to contain_exactly(ks1)
         expect(activity_type.subjects).to   contain_exactly(science)
         expect(activity_type.activity_timings).to contain_exactly(half_hour)
-        expect(activity_type.topics).to     contain_exactly(energy)
-        expect(activity_type.impacts).to    contain_exactly(reducing_electricity)
+        expect(activity_type.impacts).to contain_exactly(reducing_electricity)
         expect(activity_type.maximum_frequency).to eq(5)
         expect(activity_type.image_en.filename).to eq('placeholder.png')
 
