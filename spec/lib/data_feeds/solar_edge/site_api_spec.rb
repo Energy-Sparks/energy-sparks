@@ -200,6 +200,94 @@ describe DataFeeds::SolarEdge::SiteApi do
     end
   end
 
+  describe '#production' do
+    before do
+      production = {
+        'resolution' => 'QUARTER_HOUR',
+        'values' => [
+          { 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 0.0 },
+          { 'timestamp' => '2026-08-01T00:15:00+01:00', 'value' => 0.0 },
+          { 'timestamp' => '2026-08-01T08:00:00+01:00', 'value' => 20.0 },
+          { 'timestamp' => '2026-08-01T08:15:00+01:00', 'value' => 20.0 },
+          { 'timestamp' => '2026-08-01T08:30:00+01:00', 'value' => nil },
+          { 'timestamp' => '2026-08-01T08:45:00+01:00', 'value' => 50.0 }
+        ]
+      }
+      stub_request(path: '/energy', params: {
+                     'resolution' => 'QUARTER_HOUR',
+                     'unit' => 'KWH',
+                     'from' => '2026-08-01T00:00:00+01:00',
+                     'to' => '2026-08-01T12:00:00+01:00'
+                   }, response: production)
+
+      stub_request(path: '/energy', params: {
+                     'resolution' => 'QUARTER_HOUR',
+                     'unit' => 'KWH',
+                     'from' => '2026-08-01T12:00:00+01:00',
+                     'to' => '2026-08-02T00:00:00+01:00'
+                   }, response: { 'values' => [] })
+    end
+
+    it 'aggregates the production data to correct half-hourly indexes' do
+      day = Date.new(2026, 8, 1)
+      data = api.production(start_date: day, end_date: day)
+      expect(data[day][0]).to eq(0.0)
+      expect(data[day][16]).to eq(40.0)
+      expect(data[day][17]).to eq(50.0)
+    end
+  end
+
+  describe '#import_and_export' do
+    before do
+      telemetry = {
+        'meters' => {
+          '5118719' => {
+            'importEnergy' => {
+              'unit' => 'WH',
+              'values' => [
+                { 'timestamp' => '2026-08-01T08:00:00+01:00', 'value' => 150.0 },
+                { 'timestamp' => '2026-08-01T08:15:00+01:00', 'value' => 150.0 }
+              ]
+            },
+            'exportEnergy' => {
+              'unit' => 'WH',
+              'values' => [
+                { 'timestamp' => '2026-08-01T08:00:00+01:00', 'value' => 20.0 },
+                { 'timestamp' => '2026-08-01T08:15:00+01:00', 'value' => 20.0 }
+              ]
+            }
+          }
+        }
+      }
+
+      stub_request(path: '/meters/telemetry', params: {
+                     'resolution' => 'QUARTER_HOUR',
+                     'from' => '2026-08-01T00:00:00+01:00',
+                     'to' => '2026-08-01T12:00:00+01:00'
+                   }, response: telemetry)
+
+      stub_request(path: '/meters/telemetry', params: {
+                     'resolution' => 'QUARTER_HOUR',
+                     'from' => '2026-08-01T12:00:00+01:00',
+                     'to' => '2026-08-02T00:00:00+01:00'
+                   }, response: {
+                     'meters' => {
+                       '5118719' => {
+                         'importEnergy' => { 'values' => [] },
+                         'exportEnergy' => { 'values' => [] }
+                       }
+                     }
+                   })
+    end
+
+    it 'aggregates the import and export data to correct half-hourly indexes' do
+      day = Date.new(2026, 8, 1)
+      data = api.import_and_export(start_date: day, end_date: day)
+      expect(data[:electricity][day][16]).to be_within(0.0001).of(300.0 / 1000.0)
+      expect(data[:exported_solar_pv][day][16]).to be_within(0.0001).of(40.0 / 1000.0)
+    end
+  end
+
   describe '#all_meter_data' do
     before do
       production = {

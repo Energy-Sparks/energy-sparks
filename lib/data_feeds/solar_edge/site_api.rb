@@ -90,11 +90,11 @@ module DataFeeds
 
       # Backwards compatible with v1 client
       def all_meter_data(start_date: nil, end_date: nil)
-        import_and_export = import_and_export(start_date:, end_date:)
+        other_meters = import_and_export(start_date:, end_date:)
         {
           solar_pv: { readings: production(start_date:, end_date:) },
-          electricity: { readings: import_and_export[:electricity] },
-          exported_solar_pv: { readings: import_and_export[:exported_solar_pv] }
+          electricity: { readings: other_meters[:electricity] },
+          exported_solar_pv: { readings: other_meters[:exported_solar_pv] }
         }
       end
 
