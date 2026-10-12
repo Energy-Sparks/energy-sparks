@@ -1,0 +1,68 @@
+<%= render ComparisonTableComponent.new(report:, advice_page:, table_name:, index_params:,
+                                        headers: @headers[table_name], colgroups: @colgroups[table_name],
+                                        advice_page_tab:, advice_page_anchor: local_assigns[:advice_page_anchor]) do
+                                          |component| %>
+  <% results.each do |result| %>
+    <% next if table_name != :total && result_value(result, table_name, :previous_period, :kwh).blank? %>
+    <% component.with_row do |row| %>
+      <% row.with_school school: result.school %>
+      <% row.with_reference key: 'tariff_changed_last_year',
+                            if: if table_name == :total
+                                  result.any_tariff_changed?
+                                else
+                                  result_value(result, table_name, :tariff_has_changed, nil)
+                                end %>
+      <% if table_name != :gas %>
+        <% row.with_reference key: 'electricity_change_rows',
+                              period_type_string: I18n.t('comparisons.period_types.periods'),
+                              if: result.pupils_changed %>
+      <% end %>
+      <% if %i[electricity storage_heater].exclude?(table_name) %>
+        <% row.with_reference key: 'gas_change_rows',
+                              period_type_string: I18n.t('comparisons.period_types.periods'),
+                              schools_to_sentence: 'some schools',
+                              if: result.floor_area_changed %>
+      <% end %>
+      <% if table_name == :total %>
+        <% row.with_var do %>
+          <span class="text-nowrap">
+            <% if !result.electricity_current_period_kwh.nil? %>
+              <span class="<%= fuel_type_class(:electricity) %>">
+                <%= fa_icon(fuel_type_icon(:electricity)) %>
+              </span>
+            <% end %>
+            <% if !result.gas_current_period_kwh.nil? %>
+              <span class="<%= fuel_type_class(:gas) %>">
+                <%= fa_icon(fuel_type_icon(:gas)) %>
+              </span>
+            <% end %>
+            <% if !result.storage_heater_current_period_kwh.nil? %>
+              <span class="<%= fuel_type_class(:storage_heater) %>">
+                <%= fa_icon(fuel_type_icon(:storage_heater)) %>
+              </span>
+            <% end %>
+          </span>
+        <% end %>
+      <% end %>
+
+      <% row.with_var val: result.activation_date, unit: :date_mmm_yyyy %>
+
+      <% if local_assigns[:holiday_name] %>
+        <% row.with_var do %>
+          <% result_holiday_name(result, table_name) %>
+        <% end %>
+      <% end %>
+
+      <% if @include_previous_period_unadjusted && %i[gas storage_heater].include?(table_name) %>
+        <% row.with_var val: result_value(result, table_name, :previous_period, :kwh_unadjusted), unit: :kwh %>
+      <% end %>
+
+      <% %i[kwh co2 gbp].each do |unit| %>
+        <% row.with_var(val: result_value(result, table_name, :previous_period, unit), unit:) %>
+        <% row.with_var(val: result_value(result, table_name, :current_period, unit), unit:) %>
+        <% row.with_var(val: result_value(result, table_name, :percentage_change, unit),
+                        change: true, unit: :relative_percent_0dp) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

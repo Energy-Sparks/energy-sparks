@@ -27,12 +27,22 @@ module Schools
       before_action :set_insights_next_steps, only: [:insights]
 
       rescue_from StandardError do |exception|
-        Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
+        Rollbar.error(exception,
+                      advice_page: advice_page_key,
+                      school: @school&.name,
+                      school_id: params['school_id'],
+                      tab: @tab)
         raise if !Rails.env.production? || @advice_page.nil?
 
         locale = LocaleFinder.new(params, request).locale
         I18n.with_locale(locale) do
           render 'error', status: :internal_server_error
+        end
+      end
+
+      rescue_from ActiveRecord::RecordNotFound do
+        switch_locale do
+          route_not_found
         end
       end
 

@@ -3,9 +3,11 @@ module Solar
     def initialize(
         installation:,
         start_date:,
-        end_date:
+        end_date:,
+        reload: false
       )
       super(start_date: start_date, end_date: end_date, installation: installation)
+      @reload = reload
     end
 
     def download_and_upsert
@@ -15,6 +17,20 @@ module Solar
 
     def job
       :solar_edge_download
+    end
+
+    protected
+
+    def start_date
+      return nil if @reload
+
+      super
+    end
+
+    def end_date
+      return nil if @reload
+
+      super
     end
 
     private

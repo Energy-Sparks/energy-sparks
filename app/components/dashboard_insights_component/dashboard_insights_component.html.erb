@@ -27,15 +27,14 @@
                 next if meeting_target.nil? %>
             <%= c.with_prompt icon: fuel_type_icon(fuel_type),
                               status: meeting_target ? :positive : :negative do |prompt| %>
-              <p><%= meeting_target_text(meeting_target, fuel_type) %></p>
+              <p><%= meeting_target_text(meeting_target, fuel_type, @target) %></p>
               <% prompt.with_link do %>
                 <%= link_to t('schools.show.review_progress'),
                             polymorphic_path([school, :"advice_#{fuel_type}_target"]) %>
               <% end %>
             <% end %>
           <% end %>
-          <% if Flipper.enabled?(:manual_readings, current_user) &&
-                Targets::MonthlyConsumptionService.any_missing?(@target) %>
+          <% if manual_readings_required? %>
             <%= c.with_prompt icon: 'tasks', status: :negative do |prompt| %>
               <p><%= t('schools.show.manual_readings') %></p>
               <% prompt.with_link do %>

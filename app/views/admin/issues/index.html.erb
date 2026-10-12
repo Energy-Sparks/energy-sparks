@@ -36,11 +36,8 @@
                                           classes: 'mb-2 me-2') %>
 
   <div class="bg-light ps-2 pt-2 my-2 border rounded-2">
-    <%= form_tag polymorphic_path(
-          path_helper
-        ),
-                 method: :get do %>
-      <div class='d-flex justify-content-between flex-wrap align-items-center'>
+    <%= form_tag polymorphic_path(path_helper), method: :get do %>
+      <div class="d-flex justify-content-between flex-wrap align-items-center">
         <div class="me-2 mb-2">
           <%= text_field_tag :search, params[:search], autocomplete: 'off',
                                                        placeholder: 'Search issues...',
@@ -110,7 +107,7 @@
     <% end %>
   </div>
 
-<div id='issues-list'>
+<div id="issues-list">
   <% if @issues.any? %>
     <% if @issueable %>
       <div class="container">
@@ -119,7 +116,7 @@
         <% end %>
       </div>
     <% else %>
-      <%= render 'issues_list', issues: @issues %>
+      <%= render 'issues_list', issues: @issues, sort: true %>
     <% end %>
     <%= render 'shared/pagy_footer' %>
   <% else %>

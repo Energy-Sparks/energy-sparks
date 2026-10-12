@@ -4,9 +4,9 @@
 #
 #  id                       :bigint(8)        not null, primary key
 #  contact_email            :string           not null
-#  country                  :integer          default(0), not null
+#  country                  :integer          default("england"), not null
 #  data_sharing             :enum             default("public"), not null, enum_type: data_sharing
-#  default_chart_preference :integer          default(0), not null
+#  default_chart_preference :integer          default("default"), not null
 #  full_school              :boolean          default(TRUE)
 #  notes                    :text
 #  school_name              :string           not null

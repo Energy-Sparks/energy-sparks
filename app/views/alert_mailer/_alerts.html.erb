@@ -28,7 +28,7 @@
                           link_text: t('schools.show.review_progress'),
                           link_url: polymorphic_url([school, :advice, fuel_type, :target],
                                                     params: weekly_alert_utm_parameters, mailer: true) do %>
-        <%= meeting_target_text(meeting_target, fuel_type) %>
+        <%= meeting_target_text(meeting_target, fuel_type, school.current_target) %>
       <% end %>
     <% end %>
   <% end %>

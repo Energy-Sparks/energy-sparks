@@ -33,7 +33,7 @@ module Comparisons
           filename = "#{key}-#{filter[:table_name]}-#{Time.zone.now.iso8601}.csv"
           response.headers['Content-Type'] = 'text/csv'
           response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
-          render partial: filter[:table_name].to_s
+          render_csv
         end
         format.json do
           render json: create_chart_json
@@ -82,6 +82,10 @@ module Comparisons
     def set_advice_page
       @advice_page = AdvicePage.find_by!(key: advice_page_key) if advice_page_key
       @advice_page_tab = advice_page_tab
+    end
+
+    def render_csv
+      render partial: filter[:table_name].to_s
     end
 
     def create_charts(_results)

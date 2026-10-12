@@ -27,14 +27,14 @@
 #  number_of_header_rows   :integer          default(0), not null
 #  period_field            :string
 #  positional_index        :boolean          default(FALSE), not null
-#  process_type            :integer          default(0), not null
+#  process_type            :integer          default("s3_folder"), not null
 #  reading_date_field      :text             not null
 #  reading_fields          :text             not null, is an Array
 #  reading_status_fields   :string           default([]), not null, is an Array
 #  reading_time_field      :text
 #  repeated_names          :boolean          default(FALSE), not null
 #  row_per_reading         :boolean          default(FALSE), not null
-#  source_type             :integer          default(0), not null
+#  source_type             :integer          default("email"), not null
 #  units_field             :text
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null

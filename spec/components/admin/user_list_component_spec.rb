@@ -23,7 +23,8 @@ RSpec.describe Admin::UserListComponent, :include_application_helper, :include_u
       let(:users) { [create(:school_admin), create(:staff)] }
 
       it 'yields all of the users' do
-        expect { |b| component.users_to_display(&b) }.to yield_successive_args(users[0], users[1])
+        expect { |b| component.users_to_display(&b) }.to \
+          yield_successive_args(*users.map { |user| [user, user.school] })
       end
     end
 
@@ -41,7 +42,7 @@ RSpec.describe Admin::UserListComponent, :include_application_helper, :include_u
       it 'yields all school users' do
         expect do |b|
           component.users_to_display(&b)
-        end.to yield_successive_args(*users)
+        end.to yield_successive_args(*users.map { |user| [user, user.school] })
       end
     end
   end

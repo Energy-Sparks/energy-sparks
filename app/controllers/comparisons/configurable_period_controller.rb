@@ -4,6 +4,10 @@ module Comparisons
   class ConfigurablePeriodController < Shared::ArbitraryPeriodController
     private
 
+    def set_headers
+      super(urn: true)
+    end
+
     def key
       params[:key]
     end
