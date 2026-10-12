@@ -56,10 +56,9 @@ RSpec.shared_examples 'a scorable' do
                                       calendar: subject.scorable_calendar,
                                       template_calendar: subject.scorable_calendar)
       end
+      let(:top_scoring_school) { subject.top_scoring_school(period: period) }
 
       it 'returns the highest scorer within the period' do
-        top_scoring_school = subject.top_scoring_school(period: period)
-
         expect(outside_period_school.observations.sum(:points)).to eq(100)
         expect(top_scoring_school.id).to eq(inside_period_school.id)
         expect(top_scoring_school.sum_points).to eq(10)
