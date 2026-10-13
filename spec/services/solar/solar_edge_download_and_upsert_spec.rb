@@ -3,7 +3,7 @@ require 'rails_helper'
 module Solar
   describe SolarEdgeDownloadAndUpsert do
     let(:mpan) { 1_112_223_334_445 }
-    let(:installation) { create(:solar_edge_installation, mpan: mpan) }
+    let(:installation) { create(:solar_edge_installation, :unconsented, mpan: mpan) }
 
     let(:solar_pv_readings) do
       { 'Sun, 29 Nov 2020' => Array.new(48, 1.0), 'Mon, 30 Nov 2020' => Array.new(48, 2.0) }
@@ -88,10 +88,10 @@ module Solar
 
       context 'and they are recent' do
         let(:reading_date)  { Date.yesterday }
-        let(:expected_start) { Date.yesterday - 5 }
+        let(:expected_start) { Date.yesterday }
         let(:expected_end) { Date.yesterday }
 
-        it 'defaults to reloading last 6 days' do
+        it 'defaults to loading only latest day' do
           upserter.perform
         end
       end

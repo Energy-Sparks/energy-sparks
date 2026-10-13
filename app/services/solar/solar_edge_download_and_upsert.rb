@@ -24,7 +24,13 @@ module Solar
     def start_date
       return nil if @reload
 
-      super
+      if @requested_start_date
+        @requested_start_date
+      elsif latest_reading.nil?
+        nil
+      else
+        [latest_reading, Date.yesterday].min
+      end
     end
 
     def end_date
