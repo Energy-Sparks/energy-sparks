@@ -28,32 +28,8 @@ module Admin
       params[:issue_types] ||= Issue.issue_types.keys
       params[:statuses] ||= Issue.statuses.keys
 
-      if @issueable.is_a?(SchoolGroup) && params[:all]
-        # School group admin csv download
-        # Includes all school group and school issues
-        @issues = @issueable.all_issues.active if @issueable.is_a?(SchoolGroup)
-      else
-        # Only show issues for archived schools in a school context
-        @issues = @issues.active unless @issueable.is_a?(School)
-        @issues = @issues.for_issue_types(params[:issue_types])
-        @issues = @issues.for_statuses(params[:statuses])
-        @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
-        @issues = @issues.search(params[:search]) if params[:search].present?
-        @issues = @issues.for_issue_tag(params[:issue_tag]) if params[:issue_tag].present?
-
-        if params[:review_date]
-          @issues = @issues.where(review_date: nil) if params[:review_date] == 'review_unset'
-          if params[:review_date] == 'review_next_week'
-            @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now,
-                                    7.days.from_now)
-          end
-          @issues = @issues.where(review_date: ..Time.zone.now) if params[:review_date] == 'review_overdue'
-        end
-      end
-
+      set_issues
       @issues = @issues.includes(:issueable, :owned_by, :created_by, :updated_by)
-
-      dashboard_issues if @dashboard_user
 
       format
     end
@@ -196,6 +172,31 @@ module Admin
     def process_all_meter_ids
       ((params[:all_meter_ids] || []) & ALLOWED_ALL_METER_TYPES).flat_map do |type|
         @issue.issueable.meters.active.public_send(type).pluck(:id)
+      end
+    end
+
+    def set_issues
+      if @issueable.is_a?(SchoolGroup) && params[:all]
+        # School group admin csv download
+        # Includes all school group and school issues
+        @issues = @issueable.all_issues.active if @issueable.is_a?(SchoolGroup)
+      else
+        # Only show issues for archived schools in a school context
+        @issues = @issues.active unless @issueable.is_a?(School)
+        @issues = @issues.for_issue_types(params[:issue_types])
+        @issues = @issues.for_statuses(params[:statuses])
+        @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
+        @issues = @issues.search(params[:search]) if params[:search].present?
+        @issues = @issues.for_issue_tag(params[:issue_tag]) if params[:issue_tag].present?
+
+        if params[:review_date]
+          @issues = @issues.where(review_date: nil) if params[:review_date] == 'review_unset'
+          if params[:review_date] == 'review_next_week'
+            @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now,
+                                    7.days.from_now)
+          end
+          @issues = @issues.where(review_date: ..Time.zone.now) if params[:review_date] == 'review_overdue'
+        end
       end
     end
   end

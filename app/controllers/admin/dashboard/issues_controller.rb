@@ -17,7 +17,8 @@ module Admin
 
       private
 
-      def dashboard_issues
+      def set_issues
+        super
         @issues = @issues.where(owned_by: @dashboard_user) if @dashboard_user
       end
     end
