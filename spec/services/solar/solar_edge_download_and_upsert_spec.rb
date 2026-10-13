@@ -25,7 +25,6 @@ module Solar
     end
 
     context 'with a v1 SolarEdge site' do
-      # rubocop:disable-next RSpec/VerifiedDoubles
       let(:api) { double('solar-edge-api') }
 
       before do
