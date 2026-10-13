@@ -5,9 +5,13 @@ require 'rails_helper'
 RSpec.describe 'issues', :include_application_helper, :issues do
   let!(:school_group_issues_admin) { create(:admin, name: 'Group Issues Admin') }
   let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin) }
-  let!(:school) { create(:school, school_group: school_group) }
-  let!(:gas_meter) { create(:gas_meter, name: nil, school: school) }
-  let!(:electricity_meter) { create(:electricity_meter, school: school) }
+  let!(:school) { create(:school, school_group:) }
+  let!(:gas_meter) do
+    create(:gas_meter, name: nil, school:, data_source: create(:data_source), supplier: create(:supplier))
+  end
+  let!(:electricity_meter) do
+    create(:electricity_meter, school:, data_source: gas_meter.data_source, supplier: gas_meter.supplier)
+  end
   let!(:other_issues_admin) { create(:admin, name: 'Other Issues Admin') }
   let!(:issue) {}
   let!(:user) {}
@@ -45,13 +49,16 @@ RSpec.describe 'issues', :include_application_helper, :issues do
 
               it { expect(page).to have_text("New #{issue_type.capitalize} for #{issueable.name}") }
 
-              it 'has default values' do
+              def assigned_to
+                [DataSource, Supplier].include?(issueable.class) ? [] : issueable.default_issues_admin_user.display_name
+              end
+
+              it 'has default values', :aggregate_failures do
                 expect(find_field('Title').text).to be_blank
                 expect(find('trix-editor#issue_description')).to have_text('')
                 expect(page).to have_select('Fuel type', selected: [])
                 expect(page).to have_select('Status', selected: 'Open')
                 expect(page).to have_select('Issue tags', selected: [])
-                assigned_to = issueable.is_a?(DataSource) ? [] : issueable.default_issues_admin_user.display_name
                 expect(page).to have_select('Assigned to', selected: assigned_to)
                 expect(find_field('Next review date').value).to be_blank
                 expect(page).to have_unchecked_field('Pinned')
@@ -94,7 +101,11 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   fill_in 'Title', with: "#{issue_type} title"
                   fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                   select 'Gas', from: 'Fuel type'
-                  check gas_meter.mpan_mprn.to_s if issueable.is_a? School
+                  if issueable.is_a? School
+                    check gas_meter.mpan_mprn.to_s
+                  else
+                    check 'All Gas'
+                  end
                   select 'issue tag 1', from: 'Issue tags'
                   select 'Other Issues Admin', from: 'Assigned to'
                   fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
@@ -102,7 +113,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   click_button 'Save'
                 end
 
-                it 'creates new issue' do
+                it 'creates new issue', :aggregate_failures do
                   expect(page).to have_text issue_type.capitalize.to_s
                   expect(page).to have_text "#{issue_type} title"
                   expect(page).to have_text "#{issue_type} desc"
@@ -113,10 +124,11 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   expect(page).to have_text "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_text "Next review • #{nice_date_times_today(frozen_time + 7.days)}"
                   expect(page).to have_css("i[class*='fa-thumbtack']")
-                  if issueable.is_a? School
-                    expect(page).to have_no_text electricity_meter.mpan_mprn
-                    expect(page).to have_text gas_meter.mpan_mprn
-                  end
+                end
+
+                it 'has the correct meters' do
+                  expect(page).to have_text gas_meter.mpan_mprn
+                  expect(page).to have_no_text electricity_meter.mpan_mprn
                 end
               end
             end
@@ -131,11 +143,11 @@ RSpec.describe 'issues', :include_application_helper, :issues do
               end
 
               before do
-                issue.meters << electricity_meter if issueable.is_a? School
+                issue.meters << electricity_meter
                 click_link('Edit')
               end
 
-              it 'shows edit form' do
+              it 'shows edit form', :aggregate_failures do
                 expect(page).to have_field('Title', with: issue.title)
                 expect(find_field('issue[description]', type: :hidden).value).to eq(issue.description.to_plain_text)
                 expect(page).to have_select('Fuel type', selected: issue.fuel_type.capitalize)
@@ -148,6 +160,8 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                 if issueable.is_a? School
                   expect(page).to have_checked_field(electricity_meter.mpan_mprn.to_s)
                   expect(page).to have_unchecked_field(gas_meter.mpan_mprn.to_s)
+                else
+                  expect(page).to have_field(id: 'custom_mpans', with: electricity_meter.mpan_mprn.to_s)
                 end
               end
 
@@ -171,11 +185,13 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   if issueable.is_a? School
                     uncheck electricity_meter.mpan_mprn.to_s
                     check gas_meter.mpan_mprn.to_s
+                  else
+                    fill_in 'custom_mpans', with: gas_meter.mpan_mprn.to_s
                   end
                   click_button 'Save'
                 end
 
-                it 'saves new values' do
+                it 'saves new values', :aggregate_failures do
                   expect(page).to have_text new_issue_type
                   expect(page).to have_text "#{issue_type} title"
                   expect(page).to have_text "#{issue_type} desc"
@@ -187,16 +203,17 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   expect(page).to have_text "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
                   expect(page).to have_text 'Next review • No date set'
                   expect(page).to have_no_css("i[class*='fa-thumbtack']")
-                  if issueable.is_a? School
-                    expect(page).to have_text gas_meter.mpan_mprn
-                    expect(page).to have_no_text electricity_meter.mpan_mprn
-                  end
+                  expect(page).to have_text gas_meter.mpan_mprn
+                  expect(page).to have_no_text electricity_meter.mpan_mprn
                 end
               end
             end
 
             context 'when viewing index' do
-              let(:issue) { create(:issue, issueable: issueable, issue_type: issue_type, fuel_type: :gas, created_by: user, updated_by: user, owned_by: other_issues_admin) }
+              let(:issue) do
+                create(:issue, issueable: issueable, issue_type: issue_type, fuel_type: :gas, created_by: user, updated_by: user,
+                               owned_by: other_issues_admin)
+              end
 
               it_behaves_like 'a displayed issue' do
                 let(:issue_admin) { other_issues_admin }
@@ -251,8 +268,12 @@ RSpec.describe 'issues', :include_application_helper, :issues do
             end
 
             context 'when bulk editing issues' do
-              let!(:issue1) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
-              let!(:issue2) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
+              let!(:issue1) do
+                create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin)
+              end
+              let!(:issue2) do
+                create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin)
+              end
 
               before do
                 visit url_for([:admin, issueable, Issue])
@@ -309,23 +330,27 @@ RSpec.describe 'issues', :include_application_helper, :issues do
   end
 
   describe 'for issueable' do
-    context 'school' do
+    context 'with a school' do
       it_behaves_like 'an adminable issueable type' do
         let(:issueable) { school }
       end
     end
 
-    context 'school group' do
+    context 'with a school group' do
       it_behaves_like 'an adminable issueable type' do
         let(:issueable) { school_group }
       end
     end
 
-    context 'data source' do
-      let(:data_source) { create(:data_source) }
-
+    context 'with a data source' do
       it_behaves_like 'an adminable issueable type' do
-        let(:issueable) { data_source }
+        let(:issueable) { gas_meter.data_source }
+      end
+    end
+
+    context 'with a supplier' do
+      it_behaves_like 'an adminable issueable type' do
+        let(:issueable) { gas_meter.supplier }
       end
     end
   end
@@ -339,7 +364,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
     end
 
     describe 'index' do
-      buttons = ['Filter', 'CSV']
+      buttons = %w[Filter CSV]
 
       before do
         setup_data
