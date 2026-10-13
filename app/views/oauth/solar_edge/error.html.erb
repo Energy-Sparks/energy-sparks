@@ -5,7 +5,7 @@
     <div class="col">
       <h1><%= t('oauth.solar_edge.error.title') %></h1>
       <p>
-        <%= t('oauth.solar_edge.error.description', site_id: @site_id, school_id: @school_id) %>
+        <%= t('oauth.solar_edge.error.description', site_id: @site_id, school_id: @school&.name || @school_id) %>
       </p>
       <p>
         <%= t('oauth.solar_edge.error.notified_html') %>

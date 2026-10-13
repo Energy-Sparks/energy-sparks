@@ -6,7 +6,6 @@ cy:
         two: 'mathau o danwydd annilys:'
         many: 'mathau o danwydd annilys:'
         other: 'mathau o danwydd annilys:'
-    impacts: Effeithiau
     key_stages: Cyfnodau Allweddol
     score_for_this_activity: Sgôr ar gyfer y gweithgaredd hwn
     search:
@@ -23,5 +22,3 @@ cy:
         other: Wedi canfod %{count} o ganlyniadau
       title: Dod o hyd i weithgareddau disgyblion
     subjects: Pynciau
-    timings: Amseroedd
-    topics: Testunau

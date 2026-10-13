@@ -7,6 +7,21 @@ module Task
     has_many :todos, as: :task, inverse_of: :task, dependent: :destroy
     has_many :programme_types_todo, through: :todos, source: :assignable, source_type: 'ProgrammeType'
     has_many :audits_todo, through: :todos, source: :assignable, source_type: 'Audit'
+
+    has_many :label_items, class_name: 'Task::LabelItem', as: :task, inverse_of: :task, dependent: :destroy
+    has_many :labels, through: :label_items, source: :label
+    delegate :label_types, to: :class
+  end
+
+  class_methods do
+    def label_types(*types)
+      return @label_types ||= [] if types.empty?
+
+      @label_types = types.map(&:to_s)
+      @label_types.each do |type|
+        has_many type.pluralize.to_sym, -> { where(label_type: type) }, through: :label_items, source: :label
+      end
+    end
   end
 
   # Return the point score for an observation for this recordable
