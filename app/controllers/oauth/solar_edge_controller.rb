@@ -33,6 +33,7 @@ module Oauth
       installation.update!(
         access_token: tokens['access_token'],
         refresh_token: tokens['refresh_token'],
+        mpan: installation.mpan || installation.site_id,
         access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now,
         consent_granted_at: Time.zone.now
       )

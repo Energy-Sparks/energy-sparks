@@ -86,7 +86,7 @@ describe 'SolarEdge Oauth workflow' do
     include_context 'with a successful token request'
 
     context 'when installation exists' do
-      let(:installation) { create(:solar_edge_installation, amr_data_feed_config:) }
+      let(:installation) { create(:solar_edge_installation, amr_data_feed_config:, mpan: '999') }
 
       before do
         visit oauth_solar_edge_path(site_id: installation.site_id, code: 'code', external_id: installation.school_id)
@@ -101,7 +101,8 @@ describe 'SolarEdge Oauth workflow' do
       it 'updates the installation' do
         expect(installation.reload).to have_attributes(
           access_token: '2YotnFZFEjr1zCsicMWpAA',
-          refresh_token: 'tGzv3JOkF0XG5Qx2TlKWIA'
+          refresh_token: 'tGzv3JOkF0XG5Qx2TlKWIA',
+          mpan: '999'
         )
         expect(SolarEdgeInstallation.first.consent_granted_at.to_date).to eq(Time.zone.today)
         expect(SolarEdgeInstallation.first.access_token_expires_at.to_date).to eq(Time.zone.today)
@@ -134,6 +135,7 @@ describe 'SolarEdge Oauth workflow' do
         expect(SolarEdgeInstallation.first).to have_attributes(
           school: school,
           site_id: '4000',
+          mpan: '4000',
           access_token: '2YotnFZFEjr1zCsicMWpAA',
           refresh_token: 'tGzv3JOkF0XG5Qx2TlKWIA'
         )

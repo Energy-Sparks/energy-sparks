@@ -13,64 +13,59 @@ module Solar
     end
 
     def self.update_information(installation)
-      update_installation_information(installation, DataFeeds::SolarEdgeApi.new(installation.api_key))
+      update_installation_information(installation)
     rescue StandardError => e
       Rollbar.error(e, job: :solar_download, school: installation.school)
     end
 
     def self.check(installation)
-      solar_edge_api = DataFeeds::SolarEdgeApi.new(installation.api_key)
-      solar_edge_api.site_details
+      if installation.consented?
+        installation.refresh_tokens_if_needed!
+      else
+        solar_edge_v1.site_details
+      end
       true
     rescue StandardError
       false
     end
 
-    def self.update_installation_information(installation, solar_edge_api)
-      installation.update(information: { site_details: solar_edge_api.site_details,
-                                         dates: solar_edge_api.site_start_end_dates(installation.site_id) })
+    def self.update_installation_information(installation)
+      information =
+        if installation.consented?
+          api = installation.site_api!
+          {
+            site_details: api.details,
+            dates: api.date_range
+          }
+        else
+          {
+            site_details: solar_edge_v1.site_details,
+            dates: solar_edge_v1.site_start_end_dates(installation.site_id)
+          }
+        end
+
+      installation.update(information:)
     end
 
     def self.setup_meters(installation)
       return if installation.mpan.blank?
       return if installation.meters.any?
+      return unless installation.consented?
 
-      new(installation, AmrDataFeedConfig.solar_edge_api.first).download_initial_readings(installation)
-    end
+      first_reading_date = @installation.site_api!.date_range[:from].to_date
 
-    def perform
-      installation = SolarEdgeInstallation
-                     .where(school_id: @installation.school.id,
-                            mpan: @installation.mpan,
-                            site_id: @installation.site_id,
-                            api_key: @installation.api_key,
-                            amr_data_feed_config: @amr_data_feed_config).first_or_create! do |installation|
-        installation.active = @installation.active
-      end
-      if installation.mpan.present?
-        self.class.update_installation_information(installation, solar_edge_api)
-        self.class.setup_meters(installation)
-      end
-      installation
-    end
+      notify_email = installation.school&.default_issues_admin_user&.email || 'operations@energysparks.uk'
 
-    def download_initial_readings(installation)
-      # Retrieve two days worth of data, just to get the meters set up and ensure some data comes back
-      return unless first_reading_date
-
-      SolarEdgeDownloadAndUpsert.new(installation:,
-                                     start_date: first_reading_date,
-                                     end_date: first_reading_date + 1.day).perform
+      Solar::SolarEdgeLoaderJob.perform_later(installation:,
+                                              notify_email:,
+                                              start_date: first_reading_date,
+                                              end_date: first_reading_date)
     end
 
     private
 
-    def solar_edge_api
-      @solar_edge_api ||= DataFeeds::SolarEdgeApi.new(@installation.api_key)
-    end
-
-    def first_reading_date
-      @first_reading_date ||= solar_edge_api.site_start_end_dates(@installation.site_id).first
+    def solar_edge_v1
+      @solar_edge_v1 ||= DataFeeds::SolarEdgeApi.new(@installation.api_key)
     end
   end
 end

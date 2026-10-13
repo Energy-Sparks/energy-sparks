@@ -13,76 +13,107 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
 
   let!(:mpan) { '123456789' }
   let!(:site_id) { '9999' }
-  let!(:api_key) { 'api_key' }
+
+  shared_context 'with a stubbed SolarEdge site details request' do
+    before do
+      stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{installation.site_id}")
+        .to_return(
+          status: 200,
+          headers: {
+            'Content-Type' => 'application/json'
+          },
+          body: {
+            'siteId' => installation.site_id,
+            'activationStatus' => 'ACTIVE'
+          }.to_json
+        )
+    end
+  end
+
+  shared_context 'with a stubbed SolarEdge date request' do
+    let(:from) { '2024-01-01T00:00:00+01:00' }
+    let(:to) { '2026-01-02T13:43:01.713+01:00' }
+
+    before do
+      stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{installation.site_id}/" \
+                         'energy?from=2000-01-01T00:00:00%2B00:00&resolution=TOTAL&unit=KWH')
+        .to_return(
+          status: 200,
+          headers: {
+            'Content-Type' => 'application/json'
+          },
+          body: {
+            'period' => { 'from' => from, 'to' => to }
+          }.to_json
+        )
+    end
+  end
 
   context 'when an admin' do
     before do
-      solar_edge_api = instance_double(DataFeeds::SolarEdgeApi,
-                                       site_details: '',
-                                       site_start_end_dates: [Date.new(2025), Date.new(2026)],
-                                       smart_meter_data: {})
-      allow(DataFeeds::SolarEdgeApi).to receive(:new).with(api_key).and_return(solar_edge_api)
       sign_in(admin)
       visit school_meters_path(school)
     end
 
-    context 'when adding a new installation' do
+    context 'with existing installation' do
+      let!(:installation) { create(:solar_edge_installation, :unconsented, school:) }
+
       before do
         click_on 'Solar Feeds'
       end
-
-      it 'has no installation by default' do
-        expect(page).to have_text('This school has no Solar Edge sites')
-      end
-
-      it 'allows an installation to be added' do
-        click_on 'New Solar Edge API feed'
-        expect(page).to have_text('Add a new SolarEdge API feed')
-
-        fill_in(:solar_edge_installation_mpan, with: mpan)
-        fill_in(:solar_edge_installation_site_id, with: site_id)
-        fill_in(:solar_edge_installation_api_key, with: api_key)
-        uncheck('Active')
-
-        expect { click_on 'Submit' }.to change(SolarEdgeInstallation, :count).by(1)
-        expect(page).to have_text('SolarEdge API feed was successfully created')
-
-        expect(page).to have_text(mpan)
-        expect(page).to have_text(site_id)
-        expect(page).to have_text(api_key)
-
-        expect(SolarEdgeInstallation.first).to \
-          have_attributes(mpan:, site_id:, api_key:, amr_data_feed_config:, active: false,
-                          information: { 'site_details' => '', 'dates' => %w[2025-01-01 2026-01-01] })
-      end
-    end
-
-    context 'with existing installation' do
-      let!(:api_key) { "new_#{super()}" }
-      let!(:installation) { create(:solar_edge_installation, school:) }
-
-      before { click_on 'Solar Feeds' }
 
       it 'displays the feed config' do
         expect(page).to have_no_text('This school has no Solar Edge sites')
         expect(page).to have_text(installation.site_id)
       end
 
-      it 'allows editing' do
-        click_on 'Edit'
-        expect(page).to have_text('Update SolarEdge API feed')
+      context 'with unconsented SolarEdge site' do
+        before do
+          solar_edge_api = instance_double(DataFeeds::SolarEdgeApi,
+                                           site_details: '',
+                                           site_start_end_dates: [Date.new(2025), Date.new(2026)],
+                                           smart_meter_data: {})
+          allow(DataFeeds::SolarEdgeApi).to receive(:new).with(installation.api_key).and_return(solar_edge_api)
+          click_on 'Edit'
+        end
 
-        expect(find_by_id('solar_edge_installation_mpan').disabled?).to be true
-        expect(find_by_id('solar_edge_installation_site_id').disabled?).to be true
+        it 'allows editing' do
+          expect(page).to have_text('Update SolarEdge API feed')
 
-        fill_in(:solar_edge_installation_api_key, with: api_key)
-        click_on 'Submit'
+          expect(find_by_id('solar_edge_installation_mpan').disabled?).to be true
+          expect(find_by_id('solar_edge_installation_site_id').disabled?).to be true
+          expect(find_by_id('solar_edge_installation_api_key').disabled?).to be true
 
-        expect(page).to have_text('SolarEdge API feed was updated')
-        expect(page).to have_text(api_key)
-        expect(SolarEdgeInstallation.first).to \
-          have_attributes(api_key:,
-                          information: { 'site_details' => '', 'dates' => %w[2025-01-01 2026-01-01] })
+          uncheck(:solar_edge_installation_active)
+          click_on 'Submit'
+
+          expect(page).to have_text('SolarEdge API feed was updated')
+          expect(SolarEdgeInstallation.first).to have_attributes(active: false)
+        end
+      end
+
+      context 'with consented SolarEdge site' do
+        let!(:installation) { create(:solar_edge_installation, school:) }
+
+        include_context 'with a stubbed SolarEdge site details request'
+        include_context 'with a stubbed SolarEdge date request'
+        before do
+          click_on 'Edit'
+        end
+
+        it 'allows editing' do
+          expect(page).to have_text('Update SolarEdge API feed')
+
+          expect(find_by_id('solar_edge_installation_mpan').disabled?).to be true
+          expect(find_by_id('solar_edge_installation_site_id').disabled?).to be true
+          expect(find_by_id('solar_edge_installation_api_key').disabled?).to be true
+
+          uncheck(:solar_edge_installation_active)
+          click_on 'Submit'
+
+          expect(page).to have_text('SolarEdge API feed was updated')
+          expect(SolarEdgeInstallation.first).to have_attributes(active: false)
+        end
       end
 
       it 'allows deletion' do

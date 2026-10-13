@@ -68,6 +68,10 @@ class SolarEdgeInstallation < ApplicationRecord
     Date.parse(information['dates'].last)
   end
 
+  def consented?
+    consent_granted_at.present?
+  end
+
   # We expiry tokens early to avoid clock / timing issues with generating timestamp
   def access_token_expired?
     5.seconds.from_now.utc >= access_token_expires_at
