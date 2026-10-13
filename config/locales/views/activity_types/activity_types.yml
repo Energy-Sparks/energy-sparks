@@ -5,7 +5,6 @@ en:
       invalid_fuel_type:
         one: 'invalid fuel type: '
         other: 'invalid fuel types: '
-    impacts: Impacts
     key_stages: Key Stages
     score_for_this_activity: Score for this activity
     search:
@@ -21,5 +20,3 @@ en:
         zero: No results found
       title: Find pupil activities
     subjects: Subjects
-    timings: Timings
-    topics: Topics

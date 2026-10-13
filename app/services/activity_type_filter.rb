@@ -1,5 +1,5 @@
 class ActivityTypeFilter
-  FILTERS = [:key_stages, :subjects, :topics, :activity_timings, :impacts].freeze
+  FILTERS = [:key_stages, :subjects, :activity_timings, :impacts].freeze
 
   attr_reader :query
 
@@ -40,10 +40,6 @@ class ActivityTypeFilter
     load_selected(Subject, :subject_ids)
   end
 
-  def selected_topics
-    load_selected(Topic, :topic_ids)
-  end
-
   def selected_activity_timings
     if @query[:activity_timing_ids].blank?
       ActivityTiming.none
@@ -63,10 +59,6 @@ class ActivityTypeFilter
 
   def all_subjects
     @all_subjects ||= Subject.order(:name)
-  end
-
-  def all_topics
-    @all_topics ||= Topic.order(:name)
   end
 
   def all_activity_timings

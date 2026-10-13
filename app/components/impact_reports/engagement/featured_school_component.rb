@@ -12,7 +12,7 @@ module ImpactReports
       end
 
       def default_school
-        @default_school ||= @school_group.scored_schools(recent_boundary: 12.months.ago, academic_year: nil).first
+        @default_school ||= @school_group.top_scoring_school(period: twelve_months_ago..now)
       end
 
       def school
@@ -24,20 +24,9 @@ module ImpactReports
       end
 
       def default_description
-        key = if activity_count.zero?
-                'actions'
-              else
-                action_count.zero? ? 'activities' : 'both'
-              end
-
-        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.actions')
-        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.activities')
-        # i18n-tasks-use t('school_groups.impact.engagement.featured.description.both')
-
-        impact_t("engagement.featured.description.#{key}",
+        impact_t('engagement.featured.description',
                  school: school.name,
-                 activities: impact_t('engagement.featured.activities', count: activity_count),
-                 actions: impact_t('engagement.featured.actions', count: action_count))
+                 count: school.sum_points)
       end
 
       def now
@@ -48,21 +37,13 @@ module ImpactReports
         @twelve_months_ago ||= now - 12.months
       end
 
-      def activity_count
-        @activity_count ||= school.activities
-                                  .between(twelve_months_ago, now)
-                                  .count
-      end
-
-      def action_count
-        @action_count ||= school.observations
-                                .intervention
-                                .between(twelve_months_ago, now)
-                                .count
+      def podium_school
+        school = @school_group.scored_schools.first # this is the same as school group dashboard
+        school if school&.sum_points&.positive?
       end
 
       def podium
-        @podium ||= Podium.create(school: school, scoreboard: @school_group)
+        @podium ||= Podium.create(school: podium_school, scoreboard: @school_group)
       end
 
       def image
@@ -70,7 +51,7 @@ module ImpactReports
       end
 
       def render?
-        override? ? override_school : (default_school && podium.school_has_points?)
+        override? ? override_school : (default_school && podium_school)
       end
     end
   end
