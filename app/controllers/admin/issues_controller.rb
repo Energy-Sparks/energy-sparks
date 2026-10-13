@@ -70,7 +70,6 @@ module Admin
       @issue.attributes = { created_by: current_user, updated_by: current_user }
       if @issue.save
         process_affected_meters
-        # debugger
         redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully created')
       else
         render :new
