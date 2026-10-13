@@ -49,7 +49,6 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
         someone_elses_issue: create_issue(owned_by: create(:admin), tag_labels: ['someone else']),
         inactive_school_issue: create_inactive_school_issue }
     end
-    # let(:body) { email.html_part.body.raw_source }
 
     before do
       described_class.with(user: admin).issues_report.deliver
@@ -141,17 +140,26 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
   end
 
   describe '#admin_meter_report' do
-    let(:school) { create(:school, :with_school_group) }
+    let(:meter) { create(:gas_meter, school: create(:school, :with_school_group)) }
     let(:issue) do
       issue = create_issue(review_date: 1.day.ago, tag_labels: ['generic tag'], issueable: create(:supplier))
-      issue.meters << create(:gas_meter, school:)
+      issue.meters << meter
       issue
     end
 
     before do
-      described_class.admin_meter_report(issue.meters.first.school.default_issues_admin_user).deliver
+      issue
+      described_class.admin_meter_report(meter.school.default_issues_admin_user).deliver
     end
 
     it_behaves_like 'it has the expected issue report table'
+
+    context "when there aren't any issues for user" do
+      let(:issue) { nil }
+
+      it "doesn't send email" do
+        expect(ActionMailer::Base.deliveries).to eq([])
+      end
+    end
   end
 end

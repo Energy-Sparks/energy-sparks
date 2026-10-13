@@ -9,7 +9,7 @@ class IssuesReportMailer < ApplicationMailer
 
   def issues_report
     @user = params[:user]
-    @issues = active_issues(@user).by_review_date.by_updated_at.includes(%i[created_by updated_by issueable])
+    @issues = issues_defaults(active_issues(@user))
     return unless @issues.any?
 
     @columns = columns
@@ -20,7 +20,7 @@ class IssuesReportMailer < ApplicationMailer
 
   def admin_meter_report(user, since: nil)
     @user = user
-    @issues = admin_meter_issues(user, since)
+    @issues = issues_defaults(admin_meter_issues(user, since))
     return if @issues.empty?
 
     @columns = columns
@@ -31,6 +31,10 @@ class IssuesReportMailer < ApplicationMailer
 
   private
 
+  def issues_defaults(issues)
+    issues.by_review_date.by_updated_at.includes(:created_by, :updated_by, :issue_tags, issueable: :school_group)
+  end
+
   def active_issues(user)
     issues = Issue.for_owned_by(user).active.status_open.issue
     issues.where(review_date: ..Date.current)
@@ -40,8 +44,7 @@ class IssuesReportMailer < ApplicationMailer
 
   def admin_meter_issues(user, since)
     Issue.joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': user)
-         .active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..)
-         .includes(:issue_tags, :created_by, :updated_by, :issueable)
+         .active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..).distinct
   end
 
   def columns # rubocop:disable Metrics/AbcSize -- breaking up seems to make more complex
