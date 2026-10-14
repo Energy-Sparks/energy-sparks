@@ -837,7 +837,7 @@ GEM
       unicode-display_width (>= 1.1.1, < 4)
     terser (1.2.8)
       execjs (>= 0.3.0, < 3)
-    test-prof (1.6.3)
+    test-prof (1.6.4)
       logger
     text-table (1.2.4)
     thor (1.5.0)
