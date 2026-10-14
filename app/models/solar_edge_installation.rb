@@ -70,18 +70,13 @@ class SolarEdgeInstallation < ApplicationRecord
     meters.any?
   end
 
-  def api_latest_data_date
-    return nil if information['dates'].blank?
-
-    Date.parse(information['dates'].last)
-  end
-
   def consented?
     consent_granted_at.present?
   end
 
   def monitoring_active?
-    information['site_details']&.dig('activationStatus') == 'ACTIVE'
+    information['site_details']&.dig('activationStatus') == 'ACTIVE' ||
+      information.dig('site_details', 'sites', 'site', 0, 'status') == 'Active'
   end
 
   # We expiry tokens early to avoid clock / timing issues with generating timestamp

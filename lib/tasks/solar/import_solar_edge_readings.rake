@@ -10,7 +10,7 @@ namespace :solar do
     puts "#{DateTime.now.utc} import_solar_edge_readings start"
     begin
       SolarEdgeInstallation.active.find_each do |installation|
-        next if installation.api_key.blank? # Ignore v2 sites for now
+        next if installation.api_key.blank? && !installation.consented?
 
         puts "Running for #{installation.school.name} #{installation.site_id}"
         Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date:, end_date:, reload:).perform

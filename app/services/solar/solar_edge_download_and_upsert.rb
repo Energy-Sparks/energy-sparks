@@ -11,6 +11,8 @@ module Solar
     end
 
     def download_and_upsert
+      return unless monitoring_active?
+
       readings = SolarEdgeDownloader.new(installation: @installation, start_date: start_date, end_date: end_date, api: solar_edge_api).readings
       SolarEdgeUpserter.new(installation: @installation, readings: readings, import_log: import_log).perform
     end
@@ -40,6 +42,15 @@ module Solar
     end
 
     private
+
+    def monitoring_active?
+      return true if @installation.monitoring_active?
+
+      # refresh local copy of site status and recheck
+      SolarEdgeInstallationFactory.update_information(@installation)
+
+      @installation.monitoring_active?
+    end
 
     def solar_edge_api
       DataFeeds::SolarEdgeApi.new(@installation.api_key)

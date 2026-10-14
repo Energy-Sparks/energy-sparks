@@ -7,7 +7,15 @@ FactoryBot.define do
 
     sequence(:api_key) { |n| "api_key_#{n}" }
     information do
-      { site_detail: '', dates: %w(2023-01-01 2023-10-01) }
+      {
+        'site_details' => {
+          'activationStatus' => 'ACTIVE'
+        },
+        'dates' => {
+          from: '2023-01-01',
+          to: '2023-10-01'
+        }
+      }
     end
 
     sequence(:access_token, 'SolarEdgeAccessTokenAAAAA1')
@@ -23,6 +31,17 @@ FactoryBot.define do
 
     trait :with_expired_access_token do
       access_token_expires_at { Time.now.utc - 5.seconds }
+    end
+
+    trait :pending_status do
+      information do
+        {
+          'site_details' => {
+            'activationStatus' => 'PENDING'
+          },
+          'dates' => {}
+        }
+      end
     end
 
     trait :with_electricity_meter do

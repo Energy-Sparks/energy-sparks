@@ -219,6 +219,49 @@ module Solar
                                                                   end_date: expected_end)
         end
       end
+
+      context 'when monitoring is still in pending status' do
+        let(:installation) { create(:solar_edge_installation, :pending_status, mpan: 1_112_223_334_445) }
+
+        let(:requested_start_date) { requested_end_date - 1 }
+        let(:requested_end_date) { Time.zone.today }
+
+        context 'when status has changed' do
+          before do
+            allow(site_api).to receive_messages(details: {
+                                                  'activationStatus' => 'ACTIVE'
+                                                }, date_range: {
+                                                  from: requested_start_date,
+                                                  to: requested_end_date
+                                                })
+            allow(site_api).to receive(:all_meter_data).with(start_date: requested_start_date,
+                                                             end_date: requested_end_date).and_return(readings)
+          end
+
+          it 'inserts data' do
+            expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(0).to(6)
+            expect(site_api).to have_received(:details)
+            expect(site_api).to have_received(:date_range)
+            expect(site_api).to have_received(:all_meter_data).with(start_date: requested_start_date,
+                                                                    end_date: requested_end_date)
+          end
+        end
+
+        context 'when status is still pending' do
+          before do
+            allow(site_api).to receive(:details).and_return(
+              {
+                'activationStatus' => 'PENDING'
+              }
+            )
+          end
+
+          it 'does nothing' do
+            expect { upserter.perform }.not_to change(AmrDataFeedReading, :count)
+            expect(site_api).to have_received(:details)
+          end
+        end
+      end
     end
   end
 end

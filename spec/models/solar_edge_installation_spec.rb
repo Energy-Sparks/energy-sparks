@@ -107,6 +107,33 @@ describe SolarEdgeInstallation do
     end
   end
 
+  describe '#monitoring_active?' do
+    it 'checks status correctly' do
+      expect(create(:solar_edge_installation).monitoring_active?).to be(true)
+      expect(create(:solar_edge_installation, :pending_status).monitoring_active?).to be(false)
+    end
+
+    context 'when checking v1 status' do
+      subject(:installation) do
+        create(:solar_edge_installation, information: {
+                 'site_details' => {
+                   'sites' => {
+                     'site' => [
+                       {
+                         'status' => 'Active'
+                       }
+                     ]
+                   }
+                 }
+               })
+      end
+
+      it 'checks status' do
+        expect(installation.monitoring_active?).to be(true)
+      end
+    end
+  end
+
   describe '#refresh_api_tokens!' do
     subject!(:installation) { create(:solar_edge_installation) }
 
