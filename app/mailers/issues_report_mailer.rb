@@ -43,7 +43,7 @@ class IssuesReportMailer < ApplicationMailer
   end
 
   def admin_meter_issues(user, since)
-    Issue.admin_meter_issues(user).where(updated_at: (since || 1.day.ago).to_date..)
+    Issue.admin_meter_issues(user).active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..)
   end
 
   def columns # rubocop:disable Metrics/AbcSize -- breaking up seems to make more complex

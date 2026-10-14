@@ -7,6 +7,9 @@
                                            admin_issues_path,
                                            style: :secondary,
                                            classes: 'mb-2 me-2') %>
+  <%= render Elements::ButtonComponent.new('Manage Issue Tags', admin_issue_tags_path, style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+
 
 <% elsif @issueable.is_a?(SchoolGroup) %>
   <% content_for :header_title, "Issues & Notes for #{@school_group.name}" %>
@@ -22,90 +25,77 @@
 <% end %>
 
 <div class="d-flex align-items-center">
-  <%= render 'breadcrumbs' %>
   <% if @issueable %>
+    <%= render 'breadcrumbs' %>
     <div class="ms-auto">
       <%= render 'issues_links', issueable: @issueable %>
     </div>
   <% end %>
 </div>
 
- <%= render Elements::ButtonComponent.new('Manage Issue Tags',
-                                          admin_issue_tags_path,
-                                          style: :secondary,
-                                          classes: 'mb-2 me-2') %>
-
-  <div class="bg-light ps-2 pt-2 my-2 border rounded-2">
-    <%= form_tag polymorphic_path(path_helper), method: :get do %>
-      <div class="d-flex justify-content-between flex-wrap align-items-center">
-        <div class="me-2 mb-2">
-          <%= text_field_tag :search, params[:search], autocomplete: 'off',
-                                                       placeholder: 'Search issues...',
-                                                       width: 200,
-                                                       class: '' %>
-        </div>
-        <% unless @dashboard_user %>
-          <div class="me-2 mb-2">
-            <%= select_tag :user,
-                           options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
-                           include_blank: 'Any admin user',
-                           class: 'form-control' %>
-          </div>
-        <% end %>
-        <div class="me-2 mb-2">
-          <%= select_tag :issue_tag,
-                         options_from_collection_for_select(IssueTag.all, :id, :label, params[:issue_tag]),
-                         include_blank: 'Any tag',
-                         class: 'form-control' %>
-        </div>
-        <div class="me-2 mb-2">
-          <%= select_tag :review_date,
-                         options_for_select([['Next review date not set', :review_unset],
-                                             ['Next review date in next week', :review_next_week],
-                                             ['Next review date overdue', :review_overdue]],
-                                            params[:review_date]),
-                         include_blank: 'Any next review date',
-                         class: 'form-control' %>
-
-        </div>
-        <div class="nowrap me-2 mb-2 ensure-one-checked">
-          <%= label_tag :issue_type, 'Type:', class: 'small' %>
-          <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
-            <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type),
-                              id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
-            <%= label_tag issue_type, issue_type.capitalize,
-                          data: { bs_toggle: 'tooltip', bs_placement: 'bottom',
-                                  bs_delay: { "show": 500, "hide": 100 } },
-                          title: 'Select at least one' %>
-          <% end %>
-        </div>
-        <div class="nowrap me-2 mb-2 ensure-one-checked">
-          <%= label_tag :status, 'Status:', class: 'small' %>
-          <% Issue.statuses.keys.each do |status, status_id| %>
-            <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status),
-                              id: status,
-                              class: "badge badge-toggle-rounded-#{Issue.status_classes[status.to_sym]}") %>
-            <%= label_tag status, status.capitalize,
-                          data: { bs_toggle: 'tooltip', bs_placement: 'bottom',
-                                  bs_delay: { "show": 500, "hide": 100 } },
-                          title: 'Select at least one' %>
-          <% end %>
-        </div>
-        <div class="ms-xxl-auto me-2 mb-2">
-          <%= button_tag 'Filter',
-                         type: 'submit',
-                         class: 'btn btn-secondary btn-sm' %>
-
-          <%= button_tag 'CSV',
-                         type: 'submit',
-                         name: 'format',
-                         value: 'csv',
-                         class: 'btn btn-secondary btn-sm',
-                         data: { confirm: 'Are you sure?' } %>
-        </div>
+<div class="bg-light ps-2 pt-2 my-2 border rounded-2">
+  <%= form_tag request.path, method: :get do %>
+    <div class="d-flex justify-content-between flex-wrap align-items-center">
+      <div class="me-2 mb-2">
+        <%= text_field_tag :search, params[:search], autocomplete: 'off',
+                                                      placeholder: 'Search issues...',
+                                                      width: 200,
+                                                      class: '' %>
       </div>
-    <% end %>
-  </div>
+      <% unless @dashboard_user %>
+        <div class="me-2 mb-2">
+          <%= select_tag :user,
+                          options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
+                          include_blank: 'Any admin user',
+                          class: 'form-control' %>
+        </div>
+      <% end %>
+      <div class="me-2 mb-2">
+        <%= select_tag :issue_tag,
+                        options_from_collection_for_select(IssueTag.all, :id, :label, params[:issue_tag]),
+                        include_blank: 'Any tag',
+                        class: 'form-control' %>
+      </div>
+      <div class="me-2 mb-2">
+        <%= select_tag :review_date,
+                        options_for_select([['Next review date not set', :review_unset],
+                                            ['Next review date in next week', :review_next_week],
+                                            ['Next review date overdue', :review_overdue]],
+                                          params[:review_date]),
+                        include_blank: 'Any next review date',
+                        class: 'form-control' %>
+
+      </div>
+      <div class="nowrap me-2 mb-2 ensure-one-checked">
+        <%= label_tag :issue_type, 'Type:', class: 'small' %>
+        <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
+          <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type),
+                            id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
+          <%= label_tag issue_type, issue_type.capitalize,
+                        data: { bs_toggle: 'tooltip', bs_placement: 'bottom',
+                                bs_delay: { "show": 500, "hide": 100 } },
+                        title: 'Select at least one' %>
+        <% end %>
+      </div>
+      <div class="nowrap me-2 mb-2 ensure-one-checked">
+        <%= label_tag :status, 'Status:', class: 'small' %>
+        <% Issue.statuses.keys.each do |status, status_id| %>
+          <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status),
+                            id: status,
+                            class: "badge badge-toggle-rounded-#{Issue.status_classes[status.to_sym]}") %>
+          <%= label_tag status, status.capitalize,
+                        data: { bs_toggle: 'tooltip', bs_placement: 'bottom',
+                                bs_delay: { "show": 500, "hide": 100 } },
+                        title: 'Select at least one' %>
+        <% end %>
+      </div>
+      <div class="ms-xxl-auto me-2 mb-2">
+        <%= button_tag 'Filter', type: 'submit', class: 'btn btn-secondary btn-sm' %>
+        <%= button_tag 'CSV', type: 'submit', name: 'format', value: 'csv', class: 'btn btn-secondary btn-sm' %>
+      </div>
+    </div>
+  <% end %>
+</div>
 
 <div id="issues-list">
   <% if @issues.any? %>
