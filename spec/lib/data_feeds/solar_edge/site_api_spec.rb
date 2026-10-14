@@ -9,7 +9,6 @@ describe DataFeeds::SolarEdge::SiteApi do
                         stubs:)
   end
 
-  let(:status) { 200 }
   let(:stubs) { Faraday::Adapter::Test::Stubs.new }
 
   let(:site) { create(:solar_edge_installation) }
@@ -38,22 +37,6 @@ describe DataFeeds::SolarEdge::SiteApi do
     it 'returns the parsed response' do
       stub_request(path: nil, response:)
       expect(api.details).to eq(response)
-    end
-  end
-
-  describe '#status' do
-    context 'with an ACTIVE site' do
-      it 'returns true' do
-        stub_request(path: nil, response: { 'activationStatus' => 'ACTIVE' })
-        expect(api.active?).to be(true)
-      end
-    end
-
-    context 'with a PENDING site' do
-      it 'returns false' do
-        stub_request(path: nil, response: { 'activationStatus' => 'PENDING' })
-        expect(api.active?).to be(false)
-      end
     end
   end
 

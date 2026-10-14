@@ -30,16 +30,6 @@ module DataFeeds
         @connection.get('').body
       end
 
-      # "ACTIVE" indicates that the inverter has communicated with the Monitoring Platform at least once.
-      # "PENDING" indicates it has never communicated.
-      def status
-        details['activationStatus']
-      end
-
-      def active?
-        status == 'ACTIVE'
-      end
-
       def inventory(types: 'METER')
         @connection.get('devices', { types: }).body
       end

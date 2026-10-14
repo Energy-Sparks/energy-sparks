@@ -14,41 +14,6 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
   let!(:mpan) { '123456789' }
   let!(:site_id) { '9999' }
 
-  shared_context 'with a stubbed SolarEdge site details request' do
-    before do
-      stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{installation.site_id}")
-        .to_return(
-          status: 200,
-          headers: {
-            'Content-Type' => 'application/json'
-          },
-          body: {
-            'siteId' => installation.site_id,
-            'activationStatus' => 'ACTIVE'
-          }.to_json
-        )
-    end
-  end
-
-  shared_context 'with a stubbed SolarEdge date request' do
-    let(:from) { '2024-01-01T00:00:00+01:00' }
-    let(:to) { '2026-01-02T13:43:01.713+01:00' }
-
-    before do
-      stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{installation.site_id}/" \
-                         'energy?from=2000-01-01T00:00:00%2B00:00&resolution=TOTAL&unit=KWH')
-        .to_return(
-          status: 200,
-          headers: {
-            'Content-Type' => 'application/json'
-          },
-          body: {
-            'period' => { 'from' => from, 'to' => to }
-          }.to_json
-        )
-    end
-  end
-
   context 'when an admin' do
     before do
       sign_in(admin)
@@ -94,9 +59,11 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
 
       context 'with consented SolarEdge site' do
         let!(:installation) { create(:solar_edge_installation, school:) }
+        let(:site_id) { installation.site_id }
 
         include_context 'with a stubbed SolarEdge site details request'
         include_context 'with a stubbed SolarEdge date request'
+
         before do
           click_on 'Edit'
         end

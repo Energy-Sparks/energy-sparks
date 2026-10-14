@@ -58,8 +58,16 @@ class SolarEdgeInstallation < ApplicationRecord
     Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
   end
 
-  def cached_api_information?
-    information.present?
+  def notify_email
+    school&.default_issues_admin_user&.email || 'operations@energysparks.uk'
+  end
+
+  def can_complete_setup?
+    mpan.present? && consented?
+  end
+
+  def setup_complete?
+    meters.any?
   end
 
   def api_latest_data_date
@@ -70,6 +78,10 @@ class SolarEdgeInstallation < ApplicationRecord
 
   def consented?
     consent_granted_at.present?
+  end
+
+  def monitoring_active?
+    information['site_details']&.dig('activationStatus') == 'ACTIVE'
   end
 
   # We expiry tokens early to avoid clock / timing issues with generating timestamp
