@@ -27,7 +27,7 @@ AllCops:
     - config/routes.rb
     - db/migrate/202604211056*.rb # goodjob migrations
     - db/migrate/*_add_index_good_jobs*.rb
-    - db/migate/202610141903*.rb # goodjob migrations
+    - db/migrate/202610141903*.rb # goodjob migrations
   UseProjectIndex: true # for rubocop-view_component since 0.7.0
 
 plugins:
