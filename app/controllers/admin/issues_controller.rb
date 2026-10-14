@@ -100,7 +100,8 @@ module Admin
           end
         end
         format.csv do
-          issues = issues.with_rich_text_description.includes(:issue_tags, meters: %i[data_source admin_meter_status])
+          issues = issues.with_rich_text_description.includes(meters: %i[data_source admin_meter_status])
+                         .preload(:issue_tags)
           send_data issues.to_csv, filename: EnergySparks::Filenames.csv('issues')
         end
       end
