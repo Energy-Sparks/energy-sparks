@@ -6,17 +6,14 @@ module Admin
     include SchoolGroupBreadcrumbs
     include ActionView::Helpers::UrlHelper
 
+    before_action :enable_bootstrap5
+
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
     load_and_authorize_resource :data_source
     load_and_authorize_resource :supplier
     load_and_authorize_resource :school_onboarding, find_by: :uuid
-    before_action :issueable
-
-    before_action :enable_bootstrap5
-
-    helper_method :path_helper
-
+    before_action :set_issueable # used by through: issueable below
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
 
     ALL_METER_TYPES = { fuel: Meter.meter_types.keys, system: Meter.meter_systems.keys }
@@ -28,7 +25,7 @@ module Admin
       params[:issue_types] ||= Issue.issue_types.keys
       params[:statuses] ||= Issue.statuses.keys
 
-      set_issues
+      filter_issues
       @issues = @issues.includes(:issueable, :owned_by, :created_by, :updated_by)
 
       format
@@ -93,19 +90,18 @@ module Admin
     private
 
     def format
+      issues = sorted_issues
       respond_to do |format|
         format.html do
-          @pagy, @issues = pagy(sorted_issues)
+          @pagy, @issues = pagy(issues)
           if @issueable.is_a?(SchoolGroup)
             breadcrumbs
             render :index, layout: 'group_settings'
           end
         end
         format.csv do
-          issues = @issues.with_rich_text_description.includes(meters: %i[data_source admin_meter_status])
-
-          send_data issues.to_csv,
-                    filename: EnergySparks::Filenames.csv('issues')
+          issues = issues.with_rich_text_description.includes(:issue_tags, meters: %i[data_source admin_meter_status])
+          send_data issues.to_csv, filename: EnergySparks::Filenames.csv('issues')
         end
       end
     end
@@ -119,17 +115,9 @@ module Admin
       end
     end
 
-    def path_helper
-      if @dashboard_user
-        [:admin, :dashboard, Issue]
-      else
-        @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
-      end
-    end
-
-    def issueable
+    def set_issueable
       # For school context menu if school available
-      @issueable ||= @school || @school_group || @data_source || @supplier || @school_onboarding
+      @issueable = @school || @school_group || @data_source || @supplier || @school_onboarding
     end
 
     def redirect_index(notice:)
@@ -175,29 +163,41 @@ module Admin
       end
     end
 
-    def set_issues
-      if @issueable.is_a?(SchoolGroup) && params[:all]
-        # School group admin csv download
-        # Includes all school group and school issues
-        @issues = @issueable.all_issues.active if @issueable.is_a?(SchoolGroup)
-      else
-        # Only show issues for archived schools in a school context
-        @issues = @issues.active unless @issueable.is_a?(School)
-        @issues = @issues.for_issue_types(params[:issue_types])
-        @issues = @issues.for_statuses(params[:statuses])
-        @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
-        @issues = @issues.search(params[:search]) if params[:search].present?
-        @issues = @issues.for_issue_tag(params[:issue_tag]) if params[:issue_tag].present?
+    def filter_issues
+      return if filter_all?
 
-        if params[:review_date]
-          @issues = @issues.where(review_date: nil) if params[:review_date] == 'review_unset'
-          if params[:review_date] == 'review_next_week'
-            @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now,
-                                    7.days.from_now)
-          end
-          @issues = @issues.where(review_date: ..Time.zone.now) if params[:review_date] == 'review_overdue'
+      # Only show issues for archived schools in a school context
+      @issues = @issues.active unless @issueable.is_a?(School)
+      { issue_types: :for_issue_types,
+        statuses: :for_statuses,
+        user: :for_owned_by,
+        search: :search,
+        issue_tag: :for_issue_tag }.each do |param, scope|
+          @issues = @issues.public_send(scope, params[param]) if params[param].present?
         end
-      end
+      filter_review_date
+    end
+
+    def filter_all?
+      return false unless @issueable.is_a?(SchoolGroup) && params[:all]
+
+      # School group admin csv download
+      # Includes all school group and school issues
+      @issues = @issueable.all_issues.active
+      true
+    end
+
+    def filter_review_date
+      @issues = case params[:review_date]
+                when 'review_unset'
+                  @issues.where(review_date: nil)
+                when 'review_next_week'
+                  @issues.where('review_date BETWEEN ? AND ?', Time.zone.now, 7.days.from_now)
+                when 'review_overdue'
+                  @issues.where(review_date: ..Time.zone.now)
+                else
+                  @issues
+                end
     end
   end
 end

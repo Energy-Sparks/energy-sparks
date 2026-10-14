@@ -88,8 +88,7 @@ class Issue < ApplicationRecord
 
   scope :by_priority_order, -> { by_review_date.by_pinned.by_status.by_updated_at }
   scope :admin_meter_issues, lambda { |admin|
-    joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': admin)
-                                            .active.status_open.issue.distinct
+    joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': admin).distinct
   }
 
   has_rich_text :description

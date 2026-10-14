@@ -15,8 +15,9 @@ module Admin
 
       private
 
-      def set_issues
+      def filter_issues
         @issues = Issue.admin_meter_issues(@dashboard_user)
+        super
       end
     end
   end
