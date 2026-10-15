@@ -87,7 +87,7 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def site_api!
-    refresh_tokens_if_needed!
+    refresh_api_tokens!
 
     DataFeeds::SolarEdge::SiteApi.new(site_id:, access_token:)
   end
