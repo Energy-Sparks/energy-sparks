@@ -113,6 +113,13 @@ describe SolarEdgeInstallation do
       expect(create(:solar_edge_installation, :pending_status).monitoring_active?).to be(false)
     end
 
+    context 'when no information' do
+      it 'returns nil' do
+        expect(create(:solar_edge_installation, information: nil).monitoring_active?).to be(false)
+        expect(create(:solar_edge_installation, information: {}).monitoring_active?).to be(false)
+      end
+    end
+
     context 'when checking v1 status' do
       subject(:installation) do
         create(:solar_edge_installation, information: {

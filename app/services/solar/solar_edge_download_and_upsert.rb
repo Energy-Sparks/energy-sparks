@@ -47,7 +47,7 @@ module Solar
       return true if @installation.monitoring_active?
 
       # refresh local copy of site status and recheck
-      SolarEdgeInstallationFactory.update_information(@installation)
+      SolarEdgeInstallationFactory.new(@installation).update_information
 
       @installation.monitoring_active?
     end

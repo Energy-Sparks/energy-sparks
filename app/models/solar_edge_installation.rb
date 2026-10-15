@@ -75,6 +75,8 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def monitoring_active?
+    return false if information.blank?
+
     information['site_details']&.dig('activationStatus') == 'ACTIVE' ||
       information.dig('site_details', 'sites', 'site', 0, 'status') == 'Active'
   end

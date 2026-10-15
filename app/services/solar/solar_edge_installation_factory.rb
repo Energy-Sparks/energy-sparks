@@ -4,64 +4,63 @@ require 'dashboard'
 
 module Solar
   class SolarEdgeInstallationFactory
-    def initialize(installation, amr_data_feed_config)
+    def initialize(installation)
       @installation = installation
-      @amr_data_feed_config = amr_data_feed_config
-      return if amr_data_feed_config.solar_edge_api?
-
-      raise ArgumentError, 'Amr Data Feed Config is not set for the Solar Edge API'
     end
 
-    def self.update_information(installation)
-      information = if installation.consented?
-                      api = installation.site_api!
-                      site_details = api.details
-                      dates = if site_details['activationStatus'] == 'ACTIVE'
-                                api.date_range
-                              else
-                                {}
-                              end
-                      {
-                        site_details:,
-                        dates:
-                      }
-                    else
-                      {
-                        site_details: solar_edge_v1.site_details,
-                        dates: solar_edge_v1.site_start_end_dates(installation.site_id)
-                      }
-                    end
-      installation.update(information:)
+    def update_information
+      @installation.update(information: fetch_information)
     rescue StandardError => e
-      Rollbar.error(e, job: :solar_download, school: installation.school)
+      Rollbar.error(e, job: :solar_download, school: @installation.school)
     end
 
-    def self.check(installation)
-      if installation.consented?
-        installation.refresh_tokens_if_needed!
+    def check
+      if @installation.consented?
+        @installation.refresh_tokens_if_needed!
       else
         solar_edge_v1.site_details
       end
       true
-    rescue StandardError
+    rescue StandardError => e
       false
     end
 
-    def self.setup_meters(installation)
-      return if installation.setup_complete?
-      return unless installation.can_complete_setup?
+    def setup_meters
+      return if @installation.setup_complete?
+      return unless @installation.can_complete_setup?
 
-      first_reading_date = installation.site_api!.date_range[:from]&.to_date
+      first_reading_date = @installation.site_api!.date_range[:from]&.to_date
 
       return unless first_reading_date
 
-      Solar::SolarEdgeLoaderJob.perform_later(installation:,
-                                              notify_email: installation.notify_email,
+      Solar::SolarEdgeLoaderJob.perform_later(installation: @installation,
+                                              notify_email: @installation.notify_email,
                                               start_date: first_reading_date,
                                               end_date: first_reading_date)
     end
 
     private
+
+    def fetch_information
+      if @installation.consented?
+        api = @installation.site_api!
+        site_details = api.details
+        dates = if site_details['activationStatus'] == 'ACTIVE'
+                  api.date_range
+                else
+                  {}
+                end
+        {
+          site_details:,
+          dates:
+        }
+      else
+        {
+          site_details: solar_edge_v1.site_details,
+          dates: solar_edge_v1.site_start_end_dates(@installation.site_id)
+        }
+      end
+    end
 
     def solar_edge_v1
       @solar_edge_v1 ||= DataFeeds::SolarEdgeApi.new(@installation.api_key)

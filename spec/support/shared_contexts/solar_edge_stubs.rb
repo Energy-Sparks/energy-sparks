@@ -41,10 +41,12 @@ RSpec.shared_context 'with a failed SolarEdge token request' do
 end
 
 RSpec.shared_context 'with a stubbed SolarEdge site details request' do
+  let(:status) { 200 }
+
   before do
     stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{site_id}")
       .to_return(
-        status: 200,
+        status:,
         headers: {
           'Content-Type' => 'application/json'
         },

@@ -4,7 +4,7 @@ module DataFeeds
   module SolarEdge
     # rubocop:disable-next Metrics/ClassLength
     class SiteApi < Base
-      MAX_QUARTER_HOUR_PERIOD = 7 # days according to API response, although docs say 12 hours.
+      MAX_QUARTER_HOUR_PERIOD = 12.hours
 
       # Usage tier is 25 CPM.
       RETRY_OPTIONS = {
@@ -94,7 +94,7 @@ module DataFeeds
         wh_to_kwh(meter_data.fetch(meter_type).fetch('values'))
       end
 
-      def windowed_request(start_date, end_date, window_size: 12.hours)
+      def windowed_request(start_date, end_date, window_size: MAX_QUARTER_HOUR_PERIOD)
         from = midnight_in_europe_london(start_date)
         to   = midnight_in_europe_london(end_date + 1.day)
 

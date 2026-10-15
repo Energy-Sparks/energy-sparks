@@ -33,6 +33,8 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
       end
 
       context 'with unconsented SolarEdge site' do
+        let!(:installation) { create(:solar_edge_installation, :unconsented, school:) }
+
         before do
           solar_edge_api = instance_double(DataFeeds::SolarEdgeApi,
                                            site_details: '',
@@ -101,12 +103,10 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
       end
 
       context 'when checking an installation', :js do
-        before do
-          allow(Solar::SolarEdgeInstallationFactory).to receive(:check).and_return(ok)
-        end
+        let!(:installation) { create(:solar_edge_installation, school:) }
 
         context 'when check returns true' do
-          let(:ok) { true }
+          include_context 'with a successful SolarEdge token request'
 
           it 'updates the button correctly' do
             find("#solar-edge-#{installation.id}-test").click
@@ -117,7 +117,9 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         end
 
         context 'when check returns false' do
-          let(:ok) { false }
+          let!(:installation) { create(:solar_edge_installation, :with_expired_access_token, school:) }
+
+          include_context 'with a failed SolarEdge token request'
 
           it 'updates the button correctly' do
             find("#solar-edge-#{installation.id}-test").click
