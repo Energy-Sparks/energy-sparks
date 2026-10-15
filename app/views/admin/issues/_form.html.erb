@@ -43,8 +43,8 @@
             </div>
           <% end %>
         <% end %>
-        <i>Paste MPANs here to associate with the issue.</i>
-        <%= text_area_tag :custom_mpans, @custom_mpans, class: 'form-control is-valid string optional' %>
+        <i>Paste MPXNs here to associate with the issue.</i>
+        <%= text_area_tag :custom_mpxns, local_assigns[:custom_mpxns], class: 'form-control is-valid string optional' %>
       </fieldset>
     <% end %>
     <%= f.input :status, collection: Issue.statuses.keys, label_method: :humanize, include_blank: false %>
