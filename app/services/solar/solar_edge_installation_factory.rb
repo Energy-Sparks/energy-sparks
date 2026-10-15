@@ -21,7 +21,7 @@ module Solar
         solar_edge_v1.site_details
       end
       true
-    rescue StandardError => e
+    rescue StandardError
       false
     end
 
