@@ -73,7 +73,10 @@ module DataFeeds
         }
         windowed_request(start_date, end_date) do |from, to|
           readings = meters_telemetry(from:, to:)
+          next if readings.fetch('meters').empty? # found site with export data issues where telemetry available
+
           _, meter_data = readings.fetch('meters').sole
+
           import_and_export[:exported_solar_pv] += telemetry_for(meter_data, 'exportEnergy')
           import_and_export[:electricity] += telemetry_for(meter_data, 'importEnergy')
         end

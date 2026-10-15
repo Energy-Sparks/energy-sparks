@@ -97,7 +97,6 @@ class SolarEdgeInstallation < ApplicationRecord
     return if refresh_token.blank?
 
     with_lock do
-      reload # check if another process has already refreshed the tokens
       return false unless access_token_expired?
 
       begin
