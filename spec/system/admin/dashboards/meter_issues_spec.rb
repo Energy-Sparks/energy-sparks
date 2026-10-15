@@ -24,11 +24,12 @@ describe 'Admin dashboard - Meter Issues' do
   it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
     let(:table_id) { '.table' }
     let(:expected_header) do
-      [['', 'Title', 'Fuel', 'Created by', 'Status', 'Updated', 'Next review', '']]
+      [['', 'Title', 'Fuel', 'Created by',
+        'Status', 'Updated', 'Next review', '']]
     end
     let(:expected_rows) do
-      [['', "#{issue.title} #{issue.issueable.name} #{issue.meters.first.mpan_mprn}", 'Gas', 'user 5', 'Open',
-        '00:00 today', 'No date set', 'Edit']]
+      [['', "#{issue.title} #{issue.issueable.name} #{issue.meters.first.mpan_mprn}", 'Gas', issue.created_by.name,
+        'Open', '00:00 today', 'No date set', 'Edit']]
     end
   end
 
