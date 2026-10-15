@@ -161,7 +161,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                   expect(page).to have_checked_field(electricity_meter.mpan_mprn.to_s)
                   expect(page).to have_unchecked_field(gas_meter.mpan_mprn.to_s)
                 else
-                  expect(page).to have_field(id: 'custom_mpans', with: electricity_meter.mpan_mprn.to_s)
+                  expect(page).to have_field(id: 'custom_mpxns', with: electricity_meter.mpan_mprn.to_s)
                 end
               end
 
@@ -186,7 +186,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
                     uncheck electricity_meter.mpan_mprn.to_s
                     check gas_meter.mpan_mprn.to_s
                   else
-                    fill_in 'custom_mpans', with: gas_meter.mpan_mprn.to_s
+                    fill_in 'custom_mpxns', with: gas_meter.mpan_mprn.to_s
                   end
                   click_button 'Save'
                 end

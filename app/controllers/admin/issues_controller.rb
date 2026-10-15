@@ -16,9 +16,9 @@ module Admin
     before_action :set_issueable # used by through: issueable below
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
 
-    ALL_METER_TYPES = { fuel: %i[electricity gas solar_pv], system: %i[nhh_amr nhh hh smets2_smart] }
+    ALL_METER_TYPES = { fuel: Meter.meter_types.keys, system: Meter.meter_systems.keys }
                       .flat_map { |type, subtypes| subtypes.map { |subtype| [type, subtype] } }
-    ALLOWED_ALL_METER_TYPES = ALL_METER_TYPES.map { |_type, subtype| subtype.to_s }
+    ALLOWED_ALL_METER_TYPES = ALL_METER_TYPES.map(&:second)
     private_constant :ALLOWED_ALL_METER_TYPES
 
     def index
@@ -36,7 +36,7 @@ module Admin
     end
 
     def edit
-      @custom_mpans = @issue.meters.pluck(:mpan_mprn).join(' ')
+      @custom_mpxns = @issue.meters.pluck(:mpan_mprn).join(' ')
     end
 
     def create
@@ -154,7 +154,7 @@ module Admin
       return if params[:issue][:meter_ids]
 
       meter_ids = process_all_meter_ids.to_set
-      meter_ids += Meter.where(mpan_mprn: params[:custom_mpans].delete(',').split).pluck(:id) if params[:custom_mpans]
+      meter_ids += Meter.where(mpan_mprn: params[:custom_mpxns].split(/[,\s;]+/)).pluck(:id) if params[:custom_mpxns]
       @issue.meter_ids = meter_ids if @issue.meter_ids.to_set != meter_ids
     end
 
