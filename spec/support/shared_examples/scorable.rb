@@ -38,6 +38,32 @@ RSpec.shared_examples 'a scorable' do
         expect(subject.scored_schools.to_a.size).to be 6
       end
     end
+
+    context 'with a custom period' do
+      let!(:schools) { [] }
+      let(:period) { 12.months.ago..Time.zone.now }
+      let!(:outside_period_school) do
+        travel_to(13.months.ago) do
+          create(:school, :with_points, score_points: 100, scoreboard: scoreboard, school_group: school_group,
+                                        activities_happened_on: Time.zone.today,
+                                        calendar: subject.scorable_calendar,
+                                        template_calendar: subject.scorable_calendar)
+        end
+      end
+      let!(:inside_period_school) do
+        create(:school, :with_points, score_points: 10, scoreboard: scoreboard, school_group: school_group,
+                                      activities_happened_on: 1.day.ago,
+                                      calendar: subject.scorable_calendar,
+                                      template_calendar: subject.scorable_calendar)
+      end
+      let(:top_scoring_school) { subject.top_scoring_school(period: period) }
+
+      it 'returns the highest scorer within the period' do
+        expect(outside_period_school.observations.sum(:points)).to eq(100)
+        expect(top_scoring_school.id).to eq(inside_period_school.id)
+        expect(top_scoring_school.sum_points).to eq(10)
+      end
+    end
   end
 
   describe '#this_academic_year' do
