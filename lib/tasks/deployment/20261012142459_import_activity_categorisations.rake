@@ -5,7 +5,7 @@ namespace :after_party do
   task import_activity_categorisations: :environment do
     puts "Running deploy task 'import_activity_categorisations'"
 
-    file_name = File.join(__dir__, 'activities-categorisations.csv')
+    file_name = File.join(__dir__, 'activities-categorisations-2026-10-15.csv')
 
     importer = Tasks::Importer::Activity.new(file_name).run
 
