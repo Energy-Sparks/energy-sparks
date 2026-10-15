@@ -272,7 +272,7 @@ describe DataFeeds::SolarEdge::SiteApi do
   end
 
   describe '#all_meter_data' do
-    before do
+    def stub_production_requests
       production = {
         'resolution' => 'QUARTER_HOUR',
         'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 111.11 }]
@@ -290,16 +290,16 @@ describe DataFeeds::SolarEdge::SiteApi do
                      'from' => '2026-08-01T12:00:00+01:00',
                      'to' => '2026-08-02T00:00:00+01:00'
                    }, response: { 'values' => [] })
+    end
 
+    def stub_telemetry_requests
       telemetry = {
         'meters' => {
           '5118719' => {
             'importEnergy' => {
-              'unit' => 'WH',
               'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 123.4 }]
             },
             'exportEnergy' => {
-              'unit' => 'WH',
               'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 567.8 }]
             }
           }
@@ -326,12 +326,41 @@ describe DataFeeds::SolarEdge::SiteApi do
                    })
     end
 
-    it 'returns the data for all three meters' do
-      day = Date.new(2026, 8, 1)
-      data = api.all_meter_data(start_date: day, end_date: day)
-      expect(data[:solar_pv][:readings][day][0]).to eq(111.11)
-      expect(data[:electricity][:readings][day][0]).to be_within(0.0001).of(123.4 / 1000.0)
-      expect(data[:exported_solar_pv][:readings][day][0]).to be_within(0.0001).of(567.8 / 1000.0)
+    context 'when a date range is specified' do
+      before do
+        stub_production_requests
+        stub_telemetry_requests
+      end
+
+      it 'returns the data for all three meters' do
+        day = Date.new(2026, 8, 1)
+        data = api.all_meter_data(start_date: day, end_date: day)
+        expect(data[:solar_pv][:readings][day][0]).to eq(111.11)
+        expect(data[:electricity][:readings][day][0]).to be_within(0.0001).of(123.4 / 1000.0)
+        expect(data[:exported_solar_pv][:readings][day][0]).to be_within(0.0001).of(567.8 / 1000.0)
+      end
+    end
+
+    context 'when no dates are specified' do
+      before do
+        stub_request(path: '/energy', params: {
+                       'resolution' => 'TOTAL',
+                       'from' => DateTime.new(2000).iso8601,
+                       'unit' => 'KWH'
+                     }, response: {
+                       'period' => { 'from' => '2026-08-01T00:00:00+01:00', 'to' => '2026-08-01T13:43:01.713+01:00' }
+                     })
+        stub_production_requests
+        stub_telemetry_requests
+      end
+
+      it 'finds the site date range andreturns the data for all three meters' do
+        day = Date.new(2026, 8, 1)
+        data = api.all_meter_data(start_date: nil, end_date: nil)
+        expect(data[:solar_pv][:readings][day][0]).to eq(111.11)
+        expect(data[:electricity][:readings][day][0]).to be_within(0.0001).of(123.4 / 1000.0)
+        expect(data[:exported_solar_pv][:readings][day][0]).to be_within(0.0001).of(567.8 / 1000.0)
+      end
     end
   end
 end

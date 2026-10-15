@@ -42,11 +42,13 @@ module DataFeeds
       # Only way to request period of data available in v2 is to ask for total
       # energy production since installation date (or a very early date)
       def date_range
-        total_energy = energy(resolution: 'TOTAL', from: DateTime.new(2000))
-        {
-          from: DateTime.parse(total_energy['period']['from']),
-          to: DateTime.parse(total_energy['period']['to'])
-        }
+        @date_range ||= begin
+          total_energy = energy(resolution: 'TOTAL', from: DateTime.new(2000))
+          {
+            from: DateTime.parse(total_energy['period']['from']),
+            to: DateTime.parse(total_energy['period']['to'])
+          }
+        end
       end
 
       # NOTE: does not support unit parameter so returns data in Wh.
@@ -94,7 +96,8 @@ module DataFeeds
         wh_to_kwh(meter_data.fetch(meter_type).fetch('values'))
       end
 
-      def windowed_request(start_date, end_date, window_size: MAX_QUARTER_HOUR_PERIOD)
+      def windowed_request(requested_start_date, requested_end_date, window_size: MAX_QUARTER_HOUR_PERIOD)
+        start_date, end_date = request_period(requested_start_date, requested_end_date)
         from = midnight_in_europe_london(start_date)
         to   = midnight_in_europe_london(end_date + 1.day)
 
@@ -112,10 +115,11 @@ module DataFeeds
       end
 
       def request_period(start_date, end_date)
-        return (start_date..end_date) if start_date && end_date
+        return start_date, end_date if start_date && end_date
 
         dates = date_range
-        (start_date || dates[:from].to_date)..(end_date || dates[:to].to_date)
+
+        [start_date || dates[:from].to_date, end_date || dates[:to].to_date]
       end
 
       def add_from_to(params:, from:, to:)
