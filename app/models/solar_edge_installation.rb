@@ -86,12 +86,6 @@ class SolarEdgeInstallation < ApplicationRecord
     5.seconds.from_now.utc >= access_token_expires_at
   end
 
-  def refresh_tokens_if_needed!
-    return false unless access_token_expired?
-
-    refresh_api_tokens!
-  end
-
   def site_api!
     refresh_tokens_if_needed!
 
@@ -102,25 +96,35 @@ class SolarEdgeInstallation < ApplicationRecord
   def refresh_api_tokens!
     return if refresh_token.blank?
 
-    tokens = DataFeeds::SolarEdge::Api.new.refresh_access_token(refresh_token)
+    with_lock do
+      reload # check if another process has already refreshed the tokens
+      return false unless access_token_expired?
 
+      begin
+        tokens = DataFeeds::SolarEdge::Api.new.refresh_access_token(refresh_token)
+        store_tokens(tokens)
+      rescue StandardError => e
+        # Ensure tokens are logged somewhere if there is an issue with the update
+        # as the old refresh token is now invalid. Will need it to recover access.
+        Rollbar.error(
+          e,
+          solar_edge_installation: id,
+          tokens: tokens
+        )
+        raise
+      end
+    end
+  end
+
+  private
+
+  def store_tokens(tokens)
     update!(
       access_token: tokens['access_token'],
       refresh_token: tokens['refresh_token'],
       access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now.utc
     )
-  rescue ActiveRecord::ActiveRecordError => e
-    # Ensure tokens are logged somewhere if there is an issue with the update
-    # as the old refresh token is now invalid. Will need it to recover access.
-    Rollbar.error(
-      e,
-      solar_edge_installation: id,
-      tokens:
-    )
-    raise
   end
-
-  private
 
   def site_id_unique_to_school
     existing = self.class.where(site_id:).where.not(id:).where.not(school:)

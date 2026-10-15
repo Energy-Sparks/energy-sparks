@@ -16,7 +16,7 @@ module Solar
 
     def check
       if @installation.consented?
-        @installation.refresh_tokens_if_needed!
+        @installation.refresh_api_tokens!
       else
         solar_edge_v1.site_details
       end

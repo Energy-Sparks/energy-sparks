@@ -142,7 +142,7 @@ describe SolarEdgeInstallation do
   end
 
   describe '#refresh_api_tokens!' do
-    subject!(:installation) { create(:solar_edge_installation) }
+    subject!(:installation) { create(:solar_edge_installation, :with_expired_access_token) }
 
     context 'when not consented' do
       subject!(:installation) { create(:solar_edge_installation, :unconsented) }
