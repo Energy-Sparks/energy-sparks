@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Designed to import data from CSV exported from: https://docs.google.com/spreadsheets/d/1Dzu10e8ljf0flS9SyTAdvdz4MF_2UL6Ed-FidR9VqpQ/edit?usp=sharing
+# Imports data from CSV exported from:
+# https://docs.google.com/spreadsheets/d/1Dzu10e8ljf0flS9SyTAdvdz4MF_2UL6Ed-FidR9VqpQ/edit?usp=sharing
 # This was last exported on 15/10/2026 and stored in lib/tasks/deployment/activities-categorisations-2026-10-15.csv
 
 module Tasks

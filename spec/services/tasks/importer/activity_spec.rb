@@ -6,7 +6,7 @@ require 'csv'
 RSpec.describe Tasks::Importer::Activity do
   subject(:importer) { described_class.new(file_name) }
 
-  let(:file_name) { 'activities-categorisations.csv' }
+  let(:file_name) { 'activities-categorisations-2026-10-15.csv' }
   let!(:activity_type) { create(:activity_type, id: 33) }
 
   let(:rows) do

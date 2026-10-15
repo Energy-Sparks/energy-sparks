@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# Imports focus labels for actions (intervention types) from a CSV exported on
-# 15/10/2026 and stored in lib/tasks/deployment/actions-categorisations-2026-10-15.csv
+# Imports focus labels for actions (intervention types) from a CSV exported from:
+# https://docs.google.com/spreadsheets/d/1GmCHb0PFWvaF2_cAaUlLzOyx6vkNPj0ilAiT7JDfugA/edit?usp=sharing
+# This was last exported on 15/10/2026 and stored in lib/tasks/deployment/actions-categorisations-2026-10-15.csv
 
 module Tasks
   module Importer
