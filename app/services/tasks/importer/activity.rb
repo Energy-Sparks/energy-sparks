@@ -2,11 +2,8 @@
 
 module Tasks
   module Importer
-    # Imports the classification spreadsheet that categorises activities by
-    # topic, aim, duration, subject area and learning stage. Used by the
-    # after_party:import_activity_categorisations deployment task
     class Activity < Base
-      DATA_START_ROW = 3
+      START_ROW = 3
 
       COLUMNS = {
         activity_type_id: 0,

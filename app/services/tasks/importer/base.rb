@@ -5,7 +5,7 @@ require 'csv'
 module Tasks
   module Importer
     class Base
-      DATA_START_ROW = 2
+      START_ROW = 2
 
       def self.rollback
         raise NotImplementedError, "#{self} must implement .rollback"
@@ -27,7 +27,7 @@ module Tasks
       private
 
       def rows
-        CSV.read(@file_path).drop(self.class::DATA_START_ROW)
+        CSV.read(@file_path).drop(self.class::START_ROW)
       end
 
       def import_row(_row)
