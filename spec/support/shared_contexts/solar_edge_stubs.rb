@@ -42,6 +42,7 @@ end
 
 RSpec.shared_context 'with a stubbed SolarEdge site details request' do
   let(:status) { 200 }
+  let(:activation_status) { 'ACTIVE' }
 
   before do
     stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{site_id}")
@@ -52,7 +53,7 @@ RSpec.shared_context 'with a stubbed SolarEdge site details request' do
         },
         body: {
           'siteId' => site_id,
-          'activationStatus' => 'ACTIVE'
+          'activationStatus' => activation_status
         }.to_json
       )
   end
@@ -60,7 +61,7 @@ end
 
 RSpec.shared_context 'with a stubbed SolarEdge date request' do
   let(:from) { '2024-01-01T00:00:00+01:00' }
-  let(:to) { '2026-01-02T13:43:01.713+01:00' }
+  let(:to) { '2026-01-02T13:43:01+01:00' }
 
   before do
     stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{site_id}/" \

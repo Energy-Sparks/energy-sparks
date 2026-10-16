@@ -9,7 +9,7 @@ module Solar
     end
 
     def update_information
-      @installation.update(information: fetch_information)
+      @installation.update!(information: fetch_information)
     rescue StandardError => e
       Rollbar.error(e, job: :solar_download, school: @installation.school)
     end
@@ -46,7 +46,7 @@ module Solar
         api = @installation.site_api!
         site_details = api.details
         dates = if site_details['activationStatus'] == 'ACTIVE'
-                  api.date_range
+                  api.date_range.transform_values(&:iso8601)
                 else
                   {}
                 end
