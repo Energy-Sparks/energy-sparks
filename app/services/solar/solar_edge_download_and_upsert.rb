@@ -23,6 +23,10 @@ module Solar
 
     protected
 
+    def latest_reading
+      @installation.latest_reading
+    end
+
     def start_date
       return nil if @reload
 

@@ -5,42 +5,14 @@ require 'rails_helper'
 describe SolarEdgeInstallation do
   include_context 'with SolarEdge credentials'
 
-  describe '#electricity_meter' do
-    subject(:solar_edge_installation) { create(:solar_edge_installation) }
-
-    let(:meter) { solar_edge_installation.electricity_meter }
-
-    context 'when there is no meter' do
-      it 'returns nil' do
-        expect(meter).to be_nil
-      end
-    end
-
-    context 'when there is only an electricity meter' do
-      subject(:solar_edge_installation) { create(:solar_edge_installation, :with_electricity_meter) }
-
-      it 'returns the meter' do
-        expect(meter).to eq(solar_edge_installation.meters.first)
-      end
-    end
-
-    context 'when all meters are present' do
-      subject(:solar_edge_installation) { create(:solar_edge_installation_with_meters_and_validated_readings) }
-
-      it 'returns the meter' do
-        expect(meter).to eq(Meter.electricity.first)
-      end
-    end
-  end
-
-  describe '#latest_electricity_reading' do
+  describe '#latest_reading' do
     subject(:solar_edge_installation) { create(:solar_edge_installation) }
 
     let(:latest_electricity_reading) { solar_edge_installation.latest_electricity_reading }
 
     context 'when there is no meter' do
       it 'returns nil' do
-        expect(latest_electricity_reading).to be_nil
+        expect(latest_reading).to be_nil
       end
     end
 
@@ -52,7 +24,7 @@ describe SolarEdgeInstallation do
         end
 
         it 'returns nil' do
-          expect(latest_electricity_reading).to be_nil
+          expect(latest_reading).to be_nil
         end
       end
 
@@ -60,10 +32,11 @@ describe SolarEdgeInstallation do
         before do
           create(:electricity_meter_with_reading, mpan_mprn: 60_000_000_000_000 + solar_edge_installation.mpan.to_i,
                                                   pseudo: true, solar_edge_installation:)
+          solar_edge_installation.reload
         end
 
         it 'returns the latest date' do
-          expect(latest_electricity_reading).to eq(Date.parse(AmrDataFeedReading.first.reading_date))
+          expect(latest_reading).to eq(Date.parse(AmrDataFeedReading.first.reading_date))
         end
       end
     end

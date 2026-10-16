@@ -66,7 +66,7 @@ module Solar
         end
 
         before do
-          create(:amr_data_feed_reading, reading_date: reading_date, meter: meter)
+          create(:amr_data_feed_reading, reading_date: reading_date, parsed_date: reading_date, meter: meter)
           allow(api).to receive(:smart_meter_data).with(installation.site_id, expected_start,
                                                         expected_end).and_return(readings)
         end
@@ -158,7 +158,7 @@ module Solar
         end
 
         before do
-          create(:amr_data_feed_reading, reading_date: reading_date, meter: meter)
+          create(:amr_data_feed_reading, reading_date: reading_date, parsed_date: reading_date, meter: meter)
           allow(site_api).to receive(:all_meter_data).with(start_date: expected_start,
                                                            end_date: expected_end).and_return(readings)
         end

@@ -48,14 +48,15 @@ class SolarEdgeInstallation < ApplicationRecord
     school.urn
   end
 
-  def electricity_meter
-    meters.electricity.presence&.first
+  def meter(meter_type = :electricity)
+    meters.where(meter_type:).first
   end
 
-  def latest_electricity_reading
-    return unless electricity_meter&.amr_data_feed_readings&.any?
+  def latest_reading(meter_type = :electricity)
+    meter = meter(meter_type)
+    return unless meter&.amr_data_feed_readings&.any?
 
-    Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
+    meter.amr_data_feed_readings.order(parsed_date: :desc).first.parsed_date
   end
 
   def notify_email
