@@ -5,9 +5,9 @@ class EnergyTariffsMailer < LocaleMailer
   helper LocaleHelper
   helper EnergyTariffsHelper
 
-  def self.reminder_deliver_later_per_locale(organisation, users, has_tariff)
+  def self.reminder_deliver_now_per_locale(organisation, users, has_tariff)
     users_by_locale(users).each do |locale, locale_users|
-      reminder(organisation, locale_users, has_tariff, locale).deliver_later
+      reminder(organisation, locale_users, has_tariff, locale).deliver_now
     end
   end
 
