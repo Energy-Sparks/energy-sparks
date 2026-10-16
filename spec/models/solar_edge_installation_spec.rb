@@ -8,7 +8,7 @@ describe SolarEdgeInstallation do
   describe '#latest_reading' do
     subject(:solar_edge_installation) { create(:solar_edge_installation) }
 
-    let(:latest_electricity_reading) { solar_edge_installation.latest_electricity_reading }
+    let(:latest_reading) { solar_edge_installation.latest_reading }
 
     context 'when there is no meter' do
       it 'returns nil' do
