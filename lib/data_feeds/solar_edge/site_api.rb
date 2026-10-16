@@ -1,0 +1,188 @@
+# frozen_string_literal: true
+
+module DataFeeds
+  module SolarEdge
+    # rubocop:disable-next Metrics/ClassLength
+    class SiteApi < Base
+      MAX_QUARTER_HOUR_PERIOD = 12.hours
+
+      # Usage tier is 25 CPM.
+      RETRY_OPTIONS = {
+        retry_statuses: [429],
+        max: 5,
+        interval: 2.5,
+        interval_randomness: 0.5,
+        backoff_factor: 2
+      }.freeze
+
+      def initialize(site_id:, access_token:, stubs: nil)
+        @site_id = site_id
+        @access_token = access_token
+        @connection = build_connection(
+          url: "#{API_BASE}/sites/#{@site_id}",
+          headers: auth_headers,
+          retry_options: RETRY_OPTIONS,
+          stubs: stubs
+        )
+      end
+
+      def details
+        @connection.get('').body
+      end
+
+      def inventory(types: 'METER')
+        @connection.get('devices', { types: }).body
+      end
+
+      def energy(resolution: 'QUARTER_HOUR', unit: 'KWH', from: nil, to: nil)
+        params = add_from_to(params: { resolution:, unit: }, from:, to:)
+        @connection.get('energy', params).body
+      end
+
+      # rubocop:disable-next Metrics/ParameterLists
+      def meter_measurement(serial_number:, measurement: 'import-energy', resolution: 'QUARTER_HOUR', unit: 'KWH',
+                            from: nil, to: nil)
+        params = add_from_to(params: { resolution:, unit: }, from:, to:)
+        @connection.get("meters/#{serial_number}/#{measurement}", params).body
+      end
+
+      # Only way to request period of data available in v2 is to ask for total
+      # energy production since installation date (or a very early date)
+      def date_range
+        @date_range ||= begin
+          total_energy = energy(resolution: 'TOTAL', from: DateTime.new(2000))
+          {
+            from: DateTime.parse(total_energy['period']['from']),
+            to: DateTime.parse(total_energy['period']['to'])
+          }
+        end
+      end
+
+      # FIXME: remove?
+      # NOTE: does not support unit parameter so returns data in Wh.
+      def meters_telemetry(resolution: 'QUARTER_HOUR', from: nil, to: nil)
+        params = add_from_to(params: { resolution: }, from:, to:)
+        @connection.get('meters/telemetry', params).body
+      end
+
+      def production(start_date: nil, end_date: nil)
+        readings = []
+        windowed_request(start_date, end_date) do |from, to|
+          response = energy(from:, to:)
+          readings.concat(response.fetch('values'))
+        end
+        quarter_hourly_to_half_hourly(readings)
+      end
+
+      def import_energy(serial_number:, start_date: nil, end_date: nil)
+        readings = []
+        windowed_request(start_date, end_date) do |from, to|
+          response = meter_measurement(serial_number:, from:, to:)
+          readings.concat(response.fetch('values'))
+        end
+        quarter_hourly_to_half_hourly(readings)
+      end
+
+      def export_energy(serial_number:, start_date: nil, end_date: nil)
+        readings = []
+        windowed_request(start_date, end_date) do |from, to|
+          response = meter_measurement(serial_number:, measurement: 'export-energy', from:, to:)
+          readings.concat(response.fetch('values'))
+        end
+        quarter_hourly_to_half_hourly(readings)
+      end
+
+      # FIXME: remove
+      def import_and_export(start_date: nil, end_date: nil)
+        import_and_export = {
+          exported_solar_pv: [],
+          electricity: []
+        }
+        windowed_request(start_date, end_date) do |from, to|
+          readings = meters_telemetry(from:, to:)
+          next if readings.fetch('meters').empty? # found site with export data issues where telemetry available
+
+          _, meter_data = readings.fetch('meters').sole
+
+          import_and_export[:exported_solar_pv] += telemetry_for(meter_data, 'exportEnergy')
+          import_and_export[:electricity] += telemetry_for(meter_data, 'importEnergy')
+        end
+        import_and_export.transform_values { |readings| quarter_hourly_to_half_hourly(readings) }
+      end
+
+      # FIXME: remove
+      # Backwards compatible with v1 client
+      def all_meter_data(start_date: nil, end_date: nil)
+        other_meters = import_and_export(start_date:, end_date:)
+        {
+          solar_pv: { readings: production(start_date:, end_date:) },
+          electricity: { readings: other_meters[:electricity] },
+          exported_solar_pv: { readings: other_meters[:exported_solar_pv] }
+        }
+      end
+
+      private
+
+      # FIXME: remove?
+      def telemetry_for(meter_data, meter_type)
+        wh_to_kwh(meter_data.fetch(meter_type).fetch('values'))
+      end
+
+      def windowed_request(requested_start_date, requested_end_date, window_size: MAX_QUARTER_HOUR_PERIOD)
+        start_date, end_date = request_period(requested_start_date, requested_end_date)
+        from = midnight_in_europe_london(start_date)
+        to   = midnight_in_europe_london(end_date + 1.day)
+
+        while from < to
+          window_end = [from + window_size, to].min
+
+          yield(from, window_end)
+
+          from = window_end
+        end
+      end
+
+      def midnight_in_europe_london(date)
+        date.in_time_zone('Europe/London').beginning_of_day
+      end
+
+      def request_period(start_date, end_date)
+        return start_date, end_date if start_date && end_date
+
+        dates = date_range
+
+        [start_date || dates[:from].to_date, end_date || dates[:to].to_date]
+      end
+
+      def add_from_to(params:, from:, to:)
+        params[:from] = from.in_time_zone('Europe/London').iso8601 if from
+        params[:to] = to.in_time_zone('Europe/London').iso8601 if to
+        params
+      end
+
+      # FIXME: remove?
+      # Convert array of { timestamp:, value: } with values in Wh to kWh
+      def wh_to_kwh(readings)
+        readings.map { |reading| reading.merge('value' => reading['value']&./(1000.0)) }
+      end
+
+      # Convert array of readings in 15 minute intervals to a hash of  Date => Array(48) readings
+      def quarter_hourly_to_half_hourly(readings)
+        readings.each_with_object(date_to_x48_hash) do |reading, result|
+          timestamp = Time.iso8601(reading.fetch('timestamp'))
+          slot = (timestamp.hour * 2) + (timestamp.min / 30)
+
+          result[timestamp.to_date][slot] += reading['value'].to_f
+        end
+      end
+
+      def date_to_x48_hash
+        Hash.new { |h, k| h[k] = Array.new(48, 0.0) }
+      end
+
+      def auth_headers
+        { 'Authorization' => "Bearer #{@access_token}" }
+      end
+    end
+  end
+end

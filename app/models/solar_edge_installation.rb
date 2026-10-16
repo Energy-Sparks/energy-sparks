@@ -48,27 +48,89 @@ class SolarEdgeInstallation < ApplicationRecord
     school.urn
   end
 
-  def electricity_meter
-    meters.electricity.presence&.first
+  def meter(meter_type = :electricity)
+    meters.where(meter_type:).first
   end
 
-  def latest_electricity_reading
-    return unless electricity_meter&.amr_data_feed_readings&.any?
+  def latest_reading(meter_type = :electricity)
+    meter = meter(meter_type)
+    return unless meter&.amr_data_feed_readings&.any?
 
-    Date.parse(electricity_meter.amr_data_feed_readings.order(reading_date: :desc).first.reading_date)
+    meter.amr_data_feed_readings.order(parsed_date: :desc).first.parsed_date
   end
 
-  def cached_api_information?
-    information.present?
+  def notify_email
+    school&.default_issues_admin_user&.email || 'operations@energysparks.uk'
   end
 
-  def api_latest_data_date
-    return nil if information['dates'].blank?
+  def can_complete_setup?
+    mpan.present? && consented?
+  end
 
-    Date.parse(information['dates'].last)
+  def setup_complete?
+    meters.any?
+  end
+
+  def consented?
+    consent_granted_at.present?
+  end
+
+  def metadata_for_meter_type(meter_type = 'FeedIn')
+    return nil if information.blank? || information['inventory'].blank?
+
+    information['inventory'].find { |item| item['meterType'] == meter_type }
+  end
+
+  def monitoring_active?
+    return false if information.blank?
+
+    information['site_details']&.dig('activationStatus') == 'ACTIVE' ||
+      information.dig('site_details', 'sites', 'site', 0, 'status') == 'Active'
+  end
+
+  # We expiry tokens early to avoid clock / timing issues with generating timestamp
+  def access_token_expired?
+    5.seconds.from_now.utc >= access_token_expires_at
+  end
+
+  def site_api!
+    refresh_api_tokens!
+
+    DataFeeds::SolarEdge::SiteApi.new(site_id:, access_token:)
+  end
+
+  # We use UTC for expiry timestamp to avoid issues with BST/GMT changeover.
+  def refresh_api_tokens!
+    return if refresh_token.blank?
+
+    with_lock do
+      return false unless access_token_expired?
+
+      begin
+        tokens = DataFeeds::SolarEdge::Api.new.refresh_access_token(refresh_token)
+        store_tokens(tokens)
+      rescue StandardError => e
+        # Ensure tokens are logged somewhere if there is an issue with the update
+        # as the old refresh token is now invalid. Will need it to recover access.
+        Rollbar.error(
+          e,
+          solar_edge_installation: id,
+          tokens: tokens
+        )
+        raise
+      end
+    end
   end
 
   private
+
+  def store_tokens(tokens)
+    update!(
+      access_token: tokens['access_token'],
+      refresh_token: tokens['refresh_token'],
+      access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now.utc
+    )
+  end
 
   def site_id_unique_to_school
     existing = self.class.where(site_id:).where.not(id:).where.not(school:)
