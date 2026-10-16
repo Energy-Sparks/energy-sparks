@@ -52,6 +52,7 @@ module Solar
                 end
         {
           site_details:,
+          inventory: api.inventory,
           dates:
         }
       else

@@ -74,6 +74,12 @@ class SolarEdgeInstallation < ApplicationRecord
     consent_granted_at.present?
   end
 
+  def metadata_for_meter_type(meter_type = 'FeedIn')
+    return nil if information.blank? || information['inventory'].blank?
+
+    information['inventory'].find { |item| item['meterType'] == meter_type }
+  end
+
   def monitoring_active?
     return false if information.blank?
 

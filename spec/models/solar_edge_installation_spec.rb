@@ -226,4 +226,43 @@ describe SolarEdgeInstallation do
       end
     end
   end
+
+  describe '#metadata_for_meter_type' do
+    context 'when no information' do
+      subject(:installation) { create(:solar_edge_installation, information: nil) }
+
+      it 'returns nil' do
+        expect(installation.metadata_for_meter_type).to be_nil
+      end
+    end
+
+    context 'when no inventory' do
+      subject(:installation) { create(:solar_edge_installation, information: {}) }
+
+      it 'returns nil' do
+        expect(installation.metadata_for_meter_type).to be_nil
+      end
+    end
+
+    context 'when there is an inventory' do
+      subject(:installation) { create(:solar_edge_installation) }
+
+      it 'returns the meter metadata' do
+        expect(installation.metadata_for_meter_type).to match(
+          hash_including(
+            'type' => 'METER',
+            'meterType' => 'FeedIn',
+            'name' => 'Export Meter'
+          )
+        )
+        expect(installation.metadata_for_meter_type('Purchased')).to match(
+          hash_including(
+            'type' => 'METER',
+            'meterType' => 'Purchased',
+            'name' => 'Import Meter'
+          )
+        )
+      end
+    end
+  end
 end
