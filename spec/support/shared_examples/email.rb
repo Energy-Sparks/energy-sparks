@@ -18,3 +18,9 @@ RSpec.shared_examples 'it has a csv attachment' do
     expect(attachment.body.raw_source.split("\n")).to eq(data)
   end
 end
+
+shared_examples 'no email is sent' do
+  it "doesn't send an email" do
+    expect(ActionMailer::Base.deliveries.length).to eq(0)
+  end
+end
