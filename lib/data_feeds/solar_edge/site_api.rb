@@ -39,6 +39,13 @@ module DataFeeds
         @connection.get('energy', params).body
       end
 
+      # rubocop:disable-next Metrics/ParameterLists
+      def meter_measurement(serial_number:, measurement: 'import-energy', resolution: 'QUARTER_HOUR', unit: 'KWH',
+                            from: nil, to: nil)
+        params = add_from_to(params: { resolution:, unit: }, from:, to:)
+        @connection.get("meters/#{serial_number}/#{measurement}", params).body
+      end
+
       # Only way to request period of data available in v2 is to ask for total
       # energy production since installation date (or a very early date)
       def date_range
@@ -51,6 +58,7 @@ module DataFeeds
         end
       end
 
+      # FIXME: remove?
       # NOTE: does not support unit parameter so returns data in Wh.
       def meters_telemetry(resolution: 'QUARTER_HOUR', from: nil, to: nil)
         params = add_from_to(params: { resolution: }, from:, to:)
@@ -66,6 +74,25 @@ module DataFeeds
         quarter_hourly_to_half_hourly(readings)
       end
 
+      def import_energy(serial_number:, start_date: nil, end_date: nil)
+        readings = []
+        windowed_request(start_date, end_date) do |from, to|
+          response = meter_measurement(serial_number:, from:, to:)
+          readings.concat(response.fetch('values'))
+        end
+        quarter_hourly_to_half_hourly(readings)
+      end
+
+      def export_energy(serial_number:, start_date: nil, end_date: nil)
+        readings = []
+        windowed_request(start_date, end_date) do |from, to|
+          response = meter_measurement(serial_number:, measurement: 'export-energy', from:, to:)
+          readings.concat(response.fetch('values'))
+        end
+        quarter_hourly_to_half_hourly(readings)
+      end
+
+      # FIXME: remove
       def import_and_export(start_date: nil, end_date: nil)
         import_and_export = {
           exported_solar_pv: [],
@@ -83,6 +110,7 @@ module DataFeeds
         import_and_export.transform_values { |readings| quarter_hourly_to_half_hourly(readings) }
       end
 
+      # FIXME: remove
       # Backwards compatible with v1 client
       def all_meter_data(start_date: nil, end_date: nil)
         other_meters = import_and_export(start_date:, end_date:)
@@ -95,6 +123,7 @@ module DataFeeds
 
       private
 
+      # FIXME: remove?
       def telemetry_for(meter_data, meter_type)
         wh_to_kwh(meter_data.fetch(meter_type).fetch('values'))
       end
@@ -131,6 +160,7 @@ module DataFeeds
         params
       end
 
+      # FIXME: remove?
       # Convert array of { timestamp:, value: } with values in Wh to kWh
       def wh_to_kwh(readings)
         readings.map { |reading| reading.merge('value' => reading['value']&./(1000.0)) }
