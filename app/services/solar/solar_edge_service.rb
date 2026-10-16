@@ -3,7 +3,7 @@
 require 'dashboard'
 
 module Solar
-  class SolarEdgeInstallationFactory
+  class SolarEdgeService
     def initialize(installation)
       @installation = installation
     end

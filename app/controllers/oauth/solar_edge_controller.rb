@@ -44,7 +44,7 @@ module Oauth
 
     # post consent setup, errors here are internal not for showing to user
     def update_installation(installation)
-      service = Solar::SolarEdgeInstallationFactory.new(installation)
+      service = Solar::SolarEdgeService.new(installation)
       service.update_information
       service.setup_meters
     rescue StandardError => e
