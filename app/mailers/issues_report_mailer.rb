@@ -44,11 +44,6 @@ class IssuesReportMailer < ApplicationMailer
           .or(issues.where(created_at: 1.week.ago.to_date..))
   end
 
-  def admin_meter_issues(user, since)
-    Issue.joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': user)
-         .active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..).distinct
-  end
-
   def columns # rubocop:disable Metrics/AbcSize -- breaking up seems to make more complex
     [Column.new(:issue_type, ->(issue) { issue.issue_type }, display: :csv),
      Column.new(:issue_for, ->(issue) { issue.issueable&.name }),
