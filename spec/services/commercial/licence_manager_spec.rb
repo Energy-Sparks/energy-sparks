@@ -49,6 +49,18 @@ describe Commercial::LicenceManager do
 
           it { expect(dates[:start_date]).to eq(Time.zone.today) }
           it { expect(dates[:end_date]).to eq(contract.end_date) }
+
+          context 'with a future contract that has been invoiced' do
+            let!(:contract) do
+              create(:commercial_contract, start_date: Time.zone.tomorrow,
+                                           status: :confirmed,
+                                           licence_period: :contract,
+                                           invoice_terms: :pro_rata)
+            end
+
+            it { expect(dates[:start_date]).to eq(contract.start_date) }
+            it { expect(dates[:end_date]).to eq(contract.end_date) }
+          end
         end
         # rubocop:enable RSpec/NestedGroups
       end
@@ -270,6 +282,49 @@ describe Commercial::LicenceManager do
             end_date: Time.zone.today + 21.months - 1.day
           )
         end
+      end
+    end
+
+    context 'with a current and a future licence' do
+      let!(:licence) do
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, licence_period: :contract),
+               status: :confirmed)
+      end
+      let!(:future_licence) do
+        create(:commercial_licence,
+               school:,
+               start_date: Time.zone.tomorrow,
+               contract: create(:commercial_contract, licence_period: :contract),
+               status: :confirmed)
+      end
+
+      it 'find and updates the right licence status' do
+        expect(updated_licence).to have_attributes(
+          status: 'pending_invoice',
+          start_date: licence.start_date,
+          end_date: licence.end_date
+        )
+        expect(future_licence.reload.status).to eq('confirmed')
+      end
+    end
+
+    context 'with only a future licence' do
+      let!(:licence) do
+        create(:commercial_licence,
+               school:,
+               start_date: Time.zone.tomorrow,
+               contract: create(:commercial_contract, licence_period: :contract, start_date: Time.zone.tomorrow),
+               status: :confirmed)
+      end
+
+      it 'find and updates the licence status' do
+        expect(updated_licence).to have_attributes(
+          status: 'pending_invoice',
+          start_date: licence.start_date,
+          end_date: licence.end_date
+        )
       end
     end
   end

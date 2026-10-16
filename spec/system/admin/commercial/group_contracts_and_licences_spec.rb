@@ -4,19 +4,20 @@ require 'rails_helper'
 
 describe 'group contracts and licences', :include_application_helper do
   let(:school_group) { create(:school_group) }
-  let!(:licence) { create(:commercial_licence, school: create(:school, :with_trust, group: school_group)) }
-  let!(:academic_year) { create(:academic_year, calendar: create(:national_calendar, title: 'England and Wales')) }
+  let!(:licence) do
+    create(:commercial_licence, school: create(:school, :with_trust, group: school_group, calendar: nil))
+  end
+  let!(:academic_year) do
+    create(:academic_year,
+           start_date: Date.new(2025, 9, 1),
+           end_date: Date.new(2026, 8, 31),
+           calendar: create(:calendar, :default_national))
+  end
   let!(:next_academic_year) do
     create(:academic_year,
            calendar: academic_year.calendar,
-           start_date: academic_year.end_date + 1.day,
-           end_date: academic_year.end_date + 12.months)
-  end
-  let!(:previous_academic_year) do
-    create(:academic_year,
-           calendar: academic_year.calendar,
-           start_date: academic_year.start_date - 12.months,
-           end_date: academic_year.start_date - 1.day)
+           start_date: Date.new(2026, 9, 1),
+           end_date: Date.new(2027, 8, 31))
   end
   let(:today) { Date.new(2026, 4, 1) }
 
@@ -37,13 +38,13 @@ describe 'group contracts and licences', :include_application_helper do
     it { expect(page).to have_text(licence.school.name) }
     it { expect(page).to have_link('Licences', href: admin_school_licences_path(licence.school)) }
 
-    it 'summarises current year' do
+    it 'summarises current academic year (2025-2026)' do
       expect(page).to have_text(
         "#{short_dates(academic_year.start_date)} - #{short_dates(academic_year.end_date)}"
       )
     end
 
-    it 'summarises next year' do
+    it 'summarises next academic year (2026-2027)' do
       expect(page).to have_text(
         "#{short_dates(next_academic_year.start_date)} - #{short_dates(next_academic_year.end_date)}"
       )
@@ -55,7 +56,7 @@ describe 'group contracts and licences', :include_application_helper do
     }
   end
 
-  context 'when in September' do
+  context 'when in September it still reports as if in previous year' do
     let(:today) { Date.new(2026, 9, 1) }
 
     before do
@@ -64,15 +65,15 @@ describe 'group contracts and licences', :include_application_helper do
       end
     end
 
-    it 'summarises current year' do
+    it 'summarises last academic year (2025-2026)' do
       expect(page).to have_text(
         "#{short_dates(academic_year.start_date)} - #{short_dates(academic_year.end_date)}"
       )
     end
 
-    it 'summarises previous year' do
+    it 'summarises this academic year (2026-2027)' do
       expect(page).to have_text(
-        "#{short_dates(previous_academic_year.start_date)} - #{short_dates(previous_academic_year.end_date)}"
+        "#{short_dates(next_academic_year.start_date)} - #{short_dates(next_academic_year.end_date)}"
       )
     end
   end

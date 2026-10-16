@@ -4,13 +4,13 @@ source 'https://rubygems.org'
 
 ruby '~> 3.4.8'
 
-gem 'rails', '~> 8.1.2'
+gem 'rails', '~> 8.1.4'
 
 # Core
 gem 'awesome_print'
 gem 'benchmark'
 gem 'bootsnap'
-gem 'image_processing', '~> 2.1' # https://guides.rubyonrails.org/active_storage_overview.html#transforming-images
+gem 'image_processing', '~> 2.2' # https://guides.rubyonrails.org/active_storage_overview.html#transforming-images
 gem 'jbuilder', '~> 2.15' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'mini_magick' # for image_processing
 gem 'puma' # Use Puma as the app server

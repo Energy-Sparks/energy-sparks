@@ -9,7 +9,7 @@ class IssuesReportMailer < ApplicationMailer
 
   def issues_report
     @user = params[:user]
-    @issues = active_issues(@user).by_review_date.by_updated_at.includes(%i[created_by updated_by issueable])
+    @issues = issues_defaults(active_issues(@user))
     return unless @issues.any?
 
     @columns = columns
@@ -18,13 +18,33 @@ class IssuesReportMailer < ApplicationMailer
     prevent_delivery_from_test
   end
 
+  def admin_meter_report(user, since: nil)
+    @user = user
+    @issues = issues_defaults(admin_meter_issues(user, since))
+    return if @issues.empty?
+
+    @columns = columns
+    attachments['admin_meter_issues_report.csv'] = { mime_type: 'text/csv', content: csv_report(@columns, @issues) }
+    mail(to: @user.email, subject: admin_subject('Daily Meter Issues'))
+    prevent_delivery_from_test
+  end
+
   private
+
+  def issues_defaults(issues)
+    issues.by_review_date.by_updated_at.includes(:created_by, :updated_by, :issue_tags, issueable: :school_group)
+  end
 
   def active_issues(user)
     issues = Issue.for_owned_by(user).active.status_open.issue
     issues.where(review_date: ..Date.current)
           .or(issues.where(review_date: Date.current..1.week.from_now))
           .or(issues.where(created_at: 1.week.ago.to_date..))
+  end
+
+  def admin_meter_issues(user, since)
+    Issue.joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': user)
+         .active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..).distinct
   end
 
   def columns # rubocop:disable Metrics/AbcSize -- breaking up seems to make more complex

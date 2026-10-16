@@ -2,9 +2,10 @@
 
 namespace :solar do
   desc 'Import solar edge data'
-  task :import_solar_edge_readings, %i[start_date end_date] => :environment do |_t, args|
+  task :import_solar_edge_readings, %i[start_date end_date reload] => :environment do |_t, args|
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : nil
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : nil
+    reload = args[:reload].present? || false
 
     puts "#{DateTime.now.utc} import_solar_edge_readings start"
     begin
@@ -12,8 +13,7 @@ namespace :solar do
         next if installation.api_key.blank? # Ignore v2 sites for now
 
         puts "Running for #{installation.school.name} #{installation.site_id}"
-        Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date: start_date,
-                                              end_date: end_date).perform
+        Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date:, end_date:, reload:).perform
       end
     rescue StandardError => e
       puts "Exception: importing readings #{e.class} #{e.message}"

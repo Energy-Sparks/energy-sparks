@@ -525,6 +525,7 @@ en:
         manage_users: Manage school users and pupil logins
       view_link: View
     show:
+      achieved: Well done, you achieved your last target to reduce your gas use.
       add_alert_contacts: Add alert contacts
       add_estimate: Add an estimate
       coming_soon: Energy data coming soon
@@ -540,6 +541,7 @@ en:
       manual_readings: We have limited energy data for your school. You can enter monthly consumption data to show progress against any targets set or observe changes in consumption over a longer period of time.
       more_information: More information
       not_meeting_target: Unfortunately you are not meeting your target to reduce your %{fuels} usage
+      not_met_target: Unfortunately you have not meeting your target to reduce your %{fuels} usage
       online_training_signup: New to Energy Sparks? Sign up to one of our upcoming free online training courses to help you get the most from the service.
       percentage_change: "% Change"
       potential_savings: Potential savings

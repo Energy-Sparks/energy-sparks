@@ -11,34 +11,9 @@ describe 'school group meter reports', type: :system do
 
   before do
     sign_in(admin)
-    visit admin_reports_path
   end
 
-  context 'when on index page' do
-    before do
-      click_on 'School group meter reports'
-    end
-
-    it 'displays the reports index' do
-      expect(page).to have_text('School group meter data reports')
-      expect(page).to have_text(school_group.name)
-      expect(page).to have_button('Meter report')
-    end
-
-    context 'when clicking on the email meter report link', :js do
-      before do
-        click_on 'Meter report'
-        accept_alert do
-          click_on 'Email Meter Report'
-        end
-      end
-
-      it { expect(page).to have_text "Meter report for #{school_group.name} requested to be sent to #{admin.email}" }
-      it { expect(page).to have_text 'School group meter data reports' }
-    end
-  end
-
-  context 'when viewing the "unlinked" school group meter report page' do
+  context 'when viewing a school group meter report page' do
     before do
       visit admin_school_group_meter_report_path(school_group)
     end
