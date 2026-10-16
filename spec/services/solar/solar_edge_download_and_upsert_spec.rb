@@ -233,7 +233,7 @@ module Solar
                                                 }, date_range: {
                                                   from: requested_start_date,
                                                   to: requested_end_date
-                                                })
+                                                }, inventory: [])
             allow(site_api).to receive(:all_meter_data).with(start_date: requested_start_date,
                                                              end_date: requested_end_date).and_return(readings)
           end
@@ -249,11 +249,9 @@ module Solar
 
         context 'when status is still pending' do
           before do
-            allow(site_api).to receive(:details).and_return(
-              {
-                'activationStatus' => 'PENDING'
-              }
-            )
+            allow(site_api).to receive_messages(details: {
+                                                  'activationStatus' => 'PENDING'
+                                                }, inventory: [])
           end
 
           it 'does nothing' do

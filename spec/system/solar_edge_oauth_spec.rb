@@ -59,6 +59,7 @@ describe 'SolarEdge Oauth workflow' do
 
       include_context 'with a stubbed SolarEdge site details request'
       include_context 'with a stubbed SolarEdge date request'
+      include_context 'with a stubbed SolarEdge inventory request'
 
       before do
         visit oauth_solar_edge_path(site_id: installation.site_id, code: 'code', external_id: installation.school_id)
@@ -100,6 +101,7 @@ describe 'SolarEdge Oauth workflow' do
 
       include_context 'with a stubbed SolarEdge site details request'
       include_context 'with a stubbed SolarEdge date request'
+      include_context 'with a stubbed SolarEdge inventory request'
 
       before do
         visit oauth_solar_edge_path(site_id:, code: 'code', external_id: school.id)

@@ -73,9 +73,10 @@ FactoryBot.define do
     trait :with_electricity_meter do
       after(:create) do |solar_edge_installation, _evaluator|
         create(:electricity_meter,
+               school: solar_edge_installation.school,
                mpan_mprn: 60_000_000_000_000 + solar_edge_installation.mpan.to_i,
                pseudo: true,
-               solar_edge_installation: solar_edge_installation)
+               solar_edge_installation:)
       end
     end
 
@@ -86,19 +87,22 @@ FactoryBot.define do
 
       after(:create) do |solar_edge_installation, _evaluator|
         create(:electricity_meter_with_validated_reading,
+               school: solar_edge_installation.school,
                mpan_mprn: 60_000_000_000_000 + solar_edge_installation.mpan.to_i,
                pseudo: true,
                solar_edge_installation:)
-        solar_pv_meter = create(:electricity_meter_with_validated_reading,
-                                mpan_mprn: 70_000_000_000_000 + solar_edge_installation.mpan.to_i,
-                                pseudo: true,
-                                solar_edge_installation:)
-        solar_pv_meter.update(meter_type: :solar_pv)
-        export_meter = create(:electricity_meter_with_validated_reading,
-                              mpan_mprn: 90_000_000_000_000 + solar_edge_installation.mpan.to_i,
-                              pseudo: true,
-                              solar_edge_installation:)
-        export_meter.update(meter_type: :exported_solar_pv)
+        create(:electricity_meter_with_validated_reading,
+               meter_type: :solar_pv,
+               school: solar_edge_installation.school,
+               mpan_mprn: 70_000_000_000_000 + solar_edge_installation.mpan.to_i,
+               pseudo: true,
+               solar_edge_installation:)
+        create(:electricity_meter_with_validated_reading,
+               meter_type: :exported_solar_pv,
+               school: solar_edge_installation.school,
+               mpan_mprn: 90_000_000_000_000 + solar_edge_installation.mpan.to_i,
+               pseudo: true,
+               solar_edge_installation:)
       end
     end
   end

@@ -76,3 +76,24 @@ RSpec.shared_context 'with a stubbed SolarEdge date request' do
       )
   end
 end
+
+RSpec.shared_context 'with a stubbed SolarEdge inventory request' do
+  before do
+    stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{site_id}/" \
+                       'devices?types=METER')
+      .to_return(
+        status: 200,
+        headers: {
+          'Content-Type' => 'application/json'
+        },
+        body: [
+          { 'type' => 'METER', 'active' => true, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
+            'serialNumber' => '12345' },
+          { 'type' => 'METER', 'active' => true, 'meterType' => 'Purchased', 'name' => 'Import Meter',
+            'serialNumber' => '12345' },
+          { 'type' => 'METER', 'active' => true, 'meterType' => 'SelfConsumption', 'name' => 'Self Consumption' },
+          { 'type' => 'METER', 'active' => true, 'meterType' => 'Consumption', 'name' => 'Consumption Meter' }
+        ].to_json
+      )
+  end
+end
