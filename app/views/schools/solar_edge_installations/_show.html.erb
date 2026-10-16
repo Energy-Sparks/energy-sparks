@@ -1,13 +1,41 @@
 <% if installation.information.present? %>
-  <h2>Cached site information</h2>
+  <h2>Site configuration</h2>
   <p>
-    The following is a cached summary of the site description. It was last refreshed on
-    <%= nice_date_times(installation.updated_at) %>.
+    Some of the following information (e.g. the site and meter status) is based on a cached summary of the site description.
   </p>
   <p>
     <%= link_to 'Edit and then save the site', edit_school_solar_edge_installation_path(school, installation) %>
     to update this cached copy. Or click the links below to view live (raw) data.
   </p>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Configuration</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Consent Granted?</td>
+        <td><%= installation.consented? %></td>
+      </tr>
+      <tr>
+        <td>Site Active</td>
+        <td><%= installation.monitoring_active? %></td>
+      </tr>
+      <tr>
+        <td>Grid Import Meter Active?</td>
+        <td><%= installation.metadata_for_meter_type('Purchased')&.dig('active') %></td>
+      </tr>
+      <tr>
+        <td>Export Meter Active?</td>
+        <td><%= installation.metadata_for_meter_type&.dig('active') %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Cached data</h3>
   <%= render 'key_value_table', pairs: installation.information %>
 <% else %>
   <p>There is no cached copy of the site metadata</p>
