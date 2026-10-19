@@ -26,6 +26,37 @@ describe DataFeeds::SolarEdge::SiteApi do
     end
   end
 
+  # Stubs a fixed day with readings at specific time periods to check mapping to half-hourly periods,
+  # addition, etc.
+  def stub_request_for_days_readings(path:)
+    response = {
+      'resolution' => 'QUARTER_HOUR',
+      'values' => [
+        { 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 0.0 },
+        { 'timestamp' => '2026-08-01T00:15:00+01:00', 'value' => 0.0 },
+        { 'timestamp' => '2026-08-01T08:00:00+01:00', 'value' => 20.0 },
+        { 'timestamp' => '2026-08-01T08:15:00+01:00', 'value' => 20.0 },
+        { 'timestamp' => '2026-08-01T08:30:00+01:00', 'value' => nil },
+        { 'timestamp' => '2026-08-01T08:45:00+01:00', 'value' => 50.0 },
+        { 'timestamp' => '2026-08-01T09:00:00+01:00', 'value' => nil },
+        { 'timestamp' => '2026-08-01T09:15:00+01:00', 'value' => nil }
+      ]
+    }
+    stub_request(path:, params: {
+                   'resolution' => 'QUARTER_HOUR',
+                   'unit' => 'KWH',
+                   'from' => '2026-08-01T00:00:00+01:00',
+                   'to' => '2026-08-01T12:00:00+01:00'
+                 }, response:)
+
+    stub_request(path: path, params: {
+                   'resolution' => 'QUARTER_HOUR',
+                   'unit' => 'KWH',
+                   'from' => '2026-08-01T12:00:00+01:00',
+                   'to' => '2026-08-02T00:00:00+01:00'
+                 }, response: { 'values' => [] })
+  end
+
   describe '#details' do
     let(:response) do
       {
@@ -138,77 +169,9 @@ describe DataFeeds::SolarEdge::SiteApi do
     end
   end
 
-  describe '#meters_telemetry' do
-    let(:response) do
-      {
-        'period' => { 'from' => '2024-01-01T00:00:00+01:00', 'to' => '2024-01-02T13:43:01.713+01:00' },
-        'unit' => 'KWH',
-        'resolution' => 'QUARTER_HOUR',
-        'meters' => {
-          '5118719' => {
-            'importEnergy' => {
-              'unit' => 'WH',
-              'values' => [{ 'timestamp' => '2024-01-01T00:00:00+01:00', 'value' => 314.27 }]
-            },
-            'importPower' => {
-              'unit' => 'WH',
-              'values' => []
-            },
-            'exportEnergy' => {
-              'unit' => 'WH',
-              'values' => [{ 'timestamp' => '2024-01-01T00:00:00+01:00', 'value' => 314.27 }]
-            },
-            'exportPower' => {
-              'unit' => 'WH',
-              'values' => []
-            }
-          }
-        }
-      }
-    end
-
-    before do
-      stub_request(path: '/meters/telemetry', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'from' => DateTime.new(2024, 1, 1).iso8601,
-                     'to' => DateTime.new(2024, 1, 2).iso8601
-                   }, response:)
-    end
-
-    it 'returns the parsed response' do
-      expect(api.meters_telemetry(
-               from: DateTime.new(2024, 1, 1),
-               to: DateTime.new(2024, 1, 2)
-             )).to eq(response)
-    end
-  end
-
   describe '#production' do
     before do
-      production = {
-        'resolution' => 'QUARTER_HOUR',
-        'values' => [
-          { 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 0.0 },
-          { 'timestamp' => '2026-08-01T00:15:00+01:00', 'value' => 0.0 },
-          { 'timestamp' => '2026-08-01T08:00:00+01:00', 'value' => 20.0 },
-          { 'timestamp' => '2026-08-01T08:15:00+01:00', 'value' => 20.0 },
-          { 'timestamp' => '2026-08-01T08:30:00+01:00', 'value' => nil },
-          { 'timestamp' => '2026-08-01T08:45:00+01:00', 'value' => 50.0 }
-        ]
-      }
-      stub_request(path: '/energy', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'unit' => 'KWH',
-                     'from' => '2026-08-01T00:00:00+01:00',
-                     'to' => '2026-08-01T12:00:00+01:00'
-                   }, response: production)
-
-      stub_request(path: '/energy', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'unit' => 'KWH',
-                     'from' => '2026-08-01T12:00:00+01:00',
-                     'to' => '2026-08-02T00:00:00+01:00'
-                   }, response: { 'values' => [] })
+      stub_request_for_days_readings(path: '/energy')
     end
 
     it 'aggregates the production data to correct half-hourly indexes' do
@@ -217,150 +180,41 @@ describe DataFeeds::SolarEdge::SiteApi do
       expect(data[day][0]).to eq(0.0)
       expect(data[day][16]).to eq(40.0)
       expect(data[day][17]).to eq(50.0)
+      expect(data[day][18..47]).to eq(Array.new(30, nil))
     end
   end
 
-  describe '#import_and_export' do
+  describe '#import_energy' do
+    let(:serial_number) { 5555 }
+
     before do
-      telemetry = {
-        'meters' => {
-          '5118719' => {
-            'importEnergy' => {
-              'unit' => 'WH',
-              'values' => [
-                { 'timestamp' => '2026-08-01T08:00:00+01:00', 'value' => 150.0 },
-                { 'timestamp' => '2026-08-01T08:15:00+01:00', 'value' => 150.0 }
-              ]
-            },
-            'exportEnergy' => {
-              'unit' => 'WH',
-              'values' => [
-                { 'timestamp' => '2026-08-01T08:00:00+01:00', 'value' => 20.0 },
-                { 'timestamp' => '2026-08-01T08:15:00+01:00', 'value' => 20.0 }
-              ]
-            }
-          }
-        }
-      }
-
-      stub_request(path: '/meters/telemetry', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'from' => '2026-08-01T00:00:00+01:00',
-                     'to' => '2026-08-01T12:00:00+01:00'
-                   }, response: telemetry)
-
-      stub_request(path: '/meters/telemetry', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'from' => '2026-08-01T12:00:00+01:00',
-                     'to' => '2026-08-02T00:00:00+01:00'
-                   }, response: {
-                     'meters' => {
-                       '5118719' => {
-                         'importEnergy' => { 'values' => [] },
-                         'exportEnergy' => { 'values' => [] }
-                       }
-                     }
-                   })
+      stub_request_for_days_readings(path: "/meters/#{serial_number}/import-energy")
     end
 
-    it 'aggregates the import and export data to correct half-hourly indexes' do
+    it 'aggregates the import data to correct half-hourly indexes' do
       day = Date.new(2026, 8, 1)
-      data = api.import_and_export(start_date: day, end_date: day)
-      expect(data[:electricity][day][16]).to be_within(0.0001).of(300.0 / 1000.0)
-      expect(data[:exported_solar_pv][day][16]).to be_within(0.0001).of(40.0 / 1000.0)
+      data = api.import_energy(serial_number:, start_date: day, end_date: day)
+      expect(data[day][0]).to eq(0.0)
+      expect(data[day][16]).to eq(40.0)
+      expect(data[day][17]).to eq(50.0)
+      expect(data[day][18..47]).to eq(Array.new(30, nil))
     end
   end
 
-  describe '#all_meter_data' do
-    def stub_production_requests
-      production = {
-        'resolution' => 'QUARTER_HOUR',
-        'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 111.11 }]
-      }
-      stub_request(path: '/energy', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'unit' => 'KWH',
-                     'from' => '2026-08-01T00:00:00+01:00',
-                     'to' => '2026-08-01T12:00:00+01:00'
-                   }, response: production)
+  describe '#export_energy' do
+    let(:serial_number) { 5555 }
 
-      stub_request(path: '/energy', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'unit' => 'KWH',
-                     'from' => '2026-08-01T12:00:00+01:00',
-                     'to' => '2026-08-02T00:00:00+01:00'
-                   }, response: { 'values' => [] })
+    before do
+      stub_request_for_days_readings(path: "/meters/#{serial_number}/export-energy")
     end
 
-    def stub_telemetry_requests
-      telemetry = {
-        'meters' => {
-          '5118719' => {
-            'importEnergy' => {
-              'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 123.4 }]
-            },
-            'exportEnergy' => {
-              'values' => [{ 'timestamp' => '2026-08-01T00:00:00+01:00', 'value' => 567.8 }]
-            }
-          }
-        }
-      }
-
-      stub_request(path: '/meters/telemetry', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'from' => '2026-08-01T00:00:00+01:00',
-                     'to' => '2026-08-01T12:00:00+01:00'
-                   }, response: telemetry)
-
-      stub_request(path: '/meters/telemetry', params: {
-                     'resolution' => 'QUARTER_HOUR',
-                     'from' => '2026-08-01T12:00:00+01:00',
-                     'to' => '2026-08-02T00:00:00+01:00'
-                   }, response: {
-                     'meters' => {
-                       '5118719' => {
-                         'importEnergy' => { 'values' => [] },
-                         'exportEnergy' => { 'values' => [] }
-                       }
-                     }
-                   })
-    end
-
-    context 'when a date range is specified' do
-      before do
-        stub_production_requests
-        stub_telemetry_requests
-      end
-
-      it 'returns the data for all three meters' do
-        day = Date.new(2026, 8, 1)
-        data = api.all_meter_data(start_date: day, end_date: day)
-        expect(data[:solar_pv][:readings][day][0]).to eq(111.11)
-        expect(data[:electricity][:readings][day][0]).to be_within(0.0001).of(123.4 / 1000.0)
-        expect(data[:exported_solar_pv][:readings][day][0]).to be_within(0.0001).of(567.8 / 1000.0)
-      end
-    end
-
-    context 'when no dates are specified' do
-      before do
-        stub_request(path: '/energy', params: {
-                       'resolution' => 'TOTAL',
-                       'from' => DateTime.new(2000).iso8601,
-                       'unit' => 'KWH'
-                     }, response: {
-                       'period' => { 'from' => '2026-08-01T00:00:00+01:00', 'to' => '2026-08-01T13:43:01.713+01:00' }
-                     })
-        stub_production_requests
-        stub_telemetry_requests
-      end
-
-      it 'finds the site date range andreturns the data for all three meters' do
-        day = Date.new(2026, 8, 1)
-        data = api.all_meter_data(start_date: nil, end_date: nil)
-        expect(data[:solar_pv][:readings][day][0]).to eq(111.11)
-        expect(data[:electricity][:readings][day][0]).to be_within(0.0001).of(123.4 / 1000.0)
-        expect(data[:exported_solar_pv][:readings][day][0]).to be_within(0.0001).of(567.8 / 1000.0)
-      end
+    it 'aggregates the import data to correct half-hourly indexes' do
+      day = Date.new(2026, 8, 1)
+      data = api.export_energy(serial_number:, start_date: day, end_date: day)
+      expect(data[day][0]).to eq(0.0)
+      expect(data[day][16]).to eq(40.0)
+      expect(data[day][17]).to eq(50.0)
+      expect(data[day][18..47]).to eq(Array.new(30, nil))
     end
   end
 end

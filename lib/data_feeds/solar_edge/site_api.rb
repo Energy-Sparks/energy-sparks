@@ -58,13 +58,6 @@ module DataFeeds
         end
       end
 
-      # FIXME: remove?
-      # NOTE: does not support unit parameter so returns data in Wh.
-      def meters_telemetry(resolution: 'QUARTER_HOUR', from: nil, to: nil)
-        params = add_from_to(params: { resolution: }, from:, to:)
-        @connection.get('meters/telemetry', params).body
-      end
-
       def production(start_date: nil, end_date: nil)
         readings = []
         windowed_request(start_date, end_date) do |from, to|
@@ -92,41 +85,7 @@ module DataFeeds
         quarter_hourly_to_half_hourly(readings)
       end
 
-      # FIXME: remove
-      def import_and_export(start_date: nil, end_date: nil)
-        import_and_export = {
-          exported_solar_pv: [],
-          electricity: []
-        }
-        windowed_request(start_date, end_date) do |from, to|
-          readings = meters_telemetry(from:, to:)
-          next if readings.fetch('meters').empty? # found site with export data issues where telemetry available
-
-          _, meter_data = readings.fetch('meters').sole
-
-          import_and_export[:exported_solar_pv] += telemetry_for(meter_data, 'exportEnergy')
-          import_and_export[:electricity] += telemetry_for(meter_data, 'importEnergy')
-        end
-        import_and_export.transform_values { |readings| quarter_hourly_to_half_hourly(readings) }
-      end
-
-      # FIXME: remove
-      # Backwards compatible with v1 client
-      def all_meter_data(start_date: nil, end_date: nil)
-        other_meters = import_and_export(start_date:, end_date:)
-        {
-          solar_pv: { readings: production(start_date:, end_date:) },
-          electricity: { readings: other_meters[:electricity] },
-          exported_solar_pv: { readings: other_meters[:exported_solar_pv] }
-        }
-      end
-
       private
-
-      # FIXME: remove?
-      def telemetry_for(meter_data, meter_type)
-        wh_to_kwh(meter_data.fetch(meter_type).fetch('values'))
-      end
 
       def windowed_request(requested_start_date, requested_end_date, window_size: MAX_QUARTER_HOUR_PERIOD)
         start_date, end_date = request_period(requested_start_date, requested_end_date)
@@ -160,24 +119,29 @@ module DataFeeds
         params
       end
 
-      # FIXME: remove?
-      # Convert array of { timestamp:, value: } with values in Wh to kWh
-      def wh_to_kwh(readings)
-        readings.map { |reading| reading.merge('value' => reading['value']&./(1000.0)) }
-      end
-
       # Convert array of readings in 15 minute intervals to a hash of  Date => Array(48) readings
       def quarter_hourly_to_half_hourly(readings)
         readings.each_with_object(date_to_x48_hash) do |reading, result|
           timestamp = Time.iso8601(reading.fetch('timestamp'))
-          slot = (timestamp.hour * 2) + (timestamp.min / 30)
+          index = timestamp_to_hh_index(timestamp)
 
-          result[timestamp.to_date][slot] += reading['value'].to_f
+          result[timestamp.to_date][index] = add_nillable(result[timestamp.to_date][index], reading['value'])
         end
       end
 
+      def timestamp_to_hh_index(timestamp)
+        (timestamp.hour * 2) + (timestamp.min / 30)
+      end
+
+      def add_nillable(first, second)
+        return second if first.nil?
+        return first if second.nil?
+
+        first + second
+      end
+
       def date_to_x48_hash
-        Hash.new { |h, k| h[k] = Array.new(48, 0.0) }
+        Hash.new { |h, k| h[k] = Array.new(48, nil) }
       end
 
       def auth_headers
