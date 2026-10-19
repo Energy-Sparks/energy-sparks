@@ -51,8 +51,7 @@ class EnergyTariffReminder
   def need_tariff_reminder(model)
     exclude = model.joins(:energy_tariffs).merge(EnergyTariff.enabled.current).distinct.pluck(:id)
     exclude += School.joins(school_group: :energy_tariffs).distinct.pluck(:id) if model.model_name == 'School'
-    model.where.not(id: exclude)
-         .or(old_open_ended_tariff(model))
+    model.where.not(id: exclude).or(old_open_ended_tariff(model))
   end
 
   def old_open_ended_tariff(model)

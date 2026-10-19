@@ -11,7 +11,7 @@ describe EnergyTariffsMailer, :include_application_helper do
   before do
     stub_env(SEND_AUTOMATED_EMAILS: true)
     SiteSettings.current.update!(prices: { electricity_price: 0.15, gas_price: 0.03 })
-    described_class.reminder_deliver_now_per_locale(organisation(user), [user], tariff)
+    described_class.reminder_deliver_now_per_locale(organisation(user), [user], expiry: tariff)
     perform_enqueued_jobs
   end
 
