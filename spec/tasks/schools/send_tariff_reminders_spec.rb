@@ -53,7 +53,7 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
   context 'with a school' do
     it_behaves_like 'it sends reminders correctly'
 
-    context 'when the school group has tariff' do
+    context 'when the school group has a tariff' do
       let(:organisation) { create(:school_admin, school: create(:school, :with_school_group)).school }
       let(:tariff) { create(:energy_tariff, tariff_holder: organisation.school_group) }
 

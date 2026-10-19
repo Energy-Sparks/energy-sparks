@@ -11,11 +11,10 @@ class EnergyTariffReminder
   def send_expiring_tariff_reminders
     job = :send_expiring_tariff_reminders
     each_needing_reminder(School.active) do |school|
-      send_reminder(school, school.school_admin, job)
+      send_reminder(school, school.school_admin, job, expiry: true)
     end
-
     each_needing_reminder(SchoolGroup) do |school_group|
-      send_reminder(school_group, school_group.users.group_admin, job)
+      send_reminder(school_group, school_group.users.group_admin, job, expiry: true)
     end
   end
 
@@ -50,17 +49,20 @@ class EnergyTariffReminder
   end
 
   def need_tariff_reminder(model)
-    # debugger
     exclude = model.joins(:energy_tariffs).merge(EnergyTariff.enabled.current).distinct.pluck(:id)
     exclude += School.joins(school_group: :energy_tariffs).distinct.pluck(:id) if model.model_name == 'School'
     model.where.not(id: exclude)
-         .or(model.where(id: EnergyTariff.enabled.current.joins(model.model_name.singular.to_sym)
-                                         .where(end_date: nil, start_date: ..1.year.ago).select(:tariff_holder_id)))
+         .or(old_open_ended_tariff(model))
   end
 
-  def send_reminder(organisation, users, job)
-    EnergyTariffsMailer.reminder_deliver_now_per_locale(organisation, users, true)
+  def old_open_ended_tariff(model)
+    model.where(id: EnergyTariff.enabled.current.joins(model.model_name.singular.to_sym)
+                                .where(end_date: nil, start_date: ..1.year.ago).select(:tariff_holder_id))
+  end
+
+  def send_reminder(organisation, users, job, expiry: false)
+    EnergyTariffsMailer.reminder_deliver_now_per_locale(organisation, users, expiry:)
   rescue StandardError => e
-    EnergySparks::Log.exception(e, { job:, organisation: orgnaisation.slug })
+    EnergySparks::Log.exception(e, { job:, organisation: organisation.slug })
   end
 end

@@ -5,7 +5,7 @@
                           [:school, school_energy_tariffs_url(@organisation)]
                         end %>
   <% email = @organisation.default_issues_admin_user&.email || 'hello@energysparks.uk' %>
-  <% if @has_tariff %>
+  <% if @expiry %>
     <p><%= t('energy_tariffs_mailer.reminder.thank_you',
              school_or_group: t("energy_tariffs_mailer.reminder.#{type}"),
              fuel_types: t_fuels_as_sentence(@organisation.energy_tariffs.enabled.current.pluck(:meter_type).uniq)) %>
