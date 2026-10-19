@@ -6,20 +6,38 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
   include EmailHelpers
 
   let(:email) { last_email }
+  let(:admin) { create(:admin) }
+  let(:body) { email.html_part.body.raw_source }
 
-  before { stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true', 'ENVIRONMENT_IDENTIFIER' => 'unknown')) }
+  before { stub_env(SEND_AUTOMATED_EMAILS: true) }
+
+  def create_issue(**)
+    create(:issue, :with_tags, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago,
+                               created_by: admin, review_date: 1.week.from_now, **)
+  end
+
+  shared_examples 'it has the expected issue report table' do
+    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      let(:page) { Capybara.string(body) }
+      let(:table_id) { '.table' }
+      let(:expected_header) do
+        [['', 'Issue For', 'Group', 'Title', 'Tags', 'Fuel',
+          'Next Review Date', 'Created By', 'Created', 'Updated By',
+          'Updated', 'Edit', '']]
+      end
+      let(:expected_rows) do
+        [['', "#{issue.issueable.name} new!", issue.school_group&.name.to_s, issue.title, 'generic tag', 'Gas',
+          short_dates(issue.review_date), 'Admin', short_dates(issue.created_at), issue.updated_by.name,
+          short_dates(issue.updated_at), 'Edit']]
+      end
+    end
+  end
 
   describe '#issues_report' do
-    def create_issue(**)
-      create(:issue, :with_tags, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago,
-                                 created_by: admin, review_date: 1.week.from_now, **)
-    end
-
     def create_inactive_school_issue
       create_issue(issueable: create(:school, active: false), tag_labels: ['inactive schools'])
     end
 
-    let(:admin) { create(:admin) }
     let(:issue) do
       create_issue(review_date: 1.day.ago, tag_labels: ['generic tag'], issueable: create(:school, :with_school_group))
     end
@@ -31,27 +49,19 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
         someone_elses_issue: create_issue(owned_by: create(:admin), tag_labels: ['someone else']),
         inactive_school_issue: create_inactive_school_issue }
     end
-    let(:body) { email.html_part.body.raw_source }
 
     before do
       described_class.with(user: admin).issues_report.deliver
     end
 
     context 'when showing only open issues for user' do
+      it_behaves_like 'it has the expected issue report table'
+
       it {
         expect(email.subject).to eq("[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}")
       }
 
       it { expect(body).to have_link(issue.title, href: admin_school_issue_url(issue.issueable, issue)) }
-      it { expect(body).to have_text(issue.school_group.name) }
-      it { expect(body).to have_text(issue.issue_tags.first.label) }
-      it { expect(body).to have_text(issue.fuel_type.capitalize) }
-      it { expect(body).to have_text(issue.issueable.name) }
-      it { expect(body).to have_text(short_dates(issue.review_date)) }
-      it { expect(body).to have_text(issue.created_by.display_name) }
-      it { expect(body).to have_text(short_dates(issue.created_at)) }
-      it { expect(body).to have_text(issue.updated_by.display_name) }
-      it { expect(body).to have_text(short_dates(issue.updated_at)) }
       it { expect(body).to have_link('Edit', href: edit_admin_school_issue_url(issue.issueable, issue)) }
 
       it {
@@ -125,6 +135,30 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
                    'Edit' => "http://localhost/admin/schools/#{issue.issueable.slug}/issues/#{issue.id}/edit" }
           [hash.keys.join(','), hash.values.join(',')]
         end
+      end
+    end
+  end
+
+  describe '#admin_meter_report' do
+    let(:meter) { create(:gas_meter, school: create(:school, :with_school_group)) }
+    let(:issue) do
+      issue = create_issue(review_date: 1.day.ago, tag_labels: ['generic tag'], issueable: create(:supplier))
+      issue.meters << meter
+      issue
+    end
+
+    before do
+      issue
+      described_class.admin_meter_report(meter.school.default_issues_admin_user).deliver
+    end
+
+    it_behaves_like 'it has the expected issue report table'
+
+    context "when there aren't any issues for user" do
+      let(:issue) { nil }
+
+      it "doesn't send email" do
+        expect(ActionMailer::Base.deliveries).to eq([])
       end
     end
   end
