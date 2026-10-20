@@ -26,7 +26,7 @@ module Solar
         }
       end
 
-      let(:api) { double('solar-edge-api') }
+      let(:api) { instance_double(DataFeeds::SolarEdgeApi) }
 
       before do
         allow(DataFeeds::SolarEdgeApi).to receive(:new).with(installation.api_key).and_return(api)
