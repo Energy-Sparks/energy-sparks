@@ -187,19 +187,16 @@ module Solar
       context 'when there are existing readings for all meters' do
         before do
           create(:electricity_meter, :with_unvalidated_readings,
-                 start_date: reading_date,
                  end_date: reading_date,
                  school: installation.school,
                  solar_edge_installation: installation)
 
           create(:exported_solar_pv_meter, :with_unvalidated_readings,
-                 start_date: reading_date,
                  end_date: reading_date,
                  school: installation.school,
                  solar_edge_installation: installation)
 
           create(:solar_pv_meter, :with_unvalidated_readings,
-                 start_date: reading_date,
                  end_date: reading_date,
                  school: installation.school,
                  solar_edge_installation: installation)
@@ -282,7 +279,6 @@ module Solar
                  solar_edge_installation: installation)
 
           create(:solar_pv_meter, :with_unvalidated_readings,
-                 start_date: reading_date,
                  end_date: reading_date,
                  school: installation.school,
                  solar_edge_installation: installation)
@@ -314,7 +310,6 @@ module Solar
                  solar_edge_installation: installation)
 
           create(:solar_pv_meter, :with_unvalidated_readings,
-                 start_date: reading_date,
                  end_date: reading_date,
                  school: installation.school,
                  solar_edge_installation: installation)
@@ -330,7 +325,47 @@ module Solar
       end
 
       context 'when the import and export meters are lagging' do
-        it 'requests separate date ranges for each meter'
+        before do
+          create(:solar_pv_meter, :with_unvalidated_readings,
+                 end_date: Date.yesterday - 5,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          allow(site_api).to receive(:production).with(start_date: Date.yesterday - 5,
+                                                       end_date: Date.yesterday).and_return(readings)
+
+          create(:electricity_meter, :with_unvalidated_readings,
+                 end_date: Date.yesterday - 20,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          allow(site_api).to receive(:import_energy).with(serial_number: '12345',
+                                                          start_date: Date.yesterday - 20,
+                                                          end_date: Date.yesterday).and_return(readings)
+
+          create(:exported_solar_pv_meter, :with_unvalidated_readings,
+                 end_date: Date.yesterday - 15,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          allow(site_api).to receive(:export_energy).with(serial_number: '12345',
+                                                          start_date: Date.yesterday - 15,
+                                                          end_date: Date.yesterday).and_return(readings)
+        end
+
+        it 'requests separate date ranges for each meter' do
+          expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(3).to(9)
+          expect(site_api).to have_received(:production).with(start_date: Date.yesterday - 5,
+                                                              end_date: Date.yesterday)
+
+          expect(site_api).to have_received(:import_energy).with(serial_number: '12345',
+                                                                 start_date: Date.yesterday - 20,
+                                                                 end_date: Date.yesterday)
+
+          expect(site_api).to have_received(:export_energy).with(serial_number: '12345',
+                                                                 start_date: Date.yesterday - 15,
+                                                                 end_date: Date.yesterday)
+        end
       end
 
       context 'when the monitoring is still in a pending status' do

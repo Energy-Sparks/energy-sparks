@@ -36,7 +36,6 @@ module Solar
 
     private
 
-    # FIXME: what about gaps?
     def start_date_for_meter(meter_type = :electricity)
       return nil if @reload
 
