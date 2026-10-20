@@ -200,12 +200,12 @@ describe SolarEdgeInstallation do
     end
   end
 
-  describe '#metadata_for_meter_type' do
+  describe '#metadatcached_meter_metadataa_for_meter_type' do
     context 'when no information' do
       subject(:installation) { create(:solar_edge_installation, information: nil) }
 
       it 'returns nil' do
-        expect(installation.metadata_for_meter_type).to be_nil
+        expect(installation.cached_meter_metadata(:solar_pv)).to be_nil
       end
     end
 
@@ -213,7 +213,7 @@ describe SolarEdgeInstallation do
       subject(:installation) { create(:solar_edge_installation, information: {}) }
 
       it 'returns nil' do
-        expect(installation.metadata_for_meter_type).to be_nil
+        expect(installation.cached_meter_metadata(:solar_pv)).to be_nil
       end
     end
 
@@ -221,14 +221,14 @@ describe SolarEdgeInstallation do
       subject(:installation) { create(:solar_edge_installation) }
 
       it 'returns the meter metadata' do
-        expect(installation.metadata_for_meter_type).to match(
+        expect(installation.cached_meter_metadata(:exported_solar_pv)).to match(
           hash_including(
             'type' => 'METER',
             'meterType' => 'FeedIn',
             'name' => 'Export Meter'
           )
         )
-        expect(installation.metadata_for_meter_type('Purchased')).to match(
+        expect(installation.cached_meter_metadata(:electricity)).to match(
           hash_including(
             'type' => 'METER',
             'meterType' => 'Purchased',

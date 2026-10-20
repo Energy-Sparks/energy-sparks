@@ -40,6 +40,14 @@ class SolarEdgeInstallation < ApplicationRecord
 
   scope :active, -> { where(active: true) }
 
+  SOLAR_EDGE_METER_TYPE_MAP = {
+    'Production' => :solar_pv,
+    'Consumption' => nil, # 'Purchased' + 'SelfConsumption'
+    'SelfConsumption' => nil,
+    'FeedIn' => :exported_solar_pv,
+    'Purchased' => :electricity
+  }.freeze
+
   def display_name
     site_id
   end
@@ -75,10 +83,18 @@ class SolarEdgeInstallation < ApplicationRecord
     consent_granted_at.present?
   end
 
-  def metadata_for_meter_type(meter_type = 'FeedIn')
+  def cached_meter_metadata(meter_type)
     return nil if information.blank? || information['inventory'].blank?
 
-    information['inventory'].find { |item| item['meterType'] == meter_type }
+    information['inventory'].find { |item| item['meterType'] == solar_edge_meter_type(meter_type) }
+  end
+
+  def solar_edge_serial_number(meter_type)
+    cached_meter_metadata(meter_type)&.dig('serialNumber')
+  end
+
+  def solar_edge_meter_active?(meter_type)
+    cached_meter_metadata(meter_type)&.dig('active')
   end
 
   def monitoring_active?
@@ -86,6 +102,18 @@ class SolarEdgeInstallation < ApplicationRecord
 
     information['site_details']&.dig('activationStatus') == 'ACTIVE' ||
       information.dig('site_details', 'sites', 'site', 0, 'status') == 'Active'
+  end
+
+  # Can we load this type of meter from the installation?
+  #
+  # Always attempt loading if we've not yet created the meters.
+  # Always attempt loading if the local meter is active
+  # For export and grid import (electricity) meters, only attempt load if the meters are active according to SolarEdge
+  def can_load_meter?(meter_type)
+    return true unless setup_complete? # meters created as part of initial load, so always attempt
+    return true if meter_type == :solar_pv && meter(:solar_pv).active?
+
+    meter(meter_type)&.active? && solar_edge_meter_active?(meter_type)
   end
 
   # We expiry tokens early to avoid clock / timing issues with generating timestamp
@@ -123,6 +151,10 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   private
+
+  def solar_edge_meter_type(meter_type)
+    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type)
+  end
 
   def store_tokens(tokens)
     update!(

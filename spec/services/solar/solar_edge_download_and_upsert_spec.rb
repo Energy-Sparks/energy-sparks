@@ -177,7 +177,7 @@ module Solar
                                         end_date: requested_end_date, serial_number: '12345', readings:)
         end
 
-        it 'inserts data' do
+        it 'requests that date range for all meters' do
           expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(0).to(6)
           expect_solar_meter_api_methods(site_api:, start_date: requested_start_date, end_date: requested_end_date,
                                          serial_number: '12345')
@@ -208,12 +208,12 @@ module Solar
                                         end_date: expected_end, serial_number: '12345', readings:)
         end
 
-        context 'and they are old' do
+        context 'and they are all lagging' do
           let(:reading_date)  { Date.yesterday - 20 }
           let(:expected_start) { reading_date }
           let(:expected_end) { Date.yesterday }
 
-          it 'uses last reading date as start' do
+          it 'uses last reading date as start date to catch up' do
             upserter.perform
             expect_solar_meter_api_methods(site_api:, start_date: expected_start, end_date: expected_end,
                                            serial_number: '12345')
@@ -225,14 +225,14 @@ module Solar
           let(:expected_start) { Date.yesterday }
           let(:expected_end) { Date.yesterday }
 
-          it 'defaults to loading only latest day' do
+          it 'defaults to loading only the latest day' do
             upserter.perform
             expect_solar_meter_api_methods(site_api:, start_date: expected_start, end_date: expected_end,
                                            serial_number: '12345')
           end
         end
 
-        context 'with reload flag set' do
+        context 'with the reload flag set' do
           let(:upserter) do
             described_class.new(installation: installation, reload: true, start_date: nil, end_date: nil)
           end
@@ -258,7 +258,7 @@ module Solar
                                         end_date: expected_end, serial_number: '12345', readings:)
         end
 
-        it 'loads all data' do
+        it 'loads all historical data' do
           upserter.perform
           expect_solar_meter_api_methods(site_api:, start_date: expected_start, end_date: expected_end,
                                          serial_number: '12345')
@@ -266,18 +266,74 @@ module Solar
       end
 
       context 'when the import and export meters are inactive' do
-        it 'does not load data'
+        let(:reading_date) { Date.yesterday - 20 }
+        let(:expected_start) { reading_date }
+        let(:expected_end) { Date.yesterday }
+
+        before do
+          create(:electricity_meter,
+                 active: false,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          create(:exported_solar_pv_meter,
+                 active: false,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          create(:solar_pv_meter, :with_unvalidated_readings,
+                 start_date: reading_date,
+                 end_date: reading_date,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          allow(site_api).to receive(:production).with(start_date: expected_start,
+                                                       end_date: expected_end).and_return(readings)
+        end
+
+        it 'only loads the solar production data' do
+          expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(1).to(3)
+          expect(site_api).to have_received(:production).with(start_date: expected_start, end_date: expected_end)
+        end
       end
 
-      context 'when the SolarEdge meters are inactive' do
-        it 'does not request that data'
+      context 'when the import and electricity SolarEdge meters are inactive' do
+        let(:reading_date) { Date.yesterday - 20 }
+        let(:expected_start) { reading_date }
+        let(:expected_end) { Date.yesterday }
+
+        let(:installation) { create(:solar_edge_installation, :with_inactive_import_and_export) }
+
+        before do
+          create(:electricity_meter,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          create(:exported_solar_pv_meter,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          create(:solar_pv_meter, :with_unvalidated_readings,
+                 start_date: reading_date,
+                 end_date: reading_date,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          allow(site_api).to receive(:production).with(start_date: expected_start,
+                                                       end_date: expected_end).and_return(readings)
+        end
+
+        it 'only loads the solar production data' do
+          expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(1).to(3)
+          expect(site_api).to have_received(:production).with(start_date: expected_start, end_date: expected_end)
+        end
       end
 
       context 'when the import and export meters are lagging' do
-        it 'requests separate date ranges for those meters'
+        it 'requests separate date ranges for each meter'
       end
 
-      context 'when monitoring is still in pending status' do
+      context 'when the monitoring is still in a pending status' do
         let(:installation) { create(:solar_edge_installation, :pending_status) }
 
         let(:requested_start_date) { requested_end_date - 1 }
@@ -307,7 +363,7 @@ module Solar
                                           end_date: requested_end_date, serial_number: '12345', readings:)
           end
 
-          it 'inserts data' do
+          it 'loads the data' do
             expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(0).to(6)
             expect(site_api).to have_received(:details)
             expect(site_api).to have_received(:date_range)
@@ -316,7 +372,7 @@ module Solar
           end
         end
 
-        context 'when status is still pending' do
+        context 'when the status is still pending' do
           before do
             allow(site_api).to receive_messages(details: {
                                                   'activationStatus' => 'PENDING'

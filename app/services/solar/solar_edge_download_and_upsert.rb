@@ -52,9 +52,8 @@ module Solar
 
     def all_meter_data
       if @installation.consented? # v2
+        # FIXME refreshing metadata?
         site_api = @installation.site_api!
-        # FIXME: only try and load if meter is active on our side
-        # FIXME only try and load if meter is active on SolarEdge. Requires device metadata refresh, ideally
         {
           solar_pv: { readings: solar_pv_readings(site_api) },
           exported_solar_pv: { readings: exported_solar_pv_readings(site_api) },
@@ -70,22 +69,27 @@ module Solar
     end
 
     def solar_pv_readings(site_api)
-      site_api.production(
-        start_date: start_date_for_meter(:solar_pv),
-        end_date: end_date
-      )
+      return {} unless @installation.can_load_meter?(:solar_pv)
+
+      site_api.production(start_date: start_date_for_meter(:solar_pv), end_date:)
     end
 
     def exported_solar_pv_readings(site_api)
-      site_api.export_energy(serial_number: @installation.metadata_for_meter_type('FeedIn')['serialNumber'],
-                             start_date: start_date_for_meter(:exported_solar_pv),
-                             end_date: end_date)
+      with_active_meter(:exported_solar_pv) do |serial_number|
+        site_api.export_energy(serial_number:, start_date: start_date_for_meter(:exported_solar_pv), end_date:)
+      end
     end
 
     def electricity_readings(site_api)
-      site_api.import_energy(serial_number: @installation.metadata_for_meter_type('Purchased')['serialNumber'],
-                             start_date: start_date_for_meter,
-                             end_date: end_date)
+      with_active_meter(:electricity) do |serial_number|
+        site_api.import_energy(serial_number:, start_date: start_date_for_meter(:electricity), end_date:)
+      end
+    end
+
+    def with_active_meter(meter_type)
+      return {} unless @installation.can_load_meter?(meter_type)
+
+      yield @installation.solar_edge_serial_number(meter_type)
     end
 
     def monitoring_active?
