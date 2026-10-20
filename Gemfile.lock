@@ -756,7 +756,7 @@ GEM
       parser
       rubocop (>= 1.89.0)
       rubydex
-    ruby-limiter (2.3.0)
+    ruby-limiter (2.3.1)
     ruby-ole (1.2.13.1)
     ruby-prof (2.0.5)
       base64
