@@ -1,30 +1,42 @@
 <div class="space-y-4">
-  <% type, tariff_url = if @organisation.is_a?(SchoolGroup)
-                          [:school_group, school_group_energy_tariffs_url(@organisation)]
-                        else
-                          [:school, school_energy_tariffs_url(@organisation)]
-                        end %>
+  <% is_group = @organisation.is_a?(SchoolGroup) %>
+  <% tariff_url = polymorphic_url([@organisation, :energy_tariffs]) %>
   <% email = @organisation.default_issues_admin_user&.email || 'hello@energysparks.uk' %>
   <% if @expiry %>
     <p><%= t('energy_tariffs_mailer.reminder.thank_you',
-             school_or_group: t("energy_tariffs_mailer.reminder.#{type}"),
+             school_or_group: t("energy_tariffs_mailer.reminder.#{is_group ? :group : :school}"),
              fuel_types: t_fuels_as_sentence(@organisation.energy_tariffs.enabled.current.pluck(:meter_type).uniq)) %>
        <%= t('energy_tariffs_mailer.reminder.update_your_tariff') %></p>
-    <p><%= t('energy_tariffs_mailer.reminder.to_do_this_html', url: tariff_url) %></p>
-    <p><%= t('energy_tariffs_mailer.reminder.if_not_updated',
-             account_type: t("energy_tariffs_mailer.reminder.account_#{type}"),
-             electricity: format_target(SiteSettings.current_prices.electricity_price, :£),
-             gas: format_target(SiteSettings.current_prices.gas_price, :£)) %></p>
+    <p><%= t('energy_tariffs_mailer.reminder.to_do_this_html',
+             menu: t(is_group ? 'school_groups.sub_nav.manage_group' : 'manage_school_menu.manage_school'),
+             url: tariff_url) %></p>
+    <p><%= t('energy_tariffs_mailer.reminder.if_not_updated') %></p>
+    <%= render 'currently_tariff' %>
     <p><%= t('energy_tariffs_mailer.reminder.if_you_are_planning_html', email:) %></p>
   <% else %>
-    <p><%= t('energy_tariffs_mailer.reminder.ask_for_tariffs', name: @organisation.name) %></p>
-    <% if @organisation.is_a?(SchoolGroup) %>
-      <p><%= t('energy_tariffs_mailer.reminder.average_tariff', name: @organisation.name) %></p>
+    <% dont_forget = t('energy_tariffs_mailer.reminder.dont_forget_html',
+                       email:,
+                       school_or_group: t("energy_tariffs_mailer.reminder.#{is_group ? :school_group : :school}")) %>
+    <% if is_group %>
+      <p><%= t('energy_tariffs_mailer.reminder.to_help_energy_sparks',
+               name: t('energy_tariffs_mailer.reminder.your_group')) %></p>
+      <p><%= t('energy_tariffs_mailer.reminder.you_can_set_an_average_tariff') %></p>
+      <p><%= t('energy_tariffs_mailer.reminder.if_your_group_tariff') %></p>
+      <%= render 'currently_tariff' %>
+      <p><%= t('energy_tariffs_mailer.reminder.review_current_html', url: tariff_url) %></p>
+      <p><%= t('energy_tariffs_mailer.reminder.its_best_to_update') %>
+         <%= dont_forget %></p>
+    <% else %>
+      <% group_electricity_price = @organisation.parent_tariff_holder.price(:electricity) %>
+      <p><%= t('energy_tariffs_mailer.reminder.to_help_energy_sparks', name: @organisation.name) %></p>
+      <p><%= t('energy_tariffs_mailer.reminder.review_current_html', url: tariff_url) %></p>
+      <p><%= t('energy_tariffs_mailer.reminder.its_best_to_update') %></p>
+      <p><%= t("energy_tariffs_mailer.reminder.if_we_do_not_have#{:_group if group_electricity_price}") %>
+         <%= t('energy_tariffs_mailer.reminder.this_will_be_used') %></p>
+      <%= render 'currently_tariff', group: group_electricity_price,
+                                     electricity: group_electricity_price,
+                                     gas: @organisation.parent_tariff_holder.price(:gas) %>
+      <p><%= dont_forget %></p>
     <% end %>
-    <p><%= t('energy_tariffs_mailer.reminder.review_current_html', url: tariff_url) %></p>
-    <p><%= t('energy_tariffs_mailer.reminder.best_to_update_html',
-             email:,
-             school_or_group: t("energy_tariffs_mailer.reminder.#{type}")) %></p>
   <% end %>
-
 </div>
