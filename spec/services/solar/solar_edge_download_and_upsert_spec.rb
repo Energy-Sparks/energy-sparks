@@ -5,17 +5,7 @@ require 'rails_helper'
 # rubocop:disable-next Metrics/ModuleLength
 module Solar
   describe SolarEdgeDownloadAndUpsert do
-    let(:installation) { create(:solar_edge_installation, :unconsented, mpan: 1_112_223_334_445) }
-
-    let(:readings) do
-      {
-        solar_pv: { readings: { 'Sun, 29 Nov 2020' => Array.new(48, 1.0), 'Mon, 30 Nov 2020' => Array.new(48, 2.0) } },
-        electricity: { readings: { 'Sun, 29 Nov 2020' => Array.new(48, 3.0),
-                                   'Mon, 30 Nov 2020' => Array.new(48, 4.0) } },
-        exported_solar_pv: { readings: { 'Sun, 29 Nov 2020' => Array.new(48, 5.0),
-                                         'Mon, 30 Nov 2020' => Array.new(48, 6.0) } }
-      }
-    end
+    let(:installation) { create(:solar_edge_installation, :unconsented) }
 
     let(:requested_start_date) { nil }
     let(:requested_end_date) { nil }
@@ -25,6 +15,17 @@ module Solar
     end
 
     context 'with a v1 SolarEdge site' do
+      let(:readings) do
+        {
+          solar_pv: { readings: { 'Sun, 29 Nov 2020' => Array.new(48, 1.0),
+                                  'Mon, 30 Nov 2020' => Array.new(48, 2.0) } },
+          electricity: { readings: { 'Sun, 29 Nov 2020' => Array.new(48, 3.0),
+                                     'Mon, 30 Nov 2020' => Array.new(48, 4.0) } },
+          exported_solar_pv: { readings: { 'Sun, 29 Nov 2020' => Array.new(48, 5.0),
+                                           'Mon, 30 Nov 2020' => Array.new(48, 6.0) } }
+        }
+      end
+
       let(:api) { double('solar-edge-api') }
 
       before do
@@ -61,7 +62,7 @@ module Solar
 
       context 'when there are existing readings' do
         let(:meter) do
-          create(:electricity_meter, mpan_mprn: "9#{installation.mpan}".to_i, school: installation.school,
+          create(:electricity_meter, school: installation.school,
                                      solar_edge_installation: installation)
         end
 
@@ -127,9 +128,41 @@ module Solar
     end
 
     context 'with a v2 SolarEdge site' do
-      let(:installation) { create(:solar_edge_installation, mpan: 1_112_223_334_445) }
+      let(:readings) do
+        {
+          Date.new(2020, 11, 29) => Array.new(48, 1.0),
+          Date.new(2020, 11, 30) => Array.new(48, 2.0)
+        }
+      end
 
+      let(:installation) { create(:solar_edge_installation) }
       let(:site_api) { instance_double(DataFeeds::SolarEdge::SiteApi) }
+
+      def allow_solar_meter_api_methods(site_api:, start_date:, end_date:, serial_number:, readings:)
+        allow(site_api).to receive(:production).with(start_date:,
+                                                     end_date:).and_return(readings)
+
+        allow(site_api).to receive(:import_energy).with(serial_number:,
+                                                        start_date:,
+                                                        end_date:).and_return(readings)
+
+        allow(site_api).to receive(:export_energy).with(serial_number:,
+                                                        start_date:,
+                                                        end_date:).and_return(readings)
+      end
+
+      def expect_solar_meter_api_methods(site_api:, start_date:, end_date:, serial_number:)
+        expect(site_api).to have_received(:production).with(start_date:,
+                                                            end_date:)
+
+        expect(site_api).to have_received(:import_energy).with(serial_number:,
+                                                               start_date:,
+                                                               end_date:)
+
+        expect(site_api).to have_received(:export_energy).with(serial_number:,
+                                                               start_date:,
+                                                               end_date:)
+      end
 
       before do
         allow(installation).to receive(:site_api!).and_return(site_api)
@@ -140,27 +173,39 @@ module Solar
         let(:requested_end_date) { Time.zone.today }
 
         before do
-          allow(site_api).to receive(:all_meter_data).with(start_date: requested_start_date,
-                                                           end_date: requested_end_date).and_return(readings)
+          allow_solar_meter_api_methods(site_api:, start_date: requested_start_date,
+                                        end_date: requested_end_date, serial_number: '12345', readings:)
         end
 
         it 'inserts data' do
           expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(0).to(6)
-          expect(site_api).to have_received(:all_meter_data).with(start_date: requested_start_date,
-                                                                  end_date: requested_end_date)
+          expect_solar_meter_api_methods(site_api:, start_date: requested_start_date, end_date: requested_end_date,
+                                         serial_number: '12345')
         end
       end
 
-      context 'when there are existing readings' do
-        let(:meter) do
-          create(:electricity_meter, mpan_mprn: "9#{installation.mpan}".to_i, school: installation.school,
-                                     solar_edge_installation: installation)
-        end
-
+      context 'when there are existing readings for all meters' do
         before do
-          create(:amr_data_feed_reading, reading_date: reading_date, parsed_date: reading_date, meter: meter)
-          allow(site_api).to receive(:all_meter_data).with(start_date: expected_start,
-                                                           end_date: expected_end).and_return(readings)
+          create(:electricity_meter, :with_unvalidated_readings,
+                 start_date: reading_date,
+                 end_date: reading_date,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          create(:exported_solar_pv_meter, :with_unvalidated_readings,
+                 start_date: reading_date,
+                 end_date: reading_date,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          create(:solar_pv_meter, :with_unvalidated_readings,
+                 start_date: reading_date,
+                 end_date: reading_date,
+                 school: installation.school,
+                 solar_edge_installation: installation)
+
+          allow_solar_meter_api_methods(site_api:, start_date: expected_start,
+                                        end_date: expected_end, serial_number: '12345', readings:)
         end
 
         context 'and they are old' do
@@ -170,8 +215,8 @@ module Solar
 
           it 'uses last reading date as start' do
             upserter.perform
-            expect(site_api).to have_received(:all_meter_data).with(start_date: expected_start,
-                                                                    end_date: expected_end)
+            expect_solar_meter_api_methods(site_api:, start_date: expected_start, end_date: expected_end,
+                                           serial_number: '12345')
           end
         end
 
@@ -182,8 +227,8 @@ module Solar
 
           it 'defaults to loading only latest day' do
             upserter.perform
-            expect(site_api).to have_received(:all_meter_data).with(start_date: expected_start,
-                                                                    end_date: expected_end)
+            expect_solar_meter_api_methods(site_api:, start_date: expected_start, end_date: expected_end,
+                                           serial_number: '12345')
           end
         end
 
@@ -198,8 +243,8 @@ module Solar
 
           it 'reloads all data' do
             upserter.perform
-            expect(site_api).to have_received(:all_meter_data).with(start_date: expected_start,
-                                                                    end_date: expected_end)
+            expect_solar_meter_api_methods(site_api:, start_date: expected_start, end_date: expected_end,
+                                           serial_number: '12345')
           end
         end
       end
@@ -209,19 +254,31 @@ module Solar
         let(:expected_start) { nil }
 
         before do
-          allow(site_api).to receive(:all_meter_data).with(start_date: expected_start,
-                                                           end_date: expected_end).and_return(readings)
+          allow_solar_meter_api_methods(site_api:, start_date: expected_start,
+                                        end_date: expected_end, serial_number: '12345', readings:)
         end
 
         it 'loads all data' do
           upserter.perform
-          expect(site_api).to have_received(:all_meter_data).with(start_date: expected_start,
-                                                                  end_date: expected_end)
+          expect_solar_meter_api_methods(site_api:, start_date: expected_start, end_date: expected_end,
+                                         serial_number: '12345')
         end
       end
 
+      context 'when the import and export meters are inactive' do
+        it 'does not load data'
+      end
+
+      context 'when the SolarEdge meters are inactive' do
+        it 'does not request that data'
+      end
+
+      context 'when the import and export meters are lagging' do
+        it 'requests separate date ranges for those meters'
+      end
+
       context 'when monitoring is still in pending status' do
-        let(:installation) { create(:solar_edge_installation, :pending_status, mpan: 1_112_223_334_445) }
+        let(:installation) { create(:solar_edge_installation, :pending_status) }
 
         let(:requested_start_date) { requested_end_date - 1 }
         let(:requested_end_date) { Time.zone.today }
@@ -233,17 +290,29 @@ module Solar
                                                 }, date_range: {
                                                   from: requested_start_date,
                                                   to: requested_end_date
-                                                }, inventory: [])
-            allow(site_api).to receive(:all_meter_data).with(start_date: requested_start_date,
-                                                             end_date: requested_end_date).and_return(readings)
+                                                }, inventory: [
+                                                  { 'type' => 'METER',
+                                                    'active' => true,
+                                                    'meterType' => 'FeedIn',
+                                                    'name' => 'Export Meter',
+                                                    'serialNumber' => '12345' },
+                                                  { 'type' => 'METER',
+                                                    'active' => true,
+                                                    'meterType' => 'Purchased',
+                                                    'name' => 'Import Meter',
+                                                    'serialNumber' => '12345' }
+                                                ])
+
+            allow_solar_meter_api_methods(site_api:, start_date: requested_start_date,
+                                          end_date: requested_end_date, serial_number: '12345', readings:)
           end
 
           it 'inserts data' do
             expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(0).to(6)
             expect(site_api).to have_received(:details)
             expect(site_api).to have_received(:date_range)
-            expect(site_api).to have_received(:all_meter_data).with(start_date: requested_start_date,
-                                                                    end_date: requested_end_date)
+            expect_solar_meter_api_methods(site_api:, start_date: requested_start_date, end_date: requested_end_date,
+                                           serial_number: '12345')
           end
         end
 
