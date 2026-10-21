@@ -4,6 +4,8 @@ module Oauth
   class SolarEdgeController < ApplicationController
     skip_before_action :authenticate_user!
 
+    before_action :handle_access_denied
+
     def callback
       @site_id, @code, @school_id = params.expect(:site_id, :code, :external_id)
       @school = School.active.find(@school_id)
@@ -12,7 +14,7 @@ module Oauth
       @tokens = DataFeeds::SolarEdge::Api.new.retrieve_access_token(@code)
 
       store_tokens(@installation, @tokens)
-      ::SolarEdgeMailer.notify_admin(@installation).deliver_later
+      SolarEdgeMailer.notify_admin(@installation).deliver_later
 
       update_installation(@installation)
 
@@ -63,6 +65,15 @@ module Oauth
 
     def rollbar_context
       { site_id: @site_id, code: @code, school_id: @school_id, school: @school&.slug, installation: @installation&.id }
+    end
+
+    # user has denied access and has been redirected back with error=access_denied
+    def handle_access_denied
+      return if params[:error].blank?
+
+      @school_id = params.expect(:external_id)
+      @school = School.active.find_by(id: @school_id)
+      render :access_denied and return
     end
   end
 end

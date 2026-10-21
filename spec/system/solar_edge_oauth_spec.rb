@@ -132,4 +132,30 @@ describe 'SolarEdge Oauth workflow' do
       end
     end
   end
+
+  context 'when the user has refused consent' do
+    context 'with unknown external id' do
+      before { visit oauth_solar_edge_path(external_id: 99, error: 'access_denied') }
+
+      it 'displays a page explaining their options' do
+        expect(page).to have_title(I18n.t('oauth.solar_edge.access_denied.title'))
+        expect(page).to have_text('99')
+        expect(page).to have_text(I18n.t('oauth.solar_edge.access_denied.impact'))
+        expect(page).to have_link(href: DataFeeds::SolarEdge::Api.authorize_url(99))
+      end
+    end
+
+    context 'with a known school' do
+      let!(:school) { create(:school) }
+
+      before { visit oauth_solar_edge_path(external_id: school.id, error: 'access_denied') }
+
+      it 'displays a page explaining their options' do
+        expect(page).to have_title(I18n.t('oauth.solar_edge.access_denied.title'))
+        expect(page).to have_text(school.name)
+        expect(page).to have_text(I18n.t('oauth.solar_edge.access_denied.impact'))
+        expect(page).to have_link(href: DataFeeds::SolarEdge::Api.authorize_url(school.id))
+      end
+    end
+  end
 end
