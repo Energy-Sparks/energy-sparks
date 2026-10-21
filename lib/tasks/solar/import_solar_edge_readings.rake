@@ -7,6 +7,10 @@ namespace :solar do
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : nil
     reload = args[:reload].present? || false
 
+    # only run this load on production, need to avoid exhausting credits
+    # or refreshing access tokens across environments
+    exit(1) unless ENV['ENVIRONMENT_IDENTIFIER'] == 'production'
+
     puts "#{DateTime.now.utc} import_solar_edge_readings start"
     begin
       SolarEdgeInstallation.active.find_each do |installation|
