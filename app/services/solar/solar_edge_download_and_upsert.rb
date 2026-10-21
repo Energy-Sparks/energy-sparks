@@ -51,7 +51,6 @@ module Solar
 
     def all_meter_data
       if @installation.consented? # v2
-        # FIXME refreshing metadata?
         site_api = @installation.site_api!
         {
           solar_pv: { readings: solar_pv_readings(site_api) },

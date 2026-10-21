@@ -17,19 +17,19 @@
     </thead>
     <tbody>
       <tr>
-        <td>Consent Granted?</td>
+        <td>User Consent Granted?</td>
         <td><%= installation.consented? %></td>
       </tr>
       <tr>
-        <td>Site Active</td>
+        <td>SolarEdge Site Active</td>
         <td><%= installation.monitoring_active? %></td>
       </tr>
       <tr>
-        <td>Grid Import Meter Active?</td>
+        <td>SolarEdge Grid Import Meter Active?</td>
         <td><%= installation.cached_meter_metadata(:electricity)&.dig('active') %></td>
       </tr>
       <tr>
-        <td>Export Meter Active?</td>
+        <td>SolarEdge Export Meter Active?</td>
         <td><%= installation.cached_meter_metadata(:exported_solar_pv)&.dig('active') %></td>
       </tr>
     </tbody>
