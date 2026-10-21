@@ -2,7 +2,7 @@
 
 class EnergyTariffsMailerPreview < BasePreview
   def self.school_expiry_params
-    { school_id: School.active.with_energy_tariffs.sample.id }
+    { school_id: School.active.with_energy_tariffs.sample&.id }
   end
 
   def school_expiry
@@ -11,7 +11,7 @@ class EnergyTariffsMailerPreview < BasePreview
   end
 
   def self.school_reminder_params
-    { school_id: School.active.sample.id }
+    { school_id: School.active.sample&.id }
   end
 
   def school_reminder
@@ -21,7 +21,7 @@ class EnergyTariffsMailerPreview < BasePreview
 
   def self.school_reminder_group_tariff_params
     group = SchoolGroup.joins(:energy_tariffs).merge(EnergyTariff.current).sample
-    { school_id: group.schools.active.sample.id }
+    { school_id: (group.schools.active.sample.id if group) }
   end
 
   def school_reminder_group_tariff

@@ -24,9 +24,9 @@ class EnergyTariffReminder
     end
   end
 
-  def expiring_tariffs
-    EnergyTariff.enabled.current.where(end_date: @end_date)
-  end
+  def current_tariffs = EnergyTariff.enabled.current
+
+  def expiring_tariffs = current_tariffs.where(end_date: @end_date)
 
   def lacks_replacement?(organisation)
     organisation.energy_tariffs.merge(expiring_tariffs).any? do |tariff|
@@ -36,17 +36,28 @@ class EnergyTariffReminder
     end
   end
 
-  def each_needing_tariff_reminder(model, &)
-    exclude = model.joins(:energy_tariffs).merge(EnergyTariff.enabled.current).distinct.pluck(:id)
-    if model.klass == School
-      exclude += School.joins(school_group: :energy_tariffs).merge(EnergyTariff.enabled.current).distinct.pluck(:id)
-    end
-    model.where.not(id: exclude).or(old_open_ended_tariff(model)).find_each(&)
+  def each_needing_tariff_reminder(relation, &)
+    relation.where.not(id: with_current_tariff(relation))
+            .where.not(id: schools_with_current_group_tariff(relation))
+            .or(relation.where(id: with_stale_open_ended_tariff(relation)))
+            .find_each(&)
   end
 
-  def old_open_ended_tariff(model)
-    model.where(id: EnergyTariff.enabled.current.joins(model.model_name.singular.to_sym)
-                                .where(end_date: nil, start_date: ..1.year.ago).select(:tariff_holder_id))
+  def with_current_tariff(relation)
+    relation.klass.joins(:energy_tariffs).merge(current_tariffs).select(:id)
+  end
+
+  def schools_with_current_group_tariff(relation)
+    return School.none.select(:id) unless relation.klass == School
+
+    School.joins(school_group: :energy_tariffs).merge(current_tariffs).select(:id)
+  end
+
+  def with_stale_open_ended_tariff(relation)
+    current_tariffs.where(tariff_holder_type: relation.klass.base_class.name,
+                          end_date: nil,
+                          start_date: ..1.year.ago.to_date)
+                   .select(:tariff_holder_id)
   end
 
   def send_reminder(organisation, users, job, expiry:)

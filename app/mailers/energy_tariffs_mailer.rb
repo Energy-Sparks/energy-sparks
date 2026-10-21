@@ -19,9 +19,4 @@ class EnergyTariffsMailer < LocaleMailer
                         subject: I18n.t('energy_tariffs_mailer.reminder.subject', name: @organisation.name, locale:))
     prevent_delivery_from_test
   end
-
-  def prices
-    
-    @organisation.parent_tariff_holder.price(:electricity) || SiteSettings.current_prices.electricity_price
-  end
 end
