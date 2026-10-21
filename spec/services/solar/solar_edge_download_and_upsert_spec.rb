@@ -179,6 +179,10 @@ module Solar
 
         it 'requests that date range for all meters' do
           expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(0).to(6)
+          expect(upserter.import_log).to have_attributes(
+            records_imported: 6,
+            records_updated: 0
+          )
           expect_solar_meter_api_methods(site_api:, start_date: requested_start_date, end_date: requested_end_date,
                                          serial_number: '12345')
         end
