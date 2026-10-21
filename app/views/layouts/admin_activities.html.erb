@@ -1,0 +1,18 @@
+<% content_for :page_title, content_for?(:title) ? yield(:title) : 'Activities & Actions' %>
+
+<% content_for :header do %>
+  <%= render Admin::HeaderNavComponent.new do |header_nav| %>
+    <% header_nav.with_header title: content_for?(:title) ? yield(:title) : 'Activities & Actions' %>
+    <% header_nav.with_button 'Admin Home', admin_path %>
+    <% header_nav.with_button 'All Reports', admin_reports_path %>
+  <% end %>
+<% end %>
+
+<% content_for :application do %>
+  <%= yield %>
+<% end %>
+<% content_for :page_nav do %>
+      <%= render Navigation::AdminActivitiesComponent.new(current_user: current_user) %>
+<% end %>
+
+<%= render template: 'layouts/application' %>
