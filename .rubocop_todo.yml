@@ -14591,6 +14591,7 @@ ViewComponent/PreferComposition:
     - 'app/components/navigation/base_component.rb'
     - 'app/components/navigation/manage_group_component.rb'
     - 'app/components/navigation/manage_school_component.rb'
+    - 'app/components/navigation/admin_activities_component.rb'
     - 'app/components/notice_component.rb'
     - 'app/components/page_nav_component.rb'
     - 'app/components/panel_switcher_component.rb'
