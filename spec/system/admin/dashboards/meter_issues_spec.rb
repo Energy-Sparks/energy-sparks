@@ -21,6 +21,10 @@ describe 'Admin dashboard - Meter Issues' do
     click_on link || example.example_group.description
   end
 
+  it 'has the expected title' do
+    expect(page).to have_css('h1', text: "#{admin.display_name}'s Meter Issues & Notes")
+  end
+
   it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
     let(:table_id) { '.table' }
     let(:expected_header) do

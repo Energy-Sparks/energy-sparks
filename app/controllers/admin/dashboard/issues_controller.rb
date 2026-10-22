@@ -11,6 +11,7 @@ module Admin
         super
         build_breadcrumbs([{ name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
                            { name: 'Issues' }])
+        @title_type = 'Assigned'
       end
 
       private

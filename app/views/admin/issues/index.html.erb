@@ -1,15 +1,11 @@
 <% if @dashboard_user %>
   <% content_for :title do %>
-    <%= "#{@dashboard_user.display_name}'s Assigned Issues & Notes" %>
+    <%= "#{@dashboard_user.display_name}'s #{@title_type} Issues & Notes" %>
   <% end %>
-
   <%= render Elements::ButtonComponent.new('View all issues',
                                            admin_issues_path,
                                            style: :secondary,
                                            classes: 'mb-2 me-2') %>
-  <%= render Elements::ButtonComponent.new('Manage Issue Tags', admin_issue_tags_path, style: :secondary,
-                                           classes: 'mb-2 me-2') %>
-
 <% elsif @issueable.is_a?(SchoolGroup) %>
   <% content_for :header_title, "Issues & Notes for #{@school_group.name}" %>
 <% else %>
@@ -22,6 +18,8 @@
     <% end %>
   <% end %>
 <% end %>
+<%= render Elements::ButtonComponent.new('Manage Issue Tags', admin_issue_tags_path, style: :secondary,
+                                                                                     classes: 'mb-2 me-2') %>
 
 <div class="d-flex align-items-center">
   <% if @issueable %>
