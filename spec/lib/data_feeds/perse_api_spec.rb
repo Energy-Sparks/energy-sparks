@@ -3,11 +3,7 @@
 require 'rails_helper'
 
 describe DataFeeds::PerseApi do
-  around do |example|
-    ClimateControl.modify PERSE_API_URL: 'http://example.com', PERSE_API_KEY: 'key' do
-      example.run
-    end
-  end
+  before { stub_env(PERSE_API_URL: 'http://example.com', PERSE_API_KEY: 'key') }
 
   describe '#meter_history_realtime_data' do
     it 'calls the relevant API' do
