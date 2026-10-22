@@ -35,32 +35,32 @@
     <div class="d-flex justify-content-between flex-wrap align-items-center">
       <div class="me-2 mb-2">
         <%= text_field_tag :search, params[:search], autocomplete: 'off',
-                                                      placeholder: 'Search issues...',
-                                                      width: 200,
-                                                      class: '' %>
+                                                     placeholder: 'Search issues...',
+                                                     width: 200,
+                                                     class: '' %>
       </div>
       <% unless @dashboard_user %>
         <div class="me-2 mb-2">
           <%= select_tag :user,
-                          options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
-                          include_blank: 'Any admin user',
-                          class: 'form-control' %>
+                         options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
+                         include_blank: 'Any admin user',
+                         class: 'form-control' %>
         </div>
       <% end %>
       <div class="me-2 mb-2">
         <%= select_tag :issue_tag,
-                        options_from_collection_for_select(IssueTag.all, :id, :label, params[:issue_tag]),
-                        include_blank: 'Any tag',
-                        class: 'form-control' %>
+                       options_from_collection_for_select(IssueTag.all, :id, :label, params[:issue_tag]),
+                       include_blank: 'Any tag',
+                       class: 'form-control' %>
       </div>
       <div class="me-2 mb-2">
         <%= select_tag :review_date,
-                        options_for_select([['Next review date not set', :review_unset],
-                                            ['Next review date in next week', :review_next_week],
-                                            ['Next review date overdue', :review_overdue]],
+                       options_for_select([['Next review date not set', :review_unset],
+                                           ['Next review date in next week', :review_next_week],
+                                           ['Next review date overdue', :review_overdue]],
                                           params[:review_date]),
-                        include_blank: 'Any next review date',
-                        class: 'form-control' %>
+                       include_blank: 'Any next review date',
+                       class: 'form-control' %>
 
       </div>
       <div class="nowrap me-2 mb-2 ensure-one-checked">
