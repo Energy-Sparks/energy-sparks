@@ -16,7 +16,7 @@ module Amr
         }
       }
     end
-    let(:import_log) { create(:amr_data_feed_import_log) }
+    let(:import_log) { create(:amr_data_feed_import_log, :with_no_statistics) }
 
     let(:upserter) { Amr::N3rgyReadingsUpserter.new(meter: meter, config: config, readings: readings, import_log: import_log) }
 
@@ -34,8 +34,11 @@ module Amr
     end
 
     it 'logs counts of inserts and updates' do
-      expect(import_log).to receive(:update).with(records_imported: 1, records_updated: 0)
       upserter.perform
+      expect(import_log.reload).to have_attributes(
+        records_imported: 1,
+        records_updated: 0
+      )
     end
 
     context 'if mpan is new' do
