@@ -11,8 +11,11 @@ module Oauth
       @installation = find_installation(@site_id, @school)
       @tokens = DataFeeds::SolarEdge::Api.new.retrieve_access_token(@code)
 
-      update_installation(@installation, @tokens)
+      store_tokens(@installation, @tokens)
       ::SolarEdgeMailer.notify_admin(@installation).deliver_later
+
+      update_installation(@installation)
+
       render :success
     rescue StandardError => e
       handle_error(e)
@@ -29,13 +32,23 @@ module Oauth
       )
     end
 
-    def update_installation(installation, tokens)
+    def store_tokens(installation, tokens)
       installation.update!(
         access_token: tokens['access_token'],
         refresh_token: tokens['refresh_token'],
-        access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now,
+        mpan: installation.mpan || installation.site_id,
+        access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now.utc,
         consent_granted_at: Time.zone.now
       )
+    end
+
+    # post consent setup, errors here are internal not for showing to user
+    def update_installation(installation)
+      service = Solar::SolarEdgeService.new(installation)
+      service.update_information
+      service.setup_meters
+    rescue StandardError => e
+      handle_error(e)
     end
 
     def handle_error(error)
