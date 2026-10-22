@@ -6,6 +6,11 @@ FactoryBot.define do
     records_imported      { rand(100) }
     records_updated { rand(100) }
 
+    trait :with_no_statistics do
+      records_imported { 0 }
+      records_updated { 0 }
+    end
+
     trait :with_errors do
       error_messages { 'oh no!' }
     end

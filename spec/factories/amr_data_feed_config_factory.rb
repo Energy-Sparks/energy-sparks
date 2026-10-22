@@ -60,5 +60,10 @@ FactoryBot.define do
         (['Name', mpan_mprn_field, reading_date_field] + reading_fields.zip(reading_status_fields).flatten).join(',')
       end
     end
+
+    trait :solar_edge_api do
+      process_type { :solar_edge_api }
+      source_type { :api }
+    end
   end
 end

@@ -8,4 +8,5 @@
                             'Otherwise use the site id. This will ensure the solar meters are correctly generated. ' \
                             'This cannot be changed once set.' %>
 <%= form.input :api_key, as: :string, label: 'API key',
+                         disabled: true,
                          hint: 'The code that authorises us to access data for this site.' %>

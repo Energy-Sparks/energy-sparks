@@ -5,7 +5,9 @@ describe Amr::DataFeedUpserter do
 
   let!(:meter) { create(:electricity_meter) }
   let!(:amr_data_feed_config) { create(:amr_data_feed_config) }
-  let!(:amr_data_feed_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config) }
+  let!(:amr_data_feed_import_log) do
+    create(:amr_data_feed_import_log, :with_no_statistics, amr_data_feed_config: amr_data_feed_config)
+  end
   let(:array_of_readings) { [] }
 
   def create_reading(meter, date = Time.zone.today.iso8601, readings = Array.new(48, '1.0'), estimated: false, parsed_date: nil)

@@ -4,6 +4,8 @@ module Oauth
   class SolarEdgeController < ApplicationController
     skip_before_action :authenticate_user!
 
+    before_action :handle_access_denied
+
     def callback
       @site_id, @code, @school_id = params.expect(:site_id, :code, :external_id)
       @school = School.active.find(@school_id)
@@ -11,8 +13,11 @@ module Oauth
       @installation = find_installation(@site_id, @school)
       @tokens = DataFeeds::SolarEdge::Api.new.retrieve_access_token(@code)
 
-      update_installation(@installation, @tokens)
-      ::SolarEdgeMailer.notify_admin(@installation).deliver_later
+      store_tokens(@installation, @tokens)
+      SolarEdgeMailer.notify_admin(@installation).deliver_later
+
+      update_installation(@installation)
+
       render :success
     rescue StandardError => e
       handle_error(e)
@@ -29,13 +34,23 @@ module Oauth
       )
     end
 
-    def update_installation(installation, tokens)
+    def store_tokens(installation, tokens)
       installation.update!(
         access_token: tokens['access_token'],
         refresh_token: tokens['refresh_token'],
-        access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now,
+        mpan: installation.mpan || installation.site_id,
+        access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now.utc,
         consent_granted_at: Time.zone.now
       )
+    end
+
+    # post consent setup, errors here are internal not for showing to user
+    def update_installation(installation)
+      service = Solar::SolarEdgeService.new(installation)
+      service.update_information
+      service.setup_meters
+    rescue StandardError => e
+      handle_error(e)
     end
 
     def handle_error(error)
@@ -50,6 +65,15 @@ module Oauth
 
     def rollbar_context
       { site_id: @site_id, code: @code, school_id: @school_id, school: @school&.slug, installation: @installation&.id }
+    end
+
+    # user has denied access and has been redirected back with error=access_denied
+    def handle_access_denied
+      return if params[:error].blank?
+
+      @school_id = params.expect(:external_id)
+      @school = School.active.find_by(id: @school_id)
+      render :access_denied
     end
   end
 end

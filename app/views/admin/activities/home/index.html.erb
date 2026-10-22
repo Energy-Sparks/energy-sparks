@@ -1,0 +1,113 @@
+<% content_for :title, 'Activities and Actions' %>
+
+<p>
+  Administer the activities and actions, along with the classifications used to categorise them.
+</p>
+
+<div class="row">
+  <div class="col-xl-6">
+    <%= render TitledSectionComponent.new(id: 'activities-section', classes: 'scrollable-title') do |section| %>
+      <% section.with_title do %>
+        <h3>Activities</h3>
+      <% end %>
+      <% section.with_body do %>
+        <%= render PromptComponent.new(icon: 'book-open-reader', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Activities' } %>
+          <% p.with_link { link_to 'Manage', admin_activity_types_path } %>
+          Activities for pupils to learn about, get involved in and take action on
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'layer-group', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Categories' } %>
+          <% p.with_link { link_to 'Manage', admin_activity_categories_path } %>
+          Categories used to group activities
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'calendar', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Latest Recordings' } %>
+          <% p.with_link { link_to 'View', admin_reports_activities_path } %>
+          Activities recorded in the last 12 months
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'chart-bar', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Report' } %>
+          <% p.with_link { link_to 'View', admin_reports_activity_types_path } %>
+          Reports for activities
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="col-xl-6">
+    <%= render TitledSectionComponent.new(id: 'actions-section', classes: 'scrollable-title') do |section| %>
+      <% section.with_title do %>
+        <h3>Actions</h3>
+      <% end %>
+      <% section.with_body do %>
+        <%= render PromptComponent.new(icon: 'school', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Actions' } %>
+          <% p.with_link { link_to 'Manage', admin_intervention_types_path } %>
+          Practical changes to buildings, systems and operations carried out by adults
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'layer-group', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Categories' } %>
+          <% p.with_link { link_to 'Manage', admin_intervention_type_groups_path } %>
+          Categories used to group actions
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'calendar', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Latest Recordings' } %>
+          <% p.with_link { link_to 'View', admin_reports_interventions_path } %>
+          Actions recorded in the last 12 months
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'chart-bar', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Report' } %>
+          <% p.with_link { link_to 'View', admin_reports_intervention_types_path } %>
+          Reports for actions
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="col-md-12">
+    <%= render TitledSectionComponent.new(id: 'related-section', classes: 'scrollable-title') do |section| %>
+      <% section.with_title do %>
+        <h3>Related</h3>
+      <% end %>
+      <% section.with_body do %>
+
+        <%= render PromptComponent.new(icon: 'chart-line', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Advice pages' } %>
+          <% p.with_link { link_to 'Manage', admin_advice_pages_path } %>
+          Advice pages can have associated activities and actions
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'bell', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Alerts' } %>
+          <% p.with_link { link_to 'Manage', admin_alert_types_path } %>
+          Alerts can have associated activities and actions
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'laptop', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Audits' } %>
+          <% p.with_link { link_to 'View', admin_reports_recent_audits_path } %>
+          Recently completed audits that may have associated activities and actions
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'tasks', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Programmes' } %>
+          <% p.with_link { link_to 'Manage', admin_programme_types_path } %>
+          Collections of activities and actions to support a particular topic or theme
+        <% end %>
+
+        <%= render PromptComponent.new(icon: 'images', style: :compact, status: :none) do |p| %>
+          <% p.with_title { 'Recent images' } %>
+          <% p.with_link { link_to 'View', admin_reports_images_path } %>
+          Images recently uploaded to activity and action records
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
