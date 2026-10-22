@@ -9,18 +9,20 @@ class EnergyTariffReminder
   end
 
   def send_expiring_tariff_reminders
-    send_reminders(:send_expiring_tariff_reminders, :each_needing_expiry_reminder, expiry: true)
+    send_reminders(:send_expiring_tariff_reminders, :each_needing_expiry_reminder)
   end
 
   def send_tariff_reminders
-    send_reminders(:send_tariff_reminders, :each_needing_tariff_reminder, expiry: false)
+    send_reminders(:send_tariff_reminders, :each_needing_tariff_reminder)
   end
 
   private
 
   def each_needing_expiry_reminder(scope)
     scope.joins(:energy_tariffs).merge(expiring_tariffs).distinct.find_each do |organisation|
-      yield organisation if lacks_replacement?(organisation)
+      replacements, expiring = organisation.energy_tariffs.enabled
+                                           .partition { |tariff| tariff.end_date == @end_date }
+      yield organisation, expiring if lacks_replacement?(replacements, expiring)
     end
   end
 
@@ -28,11 +30,9 @@ class EnergyTariffReminder
 
   def expiring_tariffs = current_tariffs.where(end_date: @end_date)
 
-  def lacks_replacement?(organisation)
-    organisation.energy_tariffs.merge(expiring_tariffs).any? do |tariff|
-      organisation.energy_tariffs.enabled
-                  .where(start_date: @today.., meter_type: tariff.meter_type)
-                  .none?
+  def lacks_replacement?(expiring, replacements)
+    expiring.product(replacements.map(&:usable?)).none? do |expiring_tariff, tariff|
+      expiring_tariff == tariff.meter_type && expiring_tariff.end_date <= tariff.start_date
     end
   end
 
@@ -60,18 +60,18 @@ class EnergyTariffReminder
                    .select(:tariff_holder_id)
   end
 
-  def send_reminder(organisation, users, job, expiry:)
-    EnergyTariffsMailer.reminder_deliver_now_per_locale(organisation, users, expiry:)
+  def send_reminder(organisation, users, job, **)
+    EnergyTariffsMailer.reminder_deliver_now_per_locale(organisation, users, **)
   rescue StandardError => e
     EnergySparks::Log.exception(e, { job:, organisation: organisation.slug })
   end
 
-  def send_reminders(job, method_name, expiry:)
-    method(method_name).call(School.active) do |school|
-      send_reminder(school, school.school_admin, job, expiry:)
+  def send_reminders(job, method_name)
+    method(method_name).call(School.active) do |school, expiring_tariffs|
+      send_reminder(school, school.school_admin, job, expiring_tariffs:)
     end
-    method(method_name).call(SchoolGroup.all) do |school_group|
-      send_reminder(school_group, school_group.users.group_admin, job, expiry:)
+    method(method_name).call(SchoolGroup.all) do |school_group, expiring_tariffs|
+      send_reminder(school_group, school_group.users.group_admin, job, expiring_tariffs:)
     end
   end
 end

@@ -11,7 +11,7 @@ describe EnergyTariffsMailer, :include_application_helper do
   before do
     stub_env(SEND_AUTOMATED_EMAILS: true)
     SiteSettings.current.update!(prices: { electricity_price: 0.15, gas_price: 0.03 })
-    described_class.reminder_deliver_now_per_locale(organisation, [user], expiry: tariff.present?)
+    described_class.reminder_deliver_now_per_locale(organisation, [user], expiring_tariffs: [tariff].compact)
   end
 
   def organisation = user.public_send({ school_admin: :school, group_admin: :school_group }[user.role.to_sym])
@@ -43,8 +43,8 @@ describe EnergyTariffsMailer, :include_application_helper do
     let(:tariff) { create(:energy_tariff, tariff_holder:) }
     let(:expected_body) do
       type = organisation.is_a?(School) ? :school : :group
-      ["\nThank you for updating your #{type}'s tariff information. The current tariffs will expire in 30 days' " \
-       "time. Don't forget to update your tariff information for the next supply contract period.",
+      ["\nThank you for updating your #{type}'s electricity tariff information. The current tariffs will expire in " \
+       "30 days' time. Don't forget to update your tariff information for the next supply contract period.",
        "To do this, please login to Energy Sparks, click on the **Manage #{type.capitalize}** menu and select " \
        "[**Manage tariffs**](#{url(organisation)})",
        "If the tariff isn't updated, we will apply the Energy Sparks default tariff to your account. This will be " \

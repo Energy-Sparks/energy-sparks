@@ -2,10 +2,10 @@
   <% is_group = @organisation.is_a?(SchoolGroup) %>
   <% tariff_url = polymorphic_url([@organisation, :energy_tariffs]) %>
   <% email = @organisation.default_issues_admin_user&.email || 'hello@energysparks.uk' %>
-  <% if @expiry %>
+  <% if @expiring_tariffs.present? %>
     <p><%= t('energy_tariffs_mailer.reminder.thank_you',
              school_or_group: t("energy_tariffs_mailer.reminder.#{is_group ? :group : :school}"),
-             fuel_types: t_fuels_as_sentence(@organisation.energy_tariffs.enabled.current.pluck(:meter_type).uniq)) %>
+             fuel_types: t_fuels_as_sentence(@expiring_tariffs.pluck(:meter_type).uniq)) %>
        <%= t('energy_tariffs_mailer.reminder.update_your_tariff') %></p>
     <p><%= t('energy_tariffs_mailer.reminder.to_do_this_html',
              menu: t(is_group ? 'school_groups.sub_nav.manage_group' : 'manage_school_menu.manage_school'),
