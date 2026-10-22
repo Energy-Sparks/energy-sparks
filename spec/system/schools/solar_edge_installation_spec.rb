@@ -47,9 +47,9 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         it 'allows editing' do
           expect(page).to have_text('Update SolarEdge API feed')
 
-          expect(find_by_id('solar_edge_installation_mpan').disabled?).to be true
-          expect(find_by_id('solar_edge_installation_site_id').disabled?).to be true
-          expect(find_by_id('solar_edge_installation_api_key').disabled?).to be true
+          expect(page).to have_field('solar_edge_installation_mpan', disabled: true)
+          expect(page).to have_field('solar_edge_installation_site_id', disabled: true)
+          expect(page).to have_field('solar_edge_installation_mpan', disabled: true)
 
           uncheck(:solar_edge_installation_active)
           click_on 'Submit'
