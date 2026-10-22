@@ -6,12 +6,10 @@ describe Amr::PerseUpsert do
   describe '#perform' do
     subject(:upserter) { described_class.new }
 
-    around do |example|
+    before do
       travel_to(Date.new(2024, 12, 10))
       create(:amr_data_feed_config, identifier: 'perse-half-hourly-api')
-      ClimateControl.modify PERSE_API_URL: 'http://example.com', PERSE_API_KEY: 'key' do
-        example.run
-      end
+      stub_env(PERSE_API_URL: 'http://example.com', PERSE_API_KEY: 'key')
     end
 
     it 'imports readings' do

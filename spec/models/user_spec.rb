@@ -817,11 +817,7 @@ describe User do
     end
 
     context 'when email changed' do
-      around do |example|
-        ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
-          example.run
-        end
-      end
+      before { stub_env(ENVIRONMENT_IDENTIFIER: 'production') }
 
       context 'when user is not in mailchimp' do
         it 'does not update mailchimp' do
