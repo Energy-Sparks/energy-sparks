@@ -615,6 +615,11 @@ Rails.application.routes.draw do
         resources :meter_issues, only: [:index]
       end
     end
+
+    namespace :activities do
+      root to: 'home#index'
+    end
+
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
