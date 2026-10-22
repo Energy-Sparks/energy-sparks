@@ -53,6 +53,8 @@ describe 'SolarEdge Oauth workflow' do
   context 'when the request is successful' do
     include_context 'with a successful SolarEdge token request'
 
+    before { travel_to Time.zone.local(2026, 10, 7, 12, 0, 0) }
+
     context 'when installation exists' do
       let(:installation) { create(:solar_edge_installation, amr_data_feed_config:, mpan: '999') }
       let(:site_id) { installation.site_id }

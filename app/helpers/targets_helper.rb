@@ -14,8 +14,12 @@ module TargetsHelper
     value < estimate ? 'text-danger' : ''
   end
 
-  def meeting_target_text(meeting_target, fuel_type)
-    t("schools.show.#{meeting_target ? :making_progress : :not_meeting_target}",
-      fuels: t("advice_pages.fuel_type.#{fuel_type}"))
+  def meeting_target_text(meeting_target, fuel_type, target)
+    key = if target.expired?
+            meeting_target ? :achieved : :not_met_target
+          else
+            meeting_target ? :making_progress : :not_meeting_target
+          end
+    t("schools.show.#{key}", fuels: t("advice_pages.fuel_type.#{fuel_type}"))
   end
 end

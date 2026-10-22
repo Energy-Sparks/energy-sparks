@@ -24,7 +24,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
       it { expect(page).to have_css('#engagement-featured') }
       it { expect(page).to have_text('Featured school') }
       it { expect(page).to have_text(school.name) }
-      it { expect(page).to have_text('2 pupil activities and 2 adult actions in the last 12 months') }
+      it { expect(page).to have_text('scoring 110 points') }
       it { expect(page).to have_link('View dashboard', href: school_path(school)) }
       it { expect(page).to have_css('.bg-white.p-4.rounded-3') }
     end
@@ -35,7 +35,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
         render_inline(described_class.new(school_group: school_group))
       end
 
-      it { expect(page).to have_text('recorded 1 adult action in the last 12 months') }
+      it { expect(page).to have_text('scoring 30 points') }
     end
 
     context 'with a single activity and no actions recorded' do
@@ -44,22 +44,68 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
         render_inline(described_class.new(school_group: school_group))
       end
 
-      it { expect(page).to have_text('recorded 1 pupil activity in the last 12 months') }
+      it { expect(page).to have_text('scoring 25 points') }
     end
 
-    context 'with an action this academic year and an activity in a previous academic year but in the last 12 months' do
+    context 'with an action this academic year and an unscored activity in the previous academic year' do
       before do
         create(:observation, :intervention, school: school, at: yesterday)
         create(:activity, school: school, happened_on: 11.months.ago)
         render_inline(described_class.new(school_group: school_group))
       end
 
-      it { expect(page).to have_text('recorded 1 pupil activity and 1 adult action in the last 12 months') }
+      it { expect(page).to have_text('scoring 30 points') }
+    end
+
+    context 'with more all-time points at another school' do
+      let!(:most_active_school) do
+        create(:school, :with_points, score_points: 10, school_group: school_group, activities_happened_on: yesterday)
+      end
+
+      let!(:previously_active_school) do
+        travel_to(13.months.ago) do
+          create(:school, :with_points, score_points: 100, school_group: school_group,
+                                        activities_happened_on: Time.zone.today)
+        end
+      end
+
+      before do
+        render_inline(described_class.new(school_group: school_group))
+      end
+
+      it 'selects the school with the most points in the last 12 months' do
+        expect(previously_active_school.observations.sum(:points)).to eq(100)
+        expect(described_class.new(school_group: school_group).default_school).to eq(most_active_school)
+      end
+
+      it 'displays the recent points total' do
+        expect(page).to have_text('scoring 10 points')
+      end
     end
 
     context 'with no points' do
       before do
         render_inline(described_class.new(school_group: school_group))
+      end
+
+      it { expect(rendered_content).to be_blank }
+    end
+
+    context 'with points only outside the last 12 months' do
+      let!(:previously_active_school) do
+        travel_to(13.months.ago) do
+          create(:school, :with_points, score_points: 100, school_group: school_group,
+                                        activities_happened_on: Time.zone.today)
+        end
+      end
+
+      before do
+        render_inline(described_class.new(school_group: school_group))
+      end
+
+      it 'does not select a school' do
+        expect(previously_active_school.observations.sum(:points)).to eq(100)
+        expect(described_class.new(school_group: school_group).default_school).to be_nil
       end
 
       it { expect(rendered_content).to be_blank }
@@ -98,7 +144,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
       render_inline(described_class.new(school_group: school_group))
     end
 
-    it { expect(page).to have_text('recorded 1 adult action in the last 12 months') }
+    it { expect(page).to have_text('scoring 30 points') }
     it { expect(page).to have_css('.scoreboards-podium-component') }
   end
 
@@ -107,7 +153,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
     let!(:config) { create(:impact_report_configuration, school_group: school_group) }
 
     before do
-      allow(school_group).to receive(:scored_schools).and_return([])
+      allow(school_group).to receive(:scored_schools).and_return(ScoredSchoolsList.new([]))
       render_inline(described_class.new(school_group: school_group))
     end
 

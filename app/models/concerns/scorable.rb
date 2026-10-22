@@ -20,15 +20,14 @@ module Scorable
 
   def scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
     if academic_year
-      with_academic_year = scored(recent_boundary: recent_boundary).joins(
-        ActiveRecord::Base.sanitize_sql_array(
-          ['LEFT JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
-        )
-      )
-      ScoredSchoolsList.new(with_academic_year)
+      ScoredSchoolsList.new(scored(recent_boundary: recent_boundary).joins(observations_in_period(academic_year)))
     else
       ScoredSchoolsList.new(scored(recent_boundary: recent_boundary).left_outer_joins(:observations))
     end
+  end
+
+  def top_scoring_school(period:)
+    scored.joins(observations_in_period(period)).having('SUM(observations.points) > 0').first
   end
 
   def scored(recent_boundary: 1.month.ago)
@@ -43,5 +42,22 @@ module Scorable
 
   def scorable_schools
     schools
+  end
+
+  private
+
+  def observations_in_period(period)
+    start_date, end_date = period_dates(period)
+
+    ActiveRecord::Base.sanitize_sql_array(
+      [
+        'LEFT JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?',
+        start_date, end_date
+      ]
+    )
+  end
+
+  def period_dates(period)
+    period.is_a?(Range) ? [period.begin, period.end] : [period.start_date, period.end_date]
   end
 end

@@ -1,0 +1,34 @@
+<%= render PageNavComponent.new name: 'Overview',
+                                classes: class_names(classes, 'show'),
+                                icon: nil,
+                                href: admin_activities_root_path,
+                                options: { match_controller: true, list_inline: true } do |c| %>
+  <% c.with_section name: 'Activities',
+                    icon: 'book-open-reader',
+                    options: { match_controller: true } do |s| %>
+    <% activities_section.each do |item| %>
+      <% s.with_item(name: item[:name],
+                     href: item[:path],
+                     classes: item[:classes] || 'small') %>
+    <% end %>
+  <% end %>
+
+  <% c.with_section name: 'Actions',
+                    icon: 'school',
+                    options: { match_controller: true } do |s| %>
+    <% actions_section.each do |item| %>
+      <% s.with_item(name: item[:name],
+                     href: item[:path],
+                     classes: item[:classes] || 'small') %>
+    <% end %>
+  <% end %>
+  <% c.with_section name: 'Related',
+                    icon: 'diagram-project',
+                    options: { match_controller: true } do |s| %>
+    <% related_section.each do |item| %>
+      <% s.with_item(name: item[:name],
+                     href: item[:path],
+                     classes: item[:classes] || 'small') %>
+    <% end %>
+  <% end %>
+<% end %>

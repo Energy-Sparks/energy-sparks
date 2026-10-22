@@ -53,6 +53,8 @@ class InterventionType < ApplicationRecord
   has_many :alert_type_rating_intervention_types, dependent: nil
   has_many :alert_type_ratings, through: :alert_type_rating_intervention_types
 
+  label_types :focus
+
   # old relationships to be removed when todos feature removed
   has_many :audit_intervention_types, dependent: nil
   has_many :audits, through: :audit_intervention_types
