@@ -20,9 +20,8 @@ class EnergyTariffReminder
 
   def each_needing_expiry_reminder(scope)
     scope.joins(:energy_tariffs).merge(expiring_tariffs).distinct.find_each do |organisation|
-      replacements, expiring = organisation.energy_tariffs.enabled
-                                           .partition { |tariff| tariff.end_date == @end_date }
-      yield organisation, expiring if lacks_replacement?(replacements, expiring)
+      expiring = expiring_without_replacement(organisation)
+      yield organisation, expiring if expiring.present?
     end
   end
 
@@ -30,9 +29,13 @@ class EnergyTariffReminder
 
   def expiring_tariffs = current_tariffs.where(end_date: @end_date)
 
-  def lacks_replacement?(expiring, replacements)
-    expiring.product(replacements.map(&:usable?)).none? do |expiring_tariff, tariff|
-      expiring_tariff == tariff.meter_type && expiring_tariff.end_date <= tariff.start_date
+  def expiring_without_replacement(organisation)
+    expiring, replacements = organisation.energy_tariffs.enabled
+                                         .partition { |tariff| tariff.end_date == @end_date }
+    expiring.filter do |expiring_tariff|
+      replacements.none? do |tariff|
+        expiring_tariff.meter_type == tariff.meter_type && expiring_tariff.end_date <= tariff.start_date
+      end
     end
   end
 
