@@ -73,7 +73,7 @@ module Oauth
 
       @school_id = params.expect(:external_id)
       @school = School.active.find_by(id: @school_id)
-      render :access_denied and return
+      render :access_denied
     end
   end
 end

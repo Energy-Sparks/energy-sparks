@@ -15,7 +15,7 @@ module DataFeeds
 
       # Create user facing URL to start OAuth workflow
       def self.authorize_url(school_id, client_id: ENV.fetch('SOLAR_EDGE_CLIENT_ID', nil))
-        "#{CONNECT_BASE}/authorize?client_id=#{client_id}&external_id=#{school_id}"
+        "#{CONNECT_BASE}/authorize?#{{ client_id:, external_id: school_id }.to_query}"
       end
 
       # Exchange code from callback for access and refresh tokens
