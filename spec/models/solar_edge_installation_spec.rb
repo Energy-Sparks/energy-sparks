@@ -200,7 +200,7 @@ describe SolarEdgeInstallation do
     end
   end
 
-  describe '#metadatcached_meter_metadataa_for_meter_type' do
+  describe '#cached_meter_metadata' do
     context 'when no information' do
       subject(:installation) { create(:solar_edge_installation, information: nil) }
 
