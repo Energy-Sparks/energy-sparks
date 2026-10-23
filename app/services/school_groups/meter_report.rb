@@ -4,6 +4,8 @@ module SchoolGroups
   class MeterReport
     include ApplicationHelper
 
+    attr_reader :school_group, :all_meters
+
     class << self
       def csv_headers
         [
@@ -70,10 +72,10 @@ module SchoolGroups
 
     def meter_scope
       scope = Meter.joins(:school, school: :school_groupings)
-                   .where(schools: { active: true, school_groupings: { school_group: @school_group } })
+                   .where(schools: { active: true, school_groupings: { school_group: } })
                    .with_zero_reading_days_and_dates
                    .order('schools.name', :mpan_mprn)
-      @all_meters ? scope : scope.active
+      all_meters ? scope : scope.active
     end
   end
 end
