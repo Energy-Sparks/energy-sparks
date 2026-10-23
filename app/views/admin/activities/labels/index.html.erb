@@ -1,0 +1,36 @@
+<% content_for :title, "Activities and actions: #{@label_type.pluralize}" %>
+
+<%= render Admin::Tasks::ClassificationTabsComponent.new(current: @label_type) %>
+
+<% if @labels.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Used by</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @labels.each do |label| %>
+        <tr>
+          <td>
+            <%= label.name %>
+            <%= render Admin::TranslationFlagComponent.new(record: label, field: :name, locale: :cy) %>
+          </td>
+          <td>
+            <%= pluralize(label.label_items.count, label.task_type) %>
+          </td>
+          <td class="fit nowrap text-end">
+            <%= link_to 'Edit', edit_admin_activities_label_path(label, label_type: @label_type),
+                        class: 'btn btn-secondary btn-sm edit' %>
+            <%= render(Forms::DeleteButtonComponent.new(admin_activities_label_path(label),
+                                                        resource: label)) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No <%= @label_type.pluralize %> to display.</p>
+<% end %>

@@ -35,6 +35,8 @@ describe 'Admin activities home page' do
       it { expect(page).to have_link('Manage', href: admin_activity_types_path) }
       it { expect(page).to have_text('Categories') }
       it { expect(page).to have_link('Manage', href: admin_activity_categories_path) }
+      it { expect(page).to have_text('Classifications') }
+      it { expect(page).to have_link('Manage', href: admin_activities_labels_path(label_type: 'aim')) }
       it { expect(page).to have_text('Latest Recordings') }
       it { expect(page).to have_link('View', href: admin_reports_activities_path) }
       it { expect(page).to have_text('Report') }
@@ -46,6 +48,8 @@ describe 'Admin activities home page' do
       it { expect(page).to have_link('Manage', href: admin_intervention_types_path) }
       it { expect(page).to have_text('Categories') }
       it { expect(page).to have_link('Manage', href: admin_intervention_type_groups_path) }
+      it { expect(page).to have_text('Classifications') }
+      it { expect(page).to have_link('Manage', href: admin_activities_labels_path(label_type: 'focus')) }
       it { expect(page).to have_text('Latest Recordings') }
       it { expect(page).to have_link('View', href: admin_reports_interventions_path) }
       it { expect(page).to have_text('Report') }

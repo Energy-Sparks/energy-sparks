@@ -1,0 +1,26 @@
+<% content_for :title, "Activities and actions: #{@label.new_record? ? 'new' : 'edit'} #{@label_type}" %>
+
+<%= render Admin::Tasks::ClassificationTabsComponent.new(current: @label_type) %>
+
+<% form_url = if @label.new_record?
+                admin_activities_labels_path(label_type: @label_type)
+              else
+                admin_activities_label_path(@label)
+              end %>
+
+<div class="p-2">
+  <%= simple_form_for([:admin, @label], url: form_url) do |f| %>
+    <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
+      <%= f.input t_field(:name, locale), label: Task::Label.human_attribute_name(:name), as: :string %>
+    <% end %>
+
+    <div class="py-3 d-flex gap-2 align-items-center">
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+
+      <% unless @label.new_record? %>
+        <%= render Forms::DeleteButtonComponent.new(admin_activities_label_path(@label), resource: @label, size: nil) %>
+      <% end %>
+      <%= link_to 'Cancel', admin_activities_labels_path(label_type: @label_type), class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+</div>
