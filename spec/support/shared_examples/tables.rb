@@ -1,4 +1,7 @@
-RSpec.shared_examples 'it contains the expected data table' do |sortable: true, aligned: true, rows: true, tfoot: false|
+# frozen_string_literal: true
+
+RSpec.shared_examples 'it contains the expected data table' do |sortable: true, aligned: true, rows: true, tfoot: false,
+                                                                focus: false|
   let(:expected_rows) { nil }
   let(:expected_footer_rows) { nil }
 
@@ -28,7 +31,7 @@ RSpec.shared_examples 'it contains the expected data table' do |sortable: true, 
     expect(actual_header).to eq(expected_header)
   end
 
-  it 'has the expected rows', if: rows do
+  it 'has the expected rows', focus:, if: rows do
     body_rows = page.find("#{table_id} > tbody").find_all('tr')
     actual_rows = body_rows.map do |tr|
       tr.find_all('td').map { |td| td.text.gsub(/\s+/, ' ').strip }
