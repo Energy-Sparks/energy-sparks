@@ -1,0 +1,3 @@
+<p><%= t("energy_tariffs_mailer.reminder.currently_tariff#{:_group if local_assigns[:group]}",
+         electricity: format_target(local_assigns[:electricity] || SiteSettings.current_prices.electricity_price, :£),
+         gas: format_target(local_assigns[:gas] || SiteSettings.current_prices.gas_price, :£)) %></p>

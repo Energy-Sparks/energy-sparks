@@ -94,24 +94,28 @@ en:
       subject: We need permission to access your school's energy data
       view_school_account: view your school account
   energy_tariffs_mailer:
-    group_admin_review_group_tariffs_reminder:
-      mail_body:
-        click_here_html: "<a href='%{click_here_link}'>Click here</a>"
-        in_future: It's best to update your tariffs on Energy Sparks when you change supply contract. We will mail you twice a year, in March and September as a reminder.
-        to_help:
-          general: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we're contacting you to ask you to review the information we have about the Energy Tariffs for your group.
-          local_authority: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we’re contacting you to ask you to review the information we have about the Energy Tariffs for your local authority.
-          multi_academy_trust: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we’re contacting you to ask you to review the information we have about the Energy Tariffs for your Multi-Academy Trust.
-        to_review: To review your current tariffs and to add or update the information based on your latest contract
-        you_can_set: You can set an average tariff for all schools to provide better defaults for all schools. Individual schools can add their own tariff information
-      subject: It's time to review the energy tariffs for %{school_group_name} on Energy Sparks
-    school_admin_review_school_tariffs_reminder:
-      mail_body:
-        click_here_html: "<a href='%{click_here_link}'>click here</a>"
-        in_future: It's best to update your tariffs on Energy Sparks when you change supply contract. We will mail you twice a year, in March and September as a reminder.
-        to_help: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we're contacting you to ask you to review the information we have about the energy tariffs for %{school_name}.
-        to_review: To review your current tariffs and to add or update the information based on your latest contract
-      subject: It’s time to review the energy tariffs for %{school_name} on Energy Sparks
+    reminder:
+      currently_tariff: Currently our default tariff is set at %{electricity} per kWh of electricity and %{gas} per kWh of gas.
+      currently_tariff_group: Currently your group tariff is set at %{electricity} per kWh of electricity and %{gas} per kWh of gas.
+      dont_forget_html: Don't forget, if your %{school_or_group} is planning to switch suppliers when you change supply contract, please inform us by emailing your <a href="mailto:%{email}">Energy Sparks account manager</a> as we will need to contact your new supplier(s) to maintain data access.
+      group: group
+      if_not_updated: If the tariff isn't updated, we will apply the Energy Sparks default tariff to your account. This will be used to calculate the potential cost savings for your energy saving activities.
+      if_we_do_not_have: If we do not have current tariffs for your school we will apply the Energy Sparks default tariff to your account.
+      if_we_do_not_have_group: If we do not have current tariffs for your school we will apply your group tariff.
+      if_you_are_planning_html: If you are planning to switch suppliers when your current contract ends, please inform us by emailing your <a href="mailto:%{email}">Energy Sparks account manager</a> as we will need to contact your new supplier(s) to maintain data access.
+      if_your_group_tariff: If your group tariffs aren’t updated, and the individual schools have not added their own tariffs, then we will apply the Energy Sparks default tariffs.
+      its_best_to_update: It's best to update your tariffs on Energy Sparks when your supply contract changes.
+      review_current_html: To review your current tariffs and to add or update the information based on your latest contract, please visit your <a href="%{url}">Manage tariffs</a> page. For more details about how to set up tariffs, please see the <a href="https://energysparks.uk/resources/28/inline">Tariff Editor User guide</a>.
+      school: school
+      school_group: school group
+      subject: It's time to review the energy tariffs for %{name} on Energy Sparks
+      thank_you: Thank you for updating your %{school_or_group}'s %{fuel_types} tariff information.
+      this_will_be_used: This will be used to calculate the potential cost savings for your energy saving activities.
+      to_do_this_html: To do this, please login to Energy Sparks, click on the <b>%{menu}</b> menu and select <a href="%{url}"><b>Manage tariffs</b></a>
+      to_help_energy_sparks: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we're contacting you to ask you to review the information we have about the energy tariffs for %{name}.
+      update_your_tariff: The current tariffs will expire in 30 days' time. Don't forget to update your tariff information for the next supply contract period.
+      you_can_set_an_average_tariff: You can set an average tariff for all schools to provide better defaults for all schools. Individual schools can add their own tariff information.
+      your_group: your group
   mailer:
     get_in_touch: Get in touch
   onboarding_mailer:
