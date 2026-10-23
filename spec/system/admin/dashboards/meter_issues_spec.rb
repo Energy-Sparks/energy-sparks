@@ -6,7 +6,7 @@ describe 'Admin dashboard - Meter Issues' do
   let(:admin) { create(:admin, operations: true) }
   let(:link) { 'Meter issues' }
   let(:issue) do
-    issue = create(:issue, issueable: create(:supplier))
+    issue = create(:issue, issueable: create(:supplier), owned_by: create(:admin, name: 'Owner'))
     school = create(:school, school_group: create(:school_group, default_issues_admin_user: admin))
     issue.meters << create(:gas_meter, school:)
     issue
@@ -38,7 +38,10 @@ describe 'Admin dashboard - Meter Issues' do
   end
 
   context 'with owned issue' do
-    let(:issue) { create(:issue, issueable: create(:supplier), owned_by: admin) }
+    let(:issue) do
+      super()
+      issue.update!(owned_by: admin)
+    end
 
     it { expect(page).to have_text('No issues or notes to display.') }
   end
