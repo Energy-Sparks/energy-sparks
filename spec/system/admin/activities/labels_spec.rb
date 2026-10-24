@@ -16,7 +16,10 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
   end
 
   context 'when signed in as an admin' do
-    before { sign_in(admin) }
+    before do
+      Flipper.enable(:activity_classifications)
+      sign_in(admin)
+    end
 
     context 'when viewing the labels' do
       before { visit admin_activities_labels_path(label_type: 'aim') }
