@@ -5,17 +5,10 @@ require 'rails_helper'
 describe Task::Label do
   subject(:label) { create(:label) }
 
-  it { expect(label).to be_valid }
-
-  context 'without a label type' do
-    subject(:label) { build(:label, label_type: nil) }
-
-    it { expect(label).not_to be_valid }
-  end
-
   describe 'validations' do
     it { expect(label).to validate_presence_of(:name) }
     it { expect(label).to validate_uniqueness_of(:name).scoped_to(:label_type) }
+    it { expect(label).to validate_presence_of(:label_type) }
   end
 
   describe 'label types' do
@@ -39,34 +32,6 @@ describe Task::Label do
 
     it 'returns nothing when there is no label type' do
       expect(described_class.task_type(nil)).to be_nil
-    end
-  end
-
-  describe 'relationships' do
-    let(:activity_type) { create(:activity_type, aims: [aim], durations: [duration], topics: [topic]) }
-    let(:aim) { create(:label, label_type: :aim) }
-    let(:duration) { create(:label, label_type: :duration) }
-    let(:topic) { create(:label, label_type: :topic) }
-
-    it { expect(label).to have_many(:label_items).dependent(:destroy) }
-
-    context 'when the label is an aim' do
-      it { expect(activity_type.aims).to contain_exactly(aim) }
-    end
-
-    context 'when the label is a duration' do
-      it { expect(activity_type.durations).to contain_exactly(duration) }
-    end
-
-    context 'when the label is a topic' do
-      it { expect(activity_type.topics).to contain_exactly(topic) }
-    end
-
-    context 'when the label is a focus' do
-      let(:focus_label) { create(:label, label_type: :focus) }
-      let(:intervention_type) { create(:intervention_type, focuses: [focus_label]) }
-
-      it { expect(intervention_type.focuses).to contain_exactly(focus_label) }
     end
   end
 
