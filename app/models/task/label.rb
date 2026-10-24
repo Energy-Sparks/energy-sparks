@@ -22,9 +22,7 @@ module Task
 
     ACTIVITY_TYPES = %i[aim duration topic].freeze
     ACTION_TYPES = %i[focus].freeze
-    TASK_TYPES = ACTIVITY_TYPES.index_with('activity')
-                               .merge(ACTION_TYPES.index_with('action'))
-                               .freeze
+    TASK_TYPES = ACTIVITY_TYPES.index_with('activity').merge(ACTION_TYPES.index_with('action')).freeze
 
     translates :name, type: :string, fallbacks: { cy: :en }
     enum :label_type, (ACTIVITY_TYPES + ACTION_TYPES).index_with(&:to_s)
@@ -35,10 +33,10 @@ module Task
     has_many :label_items, class_name: 'Task::LabelItem', inverse_of: :label, dependent: :destroy
 
     scope :of_type, ->(label_type) { where(label_type: label_type) }
-    scope :by_name, -> { i18n.order(name: :asc) }
+    scope :by_name, -> { order(name: :asc) }
 
     def task_type
-      TASK_TYPES.fetch(label_type.to_sym)
+      self.class.task_type(label_type)
     end
 
     def self.task_type(label_type)
