@@ -1,0 +1,10 @@
+<%= tag.ul id: id, class: class_names(classes, 'nav nav-tabs') do %>
+  <% tabs.each do |key| %>
+    <li class="nav-item">
+      <%= link_to name_for(key), path_for(key), class: "nav-link #{'active' if active?(key)}" %>
+    </li>
+  <% end %>
+  <li class="nav-item ms-auto d-flex align-items-center">
+    <%= link_to new_label, new_path, class: 'btn btn-primary btn-sm my-2' %>
+  </li>
+<% end %>
