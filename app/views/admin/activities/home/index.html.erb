@@ -27,7 +27,7 @@
           <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
             <% p.with_title { 'Classifications' } %>
             <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'aim') } %>
-            The classifications used to categorise activities
+            Activities can be classified by their aim, topic and duration
           <% end %>
         <% end %>
 
@@ -68,7 +68,7 @@
           <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
             <% p.with_title { 'Classifications' } %>
             <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'focus') } %>
-            The classifications used to categorise actions
+            Actions can be classified by their focus
           <% end %>
         <% end %>
 

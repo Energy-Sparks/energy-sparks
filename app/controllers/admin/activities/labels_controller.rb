@@ -9,6 +9,7 @@ module Admin
 
       load_and_authorize_resource :label, class: 'Task::Label'
       before_action :set_label_type
+      before_action :add_breadcrumbs
 
       def index
         @labels = @labels.of_type(@label_type).by_name
@@ -56,6 +57,11 @@ module Admin
 
       def label_params
         params.expect(task_label: [*t_params(Task::Label.mobility_attributes)])
+      end
+
+      def add_breadcrumbs
+        @breadcrumbs << { name: Task::Label.task_type(@label_type).pluralize.humanize, href: classification_path }
+        @breadcrumbs << { name: @label_type.humanize }
       end
     end
   end

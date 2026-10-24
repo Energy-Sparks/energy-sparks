@@ -8,13 +8,13 @@
                 admin_activities_label_path(@label)
               end %>
 
-<div class="p-2">
+<div class="py-4">
   <%= simple_form_for([:admin, @label], url: form_url) do |f| %>
     <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
       <%= f.input t_field(:name, locale), label: Task::Label.human_attribute_name(:name), as: :string %>
     <% end %>
 
-    <div class="py-3 d-flex gap-2 align-items-center">
+    <div class="py-2 d-flex gap-2 align-items-center">
       <%= f.submit 'Save', class: 'btn btn-primary' %>
 
       <% unless @label.new_record? %>
