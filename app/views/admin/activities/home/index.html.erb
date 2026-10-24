@@ -23,10 +23,12 @@
           Categories used to group activities
         <% end %>
 
-        <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
-          <% p.with_title { 'Classifications' } %>
-          <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'aim') } %>
-          The classifications used to categorise activities
+        <% if Flipper.enabled?(:activity_classifications) %>
+          <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
+            <% p.with_title { 'Classifications' } %>
+            <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'aim') } %>
+            The classifications used to categorise activities
+          <% end %>
         <% end %>
 
         <%= render PromptComponent.new(icon: 'calendar', style: :compact, status: :none) do |p| %>
@@ -62,10 +64,12 @@
           Categories used to group actions
         <% end %>
 
-        <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
-          <% p.with_title { 'Classifications' } %>
-          <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'focus') } %>
-          The classifications used to categorise actions
+        <% if Flipper.enabled?(:activity_classifications) %>
+          <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
+            <% p.with_title { 'Classifications' } %>
+            <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'focus') } %>
+            The classifications used to categorise actions
+          <% end %>
         <% end %>
 
         <%= render PromptComponent.new(icon: 'calendar', style: :compact, status: :none) do |p| %>

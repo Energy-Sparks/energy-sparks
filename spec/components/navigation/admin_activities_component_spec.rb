@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Navigation::AdminActivitiesComponent, :include_url_helpers, type: :component do
-  context 'when rendering' do
+  context 'when rendering with feature enabled' do
     before do
+      Flipper.enable(:activity_classifications)
       render_inline(described_class.new)
     end
 
@@ -33,5 +34,15 @@ RSpec.describe Navigation::AdminActivitiesComponent, :include_url_helpers, type:
       it { expect(page).to have_link('Programmes', href: admin_programme_types_path) }
       it { expect(page).to have_link('Recent images', href: admin_reports_images_path) }
     end
+  end
+
+  context 'when the activity classifications feature is disabled' do
+    before do
+      Flipper.disable(:activity_classifications)
+      render_inline(described_class.new)
+    end
+
+    it { expect(page).to have_no_link('Classifications', href: admin_activities_labels_path(label_type: 'aim')) }
+    it { expect(page).to have_no_link('Classifications', href: admin_activities_labels_path(label_type: 'focus')) }
   end
 end

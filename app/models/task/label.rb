@@ -33,7 +33,7 @@ module Task
     has_many :label_items, class_name: 'Task::LabelItem', inverse_of: :label, dependent: :destroy
 
     scope :of_type, ->(label_type) { where(label_type: label_type) }
-    scope :by_name, -> { order(name: :asc) }
+    scope :by_name, -> { i18n.order(name: :asc) }
 
     def task_type
       self.class.task_type(label_type)

@@ -6,22 +6,26 @@ module Navigation
       [
         { name: 'Activities', path: admin_activity_types_path },
         { name: 'Categories', path: admin_activity_categories_path },
-        { name: 'Classifications', path: admin_activities_labels_path(label_type: 'aim'),
-          match_controller: false, selected: task_type == 'activity' },
+        (if Flipper.enabled?(:activity_classifications)
+           { name: 'Classifications', path: admin_activities_labels_path(label_type: 'aim'),
+             match_controller: false, selected: task_type == 'activity' }
+         end),
         { name: 'Latest Recordings', path: admin_reports_activities_path },
         { name: 'Report', path: admin_reports_activity_types_path }
-      ]
+      ].compact
     end
 
     def actions_section
       [
         { name: 'Actions', path: admin_intervention_types_path },
         { name: 'Categories', path: admin_intervention_type_groups_path },
-        { name: 'Classifications', path: admin_activities_labels_path(label_type: 'focus'),
-          match_controller: false, selected: task_type == 'action' },
+        (if Flipper.enabled?(:activity_classifications)
+           { name: 'Classifications', path: admin_activities_labels_path(label_type: 'focus'),
+             match_controller: false, selected: task_type == 'action' }
+         end),
         { name: 'Latest Recordings', path: admin_reports_interventions_path },
         { name: 'Report', path: admin_reports_intervention_types_path }
-      ]
+      ].compact
     end
 
     def related_section

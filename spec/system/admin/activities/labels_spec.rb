@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Admin labels' do
+RSpec.describe 'Admin::Activities::Labels system spec' do
   let!(:admin) { create(:admin) }
   let!(:aim) { create(:label, label_type: :aim, name: 'Reduce energy use') }
   let!(:duration) { create(:label, label_type: :duration, name: 'One hour') }
