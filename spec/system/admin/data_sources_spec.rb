@@ -275,6 +275,17 @@ RSpec.describe 'Data Sources admin', :include_application_helper, :school_groups
           it 'has a download email data source report button' do
             expect(page).to have_button('Email Data Source Report')
           end
+
+          it 'queues a report containing only active meters by default' do
+            expect { all(:button, 'Email Data Source Report')[1].click }.to \
+              have_enqueued_job(SendDataSourceReportJob).with(user.email, existing_data_source.id, all_meters: false)
+          end
+
+          it 'queues a report including inactive meters when selected' do
+            choose 'Active and inactive meters'
+            expect { all(:button, 'Email Data Source Report')[1].click }.to \
+              have_enqueued_job(SendDataSourceReportJob).with(user.email, existing_data_source.id, all_meters: true)
+          end
         end
       end
 
