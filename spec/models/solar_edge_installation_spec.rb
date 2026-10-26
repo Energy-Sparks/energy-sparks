@@ -238,4 +238,67 @@ describe SolarEdgeInstallation do
       end
     end
   end
+
+  # rubocop:disable-next RSpec/NestedGroups
+  describe '#can_load_meter?' do
+    context 'when setup complete' do
+      let!(:solar_edge_installation) { create(:solar_edge_installation) }
+
+      context 'with no meters in database' do
+        context 'with all SolarEdge meters active' do
+          it 'loads data for all meters' do
+            expect(solar_edge_installation.can_load_meter?(:solar_pv)).to be(true)
+            expect(solar_edge_installation.can_load_meter?(:exported_solar_pv)).to be(true)
+            expect(solar_edge_installation.can_load_meter?(:electricity)).to be(true)
+          end
+        end
+
+        context 'with inactive import and export in SolarEdge' do
+          let!(:solar_edge_installation) { create(:solar_edge_installation, :with_inactive_import_and_export) }
+
+          it 'loads data for just solar pv' do
+            expect(solar_edge_installation.can_load_meter?(:solar_pv)).to be(true)
+            expect(solar_edge_installation.can_load_meter?(:exported_solar_pv)).to be(false)
+            expect(solar_edge_installation.can_load_meter?(:electricity)).to be(false)
+          end
+        end
+      end
+
+      context 'with meters in database' do
+        let!(:solar_edge_installation) { create(:solar_edge_installation_with_meters_and_validated_readings) }
+
+        context 'when they are all active' do
+          it 'loads data for all meters' do
+            expect(solar_edge_installation.can_load_meter?(:solar_pv)).to be(true)
+            expect(solar_edge_installation.can_load_meter?(:exported_solar_pv)).to be(true)
+            expect(solar_edge_installation.can_load_meter?(:electricity)).to be(true)
+          end
+        end
+
+        context 'when electricity and export meters are inactive' do
+          before do
+            # rubocop:disable-next Rails/SkipsModelValidations
+            solar_edge_installation.meters.where(meter_type: %i[electricity
+                                                                exported_solar_pv]).update_all(active: false)
+          end
+
+          it 'loads data for just solar pv' do
+            expect(solar_edge_installation.can_load_meter?(:solar_pv)).to be(true)
+            expect(solar_edge_installation.can_load_meter?(:exported_solar_pv)).to be(false)
+            expect(solar_edge_installation.can_load_meter?(:electricity)).to be(false)
+          end
+        end
+      end
+    end
+
+    context 'when not consented' do
+      let!(:solar_edge_installation) { create(:solar_edge_installation, :unconsented) }
+
+      it 'does not load any data' do
+        expect(solar_edge_installation.can_load_meter?(:solar_pv)).to be(false)
+        expect(solar_edge_installation.can_load_meter?(:exported_solar_pv)).to be(false)
+        expect(solar_edge_installation.can_load_meter?(:electricity)).to be(false)
+      end
+    end
+  end
 end

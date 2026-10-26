@@ -29,6 +29,7 @@
 #  fk_rails_...  (amr_data_feed_config_id => amr_data_feed_configs.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
+# rubocop:disable-next Metrics/ClassLength
 class SolarEdgeInstallation < ApplicationRecord
   belongs_to :school, inverse_of: :solar_edge_installations
   belongs_to :amr_data_feed_config
@@ -104,16 +105,16 @@ class SolarEdgeInstallation < ApplicationRecord
       information.dig('site_details', 'sites', 'site', 0, 'status') == 'Active'
   end
 
-  # Can we load this type of meter from the installation?
-  #
-  # Always attempt loading if we've not yet created the meters.
-  # Always attempt loading if the local meter is active
-  # For export and grid import (electricity) meters, only attempt load if the meters are active according to SolarEdge
+  # Always attempt to load solar_pv data if the local meter is active, otherwise only
+  # load the import/export meters if the meters are active in both SolarEdge and in
+  # EnergySparks
   def can_load_meter?(meter_type)
-    return true unless setup_complete? # meters created as part of initial load, so always attempt
-    return true if meter_type == :solar_pv && meter(:solar_pv).active?
+    return false unless consented?
 
-    meter(meter_type)&.active? && solar_edge_meter_active?(meter_type)
+    return local_meter_loadable?(:solar_pv) if meter_type == :solar_pv
+
+    solar_edge_meter_active?(meter_type) &&
+      local_meter_loadable?(meter_type)
   end
 
   # We expiry tokens early to avoid clock / timing issues with generating timestamp
@@ -151,6 +152,10 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   private
+
+  def local_meter_loadable?(meter_type)
+    meter(meter_type).blank? || meter(meter_type).active?
+  end
 
   def solar_edge_meter_type(meter_type)
     SOLAR_EDGE_METER_TYPE_MAP.key(meter_type)
