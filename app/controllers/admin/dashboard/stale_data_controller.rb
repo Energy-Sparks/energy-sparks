@@ -2,7 +2,7 @@
 
 module Admin
   module Dashboard
-    class StaleDataController < Admin::Reports::LimitedDataController
+    class StaleDataController < Admin::Reports::StaleDataController
       include AdminDashboard
 
       before_action :set_user
