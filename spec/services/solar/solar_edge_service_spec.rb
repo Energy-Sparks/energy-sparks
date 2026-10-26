@@ -14,37 +14,59 @@ describe Solar::SolarEdgeService do
       include_context 'with a stubbed SolarEdge date request'
       include_context 'with a stubbed SolarEdge inventory request'
 
-      before { service.update_information }
+      context 'with no cached data' do
+        before { service.update_information }
 
-      it 'updates the site_details' do
-        expect(installation.reload.information['site_details']).to match(
-          hash_including(
-            'siteId' => site_id,
-            'activationStatus' => 'ACTIVE'
+        it 'updates the site_details' do
+          expect(installation.reload.information['site_details']).to match(
+            hash_including(
+              'siteId' => site_id,
+              'activationStatus' => 'ACTIVE'
+            )
           )
-        )
+        end
+
+        it 'updates the dates' do
+          expect(installation.reload.information['dates']).to eq(
+            {
+              'from' => '2024-01-01T00:00:00+01:00',
+              'to' => '2026-01-02T13:43:01+01:00'
+            }
+          )
+        end
+
+        it 'updates the inventory' do
+          expect(installation.reload.information['inventory']).to eq(
+            [
+              { 'type' => 'METER', 'active' => true, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
+                'serialNumber' => '12345' },
+              { 'type' => 'METER', 'active' => true, 'meterType' => 'Purchased', 'name' => 'Import Meter',
+                'serialNumber' => '12345' },
+              { 'type' => 'METER', 'active' => true, 'meterType' => 'SelfConsumption', 'name' => 'Self Consumption' },
+              { 'type' => 'METER', 'active' => true, 'meterType' => 'Consumption', 'name' => 'Consumption Meter' }
+            ]
+          )
+        end
       end
 
-      it 'updates the dates' do
-        expect(installation.reload.information['dates']).to eq(
-          {
-            'from' => '2024-01-01T00:00:00+01:00',
-            'to' => '2026-01-02T13:43:01+01:00'
-          }
-        )
-      end
+      context 'with existing dates' do
+        let!(:installation) do
+          create(:solar_edge_installation, information: {
+                   'dates' => { 'from' => 'from', 'to' => 'to' },
+                   'site_details' => { 'activationStatus' => 'ACTIVE' }
+                 })
+        end
 
-      it 'updates the inventory' do
-        expect(installation.reload.information['inventory']).to eq(
-          [
-            { 'type' => 'METER', 'active' => true, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
-              'serialNumber' => '12345' },
-            { 'type' => 'METER', 'active' => true, 'meterType' => 'Purchased', 'name' => 'Import Meter',
-              'serialNumber' => '12345' },
-            { 'type' => 'METER', 'active' => true, 'meterType' => 'SelfConsumption', 'name' => 'Self Consumption' },
-            { 'type' => 'METER', 'active' => true, 'meterType' => 'Consumption', 'name' => 'Consumption Meter' }
-          ]
-        )
+        before { service.update_information }
+
+        it 'updates the dates' do
+          expect(installation.reload.information['dates']).to eq(
+            {
+              'from' => 'from',
+              'to' => 'to'
+            }
+          )
+        end
       end
     end
 
@@ -59,9 +81,18 @@ describe Solar::SolarEdgeService do
         service.update_information
       end
 
-      it 'updates only the site_details and dates' do
+      it 'updates only the site_details and inventory' do
         expect(installation.reload.information.keys).to contain_exactly('site_details', 'inventory', 'dates')
-        expect(installation.reload.information['dates']).to be_empty
+        expect(installation.reload.information['dates']).to be_nil
+      end
+
+      context 'when status has not changed' do
+        let!(:installation) { create(:solar_edge_installation, :pending_status) }
+
+        it 'updates only the site_details and inventory' do
+          expect(installation.reload.information.keys).to contain_exactly('site_details', 'inventory', 'dates')
+          expect(installation.reload.information['dates']).to be_nil
+        end
       end
     end
   end

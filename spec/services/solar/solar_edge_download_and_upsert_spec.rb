@@ -138,6 +138,11 @@ module Solar
       let(:installation) { create(:solar_edge_installation) }
       let(:site_api) { instance_double(DataFeeds::SolarEdge::SiteApi) }
 
+      def allow_refreshing_information(site_api:)
+        allow(site_api).to receive_messages(details: installation.information['site_details'],
+                                            inventory: installation.information['inventory'])
+      end
+
       def allow_solar_meter_api_methods(site_api:, start_date:, end_date:, serial_number:, readings:)
         allow(site_api).to receive(:production).with(start_date:,
                                                      end_date:).and_return(readings)
@@ -173,6 +178,7 @@ module Solar
         let(:requested_end_date) { Time.zone.today }
 
         before do
+          allow_refreshing_information(site_api:)
           allow_solar_meter_api_methods(site_api:, start_date: requested_start_date,
                                         end_date: requested_end_date, serial_number: '12345', readings:)
         end
@@ -205,6 +211,7 @@ module Solar
                  school: installation.school,
                  solar_edge_installation: installation)
 
+          allow_refreshing_information(site_api:)
           allow_solar_meter_api_methods(site_api:, start_date: expected_start,
                                         end_date: expected_end, serial_number: '12345', readings:)
         end
@@ -255,6 +262,7 @@ module Solar
         let(:expected_start) { nil }
 
         before do
+          allow_refreshing_information(site_api:)
           allow_solar_meter_api_methods(site_api:, start_date: expected_start,
                                         end_date: expected_end, serial_number: '12345', readings:)
         end
@@ -287,6 +295,7 @@ module Solar
                  school: installation.school,
                  solar_edge_installation: installation)
 
+          allow_refreshing_information(site_api:)
           allow(site_api).to receive(:production).with(start_date: expected_start,
                                                        end_date: expected_end).and_return(readings)
         end
@@ -318,6 +327,7 @@ module Solar
                  school: installation.school,
                  solar_edge_installation: installation)
 
+          allow_refreshing_information(site_api:)
           allow(site_api).to receive(:production).with(start_date: expected_start,
                                                        end_date: expected_end).and_return(readings)
         end
@@ -330,6 +340,8 @@ module Solar
 
       context 'when the import and export meters are lagging' do
         before do
+          allow_refreshing_information(site_api:)
+
           create(:solar_pv_meter, :with_unvalidated_readings,
                  end_date: Date.yesterday - 5,
                  school: installation.school,

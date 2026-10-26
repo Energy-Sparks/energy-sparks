@@ -9,7 +9,8 @@
     <% pairs.each do |key, value| %>
       <tr>
         <th><%= key %></th>
-        <td><%= value %></td>
+        <td><pre><%= JSON.pretty_generate(value) %></pre>
+        </td>
       </tr>
     <% end %>
   </tbody>

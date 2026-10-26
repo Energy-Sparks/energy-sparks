@@ -44,8 +44,7 @@ FactoryBot.define do
     trait :pending_status do
       information do
         {
-          'site_details' => { 'activationStatus' => 'PENDING' },
-          'dates' => {}
+          'site_details' => { 'activationStatus' => 'PENDING' }
         }
       end
     end

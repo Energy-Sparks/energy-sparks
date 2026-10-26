@@ -17,19 +17,23 @@
     </thead>
     <tbody>
       <tr>
-        <td>User Consent Granted?</td>
+        <td>User granted consent?</td>
         <td><%= installation.consented? %></td>
       </tr>
       <tr>
-        <td>SolarEdge Site Active</td>
+        <td>SolarEdge monitoring active?</td>
         <td><%= installation.monitoring_active? %></td>
       </tr>
       <tr>
-        <td>SolarEdge Grid Import Meter Active?</td>
+        <td>Production date begins</td>
+        <td><%= installation.information&.dig('dates', 'from') if installation.consented? %></td>
+      </tr>
+      <tr>
+        <td>SolarEdge grid import meter active?</td>
         <td><%= installation.cached_meter_metadata(:electricity)&.dig('active') %></td>
       </tr>
       <tr>
-        <td>SolarEdge Export Meter Active?</td>
+        <td>SolarEdge export meter active?</td>
         <td><%= installation.cached_meter_metadata(:exported_solar_pv)&.dig('active') %></td>
       </tr>
     </tbody>
@@ -46,7 +50,7 @@
   <tbody>
     <tr>
       <td>Consent Granted At</td>
-      <td><%= nice_date_times(installation.consent_granted_at) if installation.consent_granted_at %></td>
+      <td><%= nice_date_times(installation.consent_granted_at) if installation.consented? %></td>
     </tr>
     <tr>
       <td>Access token</td>
