@@ -443,9 +443,6 @@ Layout/EmptyComment:
 # This cop supports safe autocorrection (--autocorrect).
 Layout/EmptyLineAfterGuardClause:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/hot_water_html_table_formatting.rb'
@@ -575,11 +572,19 @@ Layout/EmptyLineAfterGuardClause:
     - 'app/models/concerns/mailchimp_updateable.rb'
     - 'app/models/concerns/transifex_serialisable.rb'
     - 'app/models/dashboard_message.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'app/models/lists/establishment.rb'
     - 'app/models/management_dashboard_table.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/attribute_type.rb'
+    - 'app/models/meter_attribute_types/symbol.rb'
+    - 'app/models/meter_attribute_types/time_of_day.rb'
+    - 'app/models/meter_attribute_types/time_of_day30mins.rb'
+    - 'app/models/meter_attribute_types/time_of_year.rb'
     - 'app/models/resource_file.rb'
     - 'app/models/school_onboarding.rb'
     - 'app/models/scoreboard.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'app/services/academic_year_factory.rb'
     - 'app/services/alerts/generate_sms_notifications.rb'
     - 'app/services/amr/n3rgy_readings_upserter.rb'
@@ -642,7 +647,7 @@ Layout/EmptyLineAfterMagicComment:
 # Configuration parameters: EmptyLineBetweenMethodDefs, EmptyLineBetweenClassDefs, EmptyLineBetweenModuleDefs, DefLikeMacros, AllowAdjacentOneLineDefs, NumberOfEmptyLines.
 Layout/EmptyLineBetweenDefs:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types.rb'
     - 'analytics/lib/dashboard/advice/advice_gas_base.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/series_data_manager.rb'
@@ -676,7 +681,7 @@ Layout/EmptyLineBetweenDefs:
 # This cop supports safe autocorrection (--autocorrect).
 Layout/EmptyLines:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types.rb'
     - 'analytics/lib/dashboard/alerts/gas/alert_gas_annual_versus_benchmark.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/chart_configuration.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/x_axis_bucketor.rb'
@@ -733,10 +738,10 @@ Layout/EmptyLines:
 # This cop supports safe autocorrection (--autocorrect).
 Layout/EmptyLinesAfterModuleInclusion:
   Exclude:
-    - 'analytics/app/services/baseload/baseload_calculation_service.rb'
-    - 'analytics/app/services/costs/accounting_costs_service.rb'
-    - 'analytics/app/services/meter_collection_comparer.rb'
-    - 'analytics/app/services/tariffs/generic_tariff_manager.rb'
+    - 'app/services/baseload/baseload_calculation_service.rb'
+    - 'app/services/costs/accounting_costs_service.rb'
+    - 'app/services/meter_collection_reconciler.rb'
+    - 'app/services/generic_tariff_manager.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_additional_prioritisation_data.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_long_term_trend.rb'
@@ -875,8 +880,8 @@ Layout/EmptyLinesAroundBlockBody:
 # SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines, beginning_only, ending_only
 Layout/EmptyLinesAroundClassBody:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/hot_water_html_table_formatting.rb'
     - 'analytics/lib/dashboard/aggregation/accounting_costs.rb'
     - 'analytics/lib/dashboard/aggregation/economic_costs.rb'
@@ -943,7 +948,7 @@ Layout/EmptyLinesAroundMethodBody:
 # SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines
 Layout/EmptyLinesAroundModuleBody:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -959,9 +964,9 @@ Layout/EndAlignment:
 # Configuration parameters: AllowForAlignment, AllowBeforeTrailingComments, ForceEqualSignAlignment.
 Layout/ExtraSpacing:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/models/tariffs/max_monthly_demand_charges_base.rb'
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/models/max_monthly_demand_charges_base.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/dashboard_configuration.rb'
@@ -1105,7 +1110,7 @@ Layout/FirstArgumentIndentation:
 # SupportedStyles: special_inside_parentheses, consistent, align_brackets
 Layout/FirstArrayElementIndentation:
   Exclude:
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/advice/hot_water_html_table_formatting.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/chart_configuration.rb'
     - 'analytics/lib/dashboard/data_sources/metering/sheffield/solar_irradiance_from_solar_pv.rb'
@@ -1124,8 +1129,8 @@ Layout/FirstArrayElementIndentation:
 # SupportedStyles: special_inside_parentheses, consistent, align_braces
 Layout/FirstHashElementIndentation:
   Exclude:
-    - 'analytics/app/models/tariffs/distribution_use_of_system_charges.rb'
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/d_u_o_s_charges.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/advice/dashboard_configuration.rb'
     - 'analytics/lib/dashboard/alerts/common/management_summary_table.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/chart_configuration.rb'
@@ -1194,7 +1199,7 @@ Layout/FirstParameterIndentation:
 # SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
 Layout/HashAlignment:
   Exclude:
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/advice/adult_dashboard_configuration.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_configuration.rb'
@@ -1365,8 +1370,8 @@ Layout/InitialIndentation:
 # Configuration parameters: AllowDoxygenCommentStyle, AllowGemfileRubyComment, AllowRBSInlineAnnotation, AllowSteepAnnotation, AllowYARDCommentBlockSeparator.
 Layout/LeadingCommentSpace:
   Exclude:
-    - 'analytics/app/models/open_close_times.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/open_close_times.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
@@ -1506,7 +1511,7 @@ Layout/MultilineArrayBraceLayout:
 # SupportedStyles: symmetrical, new_line, same_line
 Layout/MultilineHashBraceLayout:
   Exclude:
-    - 'analytics/app/models/tariffs/distribution_use_of_system_charges.rb'
+    - 'app/models/d_u_o_s_charges.rb'
     - 'db/migrate/20230224114042_remove_notes_from_meters.rb'
     - 'lib/tasks/deployment/20230209161636_copy_meter_notes_to_school_issues.rake'
 
@@ -1565,7 +1570,7 @@ Layout/MultilineMethodCallBraceLayout:
 # SupportedStyles: aligned, indented, indented_relative_to_receiver
 Layout/MultilineMethodCallIndentation:
   Exclude:
-    - 'analytics/app/services/costs/monthly_meter_costs_service.rb'
+    - 'app/services/costs/monthly_meter_costs_service.rb'
     - 'app/controllers/compare_controller.rb'
     - 'app/controllers/school_groups/advice/gas_long_term_controller.rb'
     - 'app/models/lists/establishment.rb'
@@ -1582,8 +1587,8 @@ Layout/MultilineMethodCallIndentation:
 # SupportedStyles: aligned, indented
 Layout/MultilineOperationIndentation:
   Exclude:
-    - 'analytics/app/models/tariffs/agreed_supply_capacity_charge.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/agreed_supply_capacity_charge.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/economic_tariff_change_caveats.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/chart_drilldown.rb'
@@ -1709,8 +1714,8 @@ Layout/SpaceAroundEqualsInParameterDefault:
 # SupportedStylesForRationalLiterals: space, no_space
 Layout/SpaceAroundOperators:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/models/tariffs/max_monthly_demand_charges_base.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/models/max_monthly_demand_charges_base.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_impending_holiday.rb'
@@ -1770,8 +1775,8 @@ Layout/SpaceAroundOperators:
 # SupportedStylesForEmptyBraces: space, no_space
 Layout/SpaceBeforeBlockBraces:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/aggregation/cost_schedule.rb'
@@ -1913,7 +1918,7 @@ Layout/SpaceInsideArrayPercentLiteral:
 # SupportedStylesForEmptyBraces: space, no_space
 Layout/SpaceInsideBlockBraces:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
@@ -2051,8 +2056,8 @@ Layout/SpaceInsideBlockBraces:
 # SupportedStylesForEmptyBraces: space, no_space
 Layout/SpaceInsideHashLiteralBraces:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/advice/adult_dashboard_configuration.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
@@ -2318,9 +2323,9 @@ Lint/AmbiguousBlockAssociation:
 # This cop supports safe autocorrection (--autocorrect).
 Lint/AmbiguousOperatorPrecedence:
   Exclude:
-    - 'analytics/app/services/costs/agreed_supply_capacity_service.rb'
-    - 'analytics/app/services/costs/tariff_information_service.rb'
-    - 'analytics/app/services/power_consumption_service.rb'
+    - 'app/services/costs/agreed_supply_capacity_service.rb'
+    - 'app/services/costs/tariff_information_service.rb'
+    - 'app/services/power_consumption_service.rb'
     - 'analytics/lib/dashboard/alerts/electricity/alert_electricity_annual_versus_benchmark.rb'
     - 'analytics/lib/dashboard/alerts/electricity/alert_electricity_peak_kw_versus_benchmark.rb'
     - 'analytics/lib/dashboard/alerts/electricity/baseload/alert_electricity_baseload_versus_benchmark.rb'
@@ -2383,7 +2388,7 @@ Lint/AmbiguousRegexpLiteral:
 # Offense count: 1
 Lint/ArgumentMismatch:
   Exclude:
-    - 'analytics/app/models/open_close_times.rb'
+    - 'app/models/open_close_times.rb'
 
 # Offense count: 9
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -2573,8 +2578,8 @@ Lint/FloatComparison:
 # Offense count: 39
 Lint/IneffectiveAccessModifier:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/services/power_consumption_service.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/services/power_consumption_service.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/alerts/electricity/baseload/alert_intraweek_baseload_variation.rb'
     - 'analytics/lib/dashboard/alerts/electricity/baseload/alert_seasonal_baseload_variation.rb'
@@ -2609,7 +2614,7 @@ Lint/MissingCopEnableDirective:
 # Configuration parameters: AllowedParentClasses.
 Lint/MissingSuper:
   Exclude:
-    - 'analytics/app/services/heating/heating_thermostatic_analysis_service.rb'
+    - 'app/services/heating/heating_thermostatic_analysis_service.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
     - 'analytics/lib/dashboard/modelling/heating/heating_non_heating_disaggregation_model.rb'
     - 'analytics/lib/dashboard/utilities/time_of_day.rb'
@@ -2649,8 +2654,8 @@ Lint/PercentSymbolArray:
 # This cop supports safe autocorrection (--autocorrect).
 Lint/RedundantCopDisableDirective:
   Exclude:
-    - 'analytics/app/services/baseload/intraweek_baseload_service.rb'
-    - 'analytics/app/services/baseload/seasonal_baseload_service.rb'
+    - 'app/services/baseload/intraweek_baseload_service.rb'
+    - 'app/services/baseload/seasonal_baseload_service.rb'
     - 'app/components/impact_reports/base_component.rb'
     - 'app/components/impact_reports/metrics_base_component.rb'
     - 'app/components/page_nav_component.rb'
@@ -2683,7 +2688,7 @@ Lint/RedundantDirGlobSort:
 # This cop supports safe autocorrection (--autocorrect).
 Lint/RedundantStringCoercion:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/economic_tariff_change_caveats.rb'
     - 'analytics/lib/dashboard/charting_and_reports/virtual_schools/analytics_load_schools.rb'
@@ -2711,7 +2716,7 @@ Lint/RescueException:
 # Configuration parameters: IgnoreImplicitReferences.
 Lint/ShadowedArgument:
   Exclude:
-    - 'analytics/app/models/estimate_period_consumption.rb'
+    - 'app/models/estimate_period_consumption.rb'
     - 'analytics/lib/dashboard/modelling/heating/heating_and_hot_water_breakdown.rb'
 
 # Offense count: 2
@@ -2731,7 +2736,7 @@ Lint/SuperArgumentMismatch:
 # SupportedStyles: strict, consistent
 Lint/SymbolConversion:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/alerts/gas/boiler control/alert_seasonal_heating_schooldays.rb'
     - 'analytics/lib/dashboard/charting_and_reports/content_base.rb'
@@ -2814,7 +2819,7 @@ Lint/UnusedBlockArgument:
 # NotImplementedExceptions: NotImplementedError
 Lint/UnusedMethodArgument:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/hot_water_html_table_formatting.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
@@ -2956,7 +2961,7 @@ Lint/UselessAssignment:
 # Offense count: 1
 Lint/UselessConstantScoping:
   Exclude:
-    - 'analytics/app/models/tariffs/distribution_use_of_system_charges.rb'
+    - 'app/models/d_u_o_s_charges.rb'
 
 # Offense count: 17
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -2981,17 +2986,6 @@ Lint/Void:
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes, Max.
 Metrics/AbcSize:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/estimate_period_consumption.rb'
-    - 'analytics/app/models/meter_collection.rb'
-    - 'analytics/app/models/open_close_time.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/services/costs/monthly_meter_costs_service.rb'
-    - 'analytics/app/services/costs/tariff_information_service.rb'
-    - 'analytics/app/services/meter_collection_comparer.rb'
-    - 'analytics/app/services/power_consumption_service.rb'
-    - 'analytics/app/services/solar_photovoltaics/existing_benefits_service.rb'
-    - 'analytics/app/services/tariffs/generic_tariff_manager.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/economic_tariff_change_caveats.rb'
@@ -3216,13 +3210,18 @@ Metrics/AbcSize:
     - 'app/models/concerns/fuel_typeable.rb'
     - 'app/models/concerns/searchable.rb'
     - 'app/models/concerns/transifex_serialisable.rb'
+    - 'app/models/dashboard/meter.rb'
     - 'app/models/data_source.rb'
     - 'app/models/energy_tariff.rb'
     - 'app/models/energy_tariff_charge.rb'
     - 'app/models/energy_tariff_price.rb'
+    - 'app/models/estimate_period_consumption.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'app/models/mailchimp/contact.rb'
     - 'app/models/meter.rb'
+    - 'app/models/meter_collection.rb'
     - 'app/models/meter_monthly_summary.rb'
+    - 'app/models/open_close_time.rb'
     - 'app/models/podium.rb'
     - 'app/models/procurement_route.rb'
     - 'app/models/school.rb'
@@ -3261,18 +3260,24 @@ Metrics/AbcSize:
     - 'app/services/commercial/licence_manager.rb'
     - 'app/services/comparison_service.rb'
     - 'app/services/confirmation_reminder.rb'
+    - 'app/services/costs/monthly_meter_costs_service.rb'
+    - 'app/services/costs/tariff_information_service.rb'
     - 'app/services/energy_tariff_default_prices_creator.rb'
     - 'app/services/equivalences/calculator.rb'
     - 'app/services/equivalences/generate_equivalences.rb'
+    - 'app/services/generic_tariff_manager.rb'
     - 'app/services/holiday_factory.rb'
     - 'app/services/i18n/backend/mirror.rb'
     - 'app/services/mailchimp/audience_manager.rb'
     - 'app/services/mailchimp/audience_updater.rb'
     - 'app/services/mailchimp/csv_exporter.rb'
+    - 'app/services/meter_collection_reconciler.rb'
+    - 'app/services/meter_collection_reconciler/meter_reconciler.rb'
     - 'app/services/meters/dcc_consent_calcs.rb'
     - 'app/services/meters/dcc_grant_trusted_consents.rb'
     - 'app/services/meters/dcc_withdraw_trusted_consents.rb'
     - 'app/services/meters/n3rgy_metering_service.rb'
+    - 'app/services/power_consumption_service.rb'
     - 'app/services/recommendations/base.rb'
     - 'app/services/rollbar_notifier_service.rb'
     - 'app/services/schedule_data_manager_service.rb'
@@ -3290,6 +3295,7 @@ Metrics/AbcSize:
     - 'app/services/schools/school_metrics_generator_service.rb'
     - 'app/services/solar/base_upserter.rb'
     - 'app/services/solar/solis_cloud_download_and_upsert.rb'
+    - 'app/services/solar_photovoltaics/existing_benefits_service.rb'
     - 'app/services/targets/generate_progress_service.rb'
     - 'app/services/targets/school_group_target_data_reporting_service.rb'
     - 'app/services/targets/target_dates.rb'
@@ -3441,15 +3447,15 @@ Metrics/BlockNesting:
 # Configuration parameters: CountComments, Max, CountAsOne.
 Metrics/ClassLength:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/meter_collection.rb'
-    - 'analytics/app/models/open_close_time.rb'
-    - 'analytics/app/models/open_close_times.rb'
-    - 'analytics/app/models/tariffs/distribution_use_of_system_charges.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
-    - 'analytics/app/services/baseload/baseload_analysis.rb'
-    - 'analytics/app/services/tariffs/generic_tariff_manager.rb'
+    - 'app/models/dashboard/meter.rb'
+    - 'app/models/meter_collection.rb'
+    - 'app/models/open_close_time.rb'
+    - 'app/models/open_close_times.rb'
+    - 'app/models/d_u_o_s_charges.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
+    - 'app/services/baseload/baseload_analysis.rb'
+    - 'app/services/generic_tariff_manager.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/dashboard_configuration.rb'
@@ -3591,10 +3597,10 @@ Metrics/CollectionLiteralLength:
 # Configuration parameters: AllowedMethods, AllowedPatterns, Max.
 Metrics/CyclomaticComplexity:
   Exclude:
-    - 'analytics/app/models/meter_collection.rb'
-    - 'analytics/app/models/open_close_time.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/services/tariffs/generic_tariff_manager.rb'
+    - 'app/models/meter_collection.rb'
+    - 'app/models/open_close_time.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/services/generic_tariff_manager.rb'
     - 'analytics/lib/dashboard/advice/heating_model_fitting_advice.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_analysis_base.rb'
@@ -3809,9 +3815,9 @@ Metrics/ModuleLength:
 # Configuration parameters: Max, CountKeywordArgs, MaxOptionalParameters.
 Metrics/ParameterLists:
   Exclude:
-    - 'analytics/app/models/dashboard/aggregate_meter.rb'
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/meter_collection.rb'
+    - 'app/models/dashboard/aggregate_meter.rb'
+    - 'app/models/dashboard/meter.rb'
+    - 'app/models/meter_collection.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/economic_tariff_change_caveats.rb'
     - 'analytics/lib/dashboard/aggregation/cost_schedule.rb'
@@ -3983,7 +3989,7 @@ Metrics/PerceivedComplexity:
 # Offense count: 33
 Naming/AccessorMethodName:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
+    - 'app/models/dashboard/meter.rb'
     - 'analytics/lib/dashboard/aggregation/amr_one_days_data.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_analysis_base.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -4009,22 +4015,22 @@ Naming/AccessorMethodName:
 # Configuration parameters: AsciiConstants.
 Naming/AsciiIdentifiers:
   Exclude:
-    - 'analytics/app/classes/baseload/meter_baseload_breakdown.rb'
-    - 'analytics/app/classes/combined_usage_metric.rb'
-    - 'analytics/app/classes/costs/agreed_supply_capacity_summary.rb'
-    - 'analytics/app/services/baseload/baseload_analysis.rb'
-    - 'analytics/app/services/baseload/baseload_benchmarks_service.rb'
-    - 'analytics/app/services/baseload/baseload_calculation_service.rb'
-    - 'analytics/app/services/baseload/baseload_meter_breakdown_service.rb'
-    - 'analytics/app/services/baseload/intraweek_baseload_service.rb'
-    - 'analytics/app/services/baseload/seasonal_baseload_service.rb'
-    - 'analytics/app/services/costs/accounting_costs_service.rb'
-    - 'analytics/app/services/costs/agreed_supply_capacity_service.rb'
-    - 'analytics/app/services/costs/blended_rate_calculator.rb'
-    - 'analytics/app/services/costs/economic_tariffs_change_caveats_service.rb'
-    - 'analytics/app/services/heating/heating_start_time_service.rb'
-    - 'analytics/app/services/heating/heating_thermostatic_analysis_service.rb'
-    - 'analytics/app/services/solar_photovoltaics/existing_benefits_service.rb'
+    - 'app/classes/baseload/meter_baseload_breakdown.rb'
+    - 'app/classes/combined_usage_metric.rb'
+    - 'app/classes/costs/agreed_supply_capacity_summary.rb'
+    - 'app/services/baseload/baseload_analysis.rb'
+    - 'app/services/baseload/baseload_benchmarking_service.rb'
+    - 'app/services/baseload/baseload_calculation_service.rb'
+    - 'app/services/baseload/baseload_meter_breakdown_service.rb'
+    - 'app/services/baseload/intraweek_baseload_service.rb'
+    - 'app/services/baseload/seasonal_baseload_service.rb'
+    - 'app/services/costs/accounting_costs_service.rb'
+    - 'app/services/costs/agreed_supply_capacity_service.rb'
+    - 'app/services/costs/blended_rate_calculator.rb'
+    - 'app/services/costs/economic_tariffs_change_caveats_service.rb'
+    - 'app/services/heating/heating_start_time_service.rb'
+    - 'app/services/heating/heating_thermostatic_analysis_service.rb'
+    - 'app/services/solar_photovoltaics/existing_benefits_service.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/economic_tariff_change_caveats.rb'
@@ -4157,7 +4163,7 @@ Naming/HeredocDelimiterNaming:
 # SupportedStylesForLeadingUnderscores: disallowed, required, optional
 Naming/MemoizedInstanceVariableName:
   Exclude:
-    - 'analytics/app/models/meter_collection.rb'
+    - 'app/models/meter_collection.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/alerts/electricity/baseload/alert_freezers_off_for_summer_holidays.rb'
@@ -4175,15 +4181,15 @@ Naming/MemoizedInstanceVariableName:
 # ForbiddenIdentifiers: __id__, __send__
 Naming/MethodName:
   Exclude:
-    - 'analytics/app/classes/baseload/meter_baseload_breakdown.rb'
-    - 'analytics/app/classes/costs/agreed_supply_capacity_summary.rb'
-    - 'analytics/app/services/baseload/baseload_analysis.rb'
-    - 'analytics/app/services/baseload/baseload_calculation_service.rb'
-    - 'analytics/app/services/baseload/intraweek_baseload_service.rb'
-    - 'analytics/app/services/baseload/seasonal_baseload_service.rb'
-    - 'analytics/app/services/costs/blended_rate_calculator.rb'
-    - 'analytics/app/services/heating/heating_thermostatic_analysis_service.rb'
-    - 'analytics/app/services/solar_photovoltaics/existing_benefits_service.rb'
+    - 'app/classes/baseload/meter_baseload_breakdown.rb'
+    - 'app/classes/costs/agreed_supply_capacity_summary.rb'
+    - 'app/services/baseload/baseload_analysis.rb'
+    - 'app/services/baseload/baseload_calculation_service.rb'
+    - 'app/services/baseload/intraweek_baseload_service.rb'
+    - 'app/services/baseload/seasonal_baseload_service.rb'
+    - 'app/services/costs/blended_rate_calculator.rb'
+    - 'app/services/heating/heating_thermostatic_analysis_service.rb'
+    - 'app/services/solar_photovoltaics/existing_benefits_service.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/heating_model_fitting_advice.rb'
@@ -4231,11 +4237,11 @@ Naming/MethodName:
 # AllowedNames: as, at, by, cc, db, id, if, in, io, ip, of, on, os, pp, to
 Naming/MethodParameterName:
   Exclude:
-    - 'analytics/app/classes/combined_usage_metric.rb'
-    - 'analytics/app/classes/costs/agreed_supply_capacity_summary.rb'
-    - 'analytics/app/models/open_close_time.rb'
-    - 'analytics/app/services/heating/seasonal_control_analysis_service.rb'
-    - 'analytics/app/services/power_consumption_service.rb'
+    - 'app/classes/combined_usage_metric.rb'
+    - 'app/classes/costs/agreed_supply_capacity_summary.rb'
+    - 'app/models/open_close_time.rb'
+    - 'app/services/heating/seasonal_control_analysis_service.rb'
+    - 'app/services/power_consumption_service.rb'
     - 'analytics/lib/dashboard/advice/heating_model_fitting_advice.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_analysis_base.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -4265,7 +4271,7 @@ Naming/MethodParameterName:
 # WaywardPredicates: infinite?, nonzero?
 Naming/PredicateMethod:
   Exclude:
-    - 'analytics/app/classes/costs/meter_month.rb'
+    - 'app/classes/costs/meter_month.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -4332,8 +4338,8 @@ Naming/PredicateMethod:
 # MethodDefinitionMacros: define_method, define_singleton_method
 Naming/PredicatePrefix:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/services/costs/accounting_costs_service.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/services/costs/accounting_costs_service.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/alerts/electricity/alert_electricity_annual_versus_benchmark.rb'
     - 'analytics/lib/dashboard/alerts/electricity/baseload/alert_electricity_baseload_versus_benchmark.rb'
@@ -4392,12 +4398,12 @@ Naming/RescuedExceptionsVariableName:
 # SupportedStyles: snake_case, camelCase
 Naming/VariableName:
   Exclude:
-    - 'analytics/app/classes/combined_usage_metric.rb'
-    - 'analytics/app/classes/costs/agreed_supply_capacity_summary.rb'
-    - 'analytics/app/services/baseload/baseload_analysis.rb'
-    - 'analytics/app/services/costs/agreed_supply_capacity_service.rb'
-    - 'analytics/app/services/costs/blended_rate_calculator.rb'
-    - 'analytics/app/services/heating/heating_start_time_service.rb'
+    - 'app/classes/combined_usage_metric.rb'
+    - 'app/classes/costs/agreed_supply_capacity_summary.rb'
+    - 'app/services/baseload/baseload_analysis.rb'
+    - 'app/services/costs/agreed_supply_capacity_service.rb'
+    - 'app/services/costs/blended_rate_calculator.rb'
+    - 'app/services/heating/heating_start_time_service.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/heating_model_fitting_advice.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
@@ -4451,7 +4457,6 @@ Naming/VariableName:
 # AllowedIdentifiers: TLS1_1, TLS1_2, capture3, iso8601, rfc1123_date, rfc822, rfc2822, rfc3339, x86_64
 Naming/VariableNumber:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/dashboard_configuration.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -4478,6 +4483,8 @@ Naming/VariableNumber:
     - 'analytics/test_support/excel_charts.rb'
     - 'app/components/meter_costs_table_component.rb'
     - 'app/controllers/schools/advice/storage_heaters_controller.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/time_of_day30mins.rb'
     - 'lib/tasks/deployment/20240229165916_load_regions_and_local_authority_districts.rake'
     - 'lib/tasks/deployment/20240417100759_heat_saver_march2024_config.rake'
     - 'lib/tasks/deployment/20240807133613_add_new_dashboard_feature.rake'
@@ -4633,7 +4640,7 @@ Performance/Count:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Performance/Detect:
   Exclude:
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/test_support/parse_command_line.rb'
     - 'app/services/cads/live_data_service.rb'
     - 'app/services/calendar_term_factory.rb'
@@ -4657,8 +4664,8 @@ Performance/InefficientHashSearch:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Performance/MapCompact:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/services/heating/seasonal_control_analysis_service.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/services/heating/seasonal_control_analysis_service.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -4710,7 +4717,7 @@ Performance/RedundantBlockCall:
 # Configuration parameters: AllowRegexpMatch.
 Performance/RedundantEqualityComparisonBlock:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/utilities/deep_merge_hash.rb'
     - 'analytics/test_support/excel_charts.rb'
     - 'app/models/concerns/mailchimp_updateable.rb'
@@ -4767,11 +4774,11 @@ Performance/StringReplacement:
 # Configuration parameters: OnlySumOrWithInitialValue.
 Performance/Sum:
   Exclude:
-    - 'analytics/app/classes/baseload/intraweek_variation.rb'
-    - 'analytics/app/classes/baseload/meter_baseload_breakdown.rb'
-    - 'analytics/app/services/baseload/baseload_analysis.rb'
-    - 'analytics/app/services/baseload/baseload_meter_breakdown_service.rb'
-    - 'analytics/app/services/baseload/statistical_baseload_calculator.rb'
+    - 'app/classes/baseload/intraweek_variation.rb'
+    - 'app/classes/baseload/meter_baseload_breakdown.rb'
+    - 'app/services/baseload/baseload_analysis.rb'
+    - 'app/services/baseload/baseload_meter_breakdown_service.rb'
+    - 'app/services/baseload/statistical_baseload_calculator.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
     - 'analytics/lib/dashboard/alerts/electricity/alert_change_in_daily_electricity_short_term.rb'
@@ -6765,11 +6772,11 @@ Rails/AddColumnIndex:
 # Configuration parameters: NilOrEmpty, NotPresent, UnlessPresent.
 Rails/Blank:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/estimate_period_consumption.rb'
-    - 'analytics/app/models/meter_collection.rb'
-    - 'analytics/app/models/tariffs/climate_change_levy.rb'
-    - 'analytics/app/services/tariffs/generic_tariff_manager.rb'
+    - 'app/models/dashboard/meter.rb'
+    - 'app/models/estimate_period_consumption.rb'
+    - 'app/models/meter_collection.rb'
+    - 'app/models/climate_change_levy.rb'
+    - 'app/services/generic_tariff_manager.rb'
     - 'analytics/lib/dashboard/modelling/heating/hot_water_heating_splitter.rb'
     - 'analytics/lib/dashboard/utilities/compact_date_print.rb'
     - 'analytics/test_support/run_benchmarks.rb'
@@ -6944,12 +6951,12 @@ Rails/DangerousColumnNames:
 # SupportedStyles: strict, flexible
 Rails/Date:
   Exclude:
-    - 'analytics/app/services/baseload/baseload_benchmarks_service.rb'
-    - 'analytics/app/services/baseload/baseload_calculation_service.rb'
-    - 'analytics/app/services/heating/heating_start_time_savings_service.rb'
-    - 'analytics/app/services/heating/heating_start_time_service.rb'
-    - 'analytics/app/services/power_consumption_service.rb'
-    - 'analytics/app/services/util/meter_date_range_checker.rb'
+    - 'app/services/baseload/baseload_benchmarking_service.rb'
+    - 'app/services/baseload/baseload_calculation_service.rb'
+    - 'app/services/heating/heating_start_time_savings_service.rb'
+    - 'app/services/heating/heating_start_time_service.rb'
+    - 'app/services/power_consumption_service.rb'
+    - 'app/services/util/meter_date_range_checker.rb'
     - 'analytics/lib/dashboard/alerts/common/management_summary_table.rb'
     - 'analytics/lib/dashboard/alerts/electricity/tariffs/alert_agreed_supply_capacity_limit.rb'
     - 'analytics/lib/dashboard/charting_and_reports/calculate_aggregate_values.rb'
@@ -7347,15 +7354,15 @@ Rails/IgnoredColumnsAssignment:
 # This cop supports safe autocorrection (--autocorrect).
 Rails/IndexBy:
   Exclude:
-    - 'analytics/app/services/meter_collection_comparer.rb'
+    - 'app/services/meter_collection_reconciler.rb'
     - 'analytics/test_support/compare_charts.rb'
 
 # Offense count: 23
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Rails/IndexWith:
   Exclude:
-    - 'analytics/app/services/costs/monthly_meter_costs_service.rb'
-    - 'analytics/app/services/costs/tariff_information_service.rb'
+    - 'app/services/costs/monthly_meter_costs_service.rb'
+    - 'app/services/costs/tariff_information_service.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
     - 'analytics/lib/dashboard/aggregation/cost_schedule.rb'
@@ -7459,10 +7466,6 @@ Rails/OrderArguments:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Rails/Output:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/meter_collection.rb'
-    - 'analytics/app/models/open_close_times.rb'
-    - 'analytics/app/services/meter_collection_comparer.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_additional_prioritisation_data.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -7486,11 +7489,16 @@ Rails/Output:
     - 'analytics/lib/dashboard/utilities/record_test_times_to_csv.rb'
     - 'analytics/lib/dashboard/utilities/test_directory_configuration.rb'
     - 'app/models/concerns/csv_importable.rb'
+    - 'app/models/dashboard/meter.rb'
     - 'app/models/lists/establishment.rb'
+    - 'app/models/meter_collection.rb'
+    - 'app/models/open_close_times.rb'
     - 'app/services/aggregation/solar_pv_panels.rb'
     - 'app/services/amr/checking_validated_readings_for_a_meter.rb'
     - 'app/services/amr/upsert_validated_readings.rb'
     - 'app/services/calendar_init_service.rb'
+    - 'app/services/meter_collection_reconciler.rb'
+    - 'app/services/meter_collection_reconciler/meter_reconciler.rb'
     - 'app/services/solar/low_carbon_hub_installation_factory.rb'
     - 'lib/loader/bank_holidays.rb'
     - 'spec/analytics/app/models/tariffs/generic_accounting_tariff_spec.rb'
@@ -7549,9 +7557,9 @@ Rails/OutputSafety:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Rails/Pluck:
   Exclude:
-    - 'analytics/app/classes/baseload/meter_baseload_breakdown.rb'
-    - 'analytics/app/services/baseload/baseload_meter_breakdown_service.rb'
-    - 'analytics/app/services/heating/seasonal_control_analysis_service.rb'
+    - 'app/classes/baseload/meter_baseload_breakdown.rb'
+    - 'app/services/baseload/baseload_meter_breakdown_service.rb'
+    - 'app/services/heating/seasonal_control_analysis_service.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_analysis_base.rb'
@@ -8078,7 +8086,7 @@ Rails/ThreeStateBooleanColumn:
 # SupportedStyles: strict, flexible
 Rails/TimeZone:
   Exclude:
-    - 'analytics/app/services/power_consumption_service.rb'
+    - 'app/services/power_consumption_service.rb'
     - 'analytics/lib/dashboard/data_sources/weather/forecasts/visual_crossing_forecast.rb'
     - 'analytics/lib/dashboard/utilities/time_of_day.rb'
     - 'analytics/lib/dashboard/utilities/time_of_year.rb'
@@ -8218,7 +8226,7 @@ Security/MarshalLoad:
 # SupportedStyles: inline, group
 Style/AccessModifierDeclarations:
   Exclude:
-    - 'analytics/app/models/meter_collection.rb'
+    - 'app/models/meter_collection.rb'
     - 'analytics/lib/dashboard/advice/advice_gas_base.rb'
     - 'analytics/lib/dashboard/advice/heating_model_fitting_advice.rb'
     - 'analytics/lib/dashboard/advice/hot_water_html_table_formatting.rb'
@@ -8398,7 +8406,7 @@ Style/ArgumentsForwarding:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/ArrayIntersect:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
+    - 'app/models/dashboard/meter.rb'
 
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
@@ -8414,7 +8422,7 @@ Style/BarePercentLiterals:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/BitwisePredicate:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
+    - 'app/models/dashboard/meter.rb'
 
 # Offense count: 10
 # This cop supports safe autocorrection (--autocorrect).
@@ -8566,8 +8574,8 @@ Style/ClassEqualityComparison:
 # Offense count: 16
 Style/ClassVars:
   Exclude:
-    - 'analytics/app/models/open_close_time.rb'
-    - 'analytics/app/models/tariffs/distribution_use_of_system_charges.rb'
+    - 'app/models/open_close_time.rb'
+    - 'app/models/d_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/aggregation/amr_bad_data_types.rb'
     - 'analytics/lib/dashboard/data_sources/carbon/uk_grid_carbon_intensity.rb'
     - 'analytics/test_support/logger_control.rb'
@@ -8658,10 +8666,10 @@ Style/CommentedKeyword:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/ComparableBetween:
   Exclude:
-    - 'analytics/app/models/tariffs/climate_change_levy.rb'
-    - 'analytics/app/models/tariffs/distribution_use_of_system_charges.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/climate_change_levy.rb'
+    - 'app/models/d_u_o_s_charges.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/aggregation/cost_schedule.rb'
     - 'analytics/lib/dashboard/data_sources/carbon/uk_grid_carbon_intensity.rb'
     - 'analytics/lib/dashboard/modelling/heating/storage_heater.rb'
@@ -8717,8 +8725,8 @@ Style/Dir:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/DirectiveScope:
   Exclude:
-    - 'analytics/app/services/baseload/intraweek_baseload_service.rb'
-    - 'analytics/app/services/baseload/seasonal_baseload_service.rb'
+    - 'app/services/baseload/intraweek_baseload_service.rb'
+    - 'app/services/baseload/seasonal_baseload_service.rb'
     - 'analytics/lib/dashboard/alerts/common/benchmark_metrics.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/aggregator_post_process.rb'
     - 'app/components/commercial/licences_component.rb'
@@ -8766,7 +8774,6 @@ Style/DirectiveScope:
 # This cop supports safe autocorrection (--autocorrect).
 Style/EachWithObject:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
     - 'app/components/meter_costs_table_component.rb'
     - 'app/controllers/admin/advice_pages/activity_types_controller.rb'
     - 'app/controllers/admin/advice_pages/intervention_types_controller.rb'
@@ -8778,6 +8785,8 @@ Style/EachWithObject:
     - 'app/models/chart_data_values.rb'
     - 'app/models/equivalence.rb'
     - 'app/models/global_meter_attribute.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/hash.rb'
     - 'app/models/parent_meter_attribute_holder.rb'
     - 'app/services/benchmark_content_filter.rb'
     - 'app/services/equivalences/calculator.rb'
@@ -8791,7 +8800,7 @@ Style/EachWithObject:
 # SupportedStyles: empty, nil, both
 Style/EmptyElse:
   Exclude:
-    - 'analytics/app/models/tariffs/agreed_supply_capacity_charge.rb'
+    - 'app/models/agreed_supply_capacity_charge.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/heating_model_fitting_advice.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/chart_manager.rb'
@@ -8969,7 +8978,6 @@ Style/FormatString:
 # AllowedMethods: redirect
 Style/FormatStringToken:
   Exclude:
-    - 'analytics/app/services/meter_collection_comparer.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_report.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/aggregator_trend_lines.rb'
     - 'analytics/lib/dashboard/modelling/heating/heating_regression_models.rb'
@@ -8992,6 +9000,8 @@ Style/FormatStringToken:
     - 'analytics/test_support/run_charts.rb'
     - 'app/services/aggregate_data_service.rb'
     - 'app/services/aggregate_data_service_storage_heaters.rb'
+    - 'app/services/meter_collection_reconciler.rb'
+    - 'app/services/meter_collection_reconciler/meter_reconciler.rb'
     - 'spec/components/comparison_table_component_spec.rb'
     - 'spec/mailers/onboarding_mailer_spec.rb'
     - 'spec/models/activity_type_spec.rb'
@@ -9010,16 +9020,16 @@ Style/FrozenStringLiteralComment:
     - 'Guardfile'
     - 'Rakefile'
     - 'analytics/Rakefile'
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/dashboard/school.rb'
-    - 'analytics/app/models/dashboard/sub_meters.rb'
-    - 'analytics/app/models/estimate_period_consumption.rb'
-    - 'analytics/app/models/meter_attribute_types.rb'
-    - 'analytics/app/models/meter_collection.rb'
-    - 'analytics/app/models/tariffs/agreed_supply_capacity_charge.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/models/tariffs/max_monthly_demand_charges_base.rb'
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/dashboard/meter.rb'
+    - 'app/models/dashboard/school.rb'
+    - 'app/models/dashboard/sub_meters.rb'
+    - 'app/models/estimate_period_consumption.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_collection.rb'
+    - 'app/models/agreed_supply_capacity_charge.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/models/max_monthly_demand_charges_base.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard.rb'
     - 'analytics/lib/dashboard/advice/adult_dashboard_configuration.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
@@ -11858,7 +11868,7 @@ Style/GlobalVars:
 # Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
 Style/GuardClause:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
     - 'analytics/lib/dashboard/alerts/electricity/tariffs/alert_agreed_supply_capacity_limit.rb'
     - 'analytics/lib/dashboard/alerts/gas/boiler control/alert_heating_off.rb'
@@ -11992,14 +12002,14 @@ Style/HashExcept:
 # Configuration parameters: MinBranchesCount.
 Style/HashLikeCase:
   Exclude:
-    - 'analytics/app/models/open_close_times.rb'
+    - 'app/models/open_close_times.rb'
     - 'app/helpers/school_groups_helper.rb'
 
 # Offense count: 6
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/HashSlice:
   Exclude:
-    - 'analytics/app/models/open_close_time.rb'
+    - 'app/models/open_close_time.rb'
     - 'analytics/script/modelling/analyse_electricity_consumption_seasonality.rb'
     - 'analytics/test_support/excel_charts.rb'
     - 'analytics/test_support/run_benchmarks.rb'
@@ -12057,10 +12067,10 @@ Style/IfInsideElse:
 # This cop supports safe autocorrection (--autocorrect).
 Style/IfUnlessModifier:
   Exclude:
-    - 'analytics/app/services/baseload/intraweek_baseload_service.rb'
-    - 'analytics/app/services/baseload/seasonal_baseload_service.rb'
-    - 'analytics/app/services/costs/blended_rate_calculator.rb'
-    - 'analytics/app/services/heating/base_service.rb'
+    - 'app/services/baseload/intraweek_baseload_service.rb'
+    - 'app/services/baseload/seasonal_baseload_service.rb'
+    - 'app/services/costs/blended_rate_calculator.rb'
+    - 'app/services/heating/base_service.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/aggregation/accounting_costs.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
@@ -12321,7 +12331,7 @@ Style/MapIntoArray:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/MapJoin:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/aggregation/one_days_cost_data.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
     - 'app/models/schools/fuel_configuration.rb'
@@ -12331,10 +12341,10 @@ Style/MapJoin:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/MapToHash:
   Exclude:
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/services/baseload/baseload_meter_breakdown_service.rb'
-    - 'analytics/app/services/costs/tariff_information_service.rb'
-    - 'analytics/app/services/meter_collection_comparer.rb'
+    - 'app/models/generic_accounting_tariff.rb'
+    - 'app/services/baseload/baseload_meter_breakdown_service.rb'
+    - 'app/services/costs/tariff_information_service.rb'
+    - 'app/services/meter_collection_reconciler.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
     - 'analytics/lib/dashboard/aggregation/one_days_cost_data.rb'
@@ -12442,7 +12452,7 @@ Style/MultipleComparison:
 # SupportedStyles: literals, strict
 Style/MutableConstant:
   Exclude:
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_impending_holiday.rb'
     - 'analytics/lib/dashboard/alerts/common/management_summary_table.rb'
@@ -12530,7 +12540,7 @@ Style/NestedTernaryOperator:
 # SupportedStyles: skip_modifier_ifs, always
 Style/Next:
   Exclude:
-    - 'analytics/app/models/estimate_period_consumption.rb'
+    - 'app/models/estimate_period_consumption.rb'
     - 'analytics/lib/dashboard/alerts/electricity/alert_electricity_peak_kw_versus_benchmark.rb'
     - 'analytics/lib/dashboard/alerts/gas/boiler control/alert_heating_day_base.rb'
     - 'analytics/lib/dashboard/alerts/gas/boiler control/alert_thermostatic_control.rb'
@@ -12628,8 +12638,8 @@ Style/NumericLiterals:
 # SupportedStyles: predicate, comparison
 Style/NumericPredicate:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/dashboard/meter.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/economic_tariff_change_caveats.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_analysis_base.rb'
@@ -12716,14 +12726,14 @@ Style/OneClassPerFile:
 # Offense count: 117
 Style/OpenStructUse:
   Exclude:
-    - 'analytics/app/services/costs/accounting_costs_service.rb'
-    - 'analytics/app/services/costs/economic_tariffs_change_caveats_service.rb'
-    - 'analytics/app/services/costs/tariff_information_service.rb'
-    - 'analytics/app/services/heating/heating_start_time_service.rb'
-    - 'analytics/app/services/heating/heating_thermostatic_analysis_service.rb'
-    - 'analytics/app/services/heating/seasonal_control_analysis_service.rb'
-    - 'analytics/app/services/hot_water/gas_hot_water_service.rb'
-    - 'analytics/app/services/solar_photovoltaics/existing_benefits_service.rb'
+    - 'app/services/costs/accounting_costs_service.rb'
+    - 'app/services/costs/economic_tariffs_change_caveats_service.rb'
+    - 'app/services/costs/tariff_information_service.rb'
+    - 'app/services/heating/heating_start_time_service.rb'
+    - 'app/services/heating/heating_thermostatic_analysis_service.rb'
+    - 'app/services/heating/seasonal_control_analysis_service.rb'
+    - 'app/services/hot_water/gas_hot_water_service.rb'
+    - 'app/services/solar_photovoltaics/existing_benefits_service.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/aggregator_config.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/aggregator_results.rb'
     - 'analytics/script/uprn/support.rb'
@@ -12778,9 +12788,6 @@ Style/OptionalArguments:
 # AllowedMethods: respond_to_missing?
 Style/OptionalBooleanParameter:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
-    - 'analytics/app/models/meter_collection.rb'
-    - 'analytics/app/services/costs/tariff_information_service.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/economic_tariff_change_caveats.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
@@ -12804,7 +12811,11 @@ Style/OptionalBooleanParameter:
     - 'app/components/dashboard_equivalences_component.rb'
     - 'app/helpers/advice_page_helper.rb'
     - 'app/helpers/application_helper.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/attribute_base.rb'
+    - 'app/models/meter_collection.rb'
     - 'app/services/aggregation/validate_amr_data.rb'
+    - 'app/services/costs/tariff_information_service.rb'
     - 'app/services/schools/advice/baseload_service.rb'
     - 'app/services/transifex/loader.rb'
     - 'lib/data_feeds/rbee_solar_p_v.rb'
@@ -12881,7 +12892,7 @@ Style/QuotedSymbols:
 # SupportedStyles: compact, exploded
 Style/RaiseArgs:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
+    - 'app/models/dashboard/meter.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/heating_model_fitting_advice.rb'
     - 'analytics/lib/dashboard/aggregation/cost_schedule.rb'
@@ -12922,7 +12933,7 @@ Style/RaiseArgs:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/ReduceToHash:
   Exclude:
-    - 'analytics/app/services/costs/monthly_meter_costs_service.rb'
+    - 'app/services/costs/monthly_meter_costs_service.rb'
     - 'app/controllers/admin/advice_pages/activity_types_controller.rb'
     - 'app/controllers/admin/advice_pages/intervention_types_controller.rb'
     - 'app/controllers/admin/alert_types/activity_types_controller.rb'
@@ -13002,10 +13013,11 @@ Style/RedundantBegin:
 # AllowedMethods: infinite?, nonzero?
 Style/RedundantCondition:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/periods.rb'
     - 'analytics/lib/dashboard/charting_and_reports/content_base.rb'
     - 'analytics/lib/dashboard/utilities/html_table_formatting.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/boolean.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -13017,7 +13029,7 @@ Style/RedundantConditional:
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantConstantBase:
   Exclude:
-    - 'analytics/app/services/solar_photovoltaics/potential_benefits_estimator_service.rb'
+    - 'app/services/solar_photovoltaics/potential_benefits_estimator_service.rb'
     - 'analytics/lib/dashboard/alerts/electricity/alert_solar_pv_benefit_estimator.rb'
     - 'app/components/commercial/exception_report_prompt_component.rb'
     - 'app/controllers/admin/activity_types_controller.rb'
@@ -13043,7 +13055,7 @@ Style/RedundantConstantBase:
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantCurrentDirectoryInPath:
   Exclude:
-    - 'analytics/app/services/baseload/around_midnight_baseload_calculator.rb'
+    - 'app/services/baseload/around_midnight_baseload_calculator.rb'
     - 'analytics/lib/dashboard/aggregation/accounting_costs.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_additional_prioritisation_data.rb'
     - 'analytics/lib/dashboard/alerts/electricity/alert_out_of_hours_electricity_usage.rb'
@@ -13087,8 +13099,8 @@ Style/RedundantFetchBlock:
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantFileExtensionInRequire:
   Exclude:
-    - 'analytics/app/models/dashboard/sub_meters.rb'
-    - 'analytics/app/models/meter_attribute_types.rb'
+    - 'app/models/dashboard/sub_meters.rb'
+    - 'app/models/meter_attribute_types.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_additional_prioritisation_data.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_impending_holiday.rb'
@@ -13203,7 +13215,7 @@ Style/RedundantFileExtensionInRequire:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/RedundantFilterChain:
   Exclude:
-    - 'analytics/app/models/meter_collection.rb'
+    - 'app/models/meter_collection.rb'
     - 'app/controllers/schools/users_controller.rb'
 
 # Offense count: 17
@@ -13243,7 +13255,7 @@ Style/RedundantLineContinuation:
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantParentheses:
   Exclude:
-    - 'analytics/app/services/baseload/around_midnight_baseload_calculator.rb'
+    - 'app/services/baseload/around_midnight_baseload_calculator.rb'
     - 'analytics/lib/dashboard/aggregation/community_use_breakdown.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/chart_to_meter_map.rb'
     - 'analytics/lib/dashboard/data_sources/utilities/holiday_integrity_checks.rb'
@@ -13278,8 +13290,8 @@ Style/RedundantRegexpEscape:
 # Configuration parameters: AllowMultipleReturnValues.
 Style/RedundantReturn:
   Exclude:
-    - 'analytics/app/models/tariffs/distribution_use_of_system_charges.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
+    - 'app/models/d_u_o_s_charges.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'analytics/lib/dashboard/alerts/time period comparison/alert_period_comparison_base.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/chart_y_axis_manipulation.rb'
     - 'analytics/lib/dashboard/data_sources/utilities/temperatures.rb'
@@ -13319,7 +13331,6 @@ Style/RedundantReturn:
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantSelf:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/aggregation/cost_schedule.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -13372,6 +13383,8 @@ Style/RedundantSelf:
     - 'app/models/concerns/todos/completable.rb'
     - 'app/models/concerns/transifex_serialisable.rb'
     - 'app/models/equivalence_type_content_version.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/attribute_base.rb'
     - 'app/models/programme.rb'
     - 'app/models/scoreboard.rb'
     - 'app/models/transport_survey.rb'
@@ -13510,7 +13523,7 @@ Style/RescueStandardError:
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Style/ReturnNilInPredicateMethodDefinition:
   Exclude:
-    - 'analytics/app/models/meter_collection.rb'
+    - 'app/models/meter_collection.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_economic_tariff_calculations.rb'
     - 'app/components/meter_costs_table_component.rb'
     - 'app/controllers/schools/meters_controller.rb'
@@ -13724,8 +13737,8 @@ Style/StringChars:
 # Configuration parameters: Mode.
 Style/StringConcatenation:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/meter_collection.rb'
+    - 'app/models/dashboard/meter.rb'
+    - 'app/models/meter_collection.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/heating_model_fitting_advice.rb'
     - 'analytics/lib/dashboard/advice/hot_water_html_table_formatting.rb'
@@ -14103,8 +14116,8 @@ Style/StringLiterals:
 # This cop supports safe autocorrection (--autocorrect).
 Style/SuperArguments:
   Exclude:
-    - 'analytics/app/services/heating/heating_start_time_savings_service.rb'
-    - 'analytics/app/services/heating/heating_start_time_service.rb'
+    - 'app/services/heating/heating_start_time_savings_service.rb'
+    - 'app/services/heating/heating_start_time_service.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/aggregation/carbon_emissions.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -14148,7 +14161,6 @@ Style/SuperArguments:
 # SupportedStyles: percent, brackets
 Style/SymbolArray:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/chart_configuration.rb'
     - 'analytics/lib/dashboard/charting_and_reports/charts/periods.rb'
     - 'analytics/lib/dashboard/charting_and_reports/content_base.rb'
@@ -14229,6 +14241,8 @@ Style/SymbolArray:
     - 'app/models/contact.rb'
     - 'app/models/energy_tariff_charge.rb'
     - 'app/models/link_rewrite.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/attribute_base.rb'
     - 'app/models/school_grouping.rb'
     - 'app/models/schools/fuel_configuration.rb'
     - 'app/models/scoreboard.rb'
@@ -14302,7 +14316,7 @@ Style/SymbolArray:
 # AllowedMethods: define_method, mail, respond_to
 Style/SymbolProc:
   Exclude:
-    - 'analytics/app/models/meter_collection.rb'
+    - 'app/models/meter_collection.rb'
     - 'analytics/lib/dashboard/aggregation/one_days_cost_data.rb'
     - 'analytics/lib/dashboard/modelling/heating/heating_regression_models.rb'
     - 'analytics/lib/dashboard/modelling/heating/hot_water_heating_splitter.rb'
@@ -14332,7 +14346,6 @@ Style/TallyMethod:
 # SupportedStyles: require_parentheses, require_no_parentheses, require_parentheses_when_complex
 Style/TernaryParentheses:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
     - 'analytics/lib/dashboard/alerts/electricity/alert_solar_pv_benefit_estimator.rb'
     - 'analytics/lib/dashboard/alerts/gas/hot water/alert_poorly_insulated_hotwater.rb'
     - 'analytics/lib/dashboard/alerts/time period comparison/alert_community_use_period_comparisons.rb'
@@ -14342,6 +14355,8 @@ Style/TernaryParentheses:
     - 'analytics/lib/dashboard/modelling/electricity/bivariate_solar_temperature_model.rb'
     - 'analytics/lib/dashboard/modelling/heating/heating_start_time_calculator.rb'
     - 'analytics/script/modelling/test_impact_of_covid.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/hash.rb'
 
 # Offense count: 15
 # This cop supports safe autocorrection (--autocorrect).
@@ -14366,8 +14381,8 @@ Style/TrailingCommaInArguments:
 # SupportedStylesForMultiline: comma, consistent_comma, diff_comma, no_comma
 Style/TrailingCommaInArrayLiteral:
   Exclude:
-    - 'analytics/app/models/meter_attribute_types.rb'
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/advice/dashboard_configuration.rb'
     - 'analytics/lib/dashboard/advice/hot_water_html_table_formatting.rb'
     - 'analytics/lib/dashboard/advice/meter_breakdown_advice.rb'
@@ -14421,7 +14436,7 @@ Style/TrailingCommaInArrayLiteral:
 # SupportedStylesForMultiline: comma, consistent_comma, diff_comma, no_comma
 Style/TrailingCommaInHashLiteral:
   Exclude:
-    - 'analytics/app/models/tariffs/transmission_network_use_of_system_demand_changes.rb'
+    - 'app/models/t_n_u_o_s_charges.rb'
     - 'analytics/lib/dashboard/advice/adult_dashboard_configuration.rb'
     - 'analytics/lib/dashboard/advice/dashboard_configuration.rb'
     - 'analytics/lib/dashboard/alerts/common/alert_energy_benchmark.rb'
@@ -14659,23 +14674,6 @@ ViewComponent/TestRenderedOutput:
 # URISchemes: http, https
 Layout/LineLength:
   Exclude:
-    - 'analytics/app/models/dashboard/meter.rb'
-    - 'analytics/app/models/meter_attribute_types.rb'
-    - 'analytics/app/models/open_close_times.rb'
-    - 'analytics/app/models/tariffs/distribution_use_of_system_charges.rb'
-    - 'analytics/app/models/tariffs/generic_accounting_tariff.rb'
-    - 'analytics/app/services/analysable_mixin.rb'
-    - 'analytics/app/services/baseload/base_service.rb'
-    - 'analytics/app/services/baseload/baseload_calculation_service.rb'
-    - 'analytics/app/services/baseload/intraweek_baseload_service.rb'
-    - 'analytics/app/services/baseload/seasonal_baseload_service.rb'
-    - 'analytics/app/services/costs/blended_rate_calculator.rb'
-    - 'analytics/app/services/heating/base_service.rb'
-    - 'analytics/app/services/hot_water/gas_hot_water_service.rb'
-    - 'analytics/app/services/meter_collection_comparer.rb'
-    - 'analytics/app/services/meter_collection_factory.rb'
-    - 'analytics/app/services/power_consumption_service.rb'
-    - 'analytics/app/services/solar_photovoltaics/existing_benefits_service.rb'
     - 'analytics/lib/dashboard/advice/advice_base.rb'
     - 'analytics/lib/dashboard/advice/dashboard_analysis_advice.rb'
     - 'analytics/lib/dashboard/advice/economic_tariff_change_caveats.rb'
@@ -14986,15 +14984,22 @@ Layout/LineLength:
     - 'app/models/concerns/todos/assignable.rb'
     - 'app/models/contact.rb'
     - 'app/models/customised_chart_config.rb'
+    - 'app/models/d_u_o_s_charges.rb'
     - 'app/models/dark_sky_area.rb'
+    - 'app/models/dashboard/meter.rb'
     - 'app/models/data_source.rb'
     - 'app/models/energy_tariff.rb'
     - 'app/models/equivalence.rb'
     - 'app/models/find_out_more.rb'
+    - 'app/models/generic_accounting_tariff.rb'
     - 'app/models/management_dashboard_table.rb'
     - 'app/models/management_priority.rb'
     - 'app/models/meter.rb'
+    - 'app/models/meter_attribute_types.rb'
+    - 'app/models/meter_attribute_types/attribute_base.rb'
+    - 'app/models/meter_attribute_types/symbol.rb'
     - 'app/models/observation.rb'
+    - 'app/models/open_close_times.rb'
     - 'app/models/podium.rb'
     - 'app/models/procurement_route.rb'
     - 'app/models/programme_type.rb'
@@ -15038,6 +15043,11 @@ Layout/LineLength:
     - 'app/services/amr/perse_upsert.rb'
     - 'app/services/amr/process_amr_reading_data.rb'
     - 'app/services/amr/upsert_validated_readings_for_a_meter.rb'
+    - 'app/services/analysable_mixin.rb'
+    - 'app/services/baseload/base_service.rb'
+    - 'app/services/baseload/baseload_calculation_service.rb'
+    - 'app/services/baseload/intraweek_baseload_service.rb'
+    - 'app/services/baseload/seasonal_baseload_service.rb'
     - 'app/services/benchmark_redirector.rb'
     - 'app/services/cads/live_data_service.rb'
     - 'app/services/calendar_init_service.rb'
@@ -15045,13 +15055,20 @@ Layout/LineLength:
     - 'app/services/calendar_term_factory.rb'
     - 'app/services/charts/annotate.rb'
     - 'app/services/charts/meter_selection.rb'
+    - 'app/services/costs/blended_rate_calculator.rb'
     - 'app/services/energy_tariff_default_prices_creator.rb'
     - 'app/services/equivalences/calculator.rb'
     - 'app/services/equivalences/generate_equivalences.rb'
+    - 'app/services/heating/base_service.rb'
     - 'app/services/holiday_factory.rb'
+    - 'app/services/hot_water/gas_hot_water_service.rb'
     - 'app/services/import_notifier.rb'
     - 'app/services/mailchimp/base_audience_export_processor_service.rb'
     - 'app/services/mailchimp/csv_exporter.rb'
+    - 'app/services/meter_collection_factory.rb'
+    - 'app/services/meter_collection_reconciler.rb'
+    - 'app/services/meter_collection_reconciler/meter_reconciler.rb'
+    - 'app/services/power_consumption_service.rb'
     - 'app/services/recommendations/base.rb'
     - 'app/services/rollbar_notifier_service.rb'
     - 'app/services/schedule_data_manager_service.rb'
@@ -15076,6 +15093,7 @@ Layout/LineLength:
     - 'app/services/solar/low_carbon_hub_download_and_upsert.rb'
     - 'app/services/solar/rtone_variant_download_and_upsert.rb'
     - 'app/services/solar/solar_edge_download_and_upsert.rb'
+    - 'app/services/solar_photovoltaics/existing_benefits_service.rb'
     - 'app/services/targets/school_group_target_data_reporting_service.rb'
     - 'app/services/targets/school_target_service.rb'
     - 'app/services/targets/target_mailer_service.rb'
