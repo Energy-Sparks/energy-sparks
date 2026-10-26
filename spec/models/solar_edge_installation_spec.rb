@@ -237,6 +237,34 @@ describe SolarEdgeInstallation do
         )
       end
     end
+
+    context 'when there are multiple export meters' do
+      subject(:installation) do
+        create(:solar_edge_installation, information: {
+                 'inventory' => meters
+               })
+      end
+
+      let(:meters) do
+        [
+          { 'type' => 'METER', 'active' => false, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
+            'serialNumber' => '12345', 'createdAt' => '2026-03-02T11:10:00Z' },
+          { 'type' => 'METER', 'active' => true, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
+            'serialNumber' => '12345', 'createdAt' => '2026-07-06T14:10:01+01:00' },
+          { 'type' => 'METER', 'active' => false, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
+            'serialNumber' => '12345', 'createdAt' => '2026-03-05T16:03:24Z' }
+        ]
+      end
+
+      it 'returns the most recently created meter' do
+        expect(installation.cached_meter_metadata(:exported_solar_pv)).to match(
+          hash_including(
+            'active' => true,
+            'createdAt' => '2026-07-06T14:10:01+01:00'
+          )
+        )
+      end
+    end
   end
 
   # rubocop:disable-next RSpec/NestedGroups

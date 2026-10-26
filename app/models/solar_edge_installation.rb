@@ -87,7 +87,9 @@ class SolarEdgeInstallation < ApplicationRecord
   def cached_meter_metadata(meter_type)
     return nil if information.blank? || information['inventory'].blank?
 
-    information['inventory'].find { |item| item['meterType'] == solar_edge_meter_type(meter_type) }
+    information['inventory']
+      .select { |item| item['meterType'] == solar_edge_meter_type(meter_type) }
+      .max_by { |item| solar_edge_created_at(item) }
   end
 
   def solar_edge_serial_number(meter_type)
@@ -172,5 +174,14 @@ class SolarEdgeInstallation < ApplicationRecord
   def site_id_unique_to_school
     existing = self.class.where(site_id:).where.not(id:).where.not(school:)
     errors.add(:site_id, 'is already associated with a different school') if existing.exists?
+  end
+
+  def solar_edge_created_at(item)
+    timestamp = item['createdAt']
+    return Time.zone.at(0) if timestamp.blank?
+
+    Time.iso8601(timestamp)
+  rescue ArgumentError
+    Time.zone.at(0)
   end
 end
