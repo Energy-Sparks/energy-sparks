@@ -51,6 +51,7 @@ module Navigation
         { name: 'Estimated data', path: admin_dashboard_estimated_reads_path(dashboard_id:, admin:) },
         { name: 'Limited data meters', path: admin_dashboard_limited_data_path(dashboard_id:, admin:) },
         { name: 'Manually read meters', path: admin_dashboard_manual_reads_path(dashboard_id:, admin:) },
+        { name: 'Meter issues', path: admin_dashboard_meter_issues_path(dashboard_id:, admin:) },
         { name: 'New data for inactive meters',
           path: admin_dashboard_new_data_inactive_meter_report_index_path(dashboard_id:, admin:) },
         { name: 'Stale data meters', path: admin_dashboard_stale_data_path(dashboard_id:, admin:) }
