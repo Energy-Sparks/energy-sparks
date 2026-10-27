@@ -42,6 +42,42 @@ RSpec.describe 'schools:send_expiring_tariff_reminders' do # rubocop:disable RSp
         it_behaves_like 'no email is sent'
       end
 
+      context 'with a future replacement overlapping the expiring tariff' do
+        let(:tariff) do
+          super()
+          create(:energy_tariff, tariff_holder:, start_date: 20.days.from_now, end_date: nil)
+        end
+
+        it_behaves_like 'no email is sent'
+      end
+
+      context 'with a disabled future replacement overlapping the expiring tariff' do
+        let(:tariff) do
+          super()
+          create(:energy_tariff, tariff_holder:, start_date: 20.days.from_now, end_date: nil, enabled: false)
+        end
+
+        it_behaves_like 'it sends the expected email'
+      end
+
+      context 'with an overlapping future tariff for a different fuel' do
+        let(:tariff) do
+          super()
+          create(:energy_tariff, tariff_holder:, start_date: 20.days.from_now, end_date: nil, meter_type: :gas)
+        end
+
+        it_behaves_like 'it sends the expected email'
+      end
+
+      context 'with another tariff that has already started' do
+        let(:tariff) do
+          super()
+          create(:energy_tariff, tariff_holder:, start_date: Date.current, end_date: nil)
+        end
+
+        it_behaves_like 'it sends the expected email'
+      end
+
       context 'and another tariff after with a different meter type' do
         let(:tariff) do
           super()

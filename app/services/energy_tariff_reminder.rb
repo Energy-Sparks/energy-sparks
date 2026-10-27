@@ -35,7 +35,7 @@ class EnergyTariffReminder
     expiring.filter do |expiring_tariff|
       replacements.none? do |tariff|
         expiring_tariff.meter_type == tariff.meter_type &&
-          (tariff.start_date.nil? || expiring_tariff.end_date <= tariff.start_date)
+          (tariff.start_date.nil? || @today < tariff.start_date)
       end
     end
   end
