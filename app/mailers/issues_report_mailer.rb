@@ -10,21 +10,23 @@ class IssuesReportMailer < ApplicationMailer
   def issues_report
     @user = params[:user]
     @issues = issues_defaults(active_issues(@user))
-    return unless @issues.any?
+    return if @issues.empty?
 
     @columns = columns
-    attachments['issues_report.csv'] = { mime_type: 'text/csv', content: csv_report(@columns, @issues) }
+    attach_csv('issues_report.csv')
     mail(to: @user.email, subject: admin_subject("Issue report for #{@user.display_name}"))
     prevent_delivery_from_test
   end
 
   def admin_meter_report(user, since: nil)
-    @user = user
-    @issues = issues_defaults(admin_meter_issues(user, since))
+    @issues = issues_defaults(
+      Issue.admin_meter_issues(user).active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..)
+    )
     return if @issues.empty?
 
+    @user = user
     @columns = columns
-    attachments['admin_meter_issues_report.csv'] = { mime_type: 'text/csv', content: csv_report(@columns, @issues) }
+    attach_csv('admin_meter_issues_report.csv')
     mail(to: @user.email, subject: admin_subject('Daily Meter Issues'))
     prevent_delivery_from_test
   end
@@ -40,11 +42,6 @@ class IssuesReportMailer < ApplicationMailer
     issues.where(review_date: ..Date.current)
           .or(issues.where(review_date: Date.current..1.week.from_now))
           .or(issues.where(created_at: 1.week.ago.to_date..))
-  end
-
-  def admin_meter_issues(user, since)
-    Issue.joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': user)
-         .active.status_open.issue.where(updated_at: (since || 1.day.ago).to_date..).distinct
   end
 
   def columns # rubocop:disable Metrics/AbcSize -- breaking up seems to make more complex
@@ -66,7 +63,7 @@ class IssuesReportMailer < ApplicationMailer
      Column.new(:edit, ->(issue) { edit_polymorphic_url([:admin, issue.issueable, issue]) })]
   end
 
-  def format_date(date)
-    date&.strftime('%d/%m/%Y')
-  end
+  def format_date(date) = date&.strftime('%d/%m/%Y')
+
+  def attach_csv(filename) = super(filename, csv_report(@columns, @issues))
 end

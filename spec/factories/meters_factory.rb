@@ -94,6 +94,24 @@ FactoryBot.define do
       end
     end
 
+    trait :with_unvalidated_readings do
+      transient do
+        reading_count { 1 }
+        config        { create(:amr_data_feed_config) }
+        end_date      { Date.parse('01/06/2019') }
+        start_date    { end_date - (reading_count - 1).days }
+        import_log    { create(:amr_data_feed_import_log, amr_data_feed_config: config) }
+      end
+
+      after(:create) do |meter, evaluator|
+        (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
+          create(:amr_data_feed_reading, meter:, parsed_date: this_date,
+                                         reading_date: this_date.strftime(evaluator.config.date_format),
+                                         amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.import_log)
+        end
+      end
+    end
+
     factory :electricity_meter_with_validated_reading do
       transient do
         reading_count { 1 }
