@@ -95,9 +95,7 @@ RSpec.configure do |config|
 
   def stub_env(**kwargs)
     env = ENV.to_h
-    kwargs.stringify_keys.each do |key, value|
-      value.nil? ? env.delete(key) : env[key] = value.to_s
-    end
+    kwargs.stringify_keys.each { |key, value| value.nil? ? env.delete(key) : env[key] = value.to_s }
     stub_const('ENV', env)
   end
 end
