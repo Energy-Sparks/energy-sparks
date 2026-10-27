@@ -44,6 +44,45 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
       it_behaves_like 'it sends the expected email'
     end
 
+    context 'with only a future tariff' do
+      let(:tariff) do
+        create(:energy_tariff, tariff_holder: organisation, start_date: 1.month.from_now, end_date: nil)
+      end
+
+      it_behaves_like 'no email is sent'
+    end
+
+    context 'with only a disabled tariff' do
+      let(:tariff) { create(:energy_tariff, tariff_holder: organisation, enabled: false) }
+
+      it_behaves_like 'it sends the expected email'
+    end
+
+    context 'with only a disabled current tariff' do
+      let(:tariff) do
+        create(:energy_tariff, tariff_holder: organisation, start_date: 1.day.ago, end_date: nil, enabled: false)
+      end
+
+      it_behaves_like 'it sends the expected email'
+    end
+
+    context 'with only a disabled future tariff' do
+      let(:tariff) do
+        create(:energy_tariff, tariff_holder: organisation, start_date: 1.month.from_now, end_date: nil, enabled: false)
+      end
+
+      it_behaves_like 'it sends the expected email'
+    end
+
+    context 'with expired and current tariffs' do
+      let(:tariff) do
+        create(:energy_tariff, tariff_holder: organisation)
+        create(:energy_tariff, tariff_holder: organisation, start_date: 1.day.ago, end_date: nil)
+      end
+
+      it_behaves_like 'no email is sent'
+    end
+
     context 'with a current tariff' do
       let(:tariff) { create(:energy_tariff, tariff_holder: organisation, start_date: 1.day.ago, end_date: nil) }
 
@@ -55,6 +94,31 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
     it_behaves_like 'it sends reminders correctly'
 
     it_behaves_like 'tariff reminders for an admin linked to multiple schools'
+
+    context 'when the school has no tariffs but its group has an expired tariff' do
+      let(:organisation) { create(:school_admin, school: create(:school, :with_school_group)).school }
+      let(:tariff) { create(:energy_tariff, tariff_holder: organisation.school_group) }
+
+      it_behaves_like 'no email is sent'
+    end
+
+    context 'when the school has no tariffs but its group has a future tariff' do
+      let(:organisation) { create(:school_admin, school: create(:school, :with_school_group)).school }
+      let(:tariff) do
+        create(:energy_tariff, tariff_holder: organisation.school_group, start_date: 1.month.from_now, end_date: nil)
+      end
+
+      it_behaves_like 'no email is sent'
+    end
+
+    context 'when the school has no tariffs but its group has only a disabled tariff' do
+      let(:organisation) { create(:school_admin, school: create(:school, :with_school_group)).school }
+      let(:tariff) do
+        create(:energy_tariff, tariff_holder: organisation.school_group, end_date: nil, enabled: false)
+      end
+
+      it_behaves_like 'it sends the expected email'
+    end
 
     context 'when the school group has a tariff' do
       let(:organisation) { create(:school_admin, school: create(:school, :with_school_group)).school }

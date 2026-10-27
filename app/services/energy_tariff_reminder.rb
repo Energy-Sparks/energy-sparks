@@ -41,22 +41,29 @@ class EnergyTariffReminder
   end
 
   def each_needing_tariff_reminder(relation, &)
-    relation.where.not(id: with_current_tariff(relation))
-            .where.not(id: schools_with_current_group_tariff(relation))
+    relation.where.not(id: with_any_tariff(relation))
+            .where.not(id: schools_with_group_tariff(relation))
+            .or(relation.where(id: with_expired_tariff(relation)).where.not(id: with_current_tariff(relation)))
             .or(relation.where(id: with_stale_open_ended_tariff(relation)))
             .find_each(&)
+  end
+
+  def with_any_tariff(relation)
+    relation.klass.joins(:energy_tariffs).merge(EnergyTariff.enabled).select(:id)
   end
 
   def with_current_tariff(relation)
     relation.klass.joins(:energy_tariffs).merge(current_tariffs).select(:id)
   end
 
-  def schools_with_current_group_tariff(relation)
+  def with_expired_tariff(relation)
+    relation.klass.joins(:energy_tariffs).merge(EnergyTariff.enabled.where(end_date: ...@today)).select(:id)
+  end
+
+  def schools_with_group_tariff(relation)
     return School.none.select(:id) unless relation.klass == School
 
-    with_expired_tariffs = School.joins(:energy_tariffs).merge(EnergyTariff.enabled.where(end_date: ...@today))
-    School.joins(school_group: :energy_tariffs).merge(current_tariffs)
-          .where.not(id: with_expired_tariffs.select(:id)).select(:id)
+    School.joins(school_group: :energy_tariffs).merge(EnergyTariff.enabled).select(:id)
   end
 
   def with_stale_open_ended_tariff(relation)
