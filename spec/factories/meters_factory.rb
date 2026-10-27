@@ -42,7 +42,7 @@ FactoryBot.define do
 
     factory :gas_meter_with_validated_reading_dates do
       transient do
-        start_date      { Date.parse('01/06/2019') }
+        start_date      { end_date.to_date - 1.day }
         end_date        { Date.parse('02/06/2019') }
         status          { 'ORIG' }
         reading         { nil }
@@ -125,7 +125,7 @@ FactoryBot.define do
 
     factory :electricity_meter_with_validated_reading_dates do
       transient do
-        start_date { Date.parse('01/06/2019') }
+        start_date { end_date.to_date - 1.day }
         end_date   { Date.parse('02/06/2019') }
         reading    { nil }
       end
