@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 module SchoolGroups
   class MeterReport
     include ApplicationHelper
+
+    attr_reader :school_group, :all_meters
 
     class << self
       def csv_headers
@@ -24,9 +28,7 @@ module SchoolGroups
       end
     end
 
-    attr_reader :school_group, :all_meters
-
-    def initialize(school_group, all_meters: false)
+    def initialize(school_group, all_meters:)
       @school_group = school_group
       @all_meters = all_meters
     end
@@ -34,7 +36,7 @@ module SchoolGroups
     def csv_filename
       filename = "#{school_group.name}-meter-report-#{Time.zone.now.iso8601}"
       filename += '-all-meters' if all_meters
-      filename.parameterize + '.csv'
+      "#{filename.parameterize}.csv"
     end
 
     def csv
@@ -69,13 +71,11 @@ module SchoolGroups
     private
 
     def meter_scope
-      scope = Meter.all
-        .joins(:school, school: :school_groupings)
-        .where(schools: { active: true, school_groupings: { school_group: school_group } })
-        .with_zero_reading_days_and_dates
-        .order('schools.name', :mpan_mprn)
-      scope = all_meters ? scope : scope.active
-      scope
+      scope = Meter.joins(:school, school: :school_groupings)
+                   .where(schools: { active: true, school_groupings: { school_group: } })
+                   .with_zero_reading_days_and_dates
+                   .order('schools.name', :mpan_mprn)
+      all_meters ? scope : scope.active
     end
   end
 end
