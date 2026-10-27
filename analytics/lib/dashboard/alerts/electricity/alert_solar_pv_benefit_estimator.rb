@@ -1,5 +1,3 @@
-require_relative '../../../../app/services/solar_photovoltaics/potential_benefits_estimator_service'
-
 class AlertSolarPVBenefitEstimator < AlertElectricityOnlyBase
   attr_reader :optimum_kwp, :optimum_payback_years, :optimum_mains_reduction_percent
   attr_reader :one_year_saving_£current

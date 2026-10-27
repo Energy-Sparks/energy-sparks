@@ -77,6 +77,10 @@ module EnergySparks
     config.view_component.previews.default_layout = "component_preview"
     config.view_component.previews.controller = "Admin::ComponentPreviewsController"
 
+    config.to_prepare do
+      require 'dashboard'
+    end
+
     config.after_initialize do
       if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
         require 'dashboard/alerts/common/benchmark_metrics'
@@ -91,9 +95,6 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'allowfullscreen'
       ActionText::ContentHelper.allowed_tags = Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_tags
       ActionText::ContentHelper.allowed_tags.add 'iframe'
-       # makes sure analytics code is pulled in, can't be done before the application as requires some of the
-       # application code
-      require 'dashboard'
     end
   end
 end
