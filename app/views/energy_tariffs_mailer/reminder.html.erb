@@ -1,7 +1,7 @@
 <div class="space-y-4">
   <% is_group = @organisation.is_a?(SchoolGroup) %>
   <% tariff_url = polymorphic_url([@organisation, :energy_tariffs]) %>
-  <% email = @organisation.default_issues_admin_user&.email || 'hello@energysparks.uk' %>
+  <% email = @organisation.default_issues_admin_user&.email || 'operations@energysparks.uk' %>
   <% if @expiring_tariffs.present? %>
     <p><%= t('energy_tariffs_mailer.reminder.thank_you',
              school_or_group: t("energy_tariffs_mailer.reminder.#{is_group ? :group : :school}"),
