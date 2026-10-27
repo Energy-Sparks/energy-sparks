@@ -69,7 +69,7 @@ class EnergyTariffReminder
   def with_stale_open_ended_tariff(relation)
     current_tariffs.where(tariff_holder_type: relation.klass.base_class.name,
                           end_date: nil,
-                          start_date: ..1.year.ago.to_date)
+                          start_date: ...1.year.ago.to_date)
                    .select(:tariff_holder_id)
   end
 
