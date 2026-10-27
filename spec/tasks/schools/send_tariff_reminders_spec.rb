@@ -58,6 +58,25 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
       let(:tariff) { create(:energy_tariff, tariff_holder: organisation.school_group, end_date: nil) }
 
       it_behaves_like 'no email is sent'
+
+      context 'when the school has an expired tariff' do
+        let(:tariff) do
+          super()
+          create(:energy_tariff, tariff_holder: organisation, end_date: 1.day.ago)
+        end
+
+        it_behaves_like 'it sends the expected email'
+      end
+
+      context 'when the school has expired and current tariffs' do
+        let(:tariff) do
+          super()
+          create(:energy_tariff, tariff_holder: organisation, end_date: 1.day.ago)
+          create(:energy_tariff, tariff_holder: organisation, start_date: 1.day.ago, end_date: nil)
+        end
+
+        it_behaves_like 'no email is sent'
+      end
     end
   end
 

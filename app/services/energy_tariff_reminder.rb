@@ -54,7 +54,9 @@ class EnergyTariffReminder
   def schools_with_current_group_tariff(relation)
     return School.none.select(:id) unless relation.klass == School
 
-    School.joins(school_group: :energy_tariffs).merge(current_tariffs).select(:id)
+    with_expired_tariffs = School.joins(:energy_tariffs).merge(EnergyTariff.enabled.where(end_date: ...@today))
+    School.joins(school_group: :energy_tariffs).merge(current_tariffs)
+          .where.not(id: with_expired_tariffs.select(:id)).select(:id)
   end
 
   def with_stale_open_ended_tariff(relation)
