@@ -5,6 +5,9 @@
           data-toggle="tab" data-bs-toggle="tab" href="#<%= "#{field}-#{locale}" %>-content" role="tab"
           aria-controls="<%= "#{field}-#{locale}" %>-tab">
         <%= t("languages.#{locale}") %>
+        <% unless locale.to_s == I18n.default_locale.to_s %>
+          <%= render Admin::TranslationFlagComponent.new(record: f.object, field: field, locale: locale) %>
+        <% end %>
       </a>
     </li>
   <% end %>

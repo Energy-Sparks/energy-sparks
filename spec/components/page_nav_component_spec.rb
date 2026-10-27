@@ -149,6 +149,13 @@ RSpec.describe PageNavComponent, type: :component do
 
         it { expect(list_item).to have_css('.current') }
       end
+
+      context 'with match_controller set to false for the item overriding the page nav option' do
+        let(:header_params) { all_header_params.update(options: { match_controller: true }) }
+        let(:item_params) { all_item_params.update(href: '/schools/new', match_controller: false) }
+
+        it { expect(list_item).to have_no_css('.current') }
+      end
     end
   end
 

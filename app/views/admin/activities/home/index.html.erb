@@ -23,6 +23,14 @@
           Categories used to group activities
         <% end %>
 
+        <% if Flipper.enabled?(:activity_classifications) %>
+          <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
+            <% p.with_title { 'Classifications' } %>
+            <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'aim') } %>
+            Activities can be classified by their aim, topic and duration
+          <% end %>
+        <% end %>
+
         <%= render PromptComponent.new(icon: 'calendar', style: :compact, status: :none) do |p| %>
           <% p.with_title { 'Latest Recordings' } %>
           <% p.with_link { link_to 'View', admin_reports_activities_path } %>
@@ -54,6 +62,14 @@
           <% p.with_title { 'Categories' } %>
           <% p.with_link { link_to 'Manage', admin_intervention_type_groups_path } %>
           Categories used to group actions
+        <% end %>
+
+        <% if Flipper.enabled?(:activity_classifications) %>
+          <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
+            <% p.with_title { 'Classifications' } %>
+            <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'focus') } %>
+            Actions can be classified by their focus
+          <% end %>
         <% end %>
 
         <%= render PromptComponent.new(icon: 'calendar', style: :compact, status: :none) do |p| %>

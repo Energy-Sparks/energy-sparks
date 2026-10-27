@@ -618,6 +618,8 @@ Rails.application.routes.draw do
 
     namespace :activities do
       root to: 'home#index'
+
+      resources :labels, except: [:show]
     end
 
     resources :mailer_previews, only: [:index]

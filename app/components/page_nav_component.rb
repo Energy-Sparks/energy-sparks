@@ -26,7 +26,7 @@ class PageNavComponent < ApplicationComponent
 
   class SectionComponent < ViewComponent::Base
     renders_many :items, lambda { |**kwargs|
-      kwargs[:match_controller] ||= options[:match_controller]
+      kwargs[:match_controller] = options[:match_controller] if kwargs[:match_controller].nil?
       kwargs[:match_on_param] ||= options[:match_on_param]
       PageNavComponent::ItemComponent.new(**kwargs)
     }
