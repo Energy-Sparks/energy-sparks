@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'energy_tariff_reminders'
 
 RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/DescribeClass
   include_context 'with a task'
@@ -52,6 +53,8 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
 
   context 'with a school' do
     it_behaves_like 'it sends reminders correctly'
+
+    it_behaves_like 'tariff reminders for an admin linked to multiple schools'
 
     context 'when the school group has a tariff' do
       let(:organisation) { create(:school_admin, school: create(:school, :with_school_group)).school }

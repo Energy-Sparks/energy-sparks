@@ -74,7 +74,7 @@ class EnergyTariffReminder
 
   def send_reminders(job, method_name)
     method(method_name).call(School.active) do |school, expiring_tariffs|
-      send_reminder(school, school.school_admin, job, expiring_tariffs:)
+      send_reminder(school, school.all_school_admins.school_admin, job, expiring_tariffs:)
     end
     method(method_name).call(SchoolGroup.all) do |school_group, expiring_tariffs|
       send_reminder(school_group, school_group.users.group_admin, job, expiring_tariffs:)
