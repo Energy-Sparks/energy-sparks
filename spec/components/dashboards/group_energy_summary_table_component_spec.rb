@@ -227,7 +227,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   end
 
   context 'when there are no data enabled schools in group' do
-    let!(:school) do
+    let(:school) do
       create(:school,
              :with_basic_configuration_single_meter_and_tariffs,
              school_group: school_group,
@@ -247,7 +247,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   end
 
   context 'when there are no schools in group' do
-    let!(:school) do
+    let(:school) do
       create(:school,
              :with_basic_configuration_single_meter_and_tariffs,
              school_group: create(:school_group))
