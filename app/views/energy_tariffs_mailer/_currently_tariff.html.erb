@@ -1,3 +1,8 @@
-<p><%= t("energy_tariffs_mailer.reminder.currently_tariff#{:_group if local_assigns[:group]}",
-         electricity: format_target(local_assigns[:electricity] || SiteSettings.current_prices.electricity_price, :£),
-         gas: format_target(local_assigns[:gas] || SiteSettings.current_prices.gas_price, :£)) %></p>
+<%# locals: (group: false, gas: nil, electricity: nil) %>
+<% key = if electricity.present? && gas.present? then :both
+         elsif electricity.present? then :electricity_only
+         elsif gas.present? then :gas_only
+         end %>
+<p><%= t("energy_tariffs_mailer.reminder.currently_tariff#{"_group.#{key}" if group}",
+         electricity: format_target(electricity || SiteSettings.current_prices.electricity_price, :£),
+         gas: format_target(gas || SiteSettings.current_prices.gas_price, :£)) %></p>

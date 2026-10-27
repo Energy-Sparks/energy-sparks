@@ -28,14 +28,25 @@
          <%= dont_forget %></p>
     <% else %>
       <% group_electricity_price = @organisation.parent_tariff_holder.price(:electricity) %>
+      <% group_gas_price = @organisation.parent_tariff_holder.price(:gas) %>
       <p><%= t('energy_tariffs_mailer.reminder.to_help_energy_sparks', name: @organisation.name) %></p>
       <p><%= t('energy_tariffs_mailer.reminder.review_current_html', url: tariff_url) %></p>
       <p><%= t('energy_tariffs_mailer.reminder.its_best_to_update') %></p>
-      <p><%= t("energy_tariffs_mailer.reminder.if_we_do_not_have#{:_group if group_electricity_price}") %>
-         <%= t('energy_tariffs_mailer.reminder.this_will_be_used') %></p>
-      <%= render 'currently_tariff', group: group_electricity_price,
-                                     electricity: group_electricity_price,
-                                     gas: @organisation.parent_tariff_holder.price(:gas) %>
+      <p>
+        <% if group_electricity_price && group_gas_price %>
+          <%= t('energy_tariffs_mailer.reminder.if_we_do_not_have_group') %>
+        <% else %>
+          <% if group_electricity_price || group_gas_price %>
+            <%= t('energy_tariffs_mailer.reminder.if_we_do_not_have_group') %>
+          <% end %>
+          <%= t('energy_tariffs_mailer.reminder.if_we_do_not_have') %>
+        <% end %>
+        <%= t('energy_tariffs_mailer.reminder.this_will_be_used') %></p>
+      <% if group_electricity_price || group_gas_price %>
+        <%= render 'currently_tariff', group: true, electricity: group_electricity_price, gas: group_gas_price %>
+      <% else %>
+        <%= render 'currently_tariff' %>
+      <% end %>
       <p><%= dont_forget %></p>
     <% end %>
   <% end %>

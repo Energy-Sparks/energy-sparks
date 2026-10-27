@@ -105,7 +105,7 @@ describe EnergyTariffsMailer, :include_application_helper do
          dont_forget_text('school')]
       end
       let(:current_tariff_text) do
-        ['If we do not have current tariffs for your school we will apply the Energy Sparks default tariff to your ' \
+        ['If we do not have current school or group tariffs we will apply the Energy Sparks default tariff to your ' \
          "account. #{this_will_be_text}",
          currently_default_text]
       end
@@ -122,8 +122,25 @@ describe EnergyTariffsMailer, :include_application_helper do
           nil
         end
         let(:current_tariff_text) do
+          ['If we do not have current tariffs for your school we will apply your group tariff. If we do not have ' \
+           'current school or group tariffs we will apply the Energy Sparks default tariff to your account. ' \
+           "#{this_will_be_text}",
+           'Currently your group tariff is set at 10p per kWh of electricity and our default tariff is set at 3p per ' \
+           'kWh of gas.']
+        end
+
+        it_behaves_like 'it sends the expected email'
+      end
+
+      context 'with both group tariffs' do
+        let(:tariff) do
+          create(:energy_tariff, :with_flat_price, tariff_holder: school.school_group, end_date: nil)
+          create(:energy_tariff, :with_flat_price, tariff_holder: school.school_group, end_date: nil, meter_type: :gas)
+          nil
+        end
+        let(:current_tariff_text) do
           ["If we do not have current tariffs for your school we will apply your group tariff. #{this_will_be_text}",
-           'Currently your group tariff is set at 10p per kWh of electricity and 3p per kWh of gas.']
+           'Currently your group tariff is set at 10p per kWh of electricity and 10p per kWh of gas.']
         end
 
         it_behaves_like 'it sends the expected email'

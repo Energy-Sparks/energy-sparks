@@ -96,11 +96,14 @@ en:
   energy_tariffs_mailer:
     reminder:
       currently_tariff: Currently our default tariff is set at %{electricity} per kWh of electricity and %{gas} per kWh of gas.
-      currently_tariff_group: Currently your group tariff is set at %{electricity} per kWh of electricity and %{gas} per kWh of gas.
+      currently_tariff_group:
+        both: Currently your group tariff is set at %{electricity} per kWh of electricity and %{gas} per kWh of gas.
+        electricity_only: Currently your group tariff is set at %{electricity} per kWh of electricity and our default tariff is set at %{gas} per kWh of gas.
+        gas_only: Currently your group tariff is set at %{gas} per kWh of gas and our default tariff is set at %{electricity} per kWh of electricity.
       dont_forget_html: Don't forget, if your %{school_or_group} is planning to switch suppliers when you change supply contract, please inform us by emailing your <a href="mailto:%{email}">Energy Sparks account manager</a> as we will need to contact your new supplier(s) to maintain data access.
       group: group
       if_not_updated: If the tariff isn't updated, we will apply the Energy Sparks default tariff to your account. This will be used to calculate the potential cost savings for your energy saving activities.
-      if_we_do_not_have: If we do not have current tariffs for your school we will apply the Energy Sparks default tariff to your account.
+      if_we_do_not_have: If we do not have current school or group tariffs we will apply the Energy Sparks default tariff to your account.
       if_we_do_not_have_group: If we do not have current tariffs for your school we will apply your group tariff.
       if_you_are_planning_html: If you are planning to switch suppliers when your current contract ends, please inform us by emailing your <a href="mailto:%{email}">Energy Sparks account manager</a> as we will need to contact your new supplier(s) to maintain data access.
       if_your_group_tariff: If your group tariffs aren’t updated, and the individual schools have not added their own tariffs, then we will apply the Energy Sparks default tariffs.
