@@ -103,9 +103,7 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
   end
 
   def period_days(period_start, period_end)
-    (period_start..period_end).count do |date|
-      date.wday.between?(1, 5) && non_estimated_reading?(date)
-    end
+    (period_start..period_end).count { |date| date.on_weekday? && non_estimated_reading?(date) }
   end
 
   alias last_meter_date last_non_estimated_meter_date

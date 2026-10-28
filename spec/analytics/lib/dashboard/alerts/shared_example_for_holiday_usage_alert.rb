@@ -13,6 +13,23 @@ RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
       end
     end
 
+    context 'when outside holiday' do
+      let(:asof_date) { Date.new(2023, 12, 15) }
+
+      it 'returns :not_enough' do
+        expect(alert.enough_data).to eq(:not_enough)
+      end
+    end
+
+    context 'when data doesnt cover holiday' do
+      let(:amr_end_date) { Date.new(2023, 12, 10) }
+      let(:asof_date) { Date.new(2023, 12, 15) }
+
+      it 'returns :not_enough' do
+        expect(alert.enough_data).to eq(:not_enough)
+      end
+    end
+
     context 'when data starts partway through the holiday' do
       let(:amr_start_date) { Date.new(2023, 12, 20) }
 
@@ -43,23 +60,6 @@ RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
       before do
         (Date.new(2023, 12, 16)..asof_date).each { |date| amr_data.delete(date) }
       end
-
-      it 'returns :not_enough' do
-        expect(alert.enough_data).to eq(:not_enough)
-      end
-    end
-
-    context 'when outside holiday' do
-      let(:asof_date) { Date.new(2023, 12, 15) }
-
-      it 'returns :not_enough' do
-        expect(alert.enough_data).to eq(:not_enough)
-      end
-    end
-
-    context 'when data doesnt cover holiday' do
-      let(:amr_end_date) { Date.new(2023, 12, 10) }
-      let(:asof_date) { Date.new(2023, 12, 15) }
 
       it 'returns :not_enough' do
         expect(alert.enough_data).to eq(:not_enough)
