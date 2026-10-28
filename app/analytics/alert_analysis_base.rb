@@ -18,6 +18,135 @@ class AlertAnalysisBase < ContentBase
   attr_reader :status, :rating, :term, :analysis_date, :max_asofdate,
               :calculation_worked, :capital_cost, :one_year_saving_£, :ten_year_saving_£, :payback_years, :one_year_saving_co2, :ten_year_saving_co2, :one_year_saving_kwh, :average_capital_cost, :average_one_year_saving_£, :average_payback_years, :average_ten_year_saving_£, :error_message, :backtrace, :time_of_year_relevance
 
+  # slightly iffy way of creating short codes for alert class names
+  def self.alert_short_code(alert_class)
+    alert_class.to_s.chars.grep('A'..'Z')[1..8].join
+  end
+
+  def self.short_code_alert(short_code)
+    matching_alerts = all_available_alerts.select { |available_alert| alert_short_code(available_alert) == short_code }
+    if matching_alerts.length != 1
+      raise EnergySparksUnexpectedStateException,
+            "Only expected one matching short code for #{short_code}, got #{matching_alerts.length}"
+    end
+
+    matching_alerts.first
+  end
+
+  class UnknownFuelTypeForBenchmarkAlert < StandardError; end
+
+  def self.benchmark_alert(school, fuel_type, asof_date)
+    alert_class = case fuel_type
+                  when :electricity
+                    AlertElectricityAnnualVersusBenchmark
+                  when :gas
+                    AlertGasAnnualVersusBenchmark
+                  when :storage_heater
+                    AlertStorageHeaterAnnualVersusBenchmark
+                  else
+                    raise UnknownFuelTypeForBenchmarkAlert, "Unknown benchmark fuel type #{fuel_type}"
+                  end
+
+    alert = alert_class.new(school)
+
+    asof_date = [asof_date, alert.aggregate_meter.amr_data.end_date].min
+
+    alert.analyse(asof_date)
+    alert
+  end
+
+  def self.out_of_hours_alert(school, fuel_type, asof_date)
+    alert_class = case fuel_type
+                  when :electricity
+                    AlertOutOfHoursElectricityUsage
+                  when :gas
+                    AlertOutOfHoursGasUsage
+                  when :storage_heater
+                    AlertStorageHeaterOutOfHours
+                  else
+                    raise UnknownFuelTypeForBenchmarkAlert, "Unknown out of hours fuel type #{fuel_type}"
+                  end
+
+    alert = alert_class.new(school)
+
+    asof_date = [asof_date, alert.aggregate_meter.amr_data.end_date].min
+
+    alert.analyse(asof_date)
+
+    alert
+  end
+
+  def self.all_alerts
+    {
+      AlertChangeInDailyElectricityShortTerm => 'elst',
+      AlertChangeInDailyGasShortTerm => 'gsst',
+      AlertChangeInElectricityBaseloadShortTerm => 'elbc',
+      AlertEnergyAnnualVersusBenchmark => 'enba',
+      AlertElectricityAnnualVersusBenchmark => 'elba',
+      AlertElectricityBaseloadVersusBenchmark => 'elbb',
+      AlertGasAnnualVersusBenchmark => 'gsba',
+      AlertHeatingComingOnTooEarly => 'hthe',
+      AlertHeatingSensitivityAdvice => 'htsa',
+      AlertHotWaterEfficiency => 'hotw',
+      AlertImpendingHoliday => 'ihol',
+      #       AlertHeatingOnNonSchoolDays                                 => 'htns', deprecated
+      AlertOutOfHoursElectricityUsage => 'eloo',
+      AlertOutOfHoursElectricityUsagePreviousYear => 'elop',
+      AlertOutOfHoursGasUsage => 'gsoo',
+      AlertOutOfHoursGasUsagePreviousYear => 'gsop',
+      AlertHotWaterInsulationAdvice => 'hwia',
+      #      AlertHeatingOnSchoolDays                                    => 'htsd', deprecated
+      AlertThermostaticControl => 'httc',
+      AlertWeekendGasConsumptionShortTerm => 'gswe',
+      AlertMeterASCLimit => 'masc',
+      AlertSchoolWeekComparisonElectricity => 'eswc',
+      AlertPreviousHolidayComparisonElectricity => 'ephc',
+      AlertPreviousYearHolidayComparisonElectricity => 'epyc',
+      AlertSchoolWeekComparisonGas => 'gswc',
+      AlertPreviousHolidayComparisonGas => 'gphc',
+      AlertPreviousYearHolidayComparisonGas => 'gpyc',
+      AlertPreviousYearHolidayComparisonStorageHeater => 'spyc',
+      AlertAdditionalPrioritisationData => 'addp',
+      AlertElectricityPeakKWVersusBenchmark => 'epkb',
+      AlertStorageHeaterAnnualVersusBenchmark => 'shan',
+      AlertStorageHeaterThermostatic => 'shtc',
+      AlertStorageHeaterOutOfHours => 'shoo',
+      AlertOutOfHoursStorageHeaterUsagePreviousYear => 'shop',
+      #      AlertHeatingOnSchoolDaysStorageHeaters                      => 'shhd', deprecated
+      AlertSolarPVBenefitEstimator => 'sole',
+      AlertElectricityLongTermTrend => 'ellt',
+      AlertGasLongTermTrend => 'gslt',
+      AlertStorageHeatersLongTermTrend => 'shlt',
+      AlertOptimumStartAnalysis => 'opts',
+      AlertSummerHolidayRefrigerationAnalysis => 'free',
+      AlertSeasonalBaseloadVariation => 'sblv',
+      AlertIntraweekBaseloadVariation => 'iblv',
+      AlertGasHeatingHotWaterOnDuringHoliday => 'hdhl',
+      AlertStorageHeaterHeatingOnDuringHoliday => 'shoh',
+      AlertCommunitySchoolWeekComparisonElectricity => 'cswe',
+      AlertCommunitySchoolWeekComparisonGas => 'cswg',
+      AlertCommunityPreviousHolidayComparisonElectricity => 'cphe',
+      AlertCommunityPreviousHolidayComparisonGas => 'cphg',
+      AlertCommunityPreviousYearHolidayComparisonElectricity => 'cpye',
+      AlertCommunityPreviousYearHolidayComparisonGas => 'cpyg',
+      AlertTurnHeatingOff => 'htof',
+      AlertSeasonalHeatingSchoolDays => 'shsd',
+      AlertSeasonalHeatingSchoolDaysStorageHeaters => 'shsh',
+      AlertTurnHeatingOffStorageHeaters => 'tosh',
+      AlertElectricityUsageDuringCurrentHoliday => 'edhl',
+      AlertSchoolWeekComparisonStorageHeater => 'sswc',
+      AlertSolarGeneration => 'sgen'
+    }
+  end
+
+  def self.short_code
+    all_alerts[self]
+  end
+
+  def self.all_available_alerts
+    all_alerts.keys
+  end
+
   def initialize(school, _report_type)
     super(school)
     @capital_cost = 0.0..0.0
@@ -388,132 +517,4 @@ class AlertAnalysisBase < ContentBase
     end
   end
 
-  # slightly iffy way of creating short codes for alert class names
-  def self.alert_short_code(alert_class)
-    alert_class.to_s.chars.grep('A'..'Z')[1..8].join
-  end
-
-  def self.short_code_alert(short_code)
-    matching_alerts = all_available_alerts.select { |available_alert| alert_short_code(available_alert) == short_code }
-    if matching_alerts.length != 1
-      raise EnergySparksUnexpectedStateException,
-            "Only expected one matching short code for #{short_code}, got #{matching_alerts.length}"
-    end
-
-    matching_alerts.first
-  end
-
-  class UnknownFuelTypeForBenchmarkAlert < StandardError; end
-
-  def self.benchmark_alert(school, fuel_type, asof_date)
-    alert_class = case fuel_type
-                  when :electricity
-                    AlertElectricityAnnualVersusBenchmark
-                  when :gas
-                    AlertGasAnnualVersusBenchmark
-                  when :storage_heater
-                    AlertStorageHeaterAnnualVersusBenchmark
-                  else
-                    raise UnknownFuelTypeForBenchmarkAlert, "Unknown benchmark fuel type #{fuel_type}"
-                  end
-
-    alert = alert_class.new(school)
-
-    asof_date = [asof_date, alert.aggregate_meter.amr_data.end_date].min
-
-    alert.analyse(asof_date)
-    alert
-  end
-
-  def self.out_of_hours_alert(school, fuel_type, asof_date)
-    alert_class = case fuel_type
-                  when :electricity
-                    AlertOutOfHoursElectricityUsage
-                  when :gas
-                    AlertOutOfHoursGasUsage
-                  when :storage_heater
-                    AlertStorageHeaterOutOfHours
-                  else
-                    raise UnknownFuelTypeForBenchmarkAlert, "Unknown out of hours fuel type #{fuel_type}"
-                  end
-
-    alert = alert_class.new(school)
-
-    asof_date = [asof_date, alert.aggregate_meter.amr_data.end_date].min
-
-    alert.analyse(asof_date)
-
-    alert
-  end
-
-  def self.all_alerts
-    {
-      AlertChangeInDailyElectricityShortTerm => 'elst',
-      AlertChangeInDailyGasShortTerm => 'gsst',
-      AlertChangeInElectricityBaseloadShortTerm => 'elbc',
-      AlertEnergyAnnualVersusBenchmark => 'enba',
-      AlertElectricityAnnualVersusBenchmark => 'elba',
-      AlertElectricityBaseloadVersusBenchmark => 'elbb',
-      AlertGasAnnualVersusBenchmark => 'gsba',
-      AlertHeatingComingOnTooEarly => 'hthe',
-      AlertHeatingSensitivityAdvice => 'htsa',
-      AlertHotWaterEfficiency => 'hotw',
-      AlertImpendingHoliday => 'ihol',
-      #       AlertHeatingOnNonSchoolDays                                 => 'htns', deprecated
-      AlertOutOfHoursElectricityUsage => 'eloo',
-      AlertOutOfHoursElectricityUsagePreviousYear => 'elop',
-      AlertOutOfHoursGasUsage => 'gsoo',
-      AlertOutOfHoursGasUsagePreviousYear => 'gsop',
-      AlertHotWaterInsulationAdvice => 'hwia',
-      #      AlertHeatingOnSchoolDays                                    => 'htsd', deprecated
-      AlertThermostaticControl => 'httc',
-      AlertWeekendGasConsumptionShortTerm => 'gswe',
-      AlertMeterASCLimit => 'masc',
-      AlertSchoolWeekComparisonElectricity => 'eswc',
-      AlertPreviousHolidayComparisonElectricity => 'ephc',
-      AlertPreviousYearHolidayComparisonElectricity => 'epyc',
-      AlertSchoolWeekComparisonGas => 'gswc',
-      AlertPreviousHolidayComparisonGas => 'gphc',
-      AlertPreviousYearHolidayComparisonGas => 'gpyc',
-      AlertPreviousYearHolidayComparisonStorageHeater => 'spyc',
-      AlertAdditionalPrioritisationData => 'addp',
-      AlertElectricityPeakKWVersusBenchmark => 'epkb',
-      AlertStorageHeaterAnnualVersusBenchmark => 'shan',
-      AlertStorageHeaterThermostatic => 'shtc',
-      AlertStorageHeaterOutOfHours => 'shoo',
-      AlertOutOfHoursStorageHeaterUsagePreviousYear => 'shop',
-      #      AlertHeatingOnSchoolDaysStorageHeaters                      => 'shhd', deprecated
-      AlertSolarPVBenefitEstimator => 'sole',
-      AlertElectricityLongTermTrend => 'ellt',
-      AlertGasLongTermTrend => 'gslt',
-      AlertStorageHeatersLongTermTrend => 'shlt',
-      AlertOptimumStartAnalysis => 'opts',
-      AlertSummerHolidayRefrigerationAnalysis => 'free',
-      AlertSeasonalBaseloadVariation => 'sblv',
-      AlertIntraweekBaseloadVariation => 'iblv',
-      AlertGasHeatingHotWaterOnDuringHoliday => 'hdhl',
-      AlertStorageHeaterHeatingOnDuringHoliday => 'shoh',
-      AlertCommunitySchoolWeekComparisonElectricity => 'cswe',
-      AlertCommunitySchoolWeekComparisonGas => 'cswg',
-      AlertCommunityPreviousHolidayComparisonElectricity => 'cphe',
-      AlertCommunityPreviousHolidayComparisonGas => 'cphg',
-      AlertCommunityPreviousYearHolidayComparisonElectricity => 'cpye',
-      AlertCommunityPreviousYearHolidayComparisonGas => 'cpyg',
-      AlertTurnHeatingOff => 'htof',
-      AlertSeasonalHeatingSchoolDays => 'shsd',
-      AlertSeasonalHeatingSchoolDaysStorageHeaters => 'shsh',
-      AlertTurnHeatingOffStorageHeaters => 'tosh',
-      AlertElectricityUsageDuringCurrentHoliday => 'edhl',
-      AlertSchoolWeekComparisonStorageHeater => 'sswc',
-      AlertSolarGeneration => 'sgen'
-    }
-  end
-
-  def self.short_code
-    all_alerts[self]
-  end
-
-  def self.all_available_alerts
-    all_alerts.keys
-  end
 end
