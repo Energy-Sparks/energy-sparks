@@ -79,12 +79,10 @@ module Alerts
       }
     }.freeze
 
-    # We have enough data so long as there is some recorded usage within the current holiday
+    # We have enough data so long as there is some non-estimated usage within the current holiday
     def enough_data(community_use: :none?)
       holiday_period = @school.holidays.holiday(@today)
-      if !holiday_period.nil? &&
-         aggregate_meter.amr_data.start_date <= holiday_period.start_date &&
-         aggregate_meter.amr_data.end_date   >= holiday_period.start_date &&
+      if !holiday_period.nil? && non_estimated_readings?(holiday_period) &&
          (holiday_period.start_date..holiday_period.end_date).public_send(community_use) do |date|
            @school.open_close_times.usage(date).key?(:community)
          end
@@ -237,5 +235,13 @@ module Alerts
                usage_to_date: FormatUnit.format(:£, @holiday_usage_to_date_gbp))
       end
     end
+
+    def non_estimated_readings?(holiday_period)
+      (holiday_period.start_date..[holiday_period.end_date, @today].min).any? do |date|
+        non_estimated_reading?(date)
+      end
+    end
+
+    alias last_meter_date last_non_estimated_meter_date
   end
 end

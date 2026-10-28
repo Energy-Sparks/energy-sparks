@@ -461,8 +461,13 @@ class ContentBase
   def days_between_today_and_last_meter_date
     return 0 if check_relevance == :never_relevant
 
-    (@today - aggregate_meter.amr_data.end_date).to_i
+    date = last_meter_date
+    return max_days_out_of_date_while_still_relevant if date.nil?
+
+    (@today - date).to_i
   end
+
+  def last_meter_date = aggregate_meter.amr_data.end_date
 
   protected
 

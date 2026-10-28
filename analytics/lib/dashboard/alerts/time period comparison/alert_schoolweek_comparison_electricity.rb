@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'alert_period_comparison_base'
 require 'active_support/core_ext/integer/inflections'
 
@@ -28,9 +30,6 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
     :last_2_school_weeks_electricity_comparison_alert
   end
 
-  def calculate(asof_date)
-    super
-  end
   alias analyse_private calculate
 
   def current_period_start_short_date
@@ -57,47 +56,57 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
     :last_2_weeks
   end
 
-  protected def max_days_out_of_date_while_still_relevant
-    21
-  end
+  private
 
-  private def period_type
+  def period_type
     'school week'
   end
 
-  private def format_date(date)
+  def format_date(date)
     # rely on .ordinalize here so we can hook in custom formatting for Welsh
     I18n.l(date, format: "#{date.day.ordinalize} %B")
   end
 
-  protected def period_name(period)
+  def school_week(asof_date, offset)
+    sunday, saturday, _week_count = @school.holidays.nth_school_week(asof_date, offset)
+    SchoolDatePeriod.new(:analysis, "School Week offset #{offset}", sunday, saturday)
+  end
+
+  def fuel_time_of_year_priority(_asof_date, _current_period)
+    5.0
+  end
+
+  def max_days_out_of_date_while_still_relevant
+    21
+  end
+
+  def period_name(period)
     I18nHelper.holiday(period.type)
   end
 
-  protected def current_period_name(current_period)
+  def current_period_name(current_period)
     I18n.t('analytics.common.last_school_week') + " (#{period_name(current_period)})"
   end
 
-  protected def previous_period_name(previous_period)
+  def previous_period_name(previous_period)
     I18n.t('analytics.common.previous_school_week') + " (#{period_name(previous_period)})"
   end
 
-  protected def period_name(period)
+  def period_name(period)
     I18n.t('analytics.from_and_to',
            from_date: I18n.l(period.start_date, format: '%a %d-%m-%Y'),
            to_date: I18n.l(period.end_date, format: '%a %d-%m-%Y'))
   end
 
-  protected def last_two_periods(asof_date)
+  def last_two_periods(asof_date)
     [school_week(asof_date, 0), school_week(asof_date, -1)]
   end
 
-  private def school_week(asof_date, offset)
-    sunday, saturday, _week_count = @school.holidays.nth_school_week(asof_date, offset)
-    SchoolDatePeriod.new(:analysis, "School Week offset #{offset}", sunday, saturday)
+  def period_days(period_start, period_end)
+    (period_start..period_end).count do |date|
+      date.wday.between?(1, 5) && non_estimated_reading?(date)
+    end
   end
 
-  private def fuel_time_of_year_priority(asof_date, current_period)
-    5.0
-  end
+  alias last_meter_date last_non_estimated_meter_date
 end

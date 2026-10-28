@@ -13,6 +13,42 @@ RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
       end
     end
 
+    context 'when data starts partway through the holiday' do
+      let(:amr_start_date) { Date.new(2023, 12, 20) }
+
+      it 'returns :enough' do
+        expect(alert.enough_data).to eq(:enough)
+      end
+    end
+
+    context 'when holiday readings to date are estimated' do
+      before do
+        (Date.new(2023, 12, 16)..asof_date).each { |date| amr_data[date].set_type('EST') }
+      end
+
+      it 'returns :not_enough even with original readings later in the holiday' do
+        expect(alert.enough_data).to eq(:not_enough)
+      end
+
+      context 'with one non-estimated reading during the holiday' do
+        before { amr_data[asof_date].set_type('ORIG') }
+
+        it 'returns :enough' do
+          expect(alert.enough_data).to eq(:enough)
+        end
+      end
+    end
+
+    context 'when readings during the holiday are missing' do
+      before do
+        (Date.new(2023, 12, 16)..asof_date).each { |date| amr_data.delete(date) }
+      end
+
+      it 'returns :not_enough' do
+        expect(alert.enough_data).to eq(:not_enough)
+      end
+    end
+
     context 'when outside holiday' do
       let(:asof_date) { Date.new(2023, 12, 15) }
 
@@ -27,6 +63,46 @@ RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
 
       it 'returns :not_enough' do
         expect(alert.enough_data).to eq(:not_enough)
+      end
+    end
+  end
+
+  describe '#meter_readings_up_to_date_enough?' do
+    let(:amr_end_date) { asof_date }
+
+    it 'accepts up-to-date non-estimated readings' do
+      expect(alert.meter_readings_up_to_date_enough?).to be true
+    end
+
+    context 'with estimated readings after the last non-estimated reading' do
+      before do
+        amr_data.each do |date, reading|
+          reading.set_type('EST') if date > asof_date - days_out_of_date
+        end
+      end
+
+      context 'when the last non-estimated reading is 13 days old' do
+        let(:days_out_of_date) { 13 }
+
+        it 'accepts the readings' do
+          expect(alert.meter_readings_up_to_date_enough?).to be true
+        end
+      end
+
+      context 'when the last non-estimated reading is 14 days old' do
+        let(:days_out_of_date) { 14 }
+
+        it 'rejects the readings' do
+          expect(alert.meter_readings_up_to_date_enough?).to be false
+        end
+      end
+    end
+
+    context 'when all readings are estimated' do
+      before { amr_data.each_value { |reading| reading.set_type('EST') } }
+
+      it 'rejects the readings' do
+        expect(alert.meter_readings_up_to_date_enough?).to be false
       end
     end
   end
