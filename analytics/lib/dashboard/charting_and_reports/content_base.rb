@@ -66,11 +66,6 @@ class ContentBase
     nil
   end
 
-  protected def days_between_today_and_last_meter_date
-    return 0 if check_relevance == :never_relevant
-    (@today - aggregate_meter.amr_data.end_date).to_i
-  end
-
   def check_relevance
     return :relevant if no_single_aggregate_meter
     aggregate_meter.nil? ? :never_relevant : :relevant
@@ -263,36 +258,6 @@ class ContentBase
     end.to_h
   end
 
-  private def percent_change(old_value, new_value)
-    return nil if old_value.nil? || new_value.nil?
-    return 0.0 if !old_value.nan? && old_value == new_value # both 0.0 case
-    (new_value - old_value) / old_value
-  end
-
-  private def percent(v1, v2)
-    return nil if v1.nil? || v2.nil? || v2 == 0.0
-    v1 / v2
-  end
-
-  #For variables that indicate a range, then generate _high and _low value versions
-  #of the template data
-  private def convert_range_template_data_to_high_low(template_data, lookup, raw_data)
-    new_data = {}
-    template_data.each do |type, data| # front end want ranges as seperate high/low symbol-value pairs
-      if [:£_range, :years_range].include?(lookup[type][:units])
-        new_type = lookup[type][:units] == :£_range ? :£ : :years
-        if raw_data[type].nil?
-          new_data[self.class.convert_range_symbol_to_high(type)] = nil
-          new_data[self.class.convert_range_symbol_to_low(type)]  = nil
-        else
-          new_data[self.class.convert_range_symbol_to_high(type)] = format(new_type, raw_data[type].first, :text, false, user_numeric_comprehension_level)
-          new_data[self.class.convert_range_symbol_to_low(type)]  = format(new_type, raw_data[type].last,  :text, false, user_numeric_comprehension_level)
-        end
-      end
-    end
-    new_data
-  end
-
   #only used via test framework
   def raw_variables_for_saving
     raw = {}
@@ -321,11 +286,6 @@ class ContentBase
   def front_end_template_chart_data
     charts = front_end_template_chart_data_by_type(:chart)
     charts.reject { |_name, definition| definition.empty? }
-  end
-
-  private def front_end_template_chart_data_by_type(var_type)
-    lookup = flatten_template_variables
-    text_template_variables.select { |type, _value| lookup[type][:units] == var_type }
   end
 
   # returns :enough, :not_enough, :minimum_might_not_be_accurate
@@ -358,6 +318,41 @@ class ContentBase
 
   private
 
+  def percent_change(old_value, new_value)
+    return nil if old_value.nil? || new_value.nil?
+    return 0.0 if !old_value.nan? && old_value == new_value # both 0.0 case
+    (new_value - old_value) / old_value
+  end
+
+  def percent(v1, v2)
+    return nil if v1.nil? || v2.nil? || v2 == 0.0
+    v1 / v2
+  end
+
+  #For variables that indicate a range, then generate _high and _low value versions
+  #of the template data
+  def convert_range_template_data_to_high_low(template_data, lookup, raw_data)
+    new_data = {}
+    template_data.each do |type, data| # front end want ranges as seperate high/low symbol-value pairs
+      if [:£_range, :years_range].include?(lookup[type][:units])
+        new_type = lookup[type][:units] == :£_range ? :£ : :years
+        if raw_data[type].nil?
+          new_data[self.class.convert_range_symbol_to_high(type)] = nil
+          new_data[self.class.convert_range_symbol_to_low(type)]  = nil
+        else
+          new_data[self.class.convert_range_symbol_to_high(type)] = format(new_type, raw_data[type].first, :text, false, user_numeric_comprehension_level)
+          new_data[self.class.convert_range_symbol_to_low(type)]  = format(new_type, raw_data[type].last,  :text, false, user_numeric_comprehension_level)
+        end
+      end
+    end
+    new_data
+  end
+
+  def front_end_template_chart_data_by_type(var_type)
+    lookup = flatten_template_variables
+    text_template_variables.select { |type, _value| lookup[type][:units] == var_type }
+  end
+
   def formatted_template_variables(format = :html)
     variable_list(true, format)
   end
@@ -377,7 +372,7 @@ class ContentBase
     @flattened_variables ||= create_flattened_variables
   end
 
-  private def create_flattened_variables
+  def create_flattened_variables
     list = {}
     self.class.template_variables.each do |_group_name, variable_group|
       variable_group.each do |type, data|
@@ -395,7 +390,7 @@ class ContentBase
     list
   end
 
-  private def variable_list(formatted, format = :text)
+  def variable_list(formatted, format = :text)
     list = {}
     flatten_template_variables.each do |type, data|
       begin
@@ -422,11 +417,11 @@ class ContentBase
     list
   end
 
-  private def log_missing_variable(type)
+  def log_missing_variable(type)
     logger.info "Warning: alert doesnt implement #{type}"
   end
 
-  private def missing_variable_summary
+  def missing_variable_summary
     # do nothing as already logged above
     # but overridden for energy alert benchmark
   end
@@ -471,5 +466,11 @@ class ContentBase
     raise EnergySparksNotEnoughDataException, "zero kWh consumption between #{start_date} and #{end_date}" if kwh == 0.0
 
     data / kwh
+  end
+
+  def days_between_today_and_last_meter_date
+    return 0 if check_relevance == :never_relevant
+
+    (@today - aggregate_meter.amr_data.end_date).to_i
   end
 end
