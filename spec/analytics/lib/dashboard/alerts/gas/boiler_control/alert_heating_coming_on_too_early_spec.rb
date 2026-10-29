@@ -22,37 +22,7 @@ describe AlertHeatingComingOnTooEarly do
 
       before { alert.instance_variable_set(:@heating_model, heating_model) }
 
-      it 'accepts sufficient non-estimated readings' do
-        expect(alert.enough_data).to eq(:enough)
-      end
-
-      { 0 => :not_enough, 6 => :not_enough, 7 => :enough }.each do |days, status|
-        context "with #{days} non-estimated days" do
-          before { estimate_readings_after(amr_start_date + days - 1) }
-
-          it "returns #{status}" do
-            expect(alert.enough_data).to eq(status)
-          end
-        end
-      end
-
-      context 'with missing readings' do
-        let(:amr_start_date) { amr_end_date - 6 }
-
-        before { amr_data.delete(amr_start_date + 1) }
-
-        it 'does not count missing days towards the threshold' do
-          expect(alert.enough_data).to eq(:not_enough)
-        end
-      end
-
-      context 'with non-EST corrected readings' do
-        before { amr_data.each_value { |reading| reading.set_type('AGGR') } }
-
-        it 'counts them towards the threshold' do
-          expect(alert.enough_data).to eq(:enough)
-        end
-      end
+      it_behaves_like 'an alert requiring a minimum number of non-estimated readings', minimum_days: 7
 
       context 'without enough data for a model fit' do
         let(:model_fits) { false }
