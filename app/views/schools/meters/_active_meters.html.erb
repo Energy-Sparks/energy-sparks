@@ -22,13 +22,9 @@
             end %>
       </td>
       <td>
-        <% if meter.admin_meter_status.nil? && meter.admin_meter_status_label.present? %>
-          <span data-toggle="tooltip" title="Default <%= meter.fuel_type.to_s.humanize.downcase %> admin meter status for this school's school group">
-            <%= label_with_wbr(meter.admin_meter_status_label) %>
-          </span>
-        <% else %>
-          <span><%= label_with_wbr(meter.admin_meter_status_label) %></span>
-        <% end %>
+        <span>
+          <%= label_with_wbr(meter.admin_meter_status_label) %>
+        </span>
       </td>
     <% end %>
     <td class="text-end"><%= meter.amr_data_feed_readings.count %></td>
