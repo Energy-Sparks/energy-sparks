@@ -10,12 +10,8 @@ describe 'site-wide settings' do
   end
 
   context 'with pricing feature flag enabled' do
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'true' do
-        example.run
-        BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)
-      end
-    end
+    before { stub_env(FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'true') }
+    after { BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices) }
 
     context 'with no existing site settings' do
       it 'allows admins to update site settings with prices' do
@@ -77,11 +73,7 @@ describe 'site-wide settings' do
   end
 
   context 'with pricing feature flag disabled' do
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'false' do
-        example.run
-      end
-    end
+    before { stub_env(FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'false') }
 
     it 'allows admins to update site settings but no prices' do
       BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)

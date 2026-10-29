@@ -405,7 +405,7 @@ describe 'meter management', :include_application_helper, :meters do
       end
 
       context 'with Perse' do
-        around do |example|
+        before do
           travel_to(Date.new(2024, 12, 10))
           create(:amr_data_feed_reading, # make sure we're doing a full reload
                  amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'perse-half-hourly-api'),
@@ -413,9 +413,7 @@ describe 'meter management', :include_application_helper, :meters do
                  meter: meter)
           stub_request(:get, 'http://perse/meterhistory/v2/realtime-data?MPAN=1234567890123&fromDate=2023-10-10')
           meter.update!(perse_api: :half_hourly)
-          ClimateControl.modify PERSE_API_URL: 'http://perse', PERSE_API_KEY: 'key' do
-            example.run
-          end
+          stub_env(PERSE_API_URL: 'http://perse', PERSE_API_KEY: 'key')
         end
 
         it 'allows reloading the meter with Perse' do
