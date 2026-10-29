@@ -101,7 +101,6 @@ Rails.application.configure do
   config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY']
   config.active_record.encryption.deterministic_key = ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY']
   config.active_record.encryption.key_derivation_salt = ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT']
-  config.assets.prefix = "/static-assets"
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :terser
   config.action_controller.asset_host = ENV['ASSET_HOST'] if ENV['ASSET_HOST'].present?
@@ -115,6 +114,6 @@ Rails.application.configure do
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
   config.good_job.on_thread_error = -> (exception) { Rollbar.error(exception, from: :on_thread_error) }
-  config.public_file_server.headers['access-control-allow-origin'] = "https://#{ENV['APPLICATION_HOST']}"
   config.ssl_options = { redirect: { exclude: -> request { request.path == '/up' } } }
+  config.public_file_server.enabled = false
 end
