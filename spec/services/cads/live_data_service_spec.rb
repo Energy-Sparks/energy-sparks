@@ -58,9 +58,8 @@ module Cads
 
       it 'caches token for env var period' do
         expect(Rails.cache).to receive(:fetch).with(LiveDataService::CACHE_KEY, expires_in: 123.minutes)
-        ClimateControl.modify 'GEO_API_TOKEN_EXPIRY_MINUTES' => '123' do
-          Cads::LiveDataService.new(cad).read
-        end
+        stub_env(GEO_API_TOKEN_EXPIRY_MINUTES: '123')
+        described_class.new(cad).read
       end
 
       it 'resets token cache on auth error' do

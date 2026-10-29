@@ -35,11 +35,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
   let(:email_body) { email.html_part.decoded }
   let(:matcher) { Capybara.string(email_body.to_s) }
 
-  around do |example|
-    ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
-      example.run
-    end
-  end
+  before { stub_env(SEND_AUTOMATED_EMAILS: 'true') }
 
   shared_examples 'an email was sent' do
     it 'sends email with correct subject' do

@@ -32,11 +32,7 @@ RSpec.describe CampaignMailer do
     }
   end
 
-  around do |example|
-    ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'unknown' do
-      example.run
-    end
-  end
+  before { stub_env(ENVIRONMENT_IDENTIFIER: 'unknown') }
 
   describe '#notify_admin' do
     let(:request_type) { :book_demo }

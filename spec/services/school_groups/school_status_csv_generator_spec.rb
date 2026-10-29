@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
-  around do |example|
+  before do
     travel_to Date.new(2025, 9, 26)
-    ClimateControl.modify AWESOMEPRINT: 'off' do
-      example.run
-    end
+    stub_env(AWESOMEPRINT: 'off')
   end
 
   let(:school_group) { create(:school_group) }
