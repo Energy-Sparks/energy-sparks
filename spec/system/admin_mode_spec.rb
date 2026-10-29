@@ -4,67 +4,57 @@ describe 'Admin mode' do
   let(:staff)     { create(:staff) }
   let(:admin)     { create(:admin) }
 
+  before { stub_env(ADMIN_MODE: 'true') }
+
   context 'when logging in' do
     it 'allows form to be viewed' do
-      ClimateControl.modify ADMIN_MODE: 'true' do
-        visit new_user_session_path
-        expect(page).to have_text('Sign in to Energy Sparks')
-      end
+      visit new_user_session_path
+      expect(page).to have_text('Sign in to Energy Sparks')
     end
 
     it 'serves maintenance page for non-admins' do
-      ClimateControl.modify ADMIN_MODE: 'true' do
-        visit new_user_session_path
-        fill_in 'Email', with: staff.email
-        fill_in 'Password', with: staff.password
-        within '#staff' do
-          click_on 'Sign in'
-        end
-        expect(page).to have_text('Energy Sparks is currently down for maintenance')
+      visit new_user_session_path
+      fill_in 'Email', with: staff.email
+      fill_in 'Password', with: staff.password
+      within '#staff' do
+        click_on 'Sign in'
       end
+      expect(page).to have_text('Energy Sparks is currently down for maintenance')
     end
 
     it 'serves expected page for admins' do
-      ClimateControl.modify ADMIN_MODE: 'true' do
-        visit new_user_session_path
-        fill_in 'Email', with: admin.email
-        fill_in 'Password', with: admin.password
-        within '#staff' do
-          click_on 'Sign in'
-        end
-        expect(page).to have_text('Energy Sparks schools across the UK')
+      visit new_user_session_path
+      fill_in 'Email', with: admin.email
+      fill_in 'Password', with: admin.password
+      within '#staff' do
+        click_on 'Sign in'
       end
+      expect(page).to have_text('Energy Sparks schools across the UK')
     end
   end
 
   context 'when logged in' do
     context 'as admin' do
       it 'serves expected page for admins' do
-        ClimateControl.modify ADMIN_MODE: 'true' do
-          sign_in(admin)
-          visit root_path
-          expect(page).to have_text('Energy Sparks schools across the UK')
-        end
+        sign_in(admin)
+        visit root_path
+        expect(page).to have_text('Energy Sparks schools across the UK')
       end
     end
 
     context 'as staff' do
       it 'serves maintenance page for non-admins' do
-        ClimateControl.modify ADMIN_MODE: 'true' do
-          sign_in(staff)
-          visit root_path
-          expect(page).to have_text('Energy Sparks is currently down for maintenance')
-        end
+        sign_in(staff)
+        visit root_path
+        expect(page).to have_text('Energy Sparks is currently down for maintenance')
       end
     end
   end
 
   context 'when not logged in' do
     it 'serves maintenance page for non-admins' do
-      ClimateControl.modify ADMIN_MODE: 'true' do
-        visit root_path
-        expect(page).to have_text('Energy Sparks is currently down for maintenance')
-      end
+      visit root_path
+      expect(page).to have_text('Energy Sparks is currently down for maintenance')
     end
   end
 end

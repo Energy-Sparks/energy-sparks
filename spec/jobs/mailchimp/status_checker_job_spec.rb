@@ -11,12 +11,10 @@ describe Mailchimp::StatusCheckerJob do
 
   describe '#can_run?' do
     it 'can run in all environments' do
-      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
-        expect(job.can_run?).to be(true)
-      end
-      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'test' do
-        expect(job.can_run?).to be(true)
-      end
+      stub_env(ENVIRONMENT_IDENTIFIER: 'production')
+      expect(job.can_run?).to be(true)
+      stub_env(ENVIRONMENT_IDENTIFIER: 'test')
+      expect(job.can_run?).to be(true)
     end
   end
 

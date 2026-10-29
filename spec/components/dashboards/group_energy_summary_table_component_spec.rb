@@ -4,23 +4,18 @@ require 'rails_helper'
 
 RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_application_helper, :include_url_helpers,
                type: :component do
-  let!(:school_group) { create(:school_group) }
+  let(:school_group) { create(:school_group) }
   let(:school_group_cluster) { create(:school_group_cluster, school_group: school_group) }
-  let!(:school) do
+  let(:school) do
     create(:school,
            :with_basic_configuration_single_meter_and_tariffs,
            school_group: school_group,
            school_group_cluster: school_group_cluster)
   end
 
-  around do |example|
-    travel_to Date.new(2025, 9, 26)
-    ClimateControl.modify AWESOMEPRINT: 'off' do
-      example.run
-    end
-  end
-
   before do
+    travel_to Date.new(2025, 9, 26)
+    stub_env(AWESOMEPRINT: 'off')
     alert_type = create(:alert_type, fuel_type: nil, class_name: 'ManagementSummaryTable')
     rating = create(:alert_type_rating, alert_type: alert_type, management_dashboard_table_active: true,
                                         rating_from: 0, rating_to: 10)
@@ -232,7 +227,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   end
 
   context 'when there are no data enabled schools in group' do
-    let!(:school) do
+    let(:school) do
       create(:school,
              :with_basic_configuration_single_meter_and_tariffs,
              school_group: school_group,
@@ -252,7 +247,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   end
 
   context 'when there are no schools in group' do
-    let!(:school) do
+    let(:school) do
       create(:school,
              :with_basic_configuration_single_meter_and_tariffs,
              school_group: create(:school_group))
