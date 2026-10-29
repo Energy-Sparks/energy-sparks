@@ -1,3 +1,5 @@
+require_relative '../common/alert_analysis_base'
+
 class AlertElectricityOnlyBase < AlertAnalysisBase
   include ElectricityCostCo2Mixin
 

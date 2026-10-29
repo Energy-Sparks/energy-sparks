@@ -1,4 +1,5 @@
 #======================== Electricity Annual kWh Versus Benchmark =============
+require_relative '../common/alert_analysis_base.rb'
 require_relative '../common/alert_floor_area_pupils_mixin.rb'
 
 class AlertElectricityAnnualVersusBenchmark < AlertElectricityOnlyBase

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './alert_analysis_base.rb'
+
 # not a real 'user' alert, but something which provides basic data to support the
 # prioritisation of other alerts
 class AlertAdditionalPrioritisationData < AlertAnalysisBase

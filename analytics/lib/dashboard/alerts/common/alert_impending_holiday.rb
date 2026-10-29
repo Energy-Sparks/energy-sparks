@@ -1,4 +1,5 @@
 #======================== Holiday Alert =======================================
+require_relative 'alert_analysis_base.rb'
 require_relative '../electricity/alert_out_of_hours_electricity_usage.rb'
 require_relative '../gas/alert_out_of_hours_gas_usage.rb'
 require_relative '../gas/alert_gas_only_base.rb'

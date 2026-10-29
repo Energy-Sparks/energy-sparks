@@ -1,3 +1,4 @@
+require_relative '../common/alert_analysis_base.rb'
 
 class AlertGasOnlyBase < AlertAnalysisBase
   def initialize(school, _report_type)
