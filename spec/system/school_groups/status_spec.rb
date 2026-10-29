@@ -3,13 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'school group status', :include_application_helper, :school_groups do
-  around do |example|
-    travel_to Date.new(2025, 9, 26)
-    ClimateControl.modify AWESOMEPRINT: 'off' do
-      example.run
-    end
-  end
-
   let!(:setup_data) {} # hook for dashboard messages - goes before page is loaded
   let!(:school_group) { create(:school_group, :with_grouping) }
   let(:statuses) { { visible: true, data_enabled: true } }
@@ -26,6 +19,8 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
   let(:user) { create(:admin) }
 
   before do
+    travel_to Date.new(2025, 9, 26)
+    stub_env(AWESOMEPRINT: 'off')
     meter_collection = AggregateSchoolService.new(school).aggregate_school
     Schools::GenerateConfiguration.new(school, meter_collection).generate
 
