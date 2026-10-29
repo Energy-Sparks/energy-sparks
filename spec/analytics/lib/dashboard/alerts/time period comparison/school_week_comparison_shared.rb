@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../non_estimated_readings_shared'
+
 shared_examples 'a school week comparison ignoring estimated readings' do
   let(:amr_data) { alert.aggregate_meter.amr_data }
 
@@ -55,42 +57,13 @@ shared_examples 'a school week comparison ignoring estimated readings' do
     end
   end
 
-  describe '#meter_readings_up_to_date_enough?' do
-    it 'accepts recent non-estimated readings' do
-      expect(alert.meter_readings_up_to_date_enough?).to be true
-    end
+  it_behaves_like 'an alert requiring recent non-estimated readings', max_days_out_of_date: 21 do
+    let(:amr_end_date) { analysis_date }
 
-    context 'with estimated readings after the last non-estimated reading' do
-      before do
-        amr_data.each do |date, reading|
-          reading.set_type('EST') if date > analysis_date - days_out_of_date
-        end
-      end
+    it 'is not relevant when the latest non-estimated reading is too old' do
+      estimate_readings_after(analysis_date - 21)
 
-      context 'when the last non-estimated reading is 20 days old' do
-        let(:days_out_of_date) { 20 }
-
-        it 'accepts the readings' do
-          expect(alert.meter_readings_up_to_date_enough?).to be true
-        end
-      end
-
-      context 'when the last non-estimated reading is 21 days old' do
-        let(:days_out_of_date) { 21 }
-
-        it 'rejects the readings' do
-          expect(alert.meter_readings_up_to_date_enough?).to be false
-          expect(alert.relevance).to eq(:not_relevant)
-        end
-      end
-    end
-
-    context 'when all readings are estimated' do
-      before { amr_data.each_value { |reading| reading.set_type('EST') } }
-
-      it 'rejects the readings' do
-        expect(alert.meter_readings_up_to_date_enough?).to be false
-      end
+      expect(alert.relevance).to eq(:not_relevant)
     end
   end
 end
