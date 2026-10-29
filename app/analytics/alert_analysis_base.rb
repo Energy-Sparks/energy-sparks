@@ -527,4 +527,8 @@ class AlertAnalysisBase < ContentBase
     reading = aggregate_meter.amr_data[date]
     !reading.nil? && reading.type != 'EST'
   end
+
+  def non_estimated_days(count)
+    aggregate_meter.amr_data.each_key.lazy.select { |date| non_estimated_reading?(date) }.take(count).count
+  end
 end

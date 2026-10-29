@@ -1,17 +1,16 @@
+# frozen_string_literal: true
+
 #======================== Heating coming on too early in morning ==============
-require_relative '../alert_gas_model_base.rb'
+require_relative '../alert_gas_model_base'
 
 class AlertHeatingComingOnTooEarly < AlertGasModelBase
-  #Also defined in base class?
+  # Also defined in base class?
   FROST_PROTECTION_TEMPERATURE = 4
-  #Unused?
+  # Unused?
   MAX_HALFHOURS_HEATING_ON = 10
-
-  attr_reader :last_year_kwh, :last_year_£
-
-  attr_reader :one_year_optimum_start_saving_kwh, :one_year_optimum_start_saving_£, :one_year_optimum_start_saving_co2
-  attr_reader :one_year_optimum_start_saving_£current
-  attr_reader :percent_of_annual_gas, :avg_week_start_time
+  attr_reader :last_year_kwh, :last_year_£, :one_year_optimum_start_saving_kwh, :one_year_optimum_start_saving_£,
+              :one_year_optimum_start_saving_co2, :one_year_optimum_start_saving_£current, :percent_of_annual_gas,
+              :avg_week_start_time
 
   def initialize(school)
     super(school, :heatingcomingontooearly)
@@ -19,32 +18,28 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
   end
 
   def self.template_variables
-    specific = {'Heating coming on too early' => TEMPLATE_VARIABLES}
-    specific.merge(self.superclass.template_variables)
-  end
-
-  protected def max_days_out_of_date_while_still_relevant
-    21
+    specific = { 'Heating coming on too early' => TEMPLATE_VARIABLES }
+    specific.merge(superclass.template_variables)
   end
 
   TEMPLATE_VARIABLES = {
     one_year_optimum_start_saving_kwh: {
       description: 'Estimates (up to saving) of benefit of starting boiler later in morning using a crude optimum start and frost model - kWh',
-      units:  {kwh: :gas}
+      units: { kwh: :gas }
     },
     one_year_optimum_start_saving_£: {
       description: 'Estimates (up to saving) of benefit of starting boiler later in morning using a crude optimum start and frost model - £ historic tariff',
-      units:  :£,
+      units: :£,
       benchmark_code: 'oss£'
     },
     one_year_optimum_start_saving_£current: {
       description: 'Estimates (up to saving) of benefit of starting boiler later in morning using a crude optimum start and frost model - £ latest tariff',
-      units:  :£,
+      units: :£,
       benchmark_code: 'oss€'
     },
     one_year_optimum_start_saving_co2: {
       description: 'Estimates CO2 (up to saving) of benefit of starting boiler later in morning using a crude optimum start and frost model - CO2',
-      units:  :co2
+      units: :co2
     },
     avg_week_start_time: {
       description: 'Average time heating started in last week',
@@ -53,7 +48,7 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
     },
     percent_of_annual_gas: {
       description: 'Percent of annual gas consumption lost through coming on too early versus optimal start/frost',
-      units:  :percent
+      units: :percent
     },
     annual_heating_day_intraday_profile_gas_chart: {
       description: 'Intraday profile of annual usage (£) - only heating days, not summer',
@@ -62,7 +57,7 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
     last_7_days_gas_chart: {
       description: 'Last 7 days gas consumption and temperatures (suggest to user clicking off legend)',
       units: :chart
-    },
+    }
   }.freeze
 
   def timescale
@@ -70,7 +65,7 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
   end
 
   def enough_data
-    days_amr_data >= 7 && enough_data_for_model_fit ? :enough : :not_enough
+    non_estimated_days(7) >= 7 && enough_data_for_model_fit ? :enough : :not_enough
   end
 
   def last_7_days_gas_chart
@@ -95,7 +90,8 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
       one_year_saving_kwh: @one_year_optimum_start_saving_kwh,
       one_year_saving_£: Range.new(0.0, @one_year_optimum_start_saving_£current),
       capital_cost: Range.new(0.0, 700.0),
-      one_year_saving_co2: @one_year_optimum_start_saving_co2)
+      one_year_saving_co2: @one_year_optimum_start_saving_co2
+    )
 
     @rating = calculate_rating_from_range(1.0, 0.0, rating_7_day)
 
@@ -103,15 +99,21 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
 
     @term = :shortterm
   end
-  alias_method :analyse_private, :calculate
+  alias analyse_private calculate
 
   private
+
+  def heating_on_time_assessment(asof_date, days_countback = 7)
+    HeatingStartTimeCalculator.new(heating_model: heating_model).calculate_start_times(asof_date, days_countback)
+  end
+
+  alias last_meter_date last_non_estimated_meter_date
 
   def hm_1_year_saving(asof_date, datatype)
     heating_model.one_year_saving_from_better_boiler_start_time(asof_date, datatype)
   end
 
-  private def heating_on_time_assessment(asof_date, days_countback = 7)
-    HeatingStartTimeCalculator.new(heating_model: heating_model).calculate_start_times(asof_date, days_countback)
+  def max_days_out_of_date_while_still_relevant
+    21
   end
 end

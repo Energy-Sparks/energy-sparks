@@ -139,10 +139,7 @@ class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
   end
 
   def enough_data
-    days = aggregate_meter.amr_data.each_key.lazy
-                          .select { |date| non_estimated_reading?(date) }
-                          .take(MINIMUM_DAYS_FOR_ENOUGH_DATA + 1)
-                          .count
+    days = non_estimated_days(MINIMUM_DAYS_FOR_ENOUGH_DATA + 1)
     if days > MINIMUM_DAYS_FOR_ENOUGH_DATA
       :enough
     else
