@@ -15,6 +15,7 @@ namespace :solar do
     begin
       SolarEdgeInstallation.active.find_each do |installation|
         next if installation.api_key.blank? && !installation.consented?
+        next if !installation.consented? && Time.zone.today >= Date.new(2026, 11, 1) # stop loading v1 sites
 
         puts "Running for #{installation.school.name} #{installation.site_id}"
         Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date:, end_date:, reload:).perform

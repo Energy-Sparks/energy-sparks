@@ -5,11 +5,9 @@ RSpec.describe Schools::MeterStatusComponent, :include_url_helpers, type: :compo
     render_inline(described_class.new(**params))
   end
 
-  around do |example|
+  before do
     travel_to Date.new(2025, 9, 26)
-    ClimateControl.modify AWESOMEPRINT: 'off' do
-      example.run
-    end
+    stub_env(AWESOMEPRINT: 'off')
   end
 
   let(:base_params) { { id: 'custom-id', classes: 'extra-classes', school: school } }

@@ -119,27 +119,24 @@ module Transifex
         let(:expected_path) { "resources/o:energy-sparks:p:#{project}:r:#{slug}" }
 
         it 'handles missing env var' do
-          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: nil do
-            expect do
-              client.delete_resource(slug)
-            end.to raise_error(Transifex::Client::AccessError)
-          end
+          stub_env(TRANSIFEX_DELETABLE_PROJECTS: nil)
+          expect do
+            client.delete_resource(slug)
+          end.to raise_error(Transifex::Client::AccessError)
         end
 
         it 'raise error if project is not development' do
-          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: 'not-this-project, some-other-project' do
-            expect do
-              client.delete_resource(slug)
-            end.to raise_error(Transifex::Client::AccessError)
-          end
+          stub_env(TRANSIFEX_DELETABLE_PROJECTS: 'not-this-project, some-other-project')
+          expect do
+            client.delete_resource(slug)
+          end.to raise_error(Transifex::Client::AccessError)
         end
 
         it 'deletes url and returns true' do
-          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: project.to_s do
-            stubs.delete(expected_path) { [204, {}, body] }
-            # expect(connection).to receive(:delete).with(expected_path).and_return(response)
-            expect(client.delete_resource(slug)).to be_truthy
-          end
+          stub_env(TRANSIFEX_DELETABLE_PROJECTS: project.to_s)
+          stubs.delete(expected_path) { [204, {}, body] }
+          # expect(connection).to receive(:delete).with(expected_path).and_return(response)
+          expect(client.delete_resource(slug)).to be_truthy
         end
 
         context 'when api call fails' do
@@ -148,10 +145,9 @@ module Transifex
           let(:body)          { File.read('spec/fixtures/transifex/delete_resource_error.json') }
 
           it 'raises error if api returns error' do
-            ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: project.to_s do
-              stubs.delete(expected_path) { [status, {}, body] }
-              expect { client.delete_resource(slug) }.to raise_error(Transifex::Client::NotAuthorised)
-            end
+            stub_env(TRANSIFEX_DELETABLE_PROJECTS: project.to_s)
+            stubs.delete(expected_path) { [status, {}, body] }
+            expect { client.delete_resource(slug) }.to raise_error(Transifex::Client::NotAuthorised)
           end
         end
       end

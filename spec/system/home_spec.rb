@@ -237,14 +237,13 @@ RSpec.describe 'home' do
 
     context with_feature: :new_training_page do
       before do
-        ClimateControl.modify EVENTBRITE_API_TOKEN: 'x', EVENTBRITE_ORG_ID: 'x' do
-          allow(EventbriteSDK).to receive(:get).and_return(response)
+        stub_env(EVENTBRITE_API_TOKEN: 'x', EVENTBRITE_ORG_ID: 'x')
+        allow(EventbriteSDK).to receive(:get).and_return(response)
 
-          visit root_path
-          click_on('Our services')
-          within('#our-services') do
-            click_on('Training')
-          end
+        visit root_path
+        click_on('Our services')
+        within('#our-services') do
+          click_on('Training')
         end
       end
 
