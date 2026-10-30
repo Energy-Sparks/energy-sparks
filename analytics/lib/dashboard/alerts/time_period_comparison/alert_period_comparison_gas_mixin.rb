@@ -1,3 +1,6 @@
+require_relative 'alert_period_comparison_base'
+require_relative 'alert_period_comparison_temperature_adjustment_mixin'
+
 module AlertPeriodComparisonGasMixin
   def self.template_variables
     specific = { 'Adjusted gas school week specific (debugging)' => holiday_adjusted_gas_variables }

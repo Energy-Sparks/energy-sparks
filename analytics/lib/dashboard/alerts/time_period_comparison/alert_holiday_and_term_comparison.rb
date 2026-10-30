@@ -57,15 +57,3 @@ module AlertHolidayAndTermComparisonMixin
     days >= 1
   end
 end
-
-class AlertHolidayAndTermElectricityComparison < AlertArbitraryPeriodComparisonElectricityBase
-  include AlertHolidayAndTermComparisonMixin
-end
-
-class AlertHolidayAndTermGasComparison < AlertArbitraryPeriodComparisonGasBase
-  include AlertHolidayAndTermComparisonMixin
-end
-
-class AlertHolidayAndTermStorageHeaterComparison < AlertArbitraryPeriodComparisonStorageHeaterBase
-  include AlertHolidayAndTermComparisonMixin
-end

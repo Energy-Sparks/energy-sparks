@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'alert_arbitrary_period_comparison_electricity_base'
+
 require_relative 'alert_arbitrary_period_configurable_comparison_mixin'
 
 class AlertConfigurablePeriodElectricityComparison < AlertArbitraryPeriodComparisonElectricityBase

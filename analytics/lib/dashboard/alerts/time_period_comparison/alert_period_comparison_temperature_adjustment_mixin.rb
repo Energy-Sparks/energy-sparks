@@ -1,3 +1,5 @@
+require_relative '../gas/alert_model_cache_mixin'
+
 # shared code between gas/heat derived classes from electricity
 # classes to simulate multiple inheritance
 module AlertPeriodComparisonTemperatureAdjustmentMixin

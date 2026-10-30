@@ -287,7 +287,8 @@ class AggregateDataServiceSolar
       generation_meters,
       :solar_pv,
       generation_meters.map { |m| m.amr_data.start_date }.min,
-      generation_meters.map { |m| m.amr_data.end_date }.max
+      generation_meters.map { |m| m.amr_data.end_date }.max,
+      mpan
     )
 
     generation_meter = @meter_collection.create_modified_copy_of_meter(

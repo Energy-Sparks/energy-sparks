@@ -1,3 +1,5 @@
+require_relative '../../../../../lib/alerts/usage_during_current_holiday_base'
+
 class AlertStorageHeaterHeatingOnDuringHoliday < Alerts::UsageDuringCurrentHolidayBase
   def initialize(school)
     super(school, :storage_heaters)

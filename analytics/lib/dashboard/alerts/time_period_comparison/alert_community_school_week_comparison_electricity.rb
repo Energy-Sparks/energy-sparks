@@ -1,0 +1,6 @@
+require_relative 'alert_schoolweek_comparison_electricity'
+require_relative 'alert_community_use_mixin'
+
+class AlertCommunitySchoolWeekComparisonElectricity < AlertSchoolWeekComparisonElectricity
+  include AlertCommunityUseMixin
+end
