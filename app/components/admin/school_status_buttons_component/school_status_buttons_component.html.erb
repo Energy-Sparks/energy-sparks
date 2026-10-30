@@ -1,53 +1,47 @@
-<% if can?(:change_visibility, school) %>
-  <% if school.visible? %>
-    <%= link_to school_visibility_path(school),
+<%= tag.div id: 'school-status-buttons', class: classes do %>
+  <% if @school.visible? %>
+    <%= link_to school_visibility_path(@school),
                 class: 'badge rounded-pill text-bg-success', method: :delete,
                 data: { confirm: 'Are you sure?' },
-                title: 'Is the school visible on the website?' do %>
+                title: 'Is the @school visible on the website?' do %>
       <i class="fas fa-eye"></i>
     <% end %>
   <% else %>
-    <%= link_to school_visibility_path(school),
+    <%= link_to school_visibility_path(@school),
                 class: 'badge rounded-pill text-bg-danger',
                 method: :post,
                 data: { confirm: 'Are you sure?' } do %>
       <i class="fas fa-eye"></i>
     <% end %>
   <% end %>
-<% end %>
 
-<% if can?(:change_public, school) %>
-  <%= link_to edit_school_configuration_path(school),
+  <%= link_to edit_school_configuration_path(@school),
               id: 'data-sharing-status',
-              class: "badge rounded-pill #{data_sharing_colour(school)}",
+              class: "badge rounded-pill #{data_sharing_colour(@school)}",
               title: 'Access control settings' do %>
-     <i class="fas fa-unlock-keyhole"></i> <%= school.data_sharing.titleize %>
+      <i class="fas fa-unlock-keyhole"></i> <%= @school.data_sharing.titleize %>
   <% end %>
-<% end %>
 
-<% if can?(:change_data_processing, school) %>
-  <% if school.process_data? %>
-    <%= link_to school_data_processing_path(school),
+  <% if @school.process_data? %>
+    <%= link_to school_data_processing_path(@school),
                 class: 'badge rounded-pill text-bg-success',
                 method: :delete,
                 data: { confirm: 'Are you sure?' },
-                title: 'Process school data?' do %>
+                title: 'Process @school data?' do %>
       <i class="fas fa-play"></i>
     <% end %>
   <% else %>
-    <%= link_to school_data_processing_path(school),
+    <%= link_to school_data_processing_path(@school),
                 class: 'badge rounded-pill text-bg-danger',
                 method: :post,
                 data: { confirm: 'Are you sure?' },
-                title: 'Process school data?' do %>
+                title: 'Process @school data?' do %>
       <i class="fas fa-stop"></i>
     <% end %>
   <% end %>
-<% end %>
 
-<% if can?(:change_data_enabled, school) %>
-  <% if school.data_enabled? %>
-    <%= link_to school_data_enabled_path(school),
+  <% if @school.data_enabled? %>
+    <%= link_to school_data_enabled_path(@school),
                 class: 'badge rounded-pill text-bg-success',
                 method: :delete,
                 data: { confirm: 'Are you sure?' },
@@ -55,30 +49,28 @@
       <i class="fas fa-chart-simple"></i>
     <% end %>
   <% else %>
-    <%= link_to school_review_path(school),
+    <%= link_to school_review_path(@school),
                 class: 'badge rounded-pill text-bg-danger',
                 title: 'Data visible?' do %>
       <i class="fas fa-chart-simple"></i>
     <% end %>
   <% end %>
-<% end %>
 
-<% if can?(:view_licences, school) %>
-  <% current_licence = school.licences.current.by_start_date.first %>
-  <%= link_to admin_school_licences_path(school),
+  <% current_licence = @school.licences.current.by_start_date.first %>
+  <%= link_to admin_school_licences_path(@school),
               class: class_names(
                 'badge',
                 'round-pill',
                 "text-bg-#{licence_expiry_colour(current_licence)}"
               ),
-              title: 'Is the school licensed?' do %>
+              title: 'Is the @school licensed?' do %>
     <i class="fas fa-file-contract"></i>
     <%= current_licence ? current_licence.end_date.iso8601 : 'Unlicensed' %>
   <% end %>
-<% end %>
 
-<% if school.process_data? && can?(:regenerate_school_data, school) %>
-  <%= link_to school_batch_runs_path(school), title: 'Regenerate', class: 'badge rounded-pill text-bg-info' do %>
-    <%= fa_icon('arrows-rotate', 'data-toggle': 'tooltip', 'data-bs-toggle': 'tooltip', title: 'Regenerate') %>
+  <% if @school.process_data? %>
+    <%= link_to school_batch_runs_path(@school), title: 'Regenerate', class: 'badge rounded-pill text-bg-info' do %>
+      <%= fa_icon('arrows-rotate', 'data-toggle': 'tooltip', 'data-bs-toggle': 'tooltip', title: 'Regenerate') %>
+    <% end %>
   <% end %>
 <% end %>
