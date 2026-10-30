@@ -1,6 +1,6 @@
 #======================== Heating Sensitivity Advice ==============
 require_relative '../alert_gas_model_base.rb'
-require_relative '../../common/alert_floor_area_pupils_mixin.rb'
+require_relative '../../common/alert_floor_area_mixin.rb'
 
 class AlertHeatingSensitivityAdvice < AlertGasModelBase
   include AlertFloorAreaMixin

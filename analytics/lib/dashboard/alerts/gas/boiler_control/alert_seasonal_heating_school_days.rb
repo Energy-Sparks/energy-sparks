@@ -1,6 +1,6 @@
 #======================== Heating on for too many school days of year ==============
 require_relative '../alert_gas_model_base.rb'
-require_relative './alert_heating_day_base.rb'
+require_relative './alert_heating_days_base.rb'
 
 # alert for leaving heating on in warm weather
 class AlertSeasonalHeatingSchoolDays < AlertHeatingDaysBase

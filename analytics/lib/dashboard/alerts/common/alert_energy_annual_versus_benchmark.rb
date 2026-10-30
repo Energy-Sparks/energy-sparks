@@ -1,5 +1,5 @@
 require_relative 'alert_analysis_base'
-require_relative 'alert_floor_area_pupils_mixin'
+require_relative 'alert_floor_area_mixin'
 require_relative 'template_var_promotion_mix_in'
 require_relative 'change_in_energy_use'
 

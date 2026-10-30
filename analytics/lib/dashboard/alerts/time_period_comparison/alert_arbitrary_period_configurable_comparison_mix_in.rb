@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'alert_arbitrary_period_comparison_mixin'
+require_relative 'arbitrary_period_comparison_mix_in'
 
 module AlertArbitraryPeriodConfigurableComparisonMixIn
   include ArbitraryPeriodComparisonMixIn
