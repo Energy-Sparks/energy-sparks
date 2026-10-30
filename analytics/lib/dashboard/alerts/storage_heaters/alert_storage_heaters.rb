@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+# Preserve the original entry point for callers that load all storage-heater alerts together.
+require_relative 'alert_storage_heater_annual_versus_benchmark'
+require_relative 'alert_storage_heater_thermostatic'
+require_relative 'alert_seasonal_heating_school_days_storage_heaters'
+require_relative 'alert_turn_heating_off_storage_heaters'
+require_relative 'alert_heating_on_school_days_storage_heaters_deprecated'
+require_relative 'alert_storage_heaters_long_term_trend'
+require_relative 'alert_school_week_comparison_storage_heater'
+require_relative 'alert_previous_year_holiday_comparison_storage_heater'
