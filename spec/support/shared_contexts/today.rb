@@ -6,7 +6,5 @@ RSpec.shared_context 'with today' do
   # The alert checks the current date, but has option to override via
   # an environment variable. So by default set it as if we're running
   # on the asof_date
-  around do |example|
-    ClimateControl.modify(ENERGYSPARKSTODAY: today) { example.run }
-  end
+  before { stub_env(ENERGYSPARKSTODAY: today) }
 end

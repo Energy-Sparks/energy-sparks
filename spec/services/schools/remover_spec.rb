@@ -22,11 +22,8 @@ describe Schools::Remover, :schools, type: :service do
   let(:archive) { false }
   let(:service) { described_class.new(school, archive: archive) }
 
-  around do |example|
-    ClimateControl.modify(SEND_AUTOMATED_EMAILS: 'true') { example.run }
-  end
-
   before do
+    stub_env(SEND_AUTOMATED_EMAILS: 'true')
     create(:contact_with_name_email_phone, school: school, user: school_admin)
     create(:pupil, school: school)
     create(:issue, school: school)

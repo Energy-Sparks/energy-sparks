@@ -5,11 +5,7 @@ RSpec.describe EnergySparksDeviseMailer do
   let(:user)                  { create(:user, school: school) }
   let(:country)               { 'england' }
 
-  around do |example|
-    ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
-      example.run
-    end
-  end
+  before { stub_env(WELSH_APPLICATION_HOST: 'cy.localhost') }
 
   describe '#confirmation_instructions' do
     let(:combined_subject) do
