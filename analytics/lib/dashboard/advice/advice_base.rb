@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dashboard/charting_and_reports/content_base'
+require_relative '../charting_and_reports/content_base'
 
 class AdviceBase < ContentBase
   include Logging
