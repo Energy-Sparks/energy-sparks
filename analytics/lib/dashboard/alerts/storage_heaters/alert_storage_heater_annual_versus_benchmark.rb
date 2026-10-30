@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'alert_storage_heater_mixin'
+require_relative 'alert_gas_to_storage_heater_substitution_mix_in'
 require_relative '../gas/alert_gas_annual_versus_benchmark'
 
 class AlertStorageHeaterAnnualVersusBenchmark < AlertGasAnnualVersusBenchmark

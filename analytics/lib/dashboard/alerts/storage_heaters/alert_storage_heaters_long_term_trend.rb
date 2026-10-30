@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 # frozen_string_literal: true
 
-require_relative 'alert_storage_heater_mixin'
+require_relative 'alert_gas_to_storage_heater_substitution_mix_in'
 require_relative '../common/alert_long_term_trend'
+=======
+require_relative '../gas/alert_gas_long_term_trend'
+require_relative './alert_gas_to_storage_heater_substitution_mix_in'
+require_relative '../electricity/electricity_cost_co2_mixin'
+>>>>>>> 6005-revise-alerts-to-treat-est-data-as-missing
 
 class AlertStorageHeatersLongTermTrend < AlertGasLongTermTrend
   include AlertGasToStorageHeaterSubstitutionMixIn

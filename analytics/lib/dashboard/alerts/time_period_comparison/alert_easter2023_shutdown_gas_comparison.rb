@@ -1,5 +1,5 @@
 require_relative 'alert_arbitrary_period_comparison_gas_base'
-require_relative 'alert_arbitrary_period_comparison_mixin'
+require_relative 'arbitrary_period_comparison_mix_in'
 require_relative 'alert_easter2023_shutdown_configuration_mixin'
 
 class AlertEaster2023ShutdownGasComparison < AlertArbitraryPeriodComparisonGasBase

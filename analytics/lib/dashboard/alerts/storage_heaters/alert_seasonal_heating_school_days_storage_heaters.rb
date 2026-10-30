@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'alert_storage_heater_mixin'
-require_relative '../gas/boiler_control/alert_seasonal_heating_schooldays'
+require_relative 'alert_gas_to_storage_heater_substitution_mix_in'
+require_relative '../gas/boiler_control/alert_seasonal_heating_school_days'
 
 class AlertSeasonalHeatingSchoolDaysStorageHeaters < AlertSeasonalHeatingSchoolDays
   include AlertGasToStorageHeaterSubstitutionMixIn

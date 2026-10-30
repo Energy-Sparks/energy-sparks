@@ -1,4 +1,4 @@
-require_relative 'alert_schoolweek_comparison_gas'
+require_relative 'alert_school_week_comparison_gas'
 require_relative 'alert_community_use_mixin'
 
 class AlertCommunitySchoolWeekComparisonGas < AlertSchoolWeekComparisonGas

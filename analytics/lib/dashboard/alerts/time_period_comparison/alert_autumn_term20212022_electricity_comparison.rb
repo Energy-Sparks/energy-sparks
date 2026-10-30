@@ -1,5 +1,5 @@
 require_relative 'alert_arbitrary_period_comparison_electricity_base'
-require_relative 'alert_arbitrary_period_comparison_mixin'
+require_relative 'arbitrary_period_comparison_mix_in'
 require_relative 'alert_autumn_term20212022_comparison_mix_in'
 
 class AlertAutumnTerm20212022ElectricityComparison < AlertArbitraryPeriodComparisonElectricityBase

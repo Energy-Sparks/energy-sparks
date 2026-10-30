@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'alert_storage_heater_mixin'
-require_relative '../time_period_comparison/alert_schoolweek_comparison_gas'
+require_relative 'alert_gas_to_storage_heater_substitution_mix_in'
+require_relative '../time_period_comparison/alert_school_week_comparison_gas'
 
 class AlertSchoolWeekComparisonStorageHeater < AlertSchoolWeekComparisonGas
   include AlertGasToStorageHeaterSubstitutionMixIn

@@ -2,7 +2,7 @@
 
 #======================== Electricity Baseload Analysis Versus Benchmark =====
 require_relative '../../common/alert_analysis_base'
-require_relative '../../common/alert_floor_area_pupils_mixin'
+require_relative '../../common/alert_floor_area_mixin'
 require_relative '../../common/alert_template_variables_mixin'
 
 class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase

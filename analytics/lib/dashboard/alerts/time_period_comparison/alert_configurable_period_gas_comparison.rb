@@ -2,7 +2,7 @@
 
 require_relative 'alert_arbitrary_period_comparison_gas_base'
 
-require_relative 'alert_arbitrary_period_configurable_comparison_mixin'
+require_relative 'alert_arbitrary_period_configurable_comparison_mix_in'
 
 class AlertConfigurablePeriodGasComparison < AlertArbitraryPeriodComparisonGasBase
   include AlertArbitraryPeriodConfigurableComparisonMixIn

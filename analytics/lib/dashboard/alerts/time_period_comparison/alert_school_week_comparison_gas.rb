@@ -1,5 +1,5 @@
 require_relative 'alert_period_comparison_base'
-require_relative 'alert_schoolweek_comparison_electricity'
+require_relative 'alert_school_week_comparison_electricity'
 require_relative 'alert_period_comparison_temperature_adjustment_mixin'
 require_relative '../gas/alert_model_cache_mixin'
 # Compares the last two SCHOOL weeks - i.e. when this school is occupied, i.e. skips holidays

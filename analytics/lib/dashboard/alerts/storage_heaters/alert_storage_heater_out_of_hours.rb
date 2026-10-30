@@ -1,5 +1,5 @@
 require_relative '../gas/alert_out_of_hours_gas_usage'
-require_relative './alert_storage_heater_mixin'
+require_relative './alert_gas_to_storage_heater_substitution_mix_in'
 require_relative '../electricity/electricity_cost_co2_mixin'
 
 class AlertStorageHeaterOutOfHours < AlertOutOfHoursGasUsage
