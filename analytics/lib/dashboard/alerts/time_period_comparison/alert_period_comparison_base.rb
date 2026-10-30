@@ -1,5 +1,5 @@
-require_relative './../common/alert_analysis_base.rb'
-require_relative '../../utilities/energy_sparks_exceptions.rb'
+require_relative '../common/alert_analysis_base'
+require_relative '../../utilities/energy_sparks_exceptions'
 # General base class for 6 alerts:
 # - School week comparison: gas + electric
 # - Previous holiday week comparison: gas + electric

@@ -1,5 +1,5 @@
 #======================== Poor thermostatic control ==============
-require_relative '../alert_gas_model_base.rb'
+require_relative '../alert_gas_model_base'
 
 class AlertThermostaticControl < AlertGasModelBase
   MIN_R2 = 0.8

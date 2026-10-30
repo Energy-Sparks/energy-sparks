@@ -1,5 +1,5 @@
 #======================== Heating Sensitivity Advice ==============
-require_relative '../alert_gas_model_base.rb'
+require_relative '../alert_gas_model_base'
 
 class AlertHotWaterInsulationAdvice < AlertGasModelBase
   attr_reader :annual_hotwater_poor_insulation_heatloss_estimate_kwh

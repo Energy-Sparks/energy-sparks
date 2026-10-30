@@ -1,6 +1,6 @@
 #======================== Electricity Annual kWh Versus Benchmark =============
-require_relative '../common/alert_analysis_base.rb'
-require_relative '../common/alert_floor_area_mixin.rb'
+require_relative '../common/alert_analysis_base'
+require_relative '../common/alert_floor_area_mixin'
 
 class AlertElectricityAnnualVersusBenchmark < AlertElectricityOnlyBase
   DAYSINYEAR = 363 # 364 days inclusive - consistent with charts which are 7 days * 52 weeks

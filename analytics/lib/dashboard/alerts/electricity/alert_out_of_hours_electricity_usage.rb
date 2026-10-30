@@ -1,6 +1,6 @@
 #======================== Electricity: Out of hours usage =====================
-require_relative '../common/alert_out_of_hours_base_usage.rb'
-require_relative './electricity_cost_co2_mixin.rb'
+require_relative '../common/alert_out_of_hours_base_usage'
+require_relative 'electricity_cost_co2_mixin'
 
 class AlertOutOfHoursElectricityUsage < AlertOutOfHoursBaseUsage
   include ElectricityCostCo2Mixin

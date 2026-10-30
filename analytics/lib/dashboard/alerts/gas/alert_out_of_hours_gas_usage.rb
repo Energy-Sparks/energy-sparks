@@ -1,5 +1,5 @@
 #======================== Gas: Out of hours usage =============================
-require_relative '../common/alert_out_of_hours_base_usage.rb'
+require_relative '../common/alert_out_of_hours_base_usage'
 
 class AlertOutOfHoursGasUsage < AlertOutOfHoursBaseUsage
   def initialize(

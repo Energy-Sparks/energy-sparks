@@ -1,5 +1,5 @@
 #======================== Heating coming on too early in morning ==============
-require_relative '../alert_gas_model_base.rb'
+require_relative '../alert_gas_model_base'
 
 class AlertOptimumStartAnalysis < AlertGasModelBase
   attr_reader :regression_start_time, :optimum_start_sensitivity, :regression_r2

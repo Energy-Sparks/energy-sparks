@@ -1,5 +1,5 @@
 #======================== Hot Water Efficiency =================================
-require_relative '../alert_gas_model_base.rb'
+require_relative '../alert_gas_model_base'
 
 class AlertHotWaterEfficiency < AlertGasModelBase
   attr_reader :theoretical_annual_hot_water_requirement_litres, :theoretical_annual_hot_water_requirement_kwh

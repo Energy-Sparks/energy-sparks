@@ -1,5 +1,5 @@
 require_relative '../gas/boiler_control/alert_seasonal_heating_school_days'
-require_relative './alert_gas_to_storage_heater_substitution_mix_in'
+require_relative 'alert_gas_to_storage_heater_substitution_mix_in'
 require_relative '../electricity/electricity_cost_co2_mixin'
 
 class AlertSeasonalHeatingSchoolDaysStorageHeaters < AlertSeasonalHeatingSchoolDays

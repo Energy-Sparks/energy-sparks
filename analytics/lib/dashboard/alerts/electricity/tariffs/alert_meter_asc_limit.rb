@@ -1,5 +1,5 @@
 #======================== ASC Limit ===========================
-require_relative '../alert_electricity_only_base.rb'
+require_relative '../alert_electricity_only_base'
 
 class AlertMeterASCLimit < AlertElectricityOnlyBase
   SAVING_PER_1_KW_ASC_LIMIT_REDUCTION_£_PER_YEAR = 1000.0 / 100.0
