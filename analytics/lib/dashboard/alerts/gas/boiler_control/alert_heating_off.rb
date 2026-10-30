@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
+require_relative '../../common/alert_template_variables_mixin'
+
 # typically fires in Spring when weather warm enough to turn heating off
 class AlertTurnHeatingOff < AlertGasModelBase
   class MissingTemperatureData < StandardError; end
-  attr_reader :last_year_cost_heating_in_warm_weather_kwh, :last_year_cost_heating_in_warm_weather_£,
-              :last_year_cost_heating_in_warm_weather_co2, :last_year_heating_on_in_warm_weather_days, :future_degree_days, :horizon_start_date, :horizon_end_date, :future_saving_kwh, :future_saving_£, :future_saving_co2, :average_temperature, :average_day_temperature, :average_night_temperature, :up_to_annual_kwh, :percent_of_annual, :last_meter_reading_date, :days_since_last_meter_reading_date, :days_ago_plural
 
   def initialize(school, type = :turnheatingonoff)
     super
@@ -100,6 +100,8 @@ class AlertTurnHeatingOff < AlertGasModelBase
       units: String
     }
   }.freeze
+
+  include AlertTemplateVariablesMixin
 
   # ================================== Control Variables =========================================
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'alert_storage_heater_mixin'
-require_relative '../gas/boiler control/alert_heating_off'
+require_relative '../gas/boiler_control/alert_heating_off'
 
 class AlertTurnHeatingOffStorageHeaters < AlertTurnHeatingOff
   include AlertGasToStorageHeaterSubstitutionMixIn
