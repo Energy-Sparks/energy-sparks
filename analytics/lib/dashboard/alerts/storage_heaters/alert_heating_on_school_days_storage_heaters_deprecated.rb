@@ -1,5 +1,5 @@
-require_relative '../gas/boiler_control/alert_school_heating_days'
-require_relative './alert_storage_heater_mixin'
+require_relative '../gas/boiler_control/alert_heating_on_school_days_deprecated'
+require_relative './alert_gas_to_storage_heater_substitution_mix_in'
 require_relative '../electricity/electricity_cost_co2_mixin'
 
 #NOTE: this doesn't seem to be setup in the application, as its not registered

@@ -1,4 +1,4 @@
-require_relative '../common/alert_floor_area_pupils_mixin.rb'
+require_relative '../common/alert_floor_area_mixin.rb'
 class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
   include AlertFloorAreaMixin
   attr_reader :average_school_day_last_year_kw, :average_school_day_last_year_kw_per_pupil

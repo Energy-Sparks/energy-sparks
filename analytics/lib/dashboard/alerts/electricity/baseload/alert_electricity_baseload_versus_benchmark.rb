@@ -1,6 +1,6 @@
 #======================== Electricity Baseload Analysis Versus Benchmark =====
 require_relative '../../common/alert_analysis_base.rb'
-require_relative '../../common/alert_floor_area_pupils_mixin.rb'
+require_relative '../../common/alert_floor_area_mixin.rb'
 
 class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase
   include AlertFloorAreaMixin

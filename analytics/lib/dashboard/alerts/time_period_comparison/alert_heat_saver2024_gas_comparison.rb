@@ -1,5 +1,5 @@
 require_relative 'alert_arbitrary_period_comparison_gas_base'
-require_relative 'alert_arbitrary_period_comparison_mixin'
+require_relative 'arbitrary_period_comparison_mix_in'
 require_relative 'alert_heat_saver2024_basic_config_mix_in'
 
 class AlertHeatSaver2024GasComparison < AlertArbitraryPeriodComparisonGasBase
