@@ -5,30 +5,6 @@
 module AggregationMixin
   class MeterDateRangeException < EnergySparksUnexpectedStateException; end
 
-  # Sums the half-hourly meter readings within a specified time period
-  #
-  # If a meter doesn't have a reading within the specified period, then it is ignored
-  #
-  # @param Array an array of +Dashboard::Meter+
-  # @param Symbol the fuel type
-  # @param Date start_date
-  # @param Date end_date
-  # @param String mpan_mprn the meter identifier to be used when creating the new summed readings
-  # @param boolean zero_negative zero negatives values
-  # @returns AmrData a new time series populated with the combined data
-  def aggregate_amr_data_between_dates(meters, type, start_date, end_date, _mpan_mprn, zero_negative: false)
-    combined_amr_data = AMRData.new(type)
-    (start_date..end_date).each do |date|
-      valid_meters_for_date = meters.select { |meter| meter.amr_data.date_exists?(date) }
-      amr_data_for_date_x48_valid_meters = valid_meters_for_date.map { |meter| meter.amr_data.days_kwh_x48(date) }
-      combined_amr_data_x48 = AMRData.fast_add_multiple_x48_x_x48(amr_data_for_date_x48_valid_meters)
-      combined_amr_data_x48.map! { |v| [v, 0.0].max } if zero_negative
-      days_data = OneDayAMRReading.new(date, 'ORIG', nil, DateTime.now, combined_amr_data_x48)
-      combined_amr_data.add(date, days_data)
-    end
-    combined_amr_data
-  end
-
   # Takes a list of meters and determines a date range that has coverage across
   # all of the meters.
   #
@@ -95,6 +71,33 @@ module AggregationMixin
 
   private
 
+  # Sums the half-hourly meter readings within a specified time period
+  #
+  # If a meter doesn't have a reading within the specified period, then it is ignored
+  #
+  # @param Array an array of +Dashboard::Meter+
+  # @param Symbol the fuel type
+  # @param Date start_date
+  # @param Date end_date
+
+  # @param boolean zero_negative zero negatives values
+  # @returns AmrData a new time series populated with the combined data
+  def aggregate_amr_data_between_dates(meters, type, start_date, end_date, zero_negative: false)
+    combined_amr_data = AMRData.new(type)
+    (start_date..end_date).each do |date|
+      readings = meters.filter_map { |meter| meter.amr_data[date] if meter.amr_data.date_exists?(date) }
+      combined_amr_data.add(date, aggregate_daily_readings(readings, date, zero_negative:))
+    end
+    combined_amr_data
+  end
+
+  def aggregate_daily_readings(readings, date, zero_negative:)
+    combined_amr_data_x48 = AMRData.fast_add_multiple_x48_x_x48(readings.map(&:kwh_data_x48))
+    combined_amr_data_x48.map! { |v| [v, 0.0].max } if zero_negative
+    status = readings.any? { |reading| reading.type == 'EST' } ? 'EST' : 'ORIG'
+    OneDayAMRReading.new(date, status, nil, DateTime.now, combined_amr_data_x48)
+  end
+
   # Aggregate the data associated with a list of meters, optionally ignoring any aggregation rules
   #
   # @param Array meter an array of +Dashboard::Meter+
@@ -131,12 +134,7 @@ module AggregationMixin
 
     logger.info "Aggregating data between #{min_date} and #{max_date}"
 
-    unless meter_collection.urn.nil?
-      mpan_mprn =
-        Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(meter_collection.urn, meters.first.fuel_type)
-    end
-
-    aggregate_amr_data_between_dates(meters, type, min_date, max_date, mpan_mprn, zero_negative: zero_negative)
+    aggregate_amr_data_between_dates(meters, type, min_date, max_date, zero_negative:)
   end
 
   # Triggers the calculation and caching of co2 emissions for a meter
