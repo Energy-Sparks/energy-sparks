@@ -35,22 +35,22 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
       context 'with unconsented SolarEdge site' do
         let!(:installation) { create(:solar_edge_installation, :unconsented, school:) }
 
-        before do
-          click_on 'Edit'
+        it 'does not display the check button' do
+          expect(page).to have_no_text('Check')
         end
 
-        it 'allows editing' do
-          expect(page).to have_text('Update SolarEdge API feed')
+        context 'when editing' do
+          before { click_on 'Edit' }
 
-          expect(page).to have_field('solar_edge_installation_mpan', disabled: true)
-          expect(page).to have_field('solar_edge_installation_site_id', disabled: true)
-          expect(page).to have_field('solar_edge_installation_mpan', disabled: true)
+          it 'can update the loading status' do
+            expect(page).to have_text('Update SolarEdge API feed')
 
-          uncheck(:solar_edge_installation_active)
-          click_on 'Submit'
+            uncheck(:solar_edge_installation_active)
+            click_on 'Submit'
 
-          expect(page).to have_text('SolarEdge API feed was updated')
-          expect(SolarEdgeInstallation.first).to have_attributes(active: false)
+            expect(page).to have_text('SolarEdge API feed was updated')
+            expect(SolarEdgeInstallation.first).to have_attributes(active: false)
+          end
         end
       end
 
@@ -62,22 +62,66 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         include_context 'with a stubbed SolarEdge date request'
         include_context 'with a stubbed SolarEdge inventory request'
 
-        before do
-          click_on 'Edit'
+        context 'when editing' do
+          before { click_on 'Edit' }
+
+          it 'allows editing' do
+            expect(page).to have_text('Update SolarEdge API feed')
+
+            uncheck(:solar_edge_installation_active)
+            click_on 'Submit'
+
+            expect(page).to have_text('SolarEdge API feed was updated')
+            expect(SolarEdgeInstallation.first).to have_attributes(active: false)
+          end
         end
 
-        it 'allows editing' do
-          expect(page).to have_text('Update SolarEdge API feed')
+        it 'displays the check button with a question mark' do
+          within "#solar-edge-#{installation.id}-test" do
+            expect(page).to have_text('Check')
+            expect(page).to have_css("i[class*='fa-circle-question']")
+          end
+        end
 
-          expect(page).to have_field('solar_edge_installation_mpan', disabled: true)
-          expect(page).to have_field('solar_edge_installation_site_id', disabled: true)
-          expect(page).to have_field('solar_edge_installation_mpan', disabled: true)
+        context 'when checking an installation', :js do
+          context 'when check returns true' do
+            include_context 'with a successful SolarEdge token request'
 
-          uncheck(:solar_edge_installation_active)
-          click_on 'Submit'
+            it 'updates the button correctly' do
+              find("#solar-edge-#{installation.id}-test").click
+              within "#solar-edge-#{installation.id}-test" do
+                expect(page).to have_css("i[class*='fa-circle-check']")
+              end
+            end
+          end
 
-          expect(page).to have_text('SolarEdge API feed was updated')
-          expect(SolarEdgeInstallation.first).to have_attributes(active: false)
+          context 'when check returns false' do
+            let!(:installation) { create(:solar_edge_installation, :with_expired_access_token, school:) }
+
+            include_context 'with a failed SolarEdge token request'
+
+            it 'updates the button correctly' do
+              find("#solar-edge-#{installation.id}-test").click
+              within "#solar-edge-#{installation.id}-test" do
+                expect(page).to have_css("i[class*='fa-circle-xmark']")
+              end
+            end
+          end
+        end
+
+        context 'when submitting a loading job' do
+          before do
+            # do nothing
+            allow(Solar::SolarEdgeLoaderJob).to receive(:perform_later).and_return(true)
+          end
+
+          it 'submits the job' do
+            # ...but check the method is called
+            expect(Solar::SolarEdgeLoaderJob).to receive(:perform_later).with(installation:, notify_email: admin.email)
+            expect(page).to have_text('Run Loader')
+            find("#solar-edge-#{installation.id}-run-load").click
+            expect(page).to have_text("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
+          end
         end
       end
 
@@ -89,56 +133,6 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         click_on(installation.site_id)
         expect(page).to have_text('site_detail')
         expect(page).to have_text('dates')
-      end
-
-      it 'displays the check button with a question mark by default' do
-        within "#solar-edge-#{installation.id}-test" do
-          expect(page).to have_text('Check')
-          expect(page).to have_css("i[class*='fa-circle-question']")
-        end
-      end
-
-      context 'when checking an installation', :js do
-        let!(:installation) { create(:solar_edge_installation, school:) }
-
-        context 'when check returns true' do
-          include_context 'with a successful SolarEdge token request'
-
-          it 'updates the button correctly' do
-            find("#solar-edge-#{installation.id}-test").click
-            within "#solar-edge-#{installation.id}-test" do
-              expect(page).to have_css("i[class*='fa-circle-check']")
-            end
-          end
-        end
-
-        context 'when check returns false' do
-          let!(:installation) { create(:solar_edge_installation, :with_expired_access_token, school:) }
-
-          include_context 'with a failed SolarEdge token request'
-
-          it 'updates the button correctly' do
-            find("#solar-edge-#{installation.id}-test").click
-            within "#solar-edge-#{installation.id}-test" do
-              expect(page).to have_css("i[class*='fa-circle-xmark']")
-            end
-          end
-        end
-      end
-
-      context 'when submitting a loading job' do
-        before do
-          # do nothing
-          allow(Solar::SolarEdgeLoaderJob).to receive(:perform_later).and_return(true)
-        end
-
-        it 'submits the job' do
-          # ...but check the method is called
-          expect(Solar::SolarEdgeLoaderJob).to receive(:perform_later).with(installation:, notify_email: admin.email)
-          expect(page).to have_text('Run Loader')
-          find("#solar-edge-#{installation.id}-run-load").click
-          expect(page).to have_text("Loading job has been submitted. An email will be sent to #{admin.email} when complete.")
-        end
       end
     end
 

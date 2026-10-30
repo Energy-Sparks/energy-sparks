@@ -7,14 +7,14 @@
 </p>
 
 <div class="s-3"></div>
-<% if @installation.api_key.present? %>
+<% if @installation.created_at.today? %>
   <p>
-    This is an existing SolarEdge site using the v1 API. Nothing else needs to be done at this time.
+    This is a newly created SolarEdge site. You will need to review the configuration and complete setup for the
+    school.
   </p>
 <% else %>
   <p>
-    This is an new SolarEdge site without an API key. We will start loading data for this site once we have implemented
-    v2 of the Solar Edge API.
+    This is an existing SolarEdge site which we can now access via the new SolarEdge API.
   </p>
 <% end %>
 
