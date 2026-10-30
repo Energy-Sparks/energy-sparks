@@ -36,11 +36,6 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         let!(:installation) { create(:solar_edge_installation, :unconsented, school:) }
 
         before do
-          solar_edge_api = instance_double(DataFeeds::SolarEdgeApi,
-                                           site_details: '',
-                                           site_start_end_dates: [Date.new(2025), Date.new(2026)],
-                                           smart_meter_data: {})
-          allow(DataFeeds::SolarEdgeApi).to receive(:new).with(installation.api_key).and_return(solar_edge_api)
           click_on 'Edit'
         end
 

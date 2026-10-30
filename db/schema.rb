@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_14_190339) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_30_141623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2281,7 +2281,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_14_190339) do
     t.bigint "school_id", null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "site_id"
-    t.text "api_key"
     t.text "mpan"
     t.json "information", default: {}
     t.datetime "created_at", null: false
