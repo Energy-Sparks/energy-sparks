@@ -1,5 +1,4 @@
-require_relative './alert_period_comparison_gas_mixin.rb'
-require_relative './alert_period_comparison_temperature_adjustment_mixin.rb'
+require_relative 'alert_holiday_comparison_base'
 
 class AlertArbitraryPeriodComparisonBase < AlertHolidayComparisonBase
   def initialize(school, type = :arbitrarycomparison)
@@ -17,37 +16,4 @@ class AlertArbitraryPeriodComparisonBase < AlertHolidayComparisonBase
   def timescale
     "custom"
   end
-end
-
-class AlertArbitraryPeriodComparisonElectricityBase < AlertArbitraryPeriodComparisonBase
-  def fuel_type; :electricity end
-
-  def self.template_variables
-    specific = { 'Change in between last 2 periods' => dynamic_template_variables(:electricity) }
-    specific.merge(superclass.template_variables)
-  end
-end
-
-class AlertArbitraryPeriodComparisonGasBase < AlertArbitraryPeriodComparisonBase
-  include AlertPeriodComparisonTemperatureAdjustmentMixin
-  include AlertPeriodComparisonGasMixin
-
-  def self.template_variables
-    AlertPeriodComparisonGasMixin.template_variables.merge(superclass.template_variables)
-  end
-
-  def fuel_type; :gas end
-end
-
-class AlertArbitraryPeriodComparisonStorageHeaterBase < AlertArbitraryPeriodComparisonBase
-  include AlertPeriodComparisonTemperatureAdjustmentMixin
-  include AlertPeriodComparisonGasMixin
-  include AlertGasToStorageHeaterSubstitutionMixIn
-  include ElectricityCostCo2Mixin
-
-  def self.template_variables
-    AlertPeriodComparisonGasMixin.template_variables.merge(superclass.template_variables)
-  end
-
-  def fuel_type; :electricity end
 end

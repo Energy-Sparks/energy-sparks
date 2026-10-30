@@ -10,7 +10,7 @@ class AlertHeatingOnSchoolDaysStorageHeatersDeprecated < AlertHeatingOnSchoolDay
 
   def initialize(school)
     super(school, :storage_heater_heating_days)
-    @relevance = @school.storage_heaters? ? :relevant : :never_relevant
+    @relevance = @school.storage_heaters? ? :relevant : :never_rel
   end
 
   def heating_on_off_chart
