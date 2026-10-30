@@ -11,7 +11,7 @@ module Admin
     end
 
     def render?
-      true # current_user&.admin?
+      current_user&.admin?
     end
 
     private
