@@ -4,8 +4,9 @@
     Some of the following information (e.g. the site and meter status) is based on a cached summary of the site description.
   </p>
   <p>
+    Cached data is updated daily when loading is enabled.
     <%= link_to 'Edit and then save the site', edit_school_solar_edge_installation_path(school, installation) %>
-    to update this cached copy. Or click the links below to view live (raw) data.
+    to update the cached data now.
   </p>
 
   <table class="table">
@@ -19,6 +20,10 @@
       <tr>
         <td>User granted consent?</td>
         <td><%= installation.consented? %></td>
+      </tr>
+      <tr>
+        <td>Consent granted</td>
+        <td><%= nice_date_times(installation.consent_granted_at) if installation.consented? %></td>
       </tr>
       <tr>
         <td>SolarEdge monitoring active?</td>
@@ -39,30 +44,26 @@
     </tbody>
   </table>
 
+  <h2>Debugging</h2>
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>Access token</td>
+        <td><%= installation.access_token %></td>
+      </tr>
+      <tr>
+        <td>Refresh token</td>
+        <td><%= installation.refresh_token %></td>
+      </tr>
+      <tr>
+        <td>Access token expires</td>
+        <td><%= nice_date_times(installation.access_token_expires_at) if installation.access_token_expires_at %></td>
+      </tr>
+    </tbody>
+  </table>
+
   <h3>Cached data</h3>
   <%= render 'key_value_table', pairs: installation.information %>
 <% else %>
   <p>There is no cached copy of the site metadata</p>
 <% end %>
-
-<h2>Solar Edge v2 Debugging</h2>
-<table class="table">
-  <tbody>
-    <tr>
-      <td>Consent Granted At</td>
-      <td><%= nice_date_times(installation.consent_granted_at) if installation.consented? %></td>
-    </tr>
-    <tr>
-      <td>Access token</td>
-      <td><%= installation.access_token %></td>
-    </tr>
-    <tr>
-      <td>Refresh token</td>
-      <td><%= installation.refresh_token %></td>
-    </tr>
-    <tr>
-      <td>Access token expires</td>
-      <td><%= nice_date_times(installation.access_token_expires_at) if installation.access_token_expires_at %></td>
-    </tr>
-  </tbody>
-</table>

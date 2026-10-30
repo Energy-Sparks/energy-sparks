@@ -38,7 +38,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
 
       it 'can add and delete a low carbon hub installation' do
         fill_form
-        uncheck('Active')
+        uncheck('Loading enabled')
         submit
         expect(page).to have_no_text('This school has no Rtone API feeds')
         expect(page).to have_text(rbee_meter_id)

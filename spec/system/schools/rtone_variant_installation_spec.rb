@@ -28,7 +28,7 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
       fill_in(:rtone_variant_installation_rtone_meter_id, with: rtone_meter_id)
       fill_in(:rtone_variant_installation_username, with: username)
       fill_in(:rtone_variant_installation_password, with: password)
-      uncheck('Active')
+      uncheck('Loading enabled')
 
       expect { click_on 'Submit' }.to change(RtoneVariantInstallation, :count).by(1)
 

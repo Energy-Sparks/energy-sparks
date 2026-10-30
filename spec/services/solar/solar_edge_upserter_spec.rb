@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Solar::SolarEdgeUpserter do
   let(:mpan) { 1_112_223_334_445 }
-  let!(:solar_edge_installation) { create(:solar_edge_installation, mpan: mpan, api_key: 'n8r3yr98rn3xnr') }
+  let!(:solar_edge_installation) { create(:solar_edge_installation, mpan: mpan) }
   let(:import_log) { create(:amr_data_feed_import_log) }
   let!(:data_source) { create(:data_source, name: 'SolarEdge') }
 

@@ -7,7 +7,7 @@ FactoryBot.define do
 
     sequence(:site_id, (100_000..900_000).cycle) { |n| n }
     sequence(:mpan) { |n| n }
-    sequence(:api_key) { |n| "api_key_#{n}" }
+
     information do
       {
         'site_details' => { 'activationStatus' => 'ACTIVE' },

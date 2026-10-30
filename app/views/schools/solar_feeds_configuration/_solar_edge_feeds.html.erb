@@ -3,10 +3,10 @@
     <thead>
       <tr>
         <th>Site Id</th>
-        <th>Mpan (or Id)</th>
-        <th>API Key</th>
+        <th>Mpan/SiteId</th>
+        <th>Consented?</th>
+        <th>Loading Enabled?</th>
         <th>Last updated</th>
-        <th>Consented at</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -15,9 +15,9 @@
         <tr>
           <td><%= link_to installation.site_id, school_solar_edge_installation_path(school, installation) %></td>
           <td><%= installation.mpan %></td>
-          <td><%= installation.api_key %></td>
+          <td><%= checkmark(installation.consented?) %></td>
+          <td><%= checkmark(installation.active?) %></td>
           <td><%= nice_date_times(installation.updated_at) %></td>
-          <td><%= nice_date_times(installation.consent_granted_at) if installation.consent_granted_at %></td>
           <td><%= render 'schools/solar_edge_installations/actions', installation:, school:,
                                                                      id_prefix: Schools::SolarEdgeInstallationsController::ID_PREFIX %></td>
         </tr>
