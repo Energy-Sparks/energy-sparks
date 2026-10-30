@@ -1,0 +1,4 @@
+require_relative 'alert_autumn_term20212022_electricity_comparison'
+
+class AlertSeptNov20212022ElectricityComparison < AlertAutumnTerm20212022ElectricityComparison
+end

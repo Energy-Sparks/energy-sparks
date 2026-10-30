@@ -1,0 +1,8 @@
+require_relative 'alert_previous_year_holiday_comparison_gas'
+require_relative 'alert_period_comparison_temperature_adjustment_mixin'
+require_relative 'alert_community_use_mixin'
+
+class AlertCommunityPreviousYearHolidayComparisonGas < AlertPreviousYearHolidayComparisonGas
+  include AlertPeriodComparisonTemperatureAdjustmentMixin
+  include AlertCommunityUseMixin
+end

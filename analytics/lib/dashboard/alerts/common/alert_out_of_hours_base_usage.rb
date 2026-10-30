@@ -1,5 +1,5 @@
 #======================== Base: Out of hours usage ============================
-require_relative 'alert_analysis_base.rb'
+require_relative 'alert_analysis_base'
 require 'erb'
 
 class AlertOutOfHoursBaseUsage < AlertAnalysisBase

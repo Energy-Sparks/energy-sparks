@@ -1,0 +1,13 @@
+require_relative 'alert_school_week_comparison_gas'
+require_relative 'alert_community_use_mixin'
+
+class AlertCommunitySchoolWeekComparisonGas < AlertSchoolWeekComparisonGas
+  include AlertCommunityUseMixin
+  def adjusted_temperature_comparison_chart
+    :schoolweek_alert_2_week_comparison_for_internal_calculation_gas_adjusted_community_only
+  end
+
+  def unadjusted_temperature_comparison_chart
+    :schoolweek_alert_2_week_comparison_for_internal_calculation_gas_unadjusted_community_only
+  end
+end

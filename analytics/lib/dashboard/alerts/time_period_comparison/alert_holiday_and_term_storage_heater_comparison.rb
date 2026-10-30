@@ -1,0 +1,6 @@
+require_relative 'alert_arbitrary_period_comparison_storage_heater_base'
+require_relative 'alert_holiday_and_term_comparison_mixin'
+
+class AlertHolidayAndTermStorageHeaterComparison < AlertArbitraryPeriodComparisonStorageHeaterBase
+  include AlertHolidayAndTermComparisonMixin
+end
