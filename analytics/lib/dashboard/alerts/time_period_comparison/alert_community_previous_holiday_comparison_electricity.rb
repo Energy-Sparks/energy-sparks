@@ -1,0 +1,6 @@
+require_relative 'alert_previous_holiday_comparison_electricity'
+require_relative 'alert_community_use_mixin'
+
+class AlertCommunityPreviousHolidayComparisonElectricity < AlertPreviousHolidayComparisonElectricity
+  include AlertCommunityUseMixin
+end
