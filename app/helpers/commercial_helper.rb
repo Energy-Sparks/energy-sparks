@@ -11,4 +11,11 @@ module CommercialHelper
       :warning
     end
   end
+
+  def licence_expiry_colour(licence)
+    return :danger if licence.nil? || licence.end_date <= Time.zone.today
+    return :warning if licence.end_date < Time.zone.today + 1.month
+
+    :success
+  end
 end
