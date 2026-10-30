@@ -1400,7 +1400,7 @@ Layout/HashAlignment:
     - 'lib/data_feeds/n3rgy/consent_api_client.rb'
     - 'lib/tasks/meters/meters.rake'
     - 'spec/analytics/lib/dashboard/alerts/electricity/alert_electricity_usage_during_current_holiday_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_layer_up_powerdown_november2023_gas_comparison_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/time_period_comparison/alert_layer_up_powerdown_november2023_gas_comparison_spec.rb'
     - 'spec/mailers/previews/campaign_mailer_preview.rb'
     - 'spec/mailers/previews/onboarding_mailer_preview.rb'
     - 'spec/mailers/previews/solar_loader_job_mailer_preview.rb'
@@ -6443,9 +6443,9 @@ RSpec/MultipleExpectations:
     - 'spec/analytics/app/services/heating/heating_thermostatic_analysis_service_spec.rb'
     - 'spec/analytics/app/services/solar_photovoltaics/existing_benefits_service_spec.rb'
     - 'spec/analytics/lib/dashboard/alerts/common/alert_analysis_base_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/common/alert_electricity_long_term_trend_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/electricity/alert_electricity_long_term_trend_spec.rb'
     - 'spec/analytics/lib/dashboard/alerts/electricity/alert_solar_pv_benefit_estimator_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_configurable_period_electricity_comparison_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/time_period_comparison/alert_configurable_period_electricity_comparison_spec.rb'
     - 'spec/analytics/lib/dashboard/charting_and_reports/chart_manager_spec.rb'
     - 'spec/analytics/lib/dashboard/charting_and_reports/charts/chart_timescale_descriptions_spec.rb'
     - 'spec/analytics/lib/dashboard/modelling/heating/heating_model_spec.rb'
@@ -6852,7 +6852,7 @@ RSpec/RepeatedExampleGroupDescription:
 # This cop supports safe autocorrection (--autocorrect).
 RSpec/ScatteredLet:
   Exclude:
-    - 'spec/analytics/lib/dashboard/alerts/common/alert_electricity_long_term_trend_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/electricity/alert_electricity_long_term_trend_spec.rb'
     - 'spec/analytics/lib/dashboard/charting_and_reports/charts/aggregator_benchmarks_spec.rb'
     - 'spec/support/shared_examples/todos.rb'
 
@@ -7205,9 +7205,9 @@ RSpecRails/ReceivePerformLater:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 RSpecRails/TravelAround:
   Exclude:
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_school_week_comparison_electricity_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_school_week_comparison_gas_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_school_week_comparison_storage_heater_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/time_period_comparison/alert_schoolweek_comparison_electricity_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/time_period_comparison/alert_schoolweek_comparison_gas_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/storage_heaters/alert_school_week_comparison_storage_heater_spec.rb'
     - 'spec/components/scoreboards/podium_component_spec.rb'
     - 'spec/system/school_groups/advice/scores_spec.rb'
     - 'spec/system/scoreboard_spec.rb'
@@ -15945,11 +15945,11 @@ Layout/LineLength:
     - 'spec/analytics/lib/dashboard/aggregation/one_days_cost_data_spec.rb'
     - 'spec/analytics/lib/dashboard/alerts/common/alert_additional_prioritisation_data_spec.rb'
     - 'spec/analytics/lib/dashboard/alerts/common/benchmark_metrics_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_holiday_and_term_gas_comparison_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_holiday_and_term_storage_heater_comparison_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_school_week_comparison_electricity_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_school_week_comparison_gas_spec.rb'
-    - 'spec/analytics/lib/dashboard/alerts/time period comparison/alert_school_week_comparison_storage_heater_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/time_period_comparison/alert_holiday_and_term_gas_comparison_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/time_period_comparison/alert_holiday_and_term_storage_heater_comparison_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/time_period_comparison/alert_schoolweek_comparison_electricity_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/time_period_comparison/alert_schoolweek_comparison_gas_spec.rb'
+    - 'spec/analytics/lib/dashboard/alerts/storage_heaters/alert_school_week_comparison_storage_heater_spec.rb'
     - 'spec/analytics/lib/dashboard/charting_and_reports/chart_manager_spec.rb'
     - 'spec/analytics/lib/dashboard/charting_and_reports/charts/aggregator_benchmarks_spec.rb'
     - 'spec/analytics/lib/dashboard/charting_and_reports/charts/chart_to_meter_map_spec.rb'
