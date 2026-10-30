@@ -54,7 +54,7 @@
           <%# School status buttons (admin only) %>
           <%# Context: any page scoped to an active school %>
           <li id="school-status-buttons" class="nav-item nowrap d-none d-xl-inline-block nav-link">
-            <%= render 'shared/school_status_buttons', school: current_school %>
+            <%= render Admin::SchoolStatusButtonsComponent.new(school: current_school, current_user:) %>
           </li>
         <% end %>
       </ul>
