@@ -56,6 +56,16 @@ shared_examples 'an alert requiring a minimum number of non-estimated readings' 
   end
 end
 
+shared_examples 'an alert without a freshness limit' do
+  describe '#meter_readings_up_to_date_enough?' do
+    it 'preserves the absence of a freshness limit' do
+      travel_to amr_end_date + 1.year
+
+      expect(alert.meter_readings_up_to_date_enough?).to be true
+    end
+  end
+end
+
 shared_examples 'an alert requiring recent non-estimated readings' do |max_days_out_of_date:|
   include_context 'with estimated reading helpers'
 
