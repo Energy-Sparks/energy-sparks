@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'school_week_comparison_shared'
 
 describe AlertSchoolWeekComparisonElectricity do
   subject(:alert) { described_class.new(meter_collection) }
@@ -36,6 +37,8 @@ describe AlertSchoolWeekComparisonElectricity do
       example.run
     end
   end
+
+  it_behaves_like 'a school week comparison ignoring estimated readings'
 
   describe '#analyse' do
     before do

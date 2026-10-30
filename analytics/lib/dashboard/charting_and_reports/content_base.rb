@@ -1,20 +1,19 @@
+# frozen_string_literal: true
+
 class ContentBase
-  include Logging
   def initialize(school)
     @school = school
     @relevance = check_relevance
     @not_enough_data_exception = false
     @calculation_worked = true
-    @today = ENV['ENERGYSPARKSTODAY'].nil? ? Date.today : Date.parse(ENV['ENERGYSPARKSTODAY'])
+    @today = ENV['ENERGYSPARKSTODAY'].nil? ? Time.zone.today : Date.parse(ENV['ENERGYSPARKSTODAY'])
   end
 
   def i18n_prefix
     "analytics.#{self.class.name.underscore}"
   end
 
-  def relevance
-    @relevance
-  end
+  attr_reader :relevance
 
   def reporting_period
     :last_12_months
@@ -47,7 +46,7 @@ class ContentBase
 
   def calculate_tariff_has_changed_during_period_text(start_date, end_date)
     changed = aggregate_meter.meter_tariffs.meter_tariffs_differ_within_date_range?(start_date, end_date)
-    changed ? I18n.t("analytics.tariff_change.change_within_period_caveat") : ''
+    changed ? I18n.t('analytics.tariff_change.change_within_period_caveat') : ''
   end
 
   def calculate_tariff_has_changed_between_periods_text(period1, period2)
@@ -55,24 +54,16 @@ class ContentBase
     period2 = Range.new(period2.start_date, period2.end_date) if period2.is_a?(SchoolDatePeriod)
 
     changed = aggregate_meter.meter_tariffs.meter_tariffs_changes_between_periods?(period1, period2)
-    changed ? I18n.t("analytics.tariff_change.change_between_periods_caveat") : ''
+    changed ? I18n.t('analytics.tariff_change.change_between_periods_caveat') : ''
   end
 
   def meter_readings_up_to_date_enough?
-    max_days_out_of_date_while_still_relevant.nil? ? true : (days_between_today_and_last_meter_date < max_days_out_of_date_while_still_relevant)
-  end
-
-  protected def max_days_out_of_date_while_still_relevant
-    nil
-  end
-
-  protected def days_between_today_and_last_meter_date
-    return 0 if check_relevance == :never_relevant
-    (@today - aggregate_meter.amr_data.end_date).to_i
+    max_days_out_of_date_while_still_relevant.nil? || (days_between_today_and_last_meter_date < max_days_out_of_date_while_still_relevant)
   end
 
   def check_relevance
     return :relevant if no_single_aggregate_meter
+
     aggregate_meter.nil? ? :never_relevant : :relevant
   end
 
@@ -90,7 +81,7 @@ class ContentBase
 
   def self.flatten_front_end_template_variables
     variables = {}
-    self.template_variables.each do |_group_name, variable_group|
+    template_variables.each_value do |variable_group|
       variables.merge!(variable_group)
     end
     variables
@@ -101,6 +92,7 @@ class ContentBase
     return false unless user_type.is_a?(Hash)
     return true if user_type.key?(:user_role)  && user_type[:user_role] == :admin
     return true if user_type.key?(:staff_role) && user_type[:staff_role] == :admin
+
     false
   end
 
@@ -115,6 +107,7 @@ class ContentBase
 
   def self.user_permission?(user_type, required_type)
     return true if required_type.nil?
+
     !user_type.nil? && user_type.key?(:user_role) && user_type[:user_role] == required_type
   end
 
@@ -127,33 +120,37 @@ class ContentBase
   end
 
   def email_us_html(subject, text = 'contact us')
-    '<a href="mailto:hello@energysparks.uk?subject=' + subject + '">' + text + '</a>'
+    "<a href=\"mailto:hello@energysparks.uk?subject=#{subject}\">#{text}</a>"
   end
 
   def self.front_end_template_variables
     front_end_template = {}
-    self.template_variables.each do |group_name, variable_group|
+    template_variables.each do |group_name, variable_group|
       map_types = {
-        Float     => :float,
-        Date      => :date,
-        Time      => :datetime,
-        String    => :string,
-        Integer   => :integer,
-        Symbol    => :symbol
+        Float => :float,
+        Date => :date,
+        Time => :datetime,
+        String => :string,
+        Integer => :integer,
+        Symbol => :symbol
       }
       front_end_template[group_name] = {}
       variable_group.each do |type, data|
         next if [:chart, TrueClass].include?(data[:units])
+
         unless data[:units].is_a?(Symbol) || data[:units].is_a?(Hash)
-          if map_types.key?(data[:units])
-            data[:units] = map_types[data[:units]]
-          else
-            raise EnergySparksUnexpectedStateException.new("Missing maps for #{data[:units]} #{data}")
+          unless map_types.key?(data[:units])
+            raise EnergySparksUnexpectedStateException, "Missing maps for #{data[:units]} #{data}"
           end
+
+          data[:units] = map_types[data[:units]]
+
         end
-        if [:£_range, :years_range].include?(data[:units]) # convert range values into low and high versions
-          front_end_template[group_name].merge!(front_end_high_low_range_values(convert_range_symbol_to_high(type), data, 'high'))
-          front_end_template[group_name].merge!(front_end_high_low_range_values(convert_range_symbol_to_low(type),  data, 'low'))
+        if %i[£_range years_range].include?(data[:units]) # convert range values into low and high versions
+          front_end_template[group_name].merge!(front_end_high_low_range_values(convert_range_symbol_to_high(type),
+                                                                                data, 'high'))
+          front_end_template[group_name].merge!(front_end_high_low_range_values(convert_range_symbol_to_low(type),
+                                                                                data, 'low'))
         end
         front_end_template[group_name][type] = data
       end
@@ -162,28 +159,29 @@ class ContentBase
   end
 
   def self.convert_equivalence_template_variables(equivalences, existing_template_variables)
-    equivalences.map do |equivalence|
+    equivalences.to_h do |equivalence|
       config = existing_template_variables.values.to_a.flatten.first[equivalence[:existing_variable]]
       [
         equivalence_key(equivalence),
         {
-          description:  "#{equivalence[:existing_variable]}: #{config[:description]} converted to #{equivalence[:convert_to]}",
-          units:        equivalence[:convert_to]
+          description: "#{equivalence[:existing_variable]}: #{config[:description]} converted to #{equivalence[:convert_to]}",
+          units: equivalence[:convert_to]
         }
       ]
-    end.to_h
+    end
   end
 
   def self.equivalence_key(equivalence)
-    "#{equivalence[:existing_variable]}_#{equivalence[:convert_to]}_#{equivalence[:convert_via]}".to_sym
+    :"#{equivalence[:existing_variable]}_#{equivalence[:convert_to]}_#{equivalence[:convert_via]}"
   end
 
   def set_equivalence_variables(equivalences)
     equivalences.each do |equivalence|
       self.class.send(:attr_reader, self.class.equivalence_key(equivalence))
       existing_val = send(equivalence[:existing_variable])
-      converted_val = AllEquivalences.instance.convert(existing_val, equivalence[:convert_to], equivalence[:convert_via])
-      instance_variable_set('@' + self.class.equivalence_key(equivalence).to_s, converted_val.magnitude)
+      converted_val = AllEquivalences.instance.convert(existing_val, equivalence[:convert_to],
+                                                       equivalence[:convert_via])
+      instance_variable_set("@#{self.class.equivalence_key(equivalence)}", converted_val.magnitude)
     end
   end
 
@@ -191,32 +189,32 @@ class ContentBase
   def self.front_end_high_low_range_values(high_low_type, data, high_low_description_suffix)
     {
       high_low_type => {
-        description: data[:description] + ' ' + high_low_description_suffix,
+        description: "#{data[:description]} #{high_low_description_suffix}",
         units: data[:units] == :£_range ? :£ : :years
       }
     }
   end
 
   def self.convert_range_symbol_to_high(type)
-    (type.to_s + '_high').to_sym
+    :"#{type}_high"
   end
 
   def self.convert_range_symbol_to_low(type)
-    (type.to_s + '_low').to_sym
+    :"#{type}_low"
   end
 
   def front_end_template_data
-    #flatten list of variable names, to ignore groups
+    # flatten list of variable names, to ignore groups
     lookup = flatten_template_variables
 
-    #generate hash of unformatted variable values
+    # generate hash of unformatted variable values
     raw_data = raw_template_variables
 
-    #generate formatted template variable values
+    # generate formatted template variable values
     list = text_template_variables.reject { |type, _value| [:chart, TrueClass].include?(lookup[type][:units]) }
 
-    #generates high/low value versions of some variables
-    #e.g. end up with capital_cost, capital_cost_low, capital_cost_high
+    # generates high/low value versions of some variables
+    # e.g. end up with capital_cost, capital_cost_low, capital_cost_high
     list.merge(convert_range_template_data_to_high_low(list, lookup, raw_data))
   end
 
@@ -234,7 +232,7 @@ class ContentBase
 
     variables = {}
     raw_variables.each do |name, value|
-      if value && value.is_a?(Range)
+      if value.is_a?(Range)
         variables[self.class.convert_range_symbol_to_low(name)] = value.first
         variables[self.class.convert_range_symbol_to_high(name)] = value.last
       else
@@ -257,43 +255,13 @@ class ContentBase
     lookup = flatten_template_variables
     benchmark_vars = raw_template_variables.select { |type, _value| lookup[type].key?(:benchmark_code) }
 
-    benchmark_vars.map do |key, value|
+    benchmark_vars.to_h do |key, value|
       variable_short_code = self.class.benchmark_template_variables[key][:benchmark_code]
-      ["#{self.class.short_code}_#{variable_short_code}".to_sym, value]
-    end.to_h
-  end
-
-  private def percent_change(old_value, new_value)
-    return nil if old_value.nil? || new_value.nil?
-    return 0.0 if !old_value.nan? && old_value == new_value # both 0.0 case
-    (new_value - old_value) / old_value
-  end
-
-  private def percent(v1, v2)
-    return nil if v1.nil? || v2.nil? || v2 == 0.0
-    v1 / v2
-  end
-
-  #For variables that indicate a range, then generate _high and _low value versions
-  #of the template data
-  private def convert_range_template_data_to_high_low(template_data, lookup, raw_data)
-    new_data = {}
-    template_data.each do |type, data| # front end want ranges as seperate high/low symbol-value pairs
-      if [:£_range, :years_range].include?(lookup[type][:units])
-        new_type = lookup[type][:units] == :£_range ? :£ : :years
-        if raw_data[type].nil?
-          new_data[self.class.convert_range_symbol_to_high(type)] = nil
-          new_data[self.class.convert_range_symbol_to_low(type)]  = nil
-        else
-          new_data[self.class.convert_range_symbol_to_high(type)] = format(new_type, raw_data[type].first, :text, false, user_numeric_comprehension_level)
-          new_data[self.class.convert_range_symbol_to_low(type)]  = format(new_type, raw_data[type].last,  :text, false, user_numeric_comprehension_level)
-        end
-      end
+      [:"#{self.class.short_code}_#{variable_short_code}", value]
     end
-    new_data
   end
 
-  #only used via test framework
+  # only used via test framework
   def raw_variables_for_saving
     raw = {}
     unformatted_template_variables.each do |type, data|
@@ -303,16 +271,16 @@ class ContentBase
         raw[self.class.convert_range_symbol_to_high(type)] = data.last
       end
     end
-    raw.transform_keys{ |k| self.class.name + ':' + k.to_s }
+    raw.transform_keys { |k| "#{self.class.name}:#{k}" }
   end
 
   public_class_method def self.front_end_template_charts
-    self.template_variable_by_type(:chart)
+    template_variable_by_type(:chart)
   end
 
   def self.template_variable_by_type(var_type)
     charts = {}
-    template_variables.each do |_group_name, variable_group|
+    template_variables.each_value do |variable_group|
       charts.merge!(variable_group.select { |_type, value| value[:units] == var_type })
     end
     charts
@@ -323,15 +291,11 @@ class ContentBase
     charts.reject { |_name, definition| definition.empty? }
   end
 
-  private def front_end_template_chart_data_by_type(var_type)
-    lookup = flatten_template_variables
-    text_template_variables.select { |type, _value| lookup[type][:units] == var_type }
-  end
-
   # returns :enough, :not_enough, :minimum_might_not_be_accurate
   # depending on whether there is enough data to provide the alert
   def enough_data
-    raise EnergySparksAbstractBaseClass.new('Error: incorrect attempt to use abstract base class for enough_data template variable ' + self.class.name)
+    raise EnergySparksAbstractBaseClass,
+          "Error: incorrect attempt to use abstract base class for enough_data template variable #{self.class.name}"
   end
 
   def days_amr_data
@@ -345,6 +309,7 @@ class ContentBase
 
   def valid_content?
     return false if @relevance == :never_relevant
+
     (!@school.aggregated_heat_meters.nil? && needs_gas_data?) ||
       (!@school.aggregated_electricity_meters.nil? && needs_electricity_data?) ||
       (!@school.storage_heater_meter.nil? && needs_storage_heater_data?)
@@ -352,11 +317,52 @@ class ContentBase
 
   def make_available_to_users?
     result = relevance == :relevant && enough_data == :enough && calculation_worked
-    logger.info "Alert #{self.class.name} not being made available to users: reason: #{relevance} #{enough_data} #{calculation_worked}" if !result
+    unless result
+      Rails.logger.info "Alert #{self.class.name} not being made available to users: reason: #{relevance} #{enough_data} #{calculation_worked}"
+    end
     result
   end
 
   private
+
+  def percent_change(old_value, new_value)
+    return nil if old_value.nil? || new_value.nil?
+    return 0.0 if !old_value.nan? && old_value == new_value # both 0.0 case
+
+    (new_value - old_value) / old_value
+  end
+
+  def percent(v1, v2)
+    return nil if v1.nil? || v2.nil? || v2 == 0.0
+
+    v1 / v2
+  end
+
+  # For variables that indicate a range, then generate _high and _low value versions
+  # of the template data
+  def convert_range_template_data_to_high_low(template_data, lookup, raw_data)
+    new_data = {}
+    template_data.each_key do |type| # front end want ranges as seperate high/low symbol-value pairs
+      next unless %i[£_range years_range].include?(lookup[type][:units])
+
+      new_type = lookup[type][:units] == :£_range ? :£ : :years
+      if raw_data[type].nil?
+        new_data[self.class.convert_range_symbol_to_high(type)] = nil
+        new_data[self.class.convert_range_symbol_to_low(type)]  = nil
+      else
+        new_data[self.class.convert_range_symbol_to_high(type)] =
+          format(new_type, raw_data[type].first, :text, false, user_numeric_comprehension_level)
+        new_data[self.class.convert_range_symbol_to_low(type)] =
+          format(new_type, raw_data[type].last, :text, false, user_numeric_comprehension_level)
+      end
+    end
+    new_data
+  end
+
+  def front_end_template_chart_data_by_type(var_type)
+    lookup = flatten_template_variables
+    text_template_variables.select { |type, _value| lookup[type][:units] == var_type }
+  end
 
   def formatted_template_variables(format = :html)
     variable_list(true, format)
@@ -366,20 +372,9 @@ class ContentBase
     variable_list(false)
   end
 
-  protected def calculate_rating_from_range(good_value, bad_value, actual_value)
-    return nil if @one_year_saving && @one_year_saving_£.last < 10.0 # ignore when saving less than £10
-
-    [10.0 * [(actual_value - bad_value) / (good_value - bad_value), 0.0].max, 10.0].min.round(1)
-  end
-
-  #this is called multiple times during life-time so cache the results
-  protected def flatten_template_variables
-    @flattened_variables ||= create_flattened_variables
-  end
-
-  private def create_flattened_variables
+  def create_flattened_variables
     list = {}
-    self.class.template_variables.each do |_group_name, variable_group|
+    self.class.template_variables.each_value do |variable_group|
       variable_group.each do |type, data|
         list[type] = data
       end
@@ -395,48 +390,39 @@ class ContentBase
     list
   end
 
-  private def variable_list(formatted, format = :text)
+  def variable_list(formatted, format = :text)
     list = {}
     flatten_template_variables.each do |type, data|
-      begin
-        if [TrueClass, FalseClass].include?(data[:units])
-          list[type] = send(type) # don't reformat flags so can be bound in if tests
-        else
-          if respond_to?(type, true)
-            if formatted && send(type).nil?
-              list[type] = ''
-            else
-              list[type] = formatted ? format(data[:units], send(type), format, false, user_numeric_comprehension_level) : send(type)
-            end
-          else
-            log_missing_variable(type)
-          end
-        end
-      rescue StandardError => e
-        logger.error "Exception in variable_list for #{@school.name} for #{self.class} - #{e.class}: #{e.message} " \
-                     "(#{e.backtrace&.first})"
-        list[type] = nil
+      if [TrueClass, FalseClass].include?(data[:units])
+        list[type] = send(type) # don't reformat flags so can be bound in if tests
+      elsif respond_to?(type, true)
+        list[type] = if formatted && send(type).nil?
+                       ''
+                     elsif formatted
+                       format(data[:units], send(type), format, false,
+                              user_numeric_comprehension_level)
+                     else
+                       send(type)
+                     end
+      else
+        log_missing_variable(type)
       end
+    rescue StandardError => e
+      Rails.logger.error "Exception in variable_list for #{@school.name} for #{self.class} - " \
+                         "#{e.class}: #{e.message} (#{e.backtrace&.first})"
+      list[type] = nil
     end
     missing_variable_summary
     list
   end
 
-  private def log_missing_variable(type)
-    logger.info "Warning: alert doesnt implement #{type}"
+  def log_missing_variable(type)
+    Rails.logger.info "Warning: alert doesnt implement #{type}"
   end
 
-  private def missing_variable_summary
+  def missing_variable_summary
     # do nothing as already logged above
     # but overridden for energy alert benchmark
-  end
-
-  protected def user_numeric_comprehension_level
-    :default
-  end
-
-  protected def format(unit, value, format, in_table, level)
-    FormatUnit.format(unit, value, format, true, in_table, level)
   end
 
   def needs_gas_data?
@@ -452,8 +438,7 @@ class ContentBase
   end
 
   def debug(var)
-    logger.info var
-    puts var unless Object.const_defined?('Rails')
+    Rails.logger.debug var
   end
 
   # technically usage of a blended rate can be imperfect but sometimes when
@@ -471,5 +456,41 @@ class ContentBase
     raise EnergySparksNotEnoughDataException, "zero kWh consumption between #{start_date} and #{end_date}" if kwh == 0.0
 
     data / kwh
+  end
+
+  def days_between_today_and_last_meter_date
+    return 0 if check_relevance == :never_relevant
+
+    date = last_meter_date
+    return max_days_out_of_date_while_still_relevant if date.nil?
+
+    (@today - date).to_i
+  end
+
+  def last_meter_date = aggregate_meter.amr_data.end_date
+
+  protected
+
+  def max_days_out_of_date_while_still_relevant
+    nil
+  end
+
+  def calculate_rating_from_range(good_value, bad_value, actual_value)
+    return nil if @one_year_saving && @one_year_saving_£.last < 10.0 # ignore when saving less than £10
+
+    [10.0 * [(actual_value - bad_value) / (good_value - bad_value), 0.0].max, 10.0].min.round(1)
+  end
+
+  # this is called multiple times during life-time so cache the results
+  def flatten_template_variables
+    @flatten_template_variables ||= create_flattened_variables
+  end
+
+  def user_numeric_comprehension_level
+    :default
+  end
+
+  def format(unit, value, format, in_table, level)
+    FormatUnit.format(unit, value, format, true, in_table, level)
   end
 end

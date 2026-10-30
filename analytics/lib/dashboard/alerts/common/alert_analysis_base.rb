@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/string/filters' # for string.truncate
 # Alerts: Energy Sparks alerts
 #         this is a mix of short-term alerts e.g. your energy consumption has gone up since last week
@@ -11,384 +13,14 @@ require 'active_support/core_ext/string/filters' # for string.truncate
 class AlertAnalysisBase < ContentBase
   include Logging
 
-  ALERT_HELP_URL = 'https://blog.energysparks.uk/alerts'.freeze
+  ALERT_HELP_URL = 'https://blog.energysparks.uk/alerts'
 
   attr_reader :status, :rating, :term, :analysis_date, :max_asofdate,
               :calculation_worked, :capital_cost, :one_year_saving_£, :ten_year_saving_£, :payback_years, :one_year_saving_co2, :ten_year_saving_co2, :one_year_saving_kwh, :average_capital_cost, :average_one_year_saving_£, :average_payback_years, :average_ten_year_saving_£, :error_message, :backtrace, :time_of_year_relevance
 
-  def initialize(school, _report_type)
-    super(school)
-    @capital_cost = 0.0..0.0
-  end
-
-  def analyse(asof_date, use_max_meter_date_if_less_than_asof_date = false, **kwargs)
-    @asof_date = asof_date
-    @max_asofdate = maximum_alert_date
-    if valid_alert?
-      date = use_max_meter_date_if_less_than_asof_date ? [maximum_alert_date, asof_date].min : asof_date
-
-      if @analysis_date.nil? || @analysis_date != date # only call once per date
-        @analysis_date = date
-        calculate(@analysis_date)
-      end
-    end
-  rescue EnergySparksNotEnoughDataException => e
-    log_stack_trace(e, false)
-    @not_enough_data_exception = true # TODO(PH, 31Jul2019) a mess for the moment, needs rationalising
-  rescue EnergySparksCalculationException => e
-    # LD(2022-08-23) add handler for custom exception so we can highlight problems
-    Rollbar.warning(e, alert_type: self.class.name, asof_date: asof_date, school: @school.name)
-    log_stack_trace(e)
-    @calculation_worked = false
-  rescue StandardError => e
-    log_stack_trace(e)
-    if ENV['LOG_ALL_ANALYTICS_ERRORS'] == 'true'
-      Rollbar.warning(e, alert_type: self.class.name, asof_date: asof_date,
-                         school: @school.name)
-    end
-    @calculation_worked = false
-  end
-
-  def log_stack_trace(e, backtrace = true)
-    @error_message = e.message
-    @backtrace = e.backtrace
-
-    logger.warn e.message.truncate(120)
-    logger.warn e.backtrace[..5] if backtrace
-  end
-
-  private def exclude_backtrace?(message)
-    [
-      'Not enough samples for model to provide good regression fit',
-      'Not enough data: 1 year of data required',
-      'Not enough data: 2 years of data required'
-    ].any? { |exclude| message.include?(exclude) }
-  end
-
-  def benchmark_dates(asof_date)
-    [asof_date]
-  end
-
-  # inherited, so derived class has hash of 'name' => variables
-  def self.template_variables
-    { 'Common' => TEMPLATE_VARIABLES }
-  end
-
-  TEMPLATE_VARIABLES = {
-    rating: {
-      description: 'Rating out of 10',
-      units: Float,
-      priority_code: 'RATE',
-      benchmark_code: 'ratg'
-    },
-    pupils: {
-      description: 'Number of pupils for relevant part of school on this date',
-      units: Integer
-    },
-    floor_area: {
-      description: 'Floor area of relevant part of school',
-      units: :m2
-    },
-    one_year_saving_kwh: {
-      description: 'Estimated one year kwh reduction range',
-      units: :kwh
-    },
-    one_year_saving_£: {
-      description: 'Estimated one year saving range',
-      units: :£_range
-    },
-    one_year_saving_co2: {
-      description: 'Estimated one year saving co2',
-      units: :co2
-    },
-    ten_year_saving_co2: {
-      description: 'Estimated ten year saving co2',
-      units: :co2
-    },
-    average_one_year_saving_£: {
-      description: 'Estimated one year saving range',
-      units: :£,
-      priority_code: '1YRS'
-      # benchmark_code: '1yrsav_£'
-    },
-    average_ten_year_saving_£: {
-      description: 'Estimated ten year saving range',
-      units: :£,
-      priority_code: '10YR'
-    },
-    ten_year_saving_£: {
-      description: 'Estimated ten year saving range - typical capital investment horizon',
-      units: :£_range
-    },
-    payback_years: {
-      description: 'Payback in years',
-      units: :years_range
-    },
-    average_payback_years: {
-      description: 'Average payback in years',
-      units: :years,
-      priority_code: 'PAYB'
-    },
-    capital_cost: {
-      description: 'Capital cost',
-      units: :£_range
-    },
-    average_capital_cost: {
-      description: 'Average Capital cost',
-      units: :£,
-      priority_code: 'CAPC'
-    },
-    timescale: {
-      description: 'Timescale of analysis e.g. week, month, year',
-      units: String
-    },
-    time_of_year_relevance: {
-      description: 'Rating: 10 = relevant to time of year, 0 = irrelevant, 5 = average/normal',
-      units: Float,
-      priority_code: 'TYRL'
-    }
-  }.freeze
-
-  def maximum_alert_date
-    raise EnergySparksAbstractBaseClass.new('Error: incorrect attempt to use abstract base class ' + self.class.name)
-  end
-
-  def timescale
-    # TODO: this probably unneeded as the text returned can be dynamically looked up
-    # from the YAML file based on class name
-    raise EnergySparksAbstractBaseClass.new('Error: incorrect attempt to use abstract base class for timeescale template variable ' + self.class.name)
-  end
-
-  def time_of_year_relevance
-    set_time_of_year_relevance(5.0)
-    # TODO(PH, 26Aug2019) - remove return in favour of raise once all derived classes defined
-    # raise EnergySparksAbstractBaseClass, "Error: incorrect attempt to use abstract base class for time_of_year_relevance template variable #{self.class.name}"
-  end
-
-  def valid_alert?
-    valid_content? && meter_readings_up_to_date_enough?
-  end
-
-  protected
-
-  def set_time_of_year_relevance(weight)
-    @time_of_year_relevance = weight
-  end
-
-  def add_book_mark_to_base_url(bookmark)
-    @help_url = ALERT_HELP_URL + '#' + bookmark
-  end
-
-  def assign_commmon_saving_variables(one_year_saving_£:, one_year_saving_co2:, one_year_saving_kwh: nil,
-                                      capital_cost: nil)
-    @one_year_saving_£ = as_range(one_year_saving_£)
-    @ten_year_saving_£ = if @one_year_saving_£.nil?
-                           0.0
-                         else
-                           Range.new(@one_year_saving_£.first * 10.0,
-                                     @one_year_saving_£.last * 10.0)
-                         end
-
-    @average_one_year_saving_£ = @one_year_saving_£.nil? ? 0.0 : ((@one_year_saving_£.first + @one_year_saving_£.last) / 2.0)
-    @average_ten_year_saving_£ = @average_one_year_saving_£ * 10.0
-
-    @one_year_saving_co2 = one_year_saving_co2
-    @ten_year_saving_co2 = one_year_saving_co2 * 10.0
-
-    @one_year_saving_kwh = one_year_saving_kwh
-
-    @capital_cost = as_range(capital_cost)
-    @average_capital_cost = @capital_cost.nil? ? 0.0 : ((@capital_cost.first + @capital_cost.last) / 2.0)
-    @average_payback_years = @average_one_year_saving_£ == 0.0 ? 0.0 : @average_capital_cost / @average_one_year_saving_£
-  end
-
-  private def as_range(value)
-    value.is_a?(Float) ? Range.new(value, value) : value
-  end
-
-  def pupils
-    if @school.respond_to?(:number_of_pupils) && @school.number_of_pupils > 0
-      @school.number_of_pupils
-    elsif @school.respond_to?(:school) && !@school.school.number_of_pupils > 0
-      @school.school.number_of_pupils
-    else
-      raise EnergySparksBadDataException.new('Unable to find number of pupils for alerts')
-    end
-  end
-
-  def floor_area
-    if @school.respond_to?(:floor_area) && !@school.floor_area.nil? && @school.floor_area > 0.0
-      @school.floor_area
-    elsif @school.respond_to?(:school) && !@school.school.floor_area.nil? && @school.school.floor_area > 0.0
-      @school.school.floor_area
-    else
-      raise EnergySparksBadDataException.new('Unable to find number of floor_area for alerts')
-    end
-  end
-
-  def school_activation_date
-    @school.activation_date
-  end
-
-  def school_creation_date
-    @school.creation_date
-  end
-
-  def school_name
-    if @school.respond_to?(:name) && !@school.name.nil?
-      @school.name
-    elsif @school.respond_to?(:name) && !@school.school.name.nil?
-      @school.school.name
-    else
-      raise EnergySparksBadDataException.new('Unable to find school name for alerts')
-    end
-  end
-
-  def urn
-    @school.urn
-  end
-
-  def activation_date
-    @school.activation_date
-  end
-
-  def creation_date
-    @school.creation_date
-  end
-
-  def school_type
-    if @school.respond_to?(:school_type) && !@school.school_type.nil?
-      @school.school_type.instance_of?(String) ? @school.school_type.to_sym : @school.school_type
-    elsif @school.respond_to?(:school) && !@school.school.school_type.nil?
-      @school.school.school_type.instance_of?(String) ? @school.school.school_type.to_sym : @school.school.school_type
-    else
-      raise EnergySparksBadDataException.new("Unable to find number of school_type for alerts #{@school.school_type} #{@school.school.school_type}")
-    end
-  end
-
-  protected def holiday?(date)
-    @school.holidays.holiday?(date)
-  end
-
-  protected def weekend?(date)
-    date.saturday? || date.sunday?
-  end
-
-  protected def occupied?(date)
-    !(weekend?(date) || holiday?(date))
-  end
-
-  protected def occupancy_description(date)
-    if holiday?(date)
-      I18n.t('analytics.common.holiday')
-    else
-      weekend?(date) ? I18n.t('analytics.common.weekend') : I18n.t('analytics.common.school_day')
-    end
-  end
-
-  # returns a list of the last n 'school_days' before and including the asof_date
-  def last_n_school_days(asof_date, school_days)
-    list_of_school_days = []
-    while school_days > 0
-      if occupied?(asof_date)
-        list_of_school_days.push(asof_date)
-        school_days -= 1
-      end
-      asof_date -= 1
-    end
-    list_of_school_days.sort
-  end
-
-  protected def meter_date_up_to_one_year_before(meter, asof_date)
-    [asof_date - 365, meter.amr_data.start_date].max
-  end
-
-  protected def kwh_date_range(meter, start_date, end_date, data_type = :kwh, community_use: nil)
-    return nil if meter.amr_data.start_date > start_date || meter.amr_data.end_date < end_date
-
-    meter.amr_data.kwh_date_range(start_date, end_date, data_type, community_use: community_use)
-  end
-
-  protected def kwhs_date_range(meter, start_date, end_date, data_type = :kwh, min_days_data = nil, community_use: nil)
-    if min_days_data.nil?
-      return nil if meter.amr_data.start_date > start_date || meter.amr_data.end_date < end_date
-
-      (start_date..end_date).to_a.map do |date|
-        meter.amr_data.one_day_kwh(date, data_type, community_use: community_use)
-      end
-    else
-      sd = [meter.amr_data.start_date, start_date].max
-      ed = [meter.amr_data.end_date, end_date].min
-      days = ed - sd + 1
-      if (meter.amr_data.start_date > start_date || meter.amr_data.end_date < end_date) && days < min_days_data
-        nil
-      else
-        (sd..ed).to_a.map { |date| meter.amr_data.one_day_kwh(date, data_type, community_use: community_use) }
-      end
-    end
-  end
-
-  protected def kwh(date1, date2, data_type = :kwh)
-    aggregate_meter.amr_data.kwh_date_range(date1, date2, data_type)
-  end
-
-  protected def meter_date_one_year_before(meter, asof_date)
-    meter_date_up_to_one_year_before(meter, asof_date)
-  end
-
-  protected def annual_kwh(meter, asof_date)
-    start_date = meter_date_one_year_before(meter, asof_date)
-    kwh(start_date, asof_date) * scale_up_to_one_year(meter, asof_date)
-  end
-
-  protected def calculate_up_to_annual_kwh(meter, asof_date)
-    start_date = meter_date_one_year_before(meter, asof_date)
-    kwh(start_date, asof_date)
-  end
-
-  protected def scale_up_to_one_year(meter, asof_date)
-    365.0 / (asof_date - meter_date_one_year_before(meter, asof_date))
-  end
-
-  # TEMPORARY
-  # As part of the localisation refactor some instance variables produced in the calculate
-  # methods were moved to being returned by instance variables.
-  #
-  # This means that previously, where calculating the values of those variables may have caused
-  # an exception (e.g. attempting to determine an adjective for a nil value), the calculate
-  # method may continue and even complete.
-  #
-  # To avoid generating ratings for alerts that may have been previously (silently) failing
-  # for some schools, this method is provided to raise an error for those exceptions
-  #
-  # This is intended to give us some insights into which alerts/schools might be failing and
-  # so we can act on it. E.g. by adding in better preconditions to the calculate method
-  protected def raise_calculation_error_if_missing(variables)
-    missing = variables.entries.select { |k, v| v.nil? }
-    raise EnergySparksCalculationException.new("#{missing.map { |m| m[0] }.join(',')} are missing") if missing.any?
-  end
-
-  private
-
-  def calculate(asof_date)
-    raise EnergySparksAbstractBaseClass, 'Error: incorrect attempt to use abstract base class'
-  end
-
-  def relative_change(difference, base)
-    if difference == 0.0 && base == 0.0
-      0.0
-    elsif base == 0.0
-      Float::INFINITY
-    else
-      difference / base
-    end
-  end
-
-  public
-
   # slightly iffy way of creating short codes for alert class names
   def self.alert_short_code(alert_class)
-    alert_class.to_s.split('').select { |char| ('A'..'Z').cover?(char) }[1..8].join
+    alert_class.to_s.chars.grep('A'..'Z')[1..8].join
   end
 
   def self.short_code_alert(short_code)
@@ -513,5 +145,390 @@ class AlertAnalysisBase < ContentBase
 
   def self.all_available_alerts
     all_alerts.keys
+  end
+
+  def initialize(school, _report_type)
+    super(school)
+    @capital_cost = 0.0..0.0
+  end
+
+  def analyse(asof_date, use_max_meter_date_if_less_than_asof_date = false, **_kwargs)
+    @asof_date = asof_date
+    @max_asofdate = maximum_alert_date
+    if valid_alert?
+      date = use_max_meter_date_if_less_than_asof_date ? [maximum_alert_date, asof_date].min : asof_date
+
+      if @analysis_date.nil? || @analysis_date != date # only call once per date
+        @analysis_date = date
+        calculate(@analysis_date)
+      end
+    end
+  rescue EnergySparksNotEnoughDataException => e
+    log_stack_trace(e, false)
+    @not_enough_data_exception = true # TODO(PH, 31Jul2019) a mess for the moment, needs rationalising
+  rescue EnergySparksCalculationException => e
+    # LD(2022-08-23) add handler for custom exception so we can highlight problems
+    Rollbar.warning(e, alert_type: self.class.name, asof_date: asof_date, school: @school.name)
+    log_stack_trace(e)
+    @calculation_worked = false
+  rescue StandardError => e
+    log_stack_trace(e)
+    if ENV['LOG_ALL_ANALYTICS_ERRORS'] == 'true'
+      Rollbar.warning(e, alert_type: self.class.name, asof_date: asof_date,
+                         school: @school.name)
+    end
+    @calculation_worked = false
+  end
+
+  def log_stack_trace(e, backtrace = true)
+    @error_message = e.message
+    @backtrace = e.backtrace
+
+    logger.warn e.message.truncate(120)
+    logger.warn e.backtrace[..5] if backtrace
+  end
+
+  def benchmark_dates(asof_date)
+    [asof_date]
+  end
+
+  # inherited, so derived class has hash of 'name' => variables
+  def self.template_variables
+    { 'Common' => TEMPLATE_VARIABLES }
+  end
+
+  TEMPLATE_VARIABLES = {
+    rating: {
+      description: 'Rating out of 10',
+      units: Float,
+      priority_code: 'RATE',
+      benchmark_code: 'ratg'
+    },
+    pupils: {
+      description: 'Number of pupils for relevant part of school on this date',
+      units: Integer
+    },
+    floor_area: {
+      description: 'Floor area of relevant part of school',
+      units: :m2
+    },
+    one_year_saving_kwh: {
+      description: 'Estimated one year kwh reduction range',
+      units: :kwh
+    },
+    one_year_saving_£: {
+      description: 'Estimated one year saving range',
+      units: :£_range
+    },
+    one_year_saving_co2: {
+      description: 'Estimated one year saving co2',
+      units: :co2
+    },
+    ten_year_saving_co2: {
+      description: 'Estimated ten year saving co2',
+      units: :co2
+    },
+    average_one_year_saving_£: {
+      description: 'Estimated one year saving range',
+      units: :£,
+      priority_code: '1YRS'
+      # benchmark_code: '1yrsav_£'
+    },
+    average_ten_year_saving_£: {
+      description: 'Estimated ten year saving range',
+      units: :£,
+      priority_code: '10YR'
+    },
+    ten_year_saving_£: {
+      description: 'Estimated ten year saving range - typical capital investment horizon',
+      units: :£_range
+    },
+    payback_years: {
+      description: 'Payback in years',
+      units: :years_range
+    },
+    average_payback_years: {
+      description: 'Average payback in years',
+      units: :years,
+      priority_code: 'PAYB'
+    },
+    capital_cost: {
+      description: 'Capital cost',
+      units: :£_range
+    },
+    average_capital_cost: {
+      description: 'Average Capital cost',
+      units: :£,
+      priority_code: 'CAPC'
+    },
+    timescale: {
+      description: 'Timescale of analysis e.g. week, month, year',
+      units: String
+    },
+    time_of_year_relevance: {
+      description: 'Rating: 10 = relevant to time of year, 0 = irrelevant, 5 = average/normal',
+      units: Float,
+      priority_code: 'TYRL'
+    }
+  }.freeze
+
+  def maximum_alert_date
+    raise EnergySparksAbstractBaseClass, "Error: incorrect attempt to use abstract base class #{self.class.name}"
+  end
+
+  def timescale
+    # TODO: this probably unneeded as the text returned can be dynamically looked up
+    # from the YAML file based on class name
+    raise EnergySparksAbstractBaseClass,
+          "Error: incorrect attempt to use abstract base class for timeescale template variable #{self.class.name}"
+  end
+
+  def time_of_year_relevance
+    set_time_of_year_relevance(5.0)
+    # TODO(PH, 26Aug2019) - remove return in favour of raise once all derived classes defined
+    # raise EnergySparksAbstractBaseClass, "Error: incorrect attempt to use abstract base class for time_of_year_relevance template variable #{self.class.name}"
+  end
+
+  def valid_alert?
+    valid_content? && meter_readings_up_to_date_enough?
+  end
+
+  protected
+
+  def holiday?(date)
+    @school.holidays.holiday?(date)
+  end
+
+  def weekend?(date)
+    date.saturday? || date.sunday?
+  end
+
+  def occupied?(date)
+    !(weekend?(date) || holiday?(date))
+  end
+
+  def occupancy_description(date)
+    if holiday?(date)
+      I18n.t('analytics.common.holiday')
+    else
+      weekend?(date) ? I18n.t('analytics.common.weekend') : I18n.t('analytics.common.school_day')
+    end
+  end
+
+  def meter_date_up_to_one_year_before(meter, asof_date)
+    [asof_date - 365, meter.amr_data.start_date].max
+  end
+
+  def kwh_date_range(meter, start_date, end_date, data_type = :kwh, community_use: nil)
+    return nil if meter.amr_data.start_date > start_date || meter.amr_data.end_date < end_date
+
+    meter.amr_data.kwh_date_range(start_date, end_date, data_type, community_use: community_use)
+  end
+
+  def kwhs_date_range(meter, start_date, end_date, data_type = :kwh, min_days_data = nil, community_use: nil)
+    if min_days_data.nil?
+      return nil if meter.amr_data.start_date > start_date || meter.amr_data.end_date < end_date
+
+      (start_date..end_date).to_a.map do |date|
+        meter.amr_data.one_day_kwh(date, data_type, community_use: community_use)
+      end
+    else
+      sd = [meter.amr_data.start_date, start_date].max
+      ed = [meter.amr_data.end_date, end_date].min
+      days = ed - sd + 1
+      if (meter.amr_data.start_date > start_date || meter.amr_data.end_date < end_date) && days < min_days_data
+        nil
+      else
+        (sd..ed).to_a.map { |date| meter.amr_data.one_day_kwh(date, data_type, community_use: community_use) }
+      end
+    end
+  end
+
+  def kwh(date1, date2, data_type = :kwh)
+    aggregate_meter.amr_data.kwh_date_range(date1, date2, data_type)
+  end
+
+  def meter_date_one_year_before(meter, asof_date)
+    meter_date_up_to_one_year_before(meter, asof_date)
+  end
+
+  def annual_kwh(meter, asof_date)
+    start_date = meter_date_one_year_before(meter, asof_date)
+    kwh(start_date, asof_date) * scale_up_to_one_year(meter, asof_date)
+  end
+
+  def calculate_up_to_annual_kwh(meter, asof_date)
+    start_date = meter_date_one_year_before(meter, asof_date)
+    kwh(start_date, asof_date)
+  end
+
+  def scale_up_to_one_year(meter, asof_date)
+    365.0 / (asof_date - meter_date_one_year_before(meter, asof_date))
+  end
+
+  # TEMPORARY
+  # As part of the localisation refactor some instance variables produced in the calculate
+  # methods were moved to being returned by instance variables.
+  #
+  # This means that previously, where calculating the values of those variables may have caused
+  # an exception (e.g. attempting to determine an adjective for a nil value), the calculate
+  # method may continue and even complete.
+  #
+  # To avoid generating ratings for alerts that may have been previously (silently) failing
+  # for some schools, this method is provided to raise an error for those exceptions
+  #
+  # This is intended to give us some insights into which alerts/schools might be failing and
+  # so we can act on it. E.g. by adding in better preconditions to the calculate method
+  def raise_calculation_error_if_missing(variables)
+    missing = variables.entries.select { |_k, v| v.nil? }
+    raise EnergySparksCalculationException, "#{missing.pluck(0).join(',')} are missing" if missing.any?
+  end
+
+  def set_time_of_year_relevance(weight)
+    @time_of_year_relevance = weight
+  end
+
+  def add_book_mark_to_base_url(bookmark)
+    @help_url = "#{ALERT_HELP_URL}##{bookmark}"
+  end
+
+  def assign_commmon_saving_variables(one_year_saving_£:, one_year_saving_co2:, one_year_saving_kwh: nil,
+                                      capital_cost: nil)
+    @one_year_saving_£ = as_range(one_year_saving_£)
+    @ten_year_saving_£ = if @one_year_saving_£.nil?
+                           0.0
+                         else
+                           Range.new(@one_year_saving_£.first * 10.0,
+                                     @one_year_saving_£.last * 10.0)
+                         end
+
+    @average_one_year_saving_£ = @one_year_saving_£.nil? ? 0.0 : ((@one_year_saving_£.first + @one_year_saving_£.last) / 2.0)
+    @average_ten_year_saving_£ = @average_one_year_saving_£ * 10.0
+
+    @one_year_saving_co2 = one_year_saving_co2
+    @ten_year_saving_co2 = one_year_saving_co2 * 10.0
+
+    @one_year_saving_kwh = one_year_saving_kwh
+
+    @capital_cost = as_range(capital_cost)
+    @average_capital_cost = @capital_cost.nil? ? 0.0 : ((@capital_cost.first + @capital_cost.last) / 2.0)
+    @average_payback_years = @average_one_year_saving_£ == 0.0 ? 0.0 : @average_capital_cost / @average_one_year_saving_£
+  end
+
+  def pupils
+    if @school.respond_to?(:number_of_pupils) && @school.number_of_pupils.positive?
+      @school.number_of_pupils
+    elsif @school.respond_to?(:school) && (!@school.school.number_of_pupils).positive?
+      @school.school.number_of_pupils
+    else
+      raise EnergySparksBadDataException, 'Unable to find number of pupils for alerts'
+    end
+  end
+
+  def floor_area
+    if @school.respond_to?(:floor_area) && !@school.floor_area.nil? && @school.floor_area > 0.0
+      @school.floor_area
+    elsif @school.respond_to?(:school) && !@school.school.floor_area.nil? && @school.school.floor_area > 0.0
+      @school.school.floor_area
+    else
+      raise EnergySparksBadDataException, 'Unable to find number of floor_area for alerts'
+    end
+  end
+
+  def school_activation_date
+    @school.activation_date
+  end
+
+  def school_creation_date
+    @school.creation_date
+  end
+
+  def school_name
+    if @school.respond_to?(:name) && !@school.name.nil?
+      @school.name
+    elsif @school.respond_to?(:name) && !@school.school.name.nil?
+      @school.school.name
+    else
+      raise EnergySparksBadDataException, 'Unable to find school name for alerts'
+    end
+  end
+
+  def urn
+    @school.urn
+  end
+
+  def activation_date
+    @school.activation_date
+  end
+
+  def creation_date
+    @school.creation_date
+  end
+
+  def school_type
+    if @school.respond_to?(:school_type) && !@school.school_type.nil?
+      @school.school_type.instance_of?(String) ? @school.school_type.to_sym : @school.school_type
+    elsif @school.respond_to?(:school) && !@school.school.school_type.nil?
+      @school.school.school_type.instance_of?(String) ? @school.school.school_type.to_sym : @school.school.school_type
+    else
+      raise EnergySparksBadDataException,
+            "Unable to find number of school_type for alerts #{@school.school_type} #{@school.school.school_type}"
+    end
+  end
+
+  # returns a list of the last n 'school_days' before and including the asof_date
+  def last_n_school_days(asof_date, school_days)
+    list_of_school_days = []
+    while school_days.positive?
+      if occupied?(asof_date)
+        list_of_school_days.push(asof_date)
+        school_days -= 1
+      end
+      asof_date -= 1
+    end
+    list_of_school_days.sort
+  end
+
+  private
+
+  def exclude_backtrace?(message)
+    [
+      'Not enough samples for model to provide good regression fit',
+      'Not enough data: 1 year of data required',
+      'Not enough data: 2 years of data required'
+    ].any? { |exclude| message.include?(exclude) }
+  end
+
+  def as_range(value)
+    value.is_a?(Float) ? Range.new(value, value) : value
+  end
+
+  def calculate(_asof_date)
+    raise EnergySparksAbstractBaseClass, 'Error: incorrect attempt to use abstract base class'
+  end
+
+  def relative_change(difference, base)
+    if difference == 0.0 && base == 0.0
+      0.0
+    elsif base == 0.0
+      Float::INFINITY
+    else
+      difference / base
+    end
+  end
+
+  def last_non_estimated_meter_date
+    aggregate_meter.amr_data.end_date.downto(aggregate_meter.amr_data.start_date).find do |date|
+      non_estimated_reading?(date)
+    end
+  end
+
+  def non_estimated_reading?(date)
+    reading = aggregate_meter.amr_data[date]
+    !reading.nil? && reading.type != 'EST'
+  end
+
+  def non_estimated_days(count)
+    aggregate_meter.amr_data.each_key.lazy.select { |date| non_estimated_reading?(date) }.take(count).count
   end
 end

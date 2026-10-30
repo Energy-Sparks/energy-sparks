@@ -1,9 +1,14 @@
-require_rel '../charting_and_reports/content_base.rb'
+# frozen_string_literal: true
+
+require_relative '../charting_and_reports/content_base'
+
 class AdviceBase < ContentBase
   include Logging
-  attr_reader :summary
+
+  attr_reader :summary, :failed_charts, :rating
+
   def initialize(school)
-    super(school)
+    super
     @failed_charts = []
   end
 
@@ -18,10 +23,6 @@ class AdviceBase < ContentBase
   def analyse(asof_date)
     @asof_date = asof_date
     calculate
-  end
-
-  def failed_charts
-    @failed_charts
   end
 
   def calculate
@@ -40,7 +41,7 @@ class AdviceBase < ContentBase
   end
 
   def failed_charts_required
-    @failed_charts.select{ |failed_chart| !charts_that_are_allowed_to_fail.include?(failed_chart[:chart_name])}
+    @failed_charts.reject { |failed_chart| charts_that_are_allowed_to_fail.include?(failed_chart[:chart_name]) }
   end
 
   def charts_that_are_allowed_to_fail
@@ -49,10 +50,6 @@ class AdviceBase < ContentBase
 
   def tolerate_chart_failure(chart_name)
     charts_that_are_allowed_to_fail.include?(chart_name)
-  end
-
-  def rating
-    @rating
   end
 
   def relevance
@@ -64,12 +61,9 @@ class AdviceBase < ContentBase
   end
 
   def charts
-    chart_results = []
-
-    chart_names.each do |chart_name|
-      chart_results.push(run_chart(chart_name))
+    chart_names.map do |chart_name|
+      run_chart(chart_name)
     end
-    chart_results
   end
 
   def front_end_content(user_type: nil)
@@ -94,7 +88,7 @@ class AdviceBase < ContentBase
 
   def has_structured_content?(user_type: nil)
     structured_meter_breakdown?(user_type) &&
-    self.class.config[:meter_breakdown][:presentation_style] == :structured
+      self.class.config[:meter_breakdown][:presentation_style] == :structured
   end
 
   def structured_content(user_type: nil)
@@ -103,9 +97,9 @@ class AdviceBase < ContentBase
 
   def analytics_split_charts_and_html(content_data)
     html_bits = content_data.select { |h| %i[html analytics_html].include?(h[:type]) }
-    html = html_bits.map { |v| v[:content] }
+    html = html_bits.pluck(:content)
     charts_bits = content_data.select { |h| h[:type] == :chart }
-    charts = charts_bits.map { |v| v[:content] }
+    charts = charts_bits.pluck(:content)
     [html, charts]
   end
 
@@ -123,11 +117,11 @@ class AdviceBase < ContentBase
 
   # used by analytics - inserts location of chart, but real chart goes to Excel
   def self.highlighted_dummy_chart_name_html(chart_name)
-    text = %{
+    text = %(
       <div style="background-color: #cfc ; padding: 10px; border: 1px solid green;">
         <h3>Chart: <%= chart_name %></h3>
       </div>
-    }
+    )
     ERB.new(text).result(binding)
   end
 
@@ -137,7 +131,7 @@ class AdviceBase < ContentBase
 
   def self.promote_variables
     template_variables = {}
-    self.config[:promoted_variables].each do |alert_class, variables|
+    config[:promoted_variables].each do |alert_class, variables|
       variables.each do |to, from|
         template_variables[to] = find_alert_variable_definition(alert_class.template_variables, from)
       end
@@ -146,7 +140,7 @@ class AdviceBase < ContentBase
   end
 
   def self.find_alert_variable_definition(variable_groups, find_variable_name)
-    variable_groups.each do |_group_name, variable_group|
+    variable_groups.each_value do |variable_group|
       return variable_group[find_variable_name] if variable_group.key?(find_variable_name)
     end
   end
@@ -164,8 +158,8 @@ class AdviceBase < ContentBase
 
   def remove_diagnostics_from_content(content, user_type)
     {
-      title:    content[:title],
-      content:  remove_diagnostics_from_html(content[:content], user_type)
+      title: content[:title],
+      content: remove_diagnostics_from_html(content[:content], user_type)
     }
   end
 
@@ -178,8 +172,8 @@ class AdviceBase < ContentBase
   def raw_structured_content(user_type: nil)
     base = [
       {
-        title:    'All school meters aggregated:',
-        content:  raw_content(user_type: user_type)
+        title: 'All school meters aggregated:',
+        content: raw_content(user_type: user_type)
       }
     ]
 
@@ -204,21 +198,22 @@ class AdviceBase < ContentBase
 
     charts_and_html += debug_content
 
-    #The list of charts can include nils, as run_chart will return
-    #a nil result if there isn't enough data. So call compact to remove the nils
-    #and avoid unnecessary exception throwing/handling/logging
+    # The list of charts can include nils, as run_chart will return
+    # a nil result if there isn't enough data. So call compact to remove the nils
+    # and avoid unnecessary exception throwing/handling/logging
     charts.compact.each do |chart|
-      begin
-        chart_content(chart, charts_and_html)
-      rescue StandardError => e
-        logger.info self.class.name
-        logger.info e.message
-        logger.info e.backtrace
-      end
+      chart_content(chart, charts_and_html)
+    rescue StandardError => e
+      logger.info self.class.name
+      logger.info e.message
+      logger.info e.backtrace
     end
 
     # tack explanation of breakdown onto initial content
-    charts_and_html += [{ type: :html, content: individual_meter_level_description_html }] if structured_meter_breakdown?(user_type)
+    if structured_meter_breakdown?(user_type)
+      charts_and_html += [{ type: :html,
+                            content: individual_meter_level_description_html }]
+    end
 
     charts_and_html
   end
@@ -230,30 +225,33 @@ class AdviceBase < ContentBase
   end
 
   private_class_method def self.definition
-    DashboardConfiguration::ADULT_DASHBOARD_GROUP_CONFIGURATIONS.select { |_key, defn| defn[:content_class] == self }.values[0]
+    DashboardConfiguration::ADULT_DASHBOARD_GROUP_CONFIGURATIONS.select do |_key, defn|
+      defn[:content_class] == self
+    end.values[0]
   end
 
   def header_content(charts_and_html)
-    charts_and_html.push( { type: :analytics_html, content: '<hr>' } )
-    charts_and_html.push( { type: :title, content: self.class.config[:name] } )
+    charts_and_html.push({ type: :analytics_html, content: '<hr>' })
+    charts_and_html.push({ type: :title, content: self.class.config[:name] })
     enhanced_title = enhanced_title(self.class.config[:name])
-    charts_and_html.push( { type: :enhanced_title, content: enhanced_title})
-    charts_and_html.push( { type: :analytics_html, content: format_enhanced_title_for_analytics(enhanced_title)})
+    charts_and_html.push({ type: :enhanced_title, content: enhanced_title })
+    charts_and_html.push({ type: :analytics_html, content: format_enhanced_title_for_analytics(enhanced_title) })
   end
 
   def chart_content(chart, charts_and_html)
-    charts_and_html.push( { type: :html,  content: clean_html(chart[:advice_header]) } ) if chart.key?(:advice_header)
-    charts_and_html.push( { type: :chart_name, content: chart[:config_name] } )
-    charts_and_html.push( { type: :chart, content: chart } )
-    charts_and_html.push( { type: :analytics_html, content: AdviceBase.highlighted_dummy_chart_name_html(chart[:config_name]) } )
-    charts_and_html.push( { type: :html,  content: clean_html(chart[:advice_footer]) } ) if chart.key?(:advice_footer)
+    charts_and_html.push({ type: :html, content: clean_html(chart[:advice_header]) }) if chart.key?(:advice_header)
+    charts_and_html.push({ type: :chart_name, content: chart[:config_name] })
+    charts_and_html.push({ type: :chart, content: chart })
+    charts_and_html.push({ type: :analytics_html,
+                           content: AdviceBase.highlighted_dummy_chart_name_html(chart[:config_name]) })
+    charts_and_html.push({ type: :html, content: clean_html(chart[:advice_footer]) }) if chart.key?(:advice_footer)
   end
 
   def enhanced_title(title)
     {
-      title:    title,
-      rating:   @rating,
-      summary:  @summary
+      title: title,
+      rating: @rating,
+      summary: @summary
     }
   end
 
@@ -278,31 +276,34 @@ class AdviceBase < ContentBase
     end_date        = parse_date(chart_results[:x_axis].last)
     time_scale_days = end_date - start_date + 1
     {
-      timescale_days:         time_scale_days,
-      timescale_years:        time_scale_days / 365.0,
-      timescale_description:  FormatUnit.format(:years, time_scale_days / 365.0, :html),
-      start_date:             chart_results[:x_axis].first,
-      end_date:               chart_results[:x_axis].last
+      timescale_days: time_scale_days,
+      timescale_years: time_scale_days / 365.0,
+      timescale_description: FormatUnit.format(:years, time_scale_days / 365.0, :html),
+      start_date: chart_results[:x_axis].first,
+      end_date: chart_results[:x_axis].last
     }
   end
 
   def run_chart(chart_name)
-    begin
-      chart_manager = ChartManager.new(@school)
-      chart = chart_manager.run_standard_chart(chart_name, nil, true)
-      @failed_charts.push( { school_name: @school.name, chart_name: chart_name, message: 'Unknown', backtrace: nil } ) if chart.nil?
-      chart
-    rescue EnergySparksNotEnoughDataException => e
-      @failed_charts.push( { school_name: @school.name, chart_name: chart_name,  message: e.message, backtrace: e.backtrace, type: e.class.name, tolerate_failure: tolerate_chart_failure(chart_name) } )
-      nil
-    rescue => e
-      @failed_charts.push( { school_name: @school.name, chart_name: chart_name,  message: e.message, backtrace: e.backtrace, type: e.class.name } )
-      nil
+    chart_manager = ChartManager.new(@school)
+    chart = chart_manager.run_standard_chart(chart_name, nil, true)
+    if chart.nil?
+      @failed_charts.push({ school_name: @school.name, chart_name: chart_name, message: 'Unknown',
+                            backtrace: nil })
     end
+    chart
+  rescue EnergySparksNotEnoughDataException => e
+    @failed_charts.push({ school_name: @school.name, chart_name: chart_name, message: e.message,
+                          backtrace: e.backtrace, type: e.class.name, tolerate_failure: tolerate_chart_failure(chart_name) })
+    nil
+  rescue StandardError => e
+    @failed_charts.push({ school_name: @school.name, chart_name: chart_name, message: e.message,
+                          backtrace: e.backtrace, type: e.class.name })
+    nil
   end
 
   def self.meter_specific_chart_config(chart_name, mpxn)
-    name = "#{chart_name}_#{mpxn}".to_sym
+    name = :"#{chart_name}_#{mpxn}"
     [
       { type: :chart_name,     content: chart_name, mpan_mprn: mpxn },
       { type: :analytics_html, content: AdviceBase.highlighted_dummy_chart_name_html(name) }
@@ -310,11 +311,9 @@ class AdviceBase < ContentBase
   end
 
   def meter_specific_config(config, mpxn, user_type)
-    if self.class.user_permission?(user_type, config.dig(:user_type, :user_role))
-      evaluate_meter_breakdown_content(config, mpxn)
-    else
-      nil
-    end
+    return unless self.class.user_permission?(user_type, config.dig(:user_type, :user_role))
+
+    evaluate_meter_breakdown_content(config, mpxn)
   end
 
   def evaluate_meter_breakdown_content(config, mpxn)
@@ -352,34 +351,35 @@ class AdviceBase < ContentBase
   # to directly request data from the alert objects. This would clarify the dependencies between
   # the classes, avoiding indirection via the adult_dashboard_configuration class.
   def promote_data
-    #using the configuration in adult_dashboard_configuration.rb
-    #loop through the promoted variables
+    # using the configuration in adult_dashboard_configuration.rb
+    # loop through the promoted variables
     self.class.config[:promoted_variables].each do |alert_class, variables|
-      #create the referenced alert
+      # create the referenced alert
       alert = alert_class.new(@school)
       next unless alert.valid_alert?
-      #execute the alert (this means the same alert may be run >1 against a school)
+
+      # execute the alert (this means the same alert may be run >1 against a school)
       #
-      #any exceptions will have been swallowed up here, so the instance variables
-      #being copied across might not actually have been set. An exception might have been
-      #down to not enough data, or due to a calculation error in the alert
+      # any exceptions will have been swallowed up here, so the instance variables
+      # being copied across might not actually have been set. An exception might have been
+      # down to not enough data, or due to a calculation error in the alert
       #
-      #If the advice class itself is dependent on this information, then there may be
-      #other errors that cause the advice class to fail to run. This is most likely visible
-      #when displaying a page to users.
+      # If the advice class itself is dependent on this information, then there may be
+      # other errors that cause the advice class to fail to run. This is most likely visible
+      # when displaying a page to users.
       alert.analyse(alert_asof_date, true)
 
       next if alert.enough_data == :not_enough
 
       variables.each do |to, from|
-        #For each variable, copy the value from the alert class to this object
-        #as an instance variable. Optionally renaming (from -> to)
+        # For each variable, copy the value from the alert class to this object
+        # as an instance variable. Optionally renaming (from -> to)
         #
-        #If this object already had that instance variable set. It will be overwritten.
-        #A method with the same name will also be overwritten.
+        # If this object already had that instance variable set. It will be overwritten.
+        # A method with the same name will also be overwritten.
         #
-        #The net result is that this object will have some values copied from the alert
-        #object. And some of its code may not be used
+        # The net result is that this object will have some values copied from the alert
+        # object. And some of its code may not be used
         create_and_set_attr_reader(to, alert.send(from))
       end
     end
@@ -387,11 +387,11 @@ class AdviceBase < ContentBase
 
   def format_meter_data(meter_data)
     {
-      name:     meter_data[:meter].analytics_name,
-      kwh:      FormatUnit.format(:kwh,     meter_data[:annual_kwh], :html),
-      £:        FormatUnit.format(:£,       meter_data[:annual_£],   :html),
-      percent:  FormatUnit.format(:percent, meter_data[:percent],    :html),
-      period:   FormatUnit.format(:years,   meter_data[:years],      :html)
+      name: meter_data[:meter].analytics_name,
+      kwh: FormatUnit.format(:kwh, meter_data[:annual_kwh], :html),
+      £: FormatUnit.format(:£, meter_data[:annual_£], :html),
+      percent: FormatUnit.format(:percent, meter_data[:percent], :html),
+      period: FormatUnit.format(:years, meter_data[:years], :html)
     }
   end
 
@@ -401,22 +401,22 @@ class AdviceBase < ContentBase
 
     total_kwh = aggregate_meter.amr_data.kwh_date_range(start_date, end_date)
 
-    meter_data = available_meters_for_breakdown.map do |meter|
+    available_meters_for_breakdown.filter_map do |meter|
       if meter.amr_data.start_date > end_date || meter.amr_data.end_date < start_date
         nil # deprecated meter outside last year
       else
         sd = [meter.amr_data.start_date, start_date].max
-        ed = [meter.amr_data.end_date,   end_date  ].min
+        ed = [meter.amr_data.end_date,   end_date].min
         kwh = meter.amr_data.kwh_date_range(sd, ed)
         {
-          meter:      meter,
+          meter: meter,
           annual_kwh: kwh,
-          annual_£:   meter.amr_data.kwh_date_range(sd, ed, :£),
-          percent:    kwh / total_kwh,
-          years:      (ed - sd) / 365.0
+          annual_£: meter.amr_data.kwh_date_range(sd, ed, :£),
+          percent: kwh / total_kwh,
+          years: (ed - sd) / 365.0
         }
       end
-    end.compact.sort { |md1, md2| md2[:annual_kwh] <=> md1[:annual_kwh] }
+    end.sort { |md1, md2| md2[:annual_kwh] <=> md1[:annual_kwh] }
   end
 
   def available_meters_for_breakdown
@@ -435,20 +435,20 @@ class AdviceBase < ContentBase
     end
 
     {
-      title:      "#{fmd[:name]}: #{fmd[:kwh]} #{fmd[:£]} #{fmd[:percent]}",
+      title: "#{fmd[:name]}: #{fmd[:kwh]} #{fmd[:£]} #{fmd[:percent]}",
       html_title: "<h2 style=\"text-align:left;\">#{fmd[:name]}<span style=\"float:right;\">#{fmd[:kwh]} #{fmd[:£]} #{fmd[:percent]}</span></h2>",
-      content:    charts_and_html.compact.flatten
+      content: charts_and_html.compact.flatten
     }
   end
 
   def meter_breakdown_permission?(user_type)
     self.class.config.key?(:meter_breakdown) &&
-    self.class.user_permission?(user_type, self.class.config[:meter_breakdown][:user_type][:user_role])
+      self.class.user_permission?(user_type, self.class.config[:meter_breakdown][:user_type][:user_role])
   end
 
   def structured_meter_breakdown?(user_type)
     meter_breakdown_permission?(user_type) &&
-    available_meters_for_breakdown.length > 1
+      available_meters_for_breakdown.length > 1
   end
 
   def sorted_underlying_meters
@@ -456,47 +456,47 @@ class AdviceBase < ContentBase
   end
 
   def alert_asof_date
-    @asof_date ||= aggregate_meter.amr_data.end_date
+    @alert_asof_date ||= aggregate_meter.amr_data.end_date
   end
 
   def template_data_html
     rows = html_template_variables.to_a
-    HtmlTableFormatting.new(['Variable','Value'], rows).html
+    HtmlTableFormatting.new(%w[Variable Value], rows).html
   end
 
   def individual_meter_level_description_html
-    %q(
+    '
       <p>
         To help further understand this analysis, the analysis is now
         broken down to individual meter level:
       </p>
-    )
+    '
   end
 
-  #This methods will, for the given key:
+  # This methods will, for the given key:
   #
-  #Use the key to set an instance variable on this object.
+  # Use the key to set an instance variable on this object.
   # Where necessary a new attr_reader is defined.
-  #If there's already an instance variable then it will be overwritten.
-  #If there's a method on this class with the same name, then it will be overridden
-  #by a new attr_reader.
+  # If there's already an instance variable then it will be overwritten.
+  # If there's a method on this class with the same name, then it will be overridden
+  # by a new attr_reader.
   def create_and_set_attr_reader(key, value)
-    #check state of this variable
+    # check state of this variable
     status = variable_name_status(key)
     case status
     when :function
-      #if we have a method with that name, then set an instance variable with the value
-      #sometimes overrides AdviceBase.rating with rating
+      # if we have a method with that name, then set an instance variable with the value
+      # sometimes overrides AdviceBase.rating with rating
       logger.info "promoted variable #{key} already set as function  for #{self.class.name} - overwriting"
       create_var(key, value)
     when :variable
-      #if we don't have that variable set, then set it
-      #sometimes overrides AdviceBase.summary with summary
+      # if we don't have that variable set, then set it
+      # sometimes overrides AdviceBase.summary with summary
       logger.info "promoted variable #{key} already defined for #{self.class.name} - overwriting"
       instance_variable_set("@#{key}", value)
     else
-      #otherwise dynamically defined an attr_reader and set the instance variable
-      #this seems to be the common case based on current config
+      # otherwise dynamically defined an attr_reader and set the instance variable
+      # this seems to be the common case based on current config
       create_var(key, value)
     end
   end
@@ -506,16 +506,16 @@ class AdviceBase < ContentBase
     instance_variable_set("@#{key}", value)
   end
 
-  #for a given key, determine whether:
+  # for a given key, determine whether:
   #
   # :function = we respond to a method of that name and there's no instance variable set
   # :variable = there's currently an instance variable defined for that key on this object
   # nil = no method or instance variable defined
   def variable_name_status(key)
-    if respond_to?(key) && !instance_variable_defined?("@#{key.to_s}")
+    if respond_to?(key) && !instance_variable_defined?("@#{key}")
       :function
     else
-      instance_variable_defined?("@#{key.to_s}") ? :variable : nil
+      instance_variable_defined?("@#{key}") ? :variable : nil
     end
   end
 end
