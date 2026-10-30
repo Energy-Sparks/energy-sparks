@@ -52,4 +52,3 @@ module ArbitraryPeriodComparisonMixIn
     end
   end
 end
-

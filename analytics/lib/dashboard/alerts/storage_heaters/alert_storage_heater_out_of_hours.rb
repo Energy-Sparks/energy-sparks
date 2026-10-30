@@ -38,4 +38,3 @@ class AlertStorageHeaterOutOfHours < AlertOutOfHoursGasUsage
     Series::DayType::STORAGE_HEATER_CHARGE
   end
 end
-
