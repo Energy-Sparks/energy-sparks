@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class OnboardingMailerPreview < ActionMailer::Preview
+class OnboardingMailerPreview < BasePreview
   def onboarded_email
     OnboardingMailer.with(school: School.visible.first,
                               users: School.visible.first.users.school_admin,
@@ -63,11 +63,5 @@ class OnboardingMailerPreview < ActionMailer::Preview
   def data_enabled_email_staff
     school = School.find(params[:school_id])
     OnboardingMailer.with(school:, users: school.users.staff, locale:, staff: true).data_enabled_email
-  end
-
-  private
-
-  def locale
-    @params['locale'].presence || 'en'
   end
 end
