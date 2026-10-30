@@ -224,7 +224,6 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     combined_rating = increase_rating_on_year * of_annual_rating * increase_rating_on_last_5_weeks / 100.0
 
     potential_savings_kwh = 52.0 * (@last_year_weekend_gas_kwh - @average_weekend_gas_kwh)
-
     potential_savings_£current  = 52.0 * (@last_weekend_cost_£current   - @average_weekend_gas_£current)
     potential_savings_co2       = 52.0 * (@last_weekend_cost_co2        - @average_weekend_gas_co2)
 

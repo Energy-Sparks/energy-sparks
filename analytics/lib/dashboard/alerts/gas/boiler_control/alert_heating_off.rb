@@ -119,8 +119,6 @@ class AlertTurnHeatingOff < AlertGasModelBase
 
   private
 
-  alias last_meter_date last_non_estimated_meter_date
-
   def set_relevance
     return unless @relevance != :never_relevant
 
@@ -291,7 +289,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
     @seasonal_analysis ||= @heating_model.heating_on_seasonal_analysis(end_date: asof_date)
   end
 
-  protected
-
   def max_days_out_of_date_while_still_relevant = 7
+
+  alias last_meter_date last_non_estimated_meter_date
 end
