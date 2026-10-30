@@ -1,9 +1,7 @@
-require_relative './alert_period_comparison_base.rb'
-require_relative './alert_previous_year_holiday_comparison_electricity.rb'
-require_relative './arbitrary_period_comparison_mix_in.rb'
-require_relative './alert_previous_year_holiday_comparison_gas.rb'
-require_relative './alert_period_comparison_temperature_adjustment_mixin.rb'
-require_relative './alert_period_comparison_gas_mixin.rb'
+require_relative 'alert_previous_year_holiday_comparison_electricity'
+require_relative 'arbitrary_period_comparison_mix_in'
+require_relative 'alert_period_comparison_temperature_adjustment_mixin'
+require_relative 'alert_period_comparison_gas_mixin'
 
 class AlertPreviousYearHolidayComparisonGas < AlertPreviousYearHolidayComparisonElectricity
   include AlertPeriodComparisonTemperatureAdjustmentMixin

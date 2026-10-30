@@ -1,7 +1,5 @@
 require_relative 'alert_holiday_comparison_base'
 
-require_relative './alert_period_comparison_base.rb'
-
 class AlertPreviousYearHolidayComparisonElectricity < AlertHolidayComparisonBase
 
   def initialize(school, type = :electricitypreviousyearholidaycomparison)

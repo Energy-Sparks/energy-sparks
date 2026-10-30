@@ -1,5 +1,5 @@
 #======================== Heating coming on too early in morning ==============
-require_relative '../../gas/alert_gas_model_base.rb'
+require_relative '../../gas/alert_gas_model_base'
 
 class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
   MINIMUM_SUMMER_DROP_KW = 0.2

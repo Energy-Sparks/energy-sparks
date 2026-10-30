@@ -1,5 +1,5 @@
 #======================== Heating coming on too early in morning ==============
-require_relative '../alert_gas_model_base.rb'
+require_relative '../alert_gas_model_base'
 
 class AlertHeatingComingOnTooEarly < AlertGasModelBase
   #Also defined in base class?

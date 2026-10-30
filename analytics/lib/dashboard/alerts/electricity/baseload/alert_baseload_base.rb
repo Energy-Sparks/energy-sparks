@@ -1,4 +1,4 @@
-require_relative '../../../../../app/services/baseload/baseload_analysis.rb'
+require_relative '../../../../../app/services/baseload/baseload_analysis'
 
 class AlertBaseloadBase < AlertElectricityOnlyBase
   attr_reader :blended_baseload_rate_£_per_kwh, :blended_baseload_rate_£current_per_kwh, :has_changed_during_period_text

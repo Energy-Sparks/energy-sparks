@@ -1,4 +1,4 @@
-require_relative './alert_storage_heater_out_of_hours'
+require_relative 'alert_storage_heater_out_of_hours'
 
 class AlertOutOfHoursStorageHeaterUsagePreviousYear < AlertStorageHeaterOutOfHours
   def enough_data
