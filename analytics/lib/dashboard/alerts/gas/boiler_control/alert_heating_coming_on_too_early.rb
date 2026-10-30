@@ -113,7 +113,5 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
     heating_model.one_year_saving_from_better_boiler_start_time(asof_date, datatype)
   end
 
-  def max_days_out_of_date_while_still_relevant
-    21
-  end
+  def max_days_out_of_date_while_still_relevant = 21
 end

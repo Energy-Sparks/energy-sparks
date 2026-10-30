@@ -471,9 +471,7 @@ class ContentBase
 
   protected
 
-  def max_days_out_of_date_while_still_relevant
-    nil
-  end
+  def max_days_out_of_date_while_still_relevant = nil
 
   def calculate_rating_from_range(good_value, bad_value, actual_value)
     return nil if @one_year_saving && @one_year_saving_£.last < 10.0 # ignore when saving less than £10

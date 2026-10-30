@@ -76,9 +76,7 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
     5.0
   end
 
-  def max_days_out_of_date_while_still_relevant
-    21
-  end
+  def max_days_out_of_date_while_still_relevant = 21
 
   def period_name(period)
     I18nHelper.holiday(period.type)

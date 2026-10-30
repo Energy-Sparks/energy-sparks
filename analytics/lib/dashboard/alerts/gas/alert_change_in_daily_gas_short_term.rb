@@ -12,7 +12,6 @@ class AlertChangeInDailyGasShortTerm < AlertGasModelBase
 
   MAX_CHANGE_IN_PERCENT = 0.15
 
-
   def initialize(school)
     super(school, :changeingasconsumption)
     @relevance = :never_relevant if @relevance != :never_relevant && non_heating_only
@@ -225,9 +224,7 @@ class AlertChangeInDailyGasShortTerm < AlertGasModelBase
     end.sum
   end
 
-  def max_days_out_of_date_while_still_relevant
-    21
-  end
+  def max_days_out_of_date_while_still_relevant = 21
 
   alias last_meter_date last_non_estimated_meter_date
 end

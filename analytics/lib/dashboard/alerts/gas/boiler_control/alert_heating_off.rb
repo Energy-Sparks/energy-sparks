@@ -293,7 +293,5 @@ class AlertTurnHeatingOff < AlertGasModelBase
 
   protected
 
-  def max_days_out_of_date_while_still_relevant
-    7
-  end
+  def max_days_out_of_date_while_still_relevant = 7
 end

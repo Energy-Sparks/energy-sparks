@@ -231,7 +231,5 @@ class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
 
   alias last_meter_date last_non_estimated_meter_date
 
-  def max_days_out_of_date_while_still_relevant
-    21
-  end
+  def max_days_out_of_date_while_still_relevant = 21
 end
