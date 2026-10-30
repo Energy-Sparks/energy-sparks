@@ -2,7 +2,7 @@
 # more complicated than the electricity case as you need to adjust for
 # for temperature and take into account the heating turning on and off
 # TODO(PH,20May2018) take into account heating turning on and off
-require_relative 'alert_gas_model_base.rb'
+require_relative 'alert_gas_model_base'
 
 class AlertChangeInDailyGasShortTerm < AlertGasModelBase
   include Logging

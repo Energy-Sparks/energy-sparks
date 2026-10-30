@@ -5,35 +5,36 @@ require 'rails_helper'
 describe AlertSolarPVBenefitEstimator do
   subject(:alert) { described_class.new(meter_collection) }
 
-  # using fixed generation (from context) and consumption to simplify calculating expected values
-  let(:consumption_x48) { [*([0.1] * 10), *([0.005] * 10), *([0.4] * 8), *([0.25] * 10), *([0.01] * 10)] }
-
-  include_context 'with an aggregated meter with tariffs and school times' do
-    let(:amr_start_date)  { Date.new(2024, 1, 1) }
-    let(:amr_end_date)    { Date.new(2025, 12, 31) }
-
-    let(:amr_data) do
-      build(:amr_data, :with_date_range, :with_grid_carbon_intensity,
-            grid_carbon_intensity: grid_carbon_intensity,
-            start_date: amr_start_date,
-            end_date: amr_end_date,
-            kwh_data_x48: consumption_x48)
-    end
+  let(:asof_date) { Date.new(2025, 12, 31) }
+  let(:meter_collection) do
+    build(:meter_collection, :with_aggregate_meter, fuel_type: :electricity,
+                                                    start_date: asof_date - 364, end_date: asof_date)
   end
 
   context 'when school does not have solar' do
     let(:service) do
-      SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(meter_collection:,
-                                                                asof_date: Date.new(2025, 12, 31))
+      instance_double(SolarPhotovoltaics::PotentialBenefitsEstimatorService,
+                      enough_data?: true, calculate_optimum_scenario: optimum_scenario)
+    end
+    let(:optimum_scenario) do
+      {
+        kwp: 10.0,
+        payback_years: 8.0,
+        reduction_in_mains_percent: 0.4,
+        total_annual_saving_£: 1200.0,
+        reduction_in_mains_kwh: 5000.0,
+        total_annual_saving_co2: 900.0,
+        capital_cost_£: 9600.0
+      }
     end
 
     before do
-      alert.analyse(Date.new(2025, 12, 31))
+      allow(SolarPhotovoltaics::PotentialBenefitsEstimatorService)
+        .to receive(:new).with(meter_collection:, asof_date:).and_return(service)
+      alert.analyse(asof_date)
     end
 
     it 'creates variables based on the benefit estimate' do
-      optimum_scenario = service.calculate_optimum_scenario
-
       expect(alert.optimum_kwp).to eq(optimum_scenario[:kwp])
       expect(alert.optimum_payback_years).to eq(optimum_scenario[:payback_years])
       expect(alert.optimum_mains_reduction_percent).to eq(optimum_scenario[:reduction_in_mains_percent])

@@ -9,7 +9,7 @@ describe AlertElectricityLongTermTrend do
 
   context 'with two years of changing data' do
     include_context 'with an aggregated meter with tariffs and school times' do
-      let(:amr_start_date)  { Date.new(2021, 12, 31) }
+      let(:amr_start_date)  { Date.new(2022, 12, 31) }
       let(:amr_end_date)    { Date.new(2024, 12, 31) }
 
       # use existing function to change data for most recent year
@@ -32,16 +32,13 @@ describe AlertElectricityLongTermTrend do
     context 'with increased usage' do
       let(:scale) { 2.0 }
 
-      it 'produces expected kWh change variables' do
+      it 'calculates usage, cost and carbon changes', :aggregate_failures do
         expect(alert.last_year_kwh).to eq(unchanged_annual_use) # values from context
         expect(alert.this_year_kwh).to eq(unchanged_annual_use * scale)
         expect(alert.year_change_kwh).to eq(unchanged_annual_use)
         expect(alert.abs_difference_kwh).to eq(unchanged_annual_use)
         expect(alert.abs_difference_kwh_temp_adj).to eq(unchanged_annual_use)
         expect(alert.percent_change_kwh).to eq(1.0) # 100 percent increase
-      end
-
-      it 'calculates other change variables' do
         expect(alert.abs_difference_gbp).not_to be_nil
         expect(alert.abs_difference_gbp_temp_adj).not_to be_nil
         expect(alert.abs_difference_co2).not_to be_nil
@@ -52,16 +49,13 @@ describe AlertElectricityLongTermTrend do
     context 'with decreased usage' do
       let(:scale) { 0.5 }
 
-      it 'produces expected kWh change variables' do
+      it 'calculates usage, cost and carbon changes', :aggregate_failures do
         expect(alert.last_year_kwh).to eq(unchanged_annual_use) # values from context
         expect(alert.this_year_kwh).to eq(unchanged_annual_use * scale)
         expect(alert.year_change_kwh).to eq(unchanged_annual_use * scale * -1.0)
         expect(alert.abs_difference_kwh).to eq(unchanged_annual_use * scale)
         expect(alert.abs_difference_kwh_temp_adj).to eq(unchanged_annual_use * scale)
         expect(alert.percent_change_kwh).to eq(-0.5) # 50 percent decrease
-      end
-
-      it 'calculates other change variables' do
         expect(alert.abs_difference_gbp).not_to be_nil
         expect(alert.abs_difference_gbp_temp_adj).not_to be_nil
         expect(alert.abs_difference_co2).not_to be_nil
