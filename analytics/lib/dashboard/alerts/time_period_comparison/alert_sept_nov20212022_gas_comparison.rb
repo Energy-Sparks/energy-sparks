@@ -1,0 +1,4 @@
+require_relative 'alert_autumn_term20212022_gas_comparison'
+
+class AlertSeptNov20212022GasComparison < AlertAutumnTerm20212022GasComparison
+end

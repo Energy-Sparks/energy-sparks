@@ -1,0 +1,12 @@
+require_relative 'alert_arbitrary_period_comparison_storage_heater_base'
+require_relative 'alert_arbitrary_period_comparison_mixin'
+require_relative 'alert_jan_aug20222023_comparison_mix_in'
+
+class AlertJanAug20222023StorageHeaterComparison < AlertArbitraryPeriodComparisonStorageHeaterBase
+  include ArbitraryPeriodComparisonMixIn
+  include AlertJanAug20222023ComparisonMixIn
+
+  def comparison_configuration
+    basic_configuration
+  end
+end
