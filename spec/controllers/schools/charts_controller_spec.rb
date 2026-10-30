@@ -28,13 +28,8 @@ RSpec.describe Schools::ChartsController, type: :controller do
             let(:admin)                  { false }
             let(:environment_identifier) { 'test' }
 
-            around do |example|
-              ClimateControl.modify ENVIRONMENT_IDENTIFIER: environment_identifier do
-                example.run
-              end
-            end
-
             before do
+              stub_env(ENVIRONMENT_IDENTIFIER: environment_identifier)
               allow_any_instance_of(ChartManager).to receive(:run_chart).and_raise
               allow(controller).to receive(:current_user_admin?).and_return(admin)
             end

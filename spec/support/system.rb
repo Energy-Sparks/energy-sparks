@@ -93,5 +93,9 @@ RSpec.configure do |config|
     end
   end
 
-  def stub_env(**kwargs) = stub_const('ENV', ENV.to_h.merge(**kwargs.stringify_keys.transform_values(&:to_s)))
+  def stub_env(**kwargs)
+    env = ENV.to_h
+    kwargs.stringify_keys.each { |key, value| value.nil? ? env.delete(key) : env[key] = value.to_s }
+    stub_const('ENV', env)
+  end
 end

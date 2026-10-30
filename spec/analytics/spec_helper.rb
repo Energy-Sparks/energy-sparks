@@ -8,7 +8,6 @@ require 'pry'
 require 'rollbar'
 require 'nokogiri'
 require 'compare-xml'
-require 'climate_control'
 
 SimpleCov.start do
   add_group 'Models', 'app/models'
