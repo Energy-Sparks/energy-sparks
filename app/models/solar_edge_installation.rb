@@ -8,7 +8,6 @@
 #  access_token            :string
 #  access_token_expires_at :datetime
 #  active                  :boolean          default(TRUE), not null
-#  api_key                 :text
 #  consent_granted_at      :datetime
 #  information             :json
 #  mpan                    :text
@@ -160,7 +159,7 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def solar_edge_meter_type(meter_type)
-    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type)
+    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type) # rubocop:disable Lint/DeprecatedReference
   end
 
   def store_tokens(tokens)
