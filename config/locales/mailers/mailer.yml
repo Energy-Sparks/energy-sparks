@@ -114,6 +114,8 @@ en:
       subject: It's time to review the energy tariffs for %{name} on Energy Sparks
       thank_you: Thank you for updating your %{school_or_group}'s %{fuel_types} tariff information.
       this_will_be_used: This will be used to calculate the potential cost savings for your energy saving activities.
+      title: "%{name} Tariff Review"
+      title_expiry: "%{name} Expiring Tariffs"
       to_do_this_html: To do this, please login to Energy Sparks, click on the <b>%{menu}</b> menu and select <a href="%{url}"><b>Manage tariffs</b></a>
       to_help_energy_sparks: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we're contacting you to ask you to review the information we have about the energy tariffs for %{name}.
       update_your_tariff: The current tariffs will expire in 30 days' time. Don't forget to update your tariff information for the next supply contract period.

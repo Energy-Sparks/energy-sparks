@@ -3,9 +3,9 @@
 class EnergyTariffReminder
   REMINDER_WINDOW = 30.days
 
-  def initialize(today: Date.current)
-    @today = today
-    @end_date = today + REMINDER_WINDOW
+  def initialize
+    @today = Date.current
+    @end_date = @today + REMINDER_WINDOW
   end
 
   def send_expiring_tariff_reminders
@@ -35,7 +35,7 @@ class EnergyTariffReminder
     expiring.filter do |expiring_tariff|
       replacements.none? do |tariff|
         expiring_tariff.meter_type == tariff.meter_type &&
-          (tariff.start_date.nil? || @today < tariff.start_date)
+          (tariff.end_date.nil? || tariff.end_date > @end_date)
       end
     end
   end
@@ -80,6 +80,8 @@ class EnergyTariffReminder
   end
 
   def send_reminders(job, method_name)
+    return unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
+
     method(method_name).call(School.active) do |school, expiring_tariffs|
       send_reminder(school, school.all_school_admins.school_admin, job, expiring_tariffs:)
     end

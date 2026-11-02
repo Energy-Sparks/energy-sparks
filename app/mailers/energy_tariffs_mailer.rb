@@ -14,9 +14,10 @@ class EnergyTariffsMailer < LocaleMailer
   def reminder(organisation, users, expiring_tariffs, locale)
     @organisation = organisation
     @expiring_tariffs = expiring_tariffs
+    @title = t(".title#{:_expiry if expiring_tariffs.any?}", name: organisation.name)
     params[:locale] = locale
     make_bootstrap_mail(to: users.map(&:email),
-                        subject: I18n.t('energy_tariffs_mailer.reminder.subject', name: @organisation.name, locale:))
+                        subject: t('.subject', name: @organisation.name, locale:))
     prevent_delivery_from_test
   end
 end
