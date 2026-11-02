@@ -14538,6 +14538,8 @@ ViewComponent/PreferComposition:
     - 'app/components/admin/placeholder_component.rb'
     - 'app/components/admin/quick_links_component.rb'
     - 'app/components/admin/record_component.rb'
+    - 'app/components/admin/tasks/classification_tabs_component.rb'
+    - 'app/components/admin/translation_flag_component.rb'
     - 'app/components/admin/user_list_component.rb'
     - 'app/components/adult_reminders_component.rb'
     - 'app/components/advice_page_list_component.rb'
