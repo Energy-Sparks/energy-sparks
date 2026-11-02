@@ -3,6 +3,9 @@
 module ArbitraryPeriodComparisonMixIn
   # make all instance methods because of complexities of
   # mixing in instance methods in Ruby
+
+  private
+
   def current_period_config
     c = comparison_configuration[:current_period]
     SchoolDatePeriod.new(:analysis, 'Current period', c.first, c.last)
@@ -13,12 +16,14 @@ module ArbitraryPeriodComparisonMixIn
     SchoolDatePeriod.new(:analysis, 'Previous period', c.first, c.last)
   end
 
-  def enough_days_data(_days)
-    non_estimated_days(comparison_configuration[:enough_days_data]) >= comparison_configuration[:enough_days_data]
+  def enough_days_data(days)
+    days >= comparison_configuration[:enough_days_data]
   end
 
   def period_days(period_start, period_end)
-    period_end - period_start + 1
+    (period_start..period_end).lazy
+                              .select { |date| non_estimated_reading?(date) }
+                              .take(comparison_configuration[:enough_days_data]).size
   end
 
   def comparison_chart
@@ -43,8 +48,6 @@ module ArbitraryPeriodComparisonMixIn
       super
     end
   end
-
-  private
 
   def max_days_out_of_date_while_still_relevant
     comparison_configuration[:max_days_out_of_date]
