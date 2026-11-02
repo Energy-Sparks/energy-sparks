@@ -30,8 +30,6 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
     :last_2_school_weeks_electricity_comparison_alert
   end
 
-  alias analyse_private calculate
-
   def current_period_start_short_date
     format_date(@current_period_start_date)
   end
