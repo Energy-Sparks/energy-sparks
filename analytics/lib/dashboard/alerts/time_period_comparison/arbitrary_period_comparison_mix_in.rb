@@ -1,4 +1,4 @@
-require_relative 'holiday_shutdown_comparison_mixin'
+# frozen_string_literal: true
 
 module ArbitraryPeriodComparisonMixIn
   # make all instance methods because of complexities of
@@ -13,16 +13,8 @@ module ArbitraryPeriodComparisonMixIn
     SchoolDatePeriod.new(:analysis, 'Previous period', c.first, c.last)
   end
 
-  protected def max_days_out_of_date_while_still_relevant
-    comparison_configuration[:max_days_out_of_date]
-  end
-
-  protected def last_two_periods(asof_date)
-    [current_period_config, previous_period_config]
-  end
-
-  def enough_days_data(days)
-    days >= comparison_configuration[:enough_days_data]
+  def enough_days_data(_days)
+    non_estimated_days(comparison_configuration[:enough_days_data]) >= comparison_configuration[:enough_days_data]
   end
 
   def period_days(period_start, period_end)
@@ -51,4 +43,16 @@ module ArbitraryPeriodComparisonMixIn
       super
     end
   end
+
+  private
+
+  def max_days_out_of_date_while_still_relevant
+    comparison_configuration[:max_days_out_of_date]
+  end
+
+  def last_two_periods(_asof_date)
+    [current_period_config, previous_period_config]
+  end
+
+  alias last_meter_date last_non_estimated_meter_date
 end
