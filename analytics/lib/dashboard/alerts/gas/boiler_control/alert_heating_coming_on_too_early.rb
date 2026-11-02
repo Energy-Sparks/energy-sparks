@@ -99,7 +99,6 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
 
     @term = :shortterm
   end
-  alias analyse_private calculate
 
   private
 
@@ -107,13 +106,11 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
     HeatingStartTimeCalculator.new(heating_model: heating_model).calculate_start_times(asof_date, days_countback)
   end
 
-  alias last_meter_date last_non_estimated_meter_date
-
   def hm_1_year_saving(asof_date, datatype)
     heating_model.one_year_saving_from_better_boiler_start_time(asof_date, datatype)
   end
 
-  def max_days_out_of_date_while_still_relevant
-    21
-  end
+  def max_days_out_of_date_while_still_relevant = 21
+
+  alias last_meter_date last_non_estimated_meter_date
 end
