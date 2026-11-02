@@ -25,7 +25,7 @@ module Admin
     private
 
     def component(school)
-      render Admin::SchoolStatusButtonsComponent.new(school:, user: User.admin.first)
+      render Admin::SchoolStatusButtonsComponent.new(school: school, current_user: User.admin.first)
     end
   end
 end
