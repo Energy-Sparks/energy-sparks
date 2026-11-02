@@ -53,20 +53,12 @@ module Solar
     end
 
     def all_meter_data
-      if @installation.consented? # v2
-        site_api = @installation.site_api!
-        {
-          solar_pv: { readings: solar_pv_readings(site_api) },
-          exported_solar_pv: { readings: exported_solar_pv_readings(site_api) },
-          electricity: { readings: electricity_readings(site_api) }
-        }
-      else
-        solar_edge_api.smart_meter_data(
-          @installation.site_id,
-          start_date_for_meter,
-          end_date
-        )
-      end
+      site_api = @installation.site_api!
+      {
+        solar_pv: { readings: solar_pv_readings(site_api) },
+        exported_solar_pv: { readings: exported_solar_pv_readings(site_api) },
+        electricity: { readings: electricity_readings(site_api) }
+      }
     end
 
     def solar_pv_readings(site_api)
@@ -91,10 +83,6 @@ module Solar
       return {} unless @installation.can_load_meter?(meter_type)
 
       yield @installation.solar_edge_serial_number(meter_type)
-    end
-
-    def solar_edge_api
-      DataFeeds::SolarEdgeApi.new(@installation.api_key)
     end
   end
 end

@@ -15,11 +15,9 @@ module Solar
     end
 
     def check
-      if @installation.consented?
-        @installation.refresh_api_tokens!
-      else
-        solar_edge_v1.site_details
-      end
+      return false unless @installation.consented?
+
+      @installation.refresh_api_tokens!
       true
     rescue StandardError
       false
@@ -42,30 +40,23 @@ module Solar
     private
 
     def fetch_information
+      return unless @installation.consented?
+
       information = {
         dates: @installation.information&.dig('dates')
       }
 
-      if @installation.consented?
-        api = @installation.site_api!
-        site_details = api.details
+      api = @installation.site_api!
+      site_details = api.details
 
-        information[:site_details] = site_details
-        information[:inventory] = api.inventory
+      information[:site_details] = site_details
+      information[:inventory] = api.inventory
 
-        if refresh_dates?(previous_information: @installation.information, current_site_details: site_details)
-          information[:dates] = api.date_range.transform_values(&:iso8601)
-        end
-      else
-        refresh_v1(information)
+      if refresh_dates?(previous_information: @installation.information, current_site_details: site_details)
+        information[:dates] = api.date_range.transform_values(&:iso8601)
       end
 
       information
-    end
-
-    def refresh_v1(information)
-      information[:site_details] = solar_edge_v1.site_details
-      information[:dates] = solar_edge_v1.site_start_end_dates(@installation.site_id)
     end
 
     def refresh_dates?(previous_information:, current_site_details:)
@@ -76,10 +67,6 @@ module Solar
       current_status = current_site_details['activationStatus']
 
       previous_status != 'ACTIVE' && current_status == 'ACTIVE'
-    end
-
-    def solar_edge_v1
-      @solar_edge_v1 ||= DataFeeds::SolarEdgeApi.new(@installation.api_key)
     end
   end
 end
