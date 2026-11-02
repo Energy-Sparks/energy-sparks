@@ -8,7 +8,8 @@ module Navigation
         { name: 'Categories', path: admin_activity_categories_path },
         (if Flipper.enabled?(:activity_classifications)
            { name: 'Classifications', path: admin_activities_labels_path(label_type: 'aim'),
-             match_controller: false, selected: task_type == 'activity' }
+             match_controller: false,
+             selected: task_type == 'activity' || %(learning_stages subject_areas).include?(helpers.controller_name) }
          end),
         { name: 'Latest Recordings', path: admin_reports_activities_path },
         { name: 'Report', path: admin_reports_activity_types_path }

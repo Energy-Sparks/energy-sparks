@@ -1,0 +1,37 @@
+<% content_for :title, 'Activities and actions: subject areas' %>
+
+<%= render Admin::Tasks::ClassificationTabsComponent.new(current: @tab, country: @country) %>
+
+<% country_path = ->(country) { admin_activities_subject_areas_path(country: country) } %>
+<%= render 'admin/activities/shared/country_tabs', country: @country, country_path: country_path %>
+
+<% if @subject_areas.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Used by</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @subject_areas.each do |subject_area| %>
+        <tr>
+          <td>
+            <%= subject_area.name %>
+            <%= render Admin::TranslationFlagComponent.new(record: subject_area, field: :name, locale: :cy) %>
+          </td>
+          <td><%= pluralize(subject_area.activity_types.count, 'activity') %></td>
+          <td class="fit nowrap text-end">
+            <%= link_to 'Edit', edit_admin_activities_subject_area_path(subject_area),
+                        class: 'btn btn-secondary btn-sm edit' %>
+            <%= render(Forms::DeleteButtonComponent.new(admin_activities_subject_area_path(subject_area),
+                                                        resource: subject_area)) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No subject areas to display.</p>
+<% end %>

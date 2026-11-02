@@ -18,4 +18,14 @@ describe Activities::SubjectArea do
       expect(create(:activity_type, subject_areas: [subject_area]).subject_areas).to contain_exactly(subject_area)
     end
   end
+
+  describe '#deletable?' do
+    it { expect(subject_area).to be_deletable }
+
+    it 'is not deletable when an activity type is using it' do
+      create(:activity_type, subject_areas: [subject_area])
+
+      expect(subject_area).not_to be_deletable
+    end
+  end
 end

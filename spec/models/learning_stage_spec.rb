@@ -21,4 +21,14 @@ describe LearningStage do
                     learning_stages: [learning_stage]).learning_stages).to contain_exactly(learning_stage)
     end
   end
+
+  describe '#deletable?' do
+    it { expect(learning_stage).to be_deletable }
+
+    it 'is not deletable when an activity type is using it' do
+      create(:activity_type, learning_stages: [learning_stage])
+
+      expect(learning_stage).not_to be_deletable
+    end
+  end
 end

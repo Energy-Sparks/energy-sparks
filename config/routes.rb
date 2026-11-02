@@ -619,6 +619,8 @@ Rails.application.routes.draw do
       root to: 'home#index'
 
       resources :labels, except: [:show]
+      resources :subject_areas, except: [:show]
+      resources :learning_stages, except: [:show]
     end
 
     resources :mailer_previews, only: [:index]
