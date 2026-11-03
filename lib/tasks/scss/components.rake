@@ -11,7 +11,7 @@ def file_check_write(args, output, output_path)
 end
 
 namespace :scss do
-  task :components, [:mode] => :environment do |_, args|
+  task :components, [:mode] do |_, args| # rubocop:disable Rails/RakeEnvironment -- avoid race over secret_key_base also quicker
     Dir.chdir('app/components')
     imports = Dir.glob('*/**/*.scss').map do |filename|
       "@import \"#{filename.delete_suffix('.scss')}\";\n"

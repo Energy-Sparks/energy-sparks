@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 namespace :scss do
-  task :colours, [:mode] => :environment do |_, args|
+  task :colours, [:mode] do |_, args| # rubocop:disable Rails/RakeEnvironment -- avoid race over secret_key_base also quicker
+    require 'erb'
+    require 'active_support/core_ext/string/inflections'
+    require_relative '../../../config/initializers/colours'
+
     args.with_defaults(mode: :generate)
     template_path = 'app/assets/stylesheets/_colours.scss.erb'
     output = ERB.new(File.read(template_path)).result(binding)
