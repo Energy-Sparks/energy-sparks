@@ -1,0 +1,3 @@
+<%= tag.span id: id, class: classes, data: { bs_toggle: 'tooltip', toggle: 'tooltip' }, title: title do %>
+  <%= render Elements::IconComponent.new(name: 'flag', classes: translated? ? 'text-success' : 'text-grey-light') %>
+<% end %>
