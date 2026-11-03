@@ -2,8 +2,7 @@
 
 <%= render Admin::Tasks::ClassificationTabsComponent.new(current: @tab, country: @country) %>
 
-<% country_path = ->(country) { admin_activities_learning_stages_path(country: country) } %>
-<%= render 'admin/activities/shared/country_tabs', country: @country, country_path: country_path %>
+<%= render 'admin/activities/shared/country_tabs', country: @country, resource_class: LearningStage %>
 
 <% if @learning_stages.any? %>
   <table class="table table-striped">

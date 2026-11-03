@@ -19,13 +19,10 @@ describe Activities::SubjectArea do
     end
   end
 
-  describe '#deletable?' do
-    it { expect(subject_area).to be_deletable }
-
-    it 'is not deletable when an activity type is using it' do
-      create(:activity_type, subject_areas: [subject_area])
-
-      expect(subject_area).not_to be_deletable
-    end
+  it_behaves_like 'a deletable record',
+                  'This subject area is used by activity types and cannot be deleted',
+                  using_association: :subject_areas do
+    let(:record) { subject_area }
+    let(:record_in_use) { create(:activity_type, subject_areas: [record]) }
   end
 end

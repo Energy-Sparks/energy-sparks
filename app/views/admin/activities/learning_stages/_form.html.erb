@@ -5,8 +5,8 @@
 <%= render Admin::Tasks::ClassificationTabsComponent.new(current: @tab, country: @learning_stage.country) %>
 
 <% unless @learning_stage.new_record? %>
-  <% country_path = ->(country) { admin_activities_learning_stages_path(country: country) } %>
-  <%= render 'admin/activities/shared/country_tabs', country: @learning_stage.country.to_sym, country_path: country_path %>
+  <%= render 'admin/activities/shared/country_tabs', country: @learning_stage.country,
+                                                     resource_class: LearningStage %>
 <% end %>
 
 <% form_url = if @learning_stage.new_record?

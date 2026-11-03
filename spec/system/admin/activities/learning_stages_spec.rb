@@ -49,6 +49,16 @@ RSpec.describe 'Admin::Activities::LearningStages' do
       end
     end
 
+    context with_feature: :activity_classifications do
+      before { visit admin_activities_learning_stages_path }
+
+      it 'selects the classifications link in the page nav' do
+        within '#page-navigation' do
+          expect(page).to have_css("a.current[href='#{admin_activities_labels_path(label_type: 'aim')}']")
+        end
+      end
+    end
+
     context 'when switching country' do
       before do
         visit admin_activities_learning_stages_path

@@ -27,7 +27,7 @@
           <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
             <% p.with_title { 'Classifications' } %>
             <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'aim') } %>
-            Activities can be classified by their aim, topic and duration, subject area and learning stage
+            Activities can be classified by their aim, duration, topic, subject area and learning stage
           <% end %>
         <% end %>
 

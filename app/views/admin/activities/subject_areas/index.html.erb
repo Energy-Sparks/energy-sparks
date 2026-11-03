@@ -2,8 +2,8 @@
 
 <%= render Admin::Tasks::ClassificationTabsComponent.new(current: @tab, country: @country) %>
 
-<% country_path = ->(country) { admin_activities_subject_areas_path(country: country) } %>
-<%= render 'admin/activities/shared/country_tabs', country: @country, country_path: country_path %>
+<%= render 'admin/activities/shared/country_tabs', country: @country,
+                                                   resource_class: Activities::SubjectArea %>
 
 <% if @subject_areas.any? %>
   <table class="table table-striped">

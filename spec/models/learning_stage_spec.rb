@@ -22,13 +22,10 @@ describe LearningStage do
     end
   end
 
-  describe '#deletable?' do
-    it { expect(learning_stage).to be_deletable }
-
-    it 'is not deletable when an activity type is using it' do
-      create(:activity_type, learning_stages: [learning_stage])
-
-      expect(learning_stage).not_to be_deletable
-    end
+  it_behaves_like 'a deletable record',
+                  'This learning stage is used by activity types and cannot be deleted',
+                  using_association: :learning_stages do
+    let(:record) { learning_stage }
+    let(:record_in_use) { create(:activity_type, learning_stages: [record]) }
   end
 end
