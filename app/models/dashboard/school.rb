@@ -1,5 +1,3 @@
-require_relative '../../../lib/dashboard'
-
 module Dashboard
   class School
     # Activation date is when the school was activated by an administrator in the Energy Sparks front end - it is a date

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative './baseload_calculator'
-
 module Baseload
   # Alternative approach for calculating daily baseload
   #

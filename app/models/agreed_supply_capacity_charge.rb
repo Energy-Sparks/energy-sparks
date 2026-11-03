@@ -1,4 +1,3 @@
-require_rel './max_monthly_demand_charges_base.rb'
 class AgreedSupplyCapacityCharge < MaxMonthlyDemandChargesBase
   def agreed_supply_capacity_daily_cost(date)
     @tariff[:rates][:agreed_availability_charge][:rate] *

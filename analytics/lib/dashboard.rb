@@ -22,8 +22,8 @@ module Logging
   end
 end
 
-# Ultimately based on AR models
-require_rel '../app/**/*.rb'
+require_relative 'dashboard/utilities/time_of_year'
+require_relative 'dashboard/utilities/time_of_day'
 
 # load all ruby files in the directory "lib" and its subdirectories
 # require_rel '../lib/dashboard/charting_and_reports/interpret_chart.rb'

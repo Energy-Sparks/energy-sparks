@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_rel './meter.rb'
-
 module Dashboard
   class AggregateMeter < Meter
     def initialize(meter_collection:, amr_data:, type:, identifier:, name:,
