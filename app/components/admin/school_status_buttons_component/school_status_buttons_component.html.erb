@@ -72,7 +72,7 @@
               ),
               title: 'Is the @school licensed?' do %>
     <i class="fas fa-file-contract"></i>
-    <%= current_licence ? current_licence.end_date.iso8601 : 'Unlicensed' %>
+    <%= current_licence ? current_licence.end_date.strftime('%d-%m-%Y') : 'Unlicensed' %>
   <% end %>
 
   <% if @school.process_data? %>

@@ -75,7 +75,7 @@ RSpec.describe Admin::SchoolStatusButtonsComponent, :include_url_helpers, type: 
       context 'when school is licensed' do
         let!(:licence) { create(:commercial_licence, school:) }
 
-        it { expect(html).to have_text(licence.end_date.iso8601) }
+        it { expect(html).to have_text(licence.end_date.strftime('%d-%m-%Y')) }
       end
     end
 
