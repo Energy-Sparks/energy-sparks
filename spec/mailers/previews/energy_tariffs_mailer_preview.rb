@@ -21,7 +21,7 @@ class EnergyTariffsMailerPreview < BasePreview
 
   def self.school_reminder_group_tariff_params
     schools = SchoolGroup.joins(:energy_tariffs).merge(EnergyTariff.current).sample&.schools&.active
-    { school_id: schools.sample&.id }
+    { school_id: schools&.sample&.id }
   end
 
   alias school_reminder_group_tariff school_reminder
