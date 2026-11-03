@@ -9,7 +9,9 @@
     <% activities_section.each do |item| %>
       <% s.with_item(name: item[:name],
                      href: item[:path],
-                     classes: item[:classes] || 'small') %>
+                     classes: item[:classes] || 'small',
+                     match_controller: item[:match_controller],
+                     selected: item[:selected]) %>
     <% end %>
   <% end %>
 
@@ -19,9 +21,12 @@
     <% actions_section.each do |item| %>
       <% s.with_item(name: item[:name],
                      href: item[:path],
-                     classes: item[:classes] || 'small') %>
+                     classes: item[:classes] || 'small',
+                     match_controller: item[:match_controller],
+                     selected: item[:selected]) %>
     <% end %>
   <% end %>
+
   <% c.with_section name: 'Related',
                     icon: 'diagram-project',
                     options: { match_controller: true } do |s| %>
