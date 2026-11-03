@@ -50,6 +50,24 @@ RSpec.describe Admin::SchoolStatusButtonsComponent, :include_url_helpers, type: 
       end
     end
 
+    context 'when showing data sharing settings' do
+      it { expect(html).to have_css('a i.fa-unlock-keyhole') }
+      it { expect(html).to have_link(href: edit_school_configuration_path(school)) }
+      it { expect(html).to have_text('Public') }
+
+      context 'when sharing withing group' do
+        let(:school) { create(:school, data_sharing: :within_group) }
+
+        it { expect(html).to have_text('Within Group') }
+      end
+
+      context 'when private' do
+        let(:school) { create(:school, data_sharing: :private) }
+
+        it { expect(html).to have_text('Private') }
+      end
+    end
+
     context 'when showing licence' do
       it { expect(html).to have_css('a i.fa-file-contract') }
       it { expect(html).to have_text('Unlicensed') }

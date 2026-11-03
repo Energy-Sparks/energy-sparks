@@ -1,6 +1,7 @@
 <%= tag.div id: 'school-status-buttons', class: classes do %>
   <% if @school.visible? %>
     <%= link_to school_visibility_path(@school),
+                id: 'visibility',
                 class: 'badge rounded-pill text-bg-success', method: :delete,
                 data: { confirm: 'Are you sure?' },
                 title: 'Is the @school visible on the website?' do %>
@@ -8,6 +9,7 @@
     <% end %>
   <% else %>
     <%= link_to school_visibility_path(@school),
+                id: 'visibility',
                 class: 'badge rounded-pill text-bg-danger',
                 method: :post,
                 data: { confirm: 'Are you sure?' } do %>
@@ -24,6 +26,7 @@
 
   <% if @school.process_data? %>
     <%= link_to school_data_processing_path(@school),
+                id: 'process-data',
                 class: 'badge rounded-pill text-bg-success',
                 method: :delete,
                 data: { confirm: 'Are you sure?' },
@@ -32,6 +35,7 @@
     <% end %>
   <% else %>
     <%= link_to school_data_processing_path(@school),
+                id: 'process-data',
                 class: 'badge rounded-pill text-bg-danger',
                 method: :post,
                 data: { confirm: 'Are you sure?' },
@@ -42,6 +46,7 @@
 
   <% if @school.data_enabled? %>
     <%= link_to school_data_enabled_path(@school),
+                id: 'data-visibility',
                 class: 'badge rounded-pill text-bg-success',
                 method: :delete,
                 data: { confirm: 'Are you sure?' },
@@ -50,6 +55,7 @@
     <% end %>
   <% else %>
     <%= link_to school_review_path(@school),
+                id: 'data-visibility',
                 class: 'badge rounded-pill text-bg-danger',
                 title: 'Data visible?' do %>
       <i class="fas fa-chart-simple"></i>
@@ -58,6 +64,7 @@
 
   <% current_licence = @school.licences.current.by_start_date.first %>
   <%= link_to admin_school_licences_path(@school),
+              id: 'licences',
               class: class_names(
                 'badge',
                 'round-pill',
@@ -69,7 +76,10 @@
   <% end %>
 
   <% if @school.process_data? %>
-    <%= link_to school_batch_runs_path(@school), title: 'Regenerate', class: 'badge rounded-pill text-bg-info' do %>
+    <%= link_to school_batch_runs_path(@school),
+                id: 'regenerate',
+                title: 'Regenerate',
+                class: 'badge rounded-pill text-bg-info' do %>
       <%= fa_icon('arrows-rotate', 'data-toggle': 'tooltip', 'data-bs-toggle': 'tooltip', title: 'Regenerate') %>
     <% end %>
   <% end %>
