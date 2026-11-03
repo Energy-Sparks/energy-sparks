@@ -28,4 +28,8 @@ class ApplicationMailer < ActionMailer::Base
   def admin_subject(title)
     "[energy-sparks-#{env}] Energy Sparks - #{title}"
   end
+
+  def attach_csv(filename, content)
+    attachments[filename] = { mime_type: 'text/csv', content: }
+  end
 end

@@ -1,11 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe EnergyTariffsMailer, include_application_helper: true do
-  around do |example|
-    ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
-      example.run
-    end
-  end
+  before { stub_env(WELSH_APPLICATION_HOST: 'cy.localhost') }
 
   describe '#group_admin_review_group_tariffs_reminder' do
     let!(:school_group) { create(:school_group, group_type: :multi_academy_trust) }

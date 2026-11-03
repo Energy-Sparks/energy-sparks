@@ -11,12 +11,10 @@ describe Mailchimp::UserDeletionJob do
 
   describe '#can_run?' do
     it 'can only run in production' do
-      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
-        expect(job.can_run?).to be(true)
-      end
-      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'test' do
-        expect(job.can_run?).to be(false)
-      end
+      stub_env(ENVIRONMENT_IDENTIFIER: 'production')
+      expect(job.can_run?).to be(true)
+      stub_env(ENVIRONMENT_IDENTIFIER: 'test')
+      expect(job.can_run?).to be(false)
     end
   end
 
@@ -37,13 +35,8 @@ describe Mailchimp::UserDeletionJob do
       member
     end
 
-    around do |example|
-      ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
-        example.run
-      end
-    end
-
     before do
+      stub_env(ENVIRONMENT_IDENTIFIER: 'production')
       allow(double).to receive_messages(update_contact: member, remove_tags_from_contact: true)
     end
 

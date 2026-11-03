@@ -23,7 +23,7 @@ module CsvExportable
         paths = csv_attributes.map { |a| a.split('.') }
 
         csv << csv_headers if header == true
-        find_each do |record|
+        all.each do |record|
           csv << paths.map { |parts| parts.reduce(record) { |obj, m| obj&.public_send(m) } }
         end
       end

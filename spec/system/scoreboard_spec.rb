@@ -113,11 +113,7 @@ RSpec.describe 'scoreboards', :scoreboards do
     let(:feature_active) { false }
     let(:prize_excerpt) { 'We are also offering a special prize' }
 
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_SCOREBOARD_PRIZES: feature_active.to_s do
-        example.run
-      end
-    end
+    before { stub_env(FEATURE_FLAG_SCOREBOARD_PRIZES: feature_active.to_s) }
 
     context 'on index page' do
       before { visit scoreboards_path }

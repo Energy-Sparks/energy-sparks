@@ -6,15 +6,8 @@ RSpec.describe BillRequestMailer do
   let(:electricity_meter) { create(:electricity_meter) }
   let(:gas_meter) { create(:gas_meter) }
 
-  around do |example|
-    ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
-      ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
-        example.run
-      end
-    end
-  end
-
   before do
+    stub_env(SEND_AUTOMATED_EMAILS: 'true', WELSH_APPLICATION_HOST: 'cy.localhost')
     BillRequestMailer.with_user_locales(users: [user], school: school, electricity_meters: [electricity_meter], gas_meters: [gas_meter]) { |mailer| mailer.request_bill.deliver_now }
     @email = ActionMailer::Base.deliveries.last
   end

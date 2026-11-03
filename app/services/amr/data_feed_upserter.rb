@@ -100,7 +100,10 @@ module Amr
     end
 
     def log_changes(inserted, updated)
-      @amr_data_feed_import_log.update(records_imported: inserted, records_updated: updated)
+      @amr_data_feed_import_log.update!(
+        records_imported: @amr_data_feed_import_log.records_imported.to_i + inserted,
+        records_updated: @amr_data_feed_import_log.records_updated.to_i + updated
+      )
       Rails.logger.info "Updated #{updated} Inserted #{inserted}"
       @amr_data_feed_import_log
     end
