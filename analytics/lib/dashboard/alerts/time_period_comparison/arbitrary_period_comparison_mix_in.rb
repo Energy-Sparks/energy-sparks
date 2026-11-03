@@ -21,9 +21,8 @@ module ArbitraryPeriodComparisonMixIn
   end
 
   def period_days(period_start, period_end)
-    (period_start..period_end).lazy
-                              .select { |date| non_estimated_reading?(date) }
-                              .take(comparison_configuration[:enough_days_data]).size
+    (period_start..period_end).lazy.select { |date| non_estimated_reading?(date) }
+                              .take(comparison_configuration[:enough_days_data]).count
   end
 
   def comparison_chart
@@ -57,5 +56,5 @@ module ArbitraryPeriodComparisonMixIn
     [current_period_config, previous_period_config]
   end
 
-  alias last_meter_date last_non_estimated_meter_date
+  def last_meter_date = last_non_estimated_meter_date
 end
