@@ -6,11 +6,7 @@ describe DataFeeds::SolarEdge::Api do
   let(:status) { 200 }
   let(:stubs) { Faraday::Adapter::Test::Stubs.new }
 
-  around do |example|
-    ClimateControl.modify SOLAR_EDGE_CLIENT_ID: 'solar_edge_client_id', SOLAR_EDGE_CLIENT_SECRET: 'solar_edge_secret' do
-      example.run
-    end
-  end
+  include_context 'with SolarEdge credentials'
 
   after do
     Faraday.default_connection = nil

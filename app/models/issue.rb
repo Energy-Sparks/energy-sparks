@@ -32,6 +32,7 @@
 #
 class Issue < ApplicationRecord
   include CsvExportable
+
   delegated_type :issueable, types: %w[School SchoolGroup DataSource Supplier SchoolOnboarding]
   delegate :name, to: :issueable
 
@@ -57,7 +58,7 @@ class Issue < ApplicationRecord
 
   # Exclude issues from inactive (archived schools in this case)
   # (Issues are already removed when a school is marked as deleted)
-  scope :active, -> {
+  scope :active, lambda {
     joins("LEFT JOIN schools ON schools.id = issues.issueable_id AND issues.issueable_type = 'School'")
       .where("issues.issueable_type != 'School' OR schools.active = ?", true)
   }
@@ -86,6 +87,11 @@ class Issue < ApplicationRecord
   scope :by_created_at, -> { order(created_at: :desc) }
 
   scope :by_priority_order, -> { by_review_date.by_pinned.by_status.by_updated_at }
+  scope :admin_meter_issues, lambda { |admin|
+    joins(meters: { school: :school_group }).where('school_group.default_issues_admin_user': admin)
+                                            .where('issues.owned_by_id IS NULL OR issues.owned_by_id != ?', admin.id)
+                                            .distinct
+  }
 
   has_rich_text :description
   enum :issue_type, { issue: 0, note: 1 }, default: :issue

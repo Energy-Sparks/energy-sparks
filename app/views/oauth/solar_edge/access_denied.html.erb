@@ -1,0 +1,19 @@
+<% content_for :page_title, t('oauth.solar_edge.access_denied.title') %>
+
+<div class="application container">
+  <div class="row">
+    <div class="col">
+      <h1><%= t('oauth.solar_edge.access_denied.title') %></h1>
+      <p>
+        <%= t('oauth.solar_edge.access_denied.description', school: @school&.name || @school_id) %>
+      </p>
+      <p>
+        <%= t('oauth.solar_edge.access_denied.impact') %>
+      </p>
+      <p>
+        <%= t('oauth.solar_edge.access_denied.try_again_html',
+              consent_url: DataFeeds::SolarEdge::Api.authorize_url(@school_id)) %>
+      </p>
+    </div>
+  </div>
+</div>

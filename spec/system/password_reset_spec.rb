@@ -2,16 +2,11 @@ require 'rails_helper'
 
 describe 'User password reset' do
   context 'when requesting a password reset' do
-    around do |example|
-      ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
-        example.run
-      end
-    end
-
     let!(:user)             { create(:user, preferred_locale: preferred_locale) }
     let(:email)             { ActionMailer::Base.deliveries.last }
 
     before do
+      stub_env(WELSH_APPLICATION_HOST: 'cy.localhost')
       visit new_user_session_path
       click_on I18n.t('devise.shared.links.forgot_your_password')
       fill_in 'user_email', with: user.email

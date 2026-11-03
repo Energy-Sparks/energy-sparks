@@ -2,6 +2,11 @@
 en:
   oauth:
     solar_edge:
+      access_denied:
+        description: You have denied access for us to access data from a SolarEdge site connected to your school (%{school}).
+        impact: Lack of access to data from your solar monitoring system will impact our ability to analyse the electricity use at the school.
+        title: Access denied
+        try_again_html: If you have denied access in error, then you can <a href="%{consent_url}">revisit the consent process to approve access</a>.
       error:
         description: We were unable to connect your SolarEdge site (%{site_id}) to your school (%{school_id}) on Energy Sparks.
         notified_html: |-

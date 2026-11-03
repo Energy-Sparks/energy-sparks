@@ -612,11 +612,14 @@ Rails.application.routes.draw do
         resources :pupil_number_updates
         resources :limited_data, only: [:index]
         resources :stale_data, only: [:index]
+        resources :meter_issues, only: [:index]
       end
     end
 
     namespace :activities do
       root to: 'home#index'
+
+      resources :labels, except: [:show]
     end
 
     resources :mailer_previews, only: [:index]

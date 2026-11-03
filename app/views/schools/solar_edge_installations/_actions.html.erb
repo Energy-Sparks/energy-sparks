@@ -4,7 +4,7 @@
             method: :delete,
             data: { confirm: 'Are you sure? This will delete the meter' },
             class: 'btn btn-sm btn-danger' %>
-<% if installation.api_key.present? %>
+<% if installation.consented? %>
   <%= link_to safe_join([fa_icon('circle-question'), ' Check API']),
               polymorphic_path([:check, school, installation]),
               id: "#{id_prefix}-#{installation.id}-test", method: :post, remote: true,
