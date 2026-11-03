@@ -10,16 +10,17 @@ namespace :utility do
 
   desc 'Prepare test server'
   task prepare_test_server: :environment do
-    exit(1) if ENV['ENVIRONMENT_IDENTIFIER'] == "production"
+    exit(1) unless ENV['ENVIRONMENT_IDENTIFIER'] == "test"
 
     puts "Removing non Energy Sparks email addresses and mobile numbers"
-    encrypted_password = Devise::Encryptor.digest(User, ENV['TEST_SERVER_DEFAULT_PASSWORD'])
+    password = SecureRandom.alphanumeric(16)
+    puts "NEW PASSWORD: #{password}"
 
     User
       .where.not('email ILIKE ?', '%@energysparks.uk')
       .update_all(
         email: Arel.sql("'user' || id || '@example.org'"),
-        encrypted_password:
+        encrypted_password: Devise::Encryptor.digest(User, password)
       )
     Contact.where.not('email_address ILIKE ?', '%@energysparks.uk').update_all(email_address: '', mobile_phone_number: '')
 
