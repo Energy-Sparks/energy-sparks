@@ -5,7 +5,7 @@ module Admin
     class LearningStagesController < BaseController
       include LocaleHelper
 
-      load_and_authorize_resource :learning_stage, class: 'LearningStage'
+      load_and_authorize_resource :learning_stage
 
       before_action :set_country
       before_action :set_tab

@@ -52,9 +52,7 @@ module Admin
       end
 
       def country_params
-        return {} unless country
-
-        { country: country }
+        country ? { country: country } : {}
       end
     end
   end
