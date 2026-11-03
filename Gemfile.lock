@@ -755,7 +755,7 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.89)
       rubocop-rspec (~> 3.5)
-    rubocop-view_component (0.8.0)
+    rubocop-view_component (0.9.0)
       activesupport
       herb
       lint_roller (~> 1.1)
@@ -772,10 +772,10 @@ GEM
     ruby_parser (3.21.1)
       racc (~> 1.5)
       sexp_processor (~> 4.16)
-    rubydex (0.4.3-aarch64-linux)
-    rubydex (0.4.3-arm64-darwin)
-    rubydex (0.4.3-x86_64-darwin)
-    rubydex (0.4.3-x86_64-linux)
+    rubydex (0.4.4-aarch64-linux)
+    rubydex (0.4.4-arm64-darwin)
+    rubydex (0.4.4-x86_64-darwin)
+    rubydex (0.4.4-x86_64-linux)
     rubyntlm (0.6.8)
       base64
     rubyvis (0.7.0)
