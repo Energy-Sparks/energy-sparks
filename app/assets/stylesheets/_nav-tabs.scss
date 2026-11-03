@@ -10,8 +10,8 @@
 .nav-tabs.locales {
   .nav-item {
     .nav-link.active {
-      background: $grey-light;
-      border-color: $grey-light;
+      background: $grey-pale;
+      border-color: $grey-pale;
     }
   }
 }
@@ -19,5 +19,5 @@
 .tab-content.locales {
   padding: 10px;
   margin-bottom: 10px;
-  background-color: $grey-light;
+  background-color: $grey-pale;
 }
