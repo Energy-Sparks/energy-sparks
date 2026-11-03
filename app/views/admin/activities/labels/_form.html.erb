@@ -11,7 +11,7 @@
 <div class="py-4">
   <%= simple_form_for([:admin, @label], url: form_url) do |f| %>
     <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
-      <%= f.input t_field(:name, locale), label: Task::Label.human_attribute_name(:name), as: :string %>
+      <%= f.input t_field(:name, locale), label: 'Name', as: :string %>
     <% end %>
 
     <div class="py-2 d-flex gap-2 align-items-center">

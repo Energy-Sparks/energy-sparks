@@ -20,7 +20,7 @@
     <%= f.input :country, collection: countries, include_blank: false if @subject_area.new_record? %>
 
     <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
-      <%= f.input t_field(:name, locale), label: ::Activities::SubjectArea.human_attribute_name(:name), as: :string %>
+      <%= f.input t_field(:name, locale), label: 'Name', as: :string %>
     <% end %>
 
     <div class="py-3 d-flex gap-2 align-items-center">

@@ -2,8 +2,6 @@
 
 module Admin
   module Activities
-    # Learning stages are used to categorise activities. They are specific to a
-    # country, as the stages differ between countries.
     class LearningStagesController < BaseController
       include LocaleHelper
 
