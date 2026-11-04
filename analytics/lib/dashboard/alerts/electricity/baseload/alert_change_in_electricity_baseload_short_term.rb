@@ -1,5 +1,5 @@
 #======================== Change in Electricity Baseload Analysis =============
-require_relative '../alert_electricity_only_base.rb'
+require_relative '../alert_electricity_only_base'
 
 class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
 

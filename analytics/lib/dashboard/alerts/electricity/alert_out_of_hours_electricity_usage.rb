@@ -1,6 +1,6 @@
 #======================== Electricity: Out of hours usage =====================
-require_relative '../common/alert_out_of_hours_base_usage.rb'
-require_relative './electricity_cost_co2_mixin.rb'
+require_relative '../common/alert_out_of_hours_base_usage'
+require_relative 'electricity_cost_co2_mixin'
 
 class AlertOutOfHoursElectricityUsage < AlertOutOfHoursBaseUsage
   include ElectricityCostCo2Mixin
@@ -70,16 +70,5 @@ class AlertOutOfHoursElectricityUsage < AlertOutOfHoursBaseUsage
 
   def co2_intensity_per_kwh
     blended_co2_per_kwh
-  end
-end
-
-class AlertOutOfHoursElectricityUsagePreviousYear < AlertOutOfHoursElectricityUsage
-  def enough_data
-    days_amr_data >= 364 * 2 ? :enough : :not_enough
-  end
-
-  def out_of_hours_energy_consumption(data_type)
-    chart = ChartManager.new(@school)
-    chart.run_standard_chart(breakdown_charts[data_type], {timescale: {year: -1}}, true)
   end
 end

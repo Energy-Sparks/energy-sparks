@@ -1,0 +1,13 @@
+require_relative 'alert_arbitrary_period_comparison_electricity_base'
+require_relative 'arbitrary_period_comparison_mix_in'
+require_relative 'alert_jan_aug20222023_comparison_mix_in'
+
+class AlertJanAug20222023ElectricityComparison < AlertArbitraryPeriodComparisonElectricityBase
+  include ArbitraryPeriodComparisonMixIn
+  include AlertJanAug20222023ComparisonMixIn
+
+  def comparison_configuration
+    basic_configuration
+  end
+
+end
