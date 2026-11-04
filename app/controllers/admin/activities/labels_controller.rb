@@ -41,18 +41,23 @@ module Admin
 
       private
 
-      def set_label_type
-        @label_type = @label&.label_type.presence || default_label_type
-        @label.label_type = @label_type if @label&.new_record?
-      end
-
       def default_label_type
-        requested = params[:label_type].to_s
-        Task::Label.label_types.key?(requested) ? requested : DEFAULT_LABEL_TYPE
+        case params[:task_type]
+        when 'activity' then 'aim'
+        when 'action' then 'focus'
+        else
+          requested = params[:label_type].to_s
+          Task::Label.label_types.key?(requested) ? requested : DEFAULT_LABEL_TYPE
+        end
       end
 
       def classification_path
         admin_activities_labels_path(label_type: @label_type)
+      end
+
+      def set_label_type
+        @label_type = @label&.label_type.presence || default_label_type
+        @label.label_type = @label_type if @label&.new_record?
       end
 
       def label_params
@@ -60,11 +65,9 @@ module Admin
       end
 
       def add_breadcrumbs
-        if Task::Label.task_type(@label_type) == 'activity'
-          @breadcrumbs << { name: 'Activities', href: admin_activities_activity_classifications_path }
-        elsif Task::Label.task_type(@label_type) == 'action'
-          @breadcrumbs << { name: 'Actions', href: admin_activities_action_classifications_path }
-        end
+        type = Task::Label.task_type(@label_type)
+
+        @breadcrumbs << { name: type.pluralize.humanize, href: admin_activities_classifications_path(task_type: type) }
         @breadcrumbs << { name: @label_type.pluralize.humanize }
       end
     end

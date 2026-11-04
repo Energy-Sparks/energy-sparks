@@ -7,7 +7,7 @@ module Navigation
         { name: 'Activities', path: admin_activity_types_path },
         { name: 'Categories', path: admin_activity_categories_path },
         (if Flipper.enabled?(:activity_classifications)
-           { name: 'Classifications', path: admin_activities_labels_path(label_type: 'aim'),
+           { name: 'Classifications', path: admin_activities_classifications_path(task_type: 'activity'),
              match_controller: false,
              selected: task_type == 'activity' || %w[learning_stages subject_areas].include?(helpers.controller_name) }
          end),
@@ -21,7 +21,7 @@ module Navigation
         { name: 'Actions', path: admin_intervention_types_path },
         { name: 'Categories', path: admin_intervention_type_groups_path },
         (if Flipper.enabled?(:activity_classifications)
-           { name: 'Classifications', path: admin_activities_labels_path(label_type: 'focus'),
+           { name: 'Classifications', path: admin_activities_classifications_path(task_type: 'action'),
              match_controller: false, selected: task_type == 'action' }
          end),
         { name: 'Latest Recordings', path: admin_reports_interventions_path },

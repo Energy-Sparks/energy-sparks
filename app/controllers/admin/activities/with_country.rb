@@ -23,7 +23,7 @@ module Admin
       end
 
       def add_breadcrumbs
-        @breadcrumbs << { name: 'Activities', href: admin_activities_activity_classifications_path }
+        @breadcrumbs << { name: 'Activities', href: admin_activities_classifications_path(task_type: 'activity') }
         @breadcrumbs << { name: @tab.to_s.humanize }
       end
     end

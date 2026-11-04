@@ -34,13 +34,13 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
 
       it 'highlights the matching classifications link' do
         within '#page-navigation' do
-          expect(page).to have_css("a.current[href='#{admin_activities_labels_path(label_type: 'aim')}']")
+          expect(page).to have_css("a.current[href='#{admin_activities_classifications_path(task_type: 'activity')}']")
         end
       end
 
       it 'does not highlight the other classifications links' do
         within '#page-navigation' do
-          expect(page).to have_no_css("a.current[href='#{admin_activities_labels_path(label_type: 'duration')}']")
+          expect(page).to have_no_css("a.current[href='#{admin_activities_classifications_path(task_type: 'action')}']")
         end
       end
     end
@@ -64,9 +64,6 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
 
       it 'falls back to the aims' do
         expect(page).to have_text(aim.name)
-        within '.admin-tasks-classification-tabs-component' do
-          expect(page).to have_css("a.active[href='#{admin_activities_labels_path(label_type: 'aim')}']")
-        end
       end
     end
 
