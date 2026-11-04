@@ -2,13 +2,11 @@
 
 module Admin
   module Activities
-    class LearningStagesController < BaseClassificationsController
+    class LearningStagesController < BaseController
       include LocaleHelper
+      include WithCountry
 
       load_and_authorize_resource :learning_stage
-
-      before_action :set_tab
-      before_action :set_country
 
       def index
         @learning_stages = @learning_stages.by_name
@@ -57,11 +55,6 @@ module Admin
 
       def learning_stage_params
         params.expect(learning_stage: [*t_params(LearningStage.mobility_attributes)])
-      end
-
-      def add_breadcrumbs
-        @breadcrumbs << { name: 'Activities', href: admin_activities_activity_classifications_path }
-        @breadcrumbs << { name: 'Learning Stages' }
       end
     end
   end

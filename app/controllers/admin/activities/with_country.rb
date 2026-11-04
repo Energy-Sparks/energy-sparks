@@ -2,8 +2,14 @@
 
 module Admin
   module Activities
-    class BaseClassificationsController < BaseController
-      before_action :add_breadcrumbs
+    module WithCountry
+      extend ActiveSupport::Concern
+
+      included do
+        before_action :set_tab
+        before_action :set_country
+        before_action :add_breadcrumbs
+      end
 
       private
 
@@ -17,7 +23,8 @@ module Admin
       end
 
       def add_breadcrumbs
-        @breadcrumbs << { name: controller_name.humanize }
+        @breadcrumbs << { name: 'Activities', href: admin_activities_activity_classifications_path }
+        @breadcrumbs << { name: @tab.to_s.humanize }
       end
     end
   end

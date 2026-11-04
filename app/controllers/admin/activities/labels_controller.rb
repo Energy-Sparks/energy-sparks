@@ -2,7 +2,7 @@
 
 module Admin
   module Activities
-    class LabelsController < BaseClassificationsController
+    class LabelsController < BaseController
       include LocaleHelper
 
       DEFAULT_LABEL_TYPE = 'aim'

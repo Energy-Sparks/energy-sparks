@@ -2,13 +2,11 @@
 
 module Admin
   module Activities
-    class SubjectAreasController < BaseClassificationsController
+    class SubjectAreasController < BaseController
       include LocaleHelper
+      include WithCountry
 
       load_and_authorize_resource :subject_area, class: 'Activities::SubjectArea'
-
-      before_action :set_tab
-      before_action :set_country
 
       def index
         @subject_areas = @subject_areas.by_name
@@ -57,11 +55,6 @@ module Admin
 
       def subject_area_params
         params.expect(activities_subject_area: [*t_params(::Activities::SubjectArea.mobility_attributes)])
-      end
-
-      def add_breadcrumbs
-        @breadcrumbs << { name: 'Activities', href: admin_activities_activity_classifications_path }
-        @breadcrumbs << { name: 'Subject Areas' }
       end
     end
   end
