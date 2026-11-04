@@ -36,4 +36,27 @@ RSpec.describe AlertTemplateVariablesMixin do
   it 'preserves methods defined after inclusion' do
     expect(instance.chart).to eq(:calculated_chart)
   end
+
+  context 'with explicit template definitions' do
+    let(:alert_class) do
+      klass = Class.new do
+        def summary
+          :calculated_summary
+        end
+      end
+      klass.include(described_class.readers_for(usage_kwh: {}, summary: {}))
+      klass
+    end
+
+    it 'creates readers without requiring a TEMPLATE_VARIABLES constant' do
+      instance.instance_variable_set(:@usage_kwh, 123.0)
+
+      expect(alert_class.const_defined?(:TEMPLATE_VARIABLES, false)).to be false
+      expect(instance.usage_kwh).to eq(123.0)
+    end
+
+    it 'preserves calculated methods' do
+      expect(instance.summary).to eq(:calculated_summary)
+    end
+  end
 end

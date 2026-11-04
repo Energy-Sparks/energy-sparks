@@ -39,10 +39,6 @@ module AlertHolidayAndTermComparisonMixin
     truncate_period_to_available_meter_data(period)
   end
 
-  def period_days(period_start, period_end)
-    period_end - period_start + 1
-  end
-
   protected def comparison_chart
     nil
   end
