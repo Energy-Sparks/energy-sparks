@@ -1,6 +1,7 @@
 <% content_for :title, "Activities and actions: #{@learning_stage.new_record? ? 'new' : 'edit'} learning stage" %>
 
-<%= render Admin::Activities::ClassificationTabsComponent.new(current: @tab, country: @learning_stage.country) %>
+<%= render Admin::Activities::ClassificationTabsComponent.new(current: controller_name,
+                                                              country: @learning_stage.country) %>
 
 <% unless @learning_stage.new_record? %>
   <%= render Admin::Activities::CountryTabsComponent.new(country: @learning_stage.country,

@@ -1,6 +1,6 @@
 <% content_for :title, 'Activities and actions: subject areas' %>
 
-<%= render Admin::Activities::ClassificationTabsComponent.new(current: @tab, country: @country) %>
+<%= render Admin::Activities::ClassificationTabsComponent.new(current: controller_name, country: @country) %>
 
 <%= render Admin::Activities::CountryTabsComponent.new(country: @country,
                                                        resource_class: Activities::SubjectArea) %>
