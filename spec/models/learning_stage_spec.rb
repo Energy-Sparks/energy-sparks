@@ -16,10 +16,8 @@ describe LearningStage do
   end
 
   describe 'relationships' do
-    it 'can be assigned to an activity type' do
-      expect(create(:activity_type,
-                    learning_stages: [learning_stage]).learning_stages).to contain_exactly(learning_stage)
-    end
+    it { expect(learning_stage).to have_many(:activity_type_learning_stages).dependent(:destroy) }
+    it { expect(learning_stage).to have_many(:activity_types).through(:activity_type_learning_stages) }
   end
 
   it_behaves_like 'a deletable record',
