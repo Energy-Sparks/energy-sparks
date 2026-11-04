@@ -41,6 +41,11 @@ module Admin
 
       private
 
+      def set_label_type
+        @label_type = @label&.label_type.presence || default_label_type
+        @label.label_type = @label_type if @label&.new_record?
+      end
+
       def default_label_type
         case params[:task_type]
         when 'activity' then Task::Label::ACTIVITY_TYPES.first.to_s
@@ -53,11 +58,6 @@ module Admin
 
       def classification_path
         admin_activities_labels_path(label_type: @label_type)
-      end
-
-      def set_label_type
-        @label_type = @label&.label_type.presence || default_label_type
-        @label.label_type = @label_type if @label&.new_record?
       end
 
       def label_params
