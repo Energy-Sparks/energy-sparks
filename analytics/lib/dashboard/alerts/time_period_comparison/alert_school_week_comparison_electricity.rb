@@ -99,5 +99,4 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
   def last_two_periods(asof_date)
     [school_week(asof_date, 0), school_week(asof_date, -1)]
   end
-
 end

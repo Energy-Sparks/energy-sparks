@@ -122,8 +122,10 @@ class AlertTurnHeatingOff < AlertGasModelBase
   def set_relevance
     return unless @relevance != :never_relevant
 
-    asof_date = [@asof_date, aggregate_meter&.amr_data&.end_date].compact.first
-    rel = in_season?(@today) && recent_data? && enough_data_for_model_fit(asof_date) && heating_on_in_last_5_days?
+    rel = in_season?(@today) &&
+          recent_data? &&
+          enough_data_for_model_fit(@asof_date || aggregate_meter.amr_data.end_date) &&
+          heating_on_in_last_5_days?
     @relevance = rel ? :relevant : :never_relevant
   end
 
