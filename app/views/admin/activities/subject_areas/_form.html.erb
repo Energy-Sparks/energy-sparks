@@ -1,7 +1,5 @@
 <% content_for :title, "Activities and actions: #{@subject_area.new_record? ? 'new' : 'edit'} subject area" %>
 
-<% countries = Enums::Country::ENUM_COUNTRY.map { |country, value| [country.to_s.titleize, value] } %>
-
 <%= render Admin::Activities::ClassificationTabsComponent.new(current: @tab, country: @subject_area.country) %>
 
 <% unless @subject_area.new_record? %>
