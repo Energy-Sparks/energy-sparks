@@ -43,8 +43,8 @@ module Admin
 
       def default_label_type
         case params[:task_type]
-        when 'activity' then 'aim'
-        when 'action' then 'focus'
+        when 'activity' then Task::Label::ACTIVITY_TYPES.first.to_s
+        when 'action' then Task::Label::ACTION_TYPES.first.to_s
         else
           requested = params[:label_type].to_s
           Task::Label.label_types.key?(requested) ? requested : DEFAULT_LABEL_TYPE
