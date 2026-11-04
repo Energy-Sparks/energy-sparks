@@ -1,7 +1,5 @@
 <% content_for :title, "Activities and actions: #{@learning_stage.new_record? ? 'new' : 'edit'} learning stage" %>
 
-<% countries = Enums::Country::ENUM_COUNTRY.map { |country, value| [country.to_s.titleize, value] } %>
-
 <%= render Admin::Activities::ClassificationTabsComponent.new(current: @tab, country: @learning_stage.country) %>
 
 <% unless @learning_stage.new_record? %>
@@ -17,7 +15,11 @@
 
 <div class="p-2">
   <%= simple_form_for([:admin, @learning_stage], url: form_url) do |f| %>
-    <%= f.input :country, collection: countries, include_blank: false if @learning_stage.new_record? %>
+    <% if @learning_stage.new_record? %>
+      <%= f.input :country, collection: Enums::Country::ENUM_COUNTRY.map { |k, v|
+            [k.to_s.titleize, v]
+          }, include_blank: false %>
+    <% end %>
 
     <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
       <%= f.input t_field(:name, locale), label: 'Name', as: :string %>

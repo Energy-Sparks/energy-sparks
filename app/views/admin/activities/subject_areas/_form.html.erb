@@ -17,7 +17,12 @@
 
 <div class="p-2">
   <%= simple_form_for([:admin, @subject_area], url: form_url) do |f| %>
-    <%= f.input :country, collection: countries, include_blank: false if @subject_area.new_record? %>
+
+    <% if @subject_area.new_record? %>
+      <%= f.input :country, collection: Enums::Country::ENUM_COUNTRY.map { |k, v|
+            [k.to_s.titleize, v]
+          }, include_blank: false %>
+    <% end %>
 
     <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
       <%= f.input t_field(:name, locale), label: 'Name', as: :string %>

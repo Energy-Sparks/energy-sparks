@@ -32,7 +32,7 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
       end
 
       it 'defaults to the first country' do
-        within '#country-tabs' do
+        within '.admin-activities-country-tabs-component' do
           expect(page).to have_css("a.active[href='#{england_path}']")
         end
       end
@@ -51,7 +51,7 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
     context 'when switching country' do
       before do
         visit admin_activities_subject_areas_path
-        within '#country-tabs' do
+        within '.admin-activities-country-tabs-component' do
           click_on 'Wales'
         end
       end
