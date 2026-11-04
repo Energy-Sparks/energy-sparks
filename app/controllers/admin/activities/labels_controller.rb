@@ -5,8 +5,6 @@ module Admin
     class LabelsController < BaseController
       include LocaleHelper
 
-      DEFAULT_LABEL_TYPE = 'aim'
-
       load_and_authorize_resource :label, class: 'Task::Label'
       before_action :set_label_type
       before_action :add_breadcrumbs
@@ -52,7 +50,7 @@ module Admin
         when 'action' then Task::Label::ACTION_TYPES.first.to_s
         else
           requested = params[:label_type].to_s
-          Task::Label.label_types.key?(requested) ? requested : DEFAULT_LABEL_TYPE
+          Task::Label.label_types.key?(requested) ? requested : Task::Label::ACTIVITY_TYPES.first.to_s
         end
       end
 
