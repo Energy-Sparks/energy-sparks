@@ -6,7 +6,7 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
   let(:england_path) { admin_activities_subject_areas_path(country: :england) }
 
   let!(:admin) { create(:admin) }
-  let!(:subject_area_english) { create(:subject_area, name: 'English', country: :england) }
+  let!(:subject_area_english) { create(:subject_area, name: 'Enrichment', country: :england) }
   let!(:subject_area_welsh) { create(:subject_area, name: 'Mathematics and Numeracy', country: :wales) }
 
   context 'when not signed in' do

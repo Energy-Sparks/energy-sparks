@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Admin
-  module Tasks
+  module Activities
     class ClassificationTabsComponent < ApplicationComponent
       COUNTRY_SCOPED = %i[subject_areas learning_stages].freeze
 

@@ -1,6 +1,6 @@
 <% content_for :title, "Activities and actions: #{@label.new_record? ? 'new' : 'edit'} #{@label_type}" %>
 
-<%= render Admin::Tasks::ClassificationTabsComponent.new(current: @label_type) %>
+<%= render Admin::Activities::ClassificationTabsComponent.new(current: @label_type) %>
 
 <% form_url = if @label.new_record?
                 admin_activities_labels_path(label_type: @label_type)

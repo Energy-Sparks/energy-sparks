@@ -1,9 +1,9 @@
 <% content_for :title, 'Activities and actions: subject areas' %>
 
-<%= render Admin::Tasks::ClassificationTabsComponent.new(current: @tab, country: @country) %>
+<%= render Admin::Activities::ClassificationTabsComponent.new(current: @tab, country: @country) %>
 
-<%= render 'admin/activities/shared/country_tabs', country: @country,
-                                                   resource_class: Activities::SubjectArea %>
+<%= render Admin::Activities::CountryTabsComponent.new(country: @country,
+                                                       resource_class: Activities::SubjectArea) %>
 
 <% if @subject_areas.any? %>
   <table class="table table-striped">
@@ -22,9 +22,9 @@
             <%= render Admin::TranslationFlagComponent.new(record: subject_area, field: :name, locale: :cy) %>
           </td>
           <td><%= pluralize(subject_area.activity_types.count, 'activity') %></td>
-          <td class="fit nowrap text-end">
+          <td class="nowrap text-end">
             <%= link_to 'Edit', edit_admin_activities_subject_area_path(subject_area),
-                        class: 'btn btn-secondary btn-sm edit' %>
+                        class: 'btn btn-secondary btn-sm' %>
             <%= render(Forms::DeleteButtonComponent.new(admin_activities_subject_area_path(subject_area),
                                                         resource: subject_area)) %>
           </td>

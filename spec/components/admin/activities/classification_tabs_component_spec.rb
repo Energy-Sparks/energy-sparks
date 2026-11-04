@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::Tasks::ClassificationTabsComponent, :include_url_helpers, type: :component do
+RSpec.describe Admin::Activities::ClassificationTabsComponent, :include_url_helpers, type: :component do
   context 'when viewing an activity classification' do
     before { render_inline(described_class.new(current: 'aim')) }
 

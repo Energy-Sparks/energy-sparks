@@ -2,11 +2,11 @@
 
 <% countries = Enums::Country::ENUM_COUNTRY.map { |country, value| [country.to_s.titleize, value] } %>
 
-<%= render Admin::Tasks::ClassificationTabsComponent.new(current: @tab, country: @learning_stage.country) %>
+<%= render Admin::Activities::ClassificationTabsComponent.new(current: @tab, country: @learning_stage.country) %>
 
 <% unless @learning_stage.new_record? %>
-  <%= render 'admin/activities/shared/country_tabs', country: @learning_stage.country,
-                                                     resource_class: LearningStage %>
+  <%= render Admin::Activities::CountryTabsComponent.new(country: @learning_stage.country,
+                                                         resource_class: LearningStage) %>
 <% end %>
 
 <% form_url = if @learning_stage.new_record?

@@ -1,8 +1,8 @@
 <% content_for :title, 'Activities and actions: learning stages' %>
 
-<%= render Admin::Tasks::ClassificationTabsComponent.new(current: @tab, country: @country) %>
+<%= render Admin::Activities::ClassificationTabsComponent.new(current: @tab, country: @country) %>
 
-<%= render 'admin/activities/shared/country_tabs', country: @country, resource_class: LearningStage %>
+<%= render Admin::Activities::CountryTabsComponent.new(country: @country, resource_class: LearningStage) %>
 
 <% if @learning_stages.any? %>
   <table class="table table-striped">
@@ -27,9 +27,9 @@
                                                            locale: :cy) %>
           </td>
           <td><%= pluralize(learning_stage.activity_types.count, 'activity') %></td>
-          <td class="fit nowrap text-end">
+          <td class="nowrap text-end">
             <%= link_to 'Edit', edit_admin_activities_learning_stage_path(learning_stage),
-                        class: 'btn btn-secondary btn-sm edit' %>
+                        class: 'btn btn-secondary btn-sm' %>
             <%= render(Forms::DeleteButtonComponent.new(admin_activities_learning_stage_path(learning_stage),
                                                         resource: learning_stage)) %>
           </td>

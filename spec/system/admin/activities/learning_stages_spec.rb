@@ -87,7 +87,7 @@ RSpec.describe 'Admin::Activities::LearningStages' do
 
         it { expect(page).to have_text('Learning stage was successfully created.') }
         it { expect(page).to have_text('Second Level') }
-        it { expect(page).to have_text('Scotland') }
+        it { expect(page).to have_current_path(admin_activities_learning_stages_path(country: :scotland)) }
       end
 
       context 'with missing information' do
