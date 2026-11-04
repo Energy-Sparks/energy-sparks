@@ -43,7 +43,7 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
 
       it 'selects the classifications link in the page nav' do
         within '#page-navigation' do
-          expect(page).to have_css("a.current[href='#{admin_activities_labels_path(label_type: 'aim')}']")
+          expect(page).to have_css("a.current[href='#{admin_activities_classifications_path(task_type: 'activity')}']")
         end
       end
     end
