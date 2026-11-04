@@ -331,16 +331,11 @@ class AlertImpendingHoliday < AlertGasOnlyBase
 
   def set_last_year_holiday_consumption_variables(last_year_holiday)
     if last_year_holiday.nil?
-      @last_year_holiday_gas_kwh               = 0.0
-      @last_year_holiday_gas_£                 = 0.0
-      @last_year_holiday_gas_£current          = 0.0
-      @last_year_holiday_gas_co2               = 0.0
-      @last_year_holiday_electricity_kwh       = 0.0
-      @last_year_holiday_electricity_£         = 0.0
-      @last_year_holiday_electricity_co2       = 0.0
-      @last_year_holiday_energy_costs_£        = 0.0
-      @last_year_holiday_energy_costs_£current = 0.0
-      @last_year_holiday_energy_costs_co2      = 0.0
+      { electricity: %i[kwh £ co2],
+        gas: %i[kwh £ £current co2],
+        energy_costs: %i[£ £current co2] }.each do |fuel_type, units|
+        units.each { |unit| instance_variable_set("@last_year_holiday_#{fuel_type}_#{unit}", 0.0) }
+      end
     else
       @last_year_holiday_type = @last_year_holiday.translation_type
       @last_year_holiday_start_date = @last_year_holiday.start_date
