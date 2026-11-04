@@ -2,13 +2,13 @@
 
 module Admin
   module Activities
-    class LearningStagesController < BaseController
+    class LearningStagesController < BaseClassificationsController
       include LocaleHelper
 
       load_and_authorize_resource :learning_stage
 
-      before_action :set_country
       before_action :set_tab
+      before_action :set_country
 
       def index
         @learning_stages = @learning_stages.by_name
@@ -51,21 +51,17 @@ module Admin
         admin_activities_learning_stages_path(country: @learning_stage.country)
       end
 
-      def set_tab
-        @tab = 'learning_stages'
-      end
-
-      def set_country
-        @country = Enums::Country::ENUM_COUNTRY.keys.find { |country| country.to_s == params[:country].to_s } ||
-                   Enums::Country::ENUM_COUNTRY.keys.first
-      end
-
       def create_params
         params.expect(learning_stage: [*t_params(LearningStage.mobility_attributes), :country])
       end
 
       def learning_stage_params
         params.expect(learning_stage: [*t_params(LearningStage.mobility_attributes)])
+      end
+
+      def add_breadcrumbs
+        @breadcrumbs << { name: 'Activities', href: admin_activities_activity_classifications_path }
+        @breadcrumbs << { name: 'Learning Stages' }
       end
     end
   end

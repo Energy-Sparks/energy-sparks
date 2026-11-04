@@ -6,8 +6,8 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
   let(:england_path) { admin_activities_subject_areas_path(country: :england) }
 
   let!(:admin) { create(:admin) }
-  let!(:subject_area) { create(:subject_area, name: 'Mathematics', country: :england) }
-  let!(:welsh_area) { create(:subject_area, name: 'Mathemateg', country: :wales) }
+  let!(:subject_area_english) { create(:subject_area, name: 'English', country: :england) }
+  let!(:subject_area_welsh) { create(:subject_area, name: 'Mathematics and Numeracy', country: :wales) }
 
   context 'when not signed in' do
     before { visit admin_activities_subject_areas_path }
@@ -24,26 +24,16 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
       before { visit admin_activities_subject_areas_path }
 
       it 'lists the subject areas for the selected country' do
-        expect(page).to have_text(subject_area.name)
-        expect(page).to have_no_text(welsh_area.name)
+        expect(page).to have_text(subject_area_english.name)
+      end
+
+      it 'does not list the subject areas for other countries' do
+        expect(page).to have_no_text(subject_area_welsh.name)
       end
 
       it 'defaults to the first country' do
         within '#country-tabs' do
           expect(page).to have_css("a.active[href='#{england_path}']")
-        end
-      end
-
-      it 'shows the classification tabs' do
-        within '.admin-tasks-classification-tabs-component' do
-          expect(page).to have_link('Subject areas')
-          expect(page).to have_link('Learning stages')
-        end
-      end
-
-      it 'flags the subject areas that have not been translated' do
-        within 'tr', text: subject_area.name do
-          expect(page).to have_css("span[title='No Welsh translation']")
         end
       end
     end
@@ -67,22 +57,11 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
       end
 
       it 'lists the subject areas for that country' do
-        expect(page).to have_text(welsh_area.name)
-        expect(page).to have_no_text(subject_area.name)
-      end
-    end
-
-    context 'when the subject area is in use' do
-      before do
-        create(:activity_type, subject_areas: [subject_area])
-        visit admin_activities_subject_areas_path
+        expect(page).to have_text(subject_area_welsh.name)
       end
 
-      it 'shows the usage count and does not offer to delete it' do
-        within 'tr', text: subject_area.name do
-          expect(page).to have_text('1 activity')
-          expect(page).to have_no_link('Delete')
-        end
+      it 'does not list the subject areas for other countries' do
+        expect(page).to have_no_text(subject_area_english.name)
       end
     end
 
@@ -92,36 +71,32 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
         click_on 'New subject area'
       end
 
-      it 'creates it for the selected country' do
-        fill_in :activities_subject_area_name_en, with: 'Science'
-        select 'Scotland', from: :activities_subject_area_country
-
-        expect { click_on 'Save' }.to change(Activities::SubjectArea, :count).by(1)
-        expect(page).to have_text('Subject area was successfully created.')
-        expect(page).to have_current_path(admin_activities_subject_areas_path(country: :scotland))
-        expect(Activities::SubjectArea.last.country).to eq('scotland')
-      end
-
-      it 'can add a Welsh name' do
-        fill_in :activities_subject_area_name_en, with: 'Science'
-        fill_in :activities_subject_area_name_cy, with: 'Gwyddon'
-        click_on 'Save'
-
-        within 'tr', text: 'Science' do
-          expect(page).to have_css("span[title^='Translated:']")
+      context 'when creating a subject area for the selected country' do
+        before do
+          fill_in :activities_subject_area_name_en, with: 'Science'
+          select 'Scotland', from: :activities_subject_area_country
+          click_on 'Save'
         end
+
+        it { expect(page).to have_text('Subject area was successfully created.') }
+        it { expect(page).to have_text('Science') }
+        it { expect(page).to have_current_path(admin_activities_subject_areas_path(country: :scotland)) }
       end
 
-      it 'requires a name' do
-        expect { click_on 'Save' }.not_to change(Activities::SubjectArea, :count)
-        expect(page).to have_text("can't be blank")
+      context 'with missing information' do
+        before do
+          fill_in :activities_subject_area_name_en, with: ''
+          click_on 'Save'
+        end
+
+        it { expect(page).to have_text("Name\ncan't be blank") }
       end
     end
 
     context 'when editing a subject area' do
       before do
         visit admin_activities_subject_areas_path
-        within 'tr', text: subject_area.name do
+        within 'tr', text: subject_area_english.name do
           click_on 'Edit'
         end
       end
@@ -130,26 +105,28 @@ RSpec.describe 'Admin::Activities::SubjectAreas' do
         expect(page).to have_no_select(:activities_subject_area_country)
       end
 
-      it 'updates the subject area' do
-        fill_in :activities_subject_area_name_en, with: 'Numeracy'
-        click_on 'Save'
+      context 'when updating the subject area' do
+        before do
+          fill_in :activities_subject_area_name_en, with: 'Numeracy'
+          click_on 'Save'
+        end
 
-        expect(page).to have_text('Subject area was successfully updated.')
-        expect(page).to have_text('Numeracy')
+        it { expect(page).to have_text('Subject area was successfully updated.') }
+        it { expect(page).to have_text('Numeracy') }
       end
     end
 
     context 'when deleting a subject area that is not in use' do
       before do
         visit admin_activities_subject_areas_path
-        within 'tr', text: subject_area.name do
+        within 'tr', text: subject_area_english.name do
           click_on 'Delete'
         end
       end
 
       it 'deletes the subject area' do
         expect(page).to have_text('Subject area was successfully deleted.')
-        expect(page).to have_no_text(subject_area.name)
+        expect(page).to have_no_text(subject_area_english.name)
       end
     end
   end

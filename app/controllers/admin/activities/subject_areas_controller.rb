@@ -2,13 +2,13 @@
 
 module Admin
   module Activities
-    class SubjectAreasController < BaseController
+    class SubjectAreasController < BaseClassificationsController
       include LocaleHelper
 
       load_and_authorize_resource :subject_area, class: 'Activities::SubjectArea'
 
-      before_action :set_country
       before_action :set_tab
+      before_action :set_country
 
       def index
         @subject_areas = @subject_areas.by_name
@@ -51,21 +51,17 @@ module Admin
         admin_activities_subject_areas_path(country: @subject_area.country)
       end
 
-      def set_tab
-        @tab = 'subject_areas'
-      end
-
-      def set_country
-        @country = Enums::Country::ENUM_COUNTRY.keys.find { |country| country.to_s == params[:country].to_s } ||
-                   Enums::Country::ENUM_COUNTRY.keys.first
-      end
-
       def create_params
         params.expect(activities_subject_area: [*t_params(::Activities::SubjectArea.mobility_attributes), :country])
       end
 
       def subject_area_params
         params.expect(activities_subject_area: [*t_params(::Activities::SubjectArea.mobility_attributes)])
+      end
+
+      def add_breadcrumbs
+        @breadcrumbs << { name: 'Activities', href: admin_activities_activity_classifications_path }
+        @breadcrumbs << { name: 'Subject Areas' }
       end
     end
   end

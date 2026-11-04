@@ -2,7 +2,7 @@
 
 module Admin
   module Activities
-    class LabelsController < BaseController
+    class LabelsController < BaseClassificationsController
       include LocaleHelper
 
       DEFAULT_LABEL_TYPE = 'aim'
@@ -60,8 +60,12 @@ module Admin
       end
 
       def add_breadcrumbs
-        @breadcrumbs << { name: Task::Label.task_type(@label_type).pluralize.humanize, href: classification_path }
-        @breadcrumbs << { name: @label_type.humanize }
+        if Task::Label.task_type(@label_type) == 'activity'
+          @breadcrumbs << { name: 'Activities', href: admin_activities_activity_classifications_path }
+        elsif Task::Label.task_type(@label_type) == 'action'
+          @breadcrumbs << { name: 'Actions', href: admin_activities_action_classifications_path }
+        end
+        @breadcrumbs << { name: @label_type.pluralize.humanize }
       end
     end
   end

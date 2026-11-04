@@ -5,7 +5,8 @@
 <%= render Admin::Tasks::ClassificationTabsComponent.new(current: @tab, country: @subject_area.country) %>
 
 <% unless @subject_area.new_record? %>
-  <%= render 'admin/activities/shared/country_tabs', resource: @subject_area %>
+  <%= render 'admin/activities/shared/country_tabs', country: @subject_area.country,
+                                                     resource_class: Activities::SubjectArea %>
 <% end %>
 
 <% form_url = if @subject_area.new_record?

@@ -619,6 +619,14 @@ Rails.application.routes.draw do
     namespace :activities do
       root to: 'home#index'
 
+      get 'classifications/activities', to: 'labels#index',
+                                        defaults: { label_type: 'aim' },
+                                        as: :activity_classifications
+
+      get 'classifications/actions', to: 'labels#index',
+                                    defaults: { label_type: 'focus' },
+                                    as: :action_classifications
+
       resources :labels, except: [:show]
       resources :subject_areas, except: [:show]
       resources :learning_stages, except: [:show]
