@@ -37,8 +37,10 @@ class AlertImpendingHoliday < AlertGasOnlyBase
     days = days_amr_data
     if days >= MINIMUM_DAYS_FOR_FULL_ACCURACY
       :enough
+    elsif days >= 3
+      :minimum_might_not_be_accurate
     else
-      (days >= 3 ? :minimum_might_not_be_accurate : :not_enough)
+      :not_enough
     end
   end
 

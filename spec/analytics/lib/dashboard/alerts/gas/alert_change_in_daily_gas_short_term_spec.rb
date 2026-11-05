@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require_relative '../non_estimated_readings_shared'
+require_relative '../alert_template_variables_shared'
 
 RSpec.describe AlertChangeInDailyGasShortTerm do
   subject(:alert) { described_class.new(meter_collection) }
@@ -13,22 +14,11 @@ RSpec.describe AlertChangeInDailyGasShortTerm do
 
     it_behaves_like 'an alert requiring recent non-estimated readings', max_days_out_of_date: 21
 
-    describe 'template variable readers' do
-      it 'reads each non-calculated template variable from its instance variable' do
-        names = described_class.const_get(:TEMPLATE_VARIABLES, false).keys
-        names -= [:last_2_weeks_gas_consumption_comparison_chart]
-        names.each do |name|
-          alert.instance_variable_set("@#{name}", 123)
-
-          expect(alert.public_send(name)).to eq(123)
-        end
-      end
-
-      it 'preserves the calculated chart method' do
-        expect(alert.last_2_weeks_gas_consumption_comparison_chart)
-          .to eq(:alert_last_2_weeks_gas_comparison_temperature_compensated)
-      end
-    end
+    it_behaves_like 'an alert with template variable readers',
+                    calculated_variables: {
+                      last_2_weeks_gas_consumption_comparison_chart:
+                        :alert_last_2_weeks_gas_comparison_temperature_compensated
+                    }
 
     describe '#enough_data' do
       let(:model_fits) { true }
