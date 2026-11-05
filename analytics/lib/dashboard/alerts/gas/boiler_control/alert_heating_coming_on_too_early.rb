@@ -2,15 +2,14 @@
 
 #======================== Heating coming on too early in morning ==============
 require_relative '../alert_gas_model_base'
+require_relative '../../common/alert_template_variables_mixin'
 
 class AlertHeatingComingOnTooEarly < AlertGasModelBase
   # Also defined in base class?
   FROST_PROTECTION_TEMPERATURE = 4
   # Unused?
   MAX_HALFHOURS_HEATING_ON = 10
-  attr_reader :last_year_kwh, :last_year_£, :one_year_optimum_start_saving_kwh, :one_year_optimum_start_saving_£,
-              :one_year_optimum_start_saving_co2, :one_year_optimum_start_saving_£current, :percent_of_annual_gas,
-              :avg_week_start_time
+  attr_reader :last_year_kwh, :last_year_£
 
   def initialize(school)
     super(school, :heatingcomingontooearly)
@@ -59,6 +58,8 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
       units: :chart
     }
   }.freeze
+
+  include AlertTemplateVariablesMixin
 
   def timescale
     I18n.t("#{i18n_prefix}.timescale")

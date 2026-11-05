@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require_relative '../non_estimated_readings_shared'
+require_relative '../alert_template_variables_shared'
 
 describe AlertElectricityPeakKWVersusBenchmark do
   subject(:alert) { described_class.new(meter_collection) }
@@ -17,6 +18,11 @@ describe AlertElectricityPeakKWVersusBenchmark do
       expect(alert.meter_readings_up_to_date_enough?).to be true
     end
   end
+
+  it_behaves_like 'an alert with template variable readers',
+                  calculated_variables: {
+                    electricity_intraday_comparison_chart_6_months_apart: :intraday_line_school_days_6months
+                  }
 
   it_behaves_like 'a never relevant alert', :gas
 end
