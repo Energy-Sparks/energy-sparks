@@ -8,7 +8,6 @@ class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
 
   MINIMUM_DAYS_FOR_ENOUGH_DATA = 60
 
-
   def initialize(school)
     super(school, :peakelectricbenchmark)
   end
