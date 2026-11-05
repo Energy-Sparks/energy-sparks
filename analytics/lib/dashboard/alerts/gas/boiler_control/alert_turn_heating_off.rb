@@ -1,95 +1,100 @@
-# frozen_string_literal: true
-
-require_relative '../../common/alert_template_variables_mixin'
-
 # typically fires in Spring when weather warm enough to turn heating off
 class AlertTurnHeatingOff < AlertGasModelBase
   class MissingTemperatureData < StandardError; end
+  attr_reader :last_year_cost_heating_in_warm_weather_kwh
+  attr_reader :last_year_cost_heating_in_warm_weather_£
+  attr_reader :last_year_cost_heating_in_warm_weather_co2
+  attr_reader :last_year_heating_on_in_warm_weather_days
+  attr_reader :future_degree_days, :horizon_start_date, :horizon_end_date
+  attr_reader :future_saving_kwh, :future_saving_£, :future_saving_co2
+  attr_reader :average_temperature, :average_day_temperature, :average_night_temperature
+  attr_reader :up_to_annual_kwh, :percent_of_annual
+  attr_reader :last_meter_reading_date, :days_since_last_meter_reading_date, :days_ago_plural
 
   def initialize(school, type = :turnheatingonoff)
-    super
+    super(school, type)
     set_relevance
   end
 
   # ================================== Template Variables =========================================
 
   def self.template_variables
-    specific = { 'Turn heating off recommendations' => TEMPLATE_VARIABLES }
-    specific.merge(superclass.template_variables)
+    specific = {'Turn heating off recommendations' => TEMPLATE_VARIABLES}
+    specific.merge(self.superclass.template_variables)
   end
 
   TEMPLATE_VARIABLES = {
     last_year_cost_heating_in_warm_weather_kwh: {
       description: 'Annual (or less, meter years var) cost last year of leaving heating on in warm weather (kWh)',
-      units: :kwh
+      units:  :kwh
     },
     last_year_cost_heating_in_warm_weather_£: {
       description: 'Annual (or less, meter years var) cost last year of leaving heating on in warm weather (£) (historic tariff)',
-      units: :£
+      units:  :£
     },
     last_year_cost_heating_in_warm_weather_co2: {
       description: 'Annual (or less, meter years var) cost last year of leaving heating on in warm weather (co2)',
-      units: :co2
+      units:  :co2
     },
     last_year_heating_on_in_warm_weather_days: {
       description: 'days heating on in warm weather last year',
-      units: Integer
+      units:  Integer
     },
     historic_meter_years: {
       description: 'period of historic analysis up to 12 months available e.g. 6 months',
-      units: :years
+      units:  :years
     },
     future_degree_days: {
       description: 'degree days in horizon period',
-      units: :temperature
+      units:  :temperature
     },
     horizon_start_date: {
       description: 'start of future period savings assessed over',
-      units: Date
+      units:  Date
     },
     horizon_end_date: {
       description: 'end of future period savings assessed over',
-      units: Date
+      units:  Date
     },
     future_saving_kwh: {
       description: 'potential saving over future horizon period (kWh)',
-      units: :kwh
+      units:  :kwh
     },
     future_saving_£: {
       description: 'potential saving over future horizon period (£)',
-      units: :£
+      units:  :£
     },
     future_saving_co2: {
       description: 'potential saving over future horizon period (co2)',
-      units: :co2
+      units:  :co2
     },
     average_temperature: {
       description: 'average forecast temperature',
-      units: :temperature
+      units:  :temperature
     },
     average_day_temperature: {
       description: 'average day time forecast temperature',
-      units: :temperature
+      units:  :temperature
     },
     average_night_temperature: {
       description: 'average forecast night time temperature',
-      units: :temperature
+      units:  :temperature
     },
     up_to_annual_kwh: {
       description: 'Annual kWh consumption - partial if less data is available',
-      units: :kwh
+      units:  :kwh
     },
     percent_of_annual: {
       description: 'warm weather consumption as a percentage of annual (or partial if not enough data)',
-      units: :percent
+      units:  :percent
     },
     last_meter_reading_date: {
       description: 'date of last meter reading',
-      units: Date
+      units:  Date
     },
     days_since_last_meter_reading_date: {
       description: 'days since last meter reading date',
-      units: Integer
+      units:  Integer
     },
     days_ago: {
       description: 'days since last meter read, including day/days',
@@ -97,11 +102,9 @@ class AlertTurnHeatingOff < AlertGasModelBase
     },
     days_ago_plural: {
       description: 'set to s if days since last meter reading date > 1 so can say day or days ago',
-      units: String
+      units:  String
     }
-  }.freeze
-
-  include AlertTemplateVariablesMixin
+  }
 
   # ================================== Control Variables =========================================
 
@@ -117,22 +120,24 @@ class AlertTurnHeatingOff < AlertGasModelBase
     in_season?(@today) ? (10.0 - (@rating / 2)) : 0.0
   end
 
+  protected def max_days_out_of_date_while_still_relevant
+    7
+  end
+
   private
 
   def set_relevance
-    return unless @relevance != :never_relevant
-
-    rel = in_season?(@today) &&
-          recent_data? &&
-          enough_data_for_model_fit(@asof_date || aggregate_meter.amr_data.end_date) &&
-          heating_on_in_last_5_days?
-    @relevance = rel ? :relevant : :never_relevant
+    if @relevance != :never_relevant
+      asof_date = [@asof_date, aggregate_meter.nil? ? nil : aggregate_meter.amr_data.end_date].compact.first
+      rel = in_season?(@today) && recent_data? && enough_data_for_model_fit(asof_date) && heating_on_in_last_5_days?
+      @relevance = rel ? :relevant : :never_relevant
+    end
   end
 
   # reduce season forecast queried for to save costs
   # check env variable so always run in test environment
   def in_season?(today)
-    td = ENV['ENERGYSPARKSTODAY'].nil? ? today : Date.parse(ENV.fetch('ENERGYSPARKSTODAY', nil))
+    td = !ENV['ENERGYSPARKSTODAY'].nil? ? Date.parse(ENV['ENERGYSPARKSTODAY']) :  today
     td.month.between?(3, 10)
   end
 
@@ -153,8 +158,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
       one_year_saving_kwh: @future_saving_kwh,
       one_year_saving_£: @future_saving_£,
       capital_cost: 0.0,
-      one_year_saving_co2: @future_saving_co2
-    )
+      one_year_saving_co2: @future_saving_co2)
 
     set_up_to_dateness_of_meter
 
@@ -162,6 +166,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
 
     @term = :shortterm
   end
+  alias_method :analyse_private, :calculate
 
   def days_ago
     FormatUnit.format(:days, @days_since_last_meter_reading_date)
@@ -170,13 +175,13 @@ class AlertTurnHeatingOff < AlertGasModelBase
   def set_up_to_dateness_of_meter
     @last_meter_reading_date = aggregate_meter.amr_data.end_date
     @days_since_last_meter_reading_date = (@today - @last_meter_reading_date).to_i
-    # DONT USE
+    #DONT USE
     @days_ago_plural = @days_since_last_meter_reading_date == 1 ? '' : 's'
   end
 
   # ================================== Future Analysis ==========================================
 
-  def calculate_forecast_benefit(_today)
+  def calculate_forecast_benefit(today)
     horizon_date = analysis_horizon_date(@today)
     forecast = load_forecast_temperatures(@today)
 
@@ -192,7 +197,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
 
     @average_temperature        = average_forecast_temperature(forecast, future_date_range,  0, 24)
     @average_day_temperature    = average_forecast_temperature(forecast, future_date_range, 10, 15)
-    @average_night_temperature  = average_forecast_temperature(forecast, future_date_range,  0, 5)
+    @average_night_temperature  = average_forecast_temperature(forecast, future_date_range,  0,  5)
   end
 
   def load_forecast_temperatures(horizon_date)
@@ -203,7 +208,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
   def future_degreedays(forecast, future_date_range)
     temperatures = forecast_temperatures(forecast, future_date_range, 0, 24)
 
-    temperatures.values.sum { |t| [0.0, t - balance_point_temperature].max }
+    temperatures.values.map { |t| [0.0, t - balance_point_temperature].max }.sum
   end
 
   def average_forecast_temperature(forecast, future_date_range, start_hour, end_hour)
@@ -220,9 +225,9 @@ class AlertTurnHeatingOff < AlertGasModelBase
   end
 
   def forecast_temperatures(forecast, future_date_range, start_hour, end_hour)
-    future_date_range.index_with do |date|
-      forecast.average_temperature_within_hours(date, start_hour, end_hour)
-    end
+    future_date_range.map do |date|
+      [date, forecast.average_temperature_within_hours(date, start_hour, end_hour)]
+    end.to_h
   end
 
   def calculate_future_date_range(forecast, start_date, end_date)
@@ -232,9 +237,9 @@ class AlertTurnHeatingOff < AlertGasModelBase
   def predicted_savings_kwh(forecast, future_date_range)
     temperatures = forecast_temperatures(forecast, future_date_range, 0, 24)
 
-    temperatures.sum do |date, temperature|
+    temperatures.map do |date, temperature|
       warm?(temperature) ? heating_model.predicted_heating_kwh_future_date(date, temperature) : 0.0
-    end
+    end.sum
   end
 
   # at weekend just look forward to the coming week
@@ -251,14 +256,14 @@ class AlertTurnHeatingOff < AlertGasModelBase
   # ================================== Historic Analysis ==========================================
 
   def recent_data?
-    meter_readings_up_to_date_enough?
+    @today - aggregate_meter.amr_data.end_date < max_days_out_of_date_while_still_relevant
   end
 
   def heating_on_in_last_5_days?
     ed = aggregate_meter.amr_data.end_date
     model = calculate_model(aggregate_meter.amr_data.end_date)
     sd = [ed - 4, aggregate_meter.amr_data.start_date].max
-    (sd..ed).any? { |date| non_estimated_reading?(date) && model.heating_on?(date) }
+    (sd..ed).any?{ |date| model.heating_on?(date) }
   end
 
   def calculate_historic_benefit(asof_date)
@@ -282,16 +287,12 @@ class AlertTurnHeatingOff < AlertGasModelBase
   end
 
   def aggregate_analysis(asof_date, heating_type, value_type)
-    seasonal_analysis(asof_date).values.filter_map do |by_heating_regime_data|
+    seasonal_analysis(asof_date).values.map do |by_heating_regime_data|
       by_heating_regime_data.dig(heating_type, value_type)
-    end.sum
+    end.compact.sum
   end
 
   def seasonal_analysis(asof_date)
     @seasonal_analysis ||= @heating_model.heating_on_seasonal_analysis(end_date: asof_date)
   end
-
-  def max_days_out_of_date_while_still_relevant = 7
-
-  alias last_meter_date last_non_estimated_meter_date
 end
