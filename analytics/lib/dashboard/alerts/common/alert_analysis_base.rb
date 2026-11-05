@@ -416,9 +416,9 @@ class AlertAnalysisBase < ContentBase
   end
 
   def pupils
-    if @school.respond_to?(:number_of_pupils) && @school.number_of_pupils.positive?
+    if @school.number_of_pupils&.positive?
       @school.number_of_pupils
-    elsif @school.respond_to?(:school) && (!@school.school.number_of_pupils).positive?
+    elsif @school.school.number_of_pupils&.positive?
       @school.school.number_of_pupils
     else
       raise EnergySparksBadDataException, 'Unable to find number of pupils for alerts'
