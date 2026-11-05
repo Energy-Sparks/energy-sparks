@@ -10,7 +10,7 @@ namespace :utility do
 
   desc 'Prepare test server'
   task prepare_test_server: :environment do
-    exit(1) unless ENV['ENVIRONMENT_IDENTIFIER'] == "test"
+    abort('wrong environment') unless ENV['ENVIRONMENT_IDENTIFIER'] == "test"
 
     puts "Removing non Energy Sparks email addresses and mobile numbers"
     password = SecureRandom.alphanumeric(16)
