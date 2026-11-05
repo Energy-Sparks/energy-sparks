@@ -469,8 +469,6 @@ class ContentBase
 
   def last_meter_date = aggregate_meter.amr_data.end_date
 
-  protected
-
   def max_days_out_of_date_while_still_relevant = nil
 
   def calculate_rating_from_range(good_value, bad_value, actual_value)
