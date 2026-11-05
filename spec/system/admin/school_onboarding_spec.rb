@@ -243,7 +243,7 @@ RSpec.describe 'onboarding', :schools do
         expect(school_onboarding.school.data_enabled).to be false
 
         visit school_path(school_onboarding.school)
-        click_on 'Data visible' # goes to the review page
+        click_on 'data-visibility' # goes to the review page
 
         within('#review-buttons') do
           click_on 'Data visible' # actually enable the school
