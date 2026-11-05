@@ -1,5 +1,5 @@
 #======================== Change in Electricity Baseload Analysis =============
-require_relative '../alert_electricity_only_base.rb'
+require_relative '../alert_electricity_only_base'
 
 class AlertIntraweekBaseloadVariation < AlertBaseloadBase
   attr_reader :max_day_kw, :min_day_kw, :percent_intraday_variation, :max_day, :min_day

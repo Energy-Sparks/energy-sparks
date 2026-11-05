@@ -1,6 +1,6 @@
 #======================== Weekend Gas Consumption =============================
 # gas shouldn't be consumed at weekends, apart for from frost protection
-require_relative 'alert_gas_model_base.rb'
+require_relative 'alert_gas_model_base'
 
 class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
   MAX_COST = 5.0 # £5 limit
