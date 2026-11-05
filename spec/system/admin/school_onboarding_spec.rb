@@ -54,7 +54,7 @@ RSpec.describe 'onboarding', :schools do
       end
 
       it {
-        expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name))
+        expect(page).to have_select('School Group', options: SchoolGroup.organisation_groups.by_name.map(&:name))
       }
 
       context 'when using an existing URN' do
@@ -243,7 +243,7 @@ RSpec.describe 'onboarding', :schools do
         expect(school_onboarding.school.data_enabled).to be false
 
         visit school_path(school_onboarding.school)
-        click_on 'Data visible' # goes to the review page
+        click_on 'data-visibility' # goes to the review page
 
         within('#review-buttons') do
           click_on 'Data visible' # actually enable the school
