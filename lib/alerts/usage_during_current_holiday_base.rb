@@ -118,9 +118,7 @@ module Alerts
 
     protected
 
-    def max_days_out_of_date_while_still_relevant
-      14
-    end
+    def max_days_out_of_date_while_still_relevant = 14
 
     def aggregate_meter
       raise 'Subclass must implement'
