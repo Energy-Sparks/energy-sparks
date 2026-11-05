@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require_relative '../non_estimated_readings_shared'
+require_relative '../alert_template_variables_shared'
 
 describe AlertImpendingHoliday do
   subject(:alert) { described_class.new(meter_collection) }
@@ -32,24 +33,12 @@ describe AlertImpendingHoliday do
     end
   end
 
-  describe 'template variable readers' do
-    let(:calculated_variables) do
-      %i[holiday_short_name holiday_long_name holiday_start_date_doy meter_fuel_type_availability
-         name_of_last_year_holiday]
-    end
-
-    it 'reads the corresponding instance variable for each non-calculated template variable' do
-      (described_class.const_get(:TEMPLATE_VARIABLES, false).keys - calculated_variables).each do |name|
-        alert.instance_variable_set("@#{name}", 123)
-
-        expect(alert.public_send(name)).to eq(123)
-      end
-    end
-
-    it 'preserves the class-defined calculated methods' do
-      calculated_variables.each do |name|
-        expect(alert.method(name).owner).to eq(described_class)
-      end
-    end
-  end
+  it_behaves_like 'an alert with template variable readers',
+                  calculated_variables: {
+                    holiday_short_name: nil,
+                    holiday_long_name: nil,
+                    holiday_start_date_doy: nil,
+                    meter_fuel_type_availability: 'electricity only',
+                    name_of_last_year_holiday: ''
+                  }
 end

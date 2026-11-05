@@ -1,35 +1,27 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative '../alert_template_variables_shared'
 
 RSpec.describe AlertPeriodComparisonBase do
   subject(:alert) { described_class.allocate }
 
-  it 'reads template-backed variables from their instance variables' do
-    described_class.dynamic_template_variables(:electricity).each_key do |name|
-      next if alert.method(name).owner == described_class
-
-      alert.instance_variable_set("@#{name}", 123)
-
-      expect(alert.public_send(name)).to eq(123)
+  it_behaves_like 'an alert with template variable readers',
+                  calculated_variables: {
+                    'prefix_1' => I18nHelper.adjective(:up),
+                    'prefix_2' => I18nHelper.adjective(:increase)
+                  },
+                  additional_readers: %i[current_holiday_temperatures current_holiday_average_temperature
+                                         previous_holiday_temperatures previous_holiday_average_temperature
+                                         current_period_kwhs previous_period_kwhs_unadjusted
+                                         previous_period_average_kwh_unadjusted] do
+    let(:template_variable_names) do
+      described_class.dynamic_template_variables(:electricity).keys.reject do |name|
+        alert.method(name).owner == described_class
+      end
     end
-  end
 
-  it 'retains readers for variables not declared in the templates' do
-    %i[current_holiday_temperatures current_holiday_average_temperature
-       previous_holiday_temperatures previous_holiday_average_temperature
-       current_period_kwhs previous_period_kwhs_unadjusted previous_period_average_kwh_unadjusted].each do |name|
-      alert.instance_variable_set("@#{name}", 123)
-
-      expect(alert.public_send(name)).to eq(123)
-    end
-  end
-
-  it 'preserves calculated template methods' do
-    alert.instance_variable_set(:@difference_percent, 0.1)
-
-    expect(alert.prefix_1).to eq(I18nHelper.adjective(:up))
-    expect(alert.prefix_2).to eq(I18nHelper.adjective(:increase))
+    before { alert.instance_variable_set(:@difference_percent, 0.1) }
   end
 
   it 'keeps template metadata fuel-specific' do

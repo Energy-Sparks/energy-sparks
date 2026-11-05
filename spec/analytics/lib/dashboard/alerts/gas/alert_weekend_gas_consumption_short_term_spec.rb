@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require_relative '../non_estimated_readings_shared'
+require_relative '../alert_template_variables_shared'
 
 RSpec.describe AlertWeekendGasConsumptionShortTerm do
   subject(:alert) { described_class.new(meter_collection) }
@@ -14,29 +15,13 @@ RSpec.describe AlertWeekendGasConsumptionShortTerm do
     it_behaves_like 'an alert requiring a minimum number of non-estimated readings', minimum_days: 7
     it_behaves_like 'an alert requiring recent non-estimated readings', max_days_out_of_date: 21
 
-    describe 'template variable readers' do
-      def chart_methods
-        { last_7_day_intraday_kwh_chart: :alert_weekend_last_week_gas_datetime_kwh,
-          last_7_day_intraday_kw_chart: :alert_weekend_last_week_gas_datetime_kw,
-          last_7_day_intraday_£_chart: :alert_weekend_last_week_gas_datetime_£,
-          last_7_day_intraday_£current_chart: :alert_weekend_last_week_gas_datetime_£current }
-      end
-
-      it 'reads each non-calculated template variable from its instance variable' do
-        names = described_class.const_get(:TEMPLATE_VARIABLES, false).keys - chart_methods.keys
-        names.each do |name|
-          alert.instance_variable_set("@#{name}", 123)
-
-          expect(alert.public_send(name)).to eq(123)
-        end
-      end
-
-      it 'preserves the calculated chart methods' do
-        chart_methods.each do |name, chart|
-          expect(alert.public_send(name)).to eq(chart)
-        end
-      end
-    end
+    it_behaves_like 'an alert with template variable readers',
+                    calculated_variables: {
+                      last_7_day_intraday_kwh_chart: :alert_weekend_last_week_gas_datetime_kwh,
+                      last_7_day_intraday_kw_chart: :alert_weekend_last_week_gas_datetime_kw,
+                      last_7_day_intraday_£_chart: :alert_weekend_last_week_gas_datetime_£,
+                      last_7_day_intraday_£current_chart: :alert_weekend_last_week_gas_datetime_£current
+                    }
   end
 
   it_behaves_like 'a never relevant alert', :electricity
