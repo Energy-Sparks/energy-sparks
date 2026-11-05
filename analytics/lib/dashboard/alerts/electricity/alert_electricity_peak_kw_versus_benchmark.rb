@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 require_relative '../common/alert_floor_area_mixin'
+require_relative '../common/alert_template_variables_mixin'
 
 class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
   include AlertFloorAreaMixin
 
   MINIMUM_DAYS_FOR_ENOUGH_DATA = 60
-  attr_reader :average_school_day_last_year_kw, :average_school_day_last_year_kw_per_pupil,
-              :average_school_day_last_year_kw_per_floor_area, :exemplar_kw, :one_year_saving_versus_exemplar_£, :one_year_saving_versus_exemplar_kwh, :one_year_saving_versus_exemplar_co2
 
   def initialize(school)
     super(school, :peakelectricbenchmark)
@@ -57,6 +56,8 @@ class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
       units: :chart
     }
   }.freeze
+
+  include AlertTemplateVariablesMixin
 
   def electricity_intraday_comparison_chart_6_months_apart
     :intraday_line_school_days_6months

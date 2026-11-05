@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require_relative '../non_estimated_readings_shared'
+require_relative '../alert_template_variables_shared'
 
 describe AlertChangeInElectricityBaseloadShortTerm do
   subject(:alert) { described_class.new(meter_collection) }
@@ -14,6 +15,10 @@ describe AlertChangeInElectricityBaseloadShortTerm do
                   minimum_days: 43,
                   extra_cases: { 21 => :not_enough, 22 => :minimum_might_not_be_accurate,
                                  42 => :minimum_might_not_be_accurate }
+
+  it_behaves_like 'an alert with template variable readers',
+                  calculated_variables: { one_year_baseload_chart: :alert_1_year_baseload },
+                  additional_readers: [:next_year_change_in_baseload_£]
 
   it_behaves_like 'a never relevant alert', :gas
 end

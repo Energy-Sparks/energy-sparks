@@ -2,20 +2,12 @@
 
 #======================== Change in Electricity Baseload Analysis =============
 require_relative '../alert_electricity_only_base'
+require_relative '../../common/alert_template_variables_mixin'
 
 class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
   MAXBASELOADCHANGE = 1.15
   MINIMUM_DAYS_FOR_ENOUGH_DATA = 6 * 7
-  attr_reader :average_baseload_last_year_kw, :average_baseload_last_week_kw, :change_in_baseload_kw,
-              :kw_value_at_10_percent_saving, :last_year_baseload_kwh, :last_week_baseload_kwh,
-              :last_week_change_in_baseload_kwh, :next_year_change_in_baseload_kwh, :last_year_baseload_£,
-              :last_year_baseload_£current, :last_week_baseload_£, :last_week_baseload_£current,
-              :next_year_change_in_baseload_£, :saving_in_annual_costs_through_10_percent_baseload_reduction,
-              :predicted_percent_increase_in_usage, :significant_increase_in_baseload,
-              :predicted_percent_increase_in_usage_absolute, :next_year_change_in_baseload_absolute_£,
-              :last_year_baseload_co2, :last_week_baseload_co2, :next_year_change_in_baseload_co2,
-              :next_year_change_in_baseload_absolute_co2, :cost_saving_through_1_kw_reduction_in_baseload_£,
-              :next_year_change_in_baseload_£current, :up_until_date, :from_date
+  attr_reader :next_year_change_in_baseload_£
 
   def initialize(school, report_type = :baseloadchangeshortterm, meter = school.aggregated_electricity_meters)
     super
@@ -134,6 +126,8 @@ class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
 
   }.freeze
 
+  include AlertTemplateVariablesMixin
+
   def one_year_baseload_chart
     :alert_1_year_baseload
   end
@@ -142,8 +136,10 @@ class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
     days = non_estimated_days(MINIMUM_DAYS_FOR_ENOUGH_DATA + 1)
     if days > MINIMUM_DAYS_FOR_ENOUGH_DATA
       :enough
+    elsif days > 3 * 7
+      :minimum_might_not_be_accurate
     else
-      days > 3 * 7 ? :minimum_might_not_be_accurate : :not_enough
+      :not_enough
     end
   end
 
