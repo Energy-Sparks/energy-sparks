@@ -327,6 +327,10 @@ class AlertPeriodComparisonBase < AlertAnalysisBase
     end
   end
 
+  def time_of_year_relevance
+    @time_of_year_relevance ||= calculate_time_of_year_relevance(@asof_date)
+  end
+
   private
 
   def comparison_chart
@@ -440,8 +444,6 @@ class AlertPeriodComparisonBase < AlertAnalysisBase
     (period_start..period_end).count { |date| date.on_weekday? && non_estimated_reading?(date) }
   end
 
-  def last_meter_date = last_non_estimated_meter_date
-
   def period_debug(current_period, asof_date)
     "#{current_period.nil? ? 'no current period' : current_period}, asof #{asof_date}"
   end
@@ -521,8 +523,7 @@ class AlertPeriodComparisonBase < AlertAnalysisBase
     return :relevant if enough_days_in_period(current_period, asof_date)
 
     days_from_end_of_period_to_asof_date = asof_date - current_period.end_date
-    if days_from_end_of_period_to_asof_date.between?(0,
-                                                     DAYS_ALERT_RELEVANT_AFTER_CURRENT_PERIOD)
+    if days_from_end_of_period_to_asof_date.between?(0, DAYS_ALERT_RELEVANT_AFTER_CURRENT_PERIOD)
       :relevant
     else
       :never_relevant
@@ -566,9 +567,5 @@ class AlertPeriodComparisonBase < AlertAnalysisBase
     end
   end
 
-  public
-
-  def time_of_year_relevance
-    @time_of_year_relevance ||= calculate_time_of_year_relevance(@asof_date)
-  end
+  def last_meter_date = last_non_estimated_meter_date
 end
