@@ -1,34 +1,17 @@
+# frozen_string_literal: true
+
 #======================== Weekend Gas Consumption =============================
 # gas shouldn't be consumed at weekends, apart for from frost protection
 require_relative 'alert_gas_model_base'
+require_relative '../common/alert_template_variables_mixin'
 
 class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
   MAX_COST = 5.0 # £5 limit
   FROST_PROTECTION_TEMPERATURE = 4
   NUM_WEEKEND_COMPARISON = 5 # don't change without chaging variable names
 
-  attr_reader :last_week_end_kwh, :last_weekend_cost_£
-  attr_reader :last_year_weekend_gas_kwh, :last_year_weekend_gas_£
-  attr_reader :average_weekend_gas_kwh, :average_weekend_gas_£
-  attr_reader :percent_increase_on_average_weekend, :projected_percent_of_annual
-  attr_reader :last_5_weeks_average_weekend_kwh, :last_5_weeks_average_weekend_£, :percent_increase_on_last_5_weekends
-  attr_reader :last_weekend_cost_co2, :last_year_weekend_gas_co2, :average_weekend_gas_co2, :last_5_weeks_average_weekend_co2
-  attr_reader :last_weekend_cost_£current, :last_year_weekend_gas_£current
-  attr_reader :average_weekend_gas_£current, :last_5_weeks_average_weekend_£current
-  attr_reader :last_7_day_intraday_kwh_chart, :last_7_day_intraday_kw_chart, :last_7_day_intraday_£_chart, :last_7_day_intraday_£current_chart
-  attr_reader :has_changed_during_period_text
-  attr_reader :prior_weekend_dates_string
-  attr_reader :weekend_dates_string
-  attr_reader :frost_protection_hours
-  attr_reader :last_week_end_kwh_including_frost, :last_week_end_£_including_frost
-  attr_reader :last_week_end_£current_including_frost, :last_weekend_cost_co2_including_frost
-
   def initialize(school)
     super(school, :weekendgasconsumption)
-  end
-
-  protected def max_days_out_of_date_while_still_relevant
-    21
   end
 
   def timescale
@@ -36,12 +19,12 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
   end
 
   def enough_data
-    days_amr_data >= 7 ? :enough : :not_enough
+    non_estimated_days(7) >= 7 ? :enough : :not_enough
   end
 
   def self.template_variables
-    specific = {'Weekend gas consumption' => TEMPLATE_VARIABLES}
-    specific.merge(self.superclass.template_variables)
+    specific = { 'Weekend gas consumption' => TEMPLATE_VARIABLES }
+    specific.merge(superclass.template_variables)
   end
 
   TEMPLATE_VARIABLES = {
@@ -171,6 +154,8 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     }
   }.freeze
 
+  include AlertTemplateVariablesMixin
+
   def last_7_day_intraday_kwh_chart
     :alert_weekend_last_week_gas_datetime_kwh
   end
@@ -187,18 +172,20 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     :alert_weekend_last_week_gas_datetime_£current
   end
 
-  private def calculate(asof_date)
+  private
+
+  def calculate(asof_date)
     calculate_model(asof_date)
 
     @weekend_dates = previous_weekend_dates(asof_date)
     @weekend_dates_string = @weekend_dates.map { |d| d.strftime('%d%b%Y') }.join(',')
 
     @last_week_end_kwh, @frost_protection_hours, @last_week_end_kwh_including_frost =
-          kwh_usage_outside_frost_period(@weekend_dates, FROST_PROTECTION_TEMPERATURE, :kwh)
+      kwh_usage_outside_frost_period(@weekend_dates, FROST_PROTECTION_TEMPERATURE, :kwh)
     @last_weekend_cost_£, _x, @last_week_end_£_including_frost =
-          kwh_usage_outside_frost_period(@weekend_dates, FROST_PROTECTION_TEMPERATURE, :£)
+      kwh_usage_outside_frost_period(@weekend_dates, FROST_PROTECTION_TEMPERATURE, :£)
     @last_weekend_cost_£current, _x, @last_week_end_£current_including_frost =
-         kwh_usage_outside_frost_period(@weekend_dates, FROST_PROTECTION_TEMPERATURE, :£current)
+      kwh_usage_outside_frost_period(@weekend_dates, FROST_PROTECTION_TEMPERATURE, :£current)
     @last_weekend_cost_co2 = @last_week_end_kwh * EnergyEquivalences.co2_kg_kwh(:gas)
     @last_weekend_cost_co2_including_frost = @last_week_end_kwh_including_frost * EnergyEquivalences.co2_kg_kwh(:gas)
 
@@ -215,14 +202,19 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     @percent_increase_on_average_weekend = @average_weekend_gas_kwh == 0.0 ? 0.0 : (@last_week_end_kwh - @average_weekend_gas_kwh) / @average_weekend_gas_kwh
     @projected_percent_of_annual = @last_week_end_kwh * 52.0 / annual_kwh(aggregate_meter, asof_date)
 
-    @last_5_weeks_average_weekend_kwh      = average_last_n_weekends_kwh(@weekend_dates, :kwh, NUM_WEEKEND_COMPARISON)
-    @last_5_weeks_average_weekend_£        = average_last_n_weekends_kwh(@weekend_dates, :£,   NUM_WEEKEND_COMPARISON)
-    @last_5_weeks_average_weekend_£current = average_last_n_weekends_kwh(@weekend_dates, :£current,   NUM_WEEKEND_COMPARISON)
+    @last_5_weeks_average_weekend_kwh = average_last_n_weekends_kwh(@weekend_dates, :kwh,
+                                                                    NUM_WEEKEND_COMPARISON)
+    @last_5_weeks_average_weekend_£ = average_last_n_weekends_kwh(@weekend_dates, :£,
+                                                                  NUM_WEEKEND_COMPARISON)
+    @last_5_weeks_average_weekend_£current = average_last_n_weekends_kwh(@weekend_dates, :£current,
+                                                                         NUM_WEEKEND_COMPARISON)
     @last_5_weeks_average_weekend_co2 = @last_5_weeks_average_weekend_kwh * EnergyEquivalences.co2_kg_kwh(:gas)
     @percent_increase_on_last_5_weekends = @last_5_weeks_average_weekend_kwh == 0.0 ? 0.0 : (@last_week_end_kwh - @last_5_weeks_average_weekend_kwh) / @last_5_weeks_average_weekend_kwh
 
     prior_dates = prior_weekend_dates(@weekend_dates, NUM_WEEKEND_COMPARISON)
-    @prior_weekend_dates_string = prior_dates.sort.map { |d| d.strftime('%d%b') }.join(',') + prior_dates.max.strftime('%Y')
+    @prior_weekend_dates_string = prior_dates.sort.map do |d|
+      d.strftime('%d%b')
+    end.join(',') + prior_dates.max.strftime('%Y')
 
     @has_changed_during_period_text = calculate_tariff_has_changed_during_period_text(prior_dates.min, asof_date)
 
@@ -231,8 +223,7 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     of_annual_rating = calculate_rating_from_range(0.02, 0.12, @projected_percent_of_annual)
     combined_rating = increase_rating_on_year * of_annual_rating * increase_rating_on_last_5_weeks / 100.0
 
-    potential_savings_kwh       = 52.0 * (@last_year_weekend_gas_kwh    - @average_weekend_gas_kwh)
-    potential_savings_£         = 52.0 * (@last_weekend_cost_£          - @average_weekend_gas_£)
+    potential_savings_kwh = 52.0 * (@last_year_weekend_gas_kwh - @average_weekend_gas_kwh)
     potential_savings_£current  = 52.0 * (@last_weekend_cost_£current   - @average_weekend_gas_£current)
     potential_savings_co2       = 52.0 * (@last_weekend_cost_co2        - @average_weekend_gas_co2)
 
@@ -240,7 +231,8 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
       one_year_saving_kwh: potential_savings_kwh,
       one_year_saving_£: potential_savings_£current,
       capital_cost: 0.0,
-      one_year_saving_co2: potential_savings_co2)
+      one_year_saving_co2: potential_savings_co2
+    )
 
     @rating = @last_weekend_cost_£current < MAX_COST ? 10.0 : combined_rating
 
@@ -248,9 +240,8 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
 
     @term = :shortterm
   end
-  alias_method :analyse_private, :calculate
 
-  private def previous_weekend_dates(asof_date)
+  def previous_weekend_dates(asof_date)
     weekend_dates = []
     while weekend_dates.length < 2
       weekend_dates.push(asof_date) if weekend?(asof_date)
@@ -259,22 +250,22 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     weekend_dates.sort
   end
 
-  private def average_last_n_weekends_kwh(this_weekend_dates, datatype, n)
+  def average_last_n_weekends_kwh(this_weekend_dates, datatype, n)
     dates = prior_weekend_dates(this_weekend_dates, n)
     kwh, _x, _y = kwh_usage_outside_frost_period(dates, FROST_PROTECTION_TEMPERATURE, datatype)
     kwh / n
   end
 
-  private def prior_weekend_dates(this_weekend_dates, n)
+  def prior_weekend_dates(this_weekend_dates, n)
     dates = []
     (1..n).each do |offset|
-      dates.push(this_weekend_dates[0] - offset * 7)
-      dates.push(this_weekend_dates[1] - offset * 7)
+      dates.push(this_weekend_dates[0] - (offset * 7))
+      dates.push(this_weekend_dates[1] - (offset * 7))
     end
     dates
   end
 
-  private def weekend_gas_consumption_last_year(asof_date, datatype)
+  def weekend_gas_consumption_last_year(asof_date, datatype)
     start_date = meter_date_one_year_before(aggregate_meter, asof_date)
     annual_kwh = 0.0
     (start_date..asof_date).each do |date|
@@ -283,7 +274,7 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     annual_kwh * scale_up_to_one_year(aggregate_meter, asof_date)
   end
 
-  private def kwh_usage_outside_frost_period(dates, frost_protection_temperature, datatype)
+  def kwh_usage_outside_frost_period(dates, frost_protection_temperature, datatype)
     total_kwh = 0.0
     total_kwh_excluding_frost = 0.0
     frost_protection_hours = 0.0
@@ -302,4 +293,8 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
 
     [total_kwh_excluding_frost, frost_protection_hours, total_kwh]
   end
+
+  def max_days_out_of_date_while_still_relevant = 21
+
+  alias last_meter_date last_non_estimated_meter_date
 end

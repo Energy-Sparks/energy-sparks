@@ -12,11 +12,11 @@ module AlertHolidayAndTermComparisonMixin
   end
 
   protected def last_two_periods(asof_date)
-    [current_period_config, previous_period_config]
+    [current_period_config(asof_date), previous_period_config(asof_date)]
   end
 
-  def current_period_config
-    holiday = @school.holidays.find_previous_or_current_holiday(@asof_date)
+  def current_period_config(asof_date = @asof_date)
+    holiday = @school.holidays.find_previous_or_current_holiday(asof_date)
     # need to call this method from AlertHolidayComparisonBase to truncate range as its
     # not called directly by AlertArbitraryPeriodComparisonBase
     #
@@ -25,8 +25,8 @@ module AlertHolidayAndTermComparisonMixin
     truncate_period_to_available_meter_data(holiday)
   end
 
-  def previous_period_config
-    holiday = @school.holidays.find_previous_or_current_holiday(@asof_date)
+  def previous_period_config(asof_date = @asof_date)
+    holiday = @school.holidays.find_previous_or_current_holiday(asof_date)
     # 0 is the last week before the holiday, counting in reverse order
     sunday, saturday, week_count = @school.holidays.nth_school_week(holiday.start_date, 0)
     # reduce period by 1 day to avoid overlap
@@ -37,10 +37,6 @@ module AlertHolidayAndTermComparisonMixin
     # Might be truncated to nil if the period is after meter data, so also ensures
     # that schools with very lagging data are ignored
     truncate_period_to_available_meter_data(period)
-  end
-
-  def period_days(period_start, period_end)
-    period_end - period_start + 1
   end
 
   protected def comparison_chart

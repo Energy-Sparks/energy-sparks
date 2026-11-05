@@ -99,10 +99,4 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
   def last_two_periods(asof_date)
     [school_week(asof_date, 0), school_week(asof_date, -1)]
   end
-
-  def period_days(period_start, period_end)
-    (period_start..period_end).count { |date| date.on_weekday? && non_estimated_reading?(date) }
-  end
-
-  alias last_meter_date last_non_estimated_meter_date
 end
