@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'non_estimated_readings_shared'
+require_relative 'alert_template_variables_shared'
 
 shared_examples 'an EST-aware turn-heating-off alert' do |fuel_type:|
   include_context 'with short-term alert readings'
@@ -21,20 +22,9 @@ shared_examples 'an EST-aware turn-heating-off alert' do |fuel_type:|
 
   it_behaves_like 'an alert requiring recent non-estimated readings', max_days_out_of_date: 7
 
-  describe 'template variable readers' do
-    it 'reads the corresponding instance variable for each non-calculated template variable' do
-      (AlertTurnHeatingOff.const_get(:TEMPLATE_VARIABLES, false).keys - [:days_ago]).each do |name|
-        alert.instance_variable_set("@#{name}", 123)
-
-        expect(alert.public_send(name)).to eq(123)
-      end
-    end
-
-    it 'preserves the calculated days_ago method' do
-      alert.instance_variable_set(:@days_since_last_meter_reading_date, 3)
-
-      expect(alert.send(:days_ago)).to eq(FormatUnit.format(:days, 3))
-    end
+  it_behaves_like 'an alert with template variable readers',
+                  calculated_variables: { days_ago: FormatUnit.format(:days, 3) } do
+    before { alert.instance_variable_set(:@days_since_last_meter_reading_date, 3) }
   end
 
   describe '#relevance' do
