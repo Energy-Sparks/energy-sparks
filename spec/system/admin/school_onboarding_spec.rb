@@ -54,10 +54,10 @@ RSpec.describe 'onboarding', :schools do
       end
 
       it {
-        expect(page).to have_select('School Group', options: SchoolGroup.organisation_groups.by_name.map(&:name))
+        expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name))
       }
 
-      context 'when using an existing URN' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      context 'when using an existing URN' do
         let!(:existing_school) { create(:school, urn: 12_345) }
 
         before do

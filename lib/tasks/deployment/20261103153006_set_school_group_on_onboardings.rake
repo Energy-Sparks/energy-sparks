@@ -8,7 +8,8 @@ namespace :after_party do
     # School Group is now required. Assign a school group to onboardings that have been created
     # without one based on the onboarding school.
     SchoolOnboarding.where(school_group: nil).where.not(school: nil).find_each do |onboarding|
-      onboarding.update(school_group: onboarding.school.school_group)
+      # rubocop:disable-next Rails/SkipsModelValidations
+      onboarding.update_attribute(:school_group_id, onboarding.school.school_group.id)
     end
 
     # Update task as completed.  If you remove the line below, the task will
