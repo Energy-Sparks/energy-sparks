@@ -3,8 +3,8 @@
     <%= link_to school_visibility_path(@school),
                 id: 'visibility',
                 class: 'badge rounded-pill text-bg-success', method: :delete,
-                data: { confirm: 'Are you sure?' },
-                title: 'Is the @school visible on the website?' do %>
+                data: { confirm: 'Are you sure you want to make this school no longer visible on the website?' },
+                title: 'School is visible on the website' do %>
       <i class="fas fa-eye"></i>
     <% end %>
   <% else %>
@@ -12,7 +12,8 @@
                 id: 'visibility',
                 class: 'badge rounded-pill text-bg-danger',
                 method: :post,
-                data: { confirm: 'Are you sure?' } do %>
+                data: { confirm: 'Are you sure you want to make this school visible on the website?' },
+                title: 'School is not visible on the website' do %>
       <i class="fas fa-eye"></i>
     <% end %>
   <% end %>
@@ -20,7 +21,7 @@
   <%= link_to edit_school_configuration_path(@school),
               id: 'data-sharing-status',
               class: "badge rounded-pill #{data_sharing_colour(@school)}",
-              title: 'Access control settings' do %>
+              title: 'Update access control settings' do %>
       <i class="fas fa-unlock-keyhole"></i> <%= @school.data_sharing.titleize %>
   <% end %>
 
@@ -29,8 +30,8 @@
                 id: 'process-data',
                 class: 'badge rounded-pill text-bg-success',
                 method: :delete,
-                data: { confirm: 'Are you sure?' },
-                title: 'Process @school data?' do %>
+                data: { confirm: 'Are you sure you want to turn off data analysis for this school?' },
+                title: 'School data is being analysed' do %>
       <i class="fas fa-play"></i>
     <% end %>
   <% else %>
@@ -38,9 +39,9 @@
                 id: 'process-data',
                 class: 'badge rounded-pill text-bg-danger',
                 method: :post,
-                data: { confirm: 'Are you sure?' },
-                title: 'Process @school data?' do %>
-      <i class="fas fa-stop"></i>
+                data: { confirm: 'Are you sure you want to turn on data analysis for this school?' },
+                title: 'School data is not being analysed' do %>
+      <i class="fas fa-play"></i>
     <% end %>
   <% end %>
 
@@ -49,15 +50,15 @@
                 id: 'data-visibility',
                 class: 'badge rounded-pill text-bg-success',
                 method: :delete,
-                data: { confirm: 'Are you sure?' },
-                title: 'Data visible?' do %>
+                data: { confirm: 'Are you sure you want to hide school data?' },
+                title: 'School data is visible' do %>
       <i class="fas fa-chart-simple"></i>
     <% end %>
   <% else %>
     <%= link_to school_review_path(@school),
                 id: 'data-visibility',
                 class: 'badge rounded-pill text-bg-danger',
-                title: 'Data visible?' do %>
+                title: 'Review school to make data visible' do %>
       <i class="fas fa-chart-simple"></i>
     <% end %>
   <% end %>
@@ -72,7 +73,7 @@
               ),
               title: 'Is the @school licensed?' do %>
     <i class="fas fa-file-contract"></i>
-    <%= current_licence ? current_licence.end_date.iso8601 : 'Unlicensed' %>
+    <%= current_licence ? current_licence.end_date.strftime('%d-%m-%Y') : 'Unlicensed' %>
   <% end %>
 
   <% if @school.process_data? %>
@@ -80,7 +81,7 @@
                 id: 'regenerate',
                 title: 'Regenerate',
                 class: 'badge rounded-pill text-bg-info' do %>
-      <%= fa_icon('arrows-rotate', 'data-toggle': 'tooltip', 'data-bs-toggle': 'tooltip', title: 'Regenerate') %>
+     <i class="fas fa-arrows-rotate"></i>
     <% end %>
   <% end %>
 <% end %>
