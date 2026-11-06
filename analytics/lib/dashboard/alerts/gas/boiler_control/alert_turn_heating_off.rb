@@ -168,7 +168,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
   end
 
   def set_up_to_dateness_of_meter
-    @last_meter_reading_date = aggregate_meter.amr_data.end_date
+    @last_meter_reading_date = last_meter_date
     @days_since_last_meter_reading_date = (@today - @last_meter_reading_date).to_i
     # DONT USE
     @days_ago_plural = @days_since_last_meter_reading_date == 1 ? '' : 's'

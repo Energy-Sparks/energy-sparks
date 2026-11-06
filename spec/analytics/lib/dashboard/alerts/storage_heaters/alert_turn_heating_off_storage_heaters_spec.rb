@@ -10,5 +10,8 @@ RSpec.describe AlertTurnHeatingOffStorageHeaters do
     before { allow(meter_collection).to receive(:storage_heaters?).and_return(true) }
   end
 
+  it_behaves_like 'a turn heating off alert reporting actual reading dates', school: 'beta-academy',
+                                                                             fuel_type: :storage_heaters
+
   it_behaves_like 'a never relevant alert', :gas
 end
