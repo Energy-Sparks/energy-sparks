@@ -26,8 +26,8 @@
         <% if Flipper.enabled?(:activity_classifications) %>
           <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
             <% p.with_title { 'Classifications' } %>
-            <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'aim') } %>
-            Activities can be classified by their aim, topic and duration
+            <% p.with_link { link_to 'Manage', admin_activities_classifications_path(task_type: 'activity') } %>
+            Activities can be classified by their aim, duration, topic, subject area and learning stage
           <% end %>
         <% end %>
 
@@ -67,7 +67,7 @@
         <% if Flipper.enabled?(:activity_classifications) %>
           <%= render PromptComponent.new(icon: 'tags', style: :compact, status: :none) do |p| %>
             <% p.with_title { 'Classifications' } %>
-            <% p.with_link { link_to 'Manage', admin_activities_labels_path(label_type: 'focus') } %>
+            <% p.with_link { link_to 'Manage', admin_activities_classifications_path(task_type: 'action') } %>
             Actions can be classified by their focus
           <% end %>
         <% end %>

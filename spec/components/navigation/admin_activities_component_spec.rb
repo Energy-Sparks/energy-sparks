@@ -14,7 +14,11 @@ RSpec.describe Navigation::AdminActivitiesComponent, :include_url_helpers, type:
     describe 'activities section' do
       it { expect(page).to have_link('Activities', href: admin_activity_types_path) }
       it { expect(page).to have_link('Categories', href: admin_activity_categories_path) }
-      it { expect(page).to have_link('Classifications', href: admin_activities_labels_path(label_type: 'aim')) }
+
+      it {
+        expect(page).to have_link('Classifications', href: admin_activities_classifications_path(task_type: 'activity'))
+      }
+
       it { expect(page).to have_link('Latest Recordings', href: admin_reports_activities_path) }
       it { expect(page).to have_link('Report', href: admin_reports_activity_types_path) }
     end
@@ -22,7 +26,11 @@ RSpec.describe Navigation::AdminActivitiesComponent, :include_url_helpers, type:
     describe 'actions section' do
       it { expect(page).to have_link('Actions', href: admin_intervention_types_path) }
       it { expect(page).to have_link('Categories', href: admin_intervention_type_groups_path) }
-      it { expect(page).to have_link('Classifications', href: admin_activities_labels_path(label_type: 'focus')) }
+
+      it {
+        expect(page).to have_link('Classifications', href: admin_activities_classifications_path(task_type: 'action'))
+      }
+
       it { expect(page).to have_link('Latest Recordings', href: admin_reports_interventions_path) }
       it { expect(page).to have_link('Report', href: admin_reports_intervention_types_path) }
     end
@@ -42,7 +50,13 @@ RSpec.describe Navigation::AdminActivitiesComponent, :include_url_helpers, type:
       render_inline(described_class.new)
     end
 
-    it { expect(page).to have_no_link('Classifications', href: admin_activities_labels_path(label_type: 'aim')) }
-    it { expect(page).to have_no_link('Classifications', href: admin_activities_labels_path(label_type: 'focus')) }
+    it {
+      expect(page).to have_no_link('Classifications',
+                                   href: admin_activities_classifications_path(task_type: 'activity'))
+    }
+
+    it {
+      expect(page).to have_no_link('Classifications', href: admin_activities_classifications_path(task_type: 'action'))
+    }
   end
 end
