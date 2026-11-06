@@ -123,7 +123,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
     return unless @relevance != :never_relevant
 
     rel = in_season?(@today) &&
-          recent_data? &&
+          meter_readings_up_to_date_enough? &&
           enough_data_for_model_fit(@asof_date || aggregate_meter.amr_data.end_date) &&
           heating_on_in_last_5_days?
     @relevance = rel ? :relevant : :never_relevant
@@ -250,15 +250,11 @@ class AlertTurnHeatingOff < AlertGasModelBase
 
   # ================================== Historic Analysis ==========================================
 
-  def recent_data?
-    meter_readings_up_to_date_enough?
-  end
-
   def heating_on_in_last_5_days?
     ed = aggregate_meter.amr_data.end_date
     model = calculate_model(aggregate_meter.amr_data.end_date)
     sd = [ed - 4, aggregate_meter.amr_data.start_date].max
-    (sd..ed).any? { |date| non_estimated_reading?(date) && model.heating_on?(date) }
+    (sd..ed).any? { |date| model.heating_on?(date) }
   end
 
   def calculate_historic_benefit(asof_date)
