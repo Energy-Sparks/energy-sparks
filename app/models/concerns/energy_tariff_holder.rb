@@ -67,4 +67,9 @@ module EnergyTariffHolder
     attributes += energy_tariff_meter_attributes(meter_type, applies_to_key)
     attributes
   end
+
+  def price(fuel_type)
+    tariff = energy_tariffs.public_send(fuel_type).enabled.current.usable.first
+    tariff.energy_tariff_prices.by_start_time.first&.value if tariff
+  end
 end

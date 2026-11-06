@@ -92,25 +92,6 @@ cy:
       message: Rhaid i'ch ysgol ddiweddaru ei chaniatâd i ganiatáu i Sbarcynni barhau i gasglu, prosesu ac arddangos eich data ynni.
       subject: Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol
       view_school_account: gweld eich cyfrif ysgol
-  energy_tariffs_mailer:
-    group_admin_review_group_tariffs_reminder:
-      mail_body:
-        click_here_html: "<a href='%{click_here_link}'>Cliciwch yma</a>"
-        in_future: Mae'n well diweddaru eich tariffau ar Sbarcynni pan fyddwch chi'n newid contract cyflenwi. Byddwn yn eich postio ddwywaith y flwyddyn, ym mis Mawrth a mis Medi i'ch atgoffa.
-        to_help:
-          general: Er mwyn helpu Sbarcynni i roi amcangyfrifon cywir i chi o'ch costau ynni a'ch arbedion posib, rydym yn cysylltu â chi i ofyn i chi adolygu'r wybodaeth sydd gennym am y Tariffau Ynni ar gyfer eich grŵp.
-          local_authority: Er mwyn helpu Sbarcynni i roi amcangyfrifon cywir i chi o’ch costau ynni a’ch arbedion posibl, rydym yn cysylltu â chi i ofyn i chi adolygu’r wybodaeth sydd gennym am y Tariffau Ynni ar gyfer eich awdurdod lleol.
-          multi_academy_trust: Er mwyn helpu Sbarcynni i roi amcangyfrifon cywir i chi o’ch costau ynni a’ch arbedion posibl, rydym yn cysylltu â chi i ofyn i chi adolygu’r wybodaeth sydd gennym am y Tariffau Ynni ar gyfer eich Ymddiriedolaeth Aml-Academi.
-        to_review: I adolygu eich tariffau presennol ac i ychwanegu neu ddiweddaru'r wybodaeth yn seiliedig ar eich contract diweddaraf
-        you_can_set: Gallwch osod tariff cyfartalog ar gyfer pob ysgol i ddarparu gwell rhagosodiadau i bob ysgol. Gall ysgolion unigol ychwanegu eu gwybodaeth tariff eu hunain
-      subject: Mae'n bryd adolygu'r tariffau ynni ar gyfer %{school_group_name} ar Sbarcynni
-    school_admin_review_school_tariffs_reminder:
-      mail_body:
-        click_here_html: "<a href='%{click_here_link}'>cliciwch yma</a>"
-        in_future: Mae'n well diweddaru eich tariffau ar Sbarcynni pan fyddwch chi'n newid contract cyflenwi. Byddwn yn eich postio ddwywaith y flwyddyn, ym mis Mawrth a mis Medi i'ch atgoffa.
-        to_help: Er mwyn helpu Sbarcynni i roi amcangyfrifon cywir i chi o'ch costau ynni a'ch arbedion posib, rydym yn cysylltu â chi i ofyn i chi adolygu'r wybodaeth sydd gennym am y tariffau ynni ar gyfer %{school_name}.
-        to_review: I adolygu eich tariffau presennol ac i ychwanegu neu ddiweddaru'r wybodaeth yn seiliedig ar eich contract diweddaraf
-      subject: Mae'n bryd adolygu'r tariffau ynni ar gyfer %{school_name} ar Sbarcynni
   mailer:
     get_in_touch: Cysylltwch
   onboarding_mailer:

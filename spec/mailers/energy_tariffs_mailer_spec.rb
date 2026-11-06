@@ -1,85 +1,166 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe EnergyTariffsMailer, include_application_helper: true do
-  before { stub_env(WELSH_APPLICATION_HOST: 'cy.localhost') }
+describe EnergyTariffsMailer, :include_application_helper do
+  include EmailHelpers
 
-  describe '#group_admin_review_group_tariffs_reminder' do
-    let!(:school_group) { create(:school_group, group_type: :multi_academy_trust) }
-    let!(:school_group_admin) { create(:group_admin, school_group: school_group) }
+  let(:school) { create(:school, :with_school_group) }
+  let(:tariff) { nil }
 
-    context 'preferred locale is cy' do
-      it 'sends group admins a review group tariffs reminder email' do
-        school_group_admin.update(preferred_locale: :cy)
+  before do
+    stub_env(SEND_AUTOMATED_EMAILS: true)
+    SiteSettings.current.update!(prices: { electricity_price: 0.15, gas_price: 0.03 })
+    described_class.reminder_deliver_now_per_locale(organisation, [user], expiring_tariffs: [tariff].compact)
+  end
 
-        EnergyTariffsMailer.with(school_group_id: school_group.id).group_admin_review_group_tariffs_reminder.deliver_now
-        expect(ActionMailer::Base.deliveries.count).to eq(1)
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.subject', school_group_name: school_group.name, locale: :cy))
-        expect(email.to).to eq([school_group_admin.email])
-        # encountered some character encoding issues â and ŵ being escape to &#xxxx; and unclear how to force that encoding when checking against YAML
-        # So instead check for text explicitly
-        expect(email.html_part.decoded).to include('Ymddiriedolaeth Aml-Academi')
-        expect(email.html_part.decoded).to include("http://cy.localhost/school_groups/#{school_group.slug}/energy_tariffs")
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.mail_body.you_can_set', locale: :cy))
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.mail_body.to_review', locale: :cy))
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.mail_body.in_future', locale: :cy))
-      end
-    end
+  def organisation = user.public_send({ school_admin: :school, group_admin: :school_group }[user.role.to_sym])
 
-    context 'preferred locale is en' do
-      it 'sends group admins a review group tariffs reminder email' do
-        school_group_admin.update(preferred_locale: :en)
-
-        EnergyTariffsMailer.with(school_group_id: school_group.id).group_admin_review_group_tariffs_reminder.deliver_now
-        expect(ActionMailer::Base.deliveries.count).to eq(1)
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.subject', school_group_name: school_group.name, locale: :en))
-        expect(email.to).to eq([school_group_admin.email])
-        expect(email.html_part.decoded).to include('Multi-Academy Trust')
-        expect(email.html_part.decoded).to include("http://localhost/school_groups/#{school_group.slug}/energy_tariffs")
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.mail_body.you_can_set', locale: :en))
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.mail_body.to_review', locale: :en))
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.mail_body.in_future', locale: :en))
-      end
+  def url(organisation)
+    if organisation.is_a?(School)
+      school_energy_tariffs_url(organisation)
+    else
+      school_group_energy_tariffs_url(organisation)
     end
   end
 
-  describe '#school_admin_review_school_tariffs_reminder' do
-    let(:school) { create(:school) }
-    let!(:school_admin) { create(:school_admin, school: school) }
-    let!(:staff) { create(:staff, school: school) }
-    let!(:pupil) { create(:pupil, school: school) }
+  shared_examples 'it sends the expected email' do
+    it 'has the correct subject' do
+      expect(last_email.subject).to \
+        eq("It's time to review the energy tariffs for #{organisation.name} on Energy Sparks")
+    end
 
-    context 'preferred locale is en' do
-      it 'sends school admins a review school tariffs reminder email' do
-        school_admin.update(preferred_locale: :en)
+    it 'sends the expected email' do
+      expect(bootstrap_email_body_to_markdown(last_email)).to eq(expected_body.join("\n\n"))
+    end
+  end
 
-        EnergyTariffsMailer.with(school_id: school.id).school_admin_review_school_tariffs_reminder.deliver_now
-        expect(ActionMailer::Base.deliveries.count).to eq(1)
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject', school_name: school.name, locale: :en))
-        expect(email.to).to eq([school_admin.email])
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_help', school_name: school.name, locale: :en))
-        expect(email.html_part.decoded).to include("http://localhost/schools/#{school.slug}/energy_tariffs")
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_review', locale: :en))
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.in_future', locale: :en))
+  def currently_default_text
+    'Currently our default tariff is set at 15p per kWh of electricity and 3p per kWh of gas.'
+  end
+
+  context 'with expiry set' do
+    let(:tariff) { create(:energy_tariff, tariff_holder:) }
+    let(:expected_body) do
+      type = organisation.is_a?(School) ? :school : :group
+      ["\nThank you for updating your #{type}'s electricity tariff information. The current tariffs will expire in " \
+       "30 days' time. Don't forget to update your tariff information for the next supply contract period.",
+       "To do this, please login to Energy Sparks, click on the **Manage #{type.capitalize}** menu and select " \
+       "[**Manage tariffs**](#{url(organisation)})",
+       "If the tariff isn't updated, we will apply the Energy Sparks default tariff to your account. This will be " \
+       'used to calculate the potential cost savings for your energy saving activities.',
+       currently_default_text,
+       'If you are planning to switch suppliers when your current contract ends, please inform us by emailing your ' \
+       "[Energy Sparks account manager](mailto:#{organisation.default_issues_admin_user.email}) as we will need to " \
+       'contact your new supplier(s) to maintain data access.']
+    end
+
+    context 'with a school admin' do
+      let(:user) { create(:school_admin, school:) }
+      let(:tariff_holder) { school }
+
+      it_behaves_like 'it sends the expected email'
+    end
+
+    context 'with a group admin' do
+      let(:user) { create(:group_admin, school_group: school.school_group) }
+      let(:tariff_holder) { user.school_group }
+
+      it_behaves_like 'it sends the expected email'
+    end
+  end
+
+  context 'with expiry not set' do
+    let(:tariff) { nil }
+
+    def to_help_text(name)
+      "\nTo help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, " \
+        "we're contacting you to ask you to review the information we have about the energy tariffs for " \
+        "#{name}."
+    end
+
+    def to_review_text
+      'To review your current tariffs and to add or update the information based on your latest contract, please ' \
+        "visit your [Manage tariffs](#{url(organisation)}) page. For more details about how to set up tariffs, " \
+        'please see the [Tariff Editor User guide](https://energysparks.uk/resources/28/inline).'
+    end
+
+    def its_best_text
+      "It's best to update your tariffs on Energy Sparks when your supply contract changes."
+    end
+
+    def dont_forget_text(type)
+      "Don't forget, if your #{type} is planning to switch suppliers when you change supply contract, please inform " \
+        "us by emailing your [Energy Sparks account manager](mailto:#{organisation.default_issues_admin_user.email}) " \
+        'as we will need to contact your new supplier(s) to maintain data access.'
+    end
+
+    context 'with a school admin' do
+      let(:user) { create(:school_admin, school:) }
+      let(:expected_body) do
+        [to_help_text(organisation.name),
+         to_review_text,
+         its_best_text,
+         *current_tariff_text,
+         dont_forget_text('school')]
+      end
+      let(:current_tariff_text) do
+        ['If we do not have current school or group tariffs we will apply the Energy Sparks default tariff to your ' \
+         "account. #{this_will_be_text}",
+         currently_default_text]
+      end
+
+      def this_will_be_text
+        'This will be used to calculate the potential cost savings for your energy saving activities.'
+      end
+
+      it_behaves_like 'it sends the expected email'
+
+      context 'with a group tariff' do
+        let(:tariff) do
+          create(:energy_tariff, :with_flat_price, tariff_holder: school.school_group, end_date: nil)
+          nil
+        end
+        let(:current_tariff_text) do
+          ['If we do not have current tariffs for your school we will apply your group tariff. If we do not have ' \
+           'current school or group tariffs we will apply the Energy Sparks default tariff to your account. ' \
+           "#{this_will_be_text}",
+           'Currently your group tariff is set at 10p per kWh of electricity and our default tariff is set at 3p per ' \
+           'kWh of gas.']
+        end
+
+        it_behaves_like 'it sends the expected email'
+      end
+
+      context 'with both group tariffs' do
+        let(:tariff) do
+          create(:energy_tariff, :with_flat_price, tariff_holder: school.school_group, end_date: nil)
+          create(:energy_tariff, :with_flat_price, tariff_holder: school.school_group, end_date: nil, meter_type: :gas)
+          nil
+        end
+        let(:current_tariff_text) do
+          ["If we do not have current tariffs for your school we will apply your group tariff. #{this_will_be_text}",
+           'Currently your group tariff is set at 10p per kWh of electricity and 10p per kWh of gas.']
+        end
+
+        it_behaves_like 'it sends the expected email'
       end
     end
 
-    context 'preferred locale is cy' do
-      it 'sends school admins a review school tariffs reminder email' do
-        school_admin.update(preferred_locale: :cy)
-
-        EnergyTariffsMailer.with(school_id: school.id).school_admin_review_school_tariffs_reminder.deliver_now
-        expect(ActionMailer::Base.deliveries.count).to eq(1)
-        email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject', school_name: school.name, locale: :cy))
-        expect(email.to).to eq([school_admin.email])
-        expect(email.html_part.decoded).to include("tariffau ynni ar gyfer #{school.name}")
-        expect(email.html_part.decoded).to include("http://cy.localhost/schools/#{school.slug}/energy_tariffs")
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_review', locale: :cy))
-        expect(email.html_part.decoded).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.in_future', locale: :cy))
+    context 'with a group admin' do
+      let(:user) { create(:group_admin, school_group: school.school_group) }
+      let(:expected_body) do
+        [to_help_text('your group'),
+         'You can set an average tariff for all schools to provide better defaults for all schools. Individual ' \
+         'schools can add their own tariff information.',
+         'If your group tariffs aren’t updated, and the individual schools have not added their own tariffs, then we ' \
+         'will apply the Energy Sparks default tariffs.',
+         currently_default_text,
+         to_review_text,
+         [its_best_text, dont_forget_text('school group')].join(' ')]
       end
+
+      it_behaves_like 'it sends the expected email'
     end
   end
 end
