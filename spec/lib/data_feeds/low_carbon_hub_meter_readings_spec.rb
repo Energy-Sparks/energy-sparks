@@ -5,11 +5,7 @@ require 'rails_helper'
 describe DataFeeds::LowCarbonHubMeterReadings do
   subject(:service) { described_class.new }
 
-  around do |example|
-    ClimateControl.modify ENERGYSPARKSRBEEUSERNAME: 'username', ENERGYSPARKSRBEEPASSWORD: 'password' do
-      example.run
-    end
-  end
+  before { stub_env(ENERGYSPARKSRBEEUSERNAME: 'username', ENERGYSPARKSRBEEPASSWORD: 'password') }
 
   describe '#download' do
     subject(:response) { service.download('218854673', '6802318', Date.new(2026, 7, 4), Date.new(2026, 7, 9)) }

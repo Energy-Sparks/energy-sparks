@@ -7,13 +7,6 @@ RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :
     render_inline(described_class.new(**params))
   end
 
-  around do |example|
-    travel_to Date.new(2025, 9, 26)
-    ClimateControl.modify AWESOMEPRINT: 'off' do
-      example.run
-    end
-  end
-
   let(:base_params) { { id: 'custom-id', classes: 'extra-classes', school: school } }
   let(:school) { create(:school) }
 
@@ -24,6 +17,8 @@ RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :
   end
 
   before do
+    travel_to Date.new(2025, 9, 26)
+    stub_env(AWESOMEPRINT: 'off')
     meter_collection = AggregateSchoolService.new(school).aggregate_school
     Schools::GenerateConfiguration.new(school, meter_collection).generate
   end

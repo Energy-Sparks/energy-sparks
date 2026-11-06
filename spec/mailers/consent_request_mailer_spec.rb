@@ -5,13 +5,8 @@ RSpec.describe ConsentRequestMailer do
   let(:school)  { create(:school, name: 'Test School') }
   let(:email)   { ActionMailer::Base.deliveries.last }
 
-  around do |example|
-    ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
-      example.run
-    end
-  end
-
   before do
+    stub_env(SEND_AUTOMATED_EMAILS: 'true')
     ConsentRequestMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.request_consent.deliver_now }
   end
 

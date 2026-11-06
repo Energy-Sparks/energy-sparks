@@ -13,7 +13,10 @@ module Solar
     end
 
     def download_and_upsert
-      return unless monitoring_active?
+      # refresh local copy of metadata when loading for v2
+      SolarEdgeService.new(@installation).update_information if @installation.consented?
+
+      return unless @installation.monitoring_active?
 
       SolarEdgeUpserter.new(installation: @installation, readings: all_meter_data, import_log: import_log).perform
     end
@@ -50,20 +53,12 @@ module Solar
     end
 
     def all_meter_data
-      if @installation.consented? # v2
-        site_api = @installation.site_api!
-        {
-          solar_pv: { readings: solar_pv_readings(site_api) },
-          exported_solar_pv: { readings: exported_solar_pv_readings(site_api) },
-          electricity: { readings: electricity_readings(site_api) }
-        }
-      else
-        solar_edge_api.smart_meter_data(
-          @installation.site_id,
-          start_date_for_meter,
-          end_date
-        )
-      end
+      site_api = @installation.site_api!
+      {
+        solar_pv: { readings: solar_pv_readings(site_api) },
+        exported_solar_pv: { readings: exported_solar_pv_readings(site_api) },
+        electricity: { readings: electricity_readings(site_api) }
+      }
     end
 
     def solar_pv_readings(site_api)
@@ -88,19 +83,6 @@ module Solar
       return {} unless @installation.can_load_meter?(meter_type)
 
       yield @installation.solar_edge_serial_number(meter_type)
-    end
-
-    def monitoring_active?
-      return true if @installation.monitoring_active?
-
-      # refresh local copy of site status and recheck
-      SolarEdgeService.new(@installation).update_information
-
-      @installation.monitoring_active?
-    end
-
-    def solar_edge_api
-      DataFeeds::SolarEdgeApi.new(@installation.api_key)
     end
   end
 end
