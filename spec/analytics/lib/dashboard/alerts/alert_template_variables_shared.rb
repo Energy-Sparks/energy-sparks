@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 shared_examples 'an alert with template variable readers' do |calculated_variables: {}, additional_readers: []|
-  let(:template_variable_names) { described_class.const_get(:TEMPLATE_VARIABLES, false).keys }
+  let(:template_variable_names) { described_class::TEMPLATE_VARIABLES.keys }
 
   it 'reads the corresponding instance variable for each non-calculated template variable' do
     variables = template_variable_names - calculated_variables.keys.map(&:to_sym)
