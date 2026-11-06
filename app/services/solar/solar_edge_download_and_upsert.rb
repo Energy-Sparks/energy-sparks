@@ -82,6 +82,8 @@ module Solar
     def with_active_meter(meter_type)
       return {} unless @installation.can_load_meter?(meter_type)
 
+      @installation.refresh_api_tokens! # loading of historical data can take >2 hours so tokens can expire
+
       yield @installation.solar_edge_serial_number(meter_type)
     end
   end
