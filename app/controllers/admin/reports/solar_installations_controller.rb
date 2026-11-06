@@ -13,6 +13,10 @@ module Admin
 
       def title = 'Solar Installations'
 
+      def description
+        'Shows the current configuration status of all SolarEdge sites'
+      end
+
       def columns
         [school_group_column,
          Column.new(:admin, ->(school) { school.default_issues_admin_user&.name }),
