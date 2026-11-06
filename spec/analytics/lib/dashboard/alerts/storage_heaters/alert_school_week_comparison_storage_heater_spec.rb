@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative '../time_period_comparison/school_week_comparison_shared'
 
 describe AlertSchoolWeekComparisonStorageHeater do
   subject(:alert) { described_class.new(meter_collection) }
@@ -46,6 +47,8 @@ describe AlertSchoolWeekComparisonStorageHeater do
       example.run
     end
   end
+
+  it_behaves_like 'a school week comparison ignoring estimated readings'
 
   describe '#analyse' do
     before do
