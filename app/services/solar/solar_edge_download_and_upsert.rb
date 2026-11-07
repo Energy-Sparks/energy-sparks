@@ -64,6 +64,8 @@ module Solar
     def solar_pv_readings(site_api)
       return {} unless @installation.can_load_meter?(:solar_pv)
 
+      @installation.refresh_api_tokens! # loading of historical data can take >2 hours so tokens can expire
+
       site_api.production(start_date: start_date_for_meter(:solar_pv), end_date:)
     end
 
@@ -81,6 +83,8 @@ module Solar
 
     def with_active_meter(meter_type)
       return {} unless @installation.can_load_meter?(meter_type)
+
+      @installation.refresh_api_tokens! # loading of historical data can take >2 hours so tokens can expire
 
       yield @installation.solar_edge_serial_number(meter_type)
     end
