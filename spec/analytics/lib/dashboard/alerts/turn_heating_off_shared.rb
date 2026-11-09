@@ -9,10 +9,8 @@ shared_examples 'a turn heating off alert' do |fuel_type:|
   let(:fuel_type) { fuel_type }
   let(:amr_end_date) { Date.new(2023, 10, 15) }
   let(:heating_dates) { [amr_end_date] }
-  let(:model_fits) { true }
   let(:heating_model) do
-    instance_double(AnalyseHeatingAndHotWater::HeatingModelTemperatureSpace,
-                    enough_samples_for_good_fit: model_fits)
+    instance_double(AnalyseHeatingAndHotWater::HeatingModelTemperatureSpace, enough_samples_for_good_fit: true)
   end
 
   before do
