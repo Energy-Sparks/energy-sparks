@@ -619,7 +619,12 @@ Rails.application.routes.draw do
     namespace :activities do
       root to: 'home#index'
 
+      get 'classifications/:task_type', to: 'labels#index',
+                                  as: :classifications,
+                                  constraints: { task_type: /activity|action/ }
       resources :labels, except: [:show]
+      resources :subject_areas, except: [:show]
+      resources :learning_stages, except: [:show]
     end
 
     resources :mailer_previews, only: [:index]
