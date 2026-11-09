@@ -22,7 +22,7 @@
   So this report will include more schools than are shown in the above table.
 </p>
 
-<%= render Forms::EmailReportButtonComponent.new(deliver_admin_reports_funder_allocations_path, 'Email funder report') %>
+<p><%= render Forms::EmailReportButtonComponent.new(deliver_admin_reports_funder_allocations_path, 'Email funder report') %></p>
 
 <p>
   Summary of column headings:
@@ -71,6 +71,7 @@
   <li>Current Contract Holder - who is currently funding their use of energy sparks?</li>
   <li>Contract Start Date - start of current licensed period</li>
   <li>Contract End Date - end of current licensed period</li>
+  <li>Current Contract Status - status of the school's current licence or empty if there is no current licence</li>
   <li>Licence Start Date - start of current licensed period</li>
   <li>Licence End Date - end of current licensed period</li>
   <li>Product - Which product are they contracted/licensed to use?</li>
