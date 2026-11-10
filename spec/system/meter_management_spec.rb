@@ -262,6 +262,43 @@ describe 'meter management', :include_application_helper, :meters do
       it_behaves_like 'it creates meters', email: true, select_data_source: true
     end
 
+    [true, false].each do |active|
+      context "with meter attributes for an #{active ? 'active' : 'inactive'} meter" do
+        let(:meter) { create(:gas_meter, school:, active:) }
+        let!(:setup_data) { meter }
+
+        before { visit school_meters_path(school) }
+
+        it 'mutes the attributes icon when no attributes are set' do
+          expect(page).to have_css('a[title="Attributes"] i.fa-gear.text-muted')
+        end
+
+        context 'with an active attribute' do
+          let!(:setup_data) { create(:meter_attribute, meter:) }
+
+          it 'keeps the existing icon colour' do
+            expect(page).to have_css('a[title="Attributes"] i.fa-gear:not(.text-muted)')
+          end
+        end
+
+        context 'with only deleted attributes' do
+          let!(:setup_data) { create(:meter_attribute, :deleted, meter:) }
+
+          it 'mutes the attributes icon' do
+            expect(page).to have_css('a[title="Attributes"] i.fa-gear.text-muted')
+          end
+        end
+
+        context 'with only replaced attributes' do
+          let!(:setup_data) { create(:meter_attribute, :replaced, meter:) }
+
+          it 'mutes the attributes icon' do
+            expect(page).to have_css('a[title="Attributes"] i.fa-gear.text-muted')
+          end
+        end
+      end
+    end
+
     context 'when managing meter issues' do
       before { visit school_meters_path(school) }
 
