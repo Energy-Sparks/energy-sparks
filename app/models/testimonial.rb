@@ -20,6 +20,7 @@
 class Testimonial < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include ImageUpload
 
   belongs_to :case_study, optional: true
 
@@ -44,10 +45,6 @@ class Testimonial < ApplicationRecord
   enum :category, { default: 0, audit: 1, groups: 2 } # need more here
 
   validates :image, :title_en, :name, :quote_en, :organisation, :category, presence: true
-
-  validates :image,
-            content_type: ['image/png', 'image/jpeg'],
-            dimension: { width: { min: 640, max: 1400 } } # betwen half and full container width size to be conservative
 
   scope :active, -> { where(active: true) }
   scope :by_title, lambda {

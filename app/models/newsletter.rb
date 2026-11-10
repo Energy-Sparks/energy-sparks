@@ -26,6 +26,7 @@
 class Newsletter < ApplicationRecord
   include Publishable
   include Trackable
+  include ImageUpload
 
   scope :without_images, -> {
     left_outer_joins(:image_attachment).where(active_storage_attachments: { id: nil })
@@ -35,7 +36,4 @@ class Newsletter < ApplicationRecord
 
   validates_presence_of :title, :url, :published_on
   validates :image, presence: true, if: :publishing?
-  validates :image,
-    content_type: ['image/png', 'image/jpeg'],
-    dimension: { width: { min: 640, max: 1400 } } # betwen 640 and full container width size to be conservative
 end
