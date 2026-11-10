@@ -1,6 +1,6 @@
 <%# locals: (field:, collection:, label_method:, default_field:, school_group:, attribute: nil) %>
 <% field_label = field.to_s.humanize.downcase %>
-<% attribute = attribute || "#{field}_id" %>
+<% attribute ||= "#{field}_id" %>
 <div class="col-sm">
   <h3><%= field.to_s.humanize %></h3>
   <% %i[electricity gas solar_pv].each do |fuel_type| %>

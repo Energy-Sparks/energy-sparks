@@ -2,7 +2,7 @@
 
 <div class="container">
   <div class="row">
-    <%= render 'section', field: :data_source, collection: DataSource.all, label_method: 'name', 
+    <%= render 'section', field: :data_source, collection: DataSource.all, label_method: 'name',
                           default_field: 'default_data_source', school_group: @school_group %>
     <%= render 'section', field: :procurement_route, collection: ProcurementRoute.all,
                           label_method: 'organisation_name', default_field: 'default_procurement_route',
