@@ -101,7 +101,8 @@
   </thead>
   <tbody>
     <% if @active_meters.any? %>
-      <%= render partial: 'meter', collection: @active_meters %>
+      <%= render partial: 'meter', collection: @active_meters,
+                 locals: { school: @school, invalid_mpans: @invalid_mpan } %>
     <% else %>
       <tr>
         <td colspan="<%= colspan %>"><%= t('schools.meters.index.no_active_meters') %></td>
@@ -115,7 +116,8 @@
     </tr>
   </thead>
   <tbody>
-    <%= render partial: 'meter', collection: @active_pseudo_meters %>
+    <%= render partial: 'meter', collection: @active_pseudo_meters,
+               locals: { school: @school, invalid_mpans: @invalid_mpan } %>
   </tbody>
   <% end %>
 
@@ -126,8 +128,8 @@
       </tr>
     </thead>
     <tbody>
-      <%= render partial: 'meter', collection: @inactive_meters %>
-      <%= render partial: 'meter', collection: @inactive_pseudo_meters %>
+      <%= render partial: 'meter', collection: @inactive_meters, locals: { school: @school } %>
+      <%= render partial: 'meter', collection: @inactive_pseudo_meters, locals: { school: @school } %>
     </tbody>
   <% end %>
 </table>

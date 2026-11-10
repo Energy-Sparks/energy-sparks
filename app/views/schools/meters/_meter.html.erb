@@ -1,4 +1,5 @@
-<tr scope="row" class="<%= 'table-warning' if meter.active? && invalid_mpan.include?(meter) %>">
+<%# locals: (meter:, school:, invalid_mpans: []) %>
+<tr scope="row" class="<%= 'table-warning' if meter.active? && invalid_mpans.include?(meter) %>">
   <td class="fit">
     <%= fa_icon(fuel_type_icon(meter.meter_type)) %>
     <%= link_to meter.mpan_mprn, school_meter_path(school, meter) %>
