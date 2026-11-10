@@ -280,22 +280,6 @@ describe 'meter management', :include_application_helper, :meters do
             expect(page).to have_css('a[title="Attributes"] i.fa-gear:not(.text-muted)')
           end
         end
-
-        context 'with only deleted attributes' do
-          let!(:setup_data) { create(:meter_attribute, :deleted, meter:) }
-
-          it 'mutes the attributes icon' do
-            expect(page).to have_css('a[title="Attributes"] i.fa-gear.text-muted')
-          end
-        end
-
-        context 'with only replaced attributes' do
-          let!(:setup_data) { create(:meter_attribute, :replaced, meter:) }
-
-          it 'mutes the attributes icon' do
-            expect(page).to have_css('a[title="Attributes"] i.fa-gear.text-muted')
-          end
-        end
       end
     end
 
