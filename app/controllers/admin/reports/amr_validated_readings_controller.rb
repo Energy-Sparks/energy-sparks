@@ -20,6 +20,9 @@ module Admin
             render json: Meters::DetailedCalendarGenerator.new(@meter).generate
           end
           format.html do
+            summary_generator = Meters::SummarisedCalendarGenerator.new(@meter)
+            @summary_legend = summary_generator.legend
+            @detailed_legend = Meters::DetailedCalendarGenerator.new(@meter).legend
             @gappy_validated_readings = @meter.gappy_validated_readings
           end
         end

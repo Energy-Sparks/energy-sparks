@@ -8,10 +8,17 @@ module Meters
       @amr_types['MISSING'] = { name: 'No readings' }
 
       @colour_hash = Colours::AMR_COLOURS.each_with_index.to_h { |colour, index| [@amr_types.keys[index], colour] }
-      @colour_hash['MISSING'] = Colours.chart_dark_orange
     end
 
     private
+
+    def generate_legend
+      legend = @colour_hash.to_h do |type, colour|
+        [colour, @amr_types[type][:name].to_s + (type == 'MISSING' ? '' : "(#{type})")]
+      end
+      legend[Colours.grey_dark] = 'Other corrections and substitutions'
+      legend
+    end
 
     def first_reading_date
       @meter.first_validated_reading

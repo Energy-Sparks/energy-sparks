@@ -38,12 +38,14 @@
 <div class="calendar-legend row">
   <div class="legend-scale vertical col-md-4">
     <ul class='legend-labels'>
-      <li><span style='background:#5cb85c;'></span><div class="description" style="font-size: 17px;"><small>Original uncorrected good data (ORIG)</small></div></li>
-      <li><span style='background:#10bca2;'></span><div class="description" style="font-size: 17px;"><small>Original estimated data (EST)</small></div></li>
-      <li><span style='background:#3f7d69;'></span><div class="description" style="font-size: 17px;"><small>Corrected/modified data (not ORIG)</small></div></li>
-      <li><span style='background:#5297c6;'></span><div class="description" style="font-size: 17px;"><small>Zero usage, uncorrected original data (ORIG)</small></div></li>
-      <li><span style='background:#fcac21;'></span><div class="description" style="font-size: 17px;"><small>Zero usage, corrected/modified data (not ORIG)</small></div></li>
-      <li><span style='background:#ff4500;'></span><div class="description" style="font-size: 17px;"><small>Missing</small></div></li>
+      <% @summary_legend.each do |colour, label| %>
+        <li>
+          <span style='background:<%= colour %>;'></span>
+          <div class="description" style="font-size: 17px;">
+            <small><%= label %></small>
+          </div>
+        </li>
+      <% end %>
     </ul>
   </div>
 </div>
@@ -53,24 +55,19 @@
 <div class="readings-calendar"></div>
 
 <div class="calendar-legend row">
-  <% @colour_hash.entries.in_groups_of(10, false).each do |group| %>
+  <% @detailed_legend.entries.in_groups_of(10, false).each do |group| %>
     <div class="legend-scale vertical col-md-4">
       <ul class='legend-labels'>
-        <% group.each do |type, colour| %>
+        <% group.each do |colour, label| %>
           <li>
             <span style='background:<%= colour %>;'></span>
             <div class="description" style="font-size: 17px;">
-              <small><%= @amr_types[type][:name].to_s + (type == 'MISSING' ? '' : "(#{type})") %></small>
+              <small><%= label %></small>
             </div>
           </li>
         <% end %>
-        <li>
-          <span style='background:<%= Colours.grey_dark %>;'></span>
-          <div class="description" style="font-size: 17px;">
-            <small>Other corrections and substitutions</small>
-          </div>
-        </li>
       </ul>
     </div>
   <% end %>
+  </div>
 </div>

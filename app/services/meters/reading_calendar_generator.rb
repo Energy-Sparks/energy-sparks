@@ -3,6 +3,10 @@
 module Meters
   # Produce a set of that can be serialised to JSON consistent with bootstrap-year-calendar
   class ReadingCalendarGenerator
+    DEFAULT_LEGEND = {
+      'MISSING' => { description: 'No readings', color: 'rgb(255,69,0)' }
+    }.freeze
+
     def initialize(meter)
       @meter = meter
     end
@@ -13,7 +17,15 @@ module Meters
       }
     end
 
+    def legend
+      generate_legend.merge({ 'rgb(255,69,0)' => 'No readings' })
+    end
+
     private
+
+    def generate_legend
+      {}
+    end
 
     def generate_events
       reading_summary = summarise_readings
@@ -26,7 +38,7 @@ module Meters
           event[:name] = reading_summary[date][:description]
           event[:color] = reading_summary[date][:colour]
         else
-          event[:name] = 'Missing'
+          event[:name] = 'No readings'
           event[:color] = 'rgb(255,69,0)'
         end
         event
