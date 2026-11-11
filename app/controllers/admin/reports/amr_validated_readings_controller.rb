@@ -8,20 +8,16 @@ module Admin
       def show
         @amr_types = OneDayAMRReading::AMR_TYPES.dup
         @amr_types['MISSING'] = { name: 'No readings' }
+
         @colour_hash = Colours::AMR_COLOURS.each_with_index.map { |colour, index| [@amr_types.keys[index], colour] }.to_h
         @colour_hash['MISSING'] = Colours.chart_dark_orange
+
         @meter = Meter.includes(:amr_validated_readings).find(params[:meter_id])
         @school = @meter.school
-
-        @first_validated_reading_date = @meter.first_validated_reading
         respond_to do |format|
           format.json do
-            readings = @meter.amr_validated_readings.order(:reading_date)
-            @reading_summary = readings.pluck(:reading_date, :status, :substitute_date).map do |reading_date, status, substitute_date|
-              { reading_date => validated_reading_hash(status, substitute_date) }
-            end
-            # Turn array of hashes in to a proper hash
-            @reading_summary = @reading_summary.inject(:merge!)
+            @meter = Meter.includes(:amr_validated_readings).find(params[:meter_id])
+            render json: Meters::DetailedCalendarGenerator.new(@meter).generate
           end
           format.html do
             @gappy_validated_readings = @meter.gappy_validated_readings
@@ -31,48 +27,7 @@ module Admin
 
       def summary
         @meter = Meter.includes(:amr_validated_readings).find(params[:meter_id])
-        @first_validated_reading_date = @meter.first_validated_reading
-        respond_to do |format|
-          format.json do
-            readings = @meter.amr_validated_readings.order(:reading_date)
-            @reading_summary = readings.pluck(:reading_date, :status, :one_day_kwh).map do |reading_date, status, one_day_kwh|
-              { reading_date => summary_hash(status, one_day_kwh) }
-            end
-            # Turn array of hashes in to a proper hash
-            @reading_summary = @reading_summary.inject(:merge!)
-          end
-        end
-      end
-
-    private
-
-      def summary_hash(status, one_day_kwh)
-        if one_day_kwh == 0
-          case status
-          when 'ORIG'
-            return { description: 'Zero usage, uncorrected original data', colour: '#5297c6' }
-          when 'EST'
-            return { description: 'Zero usage, original estimated data', colour: Colours.solar_dark }
-          else
-            return { description: 'Zero usage, corrected/modified data', colour: '#fcac21' }
-          end
-        end
-
-        case status
-        when 'ORIG'
-          { description: 'ORIG, uncorrected good data', colour: Colours.chart_green }
-        when 'EST'
-          { description: 'EST, original estimated data', colour: Colours.solar_dark }
-        else
-          { description: 'Corrected/modified data', colour: '#3f7d69' }
-        end
-      end
-
-      def validated_reading_hash(status, substitute_date)
-        description = "#{status} #{@amr_types[status][:name]}"
-        description = description + " (with #{substitute_date.strftime('%d/%m/%Y')})" if substitute_date
-        colour = @colour_hash.key?(status) ? @colour_hash[status].to_s : Colours.grey_dark
-        { description: description, colour: colour }
+        render json: Meters::SummarisedCalendarGenerator.new(@meter).generate
       end
     end
   end
