@@ -63,22 +63,22 @@ module Solar
     def solar_pv_readings
       return {} unless @installation.can_load_meter?(:solar_pv)
 
-      @installation.site_api!.production(start_date: start_date_for_meter(:solar_pv), end_date:)
+      site_api.production(start_date: start_date_for_meter(:solar_pv), end_date:)
     end
 
     def exported_solar_pv_readings
       with_active_meter(:exported_solar_pv) do |serial_number|
-        @installation.site_api!.export_energy(serial_number:,
-                                              start_date: start_date_for_meter(:exported_solar_pv),
-                                              end_date:)
+        site_api.export_energy(serial_number:,
+                               start_date: start_date_for_meter(:exported_solar_pv),
+                               end_date:)
       end
     end
 
     def electricity_readings
       with_active_meter(:electricity) do |serial_number|
-        @installation.site_api!.import_energy(serial_number:,
-                                              start_date: start_date_for_meter(:electricity),
-                                              end_date:)
+        site_api.import_energy(serial_number:,
+                               start_date: start_date_for_meter(:electricity),
+                               end_date:)
       end
     end
 
@@ -86,6 +86,11 @@ module Solar
       return {} unless @installation.can_load_meter?(meter_type)
 
       yield @installation.solar_edge_serial_number(meter_type)
+    end
+
+    def site_api
+      @site_api = @installation.site_api! if @site_api.nil? || @installation.access_token_expired?
+      @site_api
     end
   end
 end
