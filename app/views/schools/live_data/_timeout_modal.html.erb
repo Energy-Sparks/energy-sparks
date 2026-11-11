@@ -2,8 +2,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><span class="event-action"></span><%= t('schools.live_data.timeout_modal.still_watching_your_live_data_usage') %></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title">
+          <span class="event-action"></span><%= t('schools.live_data.timeout_modal.still_watching_your_live_data_usage') %>
+        </h5>
+        <button type="button" class="btn-close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -11,7 +13,7 @@
         <%= t('schools.live_data.timeout_modal.temporarily_paused_message_html', timeout_interval: timeout_interval) %>.
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" data-dismiss="modal"><%= t('common.labels.restart') %></button>
+        <button type="button" class="btn" data-dismiss="modal" data-bs-dismiss="modal"><%= t('common.labels.restart') %></button>
       </div>
     </div>
   </div>
