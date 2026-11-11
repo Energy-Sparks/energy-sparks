@@ -943,6 +943,7 @@ Rails.application.routes.draw do
       resources :pupil_number_updates, only: :index
       resources :metered_solar, only: :index
       resources :modelled_solar, only: :index
+      resources :solar_edge, only: :index
       resources :solar_installations, only: :index
       resources :limited_data, only: :index
       resources :stale_data, only: :index
