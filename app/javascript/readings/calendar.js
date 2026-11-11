@@ -41,15 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
               '<div class="event-tooltip-content">' +
               '<div class="event-name" style="color:' +
               event.color +
-              '">' +
+              '"><strong>' +
               event.name +
-              '</div>' +
+              '</strong></div>' +
               '<div class="event-location">' +
               startDate.toDateString() +
-              ' - ' +
-              endDate.toDateString() +
               '</div>' +
-              '</div><hr />';
+              '</div>';
           }
 
           $(e.element).popover({
