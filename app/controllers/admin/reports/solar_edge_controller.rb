@@ -7,6 +7,10 @@ module Admin
 
       def title = 'Solar Edge Status'
 
+      def description
+        'Shows the current configuration status of all SolarEdge sites'
+      end
+
       def columns
         [
           school_group_column,
