@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ImageUpload
+module MediumImageValidation
   extend ActiveSupport::Concern
 
   ALLOWED_CONTENT_TYPES = %w[image/png image/jpeg].freeze

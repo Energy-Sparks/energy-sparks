@@ -26,7 +26,7 @@
 class Newsletter < ApplicationRecord
   include Publishable
   include Trackable
-  include ImageUpload
+  include MediumImageValidation
 
   scope :without_images, -> {
     left_outer_joins(:image_attachment).where(active_storage_attachments: { id: nil })
