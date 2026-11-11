@@ -21,7 +21,9 @@
                       url_for(controller: controller_path,
                               action: :index,
                               only_path: true,
-                              **params.permit(:school_group, :admin, :meter_type, :active).merge(format: :csv)),
+                              **params.permit(
+                                :school_group, :admin, :meter_type, :active, :consented
+                              ).merge(format: :csv)),
                       class: 'ml-2 btn btn-sm btn-secondary' %>
           <% end %>
       </div>
