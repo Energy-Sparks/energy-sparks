@@ -27,7 +27,9 @@
       <%= rewrite.url_field :target, class: 'form-control' %>
     </div>
     <div class="col-md-1 mb-3">
-      <%= rewrite.check_box :_destroy, label: 'Delete', class: 'form-control' %>
+      <div class="form-check">
+        <%= rewrite.check_box :_destroy, class: 'form-check-input' %>
+      </div>
     </div>
   </div>
 <% end %>

@@ -43,6 +43,6 @@
   <%= @intervention_type.description %>
   <% if can?(:edit, @intervention_type) %>
     <p><%= admin_button edit_admin_intervention_type_path(@intervention_type),
-                        classes: 'btn btn-default' %></p>
+                        classes: 'btn btn-secondary' %></p>
   <% end %>
 <% end %>

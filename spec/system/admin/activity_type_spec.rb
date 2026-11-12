@@ -39,7 +39,7 @@ describe 'activity type', type: :system do
         allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
         allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
 
-        click_on 'New Activity Type'
+        click_on 'New Activity', match: :first
       end
 
       it 'can add a new activity for KS1 with filters' do
@@ -74,7 +74,7 @@ describe 'activity type', type: :system do
         check('30 mins')
         check('Reducing electricity')
 
-        click_on('Create Activity type')
+        click_on('Save')
 
         activity_type = ActivityType.first
 
@@ -86,7 +86,7 @@ describe 'activity type', type: :system do
         expect(activity_type.maximum_frequency).to eq(5)
         expect(activity_type.image_en.filename).to eq('placeholder.png')
 
-        expect(page.has_content?('Activity type was successfully created.')).to be true
+        expect(page.has_content?('Activity was successfully created.')).to be true
         expect(ActivityType.count).to be 1
 
         click_on activity_name
@@ -102,11 +102,11 @@ describe 'activity type', type: :system do
 
         check('KS1')
 
-        click_on('Create Activity type')
+        click_on('Save')
 
         expect(page.has_content?("Score can't be blank"))
 
-        expect(page.has_content?('Activity type was successfully created.')).not_to be true
+        expect(page.has_content?('Activity was successfully created.')).not_to be true
         expect(ActivityType.count).to be 0
       end
 
@@ -141,7 +141,7 @@ describe 'activity type', type: :system do
       check('KS3')
       fill_in('Maximum frequency', with: 5)
 
-      click_on('Update Activity type')
+      click_on('Save')
 
       activity_type.reload
 
@@ -150,7 +150,7 @@ describe 'activity type', type: :system do
       expect(activity_type.key_stages).to     include(ks3)
       expect(activity_type.maximum_frequency).to eq(5)
 
-      expect(page.has_content?('Activity type was successfully updated.')).to be true
+      expect(page.has_content?('Activity was successfully updated.')).to be true
       expect(ActivityType.count).to be 1
     end
 
@@ -176,7 +176,7 @@ describe 'activity type', type: :system do
         fill_in_trix with: 'some welsh school specific description'
       end
 
-      click_on('Update Activity type')
+      click_on('Save')
 
       activity_type.reload
 

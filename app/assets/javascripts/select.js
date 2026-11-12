@@ -19,7 +19,7 @@ $(document).ready(function() {
 
   function changeSelect() {
     $("select.select2").select2({
-      tags: true
+      theme: $('.bs5').length ? 'bootstrap-5' : 'bootstrap'
     })
   }
 
