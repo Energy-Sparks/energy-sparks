@@ -28,6 +28,7 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
   shared_examples 'it sends reminders correctly' do
     context 'with no tariff' do
       it_behaves_like 'it sends the expected email'
+      it_behaves_like 'tariff reminders exclude inactive admins'
     end
 
     context 'when tariff has expired' do
