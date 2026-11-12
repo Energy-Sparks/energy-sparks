@@ -16,46 +16,26 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
   end
 
   describe '.csv' do
-    let!(:academic_year_start) { Time.zone.today - 6.months }
-    let!(:academic_year_end) { Time.zone.today + 6.months }
-    let!(:academic_year) do
-      create(:academic_year,
-             start_date: academic_year_start, end_date: academic_year_end)
+    let(:calendar) do
+      academic_year = create(:academic_year,
+                             start_date: Time.zone.today - 6.months, end_date: Time.zone.today + 6.months)
+      create(:calendar, academic_years: [academic_year])
     end
-    let!(:calendar) { create(:calendar, academic_years: [academic_year]) }
-
-    let(:local_authority_area) { create(:local_authority_area) }
-
-    let(:school_onboarding) do
-      create(:school_onboarding, :with_events,
-             event_names: %i[onboarding_complete onboarding_data_enabled])
-    end
-
-    let(:data_source_1) { create(:data_source) }
-    let(:procurement_route_1) { create(:procurement_route) }
-
-    let(:data_source_2) { create(:data_source) }
-    let(:procurement_route_2) { create(:procurement_route) }
-
-    let(:data_source_3) { create(:data_source) }
-    let(:procurement_route_3) { create(:procurement_route) }
-
-    let!(:funder) { Funder.create(name: 'Funder 1') }
-
     let(:school_group) { create(:school_group) }
-
-    let!(:school_1) do
+    let!(:school) do
+      school_onboarding = create(:school_onboarding, :with_events,
+                                 event_names: %i[onboarding_complete onboarding_data_enabled])
       school = create(:school,
                       visible: true,
                       data_sharing: :within_group,
                       school_onboarding: school_onboarding,
-                      school_group: school_group,
-                      calendar: calendar,
+                      school_group:,
+                      calendar:,
                       country: :england,
                       region: :east_of_england,
                       diocese: create(:school_group, :diocese),
                       local_authority_area_group: create(:school_group, :local_authority_area),
-                      local_authority_area: local_authority_area,
+                      local_authority_area: create(:local_authority_area),
                       percentage_free_school_meals: 50,
                       removal_date: nil)
       school.project_groups << create(:school_group, :project)
@@ -81,33 +61,33 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       school
     end
 
-    let!(:activities)  { create_list(:activity, 5, school: school_1) }
-    let!(:actions)     { create_list(:observation, 3, :intervention, school: school_1) }
-
     let!(:electricity_meter) do
-      create(:electricity_meter, active: true, data_source: data_source_1, procurement_route: procurement_route_1,
-                                 school: school_1)
+      create(:electricity_meter, active: true, data_source: create(:data_source),
+                                 procurement_route: create(:procurement_route), school: school)
     end
     let!(:gas_meter) do
-      create(:gas_meter, active: true, data_source: data_source_2, procurement_route: procurement_route_2,
-                         school: school_1)
+      create(:gas_meter, active: true, data_source: create(:data_source),
+                         procurement_route: create(:procurement_route), school: school)
     end
     let!(:solar_meter) do
-      create(:solar_pv_meter, active: true, data_source: data_source_3, procurement_route: procurement_route_3,
-                              school: school_1)
+      create(:solar_pv_meter, active: true, data_source: create(:data_source),
+                              procurement_route: create(:procurement_route), school: school)
     end
 
     # only basic data, helps to catch errors checking for nils
-    let!(:school_2) do
+    let!(:archived_school) do
       create(:school, visible: true, active: false, removal_date: nil, archived_date: Time.zone.today,
                       school_group: create(:school_group))
     end
-    # not included in export
-    let!(:not_visible) do
-      create(:school, visible: true, active: false, removal_date: Time.zone.today, school_group: school_group)
-    end
+    let(:csv) { service.csv }
 
-    let(:csv)   { service.csv }
+    before do
+      create(:funder, name: 'Funder 1')
+      create_list(:activity, 5, school:)
+      create_list(:observation, 3, :intervention, school:)
+      # Removed schools are not included in the export.
+      create(:school, visible: true, active: false, removal_date: Time.zone.today, school_group:)
+    end
 
     it 'returns the right headers' do
       expect(csv.lines.first.chomp).to eq described_class.csv_headers.join(',')
@@ -118,33 +98,33 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     end
 
     it 'returns expected data for school' do
-      expect(school_1.archived?).to be(false)
-      expect(school_2.archived?).to be(true)
+      expect(school.archived?).to be(false)
+      expect(archived_school.archived?).to be(true)
 
-      current_licence = school_1.licences.current.by_start_date.first
+      current_licence = school.licences.current.by_start_date.first
 
       expect(csv.lines[1].chomp).to eq [
-        school_1.school_group.name,
-        school_1.name,
-        school_1.urn,
+        school.school_group.name,
+        school.name,
+        school.urn,
         'Primary',
         'false',
         'true',
-        school_1.data_sharing.humanize,
-        school_1.school_onboarding.onboarding_completed_on.iso8601,
-        school_1.school_onboarding.first_made_data_enabled.iso8601,
+        school.data_sharing.humanize,
+        school.school_onboarding.onboarding_completed_on.iso8601,
+        school.school_onboarding.first_made_data_enabled.iso8601,
         'MAT funding',
         'MAT funding',
-        school_1.funding_status.humanize,
+        school.funding_status.humanize,
         'AB1 2CD',
         'England',
-        school_1.number_of_pupils,
-        school_1.percentage_free_school_meals,
+        school.number_of_pupils,
+        school.percentage_free_school_meals,
         1,
-        school_1.local_authority_area_group.name,
-        school_1.region.humanize,
-        school_1.diocese.name,
-        school_1.project_groups.map(&:name).join('|'),
+        school.local_authority_area_group.name,
+        school.region.humanize,
+        school.diocese.name,
+        school.project_groups.map(&:name).join('|'),
         5,
         3,
         electricity_meter.data_source.name,
@@ -168,26 +148,27 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         current_licence.contract.contract_holder.name,
         current_licence.contract.start_date,
         current_licence.contract.end_date,
+        current_licence.status.humanize,
         current_licence.start_date,
         current_licence.end_date,
         current_licence.contract.product.name
       ].join(',')
       expect(csv.lines[2].chomp).to eq [
-        school_2.school_group.name,
-        school_2.name,
-        school_2.urn,
+        archived_school.school_group.name,
+        archived_school.name,
+        archived_school.urn,
         'Primary',
         'true',
         'true',
-        school_2.data_sharing.humanize,
+        archived_school.data_sharing.humanize,
         nil,
         nil,
         nil,
         nil,
-        school_2.funding_status.humanize,
+        archived_school.funding_status.humanize,
         'AB1 2CD',
         'England',
-        school_2.number_of_pupils,
+        archived_school.number_of_pupils,
         nil,
         0,
         nil,
@@ -217,10 +198,19 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil, # Current Contract Holder
         nil,
         nil,
+        nil, # Current Contract Status
         nil,
         nil,
         nil
       ].join(',')
+    end
+
+    it 'returns the current contract status' do
+      school.licences.current.each { |licence| licence.update!(status: :invoiced) }
+
+      rows = CSV.parse(csv, headers: true)
+      row = rows.find { |school_row| school_row['URN'] == school.urn.to_s }
+      expect(row['Current Contract Status']).to eq('Invoiced')
     end
   end
 end

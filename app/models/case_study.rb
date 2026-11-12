@@ -31,7 +31,7 @@ class CaseStudy < ApplicationRecord
   include TranslatableAttachment
   include Publishable
   include Trackable
-  include ImageUpload
+  include MediumImageValidation
 
   has_many :testimonials, dependent: :restrict_with_error
   delegated_type :organisation, types: %w[SchoolGroup School], optional: true

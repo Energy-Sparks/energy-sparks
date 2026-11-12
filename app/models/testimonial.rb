@@ -20,7 +20,7 @@
 class Testimonial < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
-  include ImageUpload
+  include MediumImageValidation
 
   belongs_to :case_study, optional: true
 

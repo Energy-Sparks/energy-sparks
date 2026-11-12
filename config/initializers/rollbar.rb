@@ -31,7 +31,8 @@ Rollbar.configure do |config|
   #schools and scoreboard pages for old or non-existent schools (e.g. made up ids)
   config.exception_level_filters.merge!({
     'ActionController::RoutingError' => 'ignore',
-    'ActiveRecord::RecordNotFound' => 'ignore'
+    'ActiveRecord::RecordNotFound' => 'ignore',
+    'ActionController::ParameterMissing' => 'ignore'
   })
   #
   # You can also specify a callable, which will be called with the exception instance.
