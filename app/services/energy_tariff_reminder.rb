@@ -23,7 +23,7 @@ class EnergyTariffReminder
     selector.call(School.active) do |school, expiring_tariffs|
       yield school, school.all_school_admins.school_admin.active, expiring_tariffs
     end
-    selector.call(SchoolGroup.all) do |school_group, expiring_tariffs|
+    selector.call(SchoolGroup.organisation_groups) do |school_group, expiring_tariffs|
       yield school_group, school_group.users.group_admin.active, expiring_tariffs
     end
   end
