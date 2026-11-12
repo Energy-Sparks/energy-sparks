@@ -10,10 +10,11 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
 
   let!(:organisation) { create(:school_admin).school }
   let(:tariff) { nil }
+  let(:send_automated_emails) { true }
 
   before do
     tariff
-    stub_env(SEND_AUTOMATED_EMAILS: true)
+    stub_env(SEND_AUTOMATED_EMAILS: send_automated_emails)
     task.invoke
     perform_enqueued_jobs
   end
@@ -28,7 +29,8 @@ RSpec.describe 'schools:send_tariff_reminders' do # rubocop:disable RSpec/Descri
   shared_examples 'it sends reminders correctly' do
     context 'with no tariff' do
       it_behaves_like 'it sends the expected email'
-      it_behaves_like 'tariff reminders exclude inactive admins'
+      it_behaves_like 'it excludes inactive admins'
+      it_behaves_like 'it respects SEND_AUTOMATED_EMAILS'
     end
 
     context 'when tariff has expired' do

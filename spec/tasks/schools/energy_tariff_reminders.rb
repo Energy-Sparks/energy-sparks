@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
-shared_examples 'tariff reminders exclude inactive admins' do
+shared_examples 'it respects SEND_AUTOMATED_EMAILS' do
+  context 'when SEND_AUTOMATED_EMAILS is false' do
+    let(:send_automated_emails) { false }
+
+    it_behaves_like 'no email is sent'
+  end
+
+  context 'when SEND_AUTOMATED_EMAILS is unset' do
+    let(:send_automated_emails) { nil }
+
+    it_behaves_like 'no email is sent'
+  end
+end
+
+shared_examples 'it excludes inactive admins' do
   let(:tariff) do
     super()
     if organisation.is_a?(School)
