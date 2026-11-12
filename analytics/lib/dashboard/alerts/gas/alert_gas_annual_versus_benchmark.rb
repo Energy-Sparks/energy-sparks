@@ -8,8 +8,8 @@
 # currently not derived from a common base class with electricity as we may need
 # to tmperature adjust in future
 # storage heaters derived from this class, most of code shared - beware
-require_relative '../gas/alert_gas_only_base.rb'
-require_relative '../common/alert_floor_area_pupils_mixin.rb'
+require_relative '../gas/alert_gas_only_base'
+require_relative '../common/alert_floor_area_mixin'
 
 class AlertGasAnnualVersusBenchmark < AlertGasModelBase
   DAYSINYEAR = 363 # 364 days inclusive - consistent with charts which are 7 days * 52 weeks

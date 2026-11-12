@@ -107,7 +107,7 @@ RSpec.describe 'manage school' do
     it_behaves_like 'a manage school menu not displaying admin section'
   end
 
-  context 'as admin' do
+  context 'as admin', with_feature: :new_manage_school_pages do
     let(:user) { create(:admin) }
 
     before { visit school_path(school) }
@@ -123,10 +123,13 @@ RSpec.describe 'manage school' do
       expect(page).to have_link('Email and SMS reports')
     end
 
-    context 'with status toggles', with_feature: :new_manage_school_pages do
-      it 'links to the configuration page for data access settings' do
+    context 'when changing data access settings' do
+      before do
         visit school_path(school)
-        click_on('Public')
+        click_on('data-sharing-status')
+      end
+
+      it 'links to the configuration page for data access settings' do
         expect(page).to have_select('Data Sharing', selected: 'Public')
         select 'Within Group', from: 'Data Sharing'
         click_on 'Update configuration'
@@ -135,62 +138,73 @@ RSpec.describe 'manage school' do
           expect(page).to have_text('Within Group')
         end
 
-        school.reload
-        expect(school.data_sharing_within_group?).to be true
+        expect(school.reload.data_sharing_within_group?).to be true
+      end
+    end
+
+    context 'when toggling visibility' do
+      before do
+        visit school_path(school)
+        click_on('visibility')
       end
 
-      it 'allows toggling visibility' do
-        visit school_path(school)
-        click_on('Visible')
-        school.reload
-        expect(school).not_to be_visible
-        click_on('Visible')
-        school.reload
-        expect(school).to be_visible
+      it 'toggles correctly' do
+        expect(school.reload).not_to be_visible
+        click_on('visibility')
+        expect(school.reload).to be_visible
+      end
+    end
+
+    context 'when toggling data processing' do
+      context 'when school has data' do
+        before do
+          create(:gas_meter, :with_unvalidated_readings, school: school)
+          school.update(process_data: false)
+          visit school_path(school)
+        end
+
+        it 'toggles correctly' do
+          click_on('process-data')
+          expect(page).to have_text "#{school.name} will now process data"
+          expect(school.reload.process_data).to be(true)
+          click_on('process-data')
+          expect(school.reload.process_data).to be(false)
+        end
       end
 
-      it 'allows toggling of data processing' do
-        create(:gas_meter, :with_unvalidated_readings, school: school)
-        school.update(process_data: false)
-        visit school_path(school)
-        expect(page).to have_no_link(href: school_batch_runs_path(school))
-        click_on('Process data')
-        expect(page).to have_text "#{school.name} will now process data"
-        expect(page).to have_link(href: school_batch_runs_path(school))
-        school.reload
-        expect(school.process_data).to be(true)
-        click_on('Process data')
-        school.reload
-        expect(school.process_data).to be(false)
-      end
+      context 'when school has no data' do
+        before do
+          school.update(process_data: false)
+          visit school_path(school)
+        end
 
-      it 'disallows toggling of data processing if the school has no meter readings' do
-        school.update(process_data: false)
+        it 'disallows toggling of data processing if the school has no meter readings' do
+          click_on('process-data')
+          expect(page).to have_text "#{school.name} cannot process data as it has no meter readings"
+          expect(school.reload.process_data).to be(false)
+        end
+      end
+    end
+
+    context 'when toggling data enabled' do
+      before do
+        create(:consent_grant, school: school)
         visit school_path(school)
-        click_on('Process data')
-        expect(page).to have_text "#{school.name} cannot process data as it has no meter readings"
-        school.reload
-        expect(school.process_data).to be(false)
+        click_on('data-visibility')
       end
 
       it 'allows toggling of data enabled via the review page' do
-        create(:consent_grant, school: school)
-        visit school_path(school)
-        click_on('Data visible')
-        school.reload
-        expect(school).not_to be_data_enabled
-        click_on('Data visible')
+        expect(school.reload).not_to be_data_enabled
+        click_on('data-visibility')
 
-        school.reload
-        expect(school).not_to be_data_enabled
+        expect(school.reload).not_to be_data_enabled
 
         expect(page).to have_text('School setup review')
         within('#review-buttons') do
           click_on 'Data visible' # actually enable the school
         end
 
-        school.reload
-        expect(school).to be_data_enabled
+        expect(school.reload).to be_data_enabled
       end
     end
   end

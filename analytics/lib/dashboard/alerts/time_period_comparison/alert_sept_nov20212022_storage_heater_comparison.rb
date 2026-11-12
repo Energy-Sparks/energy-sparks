@@ -1,0 +1,4 @@
+require_relative 'alert_autumn_term20212022_storage_heater_comparison'
+
+class AlertSeptNov20212022StorageHeaterComparison < AlertAutumnTerm20212022StorageHeaterComparison
+end

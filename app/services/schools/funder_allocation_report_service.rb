@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class FunderAllocationReportService
     class << self
@@ -47,6 +49,7 @@ module Schools
           'Current Contract Holder',
           'Current Contract Start Date',
           'Current Contract End Date',
+          'Current Contract Status',
           'Licence Start Date',
           'Licence End Date',
           'Product'
@@ -63,65 +66,12 @@ module Schools
                                             .order(:school_group_id)
 
         active_and_archived_schools.each do |school|
-          electricity_data_sources = school.all_data_sources(:electricity)
-          gas_data_sources = school.all_data_sources(:gas)
-          solar_data_sources = school.all_data_sources(%i[solar_pv exported_solar_pv])
-
-          electricity_routes = school.all_procurement_routes(:electricity)
-          gas_routes = school.all_procurement_routes(:gas)
-          solar_routes = school.all_procurement_routes(%i[solar_pv exported_solar_pv])
-
-          current_licence = school.licences.current.by_start_date.first
-          current_contract = school.licences.current.by_start_date.first&.contract
-
           csv << [
-            school.school_group.name,
-            school.name,
-            school.urn,
-            school.school_type.humanize,
-            school.archived?,
-            school.data_enabled,
-            school.data_sharing.humanize,
-            onboarding_completed(school),
-            first_made_data_enabled(school),
-            school.summarised_current_contract_holder_name,
-            school.summarised_future_contract_holder_name,
-            school.funding_status.humanize,
-            school.postcode,
-            country(school),
-            school.number_of_pupils,
-            school.percentage_free_school_meals,
-            school.all_adult_school_users.count,
-            local_authority_area(school),
-            region(school),
-            school&.diocese&.name,
-            project_names(school),
-            activities_this_academic_year(school),
-            actions_this_academic_year(school),
-            electricity_data_sources[0],
-            electricity_data_sources[1],
-            electricity_data_sources[2],
-            electricity_routes[0],
-            electricity_routes[1],
-            electricity_routes[2],
-            gas_data_sources[0],
-            gas_data_sources[1],
-            gas_data_sources[2],
-            gas_routes[0],
-            gas_routes[1],
-            gas_routes[2],
-            solar_data_sources[0],
-            solar_data_sources[1],
-            solar_data_sources[2],
-            solar_routes[0],
-            solar_routes[1],
-            solar_routes[2],
-            current_contract&.contract_holder&.name,
-            current_contract&.start_date,
-            current_contract&.end_date,
-            current_licence&.start_date,
-            current_licence&.end_date,
-            current_contract&.product&.name
+            *school_columns(school),
+            *meter_columns(school, :electricity),
+            *meter_columns(school, :gas),
+            *meter_columns(school, %i[solar_pv exported_solar_pv]),
+            *contract_columns(school)
           ]
         end
       end
@@ -132,6 +82,50 @@ module Schools
     end
 
     private
+
+    def school_columns(school)
+      [school.school_group.name,
+       school.name,
+       school.urn,
+       school.school_type.humanize,
+       school.archived?,
+       school.data_enabled,
+       school.data_sharing.humanize,
+       onboarding_completed(school),
+       first_made_data_enabled(school),
+       school.summarised_current_contract_holder_name,
+       school.summarised_future_contract_holder_name,
+       school.funding_status.humanize,
+       school.postcode,
+       country(school),
+       school.number_of_pupils,
+       school.percentage_free_school_meals,
+       school.all_adult_school_users.count,
+       local_authority_area(school),
+       region(school),
+       school.diocese&.name,
+       project_names(school),
+       activities_this_academic_year(school),
+       actions_this_academic_year(school)]
+    end
+
+    def meter_columns(school, fuel_type)
+      [*school.all_data_sources(fuel_type).values_at(0, 1, 2),
+       *school.all_procurement_routes(fuel_type).values_at(0, 1, 2)]
+    end
+
+    def contract_columns(school)
+      current_licence = school.licences.current.by_start_date.first
+      current_contract = current_licence&.contract
+
+      [current_contract&.contract_holder&.name,
+       current_contract&.start_date,
+       current_contract&.end_date,
+       current_licence&.status&.humanize,
+       current_licence&.start_date,
+       current_licence&.end_date,
+       current_contract&.product&.name]
+    end
 
     def country(school)
       school.country.presence&.humanize
@@ -159,14 +153,14 @@ module Schools
 
     def activities_this_academic_year(school)
       academic_year = academic_year(school)
-      return 0 unless academic_year.present?
+      return 0 if academic_year.blank?
 
       school.activities.between(academic_year.start_date, academic_year.end_date).count
     end
 
     def actions_this_academic_year(school)
       academic_year = academic_year(school)
-      return 0 unless academic_year.present?
+      return 0 if academic_year.blank?
 
       school.observations.intervention.between(academic_year.start_date, academic_year.end_date).count
     end
