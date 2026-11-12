@@ -2,7 +2,7 @@
   <% header_nav.with_header title: 'Manage actions' %>
   <% header_nav.with_dropdown title: 'Jump to category',
                               id: 'categoryDropdown',
-                              items: InterventionTypeGroup.all.map { |group|
+                              items: InterventionTypeGroup.by_name.map { |group|
                                 [group.name, "#intervention-type-group-#{group.id}"]
                               },
                               classes: 'me-2' %>
@@ -15,8 +15,10 @@
   are inactive and no longer visible to users.
 </p>
 
-<% InterventionTypeGroup.all.find_each do |intervention_type_group| %>
-  <h2 id="intervention-type-group-<%= intervention_type_group.id %>"><%= intervention_type_group.name %></h2>
+<% InterventionTypeGroup.by_name.each do |intervention_type_group| %>
+  <h2 id="intervention-type-group-<%= intervention_type_group.id %>" class='scrollable-title'>
+    <%= intervention_type_group.name %>
+  </h2>
   <table class="table table-striped table-sm">
     <thead>
       <tr>

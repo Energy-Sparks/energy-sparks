@@ -44,9 +44,9 @@ describe 'Intervention Types', type: :system do
       fill_in('Score', with: 20)
       fill_in('Maximum frequency', with: 5)
 
-      click_on('Create Intervention type')
+      click_on('Save')
 
-      expect(page.has_content?('Intervention type was successfully created.')).to be true
+      expect(page.has_content?('Action was successfully created.')).to be true
       expect(InterventionType.count).to be 1
 
       intervention_type = InterventionType.first
@@ -68,7 +68,7 @@ describe 'Intervention Types', type: :system do
       fill_in :intervention_type_name_en, with: 'New activity'
       fill_in_trix with: 'the description'
 
-      click_on('Create Intervention type')
+      click_on('Save')
 
       expect(page.has_content?("Score can't be blank"))
       expect(InterventionType.count).to be 0
@@ -93,8 +93,8 @@ describe 'Intervention Types', type: :system do
 
       fill_in('Maximum frequency', with: 5)
 
-      click_on('Update Intervention type')
-      expect(page.has_content?('Intervention type was successfully updated.')).to be true
+      click_on('Save')
+      expect(page.has_content?('Action was successfully updated.')).to be true
       expect(InterventionType.count).to be 1
 
       intervention_type.reload
@@ -122,8 +122,8 @@ describe 'Intervention Types', type: :system do
         find(:xpath, "//option[contains(text(), '#{intervention_type.name}')]", match: :first).select_option
       end
 
-      click_on('Update Intervention type')
-      expect(page.has_content?('Intervention type was successfully updated.')).to be true
+      click_on('Save')
+      expect(page.has_content?('Action was successfully updated.')).to be true
       intervention_type.reload
       expect(intervention_type.suggested_types).to contain_exactly(intervention_type)
 
@@ -132,8 +132,8 @@ describe 'Intervention Types', type: :system do
         first("input[type='checkbox']").check
       end
 
-      click_on('Update Intervention type')
-      expect(page.has_content?('Intervention type was successfully updated.')).to be true
+      click_on('Save')
+      expect(page.has_content?('Action was successfully updated.')).to be true
       intervention_type.reload
       expect(intervention_type.suggested_types).to be_empty
     end
@@ -155,7 +155,7 @@ describe 'Intervention Types', type: :system do
         fill_in_trix with: 'some welsh description'
       end
 
-      click_on('Update Intervention type')
+      click_on('Save')
 
       visit intervention_type_path(intervention_type)
       expect(page).to have_text('some english summary')

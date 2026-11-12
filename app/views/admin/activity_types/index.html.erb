@@ -16,7 +16,9 @@
 </p>
 
 <% ActivityCategory.by_name.each do |activity_category| %>
-  <h2 id="activity-category-<%= activity_category.id %>"><%= activity_category.name %></h2>
+  <h2 id="activity-category-<%= activity_category.id %>" class='scrollable-title'>
+    <%= activity_category.name %>
+  </h2>
   <table class="table table-striped table-sm">
     <thead>
       <tr>
