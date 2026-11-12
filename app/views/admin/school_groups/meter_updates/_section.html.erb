@@ -1,0 +1,22 @@
+<%# locals: (field:, collection:, label_method:, default_field:, school_group:, attribute: nil) %>
+<% field_label = field.to_s.humanize.downcase %>
+<% attribute ||= "#{field}_id" %>
+<div class="col-sm">
+  <h3><%= field.to_s.humanize %></h3>
+  <% %i[electricity gas solar_pv].each do |fuel_type| %>
+    <% fuel_label = t("common.#{fuel_type}").sub(/\A./, &:downcase) %>
+    <% selected = default_field ? school_group.public_send("#{default_field}_#{fuel_type}_id") : nil %>
+    <%= simple_form_for fuel_type,
+                        url: public_send("admin_school_group_meter_update_bulk_update_meter_#{field}_path",
+                                         meter_update_fuel_type: fuel_type),
+                        method: :post do |form| %>
+      <div class="form-group pb-4">
+        <%= form.label attribute, "Bulk update #{field_label} for all #{fuel_label} meters" %>
+        <%= form.select attribute,
+                        options_from_collection_for_select(collection, 'id', label_method, selected),
+                        { include_blank: 'none' }, { class: 'form-control mb-2' } %>
+        <%= form.submit "Update #{fuel_label} #{field_label} for all schools in this group", class: 'btn' %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
