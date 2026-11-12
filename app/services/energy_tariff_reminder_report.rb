@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'fugit'
+require 'yaml'
+
 class EnergyTariffReminderReport
   include Columns
   include Rails.application.routes.url_helpers
@@ -32,9 +35,7 @@ class EnergyTariffReminderReport
   end
 
   def next_biannual_date
-    # Keep in sync with schools:send_tariff_reminders in .ebextensions/cronjob.config.
-    [Date.new(@from.year, 3, 15), Date.new(@from.year, 9, 15), Date.new(@from.year + 1, 3, 15)]
-      .find { |date| date >= @from }
+    @next_biannual_date ||= send_tariff_reminders_cron.next_time(@from).to_date
   end
 
   private
@@ -73,5 +74,17 @@ class EnergyTariffReminderReport
         { scheduled_on: date.iso8601, organisation:, locale:, locale_users:, tariffs: }
       end
     end
+  end
+
+  def send_tariff_reminders_cron
+    config = YAML.safe_load_file(Rails.root.join('.ebextensions/cronjob.config'))
+    lines = config.dig('files', '/etc/cron.d/energysparks', 'content').lines(chomp: true).select do |line|
+      line.end_with?(' run-webapp-job schools:send_tariff_reminders')
+    end
+    unless lines.one?
+      raise ArgumentError, 'Expected exactly one schools:send_tariff_reminders entry in .ebextensions/cronjob.config'
+    end
+
+    Fugit::Cron.do_parse(lines.first[/(\S+\s+){5}/])
   end
 end
