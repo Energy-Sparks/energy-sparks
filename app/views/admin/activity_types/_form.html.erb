@@ -1,6 +1,6 @@
-<%= simple_form_for([:admin, activity_type],
-                    wrapper_mappings: { boolean: :custom_boolean, check_boxes: :custom_collection },
-                    html: { id: 'activity_type_form' }) do |f| %>
+<%= render 'shared/errors', subject: @activity_type, subject_name: 'activity' %>
+
+<%= simple_form_for([:admin, activity_type], html: { id: 'activity_type_form' }) do |f| %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
     <%= f.input t_field(:name, locale), label: ActivityType.human_attribute_name(:name), as: :string %>
@@ -119,16 +119,19 @@
                 [category.name, types.map { |type| [type.name_with_key_stages, type.id] }]
               end, suggestion.object.suggested_type_id.to_s),
               { include_blank: true },
-              { class: 'form-control select2' }
+              { class: 'form-select select2' }
             ) %>
       </div>
       <div class="col-md-1 mb-3">
-        <%= suggestion.check_box :_destroy, class: 'form-control' %>
+        <div class="form-check">
+          <%= suggestion.check_box :_destroy, class: 'form-check-input' %>
+        </div>
       </div>
     </div>
   <% end %>
 
   <div class="actions">
-    <%= f.submit class: 'btn btn-primary' %>
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <%= link_to 'Back', admin_activity_types_path, class: 'btn btn-secondary' %>
   </div>
 <% end %>

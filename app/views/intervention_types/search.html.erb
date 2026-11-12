@@ -3,8 +3,12 @@
     <div class="d-flex justify-content-between align-items-center">
       <h1><%= t('intervention_types.search.title') %></h1>
       <div>
-        <%= link_to t('intervention_types.search.all_actions'), intervention_type_groups_path, class: 'btn btn-default' %>
-        <%= link_to t('intervention_types.search.pupil_activities'), activity_categories_path, class: 'btn btn-default' %>
+        <%= link_to t('intervention_types.search.all_actions'),
+                    intervention_type_groups_path,
+                    class: 'btn btn-secondary' %>
+        <%= link_to t('intervention_types.search.pupil_activities'),
+                    activity_categories_path,
+                    class: 'btn btn-secondary' %>
       </div>
     </div>
   </div>

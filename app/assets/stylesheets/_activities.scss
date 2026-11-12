@@ -29,7 +29,8 @@
   border-top: 5px solid $grey-dark;
 }
 
-.select2-results__options {
+// Limit to outer results list, otherwise group options render on top of each other
+.select2-results__options:not(.select2-results__options--nested) {
   max-height: 300px !important;
 }
 

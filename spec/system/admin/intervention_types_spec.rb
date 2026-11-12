@@ -27,7 +27,7 @@ describe 'Intervention Types', type: :system do
       description = 'The description'
       download_links = 'Some download links'
 
-      click_on('New Intervention type', match: :first)
+      click_on('New Action', match: :first)
       fill_in :intervention_type_name_en, with: title
       fill_in :intervention_type_summary_en, with: summary
 
@@ -64,7 +64,7 @@ describe 'Intervention Types', type: :system do
     end
 
     it 'does not crash if you forget the score' do
-      click_on('New Intervention type', match: :first)
+      click_on('New Action', match: :first)
       fill_in :intervention_type_name_en, with: 'New activity'
       fill_in_trix with: 'the description'
 

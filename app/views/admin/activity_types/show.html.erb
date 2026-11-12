@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-    Activity Type: <%= @activity_type.name %>
+    Activity: <%= @activity_type.name %>
 <% end %>
 
 <div class="row padded-row">
@@ -18,7 +18,7 @@
       <% I18n.available_locales.each do |locale| %>
         <h3><%= ActivityType.human_attribute_name(:description) %></h3>
         <% if @activity_type.description(locale: locale).present? %>
-          <%= @activity_type.description(locale: locale)  %>
+          <%= @activity_type.description(locale: locale) %>
         <% else %>
           <p><em>No description given</em></p>
         <% end %>
@@ -50,7 +50,7 @@
     <p><strong>Currently active:</strong> <%= @activity_type.active %></p>
     <div class="other-actions">
       <%= link_to 'Edit', edit_admin_activity_type_path(@activity_type), class: 'btn btn-primary' %>
-      <%= link_to 'All Types', admin_activity_types_path, class: 'btn btn-secondary'  %>
+      <%= link_to 'All Types', admin_activity_types_path, class: 'btn btn-secondary' %>
     </div>
   </div>
 </div>

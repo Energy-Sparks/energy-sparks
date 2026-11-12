@@ -39,7 +39,7 @@ describe 'activity type', type: :system do
         allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
         allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
 
-        click_on 'New Activity Type'
+        click_on 'New Activity', match: :first
       end
 
       it 'can add a new activity for KS1 with filters' do

@@ -1,42 +1,49 @@
-<h1>Intervention Types</h1>
-<div class="container">
-  <div class="row">
-    <p><%= link_to 'New Intervention type', new_admin_intervention_type_path, class: 'btn', id: 'new-type' %></p>
-  </div>
-</div>
-
-<% InterventionTypeGroup.all.each do |intervention_type_group| %>
-  <div class="container">
-    <h2 id="intervention_type_group_<%= intervention_type_group.id%>"><%= intervention_type_group.name %></h2>
-    <div class="row">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Id</th>
-          <th scope="col">Title</th>
-          <th scope="col">Score</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @intervention_types.where(intervention_type_group: intervention_type_group).sort_by(&:id).each do |intervention_type| %>
-          <tr class="<%= active(intervention_type.active) %>" scope="row" >
-            <td><%= intervention_type.id %>
-            <td><%= link_to intervention_type.name, intervention_type_path(intervention_type) %></td>
-            <td><%= intervention_type.score %></td>
-            <td><%= link_to 'Edit', edit_admin_intervention_type_path(intervention_type), class: 'btn btn-sm' %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    </div>
-  </div>
-
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Manage actions' %>
+  <% header_nav.with_dropdown title: 'Jump to category',
+                              id: 'categoryDropdown',
+                              items: InterventionTypeGroup.all.map { |group|
+                                [group.name, "#intervention-type-group-#{group.id}"]
+                              },
+                              classes: 'me-2' %>
+  <% header_nav.with_button 'New Action', new_admin_intervention_type_path,
+                            style: :primary, size: nil %>
 <% end %>
 
-<div class="container">
-  <div class="row">
-    <p><%= link_to 'New Intervention type', new_admin_intervention_type_path, class: 'btn' %></p>
-  </div>
-</div>
+<p class="mb-4">
+  Actions highlighted in <span class="bg-warning">yellow</span>
+  are inactive and no longer visible to users.
+</p>
+
+<% InterventionTypeGroup.all.find_each do |intervention_type_group| %>
+  <h2 id="intervention-type-group-<%= intervention_type_group.id %>"><%= intervention_type_group.name %></h2>
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Score</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% intervention_type_group.intervention_types.sort_by(&:id).each do |intervention_type| %>
+        <tr class="<%= active(intervention_type.active) %>" scope="row">
+          <td><%= intervention_type.id %></td>
+          <td><%= link_to intervention_type.name, intervention_type_path(intervention_type) %></td>
+          <td><%= intervention_type.score %></td>
+          <td class="text-nowrap text-end">
+            <%= link_to 'Edit',
+                        edit_admin_intervention_type_path(intervention_type),
+                        class: 'btn btn-secondary btn-sm' %>
+            <%= link_to 'Report', admin_reports_intervention_type_path(intervention_type),
+                        class: 'btn btn-secondary btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<p><%= link_to 'New Action', new_admin_intervention_type_path, class: 'btn btn-primary' %></p>
