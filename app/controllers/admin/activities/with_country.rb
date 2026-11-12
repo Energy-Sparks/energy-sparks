@@ -7,6 +7,7 @@ module Admin
 
       included do
         before_action :set_country
+        before_action :add_breadcrumbs
       end
 
       private

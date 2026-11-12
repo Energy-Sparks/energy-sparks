@@ -7,6 +7,7 @@ module Admin
     load_and_authorize_resource
     before_action :load_filters, only: %i[new edit create update]
     before_action :load_chart_list, except: :index
+    before_action :add_breadcrumbs
 
     def index
       @activity_types = @activity_types.includes(:activity_category).order('activity_categories.name', :name)
@@ -111,6 +112,10 @@ module Admin
       end
       custom_activity_charts = [['Activity charts (custom)', ChartManager::STANDARD_CHART_CONFIGURATION.keys.grep(/^activities/)]]
       @chart_list = custom_activity_charts + analysis_charts
+    end
+
+    def add_breadcrumbs
+      @breadcrumbs << { name: 'Activities', href: admin_activity_types_path }
     end
   end
 end

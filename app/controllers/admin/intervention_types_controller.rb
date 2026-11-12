@@ -6,6 +6,8 @@ module Admin
 
     load_and_authorize_resource
 
+    before_action :add_breadcrumbs
+
     def index
       @intervention_types = @intervention_types.includes(:intervention_type_group).order('intervention_types.name',
                                                                                          :name)
@@ -97,7 +99,6 @@ module Admin
 
     def add_breadcrumbs
       @breadcrumbs << { name: 'Actions', href: admin_intervention_types_path }
-      @breadcrumbs << { name: @intervention_type.pluralize.humanize } if @intervention_type
     end
   end
 end
