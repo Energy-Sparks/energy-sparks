@@ -8,9 +8,14 @@
   }
 }
 
-.select2-container--bootstrap .select2-results__group {
+.select2-container--bootstrap .select2-results__group,
+.select2-container--bootstrap-5 .select2-dropdown
+  .select2-results__options
+  .select2-results__option[role=group]
+  .select2-results__group {
   color: $body-color;
   font-size: $f4;
+  font-weight: $font-weight-bold;
 }
 
 .select2-container {
