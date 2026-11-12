@@ -39,7 +39,7 @@ describe 'activity type', type: :system do
         allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
         allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
 
-        click_on 'New Activity', match: :first
+        click_on 'New activity', match: :first
       end
 
       it 'can add a new activity for KS1 with filters' do
@@ -47,7 +47,7 @@ describe 'activity type', type: :system do
         summary = 'An activity to try'
         download_links = 'Some download links'
         school_specific_description = description + ' for SCHOOOOOOLS'
-        activity_name = 'New activity'
+        activity_name = 'New Activity'
 
         fill_in :activity_type_name_en, with: activity_name
         fill_in :activity_type_summary_en, with: summary
@@ -97,7 +97,7 @@ describe 'activity type', type: :system do
       end
 
       it 'can does not crash if you forget the score' do
-        fill_in :activity_type_name_en, with: 'New activity'
+        fill_in :activity_type_name_en, with: 'New Activity'
         fill_in_trix with: 'the description'
 
         check('KS1')
