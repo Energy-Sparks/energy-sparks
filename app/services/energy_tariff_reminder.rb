@@ -19,11 +19,11 @@ class EnergyTariffReminder
   def each_reminder(expiring:)
     return enum_for(__method__, expiring:) unless block_given?
 
-    method_name = expiring ? :each_needing_expiry_reminder : :each_needing_tariff_reminder
-    method(method_name).call(School.active) do |school, expiring_tariffs|
+    selector = method(expiring ? :each_needing_expiry_reminder : :each_needing_tariff_reminder)
+    selector.call(School.active) do |school, expiring_tariffs|
       yield school, school.all_school_admins.school_admin.active, expiring_tariffs
     end
-    method(method_name).call(SchoolGroup.all) do |school_group, expiring_tariffs|
+    selector.call(SchoolGroup.all) do |school_group, expiring_tariffs|
       yield school_group, school_group.users.group_admin.active, expiring_tariffs
     end
   end

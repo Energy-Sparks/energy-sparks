@@ -13,11 +13,7 @@ class EnergyTariffReminderReport
   end
 
   def expiring_columns
-    [Column.new('Scheduled date', ->(row) { row[:scheduled_on] }),
-     *biannual_columns,
-     Column.new('Tariff IDs', ->(row) { row[:tariffs] }, ->(row) { tariff_links(row) }),
-     Column.new('Fuel types', ->(row) { row[:tariffs].map(&:meter_type).uniq.join(', ') }),
-     Column.new('Expiry dates', ->(row) { row[:tariffs].map(&:end_date).uniq.map(&:iso8601).join(', ') })]
+    [Column.new('Scheduled date', ->(row) { row[:scheduled_on] }), *biannual_columns, *tariff_columns]
   end
 
   def biannual_columns
@@ -42,6 +38,14 @@ class EnergyTariffReminderReport
   end
 
   private
+
+  def tariff_columns
+    [Column.new('Tariff IDs', ->(row) { row[:tariffs] }, ->(row) { tariff_links(row) }),
+     Column.new('Fuel types', ->(row) { row[:tariffs].map(&:meter_type).uniq.join(', ') }),
+     Column.new('Expiry dates', ->(row) { expiry_dates(row[:tariffs]) })]
+  end
+
+  def expiry_dates(tariffs) = tariffs.map(&:end_date).uniq.map(&:iso8601).join(', ')
 
   def organisation_tariffs_path(row)
     if row[:organisation].instance_of?(School)
