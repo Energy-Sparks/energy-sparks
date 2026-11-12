@@ -1,0 +1,28 @@
+<% content_for :page_title, 'Tariff reminder emails' %>
+
+<h1>Tariff reminder emails</h1>
+
+<p>Each row represents one email, with recipients grouped by organisation and preferred locale.</p>
+<p>
+  This is a read-only forecast based on current tariff and account data. Viewing this report does not
+  send emails. Later changes to tariffs or accounts can change the recipients. The forecast does not account for
+  delivery failures, retries or whether today's scheduled emails have already been sent.
+</p>
+
+<% unless ENV['SEND_AUTOMATED_EMAILS'] == 'true' %>
+  <div class="alert alert-warning">
+    Automated emails are disabled. These emails would be sent if enabled.
+  </div>
+<% end %>
+
+<section id="expiring-reminders">
+  <h2>Expiring tariff reminders</h2>
+  <p>Expected emails in the next 6 months (<%= @report.from %> to <%= @report.to %>).</p>
+  <%= render 'table', rows: @report.expiring_rows, columns: @report.expiring_columns %>
+</section>
+
+<section id="biannual-reminders">
+  <h2>Next biannual reminder</h2>
+  <p>Expected emails for the next biannual review on <%= @report.next_biannual_date %>.</p>
+  <%= render 'table', rows: @report.next_biannual_rows, columns: @report.biannual_columns %>
+</section>

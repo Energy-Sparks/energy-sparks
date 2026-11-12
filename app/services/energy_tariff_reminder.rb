@@ -3,17 +3,29 @@
 class EnergyTariffReminder
   REMINDER_WINDOW = 30.days
 
-  def initialize
-    @today = Date.current
+  def initialize(today: Date.current)
+    @today = today
     @end_date = @today + REMINDER_WINDOW
   end
 
   def send_expiring_tariff_reminders
-    send_reminders(:send_expiring_tariff_reminders, :each_needing_expiry_reminder)
+    send_reminders(:send_expiring_tariff_reminders, expiring: true)
   end
 
   def send_tariff_reminders
-    send_reminders(:send_tariff_reminders, :each_needing_tariff_reminder)
+    send_reminders(:send_tariff_reminders, expiring: false)
+  end
+
+  def each_reminder(expiring:)
+    return enum_for(__method__, expiring:) unless block_given?
+
+    method_name = expiring ? :each_needing_expiry_reminder : :each_needing_tariff_reminder
+    method(method_name).call(School.active) do |school, expiring_tariffs|
+      yield school, school.all_school_admins.school_admin.active, expiring_tariffs
+    end
+    method(method_name).call(SchoolGroup.all) do |school_group, expiring_tariffs|
+      yield school_group, school_group.users.group_admin.active, expiring_tariffs
+    end
   end
 
   private
@@ -25,7 +37,7 @@ class EnergyTariffReminder
     end
   end
 
-  def current_tariffs = EnergyTariff.enabled.current
+  def current_tariffs = EnergyTariff.enabled.current(@today)
 
   def expiring_tariffs = current_tariffs.where(end_date: @end_date)
 
@@ -69,7 +81,7 @@ class EnergyTariffReminder
   def with_stale_open_ended_tariff(relation)
     current_tariffs.where(tariff_holder_type: relation.klass.base_class.name,
                           end_date: nil,
-                          start_date: ...1.year.ago.to_date)
+                          start_date: ...(@today - 1.year))
                    .select(:tariff_holder_id)
   end
 
@@ -79,14 +91,11 @@ class EnergyTariffReminder
     EnergySparks::Log.exception(e, { job:, organisation: organisation.slug })
   end
 
-  def send_reminders(job, method_name)
+  def send_reminders(job, expiring:)
     return unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
 
-    method(method_name).call(School.active) do |school, expiring_tariffs|
-      send_reminder(school, school.all_school_admins.school_admin.active, job, expiring_tariffs:)
-    end
-    method(method_name).call(SchoolGroup.all) do |school_group, expiring_tariffs|
-      send_reminder(school_group, school_group.users.group_admin.active, job, expiring_tariffs:)
+    each_reminder(expiring:) do |organisation, users, expiring_tariffs|
+      send_reminder(organisation, users, job, expiring_tariffs:)
     end
   end
 end
