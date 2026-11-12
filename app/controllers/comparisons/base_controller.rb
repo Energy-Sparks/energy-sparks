@@ -102,20 +102,21 @@ module Comparisons
                                       x_max_value: kwargs[:x_max_value],
                                       fuel_type: @report.fuel_type).create_chart(
                                         metric_to_translation_key, multiplier, y_axis_label
-      )
+                                      )
     end
 
-    def create_single_number_chart(results, name, multiplier, series_name, y_axis_label, **kwargs)
-      [create_chart(results, { name => series_name }, multiplier, y_axis_label, **kwargs)]
+    def create_single_number_chart(results, name, multiplier, series_name, y_axis_label, **)
+      [create_chart(results, { name => series_name }, multiplier, y_axis_label, **)]
     end
 
-    def create_multi_chart(results, names, multiplier, y_axis_label, **kwargs)
-      [create_chart(results, names, multiplier, y_axis_label, **kwargs)]
+    def create_multi_chart(results, names, multiplier, y_axis_label, **)
+      [create_chart(results, names, multiplier, y_axis_label, **)]
     end
 
     def create_chart_json
       chart_data = create_charts(@results).first
       return {} unless chart_data.is_a?(Hash)
+
       chart_data = chart_data.except(:id).merge({ chart1_type: :bar, chart1_subtype: :stacked })
       ChartDataValues.as_chart_json(ChartDataValues.new(chart_data, :comparison, fuel_type: @report.fuel_type).process)
     end
@@ -143,22 +144,26 @@ module Comparisons
 
     def set_school_group
       @school_group_layout = params[:group] == 'true'
-      @school_group = SchoolGroup.find(params[:school_group_ids].reject(&:blank?).first) if @school_group_layout
+      @school_group = SchoolGroup.find(params.expect(school_group_ids: []).compact_blank.first) if @school_group_layout
     end
 
     def redirect_unless_authorised
       return unless @school_group_layout
+
       super
     end
 
     def set_advice_vars_and_breadcrumbs
       return unless @school_group_layout
+
       load_schools
       set_fuel_types
       set_counts
       build_breadcrumbs([
-                          { name: I18n.t('advice_pages.breadcrumbs.root'), href: school_group_advice_path(@school_group) },
-                          { name: I18n.t('school_groups.titles.comparisons'), href: comparison_reports_school_group_advice_path(@school_group) },
+                          { name: I18n.t('advice_pages.breadcrumbs.root'),
+                            href: school_group_advice_path(@school_group) },
+                          { name: I18n.t('school_groups.titles.comparisons'),
+                            href: comparison_reports_school_group_advice_path(@school_group) },
                           { name: @report.title }
                         ])
     end
