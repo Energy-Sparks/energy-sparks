@@ -1,5 +1,5 @@
 #======================== Change in Electricity Baseload Analysis =============
-require_relative '../alert_electricity_only_base.rb'
+require_relative '../alert_electricity_only_base'
 
 class AlertSeasonalBaseloadVariation < AlertBaseloadBase
   attr_reader :winter_kw, :summer_kw, :percent_seasonal_variation

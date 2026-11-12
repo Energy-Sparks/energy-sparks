@@ -36,7 +36,7 @@
           <%= school.summarised_current_contract_holder_name %>
         </td>
         <td class="nowrap">
-          <%= render 'shared/school_status_buttons', school: school %>
+          <%= render Admin::SchoolStatusButtonsComponent.new(school: school, current_user:) %>
         </td>
         <td class="nowrap text-end">
           <%= link_to issue_type_icons(school.issues, label: 'Issues'), admin_school_issues_path(school),

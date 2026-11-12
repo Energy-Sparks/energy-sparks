@@ -1,5 +1,5 @@
 #======================== Change in Daily Electricity Consumption =============
-require_relative 'alert_electricity_only_base.rb'
+require_relative 'alert_electricity_only_base'
 
 #NOTE: This is not registered in the application database, so not actually in direct use?
 #REMOVE?

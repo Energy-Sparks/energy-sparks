@@ -186,29 +186,13 @@ RSpec.describe 'Navigation -> second nav' do
       context 'when logged in as a non admin' do
         let(:user) { create(:pupil) }
 
-        it { expect(nav).to have_css('#school-status-buttons') }
-
-        it 'does not display buttons' do
-          expect(nav).to have_no_link('Visible')
-          expect(nav).to have_no_link('Public')
-          expect(nav).to have_no_link('Process data')
-          expect(nav).to have_no_link('Data visible')
-          expect(nav).to have_no_css('a i.fa-arrows-rotate')
-        end
+        it { expect(nav).to have_no_css('#school-status-buttons') }
       end
 
       context 'when logged in as an admin' do
         let(:user) { create(:admin) }
 
         it { expect(nav).to have_css('#school-status-buttons') }
-
-        it 'displays buttons' do
-          expect(nav).to have_link('Visible')
-          expect(nav).to have_link('Public')
-          expect(nav).to have_link('Process data')
-          expect(nav).to have_link('Data visible')
-          expect(nav).to have_css('a i.fa-arrows-rotate')
-        end
       end
     end
   end

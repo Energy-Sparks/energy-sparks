@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './alert_analysis_base.rb'
+require_relative 'alert_analysis_base'
 
 # not a real 'user' alert, but something which provides basic data to support the
 # prioritisation of other alerts
