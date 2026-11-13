@@ -4,7 +4,8 @@ module MeterAttributes
   class SolarPV < MeterAttributeTypes::AttributeBase
     id :solar_pv
     aggregate_over :solar_pv
-    name 'Solar > Solar PV'
+    name 'Solar > Model Solar PV (when metered PV data is NOT available for any arrays)'
+    description 'Use for setting up modelled solar PV for schools when metered PV data isnt available'
 
     structure MeterAttributeTypes::Hash.define(
       structure: {
