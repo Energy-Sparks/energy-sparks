@@ -38,6 +38,7 @@ module Comparisons
         format.json do
           render json: create_chart_json
         end
+        format.any { head :not_acceptable }
       end
     end
 
