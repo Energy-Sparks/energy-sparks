@@ -1,0 +1,9 @@
+<p><%= pluralize(rows.size, 'email') %> expected.</p>
+
+<% if rows.empty? %>
+  <p>No emails expected.</p>
+<% end %>
+
+<div class="table-responsive">
+  <%= render 'admin/reports/column_table', rows: rows, columns: columns %>
+</div>

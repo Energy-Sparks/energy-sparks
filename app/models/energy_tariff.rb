@@ -86,9 +86,8 @@ class EnergyTariff < ApplicationRecord
   scope :electricity, -> { where(meter_type: :electricity) }
   scope :gas,         -> { where(meter_type: :gas) }
 
-  scope :current, lambda {
-    where(start_date: ..Date.current, end_date: Date.current..)
-      .or(where(start_date: ..Date.current, end_date: nil))
+  scope :current, lambda { |date = Date.current|
+    where(start_date: ..date, end_date: date..).or(where(start_date: ..date, end_date: nil))
   }
 
   # Sorts with null start date first, then start date, then end date
