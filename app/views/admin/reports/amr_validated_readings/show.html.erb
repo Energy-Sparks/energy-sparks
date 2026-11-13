@@ -1,7 +1,3 @@
-<% content_for :head do %>
-  <%= javascript_import_module_tag 'readings/calendar' %>
-<% end %>
-
 <h1><%= icon_and_display_name(@meter) %> meter report</h1>
 <p><%= link_to 'School group meter report', admin_school_group_meter_report_path(@meter.school.school_group),
                class: 'btn btn-success' %></p>
@@ -33,41 +29,13 @@
   </div>
 <% end %>
 
-<div class="readings-calendar" data-url="/admin/reports/amr_validated_readings/summary/<%= @meter.id %>.json"></div>
-
-<div class="calendar-legend row">
-  <div class="legend-scale vertical col-md-4">
-    <ul class='legend-labels'>
-      <% @summary_legend.each do |colour, label| %>
-        <li>
-          <span style='background:<%= colour %>;'></span>
-          <div class="description" style="font-size: 17px;">
-            <small><%= label %></small>
-          </div>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-</div>
+<%= render Meters::ReadingCalendarComponent.new(meter: @meter,
+                                                calendar_generator: Meters::SummarisedCalendarGenerator.new(@meter),
+                                                path: admin_reports_amr_validated_reading_summary_path(@meter,
+                                                                                                       format: :json)) %>
 
 <h2>Corrected readings</h2>
 
-<div class="readings-calendar"></div>
-
-<div class="calendar-legend row">
-  <% @detailed_legend.entries.in_groups_of(10, false).each do |group| %>
-    <div class="legend-scale vertical col-md-4">
-      <ul class='legend-labels'>
-        <% group.each do |colour, label| %>
-          <li>
-            <span style='background:<%= colour %>;'></span>
-            <div class="description" style="font-size: 17px;">
-              <small><%= label %></small>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-  </div>
-</div>
+<%= render Meters::ReadingCalendarComponent.new(meter: @meter,
+                                                calendar_generator: Meters::DetailedCalendarGenerator.new(@meter),
+                                                path: admin_reports_amr_validated_reading_path(@meter, format: :json)) %>
