@@ -21,3 +21,7 @@ RSpec.shared_examples 'a 422 error page' do
   it { expect(page).to have_content "Maybe you tried to change something you didn't have access to." }
   it { expect(page).to have_content 'Please continue to our home page.' }
 end
+
+RSpec.shared_examples 'a 400 response' do
+  it { expect(page).to have_http_status(:bad_request) }
+end
