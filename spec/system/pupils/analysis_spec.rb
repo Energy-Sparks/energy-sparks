@@ -341,4 +341,28 @@ describe 'Pupil analysis' do
 
     it { expect_chart_link(school, I18n.t('common.line_graphs'), 'Storage Heaters', 'Line') }
   end
+
+  context 'when visiting usage chart' do
+    let(:school) { create(:school, :with_basic_configuration_single_meter_and_tariffs) }
+
+    context 'with valid params' do
+      before { visit school_usage_path(school, period: :weekly, supply: :electricity) }
+
+      it 'displays a chart' do
+        expect(page).to have_text(I18n.t('charts.usage.titles.electricity.weekly.not_split'))
+      end
+    end
+
+    context 'with no supply' do
+      before { visit school_usage_path(school, period: :weekly) }
+
+      it_behaves_like 'a 400 response'
+    end
+
+    context 'with no period' do
+      before { visit school_usage_path(school, supply: :electricity) }
+
+      it_behaves_like 'a 400 response'
+    end
+  end
 end
