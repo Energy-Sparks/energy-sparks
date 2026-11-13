@@ -597,6 +597,19 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
+  describe 'when requesting an unsupported format' do
+    let!(:school) { create(:school) }
+
+    include_context 'index page context'
+    include_context 'results page context'
+
+    before { visit comparisons_baseload_per_pupil_index_path(format: 999) }
+
+    it 'returns a Not Acceptable response' do
+      expect(page).to have_http_status(:not_acceptable)
+    end
+  end
+
   describe 'when redirecting from the old implementation' do
     context 'when user is requesting an old report', type: :request do
       before do
