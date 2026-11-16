@@ -83,6 +83,8 @@ module Admin
       params.expect(activity_type: [*translated, *scalars,
                                     { key_stage_ids: [], impact_ids: [], subject_ids: [],
                                       activity_timing_ids: [], fuel_type: [],
+                                      aim_ids: [], duration_ids: [], topic_ids: [],
+                                      subject_area_ids: [], learning_stage_ids: [],
                                       link_rewrites_attributes: [link_rewrites_params],
                                       activity_type_suggestions_attributes: [suggestions_params] }])
     end
@@ -96,6 +98,7 @@ module Admin
     end
 
     def load_filters
+      ## Remove these when switching on activity_classifications feature flag
       @key_stages = KeyStage.order(:name)
       @subjects = Subject.order(:name)
       @impacts = Impact.order(:name)
