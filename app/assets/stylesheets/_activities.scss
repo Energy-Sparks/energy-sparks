@@ -8,6 +8,7 @@
   }
 }
 
+// The BS5 selector must stay this specific for the group headings to be styled correctly.
 .select2-container--bootstrap .select2-results__group,
 .select2-container--bootstrap-5 .select2-dropdown
   .select2-results__options
@@ -34,7 +35,7 @@
   border-top: 5px solid $grey-dark;
 }
 
-// Limit to outer results list, otherwise group options render on top of each other
+// Limit to outer results list, otherwise group options render on top of each other (bs4 and bs5)
 .select2-results__options:not(.select2-results__options--nested) {
   max-height: 300px !important;
 }
