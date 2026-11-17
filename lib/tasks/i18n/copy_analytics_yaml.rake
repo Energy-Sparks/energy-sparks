@@ -2,7 +2,7 @@ namespace :i18n do
   desc 'copy YAML files from analytics to prepare a release'
   task :copy_analytics_yaml, :dir do |t,args|
     #provide a sensible default if not specified
-    args.with_defaults(dir: Rails.root.join('config', 'locales', 'analytics'))
+    args.with_defaults(dir: Rails.root.join('config', 'locales', 'en', 'analytics'))
     dest = args.dir
 
     analytics_gem_path = `bundle info energy-sparks_analytics --path`.chomp

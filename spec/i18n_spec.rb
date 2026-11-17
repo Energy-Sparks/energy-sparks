@@ -50,7 +50,7 @@ RSpec.describe I18n do
     analytics_yaml = File.join(analytics_gem_path, 'config', 'locales')
     yaml = Dir['**/*.yml', base: analytics_yaml].reject {|f| f.match(/^x-/)}.sort
     yaml.each do |yml|
-      expect(YAML.load_file(File.join(analytics_gem_path, 'config', 'locales', yml))).to eq(YAML.load_file(Rails.root.join('config', 'locales', 'analytics', yml)))
+      expect(YAML.load_file(File.join(analytics_gem_path, 'config', 'locales', yml))).to eq(YAML.load_file(Rails.root.join('config', 'locales', 'en', 'analytics', yml)))
     end
   end
 end
