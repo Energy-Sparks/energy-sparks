@@ -43,8 +43,8 @@ require 'factory_bot'
 # Load the helpers from the support directory
 Dir[File.expand_path(File.join('spec', 'support', '**', '*.rb'))].sort.each { |f| require_relative f }
 
-# Load YAML files for translations
-I18n.load_path += Dir[File.join('config', 'locales', '**', '*.yml').to_s]
+# Load the application's translations independently of the working directory.
+I18n.load_path += Dir[File.expand_path('../../config/locales/{en,cy}/**/*.yml', __dir__)]
 
 # switch off most logging while testing
 module Logging

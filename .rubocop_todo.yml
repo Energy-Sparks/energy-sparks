@@ -1596,7 +1596,6 @@ Layout/LeadingCommentSpace:
     - 'lib/tasks/deployment/20241112151914_load_regions_and_local_authority_districts_2024_11.rake'
     - 'lib/tasks/deployment/20241118145735_funders_november2024.rake'
     - 'lib/tasks/deployment/20250127114048_update_british_gas_new.rake'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/schools/load_regions_and_load_authority_districts.rake'
 
 # Offense count: 5
@@ -1834,7 +1833,6 @@ Layout/SpaceAfterComma:
     - 'lib/tasks/deployment/20221118145759_create_new_edf_historic_config.rake'
     - 'lib/tasks/deployment/20231024132802_create_entrust_data_feed_config.rake'
     - 'lib/tasks/deployment/20240710141511_create_solar_for_schools_meters.rake'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/i18n/generate_tx_config.rake'
     - 'lib/tasks/mailchimp/audience_updater.rake'
     - 'lib/tasks/mailchimp/csv_export.rake'
@@ -2171,7 +2169,6 @@ Layout/SpaceInsideBlockBraces:
     - 'lib/energy_sparks/csv_loader.rb'
     - 'lib/energy_sparks/points_display_normaliser.rb'
     - 'lib/tasks/calendars/set_calendar_event_parents.rake'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/i18n/generate_tx_config.rake'
     - 'spec/factories/activity_categories_factory.rb'
     - 'spec/factories/activity_types_factory.rb'
@@ -2577,7 +2574,6 @@ Lint/AmbiguousRange:
 Lint/AmbiguousRegexpLiteral:
   Exclude:
     - 'analytics/test_support/run_charts.rb'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/i18n/generate_tx_config.rake'
 
 # Offense count: 1
@@ -3004,7 +3000,6 @@ Lint/UnusedBlockArgument:
     - 'analytics/test_support/run_charts.rb'
     - 'analytics/test_support/run_tests.rb'
     - 'config/initializers/z_after_party.rb'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/i18n/generate_tx_config.rake'
     - 'lib/tasks/mailchimp/audience_updater.rake'
     - 'lib/tasks/mailchimp/csv_export.rake'
@@ -7477,7 +7472,6 @@ Rails/Exit:
 # SupportedStyles: slashes, arguments
 Rails/FilePath:
   Exclude:
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/i18n/generate_tx_config.rake'
     - 'spec/factories/audit_factory.rb'
     - 'spec/factories/case_studies_factory.rb'
@@ -7949,7 +7943,6 @@ Rails/Present:
 Rails/RakeEnvironment:
   Exclude:
     - 'analytics/rakelib/testing.rake'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/i18n/generate_tx_config.rake'
     - 'lib/tasks/utility.rake'
 
@@ -11561,7 +11554,6 @@ Style/FrozenStringLiteralComment:
     - 'lib/tasks/deployment/20260304134218_accept_terms_for_onboarding_users.rake'
     - 'lib/tasks/deployment/20260304145842_add_impact_reporting_feature.rake'
     - 'lib/tasks/deployment/20260305124414_set_default_alert_percentage_threshold.rake'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/i18n/generate_tx_config.rake'
     - 'lib/tasks/i18n/transifex_load.rake'
     - 'lib/tasks/mailchimp/audience_updater.rake'
@@ -14276,7 +14268,6 @@ Style/StderrPuts:
     - 'lib/tasks/deployment/20240229165916_load_regions_and_local_authority_districts.rake'
     - 'lib/tasks/deployment/20241112151914_load_regions_and_local_authority_districts_2024_11.rake'
     - 'lib/tasks/deployment/20250423125436_reset_pv_live_areas.rake'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/schools/load_regions_and_load_authority_districts.rake'
 
 # Offense count: 2
@@ -14670,7 +14661,6 @@ Style/StringLiterals:
     - 'lib/tasks/deployment/20250414092919_perse_dashboard_messages.rake'
     - 'lib/tasks/deployment/20250416121707_remove_edf_dashboard_messages.rake'
     - 'lib/tasks/deployment/20250423125436_reset_pv_live_areas.rake'
-    - 'lib/tasks/i18n/copy_analytics_yaml.rake'
     - 'lib/tasks/i18n/generate_tx_config.rake'
     - 'lib/tasks/mailchimp/audience_updater.rake'
     - 'lib/tasks/mailchimp/csv_export.rake'

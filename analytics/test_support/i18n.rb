@@ -1,11 +1,13 @@
-#I18N Configuration, to allow test harness to access translations
+# frozen_string_literal: true
 
-#Add fallback support
+# I18n configuration for the analytics test harness.
+
+# Add fallback support
 I18n::Backend::Simple.include(I18n::Backend::Fallbacks)
 
-#Set available locale and allow fallback to english
-I18n.available_locales = [:en, :cy]
+# Set available locales and allow fallback to English
+I18n.available_locales = %i[en cy]
 I18n.fallbacks = [:en]
 
-#Load YAML files for translations
-I18n.load_path += Dir[File.join('config', 'locales', '**', '*.yml').to_s]
+# Analytics shares the application's translations, regardless of the working directory.
+I18n.load_path += Dir[File.expand_path('../../config/locales/{en,cy}/**/*.yml', __dir__)]
