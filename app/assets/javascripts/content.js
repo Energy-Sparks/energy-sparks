@@ -27,7 +27,7 @@ $(document).ready(function() {
     });
   });
 
-  $('a.preview-tab[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  $('a.preview-tab[data-toggle="tab"], a.preview-tab[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
     var tab = $(e.target);
     var pane  = $(tab.attr('href'));
     var url = pane.data('content-url');
@@ -51,7 +51,7 @@ $(document).ready(function() {
     });
   });
 
-  $('a.preview-tab[data-toggle="tab"]').on('hidden.bs.tab', function (e) {
+  $('a.preview-tab[data-toggle="tab"], a.preview-tab[data-bs-toggle="tab"]').on('hidden.bs.tab', function (e) {
     var tab = $(e.target);
     var pane  = $(tab.attr('href'));
     pane.find('.loading').show();
