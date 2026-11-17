@@ -1,3 +1,4 @@
+---
 cy:
   schools:
     transport_surveys:
@@ -7,25 +8,25 @@ cy:
           save: Cadw
         notifications:
           confirm_remove:
-            one: Ydych yn siŵr eich bod am ddileu 1 ymateb sydd heb ei gadw o %{date}?
-            two: Ydych yn siŵr eich bod am ddileu %{count} ymateb sydd heb eu cadw o %{date}?
             many: Ydych yn siŵr eich bod am ddileu %{count} ymateb sydd heb eu cadw o %{date}?
+            one: Ydych yn siŵr eich bod am ddileu 1 ymateb sydd heb ei gadw o %{date}?
             other: Ydych yn siŵr eich bod am ddileu %{count} ymateb sydd heb eu cadw o %{date}?
+            two: Ydych yn siŵr eich bod am ddileu %{count} ymateb sydd heb eu cadw o %{date}?
           confirm_save:
-            one: Ydych yn siŵr eich bod am gadw 1 ymateb sydd heb ei gadw o %{date}?
-            two: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
             many: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
+            one: Ydych yn siŵr eich bod am gadw 1 ymateb sydd heb ei gadw o %{date}?
             other: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
+            two: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
           no_connection: Bu gwall wrth gadw ymatebion - gwnewch yn siŵr bod gennych gysylltiad WIFI cyn cadw!
           no_local_storage: Nid yw eich porwr yn cefnogi nodwedd sy'n ofynnol gan ein hofferyn arolwg. Naill ai uwchraddiwch eich porwr, defnyddiwch ddewis arall neu galluogwch 'localStorage'
           no_responses: Dim byd i'w gadw - casglwch rai ymatebion arolwg yn gyntaf!
           responses_removed: Ymatebion sydd heb eu cadw wedi'u dileu!
           responses_saved: Ymatebion wedi'u cadw!
           unsaved_responses_html:
-            one: Mae <strong>1</strong> ymateb i'r arolwg sydd heb ei gadw o <strong>%{date}</strong>. Ydych chi am ei gadw neu ei ddileu?
-            two: Mae <strong>%{count}</strong> ymateb i'r arolwg sydd heb eu cadw o <strong>%{date}</strong>. Ydych chi am eu cadw neu eu dileu?
             many: Mae <strong>%{count}</strong> ymateb i'r arolwg sydd heb eu cadw o <strong>%{date}</strong>. Ydych chi am eu cadw neu eu dileu?
+            one: Mae <strong>1</strong> ymateb i'r arolwg sydd heb ei gadw o <strong>%{date}</strong>. Ydych chi am ei gadw neu ei ddileu?
             other: Mae <strong>%{count}</strong> ymateb i'r arolwg sydd heb eu cadw o <strong>%{date}</strong>. Ydych chi am eu cadw neu eu dileu?
+            two: Mae <strong>%{count}</strong> ymateb i'r arolwg sydd heb eu cadw o <strong>%{date}</strong>. Ydych chi am eu cadw neu eu dileu?
         today: heddiw
       common:
         carbon: Carbon
@@ -74,10 +75,10 @@ cy:
           time: Amser
           transport: Trafnidiaeth
         pupils:
+          many: "%{count} o ddisgyblion"
           one: Jyst fi
-          two: '%{count} ddisgybl'
-          many: '%{count} o ddisgyblion'
-          other: '%{count} o ddisgyblion'
+          other: "%{count} o ddisgyblion"
+          two: "%{count} ddisgybl"
         steps:
           carbon_html: Gwnaethoch chi ddefnyddio %{carbon} o garbon!
           confirm: Cadarnhewch eich dewis
@@ -90,36 +91,36 @@ cy:
         title: Arolwg teithio i'r ysgol
       equivalences:
         carnivore_dinner:
-          one: Mae hynny yr un peth ag 1 cinio cig %{image}!
-          two: Mae hynny yr un peth â %{count} o giniawau cig %{image}!
           many: Mae hynny yr un peth â %{count} o giniawau cig %{image}!
+          one: Mae hynny yr un peth ag 1 cinio cig %{image}!
           other: Mae hynny yr un peth â %{count} o giniawau cig %{image}!
+          two: Mae hynny yr un peth â %{count} o giniawau cig %{image}!
         computer_console:
-          one: Mae hynny yr un peth a chwarae 1 awr o gemau cyfrifiadur %{image}!
-          two: Mae hynny yr un peth a chwarae %{count} awr o gemau cyfrifiadur %{image}!
           many: Mae hynny yr un peth a chwarae %{count} awr o gemau cyfrifiadur %{image}!
+          one: Mae hynny yr un peth a chwarae 1 awr o gemau cyfrifiadur %{image}!
           other: Mae hynny yr un peth â chwarae %{count} awr o gemau cyfrifiadur %{image}!
-        neutral: "Mae hynny'n Garbon Niwtral \U0001F333!"
+          two: Mae hynny yr un peth a chwarae %{count} awr o gemau cyfrifiadur %{image}!
+        neutral: "Mae hynny'n Garbon Niwtral 🌳!"
         smartphone:
-          one: Mae hynny yr un peth â gwefru 1 ffon clyfar %{image}!
-          two: Mae hynny yr un peth â gwefru %{count} ffon clyfar %{image}!
           many: Mae hynny yr un peth â gwefru %{count} ffon clyfar %{image}!
+          one: Mae hynny yr un peth â gwefru 1 ffon clyfar %{image}!
           other: Mae hynny yr un peth â gwefru %{count} ffôn clyfar %{image}!
+          two: Mae hynny yr un peth â gwefru %{count} ffon clyfar %{image}!
         tree:
-          one: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen 1 diwrnod %{image}!
-          two: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen %{count} ddiwrnod %{image}!
           many: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen %{count} o ddiwrnodau %{image}!
+          one: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen 1 diwrnod %{image}!
           other: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen %{count} o ddiwrnodau %{image}!
+          two: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen %{count} ddiwrnod %{image}!
         tv:
-          one: Mae hynny yr un peth a 1 awr o deledu %{image}!
-          two: Mae hynny yr un peth a %{count} awr o deledu %{image}!
           many: Mae hynny yr un peth a %{count} awr o deledu %{image}!
+          one: Mae hynny yr un peth a 1 awr o deledu %{image}!
           other: Mae hynny yr un peth â %{count} awr o deledu %{image}!
+          two: Mae hynny yr un peth a %{count} awr o deledu %{image}!
         vegetarian_dinner:
-          one: Mae hynny yr un peth â 1 cinio llysieuol %{image}!
-          two: Mae hynny yr un peth â %{count} o giniawau llysieuol %{image}!
           many: Mae hynny yr un peth â %{count} o giniawau llysieuol %{image}!
+          one: Mae hynny yr un peth â 1 cinio llysieuol %{image}!
           other: Mae hynny yr un peth â %{count} o giniawau llysieuol %{image}!
+          two: Mae hynny yr un peth â %{count} o giniawau llysieuol %{image}!
       header_nav:
         survey_today: Arolwg heddiw
         view_all: Gweld yr holl arolygon trafnidiaeth
@@ -136,15 +137,15 @@ cy:
         chart_load_error: Bu problem wrth lwytho'r siart hwn
         more_detail: 'Gadewch i ni edrych ar hyn yn fwy manwl:'
         percentages:
-          car_html: "Teithiodd %{amount} mewn car"
-          park_and_stride_html: "Defnyddiodd %{amount} parcio a chamu"
-          public_transport_html: "Teithiodd %{amount} ar drafnidiaeth gyhoeddus"
-          walking_and_cycling_html: "Roedd %{amount} wedi cerdded neu feicio, gan gynhyrchu sero CO2"
+          car_html: Teithiodd %{amount} mewn car
+          park_and_stride_html: Defnyddiodd %{amount} parcio a chamu
+          public_transport_html: Teithiodd %{amount} ar drafnidiaeth gyhoeddus
+          walking_and_cycling_html: Roedd %{amount} wedi cerdded neu feicio, gan gynhyrchu sero CO2
         summary_html:
-          one: Cynhyrchodd <strong>1 disgybl a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
-          two: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
           many: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+          one: Cynhyrchodd <strong>1 disgybl a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
           other: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+          two: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
         time_travelled_by_car: Amser a deithiwyd yn y car
         transport_categories_title: Dadansoddiad o deithiau yn ôl categori trafnidiaeth
       tab_nav:

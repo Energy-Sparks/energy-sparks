@@ -1,29 +1,30 @@
+---
 cy:
   components:
     search_results:
       areas:
         subtitle:
+          many: "%{count} awdurdod lleol"
           one: 1 awdurdod lleol
-          two: '%{count} awdurdod lleol'
-          many: '%{count} awdurdod lleol'
-          other: '%{count} awdurdod lleol'
+          other: "%{count} awdurdod lleol"
+          two: "%{count} awdurdod lleol"
       diocese:
         subtitle:
+          many: "%{count} esgobaeth"
           one: 1 esgobaeth
-          two: '%{count} esgobaeth'
-          many: '%{count} esgobaeth'
-          other: '%{count} esgobaeth'
+          other: "%{count} esgobaeth"
+          two: "%{count} esgobaeth"
       keyword:
         title: Canlyniadau
       school_groups:
         subtitle:
+          many: "%{count} grŵp ysgol"
           one: 1 grŵp ysgol
-          two: '%{count} grŵp ysgol'
-          many: '%{count} grŵp ysgol'
-          other: '%{count} grŵp ysgol'
+          other: "%{count} grŵp ysgol"
+          two: "%{count} grŵp ysgol"
       schools:
         subtitle:
+          many: "%{count} ysgol"
           one: 1 ysgol
-          two: '%{count} ysgol'
-          many: '%{count} ysgol'
-          other: '%{count} ysgol'
+          other: "%{count} ysgol"
+          two: "%{count} ysgol"

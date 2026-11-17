@@ -1,13 +1,14 @@
+---
 cy:
   analytics:
     alert_energy_annual_versus_benchmark:
       timescale: blwyddyn
     alert_impending_holiday:
       timescale:
+        many: "%{count} wythnos"
         one: 1 wythnos
-        two: '%{count} wythnos'
-        many: '%{count} wythnos'
-        other: '%{count} wythnos'
+        other: "%{count} wythnos"
+        two: "%{count} wythnos"
       timescale_unknown: Anhysbys
     alert_long_term_trend:
       summary: "%{cost}pa %{increase_or_reduction} ers y llynedd, %{percent}"

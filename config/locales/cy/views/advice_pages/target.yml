@@ -1,3 +1,4 @@
+---
 cy:
   advice_pages:
     target:
@@ -17,7 +18,7 @@ cy:
           manual_readings_html: "<sup>m</sup> - darlleniadau pwrpasol a ddefnyddir"
           on_target: Ar darged?
           partial: Dangosir misoedd rhannol mewn coch.
-          percentage_change: "Newid %"
+          percentage_change: Newid %
           target: Targed (kWh)
           text_html: Mae'r tabl hwn yn crynhoi eich cynnydd i leihau eich defnydd o %{fuel_type} gan %{percent} o fis i fis. Mae pob cofnod yn y tabl yn dangos y defnydd targed a'r defnydd gwirioneddol ar gyfer pob mis yn y cyfnod targed. Gall y tabl hwn fod o gymorth wrth nodi pa fisoedd rydych chi wedi gwneud yr arbedion mwyaf neu ble mae eich defnydd o ynni wedi bod yn uwch na'r targed.
           this_year: Eleni (kWh)
