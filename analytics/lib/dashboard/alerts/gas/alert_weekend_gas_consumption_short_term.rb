@@ -32,6 +32,7 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_weekend_gas_consumption_short_term.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 

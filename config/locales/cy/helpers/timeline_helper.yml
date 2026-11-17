@@ -1,8 +1,9 @@
+---
 cy:
   timeline:
     events:
+      many: "%{count}o ddigwyddiadau"
       one: 1 digwyddiad
-      two: '%{count} ddigwyddiad'
-      many: '%{count}o ddigwyddiadau'
-      other: '%{count} o ddigwyddiadau'
+      other: "%{count} o ddigwyddiadau"
+      two: "%{count} ddigwyddiad"
     this_month: Y MIS HWN

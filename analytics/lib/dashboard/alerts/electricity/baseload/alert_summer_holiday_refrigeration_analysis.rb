@@ -53,6 +53,7 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
   }.freeze
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_summer_holiday_refrigeration_analysis.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 
@@ -78,8 +79,10 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
 
   def summary
     if @annualised_reduction_£ > 0
+      # i18n-tasks-use I18n.t('analytics.alert_summer_holiday_refrigeration_analysis.summary.high')
       I18n.t("#{i18n_prefix}.summary.high", saving: FormatUnit.format(:£, @annualised_reduction_£, :text))
     else
+      # i18n-tasks-use I18n.t('analytics.alert_summer_holiday_refrigeration_analysis.summary.ok')
       I18n.t("#{i18n_prefix}.summary.ok")
     end
   end

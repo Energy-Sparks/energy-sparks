@@ -1,0 +1,12 @@
+---
+en:
+  helpers:
+    label:
+      user:
+        email: Email
+        password: Password
+  languages:
+    cy: Welsh
+    en: English
+    mirror: Mirror
+  name: English

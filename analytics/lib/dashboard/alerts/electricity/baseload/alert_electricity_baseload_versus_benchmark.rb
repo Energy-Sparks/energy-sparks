@@ -284,8 +284,10 @@ class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase
 
   def summary
     if @one_year_saving_versus_exemplar_£ > 0
+      # i18n-tasks-use I18n.t('analytics.alert_electricity_baseload_versus_benchmark.summary.high')
       I18n.t("#{i18n_prefix}.summary.high", saving: FormatUnit.format(:£, @one_year_saving_versus_exemplar_£, :text))
     else
+      # i18n-tasks-use I18n.t('analytics.alert_electricity_baseload_versus_benchmark.summary.ok')
       I18n.t("#{i18n_prefix}.summary.ok")
     end
   end

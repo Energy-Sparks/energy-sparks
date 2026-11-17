@@ -20,6 +20,7 @@ class StaffRole < ApplicationRecord
   enum :dashboard, { management: 0, teachers: 1 }
 
   def translated_title
+    # i18n-tasks-use t("staff_role.#{title}")
     I18n.t(i18n_key)
   end
 

@@ -1,20 +1,6 @@
 ---
 en:
   charts:
-    dashboard:
-      electricity:
-        title: Electricity
-        usage: electricity usage
-      gas:
-        title: Gas
-        usage: gas usage
-      solar:
-        title: Electricity
-        usage: electricity and solar usage
-      storage_heaters:
-        title: Storage heaters
-        usage: storage heater usage
-    hourly-usage-link: View usage by day
     usage:
       date_picker:
         daily:
@@ -53,7 +39,6 @@ en:
           weekly:
             not_split: Your school's daily gas use in your chosen weeks
             split: Your school's daily gas use in your chosen week recorded by meter
-    weekly-usage-link: View usage by week
   schools:
     aggregated_meter_collections:
       show:

@@ -79,7 +79,6 @@ en:
           rain: Rain
           snow: Snow
           sun: Sun
-        weather_image: Weather image
         weather_name: Weather
       transport_survey/transport_type:
         category:
@@ -115,13 +114,7 @@ en:
       transport_survey:
         one: Transport survey
         other: Transport surveys
-      transport_survey_response:
-        one: Response
-        other: Responses
   errors:
-    attributes:
-      temperature_recording:
-        centigrade: Temperature
     format: "%{attribute} %{message}"
     messages:
       accepted: must be accepted

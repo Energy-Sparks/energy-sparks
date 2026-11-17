@@ -4,6 +4,7 @@
   <% end %>
   <%= f.input :category, collection: TransportSurvey::TransportType.categories.keys, label_method: lambda {|k| k.humanize} %>
   <%= f.input :note %>
+  <%# i18n-tasks-use t('activerecord.attributes.transport_survey/transport_type.image') %>
   <%= f.input :image %>
   <%= f.input :speed_km_per_hour, label: 'Speed (km/h)' %>
   <%= f.input :kg_co2e_per_km, label: 'Carbon (kg co2e/km)' %>

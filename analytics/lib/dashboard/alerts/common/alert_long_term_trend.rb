@@ -30,6 +30,7 @@ class AlertLongTermTrend < AlertAnalysisBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_long_term_trend.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 
@@ -237,6 +238,7 @@ class AlertLongTermTrend < AlertAnalysisBase
   end
 
   def summary
+    # i18n-tasks-use I18n.t('analytics.alert_long_term_trend.summary')
     I18n.t("#{i18n_prefix}.summary",
       cost: FormatUnit.format(:£, @year_change_£_temp_adj, :text),
       increase_or_reduction: prefix_2,

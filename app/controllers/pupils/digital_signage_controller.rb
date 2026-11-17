@@ -140,6 +140,8 @@ module Pupils
         { meter_type: :gas, avg: 'equivalence_5.measure_html', title: 'equivalence_5.equivalence', img: 'house' }
       ].map do |equivalence_config|
         default_equivalence = ActiveSupport::OrderedOptions.new
+        # i18n-tasks-use t("pupils.default_equivalences.#{equivalence_config[:avg].split(".").first}.measure_html")
+        # i18n-tasks-use t("pupils.default_equivalences.#{equivalence_config[:title].split(".").first}.equivalence")
         default_equivalence.equivalence = content_tag(:div, I18n.t(equivalence_config[:avg], scope: scope).html_safe)
         default_equivalence.equivalence = default_equivalence.equivalence + content_tag(:h3,
                                                                                         I18n.t(equivalence_config[:title],

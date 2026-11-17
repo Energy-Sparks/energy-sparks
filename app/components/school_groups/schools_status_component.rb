@@ -23,6 +23,9 @@ module SchoolGroups
     end
 
     def status(record)
+      # i18n-tasks-use t('schools.status.onboarding')
+      # i18n-tasks-use t('schools.status.data_visible')
+      # i18n-tasks-use t('schools.status.visible')
       return :onboarding if record.is_a?(SchoolOnboarding)
       if record.data_visible?
         :data_visible

@@ -1,3 +1,4 @@
+---
 cy:
   activities:
     actions:
@@ -8,27 +9,27 @@ cy:
       page_title: Diweddaru gweithgaredd
       update_your_activity: Diweddaru eich gweithgaredd
     form:
-      bonus_points_message: Gall ychwanegu llun i ddogfennu eich gweithgaredd sgorio
       bonus_points:
-        one: pwynt bonws
-        two: pwyntiau bonws
         many: pwyntiau bonws
+        one: pwynt bonws
         other: pwyntiau bonws
+        two: pwyntiau bonws
+      bonus_points_message: Gall ychwanegu llun i ddogfennu eich gweithgaredd sgorio
       build_a_record_message: Gallwch gofnodi gweithgaredd diweddar a gweithgareddau hŷn i adeiladu cofnod o'r holl weithgareddau arbed ynni rydych wedi'u cyflawni fel ysgol
       completing_this_activity:
-        one: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill 1 pwynt i chi
-        two: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} bwynt i chi
         many: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} phwynt i chi
+        one: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill 1 pwynt i chi
         other: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} pwynt i chi
+        two: Bydd cwblhau'r gweithgaredd hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} bwynt i chi
       exceeded_maximum_in_year: Rydych chi eisoes wedi cwblhau'r gweithgaredd hwn %{maximum} o weithiau yn y flwyddyn academaidd hon. Ni fyddwch yn sgorio pwyntiau ychwanegol am ei gofnodi
       how_many_pupils_were_involved_in_this_activity: Faint o ddisgyblion a gymerodd ran yn y gweithgaredd hwn?
       how_would_you_describe_this_activity: Sut byddech chi'n disgrifio'r gweithgaredd hwn
       not_a_standard_activity_message: Gan nad ydych chi'n recordio un o'n gweithgareddau safonol, mae angen i chi ddarparu teitl. Dewiswch deitl clir a fydd yn annog eraill i ddarllen am eich gweithgaredd
       other: Arall
       previous_years: Nid yw gweithgareddau a gofnodwyd mewn blynyddoedd academaidd blaenorol yn sgorio pwyntiau
+      record_activity: Cofnodi gweithgaredd
       save_activity: Cadw'r gweithgaredd
       tell_us_more_message: Dywedwch ychydig mwy wrthym am ecih gweithgaredd. Beth wnaethoch chi? Beth wnaethoch chi ddysgu? Beth allech chi ei wneud nesaf i adeiladu ar y dasg hon?
-      record_activity: Cofnodi gweithgaredd
       update_activity: Diweddaru gweithgaredd
       when_did_you_complete_this_activity: Pryd wnaethoch chi gwblhau'r gweithgaredd hwn?
     new:

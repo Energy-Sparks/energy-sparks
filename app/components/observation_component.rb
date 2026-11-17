@@ -75,6 +75,7 @@ class ObservationComponent < ViewComponent::Base
     end
 
     def message
+      # i18n-tasks-use t("components.observation.#{self.class.name.demodulize.underscore}.message")
       I18n.t(:message, scope: i18n_scope)
     end
 
@@ -195,6 +196,7 @@ class ObservationComponent < ViewComponent::Base
     end
 
     def message
+      # i18n-tasks-use t('components.observation.transport_survey.message')
       I18n.t('message', scope: i18n_scope, count: observation.observable.responses.count)
     end
   end

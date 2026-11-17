@@ -53,6 +53,7 @@ class OnboardingMailer < LocaleMailer
     @school = params[:school]
     @title = @school.name
     @user = params[:user]
+    # i18n-tasks-use t('onboarding_mailer.welcome_email.subject')
     make_bootstrap_mail(to: @user.email)
   end
 

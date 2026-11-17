@@ -1,7 +1,11 @@
 <%= f.input :name, label: t('onboarding.account.your_name') %>
+<%# i18n-tasks-use t('activerecord.attributes.user.email') %>
 <%= f.input :email %>
+<%# i18n-tasks-use t('activerecord.attributes.user.password') %>
 <%= f.input :password %>
+<%# i18n-tasks-use t('activerecord.attributes.user.password_confirmation') %>
 <%= f.input :password_confirmation %>
+<%# i18n-tasks-use t('activerecord.attributes.user.staff_role_id') %>
 <%= f.input :staff_role_id, required: true, collection: StaffRole.order(:title),
                             label_method: :translated_title, hint: t('onboarding.account.role_hint') %>
 

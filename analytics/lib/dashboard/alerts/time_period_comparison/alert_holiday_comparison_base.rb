@@ -6,6 +6,8 @@ class AlertHolidayComparisonBase < AlertPeriodComparisonBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t("analytics.alert_previous_holiday_comparison_#{fuel}.timescale")
+    # i18n-tasks-use I18n.t("analytics.alert_previous_year_holiday_comparison_#{fuel}.timescale")
     I18n.t("#{i18n_prefix}.timescale")
   end
 

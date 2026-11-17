@@ -5,8 +5,10 @@
                                        component_classes: 'theme theme-dark') do |grid| %>
     <% displayable.each do |metric| %>
       <% grid.with_stats_card do |card| %>
+        <%# i18n-tasks-use t("school_groups.impact.potential_savings.titles.#{metric.fuel_type}") %>
         <%= card.with_header title: impact_t("potential_savings.titles.#{metric.fuel_type}") %>
         <%= card.with_figure format_unit(metric.value, :£) %>
+        <%# i18n-tasks-use t("school_groups.impact.potential_savings.keys.#{metric.metric_type}") %>
         <%= card.with_subtext do
               impact_t("potential_savings.keys.#{metric.metric_type}",
                        fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}"),

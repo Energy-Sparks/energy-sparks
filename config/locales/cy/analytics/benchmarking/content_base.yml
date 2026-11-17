@@ -1,3 +1,4 @@
+---
 cy:
   analytics:
     benchmarking:
@@ -88,7 +89,7 @@ cy:
           last_year_gas_kwh_floor_area: Nwy y llynedd kWh/m²
           last_year_gas_kwh_pupil: Nwy y llynedd kWh/disgybl
           last_year_gas_£: Y llynedd Nwy £
-          last_year_out_of_hours_co2: ' Co2 y tu allan i oriau y llynedd'
+          last_year_out_of_hours_co2: " Co2 y tu allan i oriau y llynedd"
           last_year_out_of_hours_cost: Cost y tu allan i oriau y llynedd
           last_year_out_of_hours_cost_ct: Cost y tu allan i oriau y llynedd ar y tariff cyfredol
           last_year_out_of_hours_kwh: Kwh y tu allan i oriau y llynedd
