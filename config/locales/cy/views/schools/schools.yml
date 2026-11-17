@@ -1,20 +1,6 @@
 ---
 cy:
   charts:
-    dashboard:
-      electricity:
-        title: Trydan
-        usage: defnydd trydan
-      gas:
-        title: Nwy
-        usage: defnydd nwy
-      solar:
-        title: Trydan
-        usage: defnydd trydan a solar
-      storage_heaters:
-        title: Stôr-wresogyddion
-        usage: defnydd stôr-wresogyddion
-    hourly-usage-link: Gweld defnydd fesul dydd
     usage:
       date_picker:
         daily:
@@ -53,7 +39,6 @@ cy:
           weekly:
             not_split: Defnydd nwy dyddiol eich ysgol yn ystod eich wythnosau dewisol
             split: Defnydd nwy dyddiol eich ysgol yn eich wythnos ddewisol wedi'i gofnodi fesul metr
-    weekly-usage-link: Gweld defnydd fesul wythnos
   schools:
     aggregated_meter_collections:
       show:

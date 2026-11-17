@@ -13,6 +13,7 @@ class AlertSeasonalHeatingSchoolDays < AlertHeatingDaysBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_seasonal_heating_school_days.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 

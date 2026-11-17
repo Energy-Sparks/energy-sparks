@@ -34,6 +34,9 @@ class CalendarEventType < ApplicationRecord
   end
 
   def display_title
+    # Calendar event titles are stored in the database, rather than Ruby enum values.
+    # i18n-tasks-use t("calendar_event_type.#{title}.title")
+    # i18n-tasks-use t("calendar_event_type.#{title}.description")
     "#{I18n.t(i18n_key('title'))} - #{I18n.t(i18n_key('description'))}"
   end
 end

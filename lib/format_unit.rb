@@ -176,21 +176,27 @@ class FormatUnit
     if years < (1.0 / 365.0) && years > 0.0 # less than a day
       minutes = 24 * 60 * 365.0 * years
       if minutes < 90
+        # i18n-tasks-use I18n.t('analytics.units.minutes')
         I18n.t(MINUTES, count: minutes.round(0).to_s)
       else
+        # i18n-tasks-use I18n.t('analytics.units.hours')
         I18n.t(HOURS, count: (minutes / 60.0).round(0).to_s)
       end
     elsif years < (3.0 / 12.0) # less than 3 months
       days = (years * 365.0).round(0)
       if days <= 14
+        # i18n-tasks-use I18n.t('analytics.units.days')
         I18n.t(DAYS, count: days.to_s)
       else
+        # i18n-tasks-use I18n.t('analytics.units.weeks')
         I18n.t(WEEKS, count: (days / 7.0).round(0).to_s)
       end
     elsif years <= 1.51
+      # i18n-tasks-use I18n.t('analytics.units.months')
       I18n.t(MONTHS, count: months_from_years(years))
     elsif years < 5.0
       y = years.floor
+      # i18n-tasks-use I18n.t('analytics.units.years')
       "#{I18n.t(YEARS, count: y)} #{I18n.t(MONTHS, count: months_from_years(years - y))}"
     else
       I18n.t(YEARS, count: Kernel.format('%.0f', years))
@@ -211,6 +217,7 @@ class FormatUnit
       default_key
     else
       html_key = html_key_for(unit)
+      # i18n-tasks-use I18n.t('analytics.energy_units')
       I18n.t(ENERGY_UNITS).key?(html_key) ? "#{ENERGY_UNITS}.#{html_key}".freeze : default_key
     end
   end
@@ -234,8 +241,10 @@ class FormatUnit
 
   private_class_method def self.plus_minus_infinity_value(value)
     if value == Float::INFINITY
+      # i18n-tasks-use I18n.t('analytics.units.infinity')
       I18n.t(INFINITY)
     elsif value == -Float::INFINITY
+      # i18n-tasks-use I18n.t('analytics.units.infinity_negative')
       I18n.t(NEGATIVE_INFINITY)
     else
       raise InternalErrorNonInfiniteValue, "Bad value #{value}"
@@ -244,6 +253,7 @@ class FormatUnit
 
   def self.scale_num(value, in_pounds = false, user_numeric_comprehension_level = :default)
     return plus_minus_infinity_value(value) unless value.infinite?.nil?
+    # i18n-tasks-use I18n.t('analytics.units.nan')
     return I18n.t(NAN) if value.is_a?(Float) && value.nan?
 
     number = significant_figures_user_type(value, user_numeric_comprehension_level)

@@ -109,6 +109,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
   # ================================== Control Variables =========================================
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_turn_heating_off.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 

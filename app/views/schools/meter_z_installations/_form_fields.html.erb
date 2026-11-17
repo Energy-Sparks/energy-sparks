@@ -52,4 +52,5 @@
   <%= render 'existing',
              options: MeterZInstallation.all.map { |installation| [installation.api_key, installation.id] } %>
 <% end %>
+<%# i18n-tasks-use t('activerecord.attributes.meter_z_installation.api_key') %>
 <%= form.input :api_key, as: :string %>

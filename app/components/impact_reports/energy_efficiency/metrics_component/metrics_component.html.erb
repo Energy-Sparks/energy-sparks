@@ -8,6 +8,8 @@
     <% displayable.each do |metric| %>
       <% grid.with_stats_card do |card| %>
         <% key = metric.unit.nil? ? metric.metric_type : "#{metric.metric_type}.#{metric.unit}" %>
+        <%# i18n-tasks-use t("school_groups.impact.energy_efficiency.metric_types.#{metric.metric_type}.title") %>
+        <%# i18n-tasks-use t("school_groups.impact.energy_efficiency.metric_types.#{metric.metric_type}.#{metric.unit}.title") %>
         <%= card.with_header title: impact_t("energy_efficiency.metric_types.#{key}.title",
                                              fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}")).capitalize %>
         <%= card.with_figure(
@@ -15,6 +17,9 @@
             ) %>
 
         <% subtext_key = metric.metric_type == 'annual_saving' && metric.unit == 'co2' ? ".#{metric.fuel_type}" : '' %>
+        <%# i18n-tasks-use t("school_groups.impact.energy_efficiency.metric_types.#{metric.metric_type}.subtext") %>
+        <%# i18n-tasks-use t("school_groups.impact.energy_efficiency.metric_types.#{metric.metric_type}.#{metric.unit}.subtext") %>
+        <%# i18n-tasks-use t("school_groups.impact.energy_efficiency.metric_types.annual_saving.co2.subtext.#{metric.fuel_type}") %>
         <%= card.with_subtext do
               impact_t("energy_efficiency.metric_types.#{key}.subtext#{subtext_key}",
                        count: metric.number_of_schools,

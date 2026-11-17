@@ -2,6 +2,7 @@
   <div class="row pb-1">
     <div class="col-1"><%= icon %></div>
     <div class="col-11">
+      <%# i18n-tasks-use t("components.observation.#{self.class.name.demodulize.underscore}.compact_message_html") %>
       <%= I18n.t(:compact_message_html, scope: i18n_scope,
                                         school: school.name,
                                         school_path: school_path(school),
@@ -12,6 +13,8 @@
     </div>
   </div>
 <% elsif style == :description %>
+  <%# Both description and full styles use these per-observation descriptions. %>
+  <%# i18n-tasks-use t("components.observation.#{self.class.name.demodulize.underscore}.description_html") %>
   <%= render Elements::IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
   <%= I18n.t(:description_html, scope: i18n_scope,
                                 target: target,

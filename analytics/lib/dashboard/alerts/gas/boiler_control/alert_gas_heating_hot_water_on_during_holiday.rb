@@ -21,6 +21,7 @@ class AlertGasHeatingHotWaterOnDuringHoliday < Alerts::UsageDuringCurrentHoliday
 
   def summary
     if @rating == 0.0
+      # i18n-tasks-use I18n.t('analytics.alert_heating_hot_water_on_during_holiday_base.summary')
       I18n.t("#{i18n_prefix}.summary",
              heating_type: heating_type,
              holiday_name: holiday_name,
@@ -28,6 +29,7 @@ class AlertGasHeatingHotWaterOnDuringHoliday < Alerts::UsageDuringCurrentHoliday
              cost: FormatUnit.format(:£, @holiday_usage_to_date_gbp, :html),
              project_cost: FormatUnit.format(:£, @holiday_projected_usage_gbp, :html))
     else
+      # i18n-tasks-use I18n.t('analytics.alert_heating_hot_water_on_during_holiday_base.heating_not_on')
       I18n.t("#{i18n_prefix}.heating_not_on")
     end
   end

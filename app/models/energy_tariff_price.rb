@@ -25,6 +25,7 @@ class EnergyTariffPrice < ApplicationRecord
   validates :start_time, :end_time, :units, presence: true
   validates :value, presence: true, on: :update
 
+  # i18n-tasks-use t('activerecord.errors.models.energy_tariff_price.attributes.value.less_than')
   NUMERICALITY_OPTIONS = { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE }.freeze
   validates :value, numericality: NUMERICALITY_OPTIONS, allow_nil: true, on: :create
   validates :value, numericality: NUMERICALITY_OPTIONS, on: :update

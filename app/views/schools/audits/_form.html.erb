@@ -1,5 +1,8 @@
 <%= simple_form_for([@school, audit], html: { id: :audit_form }) do |f| %>
 
+  <%# Nested todo errors use these association-specific attribute names in full_messages. %>
+  <%# i18n-tasks-use t('activerecord.attributes.activity_type_todos.task') %>
+  <%# i18n-tasks-use t('activerecord.attributes.intervention_type_todos.task') %>
   <%= render 'shared/errors', subject: audit, subject_name: 'audit' %>
 
   <%= f.input :title %>

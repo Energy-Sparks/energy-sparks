@@ -44,6 +44,7 @@
                                html: { class: 'form-horizontal mt-3' }) do |f| %>
           <%= render 'devise/shared/error_messages', resource: resource %>
           <div class="form-group row">
+            <%# i18n-tasks-use t('helpers.label.user.email') %>
             <%= f.label :email, class: 'col-sm-4 col-form-label' %>
             <div class="col-sm-6">
               <%= f.email_field :email, autofocus: true, class: 'form-control' %>
@@ -51,6 +52,7 @@
           </div>
 
           <div class="form-group row">
+            <%# i18n-tasks-use t('helpers.label.user.password') %>
             <%= f.label :password, class: 'col-sm-4 col-form-label' %>
             <div class="col-sm-6">
               <%= f.password_field :password, autocomplete: 'off', class: 'form-control' %>

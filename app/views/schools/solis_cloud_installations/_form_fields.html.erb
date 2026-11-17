@@ -58,5 +58,7 @@
      end %>
   <%= render 'existing', options: %>
 <% end %>
+<%# i18n-tasks-use t('activerecord.attributes.solis_cloud_installation.api_id') %>
 <%= form.input :api_id, as: :string, hint: 'The SolisCloud API Key' %>
+<%# i18n-tasks-use t('activerecord.attributes.solis_cloud_installation.api_secret') %>
 <%= form.input :api_secret, as: :string, hint: 'The SolisCloud API Secret' %>

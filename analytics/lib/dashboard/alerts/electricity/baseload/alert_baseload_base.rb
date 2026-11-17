@@ -66,6 +66,9 @@ class AlertBaseloadBase < AlertElectricityOnlyBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t("analytics.alert_#{variation}_baseload_variation.timescale")
+    # i18n-tasks-use I18n.t('analytics.alert_change_in_electricity_baseload_short_term.timescale')
+    # i18n-tasks-use I18n.t('analytics.alert_electricity_baseload_versus_benchmark.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 

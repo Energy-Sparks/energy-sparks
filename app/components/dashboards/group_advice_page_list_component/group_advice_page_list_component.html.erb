@@ -38,6 +38,7 @@
               <%= link_to t('schools.show.find_out_more'),
                           helpers.advice_page_path(school_group, advice_page, :insights) %>
             <% end %>
+            <%# i18n-tasks-use t("school_groups.advice_pages.show.page_summary.#{advice_page.key}") %>
             <%= t(advice_page.key, scope: 'school_groups.advice_pages.show.page_summary', default: nil) %>
           <% end %>
         <% end %>

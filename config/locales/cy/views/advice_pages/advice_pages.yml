@@ -172,7 +172,6 @@ cy:
         bill_components:
           agreed_availability_charge: Tâl am y ceblau i ddarparu uchafswm y cytunwyd arno mewn KVA o drydan i'r ysgol. Yn aml gellir lleihau hyn trwy drafodaethau gyda'ch cyflenwr ynni
           all_day: trwy'r dydd
-          climate_change_levy__2021_22: 'Ardoll Newid yn yr Hinsawdd: yn seiliedig ar eich allyriadau carbon (fesul kWh o ddefnydd). Os byddwch yn lleihau eich defnydd bydd eich CCL yn lleihau'
           commodity_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan
           data_collection_dcda_agent_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
           day_night: Dyma'r tâl am drydan a ddefnyddir rhwng %{time_from} a %{time_to} fesul kWh

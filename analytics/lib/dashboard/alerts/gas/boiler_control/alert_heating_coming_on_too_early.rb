@@ -66,6 +66,7 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
   }.freeze
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_heating_coming_on_too_early.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 

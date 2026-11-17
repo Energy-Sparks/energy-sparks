@@ -4,9 +4,11 @@
 
 <%= f.hidden_field :data_enabled, value: school.data_enabled %>
 <%= f.input :name %>
+<%# i18n-tasks-use t('activerecord.attributes.school.urn') %>
 <%= f.input :urn, hint: t('schools.school_details.urn_hint') %>
 
 <div class="form-group">
+  <%# i18n-tasks-use t('activerecord.attributes.school.funding_status') %>
   <%= f.label :funding_status %>
   <%= f.select :funding_status,
                options_for_select(
@@ -22,19 +24,25 @@
     <strong><%= t('schools.school_details.admin_options') %></strong>
     <%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil,
                                   hint: t('schools.school_details.activation_date_hint') %>
+    <%# i18n-tasks-use t('activerecord.attributes.school.enable_targets_feature') %>
     <%= f.input :enable_targets_feature %>
+    <%# i18n-tasks-use t('activerecord.attributes.school.public') %>
     <%= f.input :public %>
   </div>
 <% end %>
 
 <h2 id="address"><%= t('schools.school_details.address') %></h2>
+<%# i18n-tasks-use t('activerecord.attributes.school.address') %>
 <%= f.input :address %>
+<%# i18n-tasks-use t('activerecord.attributes.school.postcode') %>
 <%= f.input :postcode %>
+<%# i18n-tasks-use t('activerecord.attributes.school.website') %>
 <%= f.input :website %>
 
 <% if can?(:manage, :geocoding) %>
   <h2><%= t('schools.school_details.location') %></h2>
   <div class="form-group">
+    <%# i18n-tasks-use t('activerecord.attributes.school.country') %>
     <%= f.label :country %>
     <%= f.select :country,
                  options_for_select(
@@ -46,7 +54,9 @@
   </div>
   <p><%= t('schools.school_details.geocode_message') %></p>
   <div class="form-group">
+    <%# i18n-tasks-use t('activerecord.attributes.school.latitude') %>
     <%= f.input :latitude %>
+    <%# i18n-tasks-use t('activerecord.attributes.school.longitude') %>
     <%= f.input :longitude %>
   </div>
 
@@ -92,6 +102,7 @@
 </div>
 
 <div class="form-group">
+  <%# i18n-tasks-use t('activerecord.attributes.school.percentage_free_school_meals') %>
   <%= f.input :percentage_free_school_meals,
               input_html: { disabled: controller.instance_of?(SchoolsController) && !current_user.admin? },
               hint: t('schools.school_details.percentage_free_school_meals_hint') %>
@@ -100,19 +111,28 @@
 <h2 id="school-features"><%= t('schools.school_details.school_features') %></h2>
 
 <div class="form-group">
+  <%# i18n-tasks-use t('activerecord.attributes.school.floor_area') %>
   <%= f.input :floor_area, hint: t('schools.school_details.floor_area_hint') %>
 </div>
 
+<%# i18n-tasks-use t('activerecord.attributes.school.indicated_has_solar_panels') %>
 <%= f.input :indicated_has_solar_panels %>
+<%# i18n-tasks-use t('activerecord.attributes.school.has_battery') %>
 <%= f.input :has_battery %>
+<%# i18n-tasks-use t('activerecord.attributes.school.indicated_has_storage_heaters') %>
 <%= f.input :indicated_has_storage_heaters %>
+<%# i18n-tasks-use t('activerecord.attributes.school.has_swimming_pool') %>
 <%= f.input :has_swimming_pool %>
+<%# i18n-tasks-use t('activerecord.attributes.school.serves_dinners') %>
 <%= f.input :serves_dinners, input_html: { data: { reveals: '.school_cooks_dinners_onsite' } } %>
+<%# i18n-tasks-use t('activerecord.attributes.school.cooks_dinners_onsite') %>
 <%= f.input :cooks_dinners_onsite, input_html: { data: { reveals: '.school_cooks_dinners_for_other_schools' } },
                                    wrapper_html: { data: { revealed_by: '.school_serves_dinners' } } %>
+<%# i18n-tasks-use t('activerecord.attributes.school.cooks_dinners_for_other_schools') %>
 <%= f.input :cooks_dinners_for_other_schools,
             input_html: { data: { reveals: '.school_cooks_dinners_for_other_schools_count' } },
             wrapper_html: { data: { revealed_by: '.school_cooks_dinners_on_site' } } %>
+<%# i18n-tasks-use t('activerecord.attributes.school.cooks_dinners_for_other_schools_count') %>
 <%= f.input :cooks_dinners_for_other_schools_count,
             wrapper_html: { data: { revealed_by: '.school_cooks_dinners_for_other_schools' } } %>
 

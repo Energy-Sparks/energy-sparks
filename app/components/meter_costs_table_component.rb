@@ -115,8 +115,27 @@ class MeterCostsTableComponent < ViewComponent::Base
       duos_charge_times(band)
     elsif component[2] == '_'
       component_times = component.to_s.gsub('_to_', ' ').tr('_', ':').split(' ')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.day_night')
       helpers.icon_tooltip(t('day_night', scope: @t_scope, time_from: component_times.first, time_to: component_times.last, default: ''))
     else
+      # Keep these tied to the supported bill components, rather than matching obsolete tooltip keys.
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.flat_rate')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.commodity_rate')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.non_commodity_rate')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.tnuos')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.agreed_availability_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.excess_availability_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.reactive_power_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.fixed_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.standing_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.site_fee')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.settlement_agency_fee')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.nhh_automatic_meter_reading_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.data_collection_dcda_agent_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.nhh_metering_agent_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.meter_asset_provider_charge')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.feed_in_tariff_levy')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.renewable_energy_obligation')
       helpers.icon_tooltip(t(component, scope: @t_scope, default: ''))
     end
   end
@@ -187,10 +206,14 @@ class MeterCostsTableComponent < ViewComponent::Base
     return '' unless mpan_mprn
     @duos ||= DUOSCharges.regional_charge_table(mpan_mprn.to_i)[:bands]
     charge_times = @duos[band].inject([]) do |memo, (key, period)|
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.all_day')
       period = t(:all_day, scope: @t_scope) if period == 'all day'
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.weekdays')
+      # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.weekends')
       memo << t(key, scope: @t_scope, period: period)
       memo
     end
+    # i18n-tasks-use t('advice_pages.tables.tooltips.bill_components.duos')
     helpers.icon_tooltip(t(:duos, scope: @t_scope, charge_times: charge_times.join(' ')))
   end
 

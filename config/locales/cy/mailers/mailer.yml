@@ -10,7 +10,6 @@ cy:
       paragraph_1_html: Rydym yn dadansoddi data ynni <a href='%{school_url}'>eich ysgol</a> i amlygu lle rydych yn gwneud cynnydd neu lle y gallech gymryd camau i leihau eich defnydd i arbed arian a lleihau allyriadau carbon
       set_a_new_target: Gosod targed newydd
       stay_up_to_date: Cadwch yn gyfoes
-      subject: Rhybuddion Sbarcynni
       subject_2024: Rhybuddion wythnosol %{school_name}
       take_action_around_the_school: Gweithredwch o amgylch yr ysgol
       take_action_choose: Dewiswch weithgaredd

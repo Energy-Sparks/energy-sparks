@@ -75,6 +75,7 @@ module Schools
       end
 
       def set_insights_next_steps
+        # i18n-tasks-use t("advice_pages.#{@advice_page.key}.insights.next_steps")
         @advice_page_insights_next_steps = if_exists('insights.next_steps')
       end
 
@@ -83,6 +84,8 @@ module Schools
       end
 
       def set_page_subtitle
+        # i18n-tasks-use t("advice_pages.#{@advice_page.key}.insights.title")
+        # i18n-tasks-use t("advice_pages.#{@advice_page.key}.analysis.title")
         @advice_page_subtitle = if_exists("#{action_name}.title")
       end
 

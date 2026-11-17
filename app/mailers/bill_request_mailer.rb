@@ -4,6 +4,7 @@ class BillRequestMailer < LocaleMailer
     @title = @school.name
     @electricity_meters = params[:electricity_meters]
     @gas_meters = params[:gas_meters]
+    # i18n-tasks-use t('bill_request_mailer.request_bill.subject')
     make_bootstrap_mail(to: user_emails(params[:users]))
   end
 

@@ -99,6 +99,8 @@ module Alerts
     end
 
     def timescale
+      # i18n-tasks-use I18n.t('analytics.alert_electricity_usage_during_current_holiday.timescale')
+      # i18n-tasks-use I18n.t('analytics.alert_heating_hot_water_on_during_holiday_base.timescale')
       I18n.t("#{i18n_prefix}.timescale")
     end
 
@@ -221,6 +223,8 @@ module Alerts
     end
 
     def summary
+      # i18n-tasks-use I18n.t('analytics.alert_electricity_usage_during_current_holiday.holiday_cost_to_date')
+      # i18n-tasks-use I18n.t('analytics.alert_electricity_usage_during_current_holiday.holiday_predicted_cost')
       return nil if @holiday_period.nil?
 
       if @today < @holiday_period.end_date

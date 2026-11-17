@@ -12,6 +12,7 @@ module Schools
       end
 
       def index
+        # i18n-tasks-use t("activerecord.models.transport_survey.#{count}")
         respond_to do |format|
           format.html { @pagy, @responses = pagy(@responses) }
           format.csv do
