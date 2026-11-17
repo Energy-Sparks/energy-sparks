@@ -44,6 +44,4 @@ RSpec.describe I18n do
     expect(I18n.t('date.abbr_month_names', locale: 'en')).to eq(['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
     expect(I18n.t('date.abbr_month_names', locale: 'cy')).to eq(['', 'Ion', 'Chwe', 'Maw', 'Ebr', 'Mai', 'Meh', 'Gorff', 'Awst', 'Medi', 'Hyd', 'Tach', 'Rhag'])
   end
-
-
 end
