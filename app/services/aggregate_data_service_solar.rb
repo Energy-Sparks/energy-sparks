@@ -13,6 +13,7 @@ class AggregateDataServiceSolar
     @meter_collection   = meter_collection
     @electricity_meters = @meter_collection.electricity_meters
     @electricity_meter_names = find_electricity_meter_names
+    @commissioned_dates = {}
   end
 
   # Process the electricity meters in the collection, returning an updated
@@ -73,6 +74,8 @@ class AggregateDataServiceSolar
   def process_solar_pv_electricity_meter(pv_meter_map)
     logger.debug { "Aggregation service: processing mains meter #{pv_meter_map.mains_consume} with solar pv" }
     print_meter_map(pv_meter_map)
+
+    Aggregation::SolarCommissionDateBackfill.process(pv_meter_map, @commissioned_dates)
 
     aggregate_multiple_generation_meters(pv_meter_map) if pv_meter_map.generation_meters.many?
 
@@ -310,7 +313,7 @@ class AggregateDataServiceSolar
   end
 
   def calculate_carbon_emissions_and_costs(pv_meter_map)
-    pv_meter_map.each_value do |meter|
+    pv_meter_map.meters.each do |meter|
       calculate_meter_carbon_emissions_and_costs(meter, :electricity) unless not_a_meter?(meter)
     end
   end
@@ -360,7 +363,8 @@ class AggregateDataServiceSolar
     pv_meter_map.each do |meter_type, meter|
       next if not_a_meter?(meter) || meter_type == :mains_consume
 
-      mpan_mapping_start_date = earliest_mpan_mapping_attribute(pv_meter_map.mains_consume, meter_type)
+      # mpan_mapping_start_date = earliest_mpan_mapping_attribute(pv_meter_map.mains_consume, meter_type)
+      mpan_mapping_start_date = earliest_mpan_mapping_attribute(pv_meter_map.mains_consume, meter_type, meter)
       mains_meter_start_date  = pv_meter_backfill_start_date(pv_meter_map.mains_consume)
       backfill_meter_with_zeros(meter, mains_meter_start_date, mpan_mapping_start_date - 1)
     end
@@ -426,10 +430,16 @@ class AggregateDataServiceSolar
   # if necessary e.g. in the circumstance where the metering was incorrect
   # during the installation phase, so anything before that is deemed to be
   # zero, or overridden by the synthetic Sheffield data if set
-  def earliest_mpan_mapping_attribute(mains_meter, meter_type)
-    mains_meter.attributes(:solar_pv_mpan_meter_mapping).map do |mpan_pv_map|
-      mpan_pv_map[Aggregation::SolarMeterMap.meter_attribute_key(meter_type)].nil? ? nil : meter_start_date(mpan_pv_map)
-    end.compact.min
+  def earliest_mpan_mapping_attribute(mains_meter, meter_type, meter)
+    mains_meter.attributes(:solar_pv_mpan_meter_mapping).filter_map do |mpan_pv_map|
+      if mpan_pv_map[Aggregation::SolarMeterMap.meter_attribute_key(meter_type)].nil?
+        nil
+      elsif mpan_pv_map[:commissioned_date]
+        meter.amr_data.start_date
+      else
+        meter_start_date(mpan_pv_map)
+      end
+    end.min
   end
 
   def meter_start_date(mpan_pv_map)
@@ -465,7 +475,7 @@ class AggregateDataServiceSolar
     return if start_date >= meter.amr_data.start_date
 
     logger.debug { "Backfilling pv meter #{meter.mpan_mprn} with zeros between #{start_date} and #{end_date}" }
-    (start_date..end_date).each do |date|
+    (start_date..[end_date, meter.amr_data.start_date - 1].min).each do |date|
       meter.amr_data.add(date, OneDayAMRReading.zero_reading(date, 'BKPV'))
     end
   end
@@ -509,12 +519,14 @@ class AggregateDataServiceSolar
 
     mappings.each do |map|
       Aggregation::SolarMeterMap.meter_mappings(map).each do |meter_attribute_key, mpan|
-        meter = @meter_collection.electricity_meters.find { |meter1| meter1.mpan_mprn.to_s == mpan }
+        meter = @meter_collection.electricity_meters.find { |meter| meter.mpan_mprn.to_s == mpan }
         next if meter.nil?
 
         @meter_collection.electricity_meters.delete_if { |m| m.mpan_mprn.to_s == mpan.to_s }
         truncate_meter_dates(meter, map)
         pv_meter_map.set_meter(meter_attribute_key, meter)
+        (@meter_mapping[meter] ||= []) << map
+        @commissioned_dates[meter.mpan_mprn] = map[:commissioned_date]
       end
     end
   end
@@ -522,8 +534,8 @@ class AggregateDataServiceSolar
   # Truncates the AMR data associated with a meter to align with the start and
   # end dates (both optional) configured in a `solar_pv_mpan_meter_mapping` attribute
   def truncate_meter_dates(meter, map)
-    truncate_start_date(meter, map[:start_date])
-    truncate_end_date(meter, map[:end_date])
+    truncate_meter_date(meter, map[:start_date], :start)
+    truncate_meter_date(meter, map[:end_date], :end)
   end
 
   def create_modelled_meters(pv_meter_map)
@@ -578,39 +590,18 @@ class AggregateDataServiceSolar
     fix_missing_or_bad_meter_data(pv_meter_map)
   end
 
-  # Set the start date for the AMRData associated with the meter
-  def truncate_start_date(meter, start_date)
-    return if start_date.nil?
+  def truncate_meter_date(meter, date, boundary)
+    return if date.nil?
 
-    if start_date < meter.amr_data.start_date
-      logger.debug do
-        "Error: solar_pv_mpan_meter_mapping meter attribute start_date #{start_date} < meter start_date #{meter.amr_data.start_date}"
-      end
-    elsif start_date > meter.amr_data.end_date
-      logger.debug do
-        "Error: solar_pv_mpan_meter_mapping meter attribute start_date #{start_date} > meter end_date #{meter.amr_data.end_date}"
-      end
+    amr_data = meter.amr_data
+    if (amr_data.start_date..amr_data.end_date).cover?(date)
+      logger.debug { "Warning: overriding amr #{boundary} date to #{date} for meter #{meter.mpan_mprn}" }
+      amr_data.public_send(:"set_#{boundary}_date", date)
     else
-      logger.debug { "Warning: overriding amr start date to #{start_date} for meter #{meter.mpan_mprn}" }
-      meter.amr_data.set_start_date(start_date)
-    end
-  end
-
-  # Set the end date for the AMRData associated with the meter
-  def truncate_end_date(meter, end_date)
-    return if end_date.nil?
-
-    if end_date > meter.amr_data.end_date
       logger.debug do
-        "Error: solar_pv_mpan_meter_mapping meter attribute end_date #{end_date} > meter end_date #{meter.amr_data.end_date}"
+        "Ignoring solar mapping #{boundary}_date #{date} for meter #{meter.mpan_mprn}: outside " \
+          "#{amr_data.start_date}..#{amr_data.end_date}"
       end
-    elsif end_date < meter.amr_data.start_date
-      logger.debug do
-        "Error: solar_pv_mpan_meter_mapping meter attribute end_date #{end_date} < meter start_date #{meter.amr_data.start_date}"
-      end
-    else
-      logger.debug { "Warning: overriding amr end date to #{end_date} for meter #{meter.mpan_mprn}" }
-      meter.amr_data.set_end_date(end_date)
     end
   end
 end
