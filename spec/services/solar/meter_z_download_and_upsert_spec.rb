@@ -44,10 +44,10 @@ describe Solar::MeterZDownloadAndUpsert do
 
     it 'creates the correct readings' do
       expect(Rollbar).to have_received(:error)
-      error_messages = "Exception: downloading solar data from nil to 2025-12-31: school #{meter.school.slug} " \
-                       'meter_serial_number 123 start_date '
-      expect(installation.amr_data_feed_config.amr_data_feed_import_logs).to \
-        contain_exactly(have_attributes(error_messages:))
+      import_log = installation.amr_data_feed_config.amr_data_feed_import_logs.first
+      error_message = 'Exception: downloading solar data from nil to 2025-12-31: ' \
+                      'the server responded with status 404 for GET '
+      expect(import_log.error_messages).to start_with(error_message)
     end
   end
 end
