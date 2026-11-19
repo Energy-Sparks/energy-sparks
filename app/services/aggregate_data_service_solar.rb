@@ -13,7 +13,7 @@ class AggregateDataServiceSolar
     @meter_collection   = meter_collection
     @electricity_meters = @meter_collection.electricity_meters
     @electricity_meter_names = find_electricity_meter_names
-    @commissioned_dates = {}
+    @solar_pv_mpan_meter_mappings = {}
   end
 
   # Process the electricity meters in the collection, returning an updated
@@ -75,7 +75,7 @@ class AggregateDataServiceSolar
     logger.debug { "Aggregation service: processing mains meter #{pv_meter_map.mains_consume} with solar pv" }
     print_meter_map(pv_meter_map)
 
-    Aggregation::SolarCommissionDateBackfill.process(pv_meter_map, @commissioned_dates)
+    Aggregation::SolarCommissionDateBackfill.process(pv_meter_map, @solar_pv_mpan_meter_mappings)
 
     aggregate_multiple_generation_meters(pv_meter_map) if pv_meter_map.generation_meters.many?
 
@@ -525,7 +525,7 @@ class AggregateDataServiceSolar
         @meter_collection.electricity_meters.delete_if { |m| m.mpan_mprn.to_s == mpan.to_s }
         truncate_meter_dates(meter, map)
         pv_meter_map.set_meter(meter_attribute_key, meter)
-        @commissioned_dates[meter.mpan_mprn] = map[:commissioned_date]
+        (@solar_pv_mpan_meter_mappings[meter] ||= []) << map
       end
     end
   end

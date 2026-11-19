@@ -329,6 +329,17 @@ describe AggregateDataServiceSolar do
             eq(expected_ranges_by_type(solar_production_meter, zero_type: :SOL0))
         end
       end
+
+      context 'with multiple attributes with commission dates' do
+        let(:meter_attributes) do
+          { solar_pv_mpan_meter_mapping: [solar_pv_mpan_meter_mapping.merge(commission_date: Date.new(2026, 5, 15)),
+                                          { start_date: Date.new(2026), commission_date: Date.new(2026, 5, 2) }] }
+        end
+
+        it 'backfills to the earliest' do
+          expect(group_ranges_by_type(solar_production_meter)[:SOLC]).to eq(Date.new(2026, 5, 2)..Date.new(2026, 5, 31))
+        end
+      end
     end
   end
 end

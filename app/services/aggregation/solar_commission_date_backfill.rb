@@ -2,11 +2,10 @@
 
 module Aggregation
   module SolarCommissionDateBackfill
-    def self.process(pv_meter_map, commissioned_dates)
+    def self.process(pv_meter_map, solar_pv_mpan_meter_mappings)
       pv_meter_map.meters.each do |meter|
-        if commissioned_dates[meter.mpan_mprn]
-          backfill_meter_to_commissioned_date(meter, commissioned_dates[meter.mpan_mprn])
-        end
+        commissioned_date = solar_pv_mpan_meter_mappings.fetch(meter, []).pluck(:commissioned_date).compact.min
+        backfill_meter_to_commissioned_date(meter, commissioned_date) if commissioned_date
       end
     end
 
