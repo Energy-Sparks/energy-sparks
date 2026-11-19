@@ -4,8 +4,9 @@ module MeterAttributes
   class ModelledSolarPvGeneration < MeterAttributeTypes::AttributeBase
     id :modelled_solar_pv_generation
     aggregate_over :modelled_solar_pv_generation
-    name 'Solar > Modelled Solar PV Generation'
-    description 'Supplemental modelled generation for metered solar'
+    name 'Solar > Model Solar PV (sites with multiple arrays and pv metering IS available for at least one array)'
+    description 'Use when a school has multiple solar arrays and we want to present modelled and metered data at ' \
+                'the same time. This attribute will model the solar for an array without PV metering'
 
     structure MeterAttributeTypes::Hash.define(
       structure: {
