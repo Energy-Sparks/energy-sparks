@@ -115,86 +115,127 @@ describe SolarEdgeInstallation do
   end
 
   describe '#refresh_api_tokens!' do
-    subject!(:installation) { create(:solar_edge_installation, :with_expired_access_token) }
-
-    context 'when not consented' do
-      subject!(:installation) { create(:solar_edge_installation, :unconsented) }
+    context 'when access token is current' do
+      subject!(:installation) { create(:solar_edge_installation) }
 
       it 'does nothing' do
         expect { installation.refresh_api_tokens! }.not_to(change { installation.reload.updated_at })
       end
-    end
 
-    context 'when there is an API error' do
-      before do
-        stub_request(:post, "#{DataFeeds::SolarEdge::Api::API_BASE}/oauth2/token")
-          .to_return(
-            status: 400,
-            headers: {
-              'Content-Type' => 'application/json'
-            },
-            body: {
-              error: 'invalid_request'
-            }.to_json
-          )
-      end
-
-      it 'throws an exception' do
-        expect { installation.refresh_api_tokens! }.to raise_error(Faraday::Error)
-      end
-    end
-
-    context 'when there is a successful response' do
-      before do
-        stub_request(:post, "#{DataFeeds::SolarEdge::Api::API_BASE}/oauth2/token")
-          .with do |request|
-            body = JSON.parse(request.body)
-            body['refresh_token'] == installation.refresh_token
-          end
-          .to_return(
-            status: 200,
-            headers: {
-              'Content-Type' => 'application/json'
-            },
-            body: {
-              access_token: 'new-access-token',
-              refresh_token: 'new-refresh-token',
-              expires_in: '7200'
-            }.to_json
-          )
-      end
-
-      it 'saves the updated tokens and expiry timestamp' do
-        installation.refresh_api_tokens!
-        expect(installation.reload).to have_attributes(
-          access_token: 'new-access-token',
-          refresh_token: 'new-refresh-token'
-        )
-        expect(installation.access_token_expires_at).to be_within(5.seconds).of(2.hours.from_now)
-      end
-
-      context 'when token refresh succeeds but saving fails' do
+      context 'when forcing a refresh' do
         before do
-          allow(Rollbar).to receive(:error)
-          # rubocop:disable-next RSpec/SubjectStub
-          allow(installation).to receive(:update!)
-            .and_raise(ActiveRecord::RecordInvalid.new(installation))
+          stub_request(:post, "#{DataFeeds::SolarEdge::Api::API_BASE}/oauth2/token")
+            .with do |request|
+              body = JSON.parse(request.body)
+              body['refresh_token'] == installation.refresh_token
+            end
+            .to_return(
+              status: 200,
+              headers: {
+                'Content-Type' => 'application/json'
+              },
+              body: {
+                access_token: 'new-access-token',
+                refresh_token: 'new-refresh-token',
+                expires_in: '7200'
+              }.to_json
+            )
         end
 
-        it 'logs the replacement tokens and re-raises the exception' do
-          expect do
-            installation.refresh_api_tokens!
-          end.to raise_error(ActiveRecord::RecordInvalid)
-
-          expect(Rollbar).to have_received(:error).with(
-            instance_of(ActiveRecord::RecordInvalid),
-            solar_edge_installation: installation.id,
-            tokens: {
-              'access_token' => 'new-access-token',
-              'refresh_token' => 'new-refresh-token',
-              'expires_in' => '7200'
-            }
+        it 'saves the updated tokens and expiry timestamp' do
+          installation.refresh_api_tokens!(force_refresh: true)
+          expect(installation.reload).to have_attributes(
+            access_token: 'new-access-token',
+            refresh_token: 'new-refresh-token'
           )
+          expect(installation.access_token_expires_at).to be_within(5.seconds).of(2.hours.from_now)
+        end
+      end
+    end
+
+    context 'when access token is expired' do
+      subject!(:installation) { create(:solar_edge_installation, :with_expired_access_token) }
+
+      context 'when not consented' do
+        subject!(:installation) { create(:solar_edge_installation, :unconsented) }
+
+        it 'does nothing' do
+          expect { installation.refresh_api_tokens! }.not_to(change { installation.reload.updated_at })
+        end
+      end
+
+      context 'when there is an API error' do
+        before do
+          stub_request(:post, "#{DataFeeds::SolarEdge::Api::API_BASE}/oauth2/token")
+            .to_return(
+              status: 400,
+              headers: {
+                'Content-Type' => 'application/json'
+              },
+              body: {
+                error: 'invalid_request'
+              }.to_json
+            )
+        end
+
+        it 'throws an exception' do
+          expect { installation.refresh_api_tokens! }.to raise_error(Faraday::Error)
+        end
+      end
+
+      context 'when there is a successful response' do
+        before do
+          stub_request(:post, "#{DataFeeds::SolarEdge::Api::API_BASE}/oauth2/token")
+            .with do |request|
+              body = JSON.parse(request.body)
+              body['refresh_token'] == installation.refresh_token
+            end
+            .to_return(
+              status: 200,
+              headers: {
+                'Content-Type' => 'application/json'
+              },
+              body: {
+                access_token: 'new-access-token',
+                refresh_token: 'new-refresh-token',
+                expires_in: '7200'
+              }.to_json
+            )
+        end
+
+        it 'saves the updated tokens and expiry timestamp' do
+          installation.refresh_api_tokens!
+          expect(installation.reload).to have_attributes(
+            access_token: 'new-access-token',
+            refresh_token: 'new-refresh-token'
+          )
+          expect(installation.access_token_expires_at).to be_within(5.seconds).of(2.hours.from_now)
+        end
+
+        # rubocop:disable-next RSpec/NestedGroups
+        context 'when token refresh succeeds but saving fails' do
+          before do
+            allow(Rollbar).to receive(:error)
+            # rubocop:disable-next RSpec/SubjectStub
+            allow(installation).to receive(:update!)
+              .and_raise(ActiveRecord::RecordInvalid.new(installation))
+          end
+
+          it 'logs the replacement tokens and re-raises the exception' do
+            expect do
+              installation.refresh_api_tokens!
+            end.to raise_error(ActiveRecord::RecordInvalid)
+
+            expect(Rollbar).to have_received(:error).with(
+              instance_of(ActiveRecord::RecordInvalid),
+              solar_edge_installation: installation.id,
+              tokens: {
+                'access_token' => 'new-access-token',
+                'refresh_token' => 'new-refresh-token',
+                'expires_in' => '7200'
+              }
+            )
+          end
         end
       end
     end

@@ -130,11 +130,11 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   # We use UTC for expiry timestamp to avoid issues with BST/GMT changeover.
-  def refresh_api_tokens!
+  def refresh_api_tokens!(force_refresh: false)
     return if refresh_token.blank?
 
     with_lock do
-      return false unless access_token_expired?
+      return false unless force_refresh || access_token_expired?
 
       begin
         tokens = DataFeeds::SolarEdge::Api.new.refresh_access_token(refresh_token)
@@ -159,7 +159,7 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def solar_edge_meter_type(meter_type)
-    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type) # rubocop:disable Lint/DeprecatedReference
+    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type)
   end
 
   def store_tokens(tokens)

@@ -13,6 +13,9 @@ module Solar
     end
 
     def download_and_upsert
+      # force refresh so we have a full 2 hour window before current tokens expire
+      @installation.refresh_api_tokens!(force_refresh: true) if @installation.consented?
+
       # refresh local copy of metadata when loading for v2
       SolarEdgeService.new(@installation).update_information if @installation.consented?
 
