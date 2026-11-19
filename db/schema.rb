@@ -2295,6 +2295,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_19_150333) do
     t.string "site_owner_email"
     t.index ["amr_data_feed_config_id"], name: "index_solar_edge_installations_on_amr_data_feed_config_id"
     t.index ["school_id"], name: "index_solar_edge_installations_on_school_id"
+    t.index ["site_id"], name: "index_solar_edge_installations_on_site_id", unique: true
   end
 
   create_table "solar_pv_tuos_readings", force: :cascade do |t|

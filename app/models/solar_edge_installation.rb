@@ -24,6 +24,7 @@
 #
 #  index_solar_edge_installations_on_amr_data_feed_config_id  (amr_data_feed_config_id)
 #  index_solar_edge_installations_on_school_id                (school_id)
+#  index_solar_edge_installations_on_site_id                  (site_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -37,8 +38,10 @@ class SolarEdgeInstallation < ApplicationRecord
 
   has_many :meters, dependent: nil
 
-  validates :site_id, presence: true
-  validate :site_id_unique_to_school
+  # rubocop:disable-next Rails/I18nLocaleTexts
+  validates :site_id,
+            presence: true,
+            uniqueness: { message: 'is already associated with a different school' }
 
   validates :site_owner_email, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
@@ -172,11 +175,6 @@ class SolarEdgeInstallation < ApplicationRecord
       refresh_token: tokens['refresh_token'],
       access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now.utc
     )
-  end
-
-  def site_id_unique_to_school
-    existing = self.class.where(site_id:).where.not(id:).where.not(school:)
-    errors.add(:site_id, 'is already associated with a different school') if existing.exists?
   end
 
   def solar_edge_created_at(item)

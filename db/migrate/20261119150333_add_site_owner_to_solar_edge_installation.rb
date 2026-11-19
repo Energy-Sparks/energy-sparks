@@ -6,5 +6,7 @@ class AddSiteOwnerToSolarEdgeInstallation < ActiveRecord::Migration[8.1]
       t.string :site_owner_name
       t.string :site_owner_email
     end
+
+    add_index :solar_edge_installations, :site_id, unique: true
   end
 end
