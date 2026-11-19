@@ -3,6 +3,9 @@
 class EnergyTariffReminder
   REMINDER_WINDOW = 30.days
 
+  def self.school_users(school) = school.all_school_admins.school_admin.active
+  def self.group_users(school_group) = school_group.users.group_admin.active
+
   def initialize(today: Date.current)
     @today = today
     @end_date = @today + REMINDER_WINDOW
@@ -21,10 +24,10 @@ class EnergyTariffReminder
 
     selector = method(expiring ? :each_needing_expiry_reminder : :each_needing_tariff_reminder)
     selector.call(School.active) do |school, expiring_tariffs|
-      yield school, school.all_school_admins.school_admin.active, expiring_tariffs
+      yield school, self.class.school_users(school), expiring_tariffs
     end
     selector.call(SchoolGroup.organisation_groups) do |school_group, expiring_tariffs|
-      yield school_group, school_group.users.group_admin.active, expiring_tariffs
+      yield school_group, self.class.group_users(school_group), expiring_tariffs
     end
   end
 

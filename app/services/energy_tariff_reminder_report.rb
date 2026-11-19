@@ -16,15 +16,13 @@ class EnergyTariffReminderReport
   end
 
   def expiring_columns
-    [Column.new('Scheduled date', ->(row) { row[:scheduled_on] }), *biannual_columns, *tariff_columns]
+    [Column.new('Scheduled date', ->(row) { row[:scheduled_on] }),
+     *common_columns,
+     *tariff_columns,
+     preview_column(expiring: true)]
   end
 
-  def biannual_columns
-    [Column.new('Organisation', ->(row) { row[:organisation].name },
-                ->(row, name) { link_to(name, organisation_tariffs_path(row)) }),
-     Column.new('Recipients', ->(row) { row[:locale_users].map(&:email).join(', ') }),
-     Column.new('Locale', ->(row) { row[:locale] })]
-  end
+  def biannual_columns = [*common_columns, preview_column(expiring: false)]
 
   def expiring_rows
     (@from...@to).flat_map { |date| reminder_rows(date, expiring: true) }
@@ -34,11 +32,22 @@ class EnergyTariffReminderReport
     reminder_rows(next_biannual_date, expiring: false)
   end
 
-  def next_biannual_date
-    @next_biannual_date ||= send_tariff_reminders_cron.next_time(@from).to_date
-  end
+  def next_biannual_date = @next_biannual_date ||= send_tariff_reminders_cron.next_time(@from).to_date
 
   private
+
+  def common_columns
+    [organisation_column,
+     Column.new('Admin', ->(row) { row[:organisation].default_issues_admin_user&.name }),
+     Column.new('Recipients', ->(row) { row[:locale_users].map(&:email).join(', ') }),
+     Column.new('Locale', ->(row) { row[:locale] })]
+  end
+
+  def organisation_column
+    Column.new('Organisation',
+               ->(row) { row[:organisation].name },
+               ->(row, name) { link_to(name, organisation_tariffs_path(row)) })
+  end
 
   def tariff_columns
     [Column.new('Tariff IDs', ->(row) { row[:tariffs] }, ->(row) { tariff_links(row) }),
@@ -86,5 +95,21 @@ class EnergyTariffReminderReport
     end
 
     Fugit::Cron.do_parse(lines.first[/(\S+\s+){5}/])
+  end
+
+  def preview_column(expiring:) = Column.new('', nil, ->(row) { preview_link(row, expiring:) })
+
+  def preview_link(row, expiring:)
+    params = { locale: row[:locale] }
+    preview = if row[:organisation].instance_of?(School)
+                params[:school_id] = row[:organisation].id
+                expiring ? :school_expiry : :school_reminder
+              else
+                params[:group_id] = row[:organisation].id
+                expiring ? :group_expiry : :group_reminder
+              end
+    icon = ApplicationController.helpers.fa_icon('envelope', aria: { hidden: true })
+    link_to(icon, admin_mailer_preview_path(path: "energy_tariffs_mailer/#{preview}", **params),
+            title: 'Preview', data: { toggle: 'tooltip', bs_toggle: 'tooltip' }, aria: { label: 'Preview email' })
   end
 end

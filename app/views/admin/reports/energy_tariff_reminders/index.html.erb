@@ -1,4 +1,11 @@
+
+<style>
+  <%# allows horizontal scrolling when table is wide %>
+  body { overflow-x: auto; }
+</style>
+
 <% content_for :page_title, 'Tariff reminder emails' %>
+<% content_for :container_size, 'wide' %>
 
 <h1>Tariff reminder emails</h1>
 
@@ -14,6 +21,11 @@
     Automated emails are disabled. These emails would be sent if enabled.
   </div>
 <% end %>
+
+<ul>
+<li><a href="#expiring-reminders">Expiring tariff reminders</a></li>
+<li><a href="#biannual-reminders">Next biannual reminder</a></li>
+</ul>
 
 <section id="expiring-reminders">
   <h2>Expiring tariff reminders</h2>

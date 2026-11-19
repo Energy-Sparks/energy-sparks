@@ -7,7 +7,8 @@ class EnergyTariffsMailerPreview < BasePreview
 
   def school_expiry
     school = School.find(params[:school_id])
-    EnergyTariffsMailer.reminder(school, school.school_admin, school.energy_tariffs.enabled.current, locale)
+    EnergyTariffsMailer.reminder(school, EnergyTariffReminder.school_users(school),
+                                 school.energy_tariffs.enabled.current, locale)
   end
 
   def self.school_reminder_params
@@ -16,7 +17,7 @@ class EnergyTariffsMailerPreview < BasePreview
 
   def school_reminder
     school = School.find(params[:school_id])
-    EnergyTariffsMailer.reminder(school, school.school_admin, [], locale)
+    EnergyTariffsMailer.reminder(school, EnergyTariffReminder.school_users(school), [], locale)
   end
 
   def self.school_reminder_group_tariff_params
@@ -33,7 +34,8 @@ class EnergyTariffsMailerPreview < BasePreview
 
   def group_expiry
     group = SchoolGroup.find(params[:group_id])
-    EnergyTariffsMailer.reminder(group, group.users.group_admin, group.energy_tariffs.enabled.current, locale)
+    EnergyTariffsMailer.reminder(group, EnergyTariffReminder.group_users(group), group.energy_tariffs.enabled.current,
+                                 locale)
   end
 
   def self.group_reminder_params
@@ -42,6 +44,6 @@ class EnergyTariffsMailerPreview < BasePreview
 
   def group_reminder
     group = SchoolGroup.find(params[:group_id])
-    EnergyTariffsMailer.reminder(group, group.users.group_admin, [], locale)
+    EnergyTariffsMailer.reminder(group, EnergyTariffReminder.group_users(group), [], locale)
   end
 end
