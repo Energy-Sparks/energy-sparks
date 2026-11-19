@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_03_115645) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_19_150333) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2291,6 +2291,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_115645) do
     t.datetime "access_token_expires_at"
     t.datetime "consent_granted_at"
     t.string "refresh_token"
+    t.string "site_owner_name"
+    t.string "site_owner_email"
     t.index ["amr_data_feed_config_id"], name: "index_solar_edge_installations_on_amr_data_feed_config_id"
     t.index ["school_id"], name: "index_solar_edge_installations_on_school_id"
   end

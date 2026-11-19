@@ -12,6 +12,8 @@
 #  information             :json
 #  mpan                    :text
 #  refresh_token           :string
+#  site_owner_email        :string
+#  site_owner_name         :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  amr_data_feed_config_id :bigint(8)        not null
@@ -37,6 +39,8 @@ class SolarEdgeInstallation < ApplicationRecord
 
   validates :site_id, presence: true
   validate :site_id_unique_to_school
+
+  validates :site_owner_email, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   scope :active, -> { where(active: true) }
 
@@ -159,7 +163,7 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def solar_edge_meter_type(meter_type)
-    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type) # rubocop:disable Lint/DeprecatedReference
+    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type)
   end
 
   def store_tokens(tokens)
