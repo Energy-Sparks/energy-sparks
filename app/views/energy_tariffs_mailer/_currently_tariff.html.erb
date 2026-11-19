@@ -1,0 +1,11 @@
+<%# locals: (group: false, gas: nil, electricity: nil) %>
+<% key = if electricity.present? && gas.present? then :both
+         elsif electricity.present? then :electricity_only
+         elsif gas.present? then :gas_only
+         end %>
+<%# i18n-tasks-use t('energy_tariffs_mailer.reminder.currently_tariff_group.both') %>
+<%# i18n-tasks-use t('energy_tariffs_mailer.reminder.currently_tariff_group.electricity_only') %>
+<%# i18n-tasks-use t('energy_tariffs_mailer.reminder.currently_tariff_group.gas_only') %>
+<p><%= t("energy_tariffs_mailer.reminder.currently_tariff#{"_group.#{key}" if group}",
+         electricity: format_target(electricity || SiteSettings.current_prices.electricity_price, :£),
+         gas: format_target(gas || SiteSettings.current_prices.gas_price, :£)) %></p>
