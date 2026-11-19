@@ -129,39 +129,39 @@
                                  input_html: { multiple: true, class: 'tom-select' } %>
 
       <h5>Subject areas</h5>
-      <%= hidden_field_tag "#{f.object_name}[subject_area_ids][]", '' %>
       <div class="row">
+        <%= f.hidden_field :subject_area_ids, multiple: true, value: '' %>
         <% Enums::Country::ENUM_COUNTRY.each_key do |country| %>
           <div class="col-md-4 mb-3">
-            <%= f.label :subject_area_ids, country.to_s.humanize,
-                        for: "#{f.object_name}_subject_area_ids_#{country}",
-                        class: 'form-label' %>
-            <%= f.collection_select :subject_area_ids,
-                                    ::Activities::SubjectArea.by_name.select { |area| area.country == country.to_s },
-                                    :id, :name,
-                                    { include_hidden: false },
-                                    { multiple: true,
-                                      id: "#{f.object_name}_subject_area_ids_#{country}",
-                                      class: 'form-select tom-select' } %>
+            <%= f.input :subject_area_ids,
+                        as: :select,
+                        label: country.to_s.humanize,
+                        collection: ::Activities::SubjectArea.for_country(country).by_name,
+                        include_hidden: false,
+                        input_html: {
+                          multiple: true,
+                          id: "#{f.object_name}_subject_area_ids_#{country}",
+                          class: 'tom-select'
+                        } %>
           </div>
         <% end %>
       </div>
 
       <h5>Learning stages</h5>
-      <%= hidden_field_tag "#{f.object_name}[learning_stage_ids][]", '' %>
       <div class="row">
+        <%= f.hidden_field :learning_stage_ids, multiple: true, value: '' %>
         <% Enums::Country::ENUM_COUNTRY.each_key do |country| %>
           <div class="col-md-4 mb-3">
-            <%= f.label :learning_stage_ids, country.to_s.humanize,
-                        for: "#{f.object_name}_learning_stage_ids_#{country}",
-                        class: 'form-label' %>
-            <%= f.collection_select :learning_stage_ids,
-                                    LearningStage.by_name.select { |stage| stage.country == country.to_s },
-                                    :id, :name,
-                                    { include_hidden: false },
-                                    { multiple: true,
-                                      id: "#{f.object_name}_learning_stage_ids_#{country}",
-                                      class: 'form-select tom-select' } %>
+            <%= f.input :learning_stage_ids,
+                        as: :select,
+                        label: country.to_s.humanize,
+                        collection: LearningStage.for_country(country).by_name,
+                        include_hidden: false,
+                        input_html: {
+                          multiple: true,
+                          id: "#{f.object_name}_learning_stage_ids_#{country}",
+                          class: 'tom-select'
+                        } %>
           </div>
         <% end %>
       </div>
