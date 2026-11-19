@@ -1,12 +1,12 @@
-<% content_for :page_title, header.title %>
+<% content_for(:page_title, header.title) unless content_for?(:page_title) %>
 
 <div class="row">
   <div class="col d-flex flex-wrap align-items-center justify-content-between">
     <%= header %>
-    <% if buttons.any? %>
+    <% if actions.any? %>
       <div>
-        <% buttons.each do |button| %>
-          <%= button %>
+        <% actions.each do |action| %>
+          <%= action %>
         <% end %>
       </div>
     <% end %>

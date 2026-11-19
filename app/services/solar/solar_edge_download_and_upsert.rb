@@ -22,7 +22,7 @@ module Solar
     end
 
     def job
-      :solar_edge_download
+      :solar_edge
     end
 
     protected

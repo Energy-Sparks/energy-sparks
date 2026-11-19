@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // When tab changes, update URL
   document.addEventListener("shown.bs.tab", function (event) {
     const link = event.target.closest(tabSelector);
+    if (!link) return;
     const target = link.getAttribute("href");
     history.replaceState(null, "", target);
   });
