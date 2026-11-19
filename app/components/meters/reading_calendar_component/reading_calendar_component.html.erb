@@ -1,0 +1,20 @@
+<%= tag.div id: id, class: classes do %>
+  <div class="readings-calendar" data-url="<%= @path %>"></div>
+
+  <div class="calendar-legend row">
+    <% legend.entries.in_groups_of(10, false).each do |group| %>
+      <div class="legend-scale vertical col-md-4">
+        <ul class='legend-labels'>
+          <% group.each do |colour, label| %>
+            <li class="legend-label">
+              <span style='background:<%= colour %>;'></span>
+              <div class="description" style="font-size: 17px;">
+                <small><%= label %></small>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+<% end %>
