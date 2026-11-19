@@ -525,7 +525,6 @@ class AggregateDataServiceSolar
         @meter_collection.electricity_meters.delete_if { |m| m.mpan_mprn.to_s == mpan.to_s }
         truncate_meter_dates(meter, map)
         pv_meter_map.set_meter(meter_attribute_key, meter)
-        (@meter_mapping[meter] ||= []) << map
         @commissioned_dates[meter.mpan_mprn] = map[:commissioned_date]
       end
     end
