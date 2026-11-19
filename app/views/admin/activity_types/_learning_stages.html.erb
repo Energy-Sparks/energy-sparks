@@ -1,0 +1,6 @@
+<% LearningStage.countries.each_key do |country| %>
+  <div class="d-flex justify-content-between gap-3 mb-2">
+    <strong><%= country.humanize %>:</strong>
+    <span><%= learning_stages.for_country(country).abbreviations.join(', ').presence || 'None' %></span>
+  </div>
+<% end %>

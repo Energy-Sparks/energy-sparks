@@ -26,7 +26,9 @@
         <th scope="col">Name</th>
         <th scope="col">School specific instructions?</th>
         <th scope="col">Score</th>
-        <th scope="col">Key Stages</th>
+        <th scope="col">
+          <%= Flipper.enabled?(:activity_classifications) ? 'Learning Stages' : 'Key Stages' %>
+        </th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -43,7 +45,24 @@
                     end %>
           <td><%= fa_icon(icon) %></td>
           <td><%= activity_type.score %></td>
-          <td><%= activity_type.key_stage_list %></td>
+          <td>
+            <% if Flipper.enabled?(:activity_classifications) %>
+              <%= activity_type.learning_stages.england.abbreviations.join(', ') %>
+              <%= button_tag type: 'button',
+                             class: 'btn btn-link p-0 text-muted',
+                             data: {
+                               bs_toggle: 'popover',
+                               bs_trigger: 'focus',
+                               bs_placement: 'bottom',
+                               bs_html: true,
+                               bs_content: render('learning_stages', learning_stages: activity_type.learning_stages)
+                             } do %>
+                <%= render Elements::IconComponent.new(name: 'info-circle') %>
+              <% end %>
+            <% else %>
+              <%= activity_type.key_stage_list %>
+            <% end %>
+          </td>
           <td class="text-nowrap text-end">
             <%= link_to 'Edit', edit_admin_activity_type_path(activity_type),
                         class: 'btn btn-secondary btn-sm' %>

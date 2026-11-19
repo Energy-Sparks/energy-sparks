@@ -13,7 +13,7 @@ const initialise = () => {
     }
 
     const options = {
-      plugins: ["remove_button"],
+      plugins: ['remove_button'],
       create: false,
       maxOptions: null,
       hideSelected: false
