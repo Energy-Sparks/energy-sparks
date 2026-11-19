@@ -70,7 +70,7 @@ describe Aggregation::SolarMeterMap do
     it { expect(solar_meter_map.each.to_a).to eq([[:mains_consume, meter]]) }
   end
 
-  describe '#each_value' do
-    it { expect(solar_meter_map.each_value.to_a).to eq([meter]) }
+  describe '#meters' do
+    it { expect(solar_meter_map.meters).to eq([meter]) }
   end
 end
