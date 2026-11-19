@@ -949,6 +949,7 @@ Rails.application.routes.draw do
       resources :solar_installations, only: :index
       resources :limited_data, only: :index
       resources :stale_data, only: :index
+      resources :energy_tariff_reminders, only: :index
     end
 
     resource :settings, only: %i[show update]
