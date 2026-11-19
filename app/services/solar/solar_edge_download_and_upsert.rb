@@ -13,9 +13,6 @@ module Solar
     end
 
     def download_and_upsert
-      # force refresh so we have a full 2 hour window before current tokens expire
-      @installation.refresh_api_tokens!(force_refresh: true) if @installation.consented?
-
       # refresh local copy of metadata when loading for v2
       SolarEdgeService.new(@installation).update_information if @installation.consented?
 
@@ -91,9 +88,12 @@ module Solar
       yield @installation.solar_edge_serial_number(meter_type)
     end
 
+    # force refresh so we have a full 2 hour window before current tokens expire
+    # means site date_range is not cached across meters where we are loading data for the first time or
+    # doing a full reload
     def site_api
-      @site_api = @installation.site_api! if @site_api.nil? || @installation.access_token_expired?
-      @site_api
+      @installation.refresh_api_tokens!(force_refresh: true) if @installation.consented?
+      @installation.site_api!
     end
   end
 end
