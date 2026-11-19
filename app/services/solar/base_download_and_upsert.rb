@@ -22,11 +22,15 @@ module Solar
 
     def import_log
       @import_log ||= AmrDataFeedImportLog.create(amr_data_feed_config: @installation.amr_data_feed_config,
-                                                  file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
+                                                  file_name:,
                                                   import_time: DateTime.now.utc)
     end
 
     protected
+
+    def file_name
+      "#{job.to_s.humanize} import for #{@installation.display_name} (#{@installation.id})"
+    end
 
     # implement this in the subclass
     def download_and_upsert
@@ -68,7 +72,7 @@ module Solar
     def log_exception(exception, context = {})
       EnergySparks::Log.exception(exception, { job:, school: school&.name, start_date:, end_date:,
                                                installation_id: @installation.id }.merge(context))
-      @error_messages << context.map { |key, value| "#{key} #{value}" }.join(' ')
+      @error_messages << exception.message
     end
   end
 end
