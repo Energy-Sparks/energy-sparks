@@ -13,11 +13,14 @@ namespace :solar do
 
     puts "#{DateTime.now.utc} import_solar_edge_readings start"
     begin
-      SolarEdgeInstallation.active.find_each do |installation|
-        next unless installation.consented?
-
+      SolarEdgeInstallation.for_active_schools.consented.find_each do |installation|
         puts "Running for #{installation.school.name} #{installation.site_id}"
-        Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date:, end_date:, reload:).perform
+
+        if installation.active?
+          Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date:, end_date:, reload:).perform
+        else
+          installation.refresh_api_tokens!
+        end
       end
     rescue StandardError => e
       puts "Exception: importing readings #{e.class} #{e.message}"
