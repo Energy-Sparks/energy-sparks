@@ -35,7 +35,7 @@
       </tr>
       <tr>
         <td>Production date begins</td>
-        <td><%= installation.information&.dig('dates', 'from') if installation.consented? %></td>
+        <td><%= installation.first_telemetry_time %></td>
       </tr>
       <tr>
         <td>SolarEdge grid import meter active?</td>
