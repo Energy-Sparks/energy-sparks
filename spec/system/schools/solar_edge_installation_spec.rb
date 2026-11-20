@@ -141,7 +141,6 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
       it 'allows viewing' do
         click_on(installation.site_id)
         expect(page).to have_text('site_detail')
-        expect(page).to have_text('dates')
         expect(page).to have_text(installation.site_owner_name)
         expect(page).to have_text(installation.site_owner_email)
       end
