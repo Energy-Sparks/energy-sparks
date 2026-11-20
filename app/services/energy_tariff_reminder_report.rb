@@ -86,8 +86,13 @@ class EnergyTariffReminderReport
   end
 
   def send_tariff_reminders_cron
-    config = YAML.safe_load_file(Rails.root.join('.ebextensions/cronjob.config'))
-    lines = config.dig('files', '/etc/cron.d/energysparks', 'content').lines(chomp: true).select do |line|
+    content = if Rails.env.production?
+                File.read('/etc/cron.d/energysparks')
+              else
+                config = YAML.safe_load_file(Rails.root.join('.ebextensions/cronjob.config'))
+                config.dig('files', '/etc/cron.d/energysparks', 'content')
+              end
+    lines = content.lines(chomp: true).select do |line|
       line.end_with?(' run-webapp-job schools:send_tariff_reminders')
     end
     unless lines.one?
