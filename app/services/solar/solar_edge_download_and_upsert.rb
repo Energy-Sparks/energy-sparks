@@ -89,8 +89,7 @@ module Solar
     end
 
     def site_api
-      @site_api = @installation.site_api! if @site_api.nil? || @installation.access_token_expired?
-      @site_api
+      @site_api ||= @installation.site_api!
     end
   end
 end

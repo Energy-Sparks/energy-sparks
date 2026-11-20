@@ -20,30 +20,30 @@ module DataFeeds
         @access_token = access_token
         @connection = build_connection(
           url: "#{API_BASE}/sites/#{@site_id}",
-          headers: auth_headers,
+
           retry_options: RETRY_OPTIONS,
           stubs: stubs
         )
       end
 
       def details
-        @connection.get('').body
+        get('')
       end
 
       def inventory(types: 'METER')
-        @connection.get('devices', { types: }).body
+        get('devices', { types: })
       end
 
       def energy(resolution: 'QUARTER_HOUR', unit: 'KWH', from: nil, to: nil)
         params = add_from_to(params: { resolution:, unit: }, from:, to:)
-        @connection.get('energy', params).body
+        get('energy', params)
       end
 
       # rubocop:disable-next Metrics/ParameterLists
       def meter_measurement(serial_number:, measurement: 'import-energy', resolution: 'QUARTER_HOUR', unit: 'KWH',
                             from: nil, to: nil)
         params = add_from_to(params: { resolution:, unit: }, from:, to:)
-        @connection.get("meters/#{serial_number}/#{measurement}", params).body
+        get("meters/#{serial_number}/#{measurement}", params)
       end
 
       # Only way to request period of data available in v2 is to ask for total
@@ -144,8 +144,9 @@ module DataFeeds
         Hash.new { |h, k| h[k] = Array.new(48, nil) }
       end
 
-      def auth_headers
-        { 'Authorization' => "Bearer #{@access_token}" }
+      def get(path, params = nil)
+        token = @access_token.respond_to?(:call) ? @access_token.call : @access_token
+        @connection.get(path, params, { 'Authorization' => "Bearer #{token}" }).body
       end
     end
   end
