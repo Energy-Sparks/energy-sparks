@@ -755,6 +755,8 @@ Rails.application.routes.draw do
         resources :meter_updates, only: [:index], param: :fuel_type do
           post :bulk_update_meter_data_source
           post :bulk_update_meter_procurement_route
+          post :bulk_update_meter_supplier
+          post :bulk_update_meter_admin_meter_status
         end
         resources :school_onboardings, only: [:index] do
           collection do
@@ -947,6 +949,7 @@ Rails.application.routes.draw do
       resources :solar_installations, only: :index
       resources :limited_data, only: :index
       resources :stale_data, only: :index
+      resources :energy_tariff_reminders, only: :index
     end
 
     resource :settings, only: %i[show update]
