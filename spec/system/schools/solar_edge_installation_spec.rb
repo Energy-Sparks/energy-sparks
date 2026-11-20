@@ -64,7 +64,6 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         let(:site_id) { installation.site_id }
 
         include_context 'with a stubbed SolarEdge site details request'
-        include_context 'with a stubbed SolarEdge date request'
         include_context 'with a stubbed SolarEdge inventory request'
 
         context 'when editing' do

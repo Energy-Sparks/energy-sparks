@@ -55,25 +55,6 @@ RSpec.shared_context 'with a stubbed SolarEdge site details request' do
   end
 end
 
-RSpec.shared_context 'with a stubbed SolarEdge date request' do
-  let(:from) { '2024-01-01T00:00:00+01:00' }
-  let(:to) { '2026-01-02T13:43:01+01:00' }
-
-  before do
-    stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{site_id}/" \
-                       'energy?from=2000-01-01T00:00:00%2B00:00&resolution=TOTAL&unit=KWH')
-      .to_return(
-        status: 200,
-        headers: {
-          'Content-Type' => 'application/json'
-        },
-        body: {
-          'period' => { 'from' => from, 'to' => to }
-        }.to_json
-      )
-  end
-end
-
 RSpec.shared_context 'with a stubbed SolarEdge inventory request' do
   before do
     stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{site_id}/" \

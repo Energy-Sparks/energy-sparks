@@ -88,9 +88,9 @@ module DataFeeds
       private
 
       def windowed_request(requested_start_date, requested_end_date, window_size: MAX_QUARTER_HOUR_PERIOD)
-        start_date, end_date = request_period(requested_start_date, requested_end_date)
-        from = midnight_in_europe_london(start_date)
-        to   = midnight_in_europe_london(end_date + 1.day)
+        from = midnight_in_europe_london(requested_start_date || Time.zone.yesterday)
+        end_date = (requested_end_date || Time.zone.yesterday) + 1.day
+        to = midnight_in_europe_london(end_date)
 
         while from < to
           window_end = [from + window_size, to].min
@@ -103,14 +103,6 @@ module DataFeeds
 
       def midnight_in_europe_london(date)
         date.in_time_zone('Europe/London').beginning_of_day
-      end
-
-      def request_period(start_date, end_date)
-        return start_date, end_date if start_date && end_date
-
-        dates = date_range
-
-        [start_date || dates[:from].to_date, end_date || dates[:to].to_date]
       end
 
       def add_from_to(params:, from:, to:)
