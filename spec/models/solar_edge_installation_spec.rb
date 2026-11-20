@@ -48,7 +48,7 @@ describe SolarEdgeInstallation do
     it 'does not allow the same site_id for different schools' do
       installation = build(:solar_edge_installation, site_id: solar_edge_installation.site_id)
       expect(installation).not_to be_valid
-      expect(installation.errors[:site_id]).to eq(['is already associated with a different school'])
+      expect(installation.errors[:site_id]).to eq(['is already associated with a school'])
     end
   end
 

@@ -41,7 +41,7 @@ class SolarEdgeInstallation < ApplicationRecord
   # rubocop:disable-next Rails/I18nLocaleTexts
   validates :site_id,
             presence: true,
-            uniqueness: { message: 'is already associated with a different school' }
+            uniqueness: { message: 'is already associated with a school' }
 
   validates :site_owner_email, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
