@@ -22,7 +22,7 @@
                               action: :index,
                               only_path: true,
                               **params.permit(
-                                :school_group, :admin, :meter_type, :active, :consented
+                                :school_group, :admin, :meter_type, :active, :consented, :school_active, :contract_id
                               ).merge(format: :csv)),
                       class: 'ml-2 btn btn-sm btn-secondary' %>
           <% end %>

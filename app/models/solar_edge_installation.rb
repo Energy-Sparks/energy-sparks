@@ -152,6 +152,13 @@ class SolarEdgeInstallation < ApplicationRecord
     end
   end
 
+  def credit_estimate
+    return 0 unless active && consented?
+    return 2 unless monitoring_active?
+
+    2 + (2 * meters.active.count)
+  end
+
   private
 
   def local_meter_loadable?(meter_type)
@@ -159,7 +166,7 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def solar_edge_meter_type(meter_type)
-    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type) # rubocop:disable Lint/DeprecatedReference
+    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type)
   end
 
   def store_tokens(tokens)

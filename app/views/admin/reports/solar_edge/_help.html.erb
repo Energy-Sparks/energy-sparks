@@ -4,10 +4,20 @@ The columns in the report are defined as follows:
 
 <ul>
   <li>
-    <strong>Consented?</strong> - Do we have consent to access the site. Without this we cannot access the API
+    <strong>School active?</strong> - Is the school active? An inactive school is either archived or deleted
   </li>
   <li>
-    <strong>Loading Enabled?</strong> - Is the SolarEdge site set to active? If not, then loading is disabled
+    <strong>Contract</strong> - Name of the contract associated with the school's current licence
+  </li>
+  <li>
+    <strong>Consented?</strong> - Do we have consent to access the site? Without this we cannot access the API
+  </li>
+  <li>
+    <strong>Loading Enabled?</strong> - Is the SolarEdge site set to active in Energy Sparks? If not, then loading is disabled
+  </li>
+  <li>
+    <strong>Monitoring Active?</strong> - Is the SolarEdge site reporting an Active status? If a site is not active
+    (Pending) then we cannot retrieve any data but will monitor for status changes.
   </li>
   <li>
     <strong>Metered Solar Configured?</strong> - Does the school have an active electricity meter with a metered
