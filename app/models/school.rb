@@ -991,6 +991,10 @@ class School < ApplicationRecord
     # 7 - "All-through"
   end
 
+  def current_contract
+    licences.current.first&.contract&.name
+  end
+
   def contract_holder
     licences.current.first&.contract_holder
   end
