@@ -20,8 +20,6 @@ module Solar
       described_class.new(installation:, start_date: requested_start_date, end_date: requested_end_date)
     end
 
-    include_context 'with a successful SolarEdge token refresh'
-
     def allow_refreshing_information(site_api:)
       allow(site_api).to receive_messages(details: installation.information['site_details'],
                                           inventory: installation.information['inventory'])

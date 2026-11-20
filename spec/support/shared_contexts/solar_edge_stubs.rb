@@ -12,7 +12,7 @@ RSpec.shared_context 'with a successful SolarEdge token request' do
       expires_in: 7200,
       refresh_token: 'tGzv3JOkF0XG5Qx2TlKWIA'
     }
-    stub_request(:post, "#{DataFeeds::SolarEdge::Api::API_BASE}/oauth2/token")
+    stub_request(:post, 'https://monitoringapi.solaredge.com/v2/oauth2/token')
       .to_return(
         status: 200,
         body: response.to_json,
@@ -27,7 +27,7 @@ RSpec.shared_context 'with a failed SolarEdge token request' do
       error: 'Error',
       error_description: 'Invalid code'
     }
-    stub_request(:post, "#{DataFeeds::SolarEdge::Api::API_BASE}/oauth2/token")
+    stub_request(:post, 'https://monitoringapi.solaredge.com/v2/oauth2/token')
       .to_return(
         status: 400,
         body: response.to_json,
