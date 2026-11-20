@@ -117,7 +117,7 @@ class MeterMonthlySummary < ApplicationRecord
         :actual
       elsif types.intersect?(%w[PROB ZMDR E0H1])
         :incomplete
-      elsif types.intersect?(%w[SOLR SOLO SOLE BKPV])
+      elsif types.intersect?(%w[SOLR SOLO SOLE BKPV SOLC])
         :estimated
       else
         raise "unknown #{types} - #{month_start} #{month_readings}"

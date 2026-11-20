@@ -55,9 +55,7 @@ module Aggregation
       @generation_meters = []
     end
 
-    def each(&) = all_meters_with_type.each(&)
-
-    def each_value(&) = all_meters_with_type.map(&:second).each(&)
+    def each(&) = meters_with_type.each(&)
 
     def all_required_key_values_non_nil?
       %i[export self_consume mains_consume mains_plus_self_consume].all? { |key| !@hash[key].nil? } &&
@@ -103,12 +101,14 @@ module Aggregation
       end
     end
 
+    def meters_with_type = @hash.to_a + @generation_meters.map { |meter| [:generation, meter] }
+
+    def meters = meters_with_type.map(&:second)
+
     private
 
     def meter_type(meter_attribute_key)
       MPAN_KEY_MAPPINGS[meter_attribute_key]
     end
-
-    def all_meters_with_type = @hash.to_a + @generation_meters.map { |meter| [:generation, meter] }
   end
 end

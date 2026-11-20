@@ -11,6 +11,9 @@ module MeterAttributes
       structure: {
         start_date: MeterAttributeTypes::Date.define(required: true),
         end_date: MeterAttributeTypes::Date.define,
+        commissioned_date: MeterAttributeTypes::Date.define(
+          hint: 'Backfill production and export meters to this date using their initial readings'
+        ),
         export_mpan: MeterAttributeTypes::String.define,
         production_mpan: MeterAttributeTypes::String.define,
         self_consume_mpan: MeterAttributeTypes::String.define(hint: 'currently unsupported'),
