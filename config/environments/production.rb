@@ -108,6 +108,7 @@ Rails.application.configure do
   config.active_storage.service = :amazon
   require './lib/energy_sparks/file_store'
   config.cache_store = EnergySparks::FileStore.new("/var/cache/rails_cache_store")
+  config.cache_store = :solid_cache_store
   # session cookie has configurable name so that live and test logins are separated
   config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME', '_energy-sparks_session'),
                                       domain: ENV.fetch('SESSION_COOKIE_DOMAIN', '.energysparks.uk')
