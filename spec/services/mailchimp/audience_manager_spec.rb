@@ -101,28 +101,43 @@ describe Mailchimp::AudienceManager do
       Mailchimp::Contact.new('user@example.org', 'Jane Smith')
     end
 
-    before do
-      allow(lists_api).to receive(:get_all_lists).and_return(lists_data)
+    context 'when user is in mailchimp' do
+      before do
+        contact = YAML.safe_load_file('spec/fixtures/mailchimp/contact.yml')
+        allow(lists_api).to receive_messages(get_all_lists: lists_data, get_list_member: contact)
+      end
+
+      it 'updates contact' do
+        expect(lists_api).to receive(:set_list_member).with(
+          'aff6ac9f1b',
+          Digest::MD5.hexdigest(contact.email_address.downcase),
+          contact.to_mailchimp_hash,
+          { skip_merge_validation: true }
+        )
+        service.update_contact(contact)
+      end
+
+      it 'updates contact using old email' do
+        expect(lists_api).to receive(:set_list_member).with(
+          'aff6ac9f1b',
+          Digest::MD5.hexdigest('old@example.org'),
+          contact.to_mailchimp_hash,
+          { skip_merge_validation: true }
+        )
+        service.update_contact(contact, 'old@example.org')
+      end
     end
 
-    it 'updates contact' do
-      expect(lists_api).to receive(:set_list_member).with(
-        'aff6ac9f1b',
-        Digest::MD5.hexdigest(contact.email_address.downcase),
-        contact.to_mailchimp_hash,
-        { skip_merge_validation: true }
-      )
-      service.update_contact(contact)
-    end
+    context 'when contact is not in mailchimp' do
+      before do
+        allow(lists_api).to receive(:get_all_lists).and_return(lists_data)
+        allow(lists_api).to receive(:get_list_member).and_raise(StandardError)
+      end
 
-    it 'updates contact using old email' do
-      expect(lists_api).to receive(:set_list_member).with(
-        'aff6ac9f1b',
-        Digest::MD5.hexdigest('old@example.org'),
-        contact.to_mailchimp_hash,
-        { skip_merge_validation: true }
-      )
-      service.update_contact(contact, 'old@example.org')
+      it 'does not call the API' do
+        expect(lists_api).not_to receive(:set_list_member)
+        service.update_contact(contact)
+      end
     end
   end
 

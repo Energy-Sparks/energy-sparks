@@ -1,5 +1,5 @@
 module Mailchimp
-  class AudienceManager
+  class AudienceManager # rubocop:disable Metrics/ClassLength
     def initialize(client = Rails.configuration.mailchimp_client)
       @client = client
     end
@@ -53,6 +53,9 @@ module Mailchimp
     end
 
     def update_contact(mailchimp_contact, original_email = nil)
+      contact = get_list_member(mailchimp_key(mailchimp_contact, original_email))
+      return unless contact
+
       resp = @client.lists.set_list_member(list.id,
                                            mailchimp_key(mailchimp_contact, original_email),
                                            mailchimp_contact.to_mailchimp_hash,
