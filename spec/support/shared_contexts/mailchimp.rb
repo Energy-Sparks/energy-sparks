@@ -26,7 +26,7 @@ RSpec.shared_context 'with a stubbed audience manager' do
 end
 
 RSpec.shared_context 'with a configured Mailchimp list' do
-  let(:list_id) { '524305' }
+  let(:list_id) { 'aff6ac9f1b' }
 
   before do
     stub_env(MAILCHIMP_LIST: list_id)

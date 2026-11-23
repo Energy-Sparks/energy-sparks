@@ -2,7 +2,7 @@ module Mailchimp
   class AudienceManager
     def initialize(client = Rails.configuration.mailchimp_client)
       @client = client
-      @list_web_id = ENV.fetch('MAILCHIMP_LIST').to_i
+      @list_id = ENV.fetch('MAILCHIMP_LIST')
     end
 
     # The Mailchimp documentation and CSV exports use different status names than
@@ -111,9 +111,9 @@ module Mailchimp
     def get_list
       lists = @client.lists.get_all_lists
 
-      list = lists['lists'].find { |list| list['web_id'] == @list_web_id } unless lists.empty?
+      list = lists['lists'].find { |list| list['id'] == @list_id } unless lists.empty?
 
-      Rollbar.error('Unable to lookup Mailchimp audience', { list_web_id: @list_web_id }) if list.blank?
+      Rollbar.error('Unable to lookup Mailchimp audience', { list_id: @list_id }) if list.blank?
 
       list.blank? ? nil : OpenStruct.new(list)
     end
