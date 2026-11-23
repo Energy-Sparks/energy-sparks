@@ -116,7 +116,7 @@ class AlertChangeInDailyGasShortTerm < AlertGasModelBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def last_2_weeks_gas_consumption_comparison_chart
     :alert_last_2_weeks_gas_comparison_temperature_compensated

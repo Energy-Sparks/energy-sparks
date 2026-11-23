@@ -159,7 +159,7 @@ class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def one_year_baseload_chart
     :alert_1_year_baseload

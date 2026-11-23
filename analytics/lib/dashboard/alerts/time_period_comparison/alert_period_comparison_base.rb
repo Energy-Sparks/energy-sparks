@@ -286,7 +286,7 @@ class AlertPeriodComparisonBase < AlertAnalysisBase
   end
 
   # Reader names are independent of fuel-specific metadata.
-  include AlertTemplateVariablesMixin.readers_for(dynamic_template_variables(nil))
+  include Alerts::TemplateVariablesMixin.readers_for(dynamic_template_variables(nil))
 
   def prefix_1
     Adjective.adjective_for_change(@difference_percent, :up, :no_change, :down)

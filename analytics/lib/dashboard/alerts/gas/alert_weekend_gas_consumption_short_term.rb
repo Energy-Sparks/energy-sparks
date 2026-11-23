@@ -154,7 +154,7 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def last_7_day_intraday_kwh_chart
     :alert_weekend_last_week_gas_datetime_kwh
