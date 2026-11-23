@@ -113,6 +113,13 @@ class SolarEdgeInstallation < ApplicationRecord
       information.dig('site_details', 'sites', 'site', 0, 'status') == 'Active'
   end
 
+  def first_telemetry_time
+    time = information&.dig('site_details', 'firstTelemetryTime')
+    return nil unless time
+
+    DateTime.parse(time)
+  end
+
   # Always attempt to load solar_pv data if the local meter is active, otherwise only
   # load the import/export meters if the meters are active in both SolarEdge and in
   # EnergySparks

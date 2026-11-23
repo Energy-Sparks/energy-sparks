@@ -64,7 +64,6 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         let(:site_id) { installation.site_id }
 
         include_context 'with a stubbed SolarEdge site details request'
-        include_context 'with a stubbed SolarEdge date request'
         include_context 'with a stubbed SolarEdge inventory request'
 
         context 'when editing' do
@@ -142,7 +141,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
       it 'allows viewing' do
         click_on(installation.site_id)
         expect(page).to have_text('site_detail')
-        expect(page).to have_text('dates')
+        expect(page).to have_text(installation.first_telemetry_time)
         expect(page).to have_text(installation.site_owner_name)
         expect(page).to have_text(installation.site_owner_email)
       end

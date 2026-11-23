@@ -60,7 +60,6 @@ describe 'SolarEdge Oauth workflow' do
       let(:site_id) { installation.site_id }
 
       include_context 'with a stubbed SolarEdge site details request'
-      include_context 'with a stubbed SolarEdge date request'
       include_context 'with a stubbed SolarEdge inventory request'
 
       before do
@@ -102,7 +101,6 @@ describe 'SolarEdge Oauth workflow' do
       let(:site_id) { '4000' }
 
       include_context 'with a stubbed SolarEdge site details request'
-      include_context 'with a stubbed SolarEdge date request'
       include_context 'with a stubbed SolarEdge inventory request'
 
       before do
