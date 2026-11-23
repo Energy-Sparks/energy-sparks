@@ -17,19 +17,13 @@ namespace :solar do
     SolarEdgeInstallation.for_active_schools.consented.find_each do |installation|
       puts "Running for #{installation.school.name} #{installation.site_id}"
 
-      context = { installation: installation.id, start_date:, end_date:, reload:, job: :import_solar_edge_readings }
-
       if installation.active?
-        begin
-          Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date:, end_date:, reload:).perform
-        rescue StandardError => e
-          EnergySparks.log(e, context)
-        end
+        Solar::SolarEdgeDownloadAndUpsert.new(installation:, start_date:, end_date:, reload:).perform
       else
         begin
           installation.refresh_api_tokens!
         rescue StandardError => e
-          EnergySparks.log(e, context)
+          EnergySparks.log(e, { installation: installation.id, job: :import_solar_edge_readings })
         end
       end
     end
