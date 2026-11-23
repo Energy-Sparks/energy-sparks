@@ -2,7 +2,6 @@
 
 #======================== Heating coming on too early in morning ==============
 require_relative '../alert_gas_model_base'
-require_relative '../../common/alert_template_variables_mixin'
 
 class AlertHeatingComingOnTooEarly < AlertGasModelBase
   include Alerts::NonEstimatedMixin

@@ -2,7 +2,6 @@
 
 #======================== Change in Electricity Baseload Analysis =============
 require_relative '../alert_electricity_only_base'
-require_relative '../../common/alert_template_variables_mixin'
 
 class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
   include Alerts::NonEstimatedMixin

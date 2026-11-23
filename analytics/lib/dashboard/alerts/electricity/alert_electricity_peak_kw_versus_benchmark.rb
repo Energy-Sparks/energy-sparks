@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../common/alert_floor_area_mixin'
-require_relative '../common/alert_template_variables_mixin'
 
 class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
   include AlertFloorAreaMixin

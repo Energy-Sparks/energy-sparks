@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Alerts
-  class NonEstimatedMixin
+  module NonEstimatedMixin
     private
 
     def last_meter_date
