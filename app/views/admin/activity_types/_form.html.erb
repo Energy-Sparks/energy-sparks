@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_import_module_tag 'tom_select' %>
+<% end %>
+
 <%= render 'shared/errors', subject: @activity_type, subject_name: 'activity' %>
 
 <%= simple_form_for([:admin, activity_type], html: { id: 'activity_type_form' }) do |f| %>
@@ -6,7 +10,11 @@
     <%= f.input t_field(:name, locale), label: ActivityType.human_attribute_name(:name), as: :string %>
   <% end %>
 
-  <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
+  <%= f.input :activity_category_id,
+              as: :select,
+              label: 'Category',
+              collection: ActivityCategory.all,
+              include_blank: false %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :image do |locale| %>
     <%= f.label 'Image' %>
@@ -28,7 +36,7 @@
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :summary do |locale| %>
     <%= f.input t_field(:summary, locale), label: ActivityType.human_attribute_name(:summary), as: :string %>
-    <p class="small">The summary text will appear on lists of activity types.</p>
+    <p class="small">The summary text will appear on lists of activities.</p>
   <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :download_links do |locale| %>
@@ -67,59 +75,144 @@
     </div>
   <% end %>
 
-  <%= f.input :score, as: :string %>
-  <%= f.input :maximum_frequency, as: :string %>
-  <p class="small">
-    Note: This is the maximum number of times a school can record the activity their academic year and
-    still be awarded the above score. After this they get zero.
-  </p>
+  <div class='rounded bg-light p-3 mb-3'>
+  <h2 class="py-0">Properties</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.input :score, label: 'Score', as: :string,
+                            hint: 'The score that will be awarded to a school for logging this activity' %>
+      </div>
+      <div class="col-md-6">
+        <%= f.input :maximum_frequency,
+                    as: :string,
+                    hint: 'The maximum times a school can record this activity this academic year ' \
+                                                'and still be awarded a score. After this they get zero.' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.input :active %>
+      </div>
+      <div class="col-md-6">
+        <%= f.input :data_driven, label: 'Uses data?' %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.input :custom, label: "Custom ('Other')" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.input :show_on_charts, label: 'Show on charts?' %>
+      </div>
+    </div>
 
-  <%= f.input :active %>
-  <%= f.input :data_driven, label: 'Uses data?' %>
-  <%= f.input :custom, label: "Custom ('Other')" %>
-  <%= f.input :show_on_charts, label: 'Show on charts?' %>
+    <%= f.input :fuel_type, as: :select, label: 'Fuel types',
+                            collection: ActivityType::VALID_FUEL_TYPES.map { |fuel_type|
+                              [fuel_type.to_s.humanize, fuel_type.to_s]
+                            },
+                            input_html: { multiple: true, class: 'tom-select' } %>
+  </div>
+  <% if Flipper.enabled?(:activity_classifications) %>
+    <div class='rounded bg-light p-3 mb-3'>
+      <h2 class="py-0">Classifications</h2>
 
-  <h2>Fuel types</h2>
-  <%= render 'crud_filter_checkboxes',
-             field: :fuel_type,
-             collection: ActivityType::VALID_FUEL_TYPES.map { |fuel_type|
-               OpenStruct.new(id: fuel_type.to_s, name: fuel_type.to_s.capitalize.humanize)
-             },
-             form: f %>
+      <%= f.input :aim_ids, as: :select, label: 'Aims',
+                            collection: Task::Label.aim.by_name,
+                            input_html: { multiple: true, class: 'tom-select' } %>
 
-  <h2>Key Stages</h2>
-  <%= render 'crud_filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>
+      <%= f.input :topic_ids, as: :select, label: 'Topics',
+                              collection: Task::Label.topic.by_name,
+                              input_html: { multiple: true, class: 'tom-select' } %>
 
-  <h2>Impacts</h2>
-  <%= render 'crud_filter_checkboxes', field: :impact_ids, collection: @impacts, form: f %>
+      <%= f.input :duration_ids, as: :select, label: 'Durations',
+                                 collection: Task::Label.duration.by_name,
+                                 input_html: { multiple: true, class: 'tom-select' } %>
 
-  <h2>Subjects</h2>
-  <%= render 'crud_filter_checkboxes', field: :subject_ids, collection: @subjects, form: f %>
+      <h5>Subject areas</h5>
+      <div class="row">
+        <%= f.hidden_field :subject_area_ids, multiple: true, value: '' %>
+        <% Enums::Country::ENUM_COUNTRY.each_key do |country| %>
+          <div class="col-md-4 mb-3">
+            <%= f.input :subject_area_ids,
+                        as: :select,
+                        label: country.to_s.humanize,
+                        collection: ::Activities::SubjectArea.for_country(country).by_name,
+                        include_hidden: false,
+                        input_html: {
+                          multiple: true,
+                          id: "#{f.object_name}_subject_area_ids_#{country}",
+                          class: 'tom-select'
+                        } %>
+          </div>
+        <% end %>
+      </div>
 
-  <h2>Timings</h2>
-  <%= render 'crud_filter_checkboxes', field: :activity_timing_ids, collection: @activity_timings, form: f %>
+      <h5>Learning stages</h5>
+      <div class="row">
+        <%= f.hidden_field :learning_stage_ids, multiple: true, value: '' %>
+        <% Enums::Country::ENUM_COUNTRY.each_key do |country| %>
+          <div class="col-md-4 mb-3">
+            <%= f.input :learning_stage_ids,
+                        as: :select,
+                        label: country.to_s.humanize,
+                        collection: LearningStage.for_country(country).by_name,
+                        include_hidden: false,
+                        input_html: {
+                          multiple: true,
+                          id: "#{f.object_name}_learning_stage_ids_#{country}",
+                          class: 'tom-select'
+                        } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= render(TogglerDropdownComponent.new(
+               hide: Flipper.enabled?(:activity_classifications),
+               title: 'Deprecated Classifications', classes: 'mt-3 mb-3'
+             )) do %>
+
+    <h2>Key Stages</h2>
+    <%= render 'crud_filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>
+
+    <h2>Impacts</h2>
+    <%= render 'crud_filter_checkboxes', field: :impact_ids, collection: @impacts, form: f %>
+
+    <h2>Subjects</h2>
+    <%= render 'crud_filter_checkboxes', field: :subject_ids, collection: @subjects, form: f %>
+
+    <h2>Timings</h2>
+    <%= render 'crud_filter_checkboxes', field: :activity_timing_ids, collection: @activity_timings, form: f %>
+
+  <% end %>
 
   <h2>Suggested Next Activities</h2>
 
   <div class="row">
     <div class="col-md-8 mb-3">
-      <label for="firstName">Activity Type</label>
+      <label for="firstName">Activity</label>
     </div>
     <div class="col-md-1 mb-3">
       <label for="lastName">Delete?</label>
     </div>
   </div>
 
+  <% grouped_activity_types = ActivityType.grouped_by_category %>
+
   <%= f.fields_for :activity_type_suggestions do |suggestion| %>
     <div class="row">
       <div class="col-md-8 mb-3">
         <%= suggestion.select(
               :suggested_type_id,
-              grouped_options_for_select(ActivityCategory.listed_with_activity_types.map do |category, types|
-                [category.name, types.map { |type| [type.name_with_key_stages, type.id] }]
-              end, suggestion.object.suggested_type_id.to_s),
+              grouped_options_for_select(
+                grouped_activity_types.map do |category, types|
+                  [category.name, types.map { |type| [type.name, type.id] }]
+                end,
+                suggestion.object.suggested_type_id
+              ),
               { include_blank: true },
-              { class: 'form-select select2' }
+              { class: 'form-select tom-select' }
             ) %>
       </div>
       <div class="col-md-1 mb-3">

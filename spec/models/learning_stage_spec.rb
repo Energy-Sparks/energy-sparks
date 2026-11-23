@@ -20,6 +20,17 @@ describe LearningStage do
     it { expect(learning_stage).to have_many(:activity_types).through(:activity_type_learning_stages) }
   end
 
+  describe '.abbreviations' do
+    let!(:england_key_stage_one) { create(:learning_stage, abbreviation: 'KS1', country: :england) }
+    let!(:england_key_stage_two) { create(:learning_stage, abbreviation: 'KS2', country: :england) }
+    let!(:wales_progression_step) { create(:learning_stage, abbreviation: 'PS1', country: :wales) }
+
+    it 'returns the abbreviations sorted by abbreviation' do
+      stages = [wales_progression_step, england_key_stage_two, england_key_stage_one]
+      expect(described_class.abbreviations(stages)).to eq(%w[KS1 KS2 PS1])
+    end
+  end
+
   it_behaves_like 'a deletable record',
                   'This learning stage is used by activity types and cannot be deleted',
                   using_association: :learning_stages do

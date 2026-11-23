@@ -31,25 +31,28 @@ module Solar
       @installation.latest_reading
     end
 
-    def end_date
-      return nil if @reload
-
-      super
-    end
-
     private
 
     def start_date_for_meter(meter_type = :electricity)
-      return nil if @reload
+      return earliest_available_data if @reload
 
       latest_reading = @installation.latest_reading(meter_type)
       if @requested_start_date
         @requested_start_date
       elsif latest_reading.nil?
-        nil
+        earliest_available_data
       else
         [latest_reading, Date.yesterday].min
       end
+    end
+
+    # SolarEdge store a maximum of one years of 15-min granularity data.
+    # So use a max of a years worth of data, or earliest date available
+    def earliest_available_data
+      [
+        @installation.first_telemetry_time&.to_date,
+        1.year.ago.to_date + 1.day
+      ].compact.max
     end
 
     def all_meter_data
@@ -89,8 +92,7 @@ module Solar
     end
 
     def site_api
-      @site_api = @installation.site_api! if @site_api.nil? || @installation.access_token_expired?
-      @site_api
+      @site_api ||= @installation.site_api!
     end
   end
 end

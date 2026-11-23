@@ -40,6 +40,10 @@ class LearningStage < ApplicationRecord
     activity_type_learning_stages.empty?
   end
 
+  def self.abbreviations(stages)
+    stages.sort_by(&:abbreviation).map(&:abbreviation)
+  end
+
   private
 
   def destroy_error_message

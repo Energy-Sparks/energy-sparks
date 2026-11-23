@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_import_module_tag 'tom_select' %>
+<% end %>
+
 <%= render 'shared/errors', subject: @intervention_type, subject_name: 'action' %>
 
 <%= simple_form_for([:admin, intervention_type], html: { id: 'intervention_type_form' }) do |f| %>
@@ -8,7 +12,7 @@
 
   <%= f.input :intervention_type_group_id,
               as: :select,
-              label: 'Intervention category',
+              label: 'Category',
               collection: InterventionTypeGroup.all,
               include_blank: false %>
 
@@ -32,7 +36,7 @@
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :summary do |locale| %>
     <%= f.input t_field(:summary, locale), label: InterventionType.human_attribute_name(:summary), as: :string %>
-    <p class="small">The summary text will appear on lists of intervention types.</p>
+    <p class="small">The summary text will appear on lists of actions.</p>
   <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :download_links do |locale| %>
@@ -48,35 +52,52 @@
   <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
     <div class="description-trix-editor <%= locale %>">
       <%= f.label InterventionType.human_attribute_name(:description) %>
-      <p class="small">The description of the intervention for all users</p>
+      <p class="small">The description of the action for all users</p>
       <%= f.rich_text_area t_field(:description, locale) %>
     </div>
   <% end %>
 
-  <%= f.input :score, label: 'Score', as: :string %>
-  <%= f.input :maximum_frequency, as: :string %>
-  <p class="small">Note: This is the maximum number of times a school can record the activity their academic year and still be awarded the above score. After this they get zero.</p>
+  <div class='rounded bg-light p-3 mb-3'>
+    <h2 class="py-0">Properties</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.input :score, label: 'Score', as: :string,
+                            hint: 'The score that will be awarded to a school for logging this action' %>
+      </div>
+      <div class="col-md-6">
+        <%= f.input :maximum_frequency, as: :string,
+                                        hint: 'The maximum times a school can record this action this academic year ' \
+                                          'and still be awarded a score. After this they get zero.' %>
+      </div>
+    </div>
 
-  <%= f.input :active %>
+    <%= f.input :active %>
+    <%= f.input :custom, label: "Custom ('Other')" %>
+    <%= f.input :show_on_charts, label: 'Show on charts?' %>
 
-  <%= f.input :custom, label: "Custom ('Other')" %>
+    <%= f.input :fuel_type, as: :select, label: 'Fuel types',
+                            collection: InterventionType::VALID_FUEL_TYPES.map { |fuel_type|
+                              [fuel_type.to_s.humanize, fuel_type.to_s]
+                            },
+                            input_html: { multiple: true, class: 'tom-select' } %>
+  </div>
 
-  <%= f.input :show_on_charts, label: 'Show on charts?' %>
+  <% if Flipper.enabled?(:activity_classifications) %>
+    <div class='rounded bg-light p-3 mb-3'>
+      <h2 class="py-0">Classifications</h2>
 
-  <h2>Fuel types</h2>
-  <%= render 'admin/activity_types/crud_filter_checkboxes',
-             field: :fuel_type,
-             collection: InterventionType::VALID_FUEL_TYPES.map { |fuel_type|
-               OpenStruct.new(id: fuel_type.to_s, name: fuel_type.to_s.capitalize.humanize)
-             },
-             form: f %>
+      <%= f.input :focus_ids, as: :select, label: 'Focuses',
+                              collection: Task::Label.focus.by_name,
+                              input_html: { multiple: true, class: 'tom-select' } %>
+    </div>
+  <% end %>
 
   <div class="intervention_type_suggestions">
     <h2>Suggested Next Actions</h2>
 
     <div class="row">
       <div class="col-md-8 mb-3">
-        <label for="firstName">Action Type</label>
+        <label for="firstName">Action</label>
       </div>
       <div class="col-md-1 mb-3">
         <label for="lastName">Delete?</label>
@@ -95,7 +116,7 @@
                   suggestion.object.suggested_type_id.to_s
                 ),
                 { include_blank: true },
-                { class: 'form-select select2' }
+                { class: 'form-select tom-select' }
               ) %>
         </div>
         <div class="col-md-1 mb-3">

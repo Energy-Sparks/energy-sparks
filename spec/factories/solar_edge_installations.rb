@@ -12,11 +12,7 @@ FactoryBot.define do
 
     information do
       {
-        'site_details' => { 'activationStatus' => 'ACTIVE' },
-        'dates' => {
-          from: '2023-01-01',
-          to: '2023-10-01'
-        },
+        'site_details' => { 'activationStatus' => 'ACTIVE', 'firstTelemetryTime' => '2023-01-01T13:10:04Z' },
         'inventory' => [
           { 'type' => 'METER', 'active' => true, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
             'serialNumber' => '12345' },
@@ -54,11 +50,7 @@ FactoryBot.define do
     trait :with_inactive_import_and_export do
       information do
         {
-          'site_details' => { 'activationStatus' => 'ACTIVE' },
-          'dates' => {
-            from: '2023-01-01',
-            to: '2023-10-01'
-          },
+          'site_details' => { 'activationStatus' => 'ACTIVE', 'firstTelemetryTime' => '2023-01-01T13:10:04Z' },
           'inventory' => [
             { 'type' => 'METER', 'active' => false, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
               'serialNumber' => '12345' },
