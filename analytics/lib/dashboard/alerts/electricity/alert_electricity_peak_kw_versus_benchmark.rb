@@ -4,6 +4,7 @@ require_relative '../common/alert_floor_area_mixin'
 
 class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
   include AlertFloorAreaMixin
+  include Alerts::NonEstimatedMixin
 
   MINIMUM_DAYS_FOR_ENOUGH_DATA = 60
 
