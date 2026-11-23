@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../../common/alert_template_variables_mixin'
-
 # typically fires in Spring when weather warm enough to turn heating off
 class AlertTurnHeatingOff < AlertGasModelBase
+  include Alerts::NonEstimatedMixin
+
   class MissingTemperatureData < StandardError; end
 
   def initialize(school, type = :turnheatingonoff)
@@ -101,7 +101,7 @@ class AlertTurnHeatingOff < AlertGasModelBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   # ================================== Control Variables =========================================
 
@@ -288,6 +288,4 @@ class AlertTurnHeatingOff < AlertGasModelBase
   end
 
   def max_days_out_of_date_while_still_relevant = 7
-
-  alias last_meter_date last_non_estimated_meter_date
 end
