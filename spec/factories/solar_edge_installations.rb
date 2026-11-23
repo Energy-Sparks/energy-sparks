@@ -4,6 +4,8 @@ FactoryBot.define do
   factory :solar_edge_installation do
     school
     amr_data_feed_config { association :amr_data_feed_config, :solar_edge_api }
+    sequence(:site_owner_name) { |n| "Site Owner #{n}" }
+    sequence(:site_owner_email) { |n| "site_owner_#{n}@example.com" }
 
     sequence(:site_id, (100_000..900_000).cycle) { |n| n }
     sequence(:mpan) { |n| n }
