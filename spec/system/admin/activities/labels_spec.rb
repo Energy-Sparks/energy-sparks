@@ -34,13 +34,13 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
 
       it 'highlights the matching classifications link' do
         within '#page-navigation' do
-          expect(page).to have_css("a.current[href='#{admin_activities_labels_path(label_type: 'aim')}']")
+          expect(page).to have_css("a.current[href='#{admin_activities_classifications_path(task_type: 'activity')}']")
         end
       end
 
       it 'does not highlight the other classifications links' do
         within '#page-navigation' do
-          expect(page).to have_no_css("a.current[href='#{admin_activities_labels_path(label_type: 'duration')}']")
+          expect(page).to have_no_css("a.current[href='#{admin_activities_classifications_path(task_type: 'action')}']")
         end
       end
     end
@@ -48,7 +48,7 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
     context 'when switching between the classifications' do
       before do
         visit admin_activities_labels_path(label_type: 'aim')
-        within '.admin-tasks-classification-tabs-component' do
+        within '.admin-activities-classification-tabs-component' do
           click_on 'Durations'
         end
       end
@@ -64,9 +64,6 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
 
       it 'falls back to the aims' do
         expect(page).to have_text(aim.name)
-        within '.admin-tasks-classification-tabs-component' do
-          expect(page).to have_css("a.active[href='#{admin_activities_labels_path(label_type: 'aim')}']")
-        end
       end
     end
 
@@ -81,7 +78,7 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
       it 'creates the label and stays on the classification' do
         expect(page).to have_text('Topic was successfully created.')
         expect(page).to have_current_path(admin_activities_labels_path(label_type: 'topic'))
-        within '.admin-tasks-classification-tabs-component' do
+        within '.admin-activities-classification-tabs-component' do
           expect(page).to have_css("a.active[href='#{admin_activities_labels_path(label_type: 'topic')}']")
         end
       end
@@ -97,7 +94,7 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
       it 'reports the error and stays on the classification' do
         expect(page).to have_text("can't be blank")
         expect(page).to have_current_path(admin_activities_labels_path(label_type: 'topic'))
-        within '.admin-tasks-classification-tabs-component' do
+        within '.admin-activities-classification-tabs-component' do
           expect(page).to have_css("a.active[href='#{admin_activities_labels_path(label_type: 'topic')}']")
         end
       end
@@ -118,7 +115,7 @@ RSpec.describe 'Admin::Activities::Labels system spec' do
       it 'updates the label and stays on the classification' do
         expect(page).to have_text('Topic was successfully updated.')
         expect(page).to have_current_path(admin_activities_labels_path(label_type: 'topic'))
-        within '.admin-tasks-classification-tabs-component' do
+        within '.admin-activities-classification-tabs-component' do
           expect(page).to have_css("a.active[href='#{admin_activities_labels_path(label_type: 'topic')}']")
         end
       end

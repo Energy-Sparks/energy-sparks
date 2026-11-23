@@ -12,6 +12,8 @@
 #  information             :json
 #  mpan                    :text
 #  refresh_token           :string
+#  site_owner_email        :string
+#  site_owner_name         :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  amr_data_feed_config_id :bigint(8)        not null
@@ -22,6 +24,7 @@
 #
 #  index_solar_edge_installations_on_amr_data_feed_config_id  (amr_data_feed_config_id)
 #  index_solar_edge_installations_on_school_id                (school_id)
+#  index_solar_edge_installations_on_site_id                  (site_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -35,8 +38,12 @@ class SolarEdgeInstallation < ApplicationRecord
 
   has_many :meters, dependent: nil
 
-  validates :site_id, presence: true
-  validate :site_id_unique_to_school
+  # rubocop:disable-next Rails/I18nLocaleTexts
+  validates :site_id,
+            presence: true,
+            uniqueness: { message: 'is already associated with a school' }
+
+  validates :site_owner_email, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   scope :active, -> { where(active: true) }
 
@@ -106,6 +113,13 @@ class SolarEdgeInstallation < ApplicationRecord
       information.dig('site_details', 'sites', 'site', 0, 'status') == 'Active'
   end
 
+  def first_telemetry_time
+    time = information&.dig('site_details', 'firstTelemetryTime')
+    return nil unless time
+
+    DateTime.parse(time)
+  end
+
   # Always attempt to load solar_pv data if the local meter is active, otherwise only
   # load the import/export meters if the meters are active in both SolarEdge and in
   # EnergySparks
@@ -118,15 +132,13 @@ class SolarEdgeInstallation < ApplicationRecord
       local_meter_loadable?(meter_type)
   end
 
-  # We expiry tokens early to avoid clock / timing issues with generating timestamp
+  # We expire tokens early to account for clock skew and request timing.
   def access_token_expired?
-    5.seconds.from_now.utc >= access_token_expires_at
+    access_token_expires_at.nil? || 5.seconds.from_now.utc >= access_token_expires_at
   end
 
   def site_api!
-    refresh_api_tokens!
-
-    DataFeeds::SolarEdge::SiteApi.new(site_id:, access_token:)
+    DataFeeds::SolarEdge::SiteApi.new(site_id:, access_token: method(:current_access_token))
   end
 
   # We use UTC for expiry timestamp to avoid issues with BST/GMT changeover.
@@ -154,12 +166,17 @@ class SolarEdgeInstallation < ApplicationRecord
 
   private
 
+  def current_access_token
+    refresh_api_tokens! if access_token_expired?
+    access_token
+  end
+
   def local_meter_loadable?(meter_type)
     meter(meter_type).blank? || meter(meter_type).active?
   end
 
   def solar_edge_meter_type(meter_type)
-    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type) # rubocop:disable Lint/DeprecatedReference
+    SOLAR_EDGE_METER_TYPE_MAP.key(meter_type)
   end
 
   def store_tokens(tokens)
@@ -168,11 +185,6 @@ class SolarEdgeInstallation < ApplicationRecord
       refresh_token: tokens['refresh_token'],
       access_token_expires_at: tokens['expires_in'].to_i.seconds.from_now.utc
     )
-  end
-
-  def site_id_unique_to_school
-    existing = self.class.where(site_id:).where.not(id:).where.not(school:)
-    errors.add(:site_id, 'is already associated with a different school') if existing.exists?
   end
 
   def solar_edge_created_at(item)
