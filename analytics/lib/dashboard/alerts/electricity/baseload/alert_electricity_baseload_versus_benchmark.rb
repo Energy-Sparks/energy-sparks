@@ -3,7 +3,6 @@
 #======================== Electricity Baseload Analysis Versus Benchmark =====
 require_relative '../../common/alert_analysis_base'
 require_relative '../../common/alert_floor_area_mixin'
-require_relative '../../common/alert_template_variables_mixin'
 
 class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase
   include AlertFloorAreaMixin
@@ -159,7 +158,7 @@ class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def one_year_baseload_chart
     :alert_1_year_baseload

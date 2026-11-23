@@ -3,6 +3,8 @@
 # During holidays alert schools if they are consuming energy
 module Alerts
   class UsageDuringCurrentHolidayBase < AlertAnalysisBase
+    include NonEstimatedMixin
+
     USAGE_THRESHOLD_GBP = 10.0
     attr_reader :holiday_usage_to_date_kwh, :holiday_usage_to_date_gbp, :holiday_usage_to_date_co2,
                 :holiday_projected_usage_kwh, :holiday_projected_usage_gbp, :holiday_projected_usage_co2
@@ -239,7 +241,5 @@ module Alerts
         non_estimated_reading?(date)
       end
     end
-
-    alias last_meter_date last_non_estimated_meter_date
   end
 end

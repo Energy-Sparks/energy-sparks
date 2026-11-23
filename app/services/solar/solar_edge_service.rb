@@ -27,14 +27,8 @@ module Solar
       return if @installation.setup_complete?
       return unless @installation.can_complete_setup?
 
-      first_reading_date = @installation.site_api!.date_range[:from]&.to_date
-
-      return unless first_reading_date
-
       Solar::SolarEdgeLoaderJob.perform_later(installation: @installation,
-                                              notify_email: @installation.notify_email,
-                                              start_date: first_reading_date,
-                                              end_date: first_reading_date)
+                                              notify_email: @installation.notify_email)
     end
 
     private
@@ -42,31 +36,12 @@ module Solar
     def fetch_information
       return unless @installation.consented?
 
-      information = {
-        dates: @installation.information&.dig('dates')
-      }
-
       api = @installation.site_api!
-      site_details = api.details
 
-      information[:site_details] = site_details
-      information[:inventory] = api.inventory
-
-      if refresh_dates?(previous_information: @installation.information, current_site_details: site_details)
-        information[:dates] = api.date_range.transform_values(&:iso8601)
-      end
-
-      information
-    end
-
-    def refresh_dates?(previous_information:, current_site_details:)
-      # Migrating from v1 to v2
-      return true if previous_information&.dig('dates').is_a?(Array)
-
-      previous_status = previous_information&.dig('site_details', 'activationStatus')
-      current_status = current_site_details['activationStatus']
-
-      previous_status != 'ACTIVE' && current_status == 'ACTIVE'
+      {
+        site_details: api.details,
+        inventory: api.inventory
+      }
     end
   end
 end

@@ -3,12 +3,14 @@
 #======================== Weekend Gas Consumption =============================
 # gas shouldn't be consumed at weekends, apart for from frost protection
 require_relative 'alert_gas_model_base'
-require_relative '../common/alert_template_variables_mixin'
 
 class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
+  include Alerts::NonEstimatedMixin
+
   MAX_COST = 5.0 # £5 limit
   FROST_PROTECTION_TEMPERATURE = 4
   NUM_WEEKEND_COMPARISON = 5 # don't change without chaging variable names
+  MINIMUM_DAYS_FOR_ENOUGH_DATA = 7
 
   def initialize(school)
     super(school, :weekendgasconsumption)
@@ -19,7 +21,7 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
   end
 
   def enough_data
-    non_estimated_days(7) >= 7 ? :enough : :not_enough
+    non_estimated_days(MINIMUM_DAYS_FOR_ENOUGH_DATA) >= MINIMUM_DAYS_FOR_ENOUGH_DATA ? :enough : :not_enough
   end
 
   def self.template_variables
@@ -154,7 +156,7 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def last_7_day_intraday_kwh_chart
     :alert_weekend_last_week_gas_datetime_kwh
@@ -295,6 +297,4 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
   end
 
   def max_days_out_of_date_while_still_relevant = 21
-
-  alias last_meter_date last_non_estimated_meter_date
 end

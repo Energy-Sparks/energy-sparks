@@ -2,13 +2,16 @@
 
 #======================== Heating coming on too early in morning ==============
 require_relative '../alert_gas_model_base'
-require_relative '../../common/alert_template_variables_mixin'
 
 class AlertHeatingComingOnTooEarly < AlertGasModelBase
+  include Alerts::NonEstimatedMixin
+
   # Also defined in base class?
   FROST_PROTECTION_TEMPERATURE = 4
   # Unused?
   MAX_HALFHOURS_HEATING_ON = 10
+  MINIMUM_DAYS_FOR_ENOUGH_DATA = 7
+
   attr_reader :last_year_kwh, :last_year_£
 
   def initialize(school)
@@ -59,14 +62,18 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def timescale
     I18n.t("#{i18n_prefix}.timescale")
   end
 
   def enough_data
-    non_estimated_days(7) >= 7 && enough_data_for_model_fit ? :enough : :not_enough
+    if non_estimated_days(MINIMUM_DAYS_FOR_ENOUGH_DATA) >= MINIMUM_DAYS_FOR_ENOUGH_DATA && enough_data_for_model_fit
+      :enough
+    else
+      :not_enough
+    end
   end
 
   def last_7_days_gas_chart
@@ -112,6 +119,4 @@ class AlertHeatingComingOnTooEarly < AlertGasModelBase
   end
 
   def max_days_out_of_date_while_still_relevant = 21
-
-  alias last_meter_date last_non_estimated_meter_date
 end

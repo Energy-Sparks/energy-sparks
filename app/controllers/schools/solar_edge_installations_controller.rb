@@ -46,7 +46,8 @@ module Schools
     private
 
     def solar_edge_installation_params
-      params.expect(solar_edge_installation: %i[site_id amr_data_feed_config_id mpan api_key active])
+      params.expect(solar_edge_installation:
+                    %i[site_id amr_data_feed_config_id mpan api_key active site_owner_email site_owner_name])
     end
 
     def request_connection_users

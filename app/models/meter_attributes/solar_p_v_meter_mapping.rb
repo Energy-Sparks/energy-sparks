@@ -4,7 +4,8 @@ module MeterAttributes
   class SolarPVMeterMapping < MeterAttributeTypes::AttributeBase
     id                  :solar_pv_mpan_meter_mapping
     aggregate_over      :solar_pv_mpan_meter_mapping
-    name                'Solar > Solar PV MPAN Meter mapping'
+    name                'Solar > Map Solar PV meters'
+    description 'Use when actual solar data is available'
 
     structure MeterAttributeTypes::Hash.define(
       structure: {

@@ -31,6 +31,7 @@ class CaseStudy < ApplicationRecord
   include TranslatableAttachment
   include Publishable
   include Trackable
+  include MediumImageValidation
 
   has_many :testimonials, dependent: :restrict_with_error
   delegated_type :organisation, types: %w[SchoolGroup School], optional: true
@@ -51,9 +52,6 @@ class CaseStudy < ApplicationRecord
   t_has_one_attached :file
   has_one_attached :image
 
-  validates :image,
-              content_type: ['image/png', 'image/jpeg'],
-              dimension: { width: { min: 640, max: 1400 } } # betwen half and full container width size to be conservative
   validates :image, presence: true, if: :publishing?
 
   validates :title_en, :file_en, presence: true

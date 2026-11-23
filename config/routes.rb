@@ -619,7 +619,12 @@ Rails.application.routes.draw do
     namespace :activities do
       root to: 'home#index'
 
+      get 'classifications/:task_type', to: 'labels#index',
+                                  as: :classifications,
+                                  constraints: { task_type: /activity|action/ }
       resources :labels, except: [:show]
+      resources :subject_areas, except: [:show]
+      resources :learning_stages, except: [:show]
     end
 
     resources :mailer_previews, only: [:index]
@@ -750,6 +755,8 @@ Rails.application.routes.draw do
         resources :meter_updates, only: [:index], param: :fuel_type do
           post :bulk_update_meter_data_source
           post :bulk_update_meter_procurement_route
+          post :bulk_update_meter_supplier
+          post :bulk_update_meter_admin_meter_status
         end
         resources :school_onboardings, only: [:index] do
           collection do
@@ -938,9 +945,11 @@ Rails.application.routes.draw do
       resources :pupil_number_updates, only: :index
       resources :metered_solar, only: :index
       resources :modelled_solar, only: :index
+      resources :solar_edge, only: :index
       resources :solar_installations, only: :index
       resources :limited_data, only: :index
       resources :stale_data, only: :index
+      resources :energy_tariff_reminders, only: :index
     end
 
     resource :settings, only: %i[show update]
