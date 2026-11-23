@@ -46,6 +46,8 @@ class SolarEdgeInstallation < ApplicationRecord
   validates :site_owner_email, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   scope :active, -> { where(active: true) }
+  scope :consented, -> { where.not(consent_granted_at: nil) }
+  scope :for_active_schools, -> { joins(:school).merge(School.active) }
 
   SOLAR_EDGE_METER_TYPE_MAP = {
     'Production' => :solar_pv,
@@ -162,6 +164,13 @@ class SolarEdgeInstallation < ApplicationRecord
         raise
       end
     end
+  end
+
+  def credit_estimate
+    return 0 unless active && consented?
+    return 2 unless monitoring_active?
+
+    2 + (2 * meters.active.count)
   end
 
   private

@@ -1,0 +1,6 @@
+
+<%= link_to admin_school_issues_path(school, issue_tag: issue_tag.id),
+            class: 'btn btn-secondary btn-sm text-nowrap',
+            title: 'Issues' do %>
+            <% issue_type_icons(school.issues.for_issue_tag(issue_tag)) %>
+<% end %>
