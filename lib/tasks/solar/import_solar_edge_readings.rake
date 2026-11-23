@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable-next Metrics/BlockLength
 namespace :solar do
   desc 'Import solar edge data'
   task :import_solar_edge_readings, %i[start_date end_date reload] => :environment do |_t, args|
