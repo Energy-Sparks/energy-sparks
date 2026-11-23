@@ -2,7 +2,6 @@
 
 module DataFeeds
   module SolarEdge
-    # rubocop:disable-next Metrics/ClassLength
     class SiteApi < Base
       MAX_QUARTER_HOUR_PERIOD = 12.hours
 
