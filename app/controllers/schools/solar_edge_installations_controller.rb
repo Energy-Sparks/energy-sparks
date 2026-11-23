@@ -14,10 +14,18 @@ module Schools
 
     def update
       if @installation.update(solar_edge_installation_params)
-        Solar::SolarEdgeService.new(@installation).update_information
         redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{NAME} was updated"
       else
         render :edit
+      end
+    end
+
+    def refresh
+      if @installation.consented?
+        Solar::SolarEdgeService.new(@installation).update_information
+        redirect_to school_solar_edge_installation_path(@school, @installation), notice: "#{NAME} was refreshed"
+      else
+        redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{NAME} is not consented"
       end
     end
 

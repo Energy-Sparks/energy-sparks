@@ -9,6 +9,10 @@
               polymorphic_path([:check, school, installation]),
               id: "#{id_prefix}-#{installation.id}-test", method: :post, remote: true,
               class: 'btn btn-sm check-button' %>
+  <%= link_to safe_join([fa_icon('arrows-rotate'), ' Refresh']),
+              polymorphic_path([:refresh, school, installation]),
+              id: "#{id_prefix}-#{installation.id}-refresh", method: :post,
+              class: 'btn btn-sm check-button' %>
   <%= form_tag polymorphic_path([:submit_job, school, installation]), method: :post do %>
     <%= button_tag(type: 'submit', id: "#{id_prefix}-#{installation.id}-run-load", class: 'btn btn-sm') do %>
       <%= fa_icon('upload') %> Run Loader
