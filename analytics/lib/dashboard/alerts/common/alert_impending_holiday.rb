@@ -2,7 +2,6 @@
 
 #======================== Holiday Alert =======================================
 require_relative 'alert_analysis_base'
-require_relative 'alert_template_variables_mixin'
 require_relative '../electricity/alert_out_of_hours_electricity_usage'
 require_relative '../gas/alert_out_of_hours_gas_usage'
 require_relative '../gas/alert_gas_only_base'
@@ -183,7 +182,7 @@ class AlertImpendingHoliday < AlertGasOnlyBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   ALERT_INHERITANCE = { # name_var_name: { class, old_name }, definition of attributes moved from other alerts, renamed to avoid clashes
     electricity_holidays_kwh: { class_type: AlertOutOfHoursElectricityUsage, variable_name: :holidays_kwh },

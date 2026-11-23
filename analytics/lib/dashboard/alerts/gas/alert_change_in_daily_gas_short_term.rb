@@ -5,12 +5,12 @@
 # for temperature and take into account the heating turning on and off
 # TODO(PH,20May2018) take into account heating turning on and off
 require_relative 'alert_gas_model_base'
-require_relative '../common/alert_template_variables_mixin'
 
 class AlertChangeInDailyGasShortTerm < AlertGasModelBase
-  include Logging
+  include Alerts::NonEstimatedMixin
 
   MAX_CHANGE_IN_PERCENT = 0.15
+  MINIMUM_DAYS_FOR_ENOUGH_DATA = 22
 
   def initialize(school)
     super(school, :changeingasconsumption)
@@ -127,7 +127,11 @@ class AlertChangeInDailyGasShortTerm < AlertGasModelBase
   end
 
   def enough_data
-    non_estimated_days(22) >= 22 && enough_data_for_model_fit ? :enough : :not_enough
+    if non_estimated_days(MINIMUM_DAYS_FOR_ENOUGH_DATA) >= MINIMUM_DAYS_FOR_ENOUGH_DATA && enough_data_for_model_fit
+      :enough
+    else
+      :not_enough
+    end
   end
 
   def self.template_variables
@@ -225,6 +229,4 @@ class AlertChangeInDailyGasShortTerm < AlertGasModelBase
   end
 
   def max_days_out_of_date_while_still_relevant = 21
-
-  alias last_meter_date last_non_estimated_meter_date
 end

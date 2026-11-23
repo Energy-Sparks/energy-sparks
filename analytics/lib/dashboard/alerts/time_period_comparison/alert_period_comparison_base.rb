@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../common/alert_analysis_base'
-require_relative '../common/alert_template_variables_mixin'
 require_relative '../../utilities/energy_sparks_exceptions'
 # General base class for 6 alerts:
 # - School week comparison: gas + electric
@@ -27,6 +26,8 @@ require_relative '../../utilities/energy_sparks_exceptions'
 #   Date.new(2019, 4, 10): all alerts should be relevant as far enough into holiday for enough data
 #   Date.new(2019, 4, 24): all alerts should be relevant as within 3 weeks of end of holiday
 class AlertPeriodComparisonBase < AlertAnalysisBase
+  include Alerts::NonEstimatedMixin
+
   DAYS_ALERT_RELEVANT_AFTER_CURRENT_PERIOD = 3 * 7 # alert relevant for up to 3 weeks after period (holiday)
   # for the purposes to a 'relevant' alert we need a minimum of 6 days
   # period data, this ensures at least 1 weekend day is present for
@@ -566,6 +567,4 @@ class AlertPeriodComparisonBase < AlertAnalysisBase
       (current_value - previous_value) / previous_value
     end
   end
-
-  def last_meter_date = last_non_estimated_meter_date
 end
