@@ -46,18 +46,6 @@ module DataFeeds
         @connection.get("meters/#{serial_number}/#{measurement}", params).body
       end
 
-      # Only way to request period of data available in v2 is to ask for total
-      # energy production since installation date (or a very early date)
-      def date_range
-        @date_range ||= begin
-          total_energy = energy(resolution: 'TOTAL', from: DateTime.new(2000))
-          {
-            from: DateTime.parse(total_energy['period']['from']),
-            to: DateTime.parse(total_energy['period']['to'])
-          }
-        end
-      end
-
       def production(start_date: nil, end_date: nil)
         readings = []
         windowed_request(start_date, end_date) do |from, to|

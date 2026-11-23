@@ -114,7 +114,7 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   def first_telemetry_time
-    time = information['site_details']&.dig('firstTelemetryTime')
+    time = information&.dig('site_details', 'firstTelemetryTime')
     return nil unless time
 
     DateTime.parse(time)
