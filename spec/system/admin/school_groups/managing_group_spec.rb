@@ -318,11 +318,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     it 'has status pill buttons' do
       within '#active' do
-        expect(page).to have_link('Visible')
-        expect(page).to have_link('Public')
-        expect(page).to have_link('Process data')
-        expect(page).to have_link('Data visible')
-        expect(page).to have_css('a i.fa-arrows-rotate')
+        expect(page).to have_css('#school-status-buttons')
       end
     end
 

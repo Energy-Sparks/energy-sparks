@@ -57,7 +57,7 @@ module Schools
     end
 
     def validate_period
-      period = params.require(:period).to_sym
+      period = params.expect(:period).to_sym
       if %i[weekly daily].include?(period)
         period
       else
@@ -67,7 +67,7 @@ module Schools
     end
 
     def validate_supply
-      supply = params.require(:supply).to_sym
+      supply = params.expect(:supply).to_sym
       if %i[electricity gas].include?(supply)
         supply
       else

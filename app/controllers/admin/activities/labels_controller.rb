@@ -5,8 +5,6 @@ module Admin
     class LabelsController < BaseController
       include LocaleHelper
 
-      DEFAULT_LABEL_TYPE = 'aim'
-
       load_and_authorize_resource :label, class: 'Task::Label'
       before_action :set_label_type
       before_action :add_breadcrumbs
@@ -47,8 +45,13 @@ module Admin
       end
 
       def default_label_type
-        requested = params[:label_type].to_s
-        Task::Label.label_types.key?(requested) ? requested : DEFAULT_LABEL_TYPE
+        case params[:task_type]
+        when 'activity' then Task::Label::ACTIVITY_TYPES.first.to_s
+        when 'action' then Task::Label::ACTION_TYPES.first.to_s
+        else
+          requested = params[:label_type].to_s
+          Task::Label.label_types.key?(requested) ? requested : Task::Label::ACTIVITY_TYPES.first.to_s
+        end
       end
 
       def classification_path
@@ -60,8 +63,10 @@ module Admin
       end
 
       def add_breadcrumbs
-        @breadcrumbs << { name: Task::Label.task_type(@label_type).pluralize.humanize, href: classification_path }
-        @breadcrumbs << { name: @label_type.humanize }
+        type = Task::Label.task_type(@label_type)
+
+        @breadcrumbs << { name: type.pluralize.humanize, href: admin_activities_classifications_path(task_type: type) }
+        @breadcrumbs << { name: @label_type.pluralize.humanize }
       end
     end
   end

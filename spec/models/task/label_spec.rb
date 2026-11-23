@@ -55,37 +55,9 @@ describe Task::Label do
     end
   end
 
-  describe 'deletable' do
-    let!(:label) { create(:label) }
-
-    context 'when the label is not in use' do
-      it { expect(label).to be_deletable }
-
-      it 'deletes the label' do
-        expect { label.destroy }.to change(described_class, :count).by(-1)
-      end
-    end
-
-    context 'when the label is in use' do
-      let!(:activity_type) { create(:activity_type, aims: [label]) }
-
-      it { expect(label).not_to be_deletable }
-
-      it 'does not delete the label' do
-        expect { label.destroy }.not_to change(described_class, :count)
-      end
-
-      context 'when destroying the label' do
-        before { label.destroy }
-
-        it 'leaves the label items in place' do
-          expect(activity_type.reload.aims).to contain_exactly(label)
-        end
-
-        it 'explains why the label cannot be deleted' do
-          expect(label.errors.full_messages).to include('This label is in use and cannot be deleted')
-        end
-      end
-    end
+  it_behaves_like 'a deletable record', 'This label is in use and cannot be deleted',
+                  using_association: :aims do
+    let(:record) { label }
+    let(:record_in_use) { create(:activity_type, aims: [record]) }
   end
 end

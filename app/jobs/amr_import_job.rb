@@ -6,10 +6,10 @@ class AmrImportJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
 
   # in case the job is still running by the time it is scheduled again
-  good_job_control_concurrency_with(
-    total_limit: 1,
-    key: -> { "#{self.class.name}-#{arguments.first.identifier}" } # AmrImportJob-config.identifier
-  )
+  good_job_concurrency_rule(total_limit: 1,
+                            #                                 AmrImportJob-config.identifier
+                            label: -> { "#{self.class.name}-#{arguments.first.identifier}" },
+                            apply_label: true)
 
   # initially this import was sequential in the rake task
   # it was then changed to create a job for each file

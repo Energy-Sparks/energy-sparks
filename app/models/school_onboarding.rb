@@ -74,7 +74,7 @@ class SchoolOnboarding < ApplicationRecord
   validates :contact_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   belongs_to :school, optional: true
-  belongs_to :school_group, optional: true
+  belongs_to :school_group
   belongs_to :project_group, -> { where(group_type: :project) }, class_name: 'SchoolGroup', optional: true
   belongs_to :diocese, -> { where(group_type: :diocese) }, class_name: 'SchoolGroup', optional: true
   belongs_to :local_authority_area, -> { where(group_type: :local_authority_area) }, class_name: 'SchoolGroup', optional: true

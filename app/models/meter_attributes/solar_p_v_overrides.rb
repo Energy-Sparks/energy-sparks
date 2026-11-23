@@ -4,7 +4,10 @@ module MeterAttributes
   class SolarPVOverrides < SolarPV
     id :solar_pv_override
     aggregate_over :solar_pv_override
-    name 'Solar > Override bad metered solar pv data'
+    name 'Solar > Add to or override metered PV with modelled solar'
+    description 'Use modelled data to override periods of erroneous or missing actual solar data or add ' \
+                'before a monitoring system is working'
+
     structure MeterAttributeTypes::Hash.define(
       structure: {
         start_date: MeterAttributeTypes::Date.define,

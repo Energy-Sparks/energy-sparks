@@ -4,6 +4,8 @@ require_relative 'alert_period_comparison_base'
 require 'active_support/core_ext/integer/inflections'
 
 class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
+  include Alerts::NonEstimatedMixin
+
   def initialize(school, type = :electricitypreviousschoolweekcomparison)
     super
   end
@@ -76,10 +78,6 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
 
   def max_days_out_of_date_while_still_relevant
     21
-  end
-
-  def period_name(period)
-    I18nHelper.holiday(period.type)
   end
 
   def current_period_name(current_period)

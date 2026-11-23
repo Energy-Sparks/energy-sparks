@@ -14,8 +14,14 @@ describe Activities::SubjectArea do
   end
 
   describe 'relationships' do
-    it 'can be assigned to an activity type' do
-      expect(create(:activity_type, subject_areas: [subject_area]).subject_areas).to contain_exactly(subject_area)
-    end
+    it { expect(subject_area).to have_many(:activity_type_subject_areas).dependent(:destroy) }
+    it { expect(subject_area).to have_many(:activity_types).through(:activity_type_subject_areas) }
+  end
+
+  it_behaves_like 'a deletable record',
+                  'This subject area is used by activity types and cannot be deleted',
+                  using_association: :subject_areas do
+    let(:record) { subject_area }
+    let(:record_in_use) { create(:activity_type, subject_areas: [record]) }
   end
 end

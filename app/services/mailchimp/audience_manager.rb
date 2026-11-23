@@ -2,6 +2,7 @@ module Mailchimp
   class AudienceManager
     def initialize(client = Rails.configuration.mailchimp_client)
       @client = client
+      @list_id = ENV.fetch('MAILCHIMP_LIST')
     end
 
     # The Mailchimp documentation and CSV exports use different status names than
@@ -48,8 +49,7 @@ module Mailchimp
       tags = tags_to_remove.map { |t| { 'name' => t, 'status' => 'inactive' } }
       @client.lists.update_list_member_tags(list.id,
                                             Digest::MD5.hexdigest(email_address.downcase),
-                                            { 'tags': tags }
-                                          )
+                                            { tags: tags })
     end
 
     def update_contact(mailchimp_contact, original_email = nil)
@@ -63,7 +63,7 @@ module Mailchimp
     def get_list_member(email_address)
       resp = @client.lists.get_list_member(list.id, email_address.downcase)
       OpenStruct.new(resp)
-    rescue
+    rescue StandardError
       nil
     end
 
@@ -79,7 +79,7 @@ module Mailchimp
       members = []
       resp = list_members(offset:, page_size:)
       total_items = resp.total_items
-      members.concat(resp.members.map {|m| OpenStruct.new(m) })
+      members.concat(resp.members.map { |m| OpenStruct.new(m) })
       if block_given?
         resp.members.each do |member|
           yield OpenStruct.new(member)
@@ -88,11 +88,11 @@ module Mailchimp
       while offset + page_size < total_items
         offset += page_size
         resp = list_members(offset:, page_size:)
-        members.concat(resp.members.map {|m| OpenStruct.new(m) })
-        if block_given?
-          resp.members.each do |member|
-            yield OpenStruct.new(member)
-          end
+        members.concat(resp.members.map { |m| OpenStruct.new(m) })
+        next unless block_given?
+
+        resp.members.each do |member|
+          yield OpenStruct.new(member)
         end
       end
       members
@@ -111,11 +111,11 @@ module Mailchimp
     def get_list
       lists = @client.lists.get_all_lists
 
-      if lists.empty?
-        nil
-      else
-        OpenStruct.new(lists['lists'].first)
-      end
+      list = lists['lists'].find { |list| list['id'] == @list_id } unless lists.empty?
+
+      Rollbar.error('Unable to lookup Mailchimp audience', { list_id: @list_id }) if list.blank?
+
+      list.blank? ? nil : OpenStruct.new(list)
     end
 
     def create_interest(interest)

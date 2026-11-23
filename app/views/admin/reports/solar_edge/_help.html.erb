@@ -1,0 +1,31 @@
+<p>
+The columns in the report are defined as follows:
+</p>
+
+<ul>
+  <li>
+    <strong>Consented?</strong> - Do we have consent to access the site. Without this we cannot access the API
+  </li>
+  <li>
+    <strong>Loading Enabled?</strong> - Is the SolarEdge site set to active? If not, then loading is disabled
+  </li>
+  <li>
+    <strong>Metered Solar Configured?</strong> - Does the school have an active electricity meter with a metered
+    solar attribute that refers to the production meter for this site? If not, then we are not using the data from this site
+  </li>
+  <li>
+    <strong>Solar Meter Active?</strong> - Is the solar meter for the site set to active in our system?
+  </li>
+  <li>
+    <strong>Export Meter Active?</strong> - Is the export meter for the site set to active in our system?
+    If not, then we won't be loading data for that meter
+  </li>
+  <li>
+    <strong>Electricity Meter Active?</strong> - Is the grid electricity meter for the site set to active in our
+    system? If not, then we won't be loading data for that meter
+  </li>
+  <li>
+    <strong>Daily Credit Estimate</strong> - Estimate of daily API credits used to load data for this site.
+    Will be zero if the site is not consented or active. Otherwise costs are 2 credits + 2 * active meters per day
+  </li>
+</ul>

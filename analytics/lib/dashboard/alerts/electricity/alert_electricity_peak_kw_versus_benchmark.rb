@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../common/alert_floor_area_mixin'
-require_relative '../common/alert_template_variables_mixin'
 
 class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
   include AlertFloorAreaMixin
@@ -57,7 +56,7 @@ class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def electricity_intraday_comparison_chart_6_months_apart
     :intraday_line_school_days_6months
