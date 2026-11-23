@@ -11,7 +11,6 @@ describe Solar::SolarEdgeService do
 
     context 'with an ACTIVE site' do
       include_context 'with a stubbed SolarEdge site details request'
-      include_context 'with a stubbed SolarEdge date request'
       include_context 'with a stubbed SolarEdge inventory request'
 
       context 'with no cached data' do
@@ -26,15 +25,6 @@ describe Solar::SolarEdgeService do
           )
         end
 
-        it 'updates the dates' do
-          expect(installation.reload.information['dates']).to eq(
-            {
-              'from' => '2024-01-01T00:00:00+01:00',
-              'to' => '2026-01-02T13:43:01+01:00'
-            }
-          )
-        end
-
         it 'updates the inventory' do
           expect(installation.reload.information['inventory']).to eq(
             [
@@ -45,26 +35,6 @@ describe Solar::SolarEdgeService do
               { 'type' => 'METER', 'active' => true, 'meterType' => 'SelfConsumption', 'name' => 'Self Consumption' },
               { 'type' => 'METER', 'active' => true, 'meterType' => 'Consumption', 'name' => 'Consumption Meter' }
             ]
-          )
-        end
-      end
-
-      context 'with existing dates' do
-        let!(:installation) do
-          create(:solar_edge_installation, information: {
-                   'dates' => { 'from' => 'from', 'to' => 'to' },
-                   'site_details' => { 'activationStatus' => 'ACTIVE' }
-                 })
-        end
-
-        before { service.update_information }
-
-        it 'updates the dates' do
-          expect(installation.reload.information['dates']).to eq(
-            {
-              'from' => 'from',
-              'to' => 'to'
-            }
           )
         end
       end
@@ -82,7 +52,7 @@ describe Solar::SolarEdgeService do
       end
 
       it 'updates only the site_details and inventory' do
-        expect(installation.reload.information.keys).to contain_exactly('site_details', 'inventory', 'dates')
+        expect(installation.reload.information.keys).to contain_exactly('site_details', 'inventory')
         expect(installation.reload.information['dates']).to be_nil
       end
 
@@ -90,7 +60,7 @@ describe Solar::SolarEdgeService do
         let!(:installation) { create(:solar_edge_installation, :pending_status) }
 
         it 'updates only the site_details and inventory' do
-          expect(installation.reload.information.keys).to contain_exactly('site_details', 'inventory', 'dates')
+          expect(installation.reload.information.keys).to contain_exactly('site_details', 'inventory')
           expect(installation.reload.information['dates']).to be_nil
         end
       end
@@ -132,10 +102,6 @@ describe Solar::SolarEdgeService do
 
     context 'when ready to be setup' do
       subject!(:installation) { create(:solar_edge_installation) }
-
-      include_context 'with a stubbed SolarEdge date request' do
-        let(:site_id) { installation.site_id }
-      end
 
       it 'schedules loading job' do
         service.setup_meters

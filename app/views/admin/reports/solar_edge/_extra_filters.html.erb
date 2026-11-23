@@ -1,0 +1,3 @@
+<%= render 'filter', field: :consented,
+                     options: options_for_select([['True', true], ['False', false]], params[:consented]),
+                     blank: 'Any Consent Status' %>

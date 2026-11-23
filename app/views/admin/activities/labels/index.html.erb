@@ -1,6 +1,6 @@
 <% content_for :title, "Activities and actions: #{@label_type.pluralize}" %>
 
-<%= render Admin::Tasks::ClassificationTabsComponent.new(current: @label_type) %>
+<%= render Admin::Activities::ClassificationTabsComponent.new(current: @label_type) %>
 
 <% if @labels.any? %>
   <table class="table table-striped">
@@ -21,9 +21,9 @@
           <td>
             <%= pluralize(label.label_items.count, label.task_type) %>
           </td>
-          <td class="fit nowrap text-end">
+          <td class="nowrap text-end">
             <%= link_to 'Edit', edit_admin_activities_label_path(label, label_type: @label_type),
-                        class: 'btn btn-secondary btn-sm edit' %>
+                        class: 'btn btn-secondary btn-sm' %>
             <%= render(Forms::DeleteButtonComponent.new(admin_activities_label_path(label),
                                                         resource: label)) %>
           </td>

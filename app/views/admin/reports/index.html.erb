@@ -59,7 +59,12 @@
       <li><%= link_to 'Recent audits', admin_reports_recent_audits_path %></li>
       <li><%= link_to 'School targets', admin_reports_school_targets_path %></li>
       <li><%= link_to 'Pupil Number Updates', admin_reports_pupil_number_updates_path %></li>
-      <li><%= link_to 'Solar Installations', admin_reports_solar_installations_path %></li>
+      <li>Solar:
+        <ul>
+          <li><%= link_to 'Solar Installations', admin_reports_solar_installations_path %></li>
+          <li><%= link_to 'SolarEdge Status', admin_reports_solar_edge_index_path %></li>
+        </ul>
+      </li>
     </ul>
 
     <h3>Data Imports</h3>
@@ -104,6 +109,7 @@
       <li><%= link_to 'DCC Tariffs report', admin_reports_tariffs_path %></li>
       <li><%= link_to 'DCC Tariff imports report', admin_reports_tariff_import_logs_path %></li>
       <li><%= link_to 'Energy Tariffs', admin_reports_energy_tariffs_path %></li>
+      <li><%= link_to 'Tariff reminder emails', admin_reports_energy_tariff_reminders_path %></li>
     </ul>
   </div>
 </div>

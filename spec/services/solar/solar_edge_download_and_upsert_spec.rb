@@ -137,8 +137,8 @@ module Solar
         end
         let(:reading_date) { Date.yesterday }
 
-        let(:expected_start) { nil }
-        let(:expected_end) { nil }
+        let(:expected_start) { 1.year.ago.to_date + 1.day }
+        let(:expected_end) { Time.zone.yesterday }
 
         it 'reloads all data' do
           upserter.perform
@@ -150,7 +150,7 @@ module Solar
 
     context 'when there are no readings' do
       let(:expected_end) { Date.yesterday }
-      let(:expected_start) { nil }
+      let(:expected_start) { 1.year.ago.to_date + 1.day }
 
       before do
         allow_refreshing_information(site_api:)
@@ -278,16 +278,14 @@ module Solar
     context 'when the monitoring is still in a pending status' do
       let(:installation) { create(:solar_edge_installation, :pending_status) }
 
-      let(:requested_start_date) { requested_end_date - 1 }
-      let(:requested_end_date) { Time.zone.today }
+      let(:requested_start_date) { 1.year.ago.to_date + 1.day }
+      let(:requested_end_date) { Time.zone.yesterday }
 
       context 'when status has changed' do
         before do
           allow(site_api).to receive_messages(details: {
-                                                'activationStatus' => 'ACTIVE'
-                                              }, date_range: {
-                                                from: requested_start_date,
-                                                to: requested_end_date
+                                                'activationStatus' => 'ACTIVE',
+                                                'firstTelemetryTime' => '2023-01-01T13:10:04Z'
                                               }, inventory: [
                                                 { 'type' => 'METER',
                                                   'active' => true,
@@ -308,7 +306,6 @@ module Solar
         it 'loads the data' do
           expect { upserter.perform }.to change(AmrDataFeedReading, :count).from(0).to(6)
           expect(site_api).to have_received(:details)
-          expect(site_api).to have_received(:date_range)
           expect_solar_meter_api_methods(site_api:, start_date: requested_start_date, end_date: requested_end_date,
                                          serial_number: '12345')
         end

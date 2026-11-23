@@ -1,0 +1,87 @@
+<%= tag.div id: 'school-status-buttons', class: classes do %>
+  <% if @school.visible? %>
+    <%= link_to school_visibility_path(@school),
+                id: 'visibility',
+                class: 'badge rounded-pill text-bg-success', method: :delete,
+                data: { confirm: 'Are you sure you want to make this school no longer visible on the website?' },
+                title: 'School is visible on the website' do %>
+      <i class="fas fa-eye"></i>
+    <% end %>
+  <% else %>
+    <%= link_to school_visibility_path(@school),
+                id: 'visibility',
+                class: 'badge rounded-pill text-bg-danger',
+                method: :post,
+                data: { confirm: 'Are you sure you want to make this school visible on the website?' },
+                title: 'School is not visible on the website' do %>
+      <i class="fas fa-eye"></i>
+    <% end %>
+  <% end %>
+
+  <%= link_to edit_school_configuration_path(@school),
+              id: 'data-sharing-status',
+              class: "badge rounded-pill #{data_sharing_colour(@school)}",
+              title: 'Update access control settings' do %>
+      <i class="fas fa-unlock-keyhole"></i> <%= @school.data_sharing.titleize %>
+  <% end %>
+
+  <% if @school.process_data? %>
+    <%= link_to school_data_processing_path(@school),
+                id: 'process-data',
+                class: 'badge rounded-pill text-bg-success',
+                method: :delete,
+                data: { confirm: 'Are you sure you want to turn off data analysis for this school?' },
+                title: 'School data is being analysed' do %>
+      <i class="fas fa-play"></i>
+    <% end %>
+  <% else %>
+    <%= link_to school_data_processing_path(@school),
+                id: 'process-data',
+                class: 'badge rounded-pill text-bg-danger',
+                method: :post,
+                data: { confirm: 'Are you sure you want to turn on data analysis for this school?' },
+                title: 'School data is not being analysed' do %>
+      <i class="fas fa-play"></i>
+    <% end %>
+  <% end %>
+
+  <% if @school.data_enabled? %>
+    <%= link_to school_data_enabled_path(@school),
+                id: 'data-visibility',
+                class: 'badge rounded-pill text-bg-success',
+                method: :delete,
+                data: { confirm: 'Are you sure you want to hide school data?' },
+                title: 'School data is visible' do %>
+      <i class="fas fa-chart-simple"></i>
+    <% end %>
+  <% else %>
+    <%= link_to school_review_path(@school),
+                id: 'data-visibility',
+                class: 'badge rounded-pill text-bg-danger',
+                title: 'Review school to make data visible' do %>
+      <i class="fas fa-chart-simple"></i>
+    <% end %>
+  <% end %>
+
+  <% current_licence = @school.licences.current.by_start_date.first %>
+  <%= link_to admin_school_licences_path(@school),
+              id: 'licences',
+              class: class_names(
+                'badge',
+                'round-pill',
+                "text-bg-#{licence_expiry_colour(current_licence)}"
+              ),
+              title: 'Is the @school licensed?' do %>
+    <i class="fas fa-file-contract"></i>
+    <%= current_licence ? current_licence.end_date.strftime('%d-%m-%Y') : 'Unlicensed' %>
+  <% end %>
+
+  <% if @school.process_data? %>
+    <%= link_to school_batch_runs_path(@school),
+                id: 'regenerate',
+                title: 'Regenerate',
+                class: 'badge rounded-pill text-bg-info' do %>
+     <i class="fas fa-arrows-rotate"></i>
+    <% end %>
+  <% end %>
+<% end %>

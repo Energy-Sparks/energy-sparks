@@ -1,0 +1,8 @@
+<%= tag.ul id: id, class: class_names(classes, 'nav nav-tabs mt-3 justify-content-end') do %>
+  <% countries.each do |country_option| %>
+    <li class="nav-item">
+      <%= link_to country_option.to_s.titleize, path_for(country_option),
+                  class: "nav-link #{'active' if active?(country_option)}" %>
+    </li>
+  <% end %>
+<% end %>

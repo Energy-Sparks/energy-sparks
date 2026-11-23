@@ -4,17 +4,15 @@ FactoryBot.define do
   factory :solar_edge_installation do
     school
     amr_data_feed_config { association :amr_data_feed_config, :solar_edge_api }
+    sequence(:site_owner_name) { |n| "Site Owner #{n}" }
+    sequence(:site_owner_email) { |n| "site_owner_#{n}@example.com" }
 
     sequence(:site_id, (100_000..900_000).cycle) { |n| n }
     sequence(:mpan) { |n| n }
 
     information do
       {
-        'site_details' => { 'activationStatus' => 'ACTIVE' },
-        'dates' => {
-          from: '2023-01-01',
-          to: '2023-10-01'
-        },
+        'site_details' => { 'activationStatus' => 'ACTIVE', 'firstTelemetryTime' => '2023-01-01T13:10:04Z' },
         'inventory' => [
           { 'type' => 'METER', 'active' => true, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
             'serialNumber' => '12345' },
@@ -52,11 +50,7 @@ FactoryBot.define do
     trait :with_inactive_import_and_export do
       information do
         {
-          'site_details' => { 'activationStatus' => 'ACTIVE' },
-          'dates' => {
-            from: '2023-01-01',
-            to: '2023-10-01'
-          },
+          'site_details' => { 'activationStatus' => 'ACTIVE', 'firstTelemetryTime' => '2023-01-01T13:10:04Z' },
           'inventory' => [
             { 'type' => 'METER', 'active' => false, 'meterType' => 'FeedIn', 'name' => 'Export Meter',
               'serialNumber' => '12345' },

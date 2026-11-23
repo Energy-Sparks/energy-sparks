@@ -17,18 +17,32 @@ class LearningStage < ApplicationRecord
   self.table_name = 'learning_stages'
 
   extend Mobility
+
+  include Deletable
   include Enums::Country
 
   # Currently we have school_key_stages and activity_type_key_stages
-  # So need to look at replacing / supporting these, if this is what we would like to do
-
-  # Eng: KS1 KS2 KS3 KS4 KS5
-  # Wales: PS1 PS2 PS3 PS4 PS5
-  # Scotland: 1st Level, 2nd Level, 3rd Level, 4th Level, Senior Phase
+  # So need to look at replacing / supporting these
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :abbreviation, type: :string, fallbacks: { cy: :en }
   validates :country, presence: true
   validates :name, presence: true, uniqueness: { scope: :country }
   validates :abbreviation, presence: true, uniqueness: { scope: :country }
+
+  scope :by_name, -> { i18n.order(name: :asc) }
+
+  has_many :activity_type_learning_stages, class_name: 'Activities::ActivityTypeLearningStage',
+                                           inverse_of: :learning_stage, dependent: :destroy
+  has_many :activity_types, through: :activity_type_learning_stages
+
+  def deletable?
+    activity_type_learning_stages.empty?
+  end
+
+  private
+
+  def destroy_error_message
+    'This learning stage is used by activity types and cannot be deleted'
+  end
 end

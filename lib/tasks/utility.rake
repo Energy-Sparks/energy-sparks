@@ -10,10 +10,22 @@ namespace :utility do
 
   desc 'Prepare test server'
   task prepare_test_server: :environment do
-    unless ENV['SEND_AUTOMATED_EMAILS']
-      puts "Removing non Energy Sparks email addresses and mobile numbers"
-      Contact.where.not(email_address: "hello@energysparks.uk").update_all(email_address: '', mobile_phone_number: '')
-    end
+    abort('wrong environment') unless ENV['ENVIRONMENT_IDENTIFIER'] == "test"
+
+    puts "Removing non Energy Sparks email addresses and mobile numbers"
+    password = SecureRandom.alphanumeric(16)
+    puts "NEW PASSWORD: #{password}"
+
+    User
+      .where.not('email ILIKE ?', '%@energysparks.uk')
+      .update_all(
+        email: Arel.sql("'user' || id || '@example.org'"),
+        encrypted_password: Devise::Encryptor.digest(User, password)
+      )
+    Contact.where.not('email_address ILIKE ?', '%@energysparks.uk').update_all(email_address: '', mobile_phone_number: '')
+
+    puts "Removing OAuth tokens"
+    SolarEdgeInstallation.where.not(refresh_token: nil).update_all(refresh_token: nil)
   end
 
   desc 'Clear active storage bucket'
