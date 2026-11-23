@@ -132,15 +132,13 @@ class SolarEdgeInstallation < ApplicationRecord
       local_meter_loadable?(meter_type)
   end
 
-  # We expiry tokens early to avoid clock / timing issues with generating timestamp
+  # We expire tokens early to account for clock skew and request timing.
   def access_token_expired?
-    5.seconds.from_now.utc >= access_token_expires_at
+    access_token_expires_at.nil? || 5.seconds.from_now.utc >= access_token_expires_at
   end
 
   def site_api!
-    refresh_api_tokens!
-
-    DataFeeds::SolarEdge::SiteApi.new(site_id:, access_token:)
+    DataFeeds::SolarEdge::SiteApi.new(site_id:, access_token: method(:current_access_token))
   end
 
   # We use UTC for expiry timestamp to avoid issues with BST/GMT changeover.
@@ -167,6 +165,11 @@ class SolarEdgeInstallation < ApplicationRecord
   end
 
   private
+
+  def current_access_token
+    refresh_api_tokens! if access_token_expired?
+    access_token
+  end
 
   def local_meter_loadable?(meter_type)
     meter(meter_type).blank? || meter(meter_type).active?
