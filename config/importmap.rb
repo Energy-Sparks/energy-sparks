@@ -14,3 +14,5 @@ pin 'transport_surveys/helpers', preload: false
 pin_all_from 'app/javascript/commercial', under: 'commercial', preload: false
 
 pin_all_from 'app/javascript/tasks', under: 'tasks', preload: false
+
+pin_all_from 'app/javascript/readings', under: 'readings', preload: false
