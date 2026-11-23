@@ -864,6 +864,7 @@ GEM
     thor (1.5.0)
     tilt (2.8.0)
     timeout (0.6.1)
+    tom-select-rails (2.5.1)
     tsort (0.2.0)
     twilio-ruby (7.13.0)
       faraday (>= 2.0, < 3.0)
@@ -1028,6 +1029,7 @@ DEPENDENCIES
   terminal-notifier-guard
   terser
   test-prof
+  tom-select-rails (~> 2.5)
   twilio-ruby
   tzinfo
   view_component
