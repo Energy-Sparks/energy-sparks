@@ -164,6 +164,13 @@ class SolarEdgeInstallation < ApplicationRecord
     end
   end
 
+  def credit_estimate
+    return 0 unless active && consented?
+    return 2 unless monitoring_active?
+
+    2 + (2 * meters.active.count)
+  end
+
   private
 
   def current_access_token

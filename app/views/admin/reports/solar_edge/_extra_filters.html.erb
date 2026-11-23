@@ -1,3 +1,12 @@
+<%= render 'filter', field: :school_active,
+                     options: options_for_select([['True', true], ['False', false]], params[:school_active]),
+                     blank: 'Any Status' %>
+
 <%= render 'filter', field: :consented,
                      options: options_for_select([['True', true], ['False', false]], params[:consented]),
                      blank: 'Any Consent Status' %>
+
+<%= render 'filter', field: :contract_id,
+                     options: options_for_select(Commercial::Contract.current.by_name.map { |c| [c.name, c.id] },
+                                                 params[:contract_id]),
+                     blank: 'Any Contract' %>
