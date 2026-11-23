@@ -11,11 +11,7 @@ describe Mailchimp::AudienceManager do
   let!(:interests_data) { YAML.safe_load_file('spec/fixtures/mailchimp/interests.yml') }
   let!(:categories_data) { YAML.safe_load_file('spec/fixtures/mailchimp/categories.yml') }
 
-  let(:list_id) { '524305' }
-
-  before do
-    stub_env(MAILCHIMP_LIST: list_id)
-  end
+  include_context 'with a configured Mailchimp list'
 
   describe '#list' do
     context 'when no lists' do
@@ -31,7 +27,9 @@ describe Mailchimp::AudienceManager do
     end
 
     context 'when missing list' do
-      let(:list_id) { '12345' }
+      include_context 'with a configured Mailchimp list' do
+        let(:list_id) { '12345' }
+      end
 
       before do
         allow(Rollbar).to receive(:error)

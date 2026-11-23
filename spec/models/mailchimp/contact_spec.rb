@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Mailchimp::Contact do
+  include_context 'with a configured Mailchimp list'
+
   shared_examples 'it correctly creates a contact' do |school_user: false, group_admin: false, cluster_admin: false|
     it 'populates the common fields' do
       expect(contact.email_address).to eq user.email

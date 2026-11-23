@@ -1,4 +1,6 @@
 RSpec.shared_context 'with a stubbed audience manager' do
+  include_context 'with a configured Mailchimp list'
+
   let(:client) { instance_double(MailchimpMarketing::Client, lists: lists_api) }
 
   let(:lists_api) { instance_double(MailchimpMarketing::ListsApi) }
@@ -20,5 +22,13 @@ RSpec.shared_context 'with a stubbed audience manager' do
       set_list_member: contact_data,
       get_list_members_info: members_data,
       update_list_member_tags: true)
+  end
+end
+
+RSpec.shared_context 'with a configured Mailchimp list' do
+  let(:list_id) { '524305' }
+
+  before do
+    stub_env(MAILCHIMP_LIST: list_id)
   end
 end
