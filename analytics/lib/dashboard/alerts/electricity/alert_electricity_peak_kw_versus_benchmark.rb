@@ -57,7 +57,7 @@ class AlertElectricityPeakKWVersusBenchmark < AlertElectricityOnlyBase
     }
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def electricity_intraday_comparison_chart_6_months_apart
     :intraday_line_school_days_6months

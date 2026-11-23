@@ -4,6 +4,8 @@ require_relative 'alert_period_comparison_base'
 require 'active_support/core_ext/integer/inflections'
 
 class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
+  include Alerts::NonEstimatedMixin
+
   def initialize(school, type = :electricitypreviousschoolweekcomparison)
     super
   end
@@ -78,10 +80,6 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
     21
   end
 
-  def period_name(period)
-    I18nHelper.holiday(period.type)
-  end
-
   def current_period_name(current_period)
     I18n.t('analytics.common.last_school_week') + " (#{period_name(current_period)})"
   end
@@ -103,6 +101,4 @@ class AlertSchoolWeekComparisonElectricity < AlertPeriodComparisonBase
   def period_days(period_start, period_end)
     (period_start..period_end).count { |date| date.on_weekday? && non_estimated_reading?(date) }
   end
-
-  alias last_meter_date last_non_estimated_meter_date
 end

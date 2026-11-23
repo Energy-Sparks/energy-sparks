@@ -5,6 +5,8 @@ require_relative '../alert_electricity_only_base'
 require_relative '../../common/alert_template_variables_mixin'
 
 class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
+  include Alerts::NonEstimatedMixin
+
   MAXBASELOADCHANGE = 1.15
   MINIMUM_DAYS_FOR_ENOUGH_DATA = 6 * 7
   attr_reader :next_year_change_in_baseload_£
@@ -126,7 +128,7 @@ class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
 
   }.freeze
 
-  include AlertTemplateVariablesMixin
+  include Alerts::TemplateVariablesMixin
 
   def one_year_baseload_chart
     :alert_1_year_baseload
@@ -225,9 +227,5 @@ class AlertChangeInElectricityBaseloadShortTerm < AlertBaseloadBase
 
   private
 
-  alias last_meter_date last_non_estimated_meter_date
-
-  def max_days_out_of_date_while_still_relevant
-    21
-  end
+  def max_days_out_of_date_while_still_relevant = 21
 end
