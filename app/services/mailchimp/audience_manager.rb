@@ -2,6 +2,7 @@ module Mailchimp
   class AudienceManager
     def initialize(client = Rails.configuration.mailchimp_client)
       @client = client
+      @list_web_id = ENV.fetch('MAILCHIMP_LIST').to_i
     end
 
     # The Mailchimp documentation and CSV exports use different status names than
@@ -111,11 +112,11 @@ module Mailchimp
     def get_list
       lists = @client.lists.get_all_lists
 
-      if lists.empty?
-        nil
-      else
-        OpenStruct.new(lists['lists'].first)
-      end
+      return nil if lists.empty?
+
+      list = lists['lists'].detect {|list| list['web_id'] == @list_web_id }
+
+      list.blank? ? nil : OpenStruct.new(list)
     end
 
     def create_interest(interest)
