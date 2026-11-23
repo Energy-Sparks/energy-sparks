@@ -198,14 +198,19 @@
     </div>
   </div>
 
+  <% grouped_activity_types = ActivityType.grouped_by_category %>
+
   <%= f.fields_for :activity_type_suggestions do |suggestion| %>
     <div class="row">
       <div class="col-md-8 mb-3">
         <%= suggestion.select(
               :suggested_type_id,
-              grouped_options_for_select(ActivityCategory.listed_with_activity_types.map do |category, types|
-                [category.name, types.map { |type| [type.name_with_key_stages, type.id] }]
-              end, suggestion.object.suggested_type_id.to_s),
+              grouped_options_for_select(
+                grouped_activity_types.map do |category, types|
+                  [category.name, types.map { |type| [type.name, type.id] }]
+                end,
+                suggestion.object.suggested_type_id
+              ),
               { include_blank: true },
               { class: 'form-select tom-select' }
             ) %>

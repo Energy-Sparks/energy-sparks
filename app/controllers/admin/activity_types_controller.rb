@@ -11,6 +11,7 @@ module Admin
 
     def index
       @activity_types = @activity_types.includes(:activity_category).order('activity_categories.name', :name)
+      @activity_categories = ActivityCategory.by_name.includes(activity_types: :learning_stages)
     end
 
     def show

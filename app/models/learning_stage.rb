@@ -31,7 +31,6 @@ class LearningStage < ApplicationRecord
   validates :abbreviation, presence: true, uniqueness: { scope: :country }
 
   scope :by_name, -> { i18n.order(name: :asc) }
-  scope :by_abbreviation, -> { i18n.order(abbreviation: :asc) }
 
   has_many :activity_type_learning_stages, class_name: 'Activities::ActivityTypeLearningStage',
                                            inverse_of: :learning_stage, dependent: :destroy
@@ -41,8 +40,8 @@ class LearningStage < ApplicationRecord
     activity_type_learning_stages.empty?
   end
 
-  def self.abbreviations
-    by_abbreviation.map(&:abbreviation)
+  def self.abbreviations(stages)
+    stages.sort_by(&:abbreviation).map(&:abbreviation)
   end
 
   private
