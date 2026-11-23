@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable-next Metrics/BlockLength
 namespace :solar do
   desc 'Import solar edge data'
   task :import_solar_edge_readings, %i[start_date end_date reload] => :environment do |_t, args|
@@ -12,23 +13,27 @@ namespace :solar do
     exit(1) unless ENV['ENVIRONMENT_IDENTIFIER'] == 'production'
 
     puts "#{DateTime.now.utc} import_solar_edge_readings start"
-    begin
-      SolarEdgeInstallation.for_active_schools.consented.find_each do |installation|
-        puts "Running for #{installation.school.name} #{installation.site_id}"
 
-        if installation.active?
+    SolarEdgeInstallation.for_active_schools.consented.find_each do |installation|
+      puts "Running for #{installation.school.name} #{installation.site_id}"
+
+      context = { installation: installation.id, start_date:, end_date:, reload:, job: :import_solar_edge_readings }
+
+      if installation.active?
+        begin
           Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date:, end_date:, reload:).perform
-        else
+        rescue StandardError => e
+          EnergySparks.log(e, context)
+        end
+      else
+        begin
           installation.refresh_api_tokens!
+        rescue StandardError => e
+          EnergySparks.log(e, context)
         end
       end
-    rescue StandardError => e
-      puts "Exception: importing readings #{e.class} #{e.message}"
-      puts e.backtrace.join("\n")
-      Rails.logger.error "Exception: importing readings: #{e.class} #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, job: :import_solar_edge_readings)
     end
+
     puts "#{DateTime.now.utc} import_solar_edge_readings end"
   end
 end
