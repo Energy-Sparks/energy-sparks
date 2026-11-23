@@ -192,5 +192,25 @@ describe 'activity type', type: :system do
       expect(page).to have_text('some english school specific description')
       expect(page).to have_text('some welsh school specific description')
     end
+
+    context 'when the activity classifications feature is enabled', with_feature: :activity_classifications do
+      before do
+        england_stage = create(:learning_stage, name: 'Key Stage 2', abbreviation: 'KS2', country: :england)
+        wales_stage = create(:learning_stage, name: 'Progression Step 1', abbreviation: 'PS1', country: :wales)
+        create(:activity_type, activity_category: activity_category,
+                               learning_stages: [england_stage, wales_stage])
+        refresh
+      end
+
+      it 'shows the England learning stages in the row' do
+        expect(page).to have_css('tbody td', text: 'KS2')
+      end
+
+      it 'shows the learning stages for every country in the popover' do
+        content = find('button[data-bs-toggle="popover"]')['data-bs-content']
+        expect(content).to include('England:', 'KS2', 'Wales:', 'PS1')
+        expect(content).to include('Scotland:', 'None')
+      end
+    end
   end
 end

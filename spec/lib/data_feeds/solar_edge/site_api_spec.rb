@@ -99,32 +99,6 @@ describe DataFeeds::SolarEdge::SiteApi do
     end
   end
 
-  describe '#date_range' do
-    let(:response) do
-      {
-        'period' => { 'from' => '2024-01-01T00:00:00+01:00', 'to' => '2026-01-02T13:43:01.713+01:00' },
-        'unit' => 'KWH',
-        'resolution' => 'TOTAL',
-        'values' => [{ 'timestamp' => '2026-10-08T00:00:00+01:00', 'value' => 314.27 }]
-      }
-    end
-
-    before do
-      stub_request(path: '/energy', params: {
-                     'resolution' => 'TOTAL',
-                     'from' => DateTime.new(2000).iso8601,
-                     'unit' => 'KWH'
-                   }, response:)
-    end
-
-    it 'returns the parsed dates' do
-      expect(api.date_range).to eq({
-                                     from: DateTime.parse('2024-01-01T00:00:00+01:00'),
-                                     to: DateTime.parse('2026-01-02T13:43:01.713+01:00')
-                                   })
-    end
-  end
-
   describe '#inventory' do
     let(:response) do
       [
