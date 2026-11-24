@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../../analytics/lib/dashboard/alerts/non_estimated_readings_shared'
+
 # These examples assume context has been setup such that the meter for the specified fuel type
 # has holidays covering 2023 as defined in holidays factory, with meter data covering same period
 RSpec.shared_examples 'a holiday and term comparison' do
@@ -23,6 +25,45 @@ RSpec.shared_examples 'a holiday and term comparison' do
     end
 
     it_behaves_like 'a valid alert', date: Date.new(2023, 9, 1)
+
+    context 'with estimated readings' do
+      include_context 'with estimated reading helpers'
+
+      let(:amr_data) { meter_collection.aggregate_meter(fuel_type).amr_data }
+
+      %i[current previous].each do |period|
+        context "with estimates in the #{period} period" do
+          let(:reading_period) do
+            alert.public_send("#{period}_period_start_date")..alert.public_send("#{period}_period_end_date")
+          end
+
+          before { estimate_readings_after(reading_period.first - 1, within: reading_period) }
+
+          it 'rejects a period with no non-estimated readings' do
+            expect(alert.enough_data).to eq(:not_enough)
+          end
+
+          it 'preserves the absence of a freshness limit' do
+            expect(alert.meter_readings_up_to_date_enough?).to be true
+          end
+
+          context 'with one non-estimated weekend reading' do
+            before { amr_data[reading_period.first].set_type('ORIG') }
+
+            it 'accepts a single calendar day of data' do
+              expect(reading_period.first.on_weekend?).to be true
+              expect(alert.enough_data).to eq(:enough)
+            end
+          end
+
+          it 'does not count a missing day' do
+            amr_data.delete(reading_period.first)
+
+            expect(alert.enough_data).to eq(:not_enough)
+          end
+        end
+      end
+    end
 
     it 'uses the right periods' do
       # Summer holiday

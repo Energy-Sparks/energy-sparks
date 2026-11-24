@@ -1,8 +1,11 @@
-require_relative 'holiday_shutdown_comparison_mixin'
+# frozen_string_literal: true
 
 module ArbitraryPeriodComparisonMixIn
   # make all instance methods because of complexities of
   # mixing in instance methods in Ruby
+
+  private
+
   def current_period_config
     c = comparison_configuration[:current_period]
     SchoolDatePeriod.new(:analysis, 'Current period', c.first, c.last)
@@ -13,20 +16,8 @@ module ArbitraryPeriodComparisonMixIn
     SchoolDatePeriod.new(:analysis, 'Previous period', c.first, c.last)
   end
 
-  protected def max_days_out_of_date_while_still_relevant
-    comparison_configuration[:max_days_out_of_date]
-  end
-
-  protected def last_two_periods(asof_date)
-    [current_period_config, previous_period_config]
-  end
-
   def enough_days_data(days)
     days >= comparison_configuration[:enough_days_data]
-  end
-
-  def period_days(period_start, period_end)
-    period_end - period_start + 1
   end
 
   def comparison_chart
@@ -50,5 +41,13 @@ module ArbitraryPeriodComparisonMixIn
     else
       super
     end
+  end
+
+  def max_days_out_of_date_while_still_relevant
+    comparison_configuration[:max_days_out_of_date]
+  end
+
+  def last_two_periods(_asof_date)
+    [current_period_config, previous_period_config]
   end
 end
