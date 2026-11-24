@@ -474,7 +474,7 @@ class AMRData < HalfHourlyData
     percent_bad = (100.0 * (length - bad_data_count['ORIG'].length) / length).round(1) if bad_data_count.key?('ORIG')
     logger.info "bad data summary: #{percent_bad}% substituted"
     bad_data_count.each do |type, dates|
-      type_description = format('%-60.60s', OneDayAMRReading.amr_types[type][:name])
+      type_description = format('%-60.60s', OneDayAMRReading::AMR_TYPES.dig(type, :name))
       logger.info " #{type}: #{type_description} * #{dates.length}"
       if type != 'ORIG'
         cpdp = CompactDatePrint.new(dates)

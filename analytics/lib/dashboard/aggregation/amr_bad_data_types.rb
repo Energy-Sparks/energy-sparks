@@ -105,10 +105,4 @@ class OneDayAMRReading
     'SOLX' => { name: 'Synthetic onsite solar + mains consumption (good)' }
   }.freeze
   AMR_TYPE_SET = AMR_TYPES.keys.to_set.freeze
-
-  # duplicate name to description: a bit of a fudge as the original design
-  # was to make name a short description, but most end up being the same length
-  def self.amr_types
-    @@amr_types ||= AMR_TYPES.transform_values { |v| v.key?(:description) ? v : v.merge({ description: v[:name] }) }
-  end
 end

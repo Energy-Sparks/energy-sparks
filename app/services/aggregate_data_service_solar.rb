@@ -519,15 +519,19 @@ class AggregateDataServiceSolar
 
     mappings.each do |map|
       Aggregation::SolarMeterMap.meter_mappings(map).each do |meter_attribute_key, mpan|
-        meter = @meter_collection.electricity_meters.find { |meter| meter.mpan_mprn.to_s == mpan }
-        next if meter.nil?
-
-        @meter_collection.electricity_meters.delete_if { |m| m.mpan_mprn.to_s == mpan.to_s }
-        truncate_meter_dates(meter, map)
-        pv_meter_map.set_meter(meter_attribute_key, meter)
-        (@solar_pv_mpan_meter_mappings[meter] ||= []) << map
+        map_real_meter(pv_meter_map, map, meter_attribute_key, mpan)
       end
     end
+  end
+
+  def map_real_meter(pv_meter_map, map, meter_attribute_key, mpan)
+    meter = @meter_collection.electricity_meters.find { |m| m.mpan_mprn.to_s == mpan }
+    return if meter.nil?
+
+    @meter_collection.electricity_meters.delete_if { |m| m.mpan_mprn.to_s == mpan.to_s }
+    truncate_meter_dates(meter, map)
+    pv_meter_map.set_meter(meter_attribute_key, meter)
+    (@solar_pv_mpan_meter_mappings[meter] ||= []) << map
   end
 
   # Truncates the AMR data associated with a meter to align with the start and
