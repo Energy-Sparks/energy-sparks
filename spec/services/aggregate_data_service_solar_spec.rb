@@ -19,7 +19,6 @@ describe AggregateDataServiceSolar do
   def sub_meters = processed_meters.first.sub_meters
   def electricity_meter = meters[:electricity]
   def meters_values = meters.values.flatten.compact
-  def attributes_with_mapping(solar_pv_mpan_meter_mapping) = { solar_pv_mpan_meter_mapping: }
 
   before do
     travel_to Date.new(2025, 5, 28)
@@ -59,9 +58,9 @@ describe AggregateDataServiceSolar do
   context 'when school has metered solar' do
     let(:solar_production_meter) { build(:meter, meter_collection:, type: :solar_pv, kwh_data_x48: [1] * 48) }
     let(:meter_attributes) do
-      attributes_with_mapping(start_date: Date.new(2023, 1, 1),
-                              production_mpan: solar_production_meter.mpan_mprn.to_s,
-                              export_mpan: solar_export_meter&.mpan_mprn&.to_s)
+      { solar_pv_mpan_meter_mapping: [{ start_date: Date.new(2023, 1, 1),
+                                        production_mpan: solar_production_meter.mpan_mprn.to_s,
+                                        export_mpan: solar_export_meter&.mpan_mprn&.to_s }] }
     end
 
     context 'with only production meter' do
@@ -155,12 +154,12 @@ describe AggregateDataServiceSolar do
     context 'with multiple production meters and no export meter' do
       let(:solar_production_meter) { build_list(:meter, 5, meter_collection:, type: :solar_pv) }
       let(:meter_attributes) do
-        attributes_with_mapping(start_date: Date.new(2023, 1, 1),
-                                production_mpan: solar_production_meter[0].mpan_mprn.to_s,
-                                production_mpan2: solar_production_meter[1].mpan_mprn.to_s,
-                                production_mpan3: solar_production_meter[2].mpan_mprn.to_s,
-                                production_mpan4: solar_production_meter[3].mpan_mprn.to_s,
-                                production_mpan5: solar_production_meter[4].mpan_mprn.to_s)
+        { solar_pv_mpan_meter_mapping: [{ start_date: Date.new(2023, 1, 1),
+                                          production_mpan: solar_production_meter[0].mpan_mprn.to_s,
+                                          production_mpan2: solar_production_meter[1].mpan_mprn.to_s,
+                                          production_mpan3: solar_production_meter[2].mpan_mprn.to_s,
+                                          production_mpan4: solar_production_meter[3].mpan_mprn.to_s,
+                                          production_mpan5: solar_production_meter[4].mpan_mprn.to_s }] }
       end
 
       it 'returns a single new electricity meter' do
@@ -184,7 +183,7 @@ describe AggregateDataServiceSolar do
         let(:solar_production_meter) { build_list(:meter, 5, meter_collection:, type: :solar_pv, day_count: 4) }
         let(:meter_attributes) do
           super().tap do |attributes|
-            attributes[:solar_pv_mpan_meter_mapping].merge!(commissioned_date: Date.new(2025, 5, 23))
+            attributes[:solar_pv_mpan_meter_mapping].first.merge!(commissioned_date: Date.new(2025, 5, 23))
           end
         end
 
@@ -256,7 +255,7 @@ describe AggregateDataServiceSolar do
       let(:start_date) { Date.new(2026, 6, 1) }
       let(:end_date) { Date.new(2026, 6, 30) }
       let(:meter_attributes) do
-        super().tap { |attributes| attributes[:solar_pv_mpan_meter_mapping].merge!(commissioned_date:) }
+        super().tap { |attributes| attributes[:solar_pv_mpan_meter_mapping].first.merge!(commissioned_date:) }
       end
       let(:meters) do
         amr_data = build(:amr_data, :with_date_range, start_date: commissioned_date - 1.day, end_date:)
@@ -333,17 +332,6 @@ describe AggregateDataServiceSolar do
         it 'uses the backfilled generation to calculate self consumption' do
           expect(group_ranges_by_type(solar_production_meter)).to \
             eq(expected_ranges_by_type(solar_production_meter, zero_type: :SOL0))
-        end
-      end
-
-      context 'with multiple attributes with commission dates' do
-        let(:meter_attributes) do
-          { solar_pv_mpan_meter_mapping: [solar_pv_mpan_meter_mapping.merge(commission_date: Date.new(2026, 5, 15)),
-                                          { start_date: Date.new(2026), commission_date: Date.new(2026, 5, 2) }] }
-        end
-
-        it 'backfills to the earliest' do
-          expect(group_ranges_by_type(solar_production_meter)[:SOLC]).to eq(Date.new(2026, 5, 2)..Date.new(2026, 5, 31))
         end
       end
     end

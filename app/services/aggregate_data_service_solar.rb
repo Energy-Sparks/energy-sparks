@@ -437,7 +437,7 @@ class AggregateDataServiceSolar
       elsif mpan_pv_map[:commissioned_date]
         meter.amr_data.start_date
       else
-        meter_start_date(mpan_pv_map)
+        mpan_pv_map[:start_date]
       end
     end.min
   end
@@ -531,7 +531,7 @@ class AggregateDataServiceSolar
     @meter_collection.electricity_meters.delete_if { |m| m.mpan_mprn.to_s == mpan.to_s }
     truncate_meter_dates(meter, map)
     pv_meter_map.set_meter(meter_attribute_key, meter)
-    (@solar_pv_mpan_meter_mappings[meter] ||= []) << map
+    @solar_pv_mpan_meter_mappings[meter] = map
   end
 
   # Truncates the AMR data associated with a meter to align with the start and

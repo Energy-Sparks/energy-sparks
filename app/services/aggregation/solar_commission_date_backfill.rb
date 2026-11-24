@@ -4,7 +4,7 @@ module Aggregation
   module SolarCommissionDateBackfill
     def self.process(pv_meter_map, solar_pv_mpan_meter_mappings)
       pv_meter_map.meters.each do |meter|
-        commissioned_date = solar_pv_mpan_meter_mappings.fetch(meter, []).pluck(:commissioned_date).compact.min
+        commissioned_date = solar_pv_mpan_meter_mappings.dig(meter, :commissioned_date)
         backfill_meter_to_commissioned_date(meter, commissioned_date) if commissioned_date
       end
     end
