@@ -866,7 +866,7 @@ GEM
     timeout (0.6.1)
     tom-select-rails (2.5.1)
     tsort (0.2.0)
-    twilio-ruby (7.13.0)
+    twilio-ruby (7.13.1)
       faraday (>= 2.0, < 3.0)
       jwt (>= 1.5, < 4.0)
       nokogiri (>= 1.6, < 2.0)
