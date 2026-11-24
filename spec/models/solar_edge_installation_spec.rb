@@ -323,4 +323,54 @@ describe SolarEdgeInstallation do
       end
     end
   end
+
+  describe '#site_api!' do
+    let(:installation) { create(:solar_edge_installation, access_token_expires_at: 1.minute.from_now) }
+    let(:from_date) { Date.new(2026) }
+    let(:energy_response) { { headers:, body: { values: [] }.to_json } }
+    let(:response_wait) { 0.minutes }
+    let(:second_token) { installation.access_token }
+
+    before do
+      freeze_time
+      stub_window(0, installation.access_token).to_return do
+        travel response_wait
+        energy_response
+      end
+      stub_window(12, second_token).to_return(energy_response)
+    end
+
+    def headers = { 'Content-Type' => 'application/json' }
+
+    def stub_window(hour, token)
+      from = (from_date.in_time_zone('Europe/London') + hour.hours).iso8601
+      stub_request(:get, "#{DataFeeds::SolarEdge::Api::API_BASE}/sites/#{installation.site_id}/energy")
+        .with(query: hash_including('from' => from)) do |request|
+          request.headers.transform_keys(&:downcase)['authorization'] == "Bearer #{token}"
+        end
+    end
+
+    it 'reuses a current token across windows without refreshing it' do
+      installation.site_api!.production(start_date: from_date, end_date: from_date)
+      expect(a_request(:any, /.*/)).to have_been_made.times(2) # 2 window calls
+      expect(installation.access_token_expires_at).to eq(1.minute.from_now)
+    end
+
+    context 'when the token expires after the first window' do
+      let(:response_wait) { 2.minutes }
+      let(:replacement_tokens) do
+        { access_token: 'replacement-access-token', refresh_token: 'replacement-refresh-token', expires_in: 7200 }
+      end
+      let(:second_token) { replacement_tokens[:access_token] }
+
+      it 'sends the next window request with the replacement token' do
+        stub_request(:post, "#{DataFeeds::SolarEdge::Api::API_BASE}/oauth2/token").with do |request|
+          JSON.parse(request.body)['refresh_token'] == installation.refresh_token
+        end.to_return(headers:, body: replacement_tokens.to_json)
+        installation.site_api!.production(start_date: from_date, end_date: from_date)
+        expect(a_request(:any, /.*/)).to have_been_made.times(3) # window calls + refresh
+        expect(installation.reload.access_token).to eq(second_token)
+      end
+    end
+  end
 end

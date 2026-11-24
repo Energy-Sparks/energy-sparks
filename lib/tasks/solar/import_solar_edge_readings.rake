@@ -12,20 +12,21 @@ namespace :solar do
     exit(1) unless ENV['ENVIRONMENT_IDENTIFIER'] == 'production'
 
     puts "#{DateTime.now.utc} import_solar_edge_readings start"
-    begin
-      SolarEdgeInstallation.active.find_each do |installation|
-        next unless installation.consented?
 
-        puts "Running for #{installation.school.name} #{installation.site_id}"
-        Solar::SolarEdgeDownloadAndUpsert.new(installation: installation, start_date:, end_date:, reload:).perform
+    SolarEdgeInstallation.for_active_schools.consented.find_each do |installation|
+      puts "Running for #{installation.school.name} #{installation.site_id}"
+
+      if installation.active?
+        Solar::SolarEdgeDownloadAndUpsert.new(installation:, start_date:, end_date:, reload:).perform
+      else
+        begin
+          installation.refresh_api_tokens!
+        rescue StandardError => e
+          EnergySparks.log(e, { installation: installation.id, job: :import_solar_edge_readings })
+        end
       end
-    rescue StandardError => e
-      puts "Exception: importing readings #{e.class} #{e.message}"
-      puts e.backtrace.join("\n")
-      Rails.logger.error "Exception: importing readings: #{e.class} #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      Rollbar.error(e, job: :import_solar_edge_readings)
     end
+
     puts "#{DateTime.now.utc} import_solar_edge_readings end"
   end
 end

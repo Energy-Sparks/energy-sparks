@@ -12,6 +12,8 @@ module Enums
 
     included do
       enum :country, ENUM_COUNTRY
+
+      scope :for_country, ->(country) { where(country: country) }
     end
   end
 end
