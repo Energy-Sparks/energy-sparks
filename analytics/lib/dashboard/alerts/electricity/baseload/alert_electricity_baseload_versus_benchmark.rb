@@ -6,6 +6,7 @@ require_relative '../../common/alert_floor_area_mixin'
 
 class AlertElectricityBaseloadVersusBenchmark < AlertBaseloadBase
   include AlertFloorAreaMixin
+  include Alerts::NonEstimatedMixin
 
   PERCENT_TOO_HIGH_MARGIN = 1.10
 
