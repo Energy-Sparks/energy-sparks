@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require_relative 'holiday_and_term_comparison_shared'
 
 describe AlertHolidayAndTermGasComparison do
   subject(:alert) { described_class.new(meter_collection) }
@@ -28,6 +29,8 @@ describe AlertHolidayAndTermGasComparison do
 
     meter_collection
   end
+
+  it_behaves_like 'an EST-aware holiday and term comparison'
 
   describe '#analyse' do
     it_behaves_like 'a holiday and term comparison' do

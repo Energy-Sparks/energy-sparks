@@ -16,4 +16,19 @@ class AlertArbitraryPeriodComparisonBase < AlertHolidayComparisonBase
   def timescale
     "custom"
   end
+
+  private
+
+  def period_days(period_start, period_end)
+    return 0 if enough_days_data(0)
+
+    days = 0
+    (period_start..period_end).each do |date|
+      next unless non_estimated_reading?(date)
+
+      days += 1
+      return days if enough_days_data(days)
+    end
+    days
+  end
 end
