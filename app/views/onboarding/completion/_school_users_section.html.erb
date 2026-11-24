@@ -2,11 +2,14 @@
   <div class="card-header">
     <h4>
       <%= t('onboarding.completion.new.school_users_section.title') %>
-    <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-school-users"
-      aria-expanded="<%= params[:show]=='school-users' ? 'true' : 'false' %>" aria-controls="collapse-school-users"><%= t('common.labels.view') %></button></span>
+    <span class="float-end"><button class="btn"
+      data-toggle="collapse" data-target="#collapse-school-users"
+      data-bs-toggle="collapse" data-bs-target="#collapse-school-users"
+      aria-expanded="<%= params[:show] == 'school-users' ? 'true' : 'false' %>"
+      aria-controls="collapse-school-users"><%= t('common.labels.view') %></button></span>
     </h4>
   </div>
-  <div id="collapse-school-users" class="collapse <%= 'show' if params[:show]=='school-users' %>">
+  <div id="collapse-school-users" class="collapse <%= 'show' if params[:show] == 'school-users' %>">
     <div class="card-body">
       <% if @users.any? %>
         <table class="table table-condensed table-borderless">
@@ -33,7 +36,8 @@
       <% else %>
         <p><%= t('onboarding.completion.new.school_users_section.you_have_not_added_additional_school_accounts_message') %>.</p>
       <% end %>
-      <%= link_to t('onboarding.completion.new.school_users_section.manage_users'), onboarding_users_path(@school_onboarding), class: 'btn btn-primary' %>
+      <%= link_to t('onboarding.completion.new.school_users_section.manage_users'),
+                  onboarding_users_path(@school_onboarding), class: 'btn btn-primary' %>
     </div>
   </div>
 </div>

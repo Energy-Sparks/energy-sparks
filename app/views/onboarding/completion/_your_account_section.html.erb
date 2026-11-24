@@ -2,21 +2,24 @@
   <div class="card-header">
     <h4>
       <%= t('onboarding.completion.new.your_account_section.title') %>
-      <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-account"
-        aria-expanded="<%= params[:show]=='account' ? 'true' : 'false' %>" aria-controls="collapse-account"><%= t('common.labels.view') %></button></span>
+      <span class="float-end"><button class="btn"
+        data-toggle="collapse" data-target="#collapse-account"
+        data-bs-toggle="collapse" data-bs-target="#collapse-account"
+        aria-expanded="<%= params[:show] == 'account' ? 'true' : 'false' %>"
+        aria-controls="collapse-account"><%= t('common.labels.view') %></button></span>
     </h4>
   </div>
-  <div id="collapse-account" class="collapse <%= 'show' if params[:show]=='account' %>">
+  <div id="collapse-account" class="collapse <%= 'show' if params[:show] == 'account' %>">
     <div class="card-body">
       <table class="table table-borderless">
         <tbody>
           <tr>
             <th><%= t('onboarding.completion.new.name') %>:</th>
-            <td><%=@school_onboarding.created_user.name%></td>
+            <td><%= @school_onboarding.created_user.name %></td>
           </tr>
           <tr>
             <th><%= t('onboarding.completion.new.email') %>:</th>
-            <td><%=@school_onboarding.created_user.email%></td>
+            <td><%= @school_onboarding.created_user.email %></td>
           </tr>
           <% if @school_onboarding.created_user.staff_role.present? %>
             <tr>
@@ -30,7 +33,8 @@
           </tr>
         </tbody>
       </table>
-      <%= link_to t('onboarding.completion.new.your_account_section.edit_your_account'), edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
+      <%= link_to t('onboarding.completion.new.your_account_section.edit_your_account'),
+                  edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
     </div>
   </div>
 </div>
