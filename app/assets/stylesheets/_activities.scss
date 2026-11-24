@@ -8,16 +8,22 @@
   }
 }
 
-.select2-container--bootstrap .select2-results__group {
+// The BS5 selector must stay this specific for the group headings to be styled correctly.
+.select2-container--bootstrap .select2-results__group,
+.select2-container--bootstrap-5 .select2-dropdown
+  .select2-results__options
+  .select2-results__option[role=group]
+  .select2-results__group {
   color: $body-color;
   font-size: $f4;
+  font-weight: $font-weight-bold;
 }
 
 .select2-container {
   width: 100% !important;
 }
 
-.select2-selection--multiple:after{
+.select2-selection--multiple:after {
   content:"";
   position:absolute;
   right:10px;
@@ -29,9 +35,26 @@
   border-top: 5px solid $grey-dark;
 }
 
-.select2-results__options {
+// Limit to outer results list, otherwise group options render on top of each other (bs4 and bs5)
+.select2-results__options:not(.select2-results__options--nested) {
   max-height: 300px !important;
 }
+
+// Tom Select group headings
+.ts-wrapper .ts-dropdown .optgroup-header {
+  color: $body-color;
+  font-size: $f6;
+  font-weight: $font-weight-bold;
+}
+
+// Tom Select selected option - grey out
+.ts-dropdown .option.selected {
+  color: #999;
+  background-color: #f8f9fa;
+  opacity: 0.6;
+  cursor: default;
+}
+
 
 img.activity-card-img {
   min-height: 150px;

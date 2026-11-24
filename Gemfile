@@ -79,6 +79,7 @@ gem 'bootstrap', '~> 5.3'
 gem 'cocoon' # nested forms
 gem 'simple_form'
 gem 'sortablejs-rails'
+gem 'tom-select-rails', '~> 2.5'
 gem 'view_component'
 
 # JS Templating

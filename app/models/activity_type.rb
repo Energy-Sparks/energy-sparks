@@ -161,6 +161,14 @@ class ActivityType < ApplicationRecord
     :activity
   end
 
+  def self.grouped_by_category
+    includes(:string_translations, activity_category: :string_translations)
+      .custom_last
+      .i18n.order(:name)
+      .group_by(&:activity_category)
+      .sort_by { |category, _| category.name.downcase }
+  end
+
   private
 
   def copy_searchable_attributes

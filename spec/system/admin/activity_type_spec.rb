@@ -39,7 +39,7 @@ describe 'activity type', type: :system do
         allow_any_instance_of(SchoolAggregation).to receive(:aggregate_school).and_return(school)
         allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
 
-        click_on 'New Activity Type'
+        click_on 'New activity', match: :first
       end
 
       it 'can add a new activity for KS1 with filters' do
@@ -47,7 +47,7 @@ describe 'activity type', type: :system do
         summary = 'An activity to try'
         download_links = 'Some download links'
         school_specific_description = description + ' for SCHOOOOOOLS'
-        activity_name = 'New activity'
+        activity_name = 'New Activity'
 
         fill_in :activity_type_name_en, with: activity_name
         fill_in :activity_type_summary_en, with: summary
@@ -74,7 +74,7 @@ describe 'activity type', type: :system do
         check('30 mins')
         check('Reducing electricity')
 
-        click_on('Create Activity type')
+        click_on('Save')
 
         activity_type = ActivityType.first
 
@@ -86,7 +86,7 @@ describe 'activity type', type: :system do
         expect(activity_type.maximum_frequency).to eq(5)
         expect(activity_type.image_en.filename).to eq('placeholder.png')
 
-        expect(page.has_content?('Activity type was successfully created.')).to be true
+        expect(page.has_content?('Activity was successfully created.')).to be true
         expect(ActivityType.count).to be 1
 
         click_on activity_name
@@ -97,16 +97,16 @@ describe 'activity type', type: :system do
       end
 
       it 'can does not crash if you forget the score' do
-        fill_in :activity_type_name_en, with: 'New activity'
+        fill_in :activity_type_name_en, with: 'New Activity'
         fill_in_trix with: 'the description'
 
         check('KS1')
 
-        click_on('Create Activity type')
+        click_on('Save')
 
         expect(page.has_content?("Score can't be blank"))
 
-        expect(page.has_content?('Activity type was successfully created.')).not_to be true
+        expect(page.has_content?('Activity was successfully created.')).not_to be true
         expect(ActivityType.count).to be 0
       end
 
@@ -141,7 +141,7 @@ describe 'activity type', type: :system do
       check('KS3')
       fill_in('Maximum frequency', with: 5)
 
-      click_on('Update Activity type')
+      click_on('Save')
 
       activity_type.reload
 
@@ -150,7 +150,7 @@ describe 'activity type', type: :system do
       expect(activity_type.key_stages).to     include(ks3)
       expect(activity_type.maximum_frequency).to eq(5)
 
-      expect(page.has_content?('Activity type was successfully updated.')).to be true
+      expect(page.has_content?('Activity was successfully updated.')).to be true
       expect(ActivityType.count).to be 1
     end
 
@@ -176,7 +176,7 @@ describe 'activity type', type: :system do
         fill_in_trix with: 'some welsh school specific description'
       end
 
-      click_on('Update Activity type')
+      click_on('Save')
 
       activity_type.reload
 
@@ -191,6 +191,26 @@ describe 'activity type', type: :system do
       expect(page).to have_text('some welsh description')
       expect(page).to have_text('some english school specific description')
       expect(page).to have_text('some welsh school specific description')
+    end
+
+    context 'when the activity classifications feature is enabled', with_feature: :activity_classifications do
+      before do
+        england_stage = create(:learning_stage, name: 'Key Stage 2', abbreviation: 'KS2', country: :england)
+        wales_stage = create(:learning_stage, name: 'Progression Step 1', abbreviation: 'PS1', country: :wales)
+        create(:activity_type, activity_category: activity_category,
+                               learning_stages: [england_stage, wales_stage])
+        refresh
+      end
+
+      it 'shows the England learning stages in the row' do
+        expect(page).to have_css('tbody td', text: 'KS2')
+      end
+
+      it 'shows the learning stages for every country in the popover' do
+        content = find('button[data-bs-toggle="popover"]')['data-bs-content']
+        expect(content).to include('England:', 'KS2', 'Wales:', 'PS1')
+        expect(content).to include('Scotland:', 'None')
+      end
     end
   end
 end
