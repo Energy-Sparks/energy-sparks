@@ -3,6 +3,8 @@
 # During holidays alert schools if they are consuming energy
 module Alerts
   class UsageDuringCurrentHolidayBase < AlertAnalysisBase
+    include NonEstimatedMixin
+
     USAGE_THRESHOLD_GBP = 10.0
     attr_reader :holiday_usage_to_date_kwh, :holiday_usage_to_date_gbp, :holiday_usage_to_date_co2,
                 :holiday_projected_usage_kwh, :holiday_projected_usage_gbp, :holiday_projected_usage_co2
@@ -79,12 +81,10 @@ module Alerts
       }
     }.freeze
 
-    # We have enough data so long as there is some recorded usage within the current holiday
+    # We have enough data so long as there is some non-estimated usage within the current holiday
     def enough_data(community_use: :none?)
       holiday_period = @school.holidays.holiday(@today)
-      if !holiday_period.nil? &&
-         aggregate_meter.amr_data.start_date <= holiday_period.start_date &&
-         aggregate_meter.amr_data.end_date   >= holiday_period.start_date &&
+      if !holiday_period.nil? && non_estimated_readings?(holiday_period) &&
          (holiday_period.start_date..holiday_period.end_date).public_send(community_use) do |date|
            @school.open_close_times.usage(date).key?(:community)
          end
@@ -120,9 +120,7 @@ module Alerts
 
     protected
 
-    def max_days_out_of_date_while_still_relevant
-      14
-    end
+    def max_days_out_of_date_while_still_relevant = 14
 
     def aggregate_meter
       raise 'Subclass must implement'
@@ -235,6 +233,12 @@ module Alerts
                holiday_name: holiday_name,
                date: I18n.l(@asof_date, format: '%A %e %b %Y'),
                usage_to_date: FormatUnit.format(:£, @holiday_usage_to_date_gbp))
+      end
+    end
+
+    def non_estimated_readings?(holiday_period)
+      (holiday_period.start_date..[holiday_period.end_date, @today].min).any? do |date|
+        non_estimated_reading?(date)
       end
     end
   end

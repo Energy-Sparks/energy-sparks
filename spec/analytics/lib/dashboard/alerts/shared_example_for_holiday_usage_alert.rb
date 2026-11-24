@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'non_estimated_readings_shared'
+
 RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
   let(:asof_date) { Date.new(2023, 12, 23) }
   let(:variables) { alert.variables_for_reporting }
@@ -29,6 +31,46 @@ RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
         expect(alert.enough_data).to eq(:not_enough)
       end
     end
+
+    context 'when data starts partway through the holiday' do
+      let(:amr_start_date) { Date.new(2023, 12, 20) }
+
+      it 'returns :enough' do
+        expect(alert.enough_data).to eq(:enough)
+      end
+    end
+
+    context 'when holiday readings to date are estimated' do
+      before do
+        (Date.new(2023, 12, 16)..asof_date).each { |date| amr_data[date].set_type('EST') }
+      end
+
+      it 'returns :not_enough even with original readings later in the holiday' do
+        expect(alert.enough_data).to eq(:not_enough)
+      end
+
+      context 'with one non-estimated reading during the holiday' do
+        before { amr_data[asof_date].set_type('ORIG') }
+
+        it 'returns :enough' do
+          expect(alert.enough_data).to eq(:enough)
+        end
+      end
+    end
+
+    context 'when readings during the holiday are missing' do
+      before do
+        (Date.new(2023, 12, 16)..asof_date).each { |date| amr_data.delete(date) }
+      end
+
+      it 'returns :not_enough' do
+        expect(alert.enough_data).to eq(:not_enough)
+      end
+    end
+  end
+
+  it_behaves_like 'an alert requiring recent non-estimated readings', max_days_out_of_date: 14 do
+    let(:amr_end_date) { asof_date }
   end
 
   describe '#analyse' do
