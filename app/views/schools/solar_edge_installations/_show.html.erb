@@ -5,8 +5,12 @@
   </p>
   <p>
     Cached data is updated daily when loading is enabled.
-    <%= link_to 'Edit and then save the site', edit_school_solar_edge_installation_path(school, installation) %>
-    to update the cached data now.
+    <%= if installation.consented?
+          link_to 'Refresh now',
+                  polymorphic_path([:refresh, school, installation]),
+                  method: :post, remote: true,
+                  class: 'btn btn-sm btn-default check-button'
+        end %>
   </p>
 
   <table class="table">

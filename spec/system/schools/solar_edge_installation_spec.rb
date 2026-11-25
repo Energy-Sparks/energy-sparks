@@ -39,6 +39,10 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
           expect(page).to have_no_text('Check')
         end
 
+        it 'does not display the refresh button' do
+          expect(page).to have_no_text('Refresh')
+        end
+
         context 'when editing' do
           before { click_on 'Edit' }
 
@@ -62,9 +66,6 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
       context 'with consented SolarEdge site' do
         let!(:installation) { create(:solar_edge_installation, school:) }
         let(:site_id) { installation.site_id }
-
-        include_context 'with a stubbed SolarEdge site details request'
-        include_context 'with a stubbed SolarEdge inventory request'
 
         context 'when editing' do
           before { click_on 'Edit' }
@@ -92,7 +93,30 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
           end
         end
 
+        it 'displays the refresh button with a symbol' do
+          within "#solar-edge-#{installation.id}-refresh" do
+            expect(page).to have_text('Refresh')
+            expect(page).to have_css("i[class*='fa-arrows-rotate']")
+          end
+        end
+
+        context 'when refreshing', :js do
+          let!(:installation) { create(:solar_edge_installation, :pending_status, school:) }
+
+          include_context 'with a stubbed SolarEdge site details request'
+          include_context 'with a stubbed SolarEdge inventory request'
+
+          before { find("#solar-edge-#{installation.id}-refresh").click }
+
+          it 'refreshes the metadata' do
+            expect(page).to have_text('ACTIVE')
+          end
+        end
+
         context 'when checking an installation', :js do
+          include_context 'with a stubbed SolarEdge site details request'
+          include_context 'with a stubbed SolarEdge inventory request'
+
           context 'when check returns true' do
             include_context 'with a successful SolarEdge token request'
 
@@ -138,12 +162,26 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations d
         expect { click_on 'Delete' }.to change(SolarEdgeInstallation, :count).by(-1)
       end
 
-      it 'allows viewing' do
-        click_on(installation.site_id)
-        expect(page).to have_text('site_detail')
-        expect(page).to have_text(installation.first_telemetry_time)
-        expect(page).to have_text(installation.site_owner_name)
-        expect(page).to have_text(installation.site_owner_email)
+      context 'when viewing the site' do
+        before { click_on(installation.site_id) }
+
+        it 'shows site owner' do
+          expect(page).to have_text(installation.site_owner_name)
+          expect(page).to have_text(installation.site_owner_email)
+        end
+
+        it 'shows cached data' do
+          expect(page).to have_text('site_detail')
+          expect(page).to have_text(installation.first_telemetry_time)
+        end
+
+        context 'when site is consented' do
+          let!(:installation) { create(:solar_edge_installation, school:) }
+
+          it 'allows refreshing cached data' do
+            expect(page).to have_link('Refresh now')
+          end
+        end
       end
     end
 
