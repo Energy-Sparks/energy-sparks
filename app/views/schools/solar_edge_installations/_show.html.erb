@@ -7,7 +7,7 @@
     Cached data is updated daily when loading is enabled.
     <%= if installation.consented?
           link_to 'Refresh now',
-                  polymorphic_path([:check, school, installation]),
+                  polymorphic_path([:refresh, school, installation]),
                   method: :post, remote: true,
                   class: 'btn btn-sm btn-default check-button'
         end %>
