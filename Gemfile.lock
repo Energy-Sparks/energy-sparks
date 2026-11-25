@@ -1038,8 +1038,17 @@ DEPENDENCIES
   wisper
   wisper-rspec
 
+CONTENT ADDRESSES
+  rubydex (0.4.4-aarch64-linux) 14b8f615 abi=3.4
+  rubydex (0.4.4-arm64-darwin) 65c9c50c abi=3.4
+  rubydex (0.4.4-x86_64-darwin) 9b74e92d abi=3.4
+  rubydex (0.4.4-x86_64-linux) aff68219 abi=3.4
+
+RUBY ABIS
+  3.4
+
 RUBY VERSION
-  ruby 3.4.8
+  ruby 3.4.13
 
 BUNDLED WITH
-  4.0.8
+  4.1.1
