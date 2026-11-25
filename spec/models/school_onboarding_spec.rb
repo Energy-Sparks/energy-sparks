@@ -7,6 +7,56 @@ describe SchoolOnboarding, type: :model do
     it { is_expected.not_to allow_value('\xE2\x80\x8Btest@example.com').for(:contact_email) }
   end
 
+  describe '#complete' do
+    let!(:onboarding) do
+      create(
+        :school_onboarding,
+        :with_school,
+        :with_events,
+        event_names: %i[email_sent onboarding_complete]
+      )
+    end
+
+    context 'when there are incomplete onboardings' do
+      before do
+        create(
+          :school_onboarding,
+          :with_school,
+          :with_events,
+          event_names: %i[email_sent]
+        )
+      end
+
+      it 'returns only complete onboardings' do
+        expect(described_class.complete).to eq([onboarding])
+      end
+    end
+
+    context 'when sorting' do
+      let!(:older_onboarding) do
+        create(
+          :school_onboarding,
+          :with_school,
+          :with_events,
+          event_names: %i[email_sent]
+        )
+      end
+
+      before do
+        create(:school_onboarding_event,
+               school_onboarding: older_onboarding,
+               created_at: Time.zone.yesterday,
+               event: :onboarding_complete)
+      end
+
+      it 'orders by completion time' do
+        expect(described_class.complete.order_by_completed_at).to eq([onboarding, older_onboarding])
+      end
+    end
+  end
+
+  describe
+
   context 'knows when it has only done an email send and or reminder email' do
     it 'with an email sent' do
       onboarding = create(:school_onboarding, :with_events, event_names: [:email_sent])

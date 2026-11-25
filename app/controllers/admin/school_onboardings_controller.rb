@@ -22,7 +22,7 @@ module Admin
 
     def completed
       @pagy, @records = pagy(
-        @completed_schools = @school_onboardings.complete.includes(:school, school: :school_group).order(updated_at: :desc)
+        @completed_schools = @school_onboardings.order_by_completed_at.includes(:school, school: :school_group)
       )
     end
 
