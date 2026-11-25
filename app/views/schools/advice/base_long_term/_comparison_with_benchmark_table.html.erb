@@ -1,0 +1,27 @@
+<table id="long-term-benchmark-comparison-table" class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th></th>
+      <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.annual_usage_kwh") %></th>
+      <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.annual_usage_co2") %></th>
+      <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.annual_usage_gbp") %></th>
+      <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.estimated_savings_gbp") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% [[t('advice_pages.benchmarks.your_school'), annual_usage],
+        [t('advice_pages.benchmarks.benchmark_school'), vs_benchmark, estimated_savings_vs_benchmark],
+        [t('advice_pages.benchmarks.exemplar_school'), vs_exemplar, estimated_savings_vs_exemplar]]
+      .each do |label, usage, savings| %>
+      <tr>
+        <td><%= label %></td>
+        <td class="text-right"><%= format_unit(usage.kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(usage.co2, :co2) %></td>
+        <td class="text-right"><%= format_unit(usage.£, :£) %></td>
+        <td class="text-right"><%= savings.nil? ? '-' : format_unit(savings.£, :£) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes' %>

@@ -28,6 +28,7 @@ RSpec.shared_examples 'it contains the expected data table' do |sortable: true, 
     actual_header = header_rows.map do |tr|
       tr.find_all('th').map { |th| th.text.strip }
     end
+    # debugger
     expect(actual_header).to eq(expected_header)
   end
 
