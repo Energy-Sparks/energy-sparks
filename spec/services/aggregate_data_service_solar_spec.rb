@@ -6,23 +6,23 @@ describe AggregateDataServiceSolar do
   subject(:processed_meters) { described_class.new(meter_collection).process_solar_pv_electricity_meters }
 
   let(:meter_collection) { build(:meter_collection, random_generator: Random.new(51), end_date: Date.current) }
-  let(:solar_pv_mpan_meter_mapping) { nil }
-  let(:meter_attributes) do
-    { solar_pv_mpan_meter_mapping: ([solar_pv_mpan_meter_mapping] unless solar_pv_mpan_meter_mapping.nil?) }.compact
-  end
-  let(:electricity_meter) do
-    build(:meter, meter_collection:, type: :electricity, meter_attributes:, kwh_data_x48: Array.new(48, 2),
-                  day_count: 8)
-  end
+  let(:meter_attributes) { {} }
   let(:solar_production_meter) { nil }
   let(:solar_export_meter) { nil }
-  let(:meters) { [electricity_meter, solar_production_meter, solar_export_meter].compact }
+  let(:meters) do
+    { electricity: build(:meter, meter_collection:, type: :electricity, meter_attributes:,
+                                 kwh_data_x48: Array.new(48, 2), day_count: 8),
+      solar_production: solar_production_meter,
+      solar_export: solar_export_meter }
+  end
 
   def sub_meters = processed_meters.first.sub_meters
+  def electricity_meter = meters[:electricity]
+  def meters_values = meters.values.flatten.compact
 
   before do
     travel_to Date.new(2025, 5, 28)
-    meters.each { |meter| meter_collection.add_electricity_meter(meter) }
+    meters_values.each { |meter| meter_collection.add_electricity_meter(meter) }
   end
 
   context 'when school does not have solar' do
@@ -57,12 +57,10 @@ describe AggregateDataServiceSolar do
 
   context 'when school has metered solar' do
     let(:solar_production_meter) { build(:meter, meter_collection:, type: :solar_pv, kwh_data_x48: [1] * 48) }
-    let(:solar_pv_mpan_meter_mapping) do
-      {
-        start_date: Date.new(2023, 1, 1),
-        production_mpan: solar_production_meter.mpan_mprn.to_s,
-        export_mpan: solar_export_meter&.mpan_mprn&.to_s
-      }.compact
+    let(:meter_attributes) do
+      { solar_pv_mpan_meter_mapping: [{ start_date: Date.new(2023, 1, 1),
+                                        production_mpan: solar_production_meter.mpan_mprn.to_s,
+                                        export_mpan: solar_export_meter&.mpan_mprn&.to_s }] }
     end
 
     context 'with only production meter' do
@@ -154,18 +152,15 @@ describe AggregateDataServiceSolar do
     end
 
     context 'with multiple production meters and no export meter' do
-      let(:solar_production_meters) { build_list(:meter, 5, meter_collection:, type: :solar_pv) }
-      let(:solar_pv_mpan_meter_mapping) do
-        {
-          start_date: Date.new(2023, 1, 1),
-          production_mpan: solar_production_meters[0].mpan_mprn.to_s,
-          production_mpan2: solar_production_meters[1].mpan_mprn.to_s,
-          production_mpan3: solar_production_meters[2].mpan_mprn.to_s,
-          production_mpan4: solar_production_meters[3].mpan_mprn.to_s,
-          production_mpan5: solar_production_meters[4].mpan_mprn.to_s
-        }
+      let(:solar_production_meter) { build_list(:meter, 5, meter_collection:, type: :solar_pv) }
+      let(:meter_attributes) do
+        { solar_pv_mpan_meter_mapping: [{ start_date: Date.new(2023, 1, 1),
+                                          production_mpan: solar_production_meter[0].mpan_mprn.to_s,
+                                          production_mpan2: solar_production_meter[1].mpan_mprn.to_s,
+                                          production_mpan3: solar_production_meter[2].mpan_mprn.to_s,
+                                          production_mpan4: solar_production_meter[3].mpan_mprn.to_s,
+                                          production_mpan5: solar_production_meter[4].mpan_mprn.to_s }] }
       end
-      let(:meters) { solar_production_meters + [electricity_meter] }
 
       it 'returns a single new electricity meter' do
         expect(processed_meters.length).to eq(1)
@@ -184,15 +179,35 @@ describe AggregateDataServiceSolar do
         expect(sub_meters[:export]).not_to be_nil
       end
 
+      context 'with a commissioned date' do
+        let(:solar_production_meter) { build_list(:meter, 5, meter_collection:, type: :solar_pv, day_count: 4) }
+        let(:meter_attributes) do
+          super().tap do |attributes|
+            attributes[:solar_pv_mpan_meter_mapping].first.merge!(commissioned_date: Date.new(2025, 5, 23))
+          end
+        end
+
+        it 'backfills all five production meters before combining their readings' do
+          generation = sub_meters[:generation]
+          solar_production_meter.each do |meter|
+            expect(meter.amr_data[Date.new(2025, 5, 23)]).to \
+              have_attributes(type: 'SOLC', substitute_date: Date.new(2025, 5, 25),
+                              kwh_data_x48: meter.amr_data[Date.new(2025, 5, 25)].kwh_data_x48)
+          end
+          expect(generation.amr_data[Date.new(2025, 5, 23)].one_day_kwh).to \
+            eq(generation.amr_data[Date.new(2025, 5, 25)].one_day_kwh)
+        end
+      end
+
       it 'creates a new generation meter from the 5 actual meters' do
         sub_meters = processed_meters.first.sub_meters
 
         # process creates a new generation meter out of those provided
-        expect(solar_production_meters).not_to include(sub_meters[:generation])
+        expect(solar_production_meter).not_to include(sub_meters[:generation])
 
         # uses mpan_mprn of first generation meter
         expect(sub_meters[:generation].mpan_mprn).to \
-          eq(Dashboard::Meter.synthetic_aggregate_generation_meter(solar_production_meters.first.mpan_mprn))
+          eq(Dashboard::Meter.synthetic_aggregate_generation_meter(solar_production_meter.first.mpan_mprn))
       end
     end
 
@@ -231,6 +246,92 @@ describe AggregateDataServiceSolar do
         it 'generation meter has modelled added' do
           expect(sub_meters[:generation].amr_data.values.map { |value| value.one_day_kwh.round }).to \
             eq([48, 48, 58, 58, 58, 58, 78, 78])
+        end
+      end
+    end
+
+    context 'with a commissioned date' do
+      let(:commissioned_date) { Date.new(2026, 5, 2) }
+      let(:start_date) { Date.new(2026, 6, 1) }
+      let(:end_date) { Date.new(2026, 6, 30) }
+      let(:meter_attributes) do
+        super().tap { |attributes| attributes[:solar_pv_mpan_meter_mapping].first.merge!(commissioned_date:) }
+      end
+      let(:meters) do
+        amr_data = build(:amr_data, :with_date_range, start_date: commissioned_date - 1.day, end_date:)
+        electricity = build(:meter, meter_collection:, type: :electricity, meter_attributes:, amr_data:)
+        super().merge(electricity:)
+      end
+      let(:solar_production_meter) do
+        build(:meter, meter_collection:, type: :solar_pv,
+                      amr_data: build(:amr_data, :with_date_range, start_date:, end_date:))
+      end
+      let(:solar_export_meter) do
+        build(:meter, meter_collection:, type: :exported_solar_pv,
+                      amr_data: build(:amr_data, :with_date_range, start_date: start_date - 1.week, end_date:))
+      end
+      let(:original_reading_dates) { meters_values.index_with { |meter| meter.amr_data.keys.sort } }
+
+      def group_ranges_by_type(meter)
+        grouped = meter.amr_data.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |(date, data), hash|
+          hash[data.type.to_sym] << date
+        end
+
+        grouped.transform_values { |dates| contiguous_date_ranges(dates) }
+      end
+
+      def contiguous_date_ranges(dates)
+        ranges = dates.sort.chunk_while { |prev, curr| curr == prev + 1.day }
+                      .map { |run| run.first..run.last }
+        ranges.one? ? ranges.first : ranges
+      end
+
+      def expected_ranges_by_type(meter, zero_type: :BKPV)
+        { ORIG: original_reading_dates[meter].first..end_date,
+          SOLC: commissioned_date..original_reading_dates[meter].first.prev_day,
+          zero_type =>
+            original_reading_dates[electricity_meter].first..original_reading_dates[electricity_meter].first }
+      end
+
+      before do
+        original_reading_dates
+        processed_meters
+      end
+
+      it 'copies each meter’s initial readings', :aggregate_failures do
+        expect(group_ranges_by_type(solar_production_meter)).to eq(expected_ranges_by_type(solar_production_meter))
+        expect(group_ranges_by_type(solar_export_meter)).to eq(expected_ranges_by_type(solar_export_meter))
+
+        original_reading_dates.to_a[1..].each do |meter, dates|
+          days_to_copy = (dates.first - commissioned_date).to_i
+          days_to_copy.times do |index|
+            source = meter.amr_data[dates[index]]
+            duplicate = meter.amr_data[commissioned_date + index]
+            expect(duplicate).to have_attributes(type: 'SOLC', substitute_date: source.date,
+                                                 date: commissioned_date + index, kwh_data_x48: source.kwh_data_x48)
+            expect(duplicate.kwh_data_x48).not_to equal(source.kwh_data_x48)
+          end
+          expect(meter.amr_data[dates.first].type).to eq('ORIG')
+          expect(meter.amr_data[commissioned_date - 1]).to have_attributes(type: 'BKPV', one_day_kwh: 0)
+        end
+      end
+
+      context 'with insufficient production readings' do
+        let(:commissioned_date) { Date.new(2026, 5, 1) }
+
+        it 'leaves the production readings unchanged' do
+          expect(group_ranges_by_type(solar_production_meter)).to \
+            eq({ ORIG: start_date..end_date, BKPV: commissioned_date.prev_day..start_date.prev_day })
+          expect(group_ranges_by_type(solar_export_meter)).to eq(expected_ranges_by_type(solar_export_meter))
+        end
+      end
+
+      context 'without export monitoring' do
+        let(:solar_export_meter) { nil }
+
+        it 'uses the backfilled generation to calculate self consumption' do
+          expect(group_ranges_by_type(solar_production_meter)).to \
+            eq(expected_ranges_by_type(solar_production_meter, zero_type: :SOL0))
         end
       end
     end

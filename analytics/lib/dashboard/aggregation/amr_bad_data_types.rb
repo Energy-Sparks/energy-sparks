@@ -86,13 +86,7 @@ class OneDayAMRReading
     'STEX' => { name: 'Remaining data post storage heater extraction-good' },
     'STRO' => { name: 'Extracted storage heater data (substituted)' },
     'STXE' => { name: 'Remaining data post storage heater extraction-subd' },
-    'SOLR' => { name: 'Synthetic solar PV output (good)' },
-    'SOLO' => { name: 'Synthetic solar PV consumed Onsite (good)' },
-    'SOLE' => { name: 'Synthetic solar PV exported (good)' },
-    'SOLX' => { name: 'Synthetic onsite solar + mains consumption (good)' },
     'HSIM' => { name: 'Synthetic data used on heating/hw calcs' },
-    'SOLS' => { name: 'Overridden PV data with data from Sheffield' },
-    'SOL0' => { name: 'Zero pv generation data prior/post to pv install' },
     'BKPV' => { name: 'Backfilled PV data (aggregation service)' },
     'TARG' => { name: 'Synthetic target data' },
     'PSTD' => { name: 'Partial data for end date - ignoring' },
@@ -101,13 +95,14 @@ class OneDayAMRReading
     'RNEG' => { name: 'Removed negative readings' },
     'COVD' => { name: '3rd lockdown COVID adjustment T&T system' },
     'CAVG' => { name: 'calculated average school data' },
-    'SOLN' => { name: 'Override night data with zero' }
+    'SOL0' => { name: 'Zero pv generation data prior/post to pv install' },
+    'SOLC' => { name: 'Solar PV readings duplicated back to commissioned date' },
+    'SOLE' => { name: 'Synthetic solar PV exported (good)' },
+    'SOLN' => { name: 'Override night data with zero' },
+    'SOLO' => { name: 'Synthetic solar PV consumed Onsite (good)' },
+    'SOLR' => { name: 'Synthetic solar PV output (good)' },
+    'SOLS' => { name: 'Overridden PV data with data from Sheffield' },
+    'SOLX' => { name: 'Synthetic onsite solar + mains consumption (good)' }
   }.freeze
   AMR_TYPE_SET = AMR_TYPES.keys.to_set.freeze
-
-  # duplicate name to description: a bit of a fudge as the original design
-  # was to make name a short description, but most end up being the same length
-  def self.amr_types
-    @@amr_types ||= AMR_TYPES.transform_values { |v| v.key?(:description) ? v : v.merge({ description: v[:name] }) }
-  end
 end
