@@ -17,7 +17,7 @@ module EmailHelpers
   end
 
   def bootstrap_email_body(email)
-    html_email(email).css('.row:nth-of-type(3)')
+    html_email(email).at_css('.row:nth-of-type(3)')
   end
 
   def bootstrap_email_body_to_markdown(email)
