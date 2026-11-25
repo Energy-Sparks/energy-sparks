@@ -9,7 +9,7 @@ module Admin
       load_and_authorize_resource :learning_stage
 
       def index
-        @learning_stages = @learning_stages.by_name
+        @learning_stages = @learning_stages.by_position
         @learning_stages = @learning_stages.where(country: @country)
       end
 
@@ -50,11 +50,11 @@ module Admin
       end
 
       def create_params
-        params.expect(learning_stage: [*t_params(LearningStage.mobility_attributes), :country])
+        params.expect(learning_stage: [*t_params(LearningStage.mobility_attributes), :country, :position])
       end
 
       def learning_stage_params
-        params.expect(learning_stage: [*t_params(LearningStage.mobility_attributes)])
+        params.expect(learning_stage: [*t_params(LearningStage.mobility_attributes), :position])
       end
     end
   end

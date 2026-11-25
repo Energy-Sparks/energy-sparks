@@ -31,7 +31,7 @@ module Layout
       private
 
       def learning_stages
-        task.learning_stages.for_country(country).by_name
+        task.learning_stages.for_country(country).by_position
       end
 
       def key_stages
