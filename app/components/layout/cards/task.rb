@@ -20,6 +20,10 @@ module Layout
         task.is_a?(ActivityType)
       end
 
+      def activities_index?
+        Flipper.enabled?(:activities_index, current_user)
+      end
+
       def show_summary?
         @show_summary
       end
@@ -30,8 +34,16 @@ module Layout
         task.learning_stages.for_country(country).by_name
       end
 
+      def key_stages
+        task.key_stages.by_name
+      end
+
       def subject_areas
         task.subject_areas.for_country(country).by_name
+      end
+
+      def subjects
+        task.subjects.by_name
       end
 
       def durations
