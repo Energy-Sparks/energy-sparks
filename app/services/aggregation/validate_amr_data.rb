@@ -368,7 +368,7 @@ module Aggregation
         year_count[date.year] += 1
       end
       year_count.each do |year, count|
-        logger.debug {  "set during #{year} * #{count} to zero" }
+        logger.debug { "set during #{year} * #{count} to zero" }
       end
     end
 
@@ -802,6 +802,7 @@ module Aggregation
     def check_for_long_gaps_in_data
       gap_count = 0
       first_bad_date = Date.new(2050, 1, 1)
+
       (@amr_data.start_date..@amr_data.end_date).reverse_each do |date|
         if @amr_data.date_missing?(date)
           first_bad_date = date if gap_count.zero?
@@ -812,6 +813,8 @@ module Aggregation
         next unless gap_count > @max_days_missing_data && !in_meter_correction_period?(date)
 
         min_date = first_bad_date + 1
+        min_date_readings = @amr_data.one_days_data_x48(min_date)
+
         # Setting start date will truncate earlier data. Application will end up
         # storing the LGAP reading as the earliest reading. Prior data will be deleted
         @amr_data.set_start_date(min_date)
@@ -823,8 +826,7 @@ module Aggregation
           end
         end
 
-        substitute_data = Array.new(48, 0.0)
-        @amr_data.add(min_date, OneDayAMRReading.new(min_date, 'LGAP', nil, DateTime.now, substitute_data))
+        @amr_data.add(min_date, OneDayAMRReading.new(min_date, 'LGAP', nil, DateTime.now, min_date_readings))
         break
       end
     end
