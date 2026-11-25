@@ -48,7 +48,6 @@ PreCommit:
   TrailingWhitespace:
     enabled: true
     exclude:
-      - 'config/locales/en.yml'
       - 'vendor/**/*'
       - 'app/assets/images/**/*'
       - 'public/error-fonts/*'

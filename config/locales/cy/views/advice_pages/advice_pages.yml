@@ -1,3 +1,4 @@
+---
 cy:
   advice_pages:
     alerts:
@@ -42,11 +43,11 @@ cy:
       calculations_based_on_fuel_type: Cyfrifiadau yn seiliedig ar %{fuel_type} a ddefnyddiwyd rhwng %{start_date} a %{end_date}
       cost_calculations: Cyfrifiadau cost
       cost_calculations_introduction:
-        - Cyfrifir costau defnydd yn seiliedig ar brisiau uned ynni ac nid ydynt yn ystyried taliadau sefydlog na ffioedd eraill.
-        - Gall tariffau fod yn seiliedig ar gyfartaleddau MAT neu Awdurdod Lleol, neu osodiad diofyn Sbarcynni, os nad yw eich ysgol wedi darparu eu tariffau gwirioneddol.
-        - Amcangyfrifir costau defnydd yn seiliedig ar wybodaeth tariff hanesyddol.
-        - Amcangyfrifon yn seiliedig ar wybodaeth tariff ddiweddaraf eich ysgol yw arbedion yn y dyfodol.
-        - Mae arbedion cost posib a ddyfynnir mewn cymariaethau ysgolion, e.e. ar gyfer ysgolion cymharol "a reolir yn dda" ac "enghreifftiol", hefyd yn seiliedig ar dariffau cyfredol eich ysgol.
+      - Cyfrifir costau defnydd yn seiliedig ar brisiau uned ynni ac nid ydynt yn ystyried taliadau sefydlog na ffioedd eraill.
+      - Gall tariffau fod yn seiliedig ar gyfartaleddau MAT neu Awdurdod Lleol, neu osodiad diofyn Sbarcynni, os nad yw eich ysgol wedi darparu eu tariffau gwirioneddol.
+      - Amcangyfrifir costau defnydd yn seiliedig ar wybodaeth tariff hanesyddol.
+      - Amcangyfrifon yn seiliedig ar wybodaeth tariff ddiweddaraf eich ysgol yw arbedion yn y dyfodol.
+      - Mae arbedion cost posib a ddyfynnir mewn cymariaethau ysgolion, e.e. ar gyfer ysgolion cymharol "a reolir yn dda" ac "enghreifftiol", hefyd yn seiliedig ar dariffau cyfredol eich ysgol.
       energy_data: Data ynni
       link_title: Sut wnaethom ni gyfrifo'r ffigurau hyn?
       page_title: Sut rydym wedi dadansoddi eich data?
@@ -171,12 +172,11 @@ cy:
         bill_components:
           agreed_availability_charge: Tâl am y ceblau i ddarparu uchafswm y cytunwyd arno mewn KVA o drydan i'r ysgol. Yn aml gellir lleihau hyn trwy drafodaethau gyda'ch cyflenwr ynni
           all_day: trwy'r dydd
-          climate_change_levy__2021_22: 'Ardoll Newid yn yr Hinsawdd: yn seiliedig ar eich allyriadau carbon (fesul kWh o ddefnydd). Os byddwch yn lleihau eich defnydd bydd eich CCL yn lleihau'
           commodity_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan
           data_collection_dcda_agent_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
           day_night: Dyma'r tâl am drydan a ddefnyddir rhwng %{time_from} a %{time_to} fesul kWh
           duos: 'Tâl defnyddio system wedi''i ddosbarthu: - tâl fesul kWh o ddefnydd yn ystod yr amseroedd hyn: %{charge_times}. I leihau, lleihau defnydd ysgolion yn ystod yr amseroedd hyn'
-          excess_availability_charge: '''Dirwy'' am fynd dros eich ''Terfyn Argaeledd Cytûn'' mewn mis. Os ydych yn cael eich ‘dirwyo’ am fwy nag ychydig fisoedd y flwyddyn mae’n rhatach ar y cyfan i ofyn i’ch cyflenwr ynni gynyddu eich ‘Terfyn Argaeledd a Gytunwyd’.'
+          excess_availability_charge: "'Dirwy' am fynd dros eich 'Terfyn Argaeledd Cytûn' mewn mis. Os ydych yn cael eich ‘dirwyo’ am fwy nag ychydig fisoedd y flwyddyn mae’n rhatach ar y cyfan i ofyn i’ch cyflenwr ynni gynyddu eich ‘Terfyn Argaeledd a Gytunwyd’."
           feed_in_tariff_levy: Ffi i dalu costau cefnogi ynni adnewyddadwy ar y rhwydwaith trydan. Gallwch leihau hyn drwy leihau eich defnydd o ynni
           fixed_charge: Ffi sefydlog ar gyfer eich cyflenwad ynni
           flat_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan

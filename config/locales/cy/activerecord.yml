@@ -1,3 +1,4 @@
+---
 cy:
   activerecord:
     attributes:
@@ -72,7 +73,6 @@ cy:
           rain: Glaw
           snow: Eira
           sun: Haul
-        weather_image: Llun tywydd
         weather_name: Tywydd
       transport_survey/transport_type:
         category:
@@ -103,19 +103,11 @@ cy:
     models:
       secr_co2_equivalence: Cywerthedd CO₂ SECR
       transport_survey:
-        one: Arolwg trafnidiaeth
-        two: Arolygon trafnidiaeth
         many: Arolygon trafnidiaeth
+        one: Arolwg trafnidiaeth
         other: Arolygon trafnidiaeth
-      transport_survey_response:
-        one: Ymateb
-        two: Ymatebion
-        many: Ymatebion
-        other: Ymatebion
+        two: Arolygon trafnidiaeth
   errors:
-    attributes:
-      temperature_recording:
-        centigrade: Tymheredd
     format: "%{attribute} %{message}"
     messages:
       accepted: rhaid derbyn
@@ -140,24 +132,24 @@ cy:
       required: rhaid bodoli
       taken: eisoes wedi'i gymryd
       too_long:
-        one: yn rhy hir (uchafswm yw 1 nod)
-        two: yn rhy hir (uchafswm yw %{count} nod)
         many: yn rhy hir (uchafswm yw %{count} nod)
+        one: yn rhy hir (uchafswm yw 1 nod)
         other: yn rhy hir (uchafswm yw %{count} nod)
+        two: yn rhy hir (uchafswm yw %{count} nod)
       too_short:
-        one: yn rhy fyr (lleiafswm yw 1 nod)
-        two: yn rhy fyr (lleiafswm yw %{count} nod)
         many: yn rhy fyr (lleiafswm yw %{count} nod)
+        one: yn rhy fyr (lleiafswm yw 1 nod)
         other: yn rhy fyr (lleiafswm yw %{count} nod)
+        two: yn rhy fyr (lleiafswm yw %{count} nod)
       wrong_length:
-        one: yw'r hyd anghywir (dylai fod yn 1 nod)
-        two: yw'r hyd anghywir (dylai fod yn %{count} nod)
         many: yw'r hyd anghywir (dylai fod yn %{count} nod)
+        one: yw'r hyd anghywir (dylai fod yn 1 nod)
         other: yw'r hyd anghywir (dylai fod yn %{count} nod)
+        two: yw'r hyd anghywir (dylai fod yn %{count} nod)
     template:
       body: 'Roedd problemau gyda’r meysydd canlynol:'
       header:
-        one: Roedd 1 gwall yn gwahardd y %{model} hwn rhag cael ei gadw
-        two: Roedd %{count} wall yn gwahardd y %{model} hwn rhag cael ei gadw
         many: Roedd %{count} gwall yn gwahardd y %{model} hwn rhag cael ei gadw
+        one: Roedd 1 gwall yn gwahardd y %{model} hwn rhag cael ei gadw
         other: Roedd %{count} gwall yn gwahardd y %{model} hwn rhag cael ei gadw
+        two: Roedd %{count} wall yn gwahardd y %{model} hwn rhag cael ei gadw

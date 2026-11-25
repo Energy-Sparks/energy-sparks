@@ -1,12 +1,13 @@
+---
 cy:
   scoreboard:
     current_scoreboard: Gweld y bwrdd sgorio presennol
     current_scores: Dyma'r sgorau presennol ar gyfer y flwyddyn academaidd hon
     intro_para_1:
-      one: 'Mae 1 ysgol yn cystadlu ar y sgorfwrdd hwn '
-      two: 'Mae %{count} ysgol yn cystadlu ar y sgorfwrdd hwn '
       many: 'Mae %{count} ysgol yn cystadlu ar y sgorfwrdd hwn '
+      one: 'Mae 1 ysgol yn cystadlu ar y sgorfwrdd hwn '
       other: 'Mae %{count} ysgol yn cystadlu ar y bwrdd sgorio hwn '
+      two: 'Mae %{count} ysgol yn cystadlu ar y sgorfwrdd hwn '
     intro_para_2_national: Mae adroddiadau bwrdd sgorio gwobrau cenedlaethol Sbarcynni yn dangos pwyntiau a sgoriwyd gan ysgolion rhwng %{start_date} a %{end_date}
     position: Safle
     previous_scoreboard: Gweld y sgorau terfynol o'r llynedd
@@ -23,7 +24,7 @@ cy:
     prizes_para_2: Rydym hefyd yn cynnig gwobr arbennig i'r ysgol sy'n darparu'r dystiolaeth fwyaf cymhellol o weithredu dan arweiniad disgyblion yn eu hysgol ar sail eich cofnod gweithgarwch
     regional_title: Byrddau Sgorio Rhanbarthol
     view_all:
-      one: Gweld sgorau ar gyfer 1 ysgol
-      two: Gweld sgorau ar gyfer %{count} ysgol
       many: Gweld sgorau ar gyfer %{count} ysgol
+      one: Gweld sgorau ar gyfer 1 ysgol
       other: Gweld sgorau ar gyfer %{count} ysgol
+      two: Gweld sgorau ar gyfer %{count} ysgol

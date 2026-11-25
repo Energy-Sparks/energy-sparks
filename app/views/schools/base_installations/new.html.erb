@@ -1,3 +1,6 @@
+<%# NAME is the concrete installation model's translated model_name.human. %>
+<%# i18n-tasks-use t('activerecord.models.meter_z_installation') %>
+<%# i18n-tasks-use t('activerecord.models.solis_cloud_installation') %>
 <h1>Add a new <%= controller.class::NAME %> for <%= @school.name %></h1>
 
 <%= render 'form', school: @school, installation: @installation %>

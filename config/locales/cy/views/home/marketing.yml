@@ -1,3 +1,4 @@
+---
 cy:
   campaigns:
     form:
@@ -158,88 +159,88 @@ cy:
         title: Ysgolion bach
     product_features:
       categories:
-        - title: Addysg a chyngor
-          features:
-            - title_html: Mynediad at <a href="/activity_categories" target="_new">weithgareddau disgyblion</a> gydag adnoddau cefnogol i gynyddu llythrennedd ynni a charbon
-              starter: 140+
-              standard: 140+
-            - title_html: Canllawiau ar <a href="/intervention_type_groups" target="_new">weithredoedd arbed ynni</a> dan arweiniad oedolion, cost isel a dim cost
-              starter: 60+
-              standard: 60+
-            - title_html: <a href="/newsletters" target="_new">Cylchlythyrau</a> a <a href="https://blog.energysparks.uk" target="_new">phostiadau blog</a> rheolaidd gyda chyngor, syniadau ac awgrymiadau ar arbed ynni
-              starter_icon: circle-check
-              standard_icon: circle-check
-            - title_html: Cofnodwch weithgareddau a chamau arbed ynni i sgorio pwyntiau ar gyfer ein cystadlaethau ac adeiladu cofnod o ymyriadau
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Cymerwch ran yn ein cystadlaethau a'n digwyddiadau
-              starter_icon: xmark
-              standard_icon: circle-check
-        - title: Offeryn rheoli ynni
-          features:
-            - title_html: Cyfrifon defnyddwyr
-              starter_icon: xmark
-              standard: Diderfyn
-            - title_html: Mewnwelediadau a rhybuddion defnydd ynni a anfonir drwy e-bost
-              starter_icon: xmark
-              standard: Wythnosol
-            - title_html: Dadansoddiad ynni penodol i'r ysgol yn seiliedig ar ddata nwy, trydan a solar bob hanner awr
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Argymhellion arbed ynni wedi'u blaenoriaethu
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Dangosfwrdd oedolion gyda mewnwelediadau a rhybuddion allweddol
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Dangosfwrdd disgyblion gyda chymhariaethau defnydd ynni hawdd eu deall ac anogwyr i weithredu
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Siartiau defnydd ynni rhyngweithiol
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Dadansoddiad lefel mesurydd a siartiau
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Tracio cynnydd drwy osod targedau arbed ynni
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: <a href="/compare" target="_new">Cymharu'r defnydd</a> o ynni yn erbyn ysgolion tebyg
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Data integredig o'ch paneli solar
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Dangosfwrdd Ymddiriedolaeth Aml-Academi i ddarparu goruchwyliaeth rheoli ynni ar draws pob ysgol
-              starter_icon: xmark
-              standard_icon: circle-check
-        - title: Cofrestru a chefnogaeth
-          features:
-            - title_html: Rheolwr cyfrif ymroddedig
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Cymorth e-bost rheoli ynni
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Cefnogaeth e-bost addysg gynaliadwyedd
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: <a href="/training" target="_new">Hyfforddiant gweminar</a>
-              starter_icon: xmark
-              standard_icon: circle-check
-            - title_html: Cymorth gydag uwchraddio i fesuryddion bob hanner awr
-              starter_icon: xmark
-              standard: Ar gais
-        - title: Ffioedd ac opsiynau ychwanegol
-          features:
-            - title_html: Cyfrif preifat (mae cyfrifon safonol yn weladwy i'r cyhoedd i rymuso cymuned yr ysgol gyfan i ymgysylltu â'r mewnwelediadau data ynni)
-              starter_icon: xmark
-              standard_icon: sterling-sign
-              info: "%{private_account_fee} + TAW fesul ysgol y flwyddyn"
-            - title_html: Dadansoddi data ar gyfer mwy na 5 mesurydd
-              starter_icon: xmark
-              standard_icon: sterling-sign
-              info: "%{metering_fee}+ TAW fesul mesurydd"
+      - title: Addysg a chyngor
+        features:
+        - title_html: Mynediad at <a href="/activity_categories" target="_new">weithgareddau disgyblion</a> gydag adnoddau cefnogol i gynyddu llythrennedd ynni a charbon
+          starter: 140+
+          standard: 140+
+        - title_html: Canllawiau ar <a href="/intervention_type_groups" target="_new">weithredoedd arbed ynni</a> dan arweiniad oedolion, cost isel a dim cost
+          starter: 60+
+          standard: 60+
+        - title_html: <a href="/newsletters" target="_new">Cylchlythyrau</a> a <a href="https://blog.energysparks.uk" target="_new">phostiadau blog</a> rheolaidd gyda chyngor, syniadau ac awgrymiadau ar arbed ynni
+          starter_icon: circle-check
+          standard_icon: circle-check
+        - title_html: Cofnodwch weithgareddau a chamau arbed ynni i sgorio pwyntiau ar gyfer ein cystadlaethau ac adeiladu cofnod o ymyriadau
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Cymerwch ran yn ein cystadlaethau a'n digwyddiadau
+          starter_icon: xmark
+          standard_icon: circle-check
+      - title: Offeryn rheoli ynni
+        features:
+        - title_html: Cyfrifon defnyddwyr
+          starter_icon: xmark
+          standard: Diderfyn
+        - title_html: Mewnwelediadau a rhybuddion defnydd ynni a anfonir drwy e-bost
+          starter_icon: xmark
+          standard: Wythnosol
+        - title_html: Dadansoddiad ynni penodol i'r ysgol yn seiliedig ar ddata nwy, trydan a solar bob hanner awr
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Argymhellion arbed ynni wedi'u blaenoriaethu
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Dangosfwrdd oedolion gyda mewnwelediadau a rhybuddion allweddol
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Dangosfwrdd disgyblion gyda chymhariaethau defnydd ynni hawdd eu deall ac anogwyr i weithredu
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Siartiau defnydd ynni rhyngweithiol
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Dadansoddiad lefel mesurydd a siartiau
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Tracio cynnydd drwy osod targedau arbed ynni
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: <a href="/compare" target="_new">Cymharu'r defnydd</a> o ynni yn erbyn ysgolion tebyg
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Data integredig o'ch paneli solar
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Dangosfwrdd Ymddiriedolaeth Aml-Academi i ddarparu goruchwyliaeth rheoli ynni ar draws pob ysgol
+          starter_icon: xmark
+          standard_icon: circle-check
+      - title: Cofrestru a chefnogaeth
+        features:
+        - title_html: Rheolwr cyfrif ymroddedig
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Cymorth e-bost rheoli ynni
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Cefnogaeth e-bost addysg gynaliadwyedd
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: <a href="/training" target="_new">Hyfforddiant gweminar</a>
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title_html: Cymorth gydag uwchraddio i fesuryddion bob hanner awr
+          starter_icon: xmark
+          standard: Ar gais
+      - title: Ffioedd ac opsiynau ychwanegol
+        features:
+        - title_html: Cyfrif preifat (mae cyfrifon safonol yn weladwy i'r cyhoedd i rymuso cymuned yr ysgol gyfan i ymgysylltu â'r mewnwelediadau data ynni)
+          starter_icon: xmark
+          standard_icon: sterling-sign
+          info: "%{private_account_fee} + TAW fesul ysgol y flwyddyn"
+        - title_html: Dadansoddi data ar gyfer mwy na 5 mesurydd
+          starter_icon: xmark
+          standard_icon: sterling-sign
+          info: "%{metering_fee}+ TAW fesul mesurydd"
       standard:
         description_html: Ar gael i ysgolion y DU sydd â chyfrif<br>Sbarcynni
         title: Safonol

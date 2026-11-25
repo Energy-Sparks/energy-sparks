@@ -2,8 +2,10 @@
   <h1><%= t('schools.timeline.title') %></h1>
   <p>
     <% if @academic_year == @current_academic_year %>
+      <%# i18n-tasks-use t("#{@i18n_scope}.timeline.activity_in_current_year") %>
       <%= t('timeline.activity_in_current_year', scope: @i18n_scope) %>
     <% else %>
+      <%# i18n-tasks-use t("#{@i18n_scope}.timeline.activity_in_year") %>
       <%= t('timeline.activity_in_year', scope: @i18n_scope, school_year: @academic_year.title) %>
     <% end %>
   </p>

@@ -316,6 +316,7 @@ class AlertGasAnnualVersusBenchmark < AlertGasModelBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_gas_annual_versus_benchmark.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 

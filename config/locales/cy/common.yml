@@ -1,3 +1,4 @@
+---
 cy:
   co2: CO2
   common:
@@ -12,7 +13,6 @@ cy:
     electricity_and_solar_pv: Trydan a Solar Ffotofoltaig
     email_us: e-bostio ni
     exported_solar_pv: Solar ffotofoltaig wedi'i allforio
-    programmes: Rhaglenni
     gas: Nwy
     labels:
       actions: Gweithredoedd
@@ -49,7 +49,7 @@ cy:
       learn_more: Dysgu rhagor
       manage: Rheoli
       next: Nesaf
-      no_label: 'Na'
+      no_label: Na
       not_applicable: Amh
       not_set: Heb ei osod
       overview: Trosolwg
@@ -79,12 +79,13 @@ cy:
       view_opportunities: Gweld cyfleoedd
       view_results: Gweld canlyniadau
       welcome: Croeso
-      yes_label: 'Ie'
+      yes_label: Ie
     line_graphs: Graffiau llinell
     pie_charts: Siartiau cylch
     points: pwyntiau
     points_html: "%{count} o bwyntiau"
     privacy_policy: polisi preifatrwydd
+    programmes: Rhaglenni
     school: Ysgol
     school_types:
       infant: Babanod
@@ -108,9 +109,9 @@ cy:
     terms_and_conditions: telerau ac amodau
     units:
       minutes:
-        one: '%{count} funud'
-        two: '%{count} funud'
-        many: '%{count} o funudau'
-        other: '%{count} o funudau'
+        many: "%{count} o funudau"
+        one: "%{count} funud"
+        other: "%{count} o funudau"
+        two: "%{count} funud"
   kwh: kWh
-  £: "£"
+  "£": "£"

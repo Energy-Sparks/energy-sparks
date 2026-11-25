@@ -1,3 +1,4 @@
+---
 cy:
   case_studies:
     feature:
@@ -24,18 +25,18 @@ cy:
       header: Helpu ysgolion i dorri costau ynni a brwydro yn erbyn newid hinsawdd
     features:
       cards:
-        - badge: Mewnwelediadau pwerus
-          statement: Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd
-        - badge: Datrys problemau
-          statement: Darganfod a yw ynni'n cael ei wastraffu y tu allan i oriau ysgol
-        - badge: Cyngor pwrpasol
-          statement: Cael cyngor arbed ynni wedi'i deilwra'n arbennig ar gyfer eich ysgol
-        - badge: Rhybuddion amserol
-          statement: Derbyniwch rybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid
-        - badge: Gweithgareddau dysgu
-          statement: Archwilio gweithgareddau tîm eco ac ystafell ddosbarth ar gyfer disgyblion
-        - badge: Cymuned hinsawdd
-          statement: Rhannwch syniadau arbed ynni a chystadlwch yn erbyn ysgolion eraill
+      - badge: Mewnwelediadau pwerus
+        statement: Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd
+      - badge: Datrys problemau
+        statement: Darganfod a yw ynni'n cael ei wastraffu y tu allan i oriau ysgol
+      - badge: Cyngor pwrpasol
+        statement: Cael cyngor arbed ynni wedi'i deilwra'n arbennig ar gyfer eich ysgol
+      - badge: Rhybuddion amserol
+        statement: Derbyniwch rybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid
+      - badge: Gweithgareddau dysgu
+        statement: Archwilio gweithgareddau tîm eco ac ystafell ddosbarth ar gyfer disgyblion
+      - badge: Cymuned hinsawdd
+        statement: Rhannwch syniadau arbed ynni a chystadlwch yn erbyn ysgolion eraill
       description: Mae Sbarcynni yn darparu data ynni bron mewn amser real a mewnwelediadau penodol i'r ysgol i'ch helpu i dorri costau a charbon, yn ogystal ag amrywiaeth o adnoddau a gweithgareddau a gynlluniwyd i ysbrydoli eich disgyblion.
       header: Offer sy'n cael eu gyrru gan ddata a fydd yn newid eich ysgol
     general:
@@ -86,10 +87,10 @@ cy:
       intro: Rydych chi wedi dilyn dolen benodol i'r ysgol. Dewiswch un o'ch ysgolion i barhau.
       title: Dewiswch ysgol i barhau
   school_count:
+    many: "%{count} ysgol"
     one: 1 ysgol
-    two: '%{count} ysgol'
-    many: '%{count} ysgol'
-    other: '%{count} ysgol'
+    other: "%{count} ysgol"
+    two: "%{count} ysgol"
   training:
     feature:
       description: Mae'r dudalen hon yn rhestru ein holl sesiynau hyfforddi sydd i ddod. Dilynwch y dolenni i’n tudalen Eventbrite i archebu eich tocynnau.

@@ -145,6 +145,7 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_out_of_hours_base_usage.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 
@@ -189,6 +190,7 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
   end
 
   def summary
+    # i18n-tasks-use I18n.t('analytics.alert_out_of_hours_base_usage.summary')
     I18n.t("#{i18n_prefix}.summary",
       cost: FormatUnit.format(:£, @out_of_hours_£, :text),
       percent: FormatUnit.format(:percent, @out_of_hours_percent, :text))

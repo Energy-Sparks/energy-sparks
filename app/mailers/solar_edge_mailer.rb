@@ -4,6 +4,7 @@ class SolarEdgeMailer < LocaleMailer
   def request_connection
     @school = params[:school]
     @title = @school.name
+    # i18n-tasks-use t('solar_edge_mailer.request_connection.subject')
     make_bootstrap_mail(to: to_field(params[:users], params[:email]))
   end
 

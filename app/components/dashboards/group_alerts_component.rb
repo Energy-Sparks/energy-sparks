@@ -80,6 +80,16 @@ module Dashboards
     private
 
     def describe_school_count(count, schools)
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.no_schools')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.all')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.one')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.two')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.few')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.some')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.several')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.most')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.almost_all')
+      # i18n-tasks-use t('components.dashboards.group_alerts.school_descriptions.schools')
       scope = 'components.dashboards.group_alerts.school_descriptions'
       return I18n.t('no_schools', scope: scope) if schools.to_i <= 0
       percentage = BigDecimal(count.to_s) / BigDecimal(schools.to_s)

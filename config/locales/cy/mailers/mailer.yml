@@ -1,3 +1,4 @@
+---
 cy:
   alert_mailer:
     alert_email:
@@ -9,8 +10,7 @@ cy:
       paragraph_1_html: Rydym yn dadansoddi data ynni <a href='%{school_url}'>eich ysgol</a> i amlygu lle rydych yn gwneud cynnydd neu lle y gallech gymryd camau i leihau eich defnydd i arbed arian a lleihau allyriadau carbon
       set_a_new_target: Gosod targed newydd
       stay_up_to_date: Cadwch yn gyfoes
-      subject: Rhybuddion Sbarcynni
-      subject_2024: "Rhybuddion wythnosol %{school_name}"
+      subject_2024: Rhybuddion wythnosol %{school_name}
       take_action_around_the_school: Gweithredwch o amgylch yr ysgol
       take_action_choose: Dewiswch weithgaredd
       take_action_message: Cwblhewch un o'n gweithgareddau dan arweiniad disgyblion neu oedolion a argymhellir i ddechrau lleihau eich defnydd o ynni
@@ -98,8 +98,8 @@ cy:
     build_an_energy_saving_team_html: <b>Adeiladu tîm arbed ynni:</b> ystyriwch <a href="%{root_url}activity_types/33">sefydlu tîm myfyrwyr</a> i arwain ar effeithlonrwydd ynni yn eich ysgol a'u helpu i <a href="%{root_url}activity_types/174">ddod o hyd i'w cynghreiriaid ynni</a>. Gallant ddechrau defnyddio ein gweithgareddau addysgol ar unwaith. Gwyliwch ein <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">fideo</a> ar sut i gofnodi gweithgareddau.
     completion_email:
       find_them_on_energy_sparks: Dewch o hyd iddynt ar Sbarcynni
-      subject: "Mae %{school} (%{school_group}) wedi cwblhau'r broses ymuno"
-      title: "Mae %{school_name} (%{school_group}) wedi cwblhau'r broses gosod awtomatig"
+      subject: Mae %{school} (%{school_group}) wedi cwblhau'r broses ymuno
+      title: Mae %{school_name} (%{school_group}) wedi cwblhau'r broses gosod awtomatig
     data_enabled_email:
       below_are_a_few_admin_html: |-
         <div>
@@ -146,7 +146,7 @@ cy:
       get_in_touch_message_html: <a href="%{contact_url}">Cysylltwch</a> os oes gennych unrhyw gwestiynau pellach.
       in_the_mean_time: 'Yn y cyfamser, dyma ein canllaw cyflym ar gyfer gwneud y gorau o''ch cyfrif Sbarcynni:'
       review_our_range_html: <b>Adolygwch ein hamrywiaeth o <a href="%{root_url}intervention_type_groups">weithredoedd arbed ynni</a></b> y gallwch chi, aelodau eraill o staff a gwirfoddolwyr eu cymryd i ddechrau gwella eich defnydd o ynni.
-      subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
+      subject: Mae %{school} bellach yn fyw ar Sbarcynni
       we_are_working_message: Rydym yn gweithio i gael mynediad at ddata ynni eich ysgol.
       we_will_be_in_touch_shortly_message: Byddwn mewn cysylltiad yn fuan i gadarnhau pan fyddwn wedi gorffen cael mynediad at eich data ynni.
     onboarding_email:
@@ -159,31 +159,31 @@ cy:
       title: Sefydlwch eich ysgol ar Sbarcynni
     reminder_email:
       paragraph_1_html:
-        one: Diolch i chi am gofrestru e%{school_name} gyda <a href="https://energysparks.uk">Sbarcynni</a>
-        two: Diolch i chi am gofrestru eich ysgolion gyda <a href="https://energysparks.uk">Sbarcynn</a>i
         many: Diolch i chi am gofrestru eich ysgolion gyda <a href="https://energysparks.uk">Sbarcynni</a>
+        one: Diolch i chi am gofrestru e%{school_name} gyda <a href="https://energysparks.uk">Sbarcynni</a>
         other: Diolch i chi am gofrestru eich ysgolion gyda <a href="https://energysparks.uk">Sbarcynni</a>
+        two: Diolch i chi am gofrestru eich ysgolion gyda <a href="https://energysparks.uk">Sbarcynn</a>i
       paragraph_2:
-        one: Mae angen rhai manylion gennych am eich ysgol, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
-        two: Mae angen rhai manylion gennych am eich ysgolion, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
         many: Mae angen rhai manylion gennych am eich ysgolion, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
+        one: Mae angen rhai manylion gennych am eich ysgol, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
         other: Mae angen rhai manylion gennych am eich ysgolion, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
+        two: Mae angen rhai manylion gennych am eich ysgolion, gan gynnwys caniatâd i gyhoeddi data mesurydd ar Sbarcynni.
       paragraph_3:
-        one: Sefydlwch eich ysgol ar Sbarcynni
-        two: 'Cwblhewch y broses sefydlu ar gyfer yr ysgolion canlynol:'
         many: 'Cwblhewch y broses sefydlu ar gyfer yr ysgolion canlynol:'
+        one: Sefydlwch eich ysgol ar Sbarcynni
         other: 'Cwblhewch y broses sefydlu ar gyfer yr ysgolion canlynol:'
+        two: 'Cwblhewch y broses sefydlu ar gyfer yr ysgolion canlynol:'
       subject:
-        one: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
-        two: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
         many: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+        one: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
         other: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+        two: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
       the_energy_sparks_team: Tîm Sbarcynni
       title:
-        one: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
-        two: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
         many: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+        one: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
         other: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
+        two: Peidiwch ag anghofio sefydlu eich ysgolion ar Sbarcynni
     set_up_a_holiday_switch_off_routine_html: <b>Sefydlu trefn diffodd ar gyfer y gwyliau:</b> Ar gyfartaledd, mae 15% o ynni ysgolion yn cael ei ddefnyddio yn ystod y gwyliau. Mae creu rhestr wirio diffodd ynni ar gyfer y gwyliau a mynd drwy'r rhestr ar ddiwedd y tymor yn un o'r ffyrdd hawsaf a rhataf o leihau biliau ynni, hyd yn oed i ysgolion sydd â chlybiau gwyliau. Mae gennym rai <a href="%{root_url}intervention_types/71"> rhestrau gwirio diffodd enghreifftiol</a> ar gael i chi eu defnyddio.
     set_up_with_a_staff_account: Rydych chi wedi cael cyfrif staff. Os ydych chi'n meddwl y gallai fod angen i chi wirio a diweddaru manylion yr ysgol, bydd angen cyfrif gweinyddwr arnoch chi.
     sign_up_to_energy_saving_alerts_html: <b>Cofrestrwch ar gyfer rhybuddion a negeseuon arbed ynni:</b> Mae ein system rhybuddio wedi helpu rhai ysgolion i arbed miloedd o bunnoedd drwy eu hysbysu am newidiadau disgwyliedig yn eu defnydd o ynni. Gallwch hefyd dderbyn awgrymiadau a diweddariadau rheolaidd i helpu eich ysgol i wneud y gorau o'i chyfrif Sbarcynni drwy gydol y flwyddyn. <a href="%{root_url}profiles">Newidiwch eich dewisiadau e-bost yma.</a>
@@ -204,9 +204,9 @@ cy:
       we_estimated_that_html: Rydym yn amcangyfrif mai eich cyfle arbed ynni blaenoriaeth uchaf yw %{opportunity}. Gallai gwneud hyn arbed cymaint â %{gbp_saving} a %{co2_saving}kg o CO₂ y flwyddyn i chi.
   school_archived_mailer:
     archived:
-      has_been_archived: "Mae %{school_name} wedi'i archifo ar Sbarcynni. Ni fyddwch bellach yn gallu cael mynediad at y mewnwelediadau data ynni na'r gweithgareddau a gofnodwyd yn flaenorol ar gyfer eich ysgol."
+      has_been_archived: Mae %{school_name} wedi'i archifo ar Sbarcynni. Ni fyddwch bellach yn gallu cael mynediad at y mewnwelediadau data ynni na'r gweithgareddau a gofnodwyd yn flaenorol ar gyfer eich ysgol.
       newsletters: Os ydych chi wedi tanysgrifio i'n cylchlythyrau, byddwch yn parhau i dderbyn y rhain, ond gallwch chi ddewis optio allan gan ddefnyddio'r ddolen dad-danysgrifio ar waelod pob cylchlythyr.
-      subject: "Mae %{school_name} wedi'i archifo ar Sbarcynni"
+      subject: Mae %{school_name} wedi'i archifo ar Sbarcynni
       title: Ysgol wedi'i harchifo
       we_would_love_html: Byddem wrth ein bodd yn cefnogi eich ysgol eto yn y dyfodol. Gallwch weld ein gwasanaethau a'n prisiau cyfredol <a href="%{url}">yma</a> neu ofyn i ail-gofrestru eich ysgol drwy e-bostio <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
       your_account: Efallai bod eich cyfrif wedi'i archifo oherwydd bod defnydd yr ysgol o Sbarcynni wedi dod i ben ac rydych chi wedi dewis peidio â thalu am ein gwasanaethau o hyn ymlaen. Gallai hefyd fod oherwydd nad ydych wedi adnewyddu contract â thâl i ddefnyddio ein hofferyn rheoli ynni ar-lein.

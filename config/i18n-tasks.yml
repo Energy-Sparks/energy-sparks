@@ -4,7 +4,6 @@
 base_locale: en
 ## All available locales are inferred from the data by default. Alternatively, specify them explicitly:
 # locales: [es, fr]
-locales: [en]
 ## Reporting locale, default: en. Available: en, ru.
 # internal_locale: en
 
@@ -14,10 +13,15 @@ data:
   ## Provide a custom adapter:
   # adapter: I18n::Tasks::Data::FileSystem
 
-  # Locale files or `File.find` patterns where translations are read from:
+  # Locale files or `Dir.glob` patterns where translations are read from.
+  # When a key is defined in several files, the file read last wins: patterns are read in order,
+  # and the files matching a pattern in the order `Dir.glob` returns them.
   read:
     ## Default:
-    - config/locales/**/*.yml
+    # - config/locales/%{locale}.yml
+    ## More files:
+    # - config/locales/**/*.%{locale}.yml
+    - config/locales/%{locale}/**/*.yml
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
   # `i18n-tasks normalize -p` will force move the keys according to these rules
@@ -33,7 +37,7 @@ data:
     ## Example (replace %#= with %=):
     # - "<%#= %x[bundle info vagrant --path].chomp %>/templates/locales/%{locale}.yml"
 
-  ## Specify the router (see Readme for details). Valid values: conservative_router, pattern_router, or a custom class.
+  ## Specify the router (see Readme for details). Valid values: conservative_router, pattern_router, isolating_router, or a custom class.
   # router: conservative_router
 
   yaml:
@@ -51,9 +55,12 @@ data:
 
 # Find translate calls
 search:
-  ## Paths or `File.find` patterns to search in:
-  # paths:
-  #  - app/
+  ## Paths or `Find.find` patterns to search in:
+  paths:
+    - app/
+    - lib/
+    - analytics/lib/
+    - analytics/app/
 
   ## Root directories for relative keys resolution.
   # relative_roots:
@@ -71,27 +78,33 @@ search:
   #  -
 
   ## Files or `File.fnmatch` patterns to exclude from search. Some files are always excluded regardless of this setting:
-  ##   %w(*.jpg *.png *.gif *.svg *.ico *.eot *.otf *.ttf *.woff *.woff2 *.pdf *.css *.sass *.scss *.less *.yml *.json *.map)
+  ##   *.jpg *.jpeg *.png *.gif *.svg *.ico *.eot *.otf *.ttf *.woff *.woff2 *.pdf *.css *.sass *.scss *.less
+  ##   *.yml *.json *.zip *.tar.gz *.swf *.flv *.mp3 *.wav *.flac *.webm *.mp4 *.ogg *.opus *.webp *.map *.xlsx
   exclude:
     - app/assets/images
     - app/assets/fonts
     - app/assets/videos
+    - app/assets/builds
 
   ## Alternatively, the only files or `File.fnmatch patterns` to search in `paths`:
   ## If specified, this settings takes priority over `exclude`, but `exclude` still applies.
   # only: ["*.rb", "*.html.slim"]
 
   ## If `strict` is `false`, guess usages such as t("categories.#{category}.title"). The default is `true`.
-  # strict: true
+  strict: false
 
   ## Allows adding ast_matchers for finding translations using the AST-scanners
   ## The available matchers are:
   ## - RailsModelMatcher
   ##     Matches ActiveRecord translations like
   ##     User.human_attribute_name(:email) and User.model_name.human
+  ## - DefaultI18nSubjectMatcher
+  ##     Matches ActionMailer's default_i18n_subject method
   ##
   ## To implement your own, please see `I18n::Tasks::Scanners::AstMatchers::BaseMatcher`.
-  <%# I18n::Tasks.add_ast_matcher('I18n::Tasks::Scanners::AstMatchers::RailsModelMatcher') %>
+  ast_matchers:
+    - 'I18n::Tasks::Scanners::AstMatchers::RailsModelMatcher'
+    - 'I18n::Tasks::Scanners::AstMatchers::DefaultI18nSubjectMatcher'
 
   ## Multiple scanners can be used. Their results are merged.
   ## The options specified above are passed down to each scanner. Per-scanner options can be specified as well.
@@ -107,79 +120,82 @@ search:
 #   deepl_api_key: "48E92789-57A3-466A-9959-1A1A1A1A1A1A"
 #   # deepl_host: "https://api.deepl.com"
 #   # deepl_version: "v2"
+#   # deepl_glossary_ids:
+#   #   - uuid
+#   # add additional options to the DeepL.translate call: https://www.deepl.com/docs-api/translate-text/translate-text/
+#   deepl_options:
+#     formality: prefer_less
+#   # OpenAI
+#   openai_api_key: "sk-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+#   # openai_model: "gpt-4o-mini" # see https://platform.openai.com/docs/models
+#   # openai_temperature: 0.0 # Controls randomness in responses (0.0-2.0), default: 0.0
+#   # may contain `%{from}` and `%{to}`, which will be replaced by source and target locale codes, respectively (using `Kernel.format`)
+#   # openai_system_prompt: >-
+#   #   You are a professional translator that translates content from the %{from} locale
+#   #   to the %{to} locale in an i18n locale array.
+#   #
+#   # Per-locale prompts override the default prompt for specific target locales
+#   # openai_locale_prompts:
+#   #   es: >-
+#   #     You are a professional translator specializing in Latin American Spanish.
+#   #     Translate content from the %{from} locale to the %{to} locale, using informal language
+#   #     and regional expressions common in Mexico.
+#   #   ja: >-
+#   #     You are a professional translator specializing in business Japanese.
+#   #     Translate content from the %{from} locale to the %{to} locale using formal, professional
+#   #     language appropriate for business contexts.
+#   #
+#   #   The array has a structured format and contains multiple strings. Your task is to translate
+#   #   each of these strings and create a new array with the translated strings.
+#   #
+#   #   HTML markups (enclosed in < and > characters) must not be changed under any circumstance.
+#   #   Variables (starting with %%{ and ending with }) must not be changed under any circumstance.
+#   #
+#   #   Keep in mind the context of all the strings for a more accurate translation.
 
 ## Do not consider these keys missing:
-ignore_missing:
+# ignore_missing:
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
+# - '{devise,simple_form}.*'
+
+ignore_missing:
+  cy: # missing Welsh translations expected while waiting for translation
+    - '*'
+  en:
+    - 'activerecord.attributes.activity_category.description'
+    - 'activerecord.attributes.activity_category.name'
+    - 'activerecord.attributes.advice_page.learn_more'
+    - 'activerecord.attributes.case_study.description'
+    - 'activerecord.attributes.case_study.file'
+    - 'activerecord.attributes.case_study.tags'
+    - 'activerecord.attributes.case_study.title'
+    - 'activerecord.attributes.intervention_type_group.description'
+    - 'activerecord.attributes.intervention_type_group.name'
+    - 'activerecord.attributes.programme_type.document_link'
+    - 'activerecord.attributes.programme_type.short_description'
+    - 'activerecord.attributes.programme_type.title'
+    - 'activerecord.attributes.scoreboard.name'
+    - 'activerecord.models.m_od_el' # The static model matcher mistakes the dynamic MODEL constant for a model name.
+    - 'activerecord.models.school_group'
 
 ## Consider these keys used:
-ignore_unused:
-  - 'activerecord.*'
-  - 'helpers.*'
-  - 'support.*'
-  - '{errors, simple_form}.*'
-  - '*_mailer.*.subject'
-  - 'analytics.[ac-z]*'
-  - 'calendar_event_type.*'
-  - 'key_stage.*'
-  - 'staff_role.*'
-  - 'subject.*'
-  - 'charts.*'
-  - 'schools.transport_surveys.equivalences.*'
-  - 'schools.transport_surveys.show.percentages.*'
-  - 'schools.transport_surveys.app.*'
-  - 'kwh'
-  - 'co2'
-  - '£'
-  - 'date.*'
-  - 'devise.*'
-  - 'common.storage_heater'
-  - 'chart_configuration.*'
-  - 'aggregation_service_solar_pv.*'
-  - 'pagy.*'
-  - 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
-  - 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title'
-  - 'advice_pages.heating_control.analysis.meter_breakdown.chart_subtitle_html'
-  - 'advice_pages.heating_control.analysis.meter_breakdown.chart_title'
-  - 'advice_pages.*.analysis.title'
-  - 'advice_pages.*.insights.title'
-  - 'advice_pages.*.insights.next_steps'
-  - 'advice_pages.electricity_costs.charts.cost_1_year_accounting_breakdown*'
-  - 'advice_pages.gas_costs.charts.cost_1_year_accounting_breakdown*'
-  - 'advice_pages.tables.tooltips.bill_components.*'
-  - 'school_groups.priority_actions.alert_types.*_html'
-  - 'schools.user_tariffs.index.exported_solar_pv.*'
-  - 'schools.user_tariffs.index.solar_pv.*'
-  - 'schools.user_tariffs.index.*'
-  - 'schools.user_tariffs.there*'
-  - 'schools.user_tariff_charges.index.introduction*'
-  - 'schools.user_tariff_flat_prices.*.introduction*'
-  - 'schools.user_tariff_differential_prices.index.introduction*'
-  - 'schools.prompts.programme.summary_*'
-  - 'activity_types.errors.invalid_fuel_type.*'
-  - 'intervention_types.errors.invalid_fuel_type.*'
-  - 'onboarding_mailer.reminder_email.subject.*'
-  - 'onboarding_mailer.reminder_email.paragraph_3.*'
-  - 'components.observation.*.description*'
-  - 'components.observation.*.compact_message*'
-  - 'components.observation.*.message*'
-  - 'campaign_mailer.send_information.for_las.group_dashboard_html'
-  - 'campaign_mailer.send_information.for_mats.group_dashboard_html'
-  - 'pupils.default_equivalences.equivalence_*.*'
-  - 'schools.prompts.programme.progress.*'
-  - 'schools.prompts.audit.progress.*'
-  - 'components.dashboards.group_alerts.school_descriptions.*'
-  - 'school_groups.advice.chart_types.*'
-  - '{schools,school_groups}.timeline.activity_in_*'
-  - 'school_groups.advice.comparison_reports.links.*'
-  - 'school_groups.advice_pages.show.page_summary.*'
-  - 'school_groups.impact.potential_savings.{titles,keys}.*'
-  - 'school_groups.impact.energy_efficiency.metric_types.*'
-  - 'schools.status.*'
+# ignore_unused:
+# - 'activerecord.attributes.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
 # - 'simple_form.{error_notification,required}.:'
+
+# Framework and third-party gem lookups are outside the application's scanner paths.
+ignore_unused:
+  - 'activerecord.errors.messages.*'
+  - 'errors.messages.*'
+  - 'errors.format'
+  - 'errors.template.*'
+  - 'support.array.*'
+  - 'date.*'
+  - 'devise.*'
+  - 'pagy.*'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:
@@ -210,9 +226,13 @@ ignore_unused:
 #       patterns: [['\bSpree\.t[( ]\s*%{key}', 'spree.%{key}']] %>
  <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
        patterns: [
-         ['\badvice_t[( ]\s*%{key}', 'advice_pages.%{key}']
-       ] %>
- <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
-       patterns: [
-         ['\bimpact_t[( ]\s*%{key}', 'school_groups.impact.%{key}']
+         ['\badvice_t[( ]\s*%{key}', 'advice_pages.%{key}'],
+         ['\bimpact_t[( ]\s*%{key}', 'school_groups.impact.%{key}'],
+         ['\bchart_subtitle_key:\s*%{key}', '%{key}'],
+         ['\by_axis_keys:\s*%{key}', '%{key}'],
+
+         ['\bTransportSurvey::Response\.human_enum_name\(\s*%{key}',
+          'activerecord.attributes.transport_survey/response.%{key}'],
+         ['\bTransportSurvey::TransportType\.human_enum_name\(\s*%{key}',
+          'activerecord.attributes.transport_survey/transport_type.%{key}']
        ] %>

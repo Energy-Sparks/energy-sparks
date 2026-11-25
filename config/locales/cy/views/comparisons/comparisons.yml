@@ -1,3 +1,4 @@
+---
 cy:
   comparisons:
     column_headings:
@@ -14,10 +15,10 @@ cy:
     hot_water_efficiency:
       unlisted:
         message:
-          one: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
-          two: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
           many: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
+          one: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
           other: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
+          two: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi, neu mae ganddynt byllau nofio felly ni ellir amcangyfrif eu defnydd o ddŵr poeth yn gywir
     period_types:
       periods: cyfnodau
     tables:
@@ -30,13 +31,13 @@ cy:
       total_usage: Cymhariaeth cyfanswm defnydd ynni
     unlisted:
       link:
-        one: Gweld ysgol
-        two: Gweld rhestr o ysgolion
         many: Gweld rhestr o ysgolion
+        one: Gweld ysgol
         other: Gweld rhestr o ysgolion
+        two: Gweld rhestr o ysgolion
       loading: Wrthi'n llwytho ysgolion
       message:
-        one: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi
-        two: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi
         many: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi
+        one: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi
         other: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddi ddigon o ddata i'w dadansoddi
+        two: Ni ellid dangos %{count} ysgol yn yr adroddiad hwn gan nad oes ganddynt ddigon o ddata i'w dadansoddi

@@ -37,6 +37,8 @@ module Completables
     end
 
     def message
+      # i18n-tasks-use t("schools.prompts.audit.progress.#{i18n_message_key}")
+      # i18n-tasks-use t("schools.prompts.programme.progress.#{i18n_message_key}")
       I18n.t("schools.prompts.#{i18n_base}.#{i18n_message_key}",
         title: assignable.title,
         count: completed_count,
@@ -53,6 +55,8 @@ module Completables
             else
               'summary_html'
             end
+      # i18n-tasks-use t("schools.prompts.audit.progress.#{key}")
+      # i18n-tasks-use t("schools.prompts.programme.progress.#{key}")
       I18n.t("schools.prompts.#{i18n_base}.#{key}",
         count: bonus_points,
         uncompleted_count: uncompleted_count,

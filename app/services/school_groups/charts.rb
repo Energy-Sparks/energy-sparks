@@ -65,6 +65,9 @@ module SchoolGroups
     def safe_charts
       SAFE_CHARTS.map do |fuel_type, charts|
         updated_charts = charts.map do |chart_type, config|
+          # i18n-tasks-use t("school_groups.advice.chart_types.#{fuel_type}.#{chart_type}.label")
+          # i18n-tasks-use t("school_groups.advice.chart_types.#{fuel_type}.#{chart_type}.title")
+          # i18n-tasks-use t("school_groups.advice.chart_types.#{fuel_type}.#{chart_type}.subtitle")
           scope = "school_groups.advice.chart_types.#{fuel_type}"
           update_config = config.merge({
             label: I18n.t("#{chart_type}.label", scope:, default: nil),

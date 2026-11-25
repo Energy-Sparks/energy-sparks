@@ -130,6 +130,7 @@ class AlertChangeInDailyGasShortTerm < AlertGasModelBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_change_in_daily_gas_short_term.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 

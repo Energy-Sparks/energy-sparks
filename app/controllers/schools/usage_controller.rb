@@ -53,6 +53,7 @@ module Schools
     end
 
     def title_key(supply, period, split_meters)
+      # i18n-tasks-use t("charts.usage.titles.#{supply}.#{period}.#{split_meters}")
       "charts.usage.titles.#{supply}.#{period}.#{split_meters ? 'split' : 'not_split'}"
     end
 

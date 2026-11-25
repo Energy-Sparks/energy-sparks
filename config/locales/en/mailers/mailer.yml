@@ -10,7 +10,6 @@ en:
       paragraph_1_html: We analyse <a href='%{school_url}'>your school's</a> energy data to highlight where you are making progress or where you may be able to take steps to reduce your usage to save money and reduce carbon emissions
       set_a_new_target: Set a new target
       stay_up_to_date: Stay up to date
-      subject: Energy Sparks alerts
       subject_2024: "%{school_name} weekly alerts"
       take_action_around_the_school: Take action around the school
       take_action_choose: Choose activity

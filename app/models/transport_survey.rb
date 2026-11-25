@@ -82,6 +82,7 @@ class TransportSurvey < ApplicationRecord
   end
 
   def self.equivalences
+    # i18n-tasks-use t("schools.transport_surveys.equivalences.#{name}")
     equivalence_images.collect do |name, image|
       { rate: EnergyEquivalences.all_equivalences[name][:conversions][:co2][:rate] / (equivalence_devisors[name] || 1),
         statement: I18n.t(name, scope: 'schools.transport_surveys.equivalences'),

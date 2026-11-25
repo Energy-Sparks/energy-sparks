@@ -1,11 +1,12 @@
+---
 cy:
   activity_types:
     errors:
       invalid_fuel_type:
-        one: 'math o danwydd annilys:'
-        two: 'mathau o danwydd annilys:'
         many: 'mathau o danwydd annilys:'
+        one: 'math o danwydd annilys:'
         other: 'mathau o danwydd annilys:'
+        two: 'mathau o danwydd annilys:'
     key_stages: Cyfnodau Allweddol
     score_for_this_activity: Sgôr ar gyfer y gweithgaredd hwn
     search:
@@ -16,9 +17,9 @@ cy:
       limit_results_shown: Cyfyngu ar y canlyniadau a ddangosir
       no_results_found: Heb ganfod unrhyw ganlyniadau
       results_found:
-        one: Wedi canfod 1 canlyniad
-        two: Wedi canfod %{count} ganlyniad
         many: Wedi canfod %{count} o ganlyniadau
+        one: Wedi canfod 1 canlyniad
         other: Wedi canfod %{count} o ganlyniadau
+        two: Wedi canfod %{count} ganlyniad
       title: Dod o hyd i weithgareddau disgyblion
     subjects: Pynciau

@@ -68,6 +68,14 @@ class TransportSurvey::Response < ApplicationRecord
   end
 
   def self.csv_attributes
+    # CsvExportable resolves these headers through human_attribute_name at runtime.
+    # i18n-tasks-use t('activerecord.attributes.transport_survey/response.id')
+    # i18n-tasks-use t('activerecord.attributes.transport_survey/response.run_identifier')
+    # i18n-tasks-use t('activerecord.attributes.transport_survey/response.weather_name')
+    # i18n-tasks-use t('activerecord.attributes.transport_survey/response.journey_minutes')
+    # i18n-tasks-use t('activerecord.attributes.transport_survey/response.passengers')
+    # i18n-tasks-use t('activerecord.attributes.transport_survey/response.surveyed_at')
+    # i18n-tasks-use t('activerecord.attributes.transport_survey/transport_type.name')
     %w[id run_identifier weather_name journey_minutes transport_type.name passengers carbon_kg_co2 surveyed_at]
   end
 

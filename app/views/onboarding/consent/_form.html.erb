@@ -1,7 +1,10 @@
 <%= simple_form_for(consent_grant, url: path, method: :post) do |f| %>
   <%= f.hidden_field :consent_statement_id %>
+  <%# i18n-tasks-use t('activerecord.attributes.consent_grant.name') %>
   <%= f.input :name %>
+  <%# i18n-tasks-use t('activerecord.attributes.consent_grant.job_title') %>
   <%= f.input :job_title %>
+  <%# i18n-tasks-use t('activerecord.attributes.consent_grant.school_name') %>
   <%= f.input :school_name %>
 
   <div class="custom-control custom-checkbox agreements">

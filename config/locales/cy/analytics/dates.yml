@@ -1,3 +1,4 @@
+---
 cy:
   analytics:
     academic_year: Blwyddyn Academaidd %{period_start_date}/%{period_end_date}

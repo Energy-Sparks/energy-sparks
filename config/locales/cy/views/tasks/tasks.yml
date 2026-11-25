@@ -1,61 +1,61 @@
+---
 cy:
   tasks:
-    download_resources: Lawrlwytho adnoddau
-    select_school: Dewiswch ysgol...
-    login_to_record:
-      are_you_an_energy_sparks_user: Ydych chi'n ddefnyddiwr Sbarcynni
-    previous_records:
-      completed_most_recently_on: yn fwyaf diweddar ar
-      completed_on: 'ar'
-      previously_completed: "%{label} wedi'i gwblhau o'r blaen"
+    action:
+      complete_this_for_group_html:
+        many: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        one: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        other: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        two: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+      complete_this_html:
+        many: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> o bwyntiau i'th ysgol!
+        one: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> pwynt i'th ysgol!
+        other: Cwblhewch y weithred hon i sgorio <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+        two: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> bwynt i'th ysgol!
+      record_this: Cofnodi'r weithred hon
     activity:
       complete_this_for_group_html:
-        one: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>1</strong> pwynt!
-        two: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
         many: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        one: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>1</strong> pwynt!
         other: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        two: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
       complete_this_html:
-        one: Cwblhewch y gweithgaredd hwn i sgorio <strong>1</strong> pwynt!
-        two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
         many: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+        one: Cwblhewch y gweithgaredd hwn i sgorio <strong>1</strong> pwynt!
         other: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+        two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
       record_this: Cofnodi'r gweithgaredd hwn
-    action:
-      complete_this_html:
-        one: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> pwynt i'th ysgol!
-        two: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> bwynt i'th ysgol!
-        many: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> o bwyntiau i'th ysgol!
-        other: Cwblhewch y weithred hon i sgorio <strong>%{count}</strong> o bwyntiau i'ch ysgol!
-      complete_this_for_group_html:
-        one: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
-        two: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
-        many: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
-        other: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
-      record_this: Cofnodi'r weithred hon
     complete:
       action: Cwblhau gweithred
       activity: Cwblhau gweithgaredd
     completed:
       action:
         no_points: Rydym wedi cofnodi eich gweithred
-        page_title: "Gweithred %{school} "
+        page_title: 'Gweithred %{school} '
         view_link: Gweld eich gweithred
       activity:
         no_points: Rydym wedi cofnodi eich gweithgaredd
-        page_title: "Gweithgaredd %{school}"
+        page_title: Gweithgaredd %{school}
         view_link: Gweld eich gweithgarwch
       congratulations: Llongyfarchiadau!
       points: Rydych chi newydd sgorio %{points} o bwyntiau
       share: Rhannwch yr hyn rydych chi wedi’i wneud ag eraill yng nghymuned yr ysgol
       what_next: Beth ydych chi eisiau ei wneud nesaf?
     completed_on: Cwblhawyd ar %{date}
-    score:
-      action: Sgôr ar gyfer y weithred hon
-      activity: Sgôr ar gyfer y gweithgaredd hwn
-    view:
-      action: Gweld gweithred
-      activity: Gweld gweithgaredd
+    download_resources: Lawrlwytho adnoddau
     form:
       tell_us_more: Dywedwch ragor wrthym am yr hyn a wnaethoch
       you_can_add_formatting: Gallwch ychwanegu fformatio, dolenni ac atodi lluniau gan ddefnyddio'r bar offer isod. Gallwch hofran dros bob eicon i ddysgu beth mae'n ei wneud
-
+    login_to_record:
+      are_you_an_energy_sparks_user: Ydych chi'n ddefnyddiwr Sbarcynni
+    previous_records:
+      completed_most_recently_on: yn fwyaf diweddar ar
+      completed_on: ar
+      previously_completed: "%{label} wedi'i gwblhau o'r blaen"
+    score:
+      action: Sgôr ar gyfer y weithred hon
+      activity: Sgôr ar gyfer y gweithgaredd hwn
+    select_school: Dewiswch ysgol...
+    view:
+      action: Gweld gweithred
+      activity: Gweld gweithgaredd

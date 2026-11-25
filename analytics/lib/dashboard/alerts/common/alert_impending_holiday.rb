@@ -31,6 +31,8 @@ class AlertImpendingHoliday < AlertGasOnlyBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_impending_holiday.timescale_unknown')
+    # i18n-tasks-use I18n.t('analytics.alert_impending_holiday.timescale')
     @holiday.nil? ? I18n.t("#{i18n_prefix}.timescale_unknown") : I18n.t("#{i18n_prefix}.timescale", count: @holiday_length_weeks)
   end
 

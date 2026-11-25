@@ -21,6 +21,7 @@ class AlertMeterASCLimit < AlertElectricityOnlyBase
   end
 
   def timescale
+    # i18n-tasks-use I18n.t('analytics.alert_meter_asc_limit.timescale')
     I18n.t("#{i18n_prefix}.timescale")
   end
 
@@ -114,6 +115,7 @@ class AlertMeterASCLimit < AlertElectricityOnlyBase
   end
 
   private def text_for_one_meter(mpan, asc_info)
+    # i18n-tasks-use I18n.t('analytics.alert_meter_asc_limit.peak_power_consumption')
     I18n.t("#{i18n_prefix}.peak_power_consumption",
       mpan: mpan,
       asc_limit: FormatUnit.format(:kw, asc_info[:asc_limit_kw]),
@@ -123,8 +125,10 @@ class AlertMeterASCLimit < AlertElectricityOnlyBase
 
   private def text_for_opportunity_or_risk(asc_info)
     if asc_info[:close_to_margin]
+      # i18n-tasks-use I18n.t('analytics.alert_meter_asc_limit.close_to_margin')
       I18n.t("#{i18n_prefix}.close_to_margin")
     else
+      # i18n-tasks-use I18n.t('analytics.alert_meter_asc_limit.opportunity')
       I18n.t("#{i18n_prefix}.opportunity",
         annual_saving: FormatUnit.format(:£, asc_info[:annual_saving_£]),
         ten_year_saving: FormatUnit.format(:£, asc_info[:annual_saving_£] * 10.0))

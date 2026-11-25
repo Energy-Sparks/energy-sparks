@@ -173,7 +173,6 @@ en:
         bill_components:
           agreed_availability_charge: A charge for the cabling to provide an agreed maximum amount of power in KVA of electricity to the school. This can often be reduced via discussions with your energy supplier
           all_day: all day
-          climate_change_levy__2021_22: 'Climate Change Levy: based on your carbon emissions (per kWh of consumption). If you reduce your consumption your CCL will reduce'
           commodity_rate: The charge per kWh of consumption for the whole day
           data_collection_dcda_agent_charge: The cost of collecting your half hourly meter readings twice a day. Energy Sparks uses this half hourly data to analyse your energy consumption
           day_night: This is the charge for electricity consumed between %{time_from} and %{time_to} per kWh

@@ -1,3 +1,4 @@
+---
 cy:
   intervention_type_groups:
     index:
@@ -6,14 +7,14 @@ cy:
       page_title: Gweithredoedd
       search: Chwilio
       view_all_actions:
-        one: Gweld 1 weithred
-        two: Gweld pob un o'r %{count} weithred
         many: Gweld pob un o'r %{count} o weithredoedd
+        one: Gweld 1 weithred
         other: Gweld pob un o'r %{count} o weithredoedd
+        two: Gweld pob un o'r %{count} weithred
     show:
       all_actions: Pob gweithred
       introduction_html:
-        one: <strong>1</strong> weithred y gellir ei gwneud o amgylch yr ysgol i helpu i wella arbed ynni
-        two: Casgliad o <strong>%{count}</strong> o weithredoedd y gellir eu cyflawni o amgylch yr ysgol i helpu i arbed ynni
         many: Casgliad o <strong>%{count}</strong> o weithredoedd y gellir eu cyflawni o amgylch yr ysgol i helpu i arbed ynni
+        one: "<strong>1</strong> weithred y gellir ei gwneud o amgylch yr ysgol i helpu i wella arbed ynni"
         other: Casgliad o <strong>%{count}</strong> o weithredoedd y gellir eu cyflawni o amgylch yr ysgol i helpu i arbed ynni
+        two: Casgliad o <strong>%{count}</strong> o weithredoedd y gellir eu cyflawni o amgylch yr ysgol i helpu i arbed ynni

@@ -89,8 +89,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
   config.action_mailer.asset_host = ENV['ASSET_HOST'] && ENV['APPLICATION_HOST'] ? ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" } : 'localhost:3000'
 
-  # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
-  # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
+
   # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any
   # untranslated text in the erb templates.
   config.i18n.available_locales << :mirror

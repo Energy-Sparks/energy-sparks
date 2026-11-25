@@ -1,21 +1,22 @@
+---
 cy:
   interventions:
     edit:
       page_title: Diweddaru gweithred arbed ynni
       title: Diweddarwch eich gweithred arbed ynni
     form:
-      bonus_points_message: Gall ychwanegu llun i ddogfennu eich gweithred sgorio
       adding_some_background_detail_label: Gall ychwanegu rhai manylion cefndir eich helpu i olrhain a monitro gwelliannau
       bonus_points:
-        one: pwynt bonws
-        two: pwyntiau bonws
         many: pwyntiau bonws
+        one: pwynt bonws
         other: pwyntiau bonws
+        two: pwyntiau bonws
+      bonus_points_message: Gall ychwanegu llun i ddogfennu eich gweithred sgorio
       completing_this_activity:
-        one: Bydd cwblhau'r cam hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill 1 pwynt i chi
-        two: Bydd cwblhau'r cam hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} o bwyntiau i chi
         many: Bydd cwblhau'r cam hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} o bwyntiau i chi
+        one: Bydd cwblhau'r cam hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill 1 pwynt i chi
         other: Bydd cwblhau'r cam hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} o bwyntiau i chi
+        two: Bydd cwblhau'r cam hwn hyd at %{maximum} waith y flwyddyn academaidd hon yn ennill %{count} o bwyntiau i chi
       exceeded_maximum_in_year: Rydych chi eisoes wedi cwblhau'r weithred hon %{maximum} o weithiau yn y flwyddyn academaidd hon. Ni fyddwch yn sgorio pwyntiau ychwanegol am ei gofnodi
       previous_years: Nid yw camau gweithredu a gofnodwyd mewn blynyddoedd academaidd blaenorol yn sgorio pwyntiau
       record_action: Cofnodi gweithred
