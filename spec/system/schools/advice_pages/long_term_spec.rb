@@ -418,9 +418,9 @@ describe 'long term advice page', :aggregate_failures do
     it_behaves_like 'a long term advice page'
   end
 
-  # describe 'gas' do
-  #   let(:fuel_type) { :gas }
+  describe 'gas' do
+    let(:fuel_type) { :gas }
 
-  #   it_behaves_like 'a long term advice page'
-  # end
+    it_behaves_like 'a long term advice page'
+  end
 end
