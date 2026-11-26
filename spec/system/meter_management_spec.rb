@@ -1,26 +1,24 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'test_prof/recipes/rspec/let_it_be'
 
 RSpec.shared_examples_for 'a listed meter' do |admin: true, staff: false|
-  it 'displays list heading' do
+  # rubocop:disable-next RSpec/ExampleLength -- Check the same rendered page without repeating the setup.
+  it 'displays the heading, meter data and links', :aggregate_failures do
     if meter.active
       expect(page).to have_text('Active meters')
     else
       expect(page).to have_text('Inactive meters')
     end
-  end
 
-  it 'displays meter data' do
     expect(page).to have_text(meter.mpan_mprn)
     expect(page).to have_text(meter.name)
     expect(page).to have_text(short_dates(meter.first_validated_reading))
     expect(page).to have_text(short_dates(meter.last_validated_reading))
     expect(page).to have_text(meter.zero_reading_days.count)
     expect(page).to have_text(meter.gappy_validated_readings.count)
-  end
 
-  it 'displays meter links' do
     if !staff && meter.active && meter.amr_validated_readings.any?
       expect(page).to have_link(href: school_meter_path(meter.school, meter, format: 'csv'))
     end
@@ -35,7 +33,7 @@ RSpec.shared_examples_for 'a listed meter' do |admin: true, staff: false|
 end
 
 RSpec.shared_examples_for 'the show meter page' do |admin:|
-  it 'displays the correct fields' do
+  it 'displays the correct fields', :aggregate_failures do
     click_on meter.mpan_mprn.to_s
     expect(page).to have_text('Basic information')
     expect(page).to have_text("MPAN/MPRN #{meter.mpan_mprn} Serial Number Type #{meter.meter_type.titleize}")
@@ -60,7 +58,6 @@ RSpec.shared_examples_for 'it creates meters' do |email: false, select_data_sour
                                                            available_data: Time.zone.today..Time.zone.today,
                                                            type: :smets2)
       allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
-      click_on('Manage meters')
     end
 
     it 'requires a type' do
@@ -116,11 +113,13 @@ describe 'meter management', :include_application_helper, :meters do
   include ActiveJob::TestHelper
   include EmailHelpers
 
-  let(:school_name)     { 'Oldfield Park Infants' }
-  let!(:school)         { create_active_school(name: school_name, school_group: create(:school_group)) }
-  let!(:data_source)    { create(:data_source, name: 'Data Co') }
-  let!(:supplier)       { create(:supplier, name: 'Supply Co') }
-  let(:active_meter)    do
+  let_it_be(:school, reload: true) do
+    create_active_school(name: 'Oldfield Park Infants', school_group: create(:school_group))
+  end
+  let_it_be(:data_source) { create(:data_source, name: 'Data Co') }
+  let_it_be(:supplier) { create(:supplier, name: 'Supply Co') }
+  let_it_be(:perse_feed_config) { create(:amr_data_feed_config, identifier: 'perse-half-hourly-api') }
+  let(:active_meter) do
     create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, supplier:, gas_unit: :m3)
   end
   let(:inactive_meter) do
@@ -128,22 +127,22 @@ describe 'meter management', :include_application_helper, :meters do
   end
   let!(:setup_data) {}
 
-  around do |example|
-    create(:amr_data_feed_config, identifier: 'perse-half-hourly-api')
-    example.run
-  end
-
   context 'when a school admin' do
-    before do
-      sign_in(create(:school_admin, school:))
+    before { sign_in(create(:school_admin, school:)) }
+
+    it 'can navigate to meter management' do
       visit root_path
+      click_on 'Manage meters'
+      expect(page).to have_text('Active meters')
     end
 
     context 'when the school has a meter with no readings' do
-      before { create(:gas_meter, name: 'Gas meter', school:) }
+      before do
+        create(:gas_meter, name: 'Gas meter', school:)
+        visit school_meters_path(school)
+      end
 
       it 'allows deletion of inactive meters' do
-        click_on 'Manage meters'
         click_on 'Deactivate'
         click_on 'Delete'
         expect(school.meters.count).to eq(0)
@@ -155,7 +154,7 @@ describe 'meter management', :include_application_helper, :meters do
         create(:electricity_meter_with_reading, name: 'Electricity meter', school:, mpan_mprn: 1_234_567_890_123)
       end
 
-      before { click_on 'Manage meters' }
+      before { visit school_meters_path(school) }
 
       it 'the meter cannot be deleted' do
         click_on 'Deactivate'
@@ -178,27 +177,15 @@ describe 'meter management', :include_application_helper, :meters do
 
       before do
         allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
-        click_on 'Manage meters'
+        visit school_meters_path(school)
         click_on meter.mpan_mprn.to_s
       end
 
-      it 'the meter inventory button is not shown' do
+      it 'does not show admin-only controls or sections', :aggregate_failures do
         expect(page).to have_no_selector(:link_or_button, 'Inventory')
-      end
-
-      it 'the tariff report button is not shown' do
         expect(page).to have_no_selector(:link_or_button, 'Tariff Report')
-      end
-
-      it 'the attributes button is not shown' do
         expect(page).to have_no_selector(:link_or_button, 'Attributes')
-      end
-
-      it 'the reload button is not shown' do
         expect(page).to have_no_selector(:link_or_button, 'Reload')
-      end
-
-      it 'does not admin only sections' do
         expect(page).to have_no_text('DCC (SMETS2) information')
         expect(page).to have_no_text('Perse Metering')
       end
@@ -208,21 +195,23 @@ describe 'meter management', :include_application_helper, :meters do
   end
 
   context 'when a group admin' do
-    before do
-      sign_in(create(:group_admin, school_group: school.school_group))
-      visit root_path
+    before { sign_in(create(:group_admin, school_group: school.school_group)) }
+
+    it 'can navigate to meter management' do
+      visit school_path(school)
+      click_on 'Manage meters'
+      expect(page).to have_text('Active meters')
     end
 
     it_behaves_like 'the meter management page for staff'
   end
 
   context 'when a teacher' do
-    before do
-      sign_in(create(:staff, school:))
-      visit school_meters_path(school)
-    end
+    before { sign_in(create(:staff, school:)) }
 
     it 'does not show things it should not' do
+      visit school_meters_path(school)
+      expect(page).to have_text('Active meters')
       expect(page).to have_no_text('Delete')
       expect(page).to have_no_text('Create Meter')
       expect(page).to have_no_text('Activate')
@@ -234,19 +223,24 @@ describe 'meter management', :include_application_helper, :meters do
     it_behaves_like 'the show meter page', admin: false do
       let(:setup_data) { meter }
       let(:meter) { active_meter }
+
+      before { visit school_meters_path(school) }
     end
   end
 
   context 'when an admin' do
-    let!(:admin) { create(:admin) }
+    let_it_be(:admin) { create(:admin) }
 
-    before do
-      sign_in(admin)
+    before { sign_in(admin) }
+
+    it 'can navigate to meter management' do
       visit school_path(school)
+      click_on 'Manage meters'
+      expect(page).to have_text('Active meters')
     end
 
     context 'with the Manage meters page' do
-      before { click_on 'Manage meters' }
+      before { visit school_meters_path(school) }
 
       it_behaves_like 'admin dashboard messages' do
         let(:messageable) { school }
@@ -292,22 +286,26 @@ describe 'meter management', :include_application_helper, :meters do
 
         before { stub_request(:get, "https://n3rgy.test/find-mpxn/#{meter.mpan_mprn}") }
 
-        it { expect(page).to have_link('Issues') }
-        it { expect(page).to have_css("i[class*='fa-exclamation-circle']") }
-        it { expect(page).to have_no_css("i[class*='fa-exclamation-circle text-danger']") }
+        it 'shows the issues link without an alert', :aggregate_failures do
+          expect(page).to have_link('Issues')
+          expect(page).to have_css("i[class*='fa-exclamation-circle']")
+          expect(page).to have_no_css("i[class*='fa-exclamation-circle text-danger']")
+        end
 
         context "when clicking on meter 'Details'" do
           before do
             click_link meter.mpan_mprn.to_s
           end
 
-          it { expect(page).to have_link('Issues') }
-          it { expect(page).to have_no_css("i[class*='fa-exclamation-circle text-danger']") }
+          it 'shows the issues link without an alert', :aggregate_failures do
+            expect(page).to have_link('Issues')
+            expect(page).to have_no_css("i[class*='fa-exclamation-circle text-danger']")
+          end
         end
       end
 
       shared_examples 'editing an issue for meter via modal' do
-        context 'when editing an issue' do
+        context 'when editing an issue', :js do
           before do
             click_on 'Issues'
             within('.modal') do
@@ -344,23 +342,27 @@ describe 'meter management', :include_application_helper, :meters do
         end
       end
 
-      context 'with meter issues', :js do
+      context 'with meter issues' do
         let(:meter) { active_meter }
         let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin) }
         let!(:setup_data) { issue }
 
         before { stub_request(:get, "https://n3rgy.test/find-mpxn/#{meter.mpan_mprn}") }
 
-        it { expect(page).to have_link('Issues') }
-        it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
+        it 'shows the issues link with an alert', :aggregate_failures do
+          expect(page).to have_link('Issues')
+          expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']")
+        end
 
         it_behaves_like 'editing an issue for meter via modal'
 
         context "when clicking on meter 'Details'" do
           before { click_link meter.mpan_mprn.to_s }
 
-          it { expect(page).to have_link('Issues') }
-          it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
+          it 'shows the issues link with an alert', :aggregate_failures do
+            expect(page).to have_link('Issues')
+            expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']")
+          end
 
           it_behaves_like 'editing an issue for meter via modal'
         end
@@ -377,7 +379,7 @@ describe 'meter management', :include_application_helper, :meters do
         stub_request(:get, 'https://n3rgy.test/mpxn/1234567890123').to_return(body: '{}')
         stub_request(:get, %r{^https://n3rgy.test/mpxn/1234567890123/utility/electricity/readingtype/consumption?})
           .to_return(body: { availableCacheRange: { start: Time.zone.today.to_s, end: Time.zone.today.to_s } }.to_json)
-        click_on 'Manage meters'
+        visit school_meters_path(school)
       end
 
       it 'shows the status and dates' do
@@ -429,7 +431,7 @@ describe 'meter management', :include_application_helper, :meters do
         before do
           travel_to(Date.new(2024, 12, 10))
           create(:amr_data_feed_reading, # make sure we're doing a full reload
-                 amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'perse-half-hourly-api'),
+                 amr_data_feed_config: perse_feed_config,
                  reading_date: '2024-12-10',
                  meter: meter)
           stub_request(:get, 'http://perse/meterhistory/v2/realtime-data?MPAN=1234567890123&fromDate=2023-10-10')
@@ -460,9 +462,7 @@ describe 'meter management', :include_application_helper, :meters do
     context 'when the school has a meter' do
       let!(:gas_meter) { create(:gas_meter, name: 'Gas meter', school:) }
 
-      before do
-        click_on 'Manage meters'
-      end
+      before { visit school_meters_path(school) }
 
       it 'allows editing' do
         click_on 'Edit'
@@ -523,7 +523,7 @@ describe 'meter management', :include_application_helper, :meters do
 
       before do
         allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        click_on 'Manage meters'
+        visit school_meters_path(school)
       end
 
       it 'allows deletion of inactive meters' do
