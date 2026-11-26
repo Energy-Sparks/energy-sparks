@@ -6,6 +6,7 @@
 #
 #  id         :bigint(8)        not null, primary key
 #  country    :enum             default("england"), not null, enum_type: country
+#  position   :integer          default(0), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -29,8 +30,10 @@ class LearningStage < ApplicationRecord
   validates :country, presence: true
   validates :name, presence: true, uniqueness: { scope: :country }
   validates :abbreviation, presence: true, uniqueness: { scope: :country }
+  validates :position, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   scope :by_name, -> { i18n.order(name: :asc) }
+  scope :by_position, -> { i18n.order(:position).order(name: :asc) }
 
   has_many :activity_type_learning_stages, class_name: 'Activities::ActivityTypeLearningStage',
                                            inverse_of: :learning_stage, dependent: :destroy
@@ -41,7 +44,7 @@ class LearningStage < ApplicationRecord
   end
 
   def self.abbreviations(stages)
-    stages.sort_by(&:abbreviation).map(&:abbreviation)
+    stages.sort_by { |stage| [stage.position, stage.abbreviation] }.map(&:abbreviation)
   end
 
   private

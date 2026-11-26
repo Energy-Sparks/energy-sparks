@@ -77,7 +77,9 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :school_group
   belongs_to :project_group, -> { where(group_type: :project) }, class_name: 'SchoolGroup', optional: true
   belongs_to :diocese, -> { where(group_type: :diocese) }, class_name: 'SchoolGroup', optional: true
-  belongs_to :local_authority_area, -> { where(group_type: :local_authority_area) }, class_name: 'SchoolGroup', optional: true
+  belongs_to :local_authority_area, lambda {
+    where(group_type: :local_authority_area)
+  }, class_name: 'SchoolGroup', optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :weather_station, optional: true
@@ -90,17 +92,26 @@ class SchoolOnboarding < ApplicationRecord
   has_many :issues, as: :issueable, dependent: :destroy
 
   scope :by_name, -> { order(school_name: :asc) }
+
   scope :complete, lambda {
-    joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] })
-  }
-  scope :completed_in_last_x_days, ->(x) do # rubocop:disable Style/Lambda
     joins(:events).where(
       school_onboarding_events: {
-        event: SchoolOnboardingEvent.events[:onboarding_complete],
-        created_at: x.days.ago..
+        event: SchoolOnboardingEvent.events[:onboarding_complete]
       }
     )
-  end
+  }
+
+  scope :completed_in_last_x_days, lambda { |days|
+    complete.where(
+      school_onboarding_events: {
+        created_at: days.days.ago..
+      }
+    )
+  }
+
+  scope :order_by_completed_at, lambda {
+    complete.order('school_onboarding_events.created_at DESC')
+  }
 
   scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.onboardings_for_group.complete : complete) }
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: }) }
@@ -220,6 +231,7 @@ class SchoolOnboarding < ApplicationRecord
   def find_group(group_type:, code_attr:)
     establishment = Lists::Establishment.current_establishment_from_urn(urn)
     return nil unless establishment && establishment&.public_send(code_attr)
+
     SchoolGroup.find_by(group_type:, dfe_code: establishment.public_send(code_attr))
   end
 
