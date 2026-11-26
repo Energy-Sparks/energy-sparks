@@ -22,13 +22,18 @@
           }, include_blank: false %>
     <% end %>
 
+    <%= render 'admin/shared/locale_tabs', f: f, field: :abbreviation do |locale| %>
+      <%= f.input t_field(:abbreviation, locale), label: 'Abbreviation', as: :string %>
+    <% end %>
+
     <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
       <%= f.input t_field(:name, locale), label: 'Name', as: :string %>
     <% end %>
 
-    <%= render 'admin/shared/locale_tabs', f: f, field: :abbreviation do |locale| %>
-      <%= f.input t_field(:abbreviation, locale), label: 'Abbreviation', as: :string %>
-    <% end %>
+    <%= f.input :position,
+                as: :integer,
+                input_html: { min: 0 },
+                hint: 'Learning stages are displayed in this order, then alphabetically by name' %>
 
     <div class="py-3 d-flex gap-2 align-items-center">
       <%= f.submit 'Save', class: 'btn btn-primary' %>

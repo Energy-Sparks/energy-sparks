@@ -1,6 +1,7 @@
 ---
 en:
   activity_types:
+    duration: Duration
     errors:
       invalid_fuel_type:
         one: 'invalid fuel type: '
@@ -19,4 +20,8 @@ en:
         other: "%{count} results found"
         zero: No results found
       title: Find pupil activities
+    subject_area_label:
+      england: Subject
+      scotland: Curriculum area
+      wales: Area of Learning and Experience
     subjects: Subjects

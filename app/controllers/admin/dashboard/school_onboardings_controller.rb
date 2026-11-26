@@ -22,7 +22,7 @@ module Admin
                                                   .joins(:school_group)
                                                   .where(school_group: { default_issues_admin_user: @dashboard_user })
                                                   .includes(:school, school: :school_group)
-                                                  .order(updated_at: :desc)
+                                                  .order_by_completed_at
         )
         build_breadcrumbs([
                             { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },

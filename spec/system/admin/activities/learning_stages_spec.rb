@@ -35,6 +35,11 @@ RSpec.describe 'Admin::Activities::LearningStages' do
         expect(page).to have_no_text(learning_stage_welsh.abbreviation)
       end
 
+      it 'shows the position for each learning stage' do
+        expect(page).to have_css('th', text: 'Position')
+        expect(page).to have_css('td', text: learning_stage_english.position)
+      end
+
       it 'defaults to the first country' do
         within '.admin-activities-country-tabs-component' do
           expect(page).to have_css("a.active[href='#{england_path}']")
@@ -117,11 +122,16 @@ RSpec.describe 'Admin::Activities::LearningStages' do
       context 'when updating the learning stage' do
         before do
           fill_in :learning_stage_name_en, with: 'Foundation Stage'
+          fill_in :learning_stage_position, with: 2
           click_on 'Save'
         end
 
         it { expect(page).to have_text('Learning stage was successfully updated.') }
         it { expect(page).to have_text('Foundation Stage') }
+
+        it 'updates the position' do
+          expect(learning_stage_english.reload.position).to eq(2)
+        end
       end
     end
 
