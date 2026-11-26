@@ -155,7 +155,7 @@
             <%= f.input :learning_stage_ids,
                         as: :select,
                         label: country.to_s.humanize,
-                        collection: LearningStage.for_country(country).by_name,
+                        collection: LearningStage.for_country(country).by_position,
                         include_hidden: false,
                         input_html: {
                           multiple: true,

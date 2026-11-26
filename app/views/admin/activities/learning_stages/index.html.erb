@@ -8,6 +8,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
+        <th>Position</th>
         <th>Name</th>
         <th>Abbreviation</th>
         <th>Used by</th>
@@ -17,6 +18,7 @@
     <tbody>
       <% @learning_stages.each do |learning_stage| %>
         <tr>
+          <td><%= learning_stage.position %></td>
           <td>
             <%= learning_stage.name %>
             <%= render Admin::TranslationFlagComponent.new(record: learning_stage, field: :name, locale: :cy) %>
