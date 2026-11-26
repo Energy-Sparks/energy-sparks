@@ -11,13 +11,13 @@
     <div id="calendar" class="calendar"></div>
 
     <div class="calendar-legend clearfix">
-      <div class="legend-scale vertical float-right">
+      <div class="legend-scale vertical float-end">
         <ul class="legend-labels">
           <% [[40, 'Calorific Value > 40.0'],
               [39, 'Calorific Value > 39.0'],
               [38, 'Calorific Value < 39.0'],
               [:missing, 'Missing day']].each do |colour, description| %>
-            <li><span class="mr-2" style='background:<%= Colours.hex(@colours[colour]) %>;'></span><%= description %></li>
+            <li><span class="me-2" style='background:<%= Colours.hex(@colours[colour]) %>;'></span><%= description %></li>
           <% end %>
         </ul>
       </div>

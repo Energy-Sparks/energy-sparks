@@ -2,8 +2,11 @@
   <div class="card-header">
     <h4>
       <%= t('onboarding.completion.new.consent_section.title') %>
-      <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-consent"
-        aria-expanded="false" aria-controls="collapse-consent"><%= t('common.labels.view') %></button></span>
+      <span class="float-end"><button class="btn"
+        data-toggle="collapse" data-target="#collapse-consent"
+        data-bs-toggle="collapse" data-bs-target="#collapse-consent"
+        aria-expanded="false"
+        aria-controls="collapse-consent"><%= t('common.labels.view') %></button></span>
     </h4>
   </div>
   <div id="collapse-consent" class="collapse">

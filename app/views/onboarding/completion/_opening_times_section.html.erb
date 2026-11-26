@@ -2,11 +2,14 @@
   <div class="card-header">
     <h4>
       <%= t('onboarding.completion.new.opening_times_section.set_your_school_opening_times') %>
-      <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-opening-times"
-        aria-expanded="<%= params[:show]=='opening-times' ? 'true' : 'false' %>" aria-controls="collapse-opening-times"><%= t('common.labels.view') %></button></span>
+      <span class="float-end"><button class="btn"
+        data-toggle="collapse" data-target="#collapse-opening-times"
+        data-bs-toggle="collapse" data-bs-target="#collapse-opening-times"
+        aria-expanded="<%= params[:show] == 'opening-times' ? 'true' : 'false' %>"
+        aria-controls="collapse-opening-times"><%= t('common.labels.view') %></button></span>
     </h4>
   </div>
-  <div id="collapse-opening-times" class="collapse <%= 'show' if params[:show]=='opening-times' %>">
+  <div id="collapse-opening-times" class="collapse <%= 'show' if params[:show] == 'opening-times' %>">
     <div class="card-body">
       <p><%= t('onboarding.completion.new.opening_times_section.set_your_school_opening_times_message') %>:
       </p>
@@ -28,7 +31,8 @@
           <% end %>
         </tbody>
       </table>
-      <%= link_to t('onboarding.completion.new.opening_times_section.set_opening_times'), edit_onboarding_school_times_path(@school_onboarding), class: 'btn btn-primary' %>
+      <%= link_to t('onboarding.completion.new.opening_times_section.set_opening_times'),
+                  edit_onboarding_school_times_path(@school_onboarding), class: 'btn btn-primary' %>
     </div>
   </div>
 </div>
