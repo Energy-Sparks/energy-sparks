@@ -13,7 +13,7 @@ module Layout
         @task = task
         @country = country.to_s.downcase.to_sym
         @show_summary = show_summary
-        validate_inclusion country:, in: COUNTRIES
+        validate_inclusion country: @country, in: COUNTRIES
       end
 
       def activity_type?

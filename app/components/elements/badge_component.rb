@@ -13,7 +13,7 @@ module Elements
     end
 
     def call
-      tag.span(id: id, class: classes, **html_options) { "#{@text}#{content}".html_safe }
+      tag.span(id: id, class: classes, **html_options) { safe_join([@text, content].compact) }
     end
 
     def render?
