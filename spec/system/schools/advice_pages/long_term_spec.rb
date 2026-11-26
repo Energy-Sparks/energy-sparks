@@ -238,7 +238,7 @@ shared_examples 'a long term advice page' do
               if fuel_type == :electricity
                 ['195', '31.8', '£19.50', '£17,500']
               else
-                ["105,000", "19,200", "£10,500", "£6,980"]
+                ['105,000', '19,200', '£10,500', '£6,980']
               end
             end
           end
@@ -257,7 +257,7 @@ shared_examples 'a long term advice page' do
                 if fuel_type == :electricity
                   ['195,000', '31,800', '£19,500', '-£2,030']
                 else
-                  ["105,000", "19,200", "£10,500", "£6,980"]
+                  ['105,000', '19,200', '£10,500', '£6,980']
                 end
               end
             end
