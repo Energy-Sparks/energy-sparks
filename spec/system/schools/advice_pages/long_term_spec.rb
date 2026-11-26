@@ -176,14 +176,14 @@ shared_examples 'a long term advice page' do
     context "when on the 'Analysis' tab" do
       before { click_on 'Analysis' }
 
-      shared_examples 'it contains the benchmark comparison table' do |exemplar_figures:, well_managed_figures:|
+      shared_examples 'it contains the benchmark comparison table' do
         it_behaves_like 'it contains the expected data table', sortable: false do
           let(:table_id) { '#long-term-benchmark-comparison-table' }
           let(:expected_header) do
             [['', 'Annual usage (kWh)', 'Annual co2 (kg/CO2)', 'Annual cost (£)', 'Estimated saving (£)']]
           end
           let(:expected_rows) do
-            [['Your school', '175,000', '28,500', '£17,500', '-'],
+            [['Your school', '175,000', fuel_type == :electricity ? '28,500' : '31,900', '£17,500', '-'],
              ['Well managed', *well_managed_figures],
              ['Exemplar', *exemplar_figures]]
           end
@@ -226,15 +226,40 @@ shared_examples 'a long term advice page' do
         end
 
         unless limited_data_charts
-          it_behaves_like 'it contains the benchmark comparison table',
-                          well_managed_figures: ['229', '37.3', '£22.90', '£17,400'],
-                          exemplar_figures: ['195', '31.8', '£19.50', '£17,500']
+          it_behaves_like 'it contains the benchmark comparison table' do
+            let(:well_managed_figures) do
+              if fuel_type == :electricity
+                ['229', '37.3', '£22.90', '£17,400']
+              else
+                ['123,000', '22,500', '£12,300', '£5,160']
+              end
+            end
+            let(:exemplar_figures) do
+              if fuel_type == :electricity
+                ['195', '31.8', '£19.50', '£17,500']
+              else
+                ["105,000", "19,200", "£10,500", "£6,980"]
+              end
+            end
+          end
 
           context 'with negative savings' do
-            it_behaves_like 'it contains the benchmark comparison table',
-                            well_managed_figures: ['229,000', '37,300', '£22,900', '-£5,430'],
-                            exemplar_figures: ['195,000', '31,800', '£19,500', '-£2,030'] do
+            it_behaves_like 'it contains the benchmark comparison table' do
               let(:school) { create_school(number_of_pupils: 1000) }
+              let(:well_managed_figures) do
+                if fuel_type == :electricity
+                  ['229,000', '37,300', '£22,900', '-£5,430']
+                else
+                  ['123,000', '22,500', '£12,300', '£5,160']
+                end
+              end
+              let(:exemplar_figures) do
+                if fuel_type == :electricity
+                  ['195,000', '31,800', '£19,500', '-£2,030']
+                else
+                  ["105,000", "19,200", "£10,500", "£6,980"]
+                end
+              end
             end
           end
         end
