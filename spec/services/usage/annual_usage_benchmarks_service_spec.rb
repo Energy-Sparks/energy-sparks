@@ -2,6 +2,26 @@
 
 require 'rails_helper'
 
+shared_examples 'annual usage signed savings' do |constant, versus, lower_value, equal_value|
+  it 'returns positive savings when usage is above the comparison' do
+    stub_const(constant, lower_value)
+    savings = service.estimated_savings(versus:)
+    expect(savings.kwh).to be_within(0.01).of(74_720.0)
+    expect(savings.gbp).to be_within(0.01).of(7472.0)
+    expect(savings.co2).to be_within(0.01).of(14_944.0)
+    expect(savings.percent).to be_within(0.01).of(0.7472)
+  end
+
+  it 'returns zero savings when usage equals the comparison' do
+    stub_const(constant, equal_value)
+    savings = service.estimated_savings(versus:)
+    expect(savings.kwh).to be_within(0.01).of(0.0)
+    expect(savings.gbp).to be_within(0.01).of(0.0)
+    expect(savings.co2).to be_within(0.01).of(0.0)
+    expect(savings.percent).to be_within(0.01).of(0.0)
+  end
+end
+
 describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :service do
   let(:fuel_type) { :electricity }
 
@@ -110,23 +130,28 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
     end
   end
 
-  describe '#estimate_savings' do
+  describe '#estimated_savings' do
     context 'with electricity' do
+      it_behaves_like 'annual usage signed savings',
+                      'BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', :benchmark_school, 100.0, 174.72
+      it_behaves_like 'annual usage signed savings',
+                      'BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', :exemplar_school, 100.0, 174.72
+
       it 'calculates the expected values for a benchmark school' do
         stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 219.0)
         savings = service.estimated_savings(versus: :benchmark_school)
-        expect(savings.kwh).to be_within(0.01).of(44_280.0)
-        expect(savings.£).to be_within(0.01).of(4428.0)
-        expect(savings.co2).to be_within(0.01).of(8856.0)
+        expect(savings.kwh).to be_within(0.01).of(-44_280.0)
+        expect(savings.£).to be_within(0.01).of(-4428.0)
+        expect(savings.co2).to be_within(0.01).of(-8856.0)
         expect(savings.percent).to be_within(0.01).of(-0.20)
       end
 
       it 'calculates the expected values for an exemplar school' do
         stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 196.0)
         savings = service.estimated_savings(versus: :exemplar_school)
-        expect(savings.kwh).to be_within(0.01).of(21_280.0)
-        expect(savings.£).to be_within(0.01).of(2128.0)
-        expect(savings.co2).to be_within(0.01).of(4256.0)
+        expect(savings.kwh).to be_within(0.01).of(-21_280.0)
+        expect(savings.£).to be_within(0.01).of(-2128.0)
+        expect(savings.co2).to be_within(0.01).of(-4256.0)
         expect(savings.percent).to be_within(0.01).of(-0.11)
       end
     end
@@ -134,21 +159,26 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
     context 'with gas' do
       let(:fuel_type) { :gas }
 
+      it_behaves_like 'annual usage signed savings',
+                      'BenchmarkMetrics::BENCHMARK_GAS_USAGE_PER_M2', :benchmark_school, 20.0, 34.944
+      it_behaves_like 'annual usage signed savings',
+                      'BenchmarkMetrics::EXEMPLAR_GAS_USAGE_PER_M2', :exemplar_school, 20.0, 34.944
+
       it 'calculates the expected values for a benchmark school' do
         stub_const('BenchmarkMetrics::BENCHMARK_GAS_USAGE_PER_M2', 64)
         savings = service.estimated_savings(versus: :benchmark_school)
-        expect(savings.kwh).to be_within(0.01).of(145_280.0)
-        expect(savings.£).to be_within(0.01).of(14_528.0)
-        expect(savings.co2).to be_within(0.01).of(29_056.0)
+        expect(savings.kwh).to be_within(0.01).of(-145_280.0)
+        expect(savings.£).to be_within(0.01).of(-14_528.0)
+        expect(savings.co2).to be_within(0.01).of(-29_056.0)
         expect(savings.percent).to be_within(0.01).of(-0.45)
       end
 
       it 'calculates the expected values for an exemplar school' do
         stub_const('BenchmarkMetrics::EXEMPLAR_GAS_USAGE_PER_M2', 55)
         savings = service.estimated_savings(versus: :exemplar_school)
-        expect(savings.kwh).to be_within(0.01).of(100_280.0)
-        expect(savings.£).to be_within(0.01).of(10_028.0)
-        expect(savings.co2).to be_within(0.01).of(20_056.0)
+        expect(savings.kwh).to be_within(0.01).of(-100_280.0)
+        expect(savings.£).to be_within(0.01).of(-10_028.0)
+        expect(savings.co2).to be_within(0.01).of(-20_056.0)
         expect(savings.percent).to be_within(0.01).of(-0.36)
       end
     end

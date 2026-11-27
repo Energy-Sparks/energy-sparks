@@ -92,9 +92,9 @@ module Usage
       saving_versus_benchmark_co2 = saving_versus_benchmark_kwh * co2_per_kwh
 
       CombinedUsageMetric.new(
-        kwh: saving_versus_benchmark_kwh.magnitude,
-        gbp: saving_versus_benchmark_gbp.magnitude,
-        co2: saving_versus_benchmark_co2.magnitude,
+        kwh: saving_versus_benchmark_kwh,
+        gbp: saving_versus_benchmark_gbp,
+        co2: saving_versus_benchmark_co2,
         percent: percent_change(annual_usage_for_comparison.kwh, last_year_kwh)
       )
     end

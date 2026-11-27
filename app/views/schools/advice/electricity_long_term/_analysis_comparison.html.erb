@@ -16,11 +16,12 @@
         school_type: t("common.school_types.#{school.school_type}")) %>
 </p>
 
-<%= render 'comparison_with_benchmark_table', annual_usage: annual_usage,
-                                              vs_exemplar: vs_exemplar,
-                                              vs_benchmark: vs_benchmark,
-                                              estimated_savings_vs_exemplar: estimated_savings_vs_exemplar,
-                                              estimated_savings_vs_benchmark: estimated_savings_vs_benchmark %>
+<%= render 'comparison_with_benchmark_table', fuel_type: :electricity,
+                                              annual_usage:,
+                                              vs_exemplar:,
+                                              vs_benchmark:,
+                                              estimated_savings_vs_exemplar:,
+                                              estimated_savings_vs_benchmark: %>
 
 <%= render ChartComponent.new(chart_type: :group_by_week_electricity_versus_benchmark, school: school) do |c| %>
   <% c.with_title { t('advice_pages.electricity_long_term.charts.group_by_week_electricity_versus_benchmark.title') } %>
