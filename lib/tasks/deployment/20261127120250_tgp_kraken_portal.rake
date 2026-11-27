@@ -1,30 +1,10 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: tgp_kraken_portal'
   task tgp_kraken_portal: :environment do
     puts "Running deploy task 'tgp_kraken_portal'"
 
-    # For row per day CSV/Excel feeds use the below template adding the
-    # correct number of header rows, actual date format, and the actual
-    # header and list of reading fields. Other optional fields, including filters
-    # can be defined
-    #
-    # For formats that use serial numbers:
-    #
-    # lookup_by_serial_number: true
-    # mpan_mprn_field: ''
-    # msn_field: ''
-    #
-    # For row per reading formats add:
-    #
-    # row_per_reading: true
-    #
-    # Then, if there is a separate time or period field then also add:
-    #
-    # positional_index: true
-    # period_field: ''
-    # reading_time_field: ''
-    # half_hourly_labelling: :start/:end
-    #
     reading_fields = '00:00 - 00:30,00:30 - 01:00,01:00 - 01:30,01:30 - 02:00,02:00 - 02:30,02:30 - 03:00,' \
                      '03:00 - 03:30,03:30 - 04:00,04:00 - 04:30,04:30 - 05:00,05:00 - 05:30,05:30 - 06:00,' \
                      '06:00 - 06:30,06:30 - 07:00,07:00 - 07:30,07:30 - 08:00,08:00 - 08:30,08:30 - 09:00,' \
