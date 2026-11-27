@@ -275,9 +275,13 @@ describe Aggregation::ValidateAmrData, type: :service do
     end
 
     context 'with a gap' do
+      subject(:after_gap_reading) { amr_data.days_amr_data(after_gap_date) }
+
       let(:amr_data) do
         amr_data = super()
-        amr_data.add(after_gap_date, OneDayAMRReading.zero_reading(after_gap_date, 'ORIG'))
+        amr_data.add(after_gap_date,
+                     build(:one_day_amr_reading, date: after_gap_date, type: 'ORIG',
+                                                 kwh_data_x48: Array.new(48, 1.0)))
         amr_data
       end
 
@@ -286,19 +290,23 @@ describe Aggregation::ValidateAmrData, type: :service do
 
         it 'does not truncate the meter' do
           expect(amr_data.start_date).to eq(Date.new(2025, 1, 1))
-          expect(amr_data.days_amr_data(after_gap_date).type).to eq('ORIG')
+          expect(after_gap_reading.type).to eq('ORIG')
         end
       end
 
-      context 'when gap is 50 days' do
-        let(:after_gap_date) { Date.new(2025, 12, 31) }
+      context 'when gap is more than 50 days' do
+        let(:after_gap_date) { Date.new(2025, 12, 30) }
 
         context 'with electricity meter' do # rubocop:disable RSpec/NestedGroups
           before { create_validator(meter).validate }
 
           it 'truncates the meter' do
             expect(amr_data.start_date).to eq(after_gap_date)
-            expect(amr_data.days_amr_data(after_gap_date).type).to eq('LGAP')
+          end
+
+          it 'overrides the status code but not the readings' do
+            expect(after_gap_reading.type).to eq('LGAP')
+            expect(after_gap_reading.kwh_data_x48).to eq(Array.new(48, 1.0))
           end
         end
 
@@ -316,7 +324,11 @@ describe Aggregation::ValidateAmrData, type: :service do
 
           it 'truncates the meter' do
             expect(amr_data.start_date).to eq(after_gap_date)
-            expect(amr_data.days_amr_data(after_gap_date).type).to eq('LGAP')
+          end
+
+          it 'overrides the status code but not the readings' do
+            expect(after_gap_reading.type).to eq('LGAP')
+            expect(after_gap_reading.kwh_data_x48).to eq(Array.new(48, 1.0))
           end
         end
       end
