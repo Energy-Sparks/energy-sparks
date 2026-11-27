@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-namespace :after_party do
+namespace :after_party do # rubocop:disable Metrics/BlockLength
   desc 'Deployment task: tgp_kraken_portal'
   task tgp_kraken_portal: :environment do
     puts "Running deploy task 'tgp_kraken_portal'"
-
     reading_fields = '00:00 - 00:30,00:30 - 01:00,01:00 - 01:30,01:30 - 02:00,02:00 - 02:30,02:30 - 03:00,' \
                      '03:00 - 03:30,03:30 - 04:00,04:00 - 04:30,04:30 - 05:00,05:00 - 05:30,05:30 - 06:00,' \
                      '06:00 - 06:30,06:30 - 07:00,07:00 - 07:30,07:30 - 08:00,08:00 - 08:30,08:30 - 09:00,' \
@@ -28,7 +27,6 @@ namespace :after_party do
         reading_status_fields: ['Quality'],
         estimate_flags: %w[ESTIMATE ESTIMATED] # example has ACTUAL only so guessing these will be used for estimated
       )
-
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
     AfterParty::TaskRecord.create version: AfterParty::TaskRecorder.new(__FILE__).timestamp
