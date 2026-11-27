@@ -25,8 +25,9 @@ namespace :after_party do
     # reading_time_field: ''
     # half_hourly_labelling: :start/:end
     #
-    AmrDataFeedConfig.find_or_create_by!(identifier: '<%= name %>') do |config|
-      config.assign_attributes(
+    AmrDataFeedConfig
+      .find_or_initialize_by(identifier: '<%= name %>')
+      .update!(
         description: '<%= options.description %>',
         notes: '',
         number_of_header_rows: 1,
